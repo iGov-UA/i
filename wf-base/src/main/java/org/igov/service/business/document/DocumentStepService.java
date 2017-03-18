@@ -11,7 +11,6 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.apache.commons.lang3.StringUtils;
 import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
@@ -32,20 +31,17 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
 import org.apache.commons.io.IOUtils;
-import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.igov.service.conf.AttachmetService;
-import org.igov.service.exception.CRCInvalidException;
 import org.igov.util.Tool;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 
 @Component("documentStepService")
@@ -153,45 +149,28 @@ public class DocumentStepService {
         return aDocumentStep_Result;
     }
 
-    private boolean isNewStepRights(String snID_Process_Activiti, String sKey_Step_Document_To, String sKey_GroupPostfix_New) {
-        List<DocumentStep> aCheckDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+    private boolean isNew_DocumentStepSubjectRight(String snID_Process_Activiti, String sKey_Step_Document,
+            String sKey_GroupPostfix_New) {
 
-        boolean saveflag = true;
-
+        List<DocumentStep> aCheckDocumentStep = documentStepDao
+                .findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        boolean isNew = true;
         for (DocumentStep oCheckDocumentStep : aCheckDocumentStep) {
-            if (!oCheckDocumentStep.getsKey_Step().equals(sKey_Step_Document_To)) {
-                continue;
-            }
-
-            List<DocumentStepSubjectRight> aCheckDocumentStepSubjectRight = oCheckDocumentStep.getRights();
-            LOG.info("oCheckDocumentStep is {}", oCheckDocumentStep);
-            LOG.info("aCheckDocumentStepRights is {}", aCheckDocumentStepSubjectRight);
-
-            for (DocumentStepSubjectRight oCheckDocumentStepSubjectRight : aCheckDocumentStepSubjectRight) {
-                LOG.info("right.getsKey_GroupPostfix() is {}", oCheckDocumentStepSubjectRight.getsKey_GroupPostfix());
-                LOG.info("sKey_GroupPostfix_New is {}", sKey_GroupPostfix_New);
-                if (oCheckDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
-                    saveflag = false;
-                    break;
-                }
-            }
-
-            if (!saveflag) {
-                break;
+            if (oCheckDocumentStep.getsKey_Step().equals(sKey_Step_Document)) {
+                return isNew_DocumentStepSubjectRights(oCheckDocumentStep, sKey_GroupPostfix_New);
             }
         }
-        return saveflag;
+        return isNew;
     }
 
     private boolean isNew_DocumentStepSubjectRights(DocumentStep oDocumentStep,
-            DocumentStepSubjectRight oDocumentStepSubjectRight_Common) {
+            String sKey_GroupPostfix_New) {
         List<DocumentStepSubjectRight> aoDocumentStepSubjectRight = oDocumentStep.getRights();
         if (aoDocumentStepSubjectRight == null) {
             aoDocumentStepSubjectRight = new ArrayList<>();
         }
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aoDocumentStepSubjectRight) {
-            if (oDocumentStepSubjectRight.getsKey_GroupPostfix()
-                    .equalsIgnoreCase(oDocumentStepSubjectRight_Common.getsKey_GroupPostfix())) {
+            if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equalsIgnoreCase(sKey_GroupPostfix_New)) {
                 LOG.info("double DocumentStepSubjectRight: snID_Process_Activiti is: {} sKey_Step is: {} sKey_GroupPostfix: {}",
                         oDocumentStep.getSnID_Process_Activiti(), oDocumentStep.getsKey_Step(), oDocumentStepSubjectRight.getsKey_GroupPostfix());
                 return false;
@@ -208,7 +187,8 @@ public class DocumentStepService {
         if (!aDocumentStepSubjectRightToSet_Common.isEmpty()) {
             for (DocumentStepSubjectRight oDocumentStepSubjectRightToSet_Common
                     : aDocumentStepSubjectRightToSet_Common) {
-                if (!isNew_DocumentStepSubjectRights(oDocumentStep, oDocumentStepSubjectRightToSet_Common)) {
+                if (!isNew_DocumentStepSubjectRights(oDocumentStep, 
+                        oDocumentStepSubjectRightToSet_Common.getsKey_GroupPostfix())) {
                     continue;
                 }
                 DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
@@ -231,7 +211,7 @@ public class DocumentStepService {
                 }
                 oDocumentStepSubjectRight_New.setDocumentStepSubjectRightFields(aoDocumentStepSubjectRightField_New);
 
-                if (isNewStepRights(oDocumentStep.getSnID_Process_Activiti(), oDocumentStep.getsKey_Step(),
+                if (isNew_DocumentStepSubjectRight(oDocumentStep.getSnID_Process_Activiti(), oDocumentStep.getsKey_Step(),
                         oDocumentStepSubjectRight_New.getsKey_GroupPostfix())) {
                     aoDocumentStepSubjectRight_New.add(oDocumentStepSubjectRight_New);
                     LOG.info("oDocumentStepSubjectRight: {} is added", oDocumentStepSubjectRight_New);
@@ -386,7 +366,7 @@ public class DocumentStepService {
                     if (sKey_GroupPostfix.equals(oDocumentStepSubjectRight_From.getsKey_GroupPostfix())) {
                         LOG.info("!!! sKey_GroupPostfix: {} oDocumentStepSubjectRight_From.getsKey_GroupPostfix(): {}",
                                 sKey_GroupPostfix, oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
-                        if (isNewStepRights(snID_Process_Activiti, oDocumentStep_To.getsKey_Step(), sKey_GroupPostfix_New)) {
+                        if (isNew_DocumentStepSubjectRight(snID_Process_Activiti, oDocumentStep_To.getsKey_Step(), sKey_GroupPostfix_New)) {
 
                             aDocumentStepSubjectRight.add(oDocumentStepSubjectRight_From);
                             asResultGroup_Selected.add(sResultGroup);
