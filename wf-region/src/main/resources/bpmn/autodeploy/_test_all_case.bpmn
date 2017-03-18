@@ -104,8 +104,8 @@
         <activiti:formProperty id="sComment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileUT1" name="Рахунок для сплати" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/testPrint2.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_user1" name="markers test_all_case_user1" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_user1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
 <!-- 
@@ -144,12 +144,10 @@
         <activiti:formProperty id="sComment2" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileUT2" name="Рішення" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/testPrint2.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_user2" name="markers test_all_case_user2" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_user2.json')}"></activiti:formProperty>
-<!-- 
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
- -->
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile0},${nFile1},${nFile2},${nFile3},${form_signed},${nFileMail},${nFileUT1}]]></activiti:expression>
