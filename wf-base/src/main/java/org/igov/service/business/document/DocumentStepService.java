@@ -295,10 +295,10 @@ public class DocumentStepService {
 
             if (sSubjectType.equals("Organ")) {
                 oSubjectGroupResultTree = oSubjectGroupTreeService
-                        .getCatalogSubjectGroupsTree(sKey_GroupPostfix_New, 0L, null, false, 0L, HUMAN);
+                        .getCatalogSubjectGroupsTree(sKey_GroupPostfix_New, 1L, null, false, 1L, HUMAN);
             }
 
-            List<String> asID_Group_Activiti_New = new ArrayList<>();
+            Set<String> asID_Group_Activiti_New = new TreeSet<>();
             if (oSubjectGroupResultTree != null) {
                 List<SubjectGroup> aSubjectGroups = oSubjectGroupResultTree.getaSubjectGroupTree();
                 if (aSubjectGroups == null || aSubjectGroups.isEmpty()) {

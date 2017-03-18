@@ -1,8 +1,6 @@
 package org.igov.service.business.action.task.listener.doc;
 
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.List;
 import org.igov.model.document.DocumentStep;
