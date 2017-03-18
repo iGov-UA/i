@@ -128,7 +128,8 @@ exports.index = function (req, res) {
       path = 'history/historic-task-instances';
       query.size = query.nSize;
       query.start = query.nStart;
-      query.sLogin = user.id;
+      query.taskInvolvedUser = user.id;
+      query.finished = true;
     } else if (req.query.filterType === 'documents') {
       query.sFilterStatus = 'Opened';
       query.sLogin = user.id;
