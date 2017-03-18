@@ -51,8 +51,8 @@ import org.springframework.stereotype.Component;
 @Service
 public class SubjectGroupTreeService {
 
-    private static final String ORGAN = "Organ";
-    private static final String HUMAN = "Human";
+    public static final String ORGAN = "Organ";
+    public static final String HUMAN = "Human";
     /**
      * флаг определяющий, что на вход был конкрентный тип ORGAN или HUMAN
      */
