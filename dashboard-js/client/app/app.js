@@ -1,5 +1,6 @@
 'use strict';
 angular.module('dashboardJsApp', [
+  'base64',
   'ngCookies',
   'ngResource',
   'ngSanitize',
@@ -21,7 +22,8 @@ angular.module('dashboardJsApp', [
   'datepickerService',
   'autocompleteService',
   'datetimepicker',
-  'ea.treeview'
+  'ea.treeview',
+  'cryptoPlugin'
 ]).config(function($urlRouterProvider, $locationProvider) {
   $urlRouterProvider
     .otherwise('/');

@@ -6,9 +6,9 @@
     .controller('NavbarCtrl', navbarCtrl);
 
   navbarCtrl.$inject = ['$scope', '$rootScope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
-                        '$state', 'tasks', 'lunaService', 'Modal', '$stateParams'];
+                        '$state', 'tasks', 'lunaService', 'Modal', '$stateParams', 'signDialog'];
   function navbarCtrl($scope, $rootScope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
-                      $state, tasks, lunaService, Modal, $stateParams) {
+                      $state, tasks, lunaService, Modal, $stateParams, signDialog) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -237,7 +237,15 @@
       if(res && newVal !== undefined && res.status !== newVal) {
         setEcpStatusToLS($rootScope.checkboxForAutoECP);
       }
-    })
+    });
+
+    $scope.showSignDialog = function () {
+      signDialog.signContent("sign this string", function () {
+        console.log('Sign Dismissed');
+      }, function (signedContent) {
+        console.log('Sign Result ' + JSON.stringify(signedContent));
+      })
+    }
 
   }
 })();
