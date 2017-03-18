@@ -80,8 +80,9 @@ public class SubjectGroupTreeService {
     //Мапа для укладывания ид родителя и его детей в методе получения иерархии  getChildrenTree
     Map<Long, List<SubjectGroup>> getChildrenTreeRes = new HashMap<>();
 
-    public SubjectGroupResultTree getCatalogSubjectGroupsTree(String sID_Group_Activiti, Long deepLevel,
-            String sFind, Boolean bIncludeRoot, Long deepLevelWidth, String sSubjectType) {
+    public SubjectGroupResultTree getCatalogSubjectGroupsTree(String sID_Group_Activiti, 
+            Long deepLevel, String sFind, Boolean bIncludeRoot, Long deepLevelWidth, 
+            String sSubjectType) {
 
         /**
          * Лист для ид Subject ORGAN или HUMAN для последующего анализа
@@ -121,7 +122,7 @@ public class SubjectGroupTreeService {
                             }
                         }));
                 LOG.info("subjectHumansIdSubj.size: " + subjectHumansIdSubj.size());
-                
+
                 subjectGroupRelations = Lists
                         .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                             @Override
@@ -135,11 +136,11 @@ public class SubjectGroupTreeService {
                             }
                         }));
                 LOG.info("subjectGroupRelations.size: " + subjectGroupRelations.size());
-                
+
                 resSubjectTypeList.addAll(subjectHumansIdSubj);
                 LOG.info("resSubjectTypeList.size HUMAN: " + resSubjectTypeList.size());
             }
-            
+
             if (subjectOrgans != null && !subjectOrgans.isEmpty()) {
                 List<Long> subjectOrgansIdSubj = Lists
                         .newArrayList(Collections2.transform(subjectOrgans, new Function<SubjectOrgan, Long>() {
@@ -149,7 +150,7 @@ public class SubjectGroupTreeService {
                             }
                         }));
                 LOG.info("subjectOrgansIdSubj.size: " + subjectOrgansIdSubj.size());
-                
+
                 subjectGroupRelations = Lists
                         .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
                             @Override
@@ -165,7 +166,7 @@ public class SubjectGroupTreeService {
                 resSubjectTypeList.addAll(subjectOrgansIdSubj);
                 LOG.info("subjectGroupRelations.size ORGAN: " + subjectGroupRelations.size());
             }
-            
+
             for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 
                 SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
@@ -176,7 +177,7 @@ public class SubjectGroupTreeService {
                     parentSubjectGroup = new VSubjectGroupParentNode();
                     final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
                     LOG.info("SubjectGroup parent" + parent.getsID_Group_Activiti()
-                    + " child: " + subjectGroupRelation.getoSubjectGroup_Child());
+                            + " child: " + subjectGroupRelation.getoSubjectGroup_Child());
                     if (!idParentList.contains(parent.getId())) {
                         idParentList.add(parent.getId());
                         // устанавливаем парентов
@@ -189,8 +190,8 @@ public class SubjectGroupTreeService {
                         parentChildren.put(parent, parentSubjectGroup.getChildren());
                         // мапа группа-ид парента
                         mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
-                        LOG.info("!add mapGroupActiviti: " + parent.getsID_Group_Activiti() 
-                                    + "nID parent: " + parent.getId());
+                        LOG.info("!add mapGroupActiviti: " + parent.getsID_Group_Activiti()
+                                + "nID parent: " + parent.getId());
                     } else {
                         for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
                             // убираем дубликаты
@@ -203,8 +204,8 @@ public class SubjectGroupTreeService {
                                 parentChildren.put(parent, parentSubjectGroup.getChildren());
                                 // мапа группа-ид парента
                                 mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
-                                LOG.info("!!add mapGroupActiviti: " + parent.getsID_Group_Activiti() 
-                                    + "nID parent: " + parent.getId());
+                                LOG.info("!!add mapGroupActiviti: " + parent.getsID_Group_Activiti()
+                                        + "nID parent: " + parent.getId());
                             }
                         }
                     }
@@ -227,7 +228,7 @@ public class SubjectGroupTreeService {
                 // детей его детей
                 children = subjToNodeMap.get(groupFiltr);
             }
-            LOG.info("children.size: " + children.size() );
+            LOG.info("children.size: " + children.size());
             Map<Long, List<SubjectGroup>> hierarchyProcessSubject = new HashMap<>();
             // children полный список первого уровня
             if (children != null && !children.isEmpty()) {
@@ -241,16 +242,16 @@ public class SubjectGroupTreeService {
                             }
                         }));
                 aChildResult.addAll(children);
-                LOG.info("idChildren.size: " + idChildren.size() );
+                LOG.info("idChildren.size: " + idChildren.size());
                 hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
                 LOG.info("hierarchyProcessSubject" + hierarchyProcessSubject);
             }
 
             List<SubjectGroup> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
-            
+
             LOG.info("aChildResultByUser" + aChildResultByUser);
 
-            List<SubjectGroup> resultTree = new ArrayList<>();
+            List<SubjectGroup> resultTree;
             if (sFind != null && !sFind.isEmpty()) {
                 resultTree = getSubjectGroupTree(hierarchyProcessSubject, aChildResultByUser);
 
@@ -258,7 +259,7 @@ public class SubjectGroupTreeService {
                 resultTree = getSubjectGroupTree(hierarchyProcessSubject, aChildResult);
             }
             LOG.info("resultTree: " + resultTree);
-            
+
             if (isDisplayRootElement(bIncludeRoot)) {
                 if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
                     if (resultTree != null && !resultTree.isEmpty()) {
@@ -270,7 +271,7 @@ public class SubjectGroupTreeService {
             } else {
                 processSubjectResultTree.setaSubjectGroupTree(resultTree);
             }
-            
+
             LOG.info("processSubjectResultTree" + processSubjectResultTree);
 
             /**
@@ -278,16 +279,17 @@ public class SubjectGroupTreeService {
              * пустой с ид Subject органа или хьманов, лист содержит groupFiltr
              * возвращаем ответ, иначе ничего не возвращаем
              */
-            if(isSubjectType && !resSubjectTypeList.isEmpty() && resSubjectTypeList.contains(groupFiltr)) {
-	        	LOG.info("processSubjectResultTree isSubjectType " + processSubjectResultTree);
-	        	return processSubjectResultTree;
-			}else if(!isSubjectType){
-				LOG.info("processSubjectResultTree !isSubjectType " + processSubjectResultTree);
-				return processSubjectResultTree;
-			}else {
-				SubjectGroupResultTree processSubjectResultTreeRes = new SubjectGroupResultTree();
-				 return processSubjectResultTreeRes;
-			}
+            /*if (isSubjectType && !resSubjectTypeList.isEmpty() 
+                    && resSubjectTypeList.contains(groupFiltr)) {
+                LOG.info("processSubjectResultTree isSubjectType " + processSubjectResultTree);
+                return processSubjectResultTree;
+            } else if (!isSubjectType) {
+                LOG.info("processSubjectResultTree !isSubjectType " + processSubjectResultTree);
+                return processSubjectResultTree;
+            } else {
+                SubjectGroupResultTree processSubjectResultTreeRes = new SubjectGroupResultTree();
+                return processSubjectResultTreeRes;
+            }*/
         }
 
         return processSubjectResultTree;
