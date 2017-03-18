@@ -130,7 +130,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodStorage" name="Склад зберігання товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum" required="true">
+        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum">
           <activiti:value id="sGood" name="контракт готовий, передати на затвердження"></activiti:value>
           <activiti:value id="sMistake" name="потрібно виправити помилку"></activiti:value>
         </activiti:formProperty>
@@ -231,7 +231,7 @@ execution.setVariable('processInstanceId', processInstanceId)
 Направляємо Вам на погодження контракт на поставку ${sGoodType}<br>
 Якщо будуть питання - з радістю відповімо.<br>
 <br>
---
+--<br>
 ТОВ ВКФ «ВЕЛТА»<br>
 Тел./факс: (056) 370-93-93, 732-04-04<br>
 e-mail: office@velta-ua.com<br>]]></activiti:expression>
@@ -297,16 +297,16 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 // клонирование прав на 3-й шаг
 
 var sKey_GroupPostfix_New = 'Velta_Justice_Head'
-var sKey_GroupPostfix = '_default_Velta_Justice'
+var sKey_GroupPostfix = '_default_Velta_Justice_step5'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 		</script>
     </scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
-    <scriptTask id="scripttask6" name="переключение степа на 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask6" name="переключение степа на 4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_2'
+var sKey_Step= 'step_4'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав на 4-й шаг

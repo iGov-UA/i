@@ -269,8 +269,8 @@
 <b>11. АДРЕСИ І РЕКВІЗИТИ СТОРІН:</b>
 </div>
 <table cellspacing="0" border="0" style="padding-top:12px">
-	<colgroup width="340"></colgroup>
-	<colgroup width="340"></colgroup>
+	<colgroup style="width: 340px"></colgroup>
+	<colgroup style="width: 340px"></colgroup>
 	<tr>
 		<td height="15" align="CENTER" valign="middle" style="font-family:Times New Roman;font-size:12pt;"><b>ПОКУПЕЦЬ:</b></td>
 		<td align="CENTER" valign="middle" style="font-family:Times New Roman;font-size:12pt;"><b>ПОСТАЧАЛЬНИК:</b></td>
@@ -295,7 +295,7 @@
 	</tr>
 	<tr>
 		<td height="15" align="left" valign="middle" style="font-family:Times New Roman;font-size:12pt;">р/р 26006000568001<br>у ПАТ «АКБ «КОНКОРД»<br>МФО 307350</td>
-		<td align="left" valign="middle" style="font-family:Times New Roman;font-size:12pt;">[sBankRekv]</td>
+		<td id="bank" align="left" valign="middle" style="font-family:Times New Roman;font-size:12pt;">[sBankRekv]</td>
 	</tr>
 	<tr>
 		<td height="15" align="left" valign="middle" style="font-family:Times New Roman;font-size:12pt;">Код ЄДРПОУ 30912734</td>
@@ -322,7 +322,7 @@
 	</tr>
 	<tr>
 		<td height="15" align="CENTER" valign="middle" style="font-family:Times New Roman;font-size:12pt;"><b>Генеральний директор<br>ТОВ ВКФ «ВЕЛТА»</b></td>
-		<td align="CENTER" valign="middle" style="font-family:Times New Roman;font-size:12pt;"><b>[sPosition]</b></td>
+		<td align="CENTER" valign="middle" style="font-family:Times New Roman;font-size:12pt;"><b>[sPosition]<br>[sCompName]</b></td>
 	</tr>
 	<tr>
 		<td height="45" colspan="2"></td>
@@ -332,7 +332,7 @@
 		<td id="chief" align="CENTER" valign="middle" style="font-family:Times New Roman;font-size:12pt;"><b></b></td>
 	</tr>
 	<tr>
-		<td height="15" align="CENTER" valign="middle" style="font-family:Times New Roman;font-size:10pt;">             М.П. </td>
+		<td height="15" align="left" valign="middle" style="font-family:Times New Roman;font-size:10pt;padding-left: 100px">М.П. </td>
 		<td align="CENTER" valign="middle" style="font-family:Times New Roman;font-size:12pt;"></td>
 	</tr>
 </table>
@@ -340,12 +340,11 @@
 	var lastName = "[lastName_UA3]";
 	var firstName = "[firstName_UA3]";
 	var middleName = "[middleName_UA3]";
-	var res = "__________________ /" + firstName.substr(0,1) + "." + middleName.substr(0,1) + "." + " " + lastName;
+	var res = "<b>" + "__________________ /" + firstName.substr(0,1) + "." + middleName.substr(0,1) + "." + " " + lastName + "</b>";
 	document.getElementById("chief").innerHTML = res;
 	var rekv = "[sBankRekv]";
-	var res1 = rekv.substr(0,rekv.indexOf(" ",7)) + "<br>" + rekv.substr(rekv.indexOf(" ",7),rekv.indexOf("МФО")) + "<br>" + rekv.substr(rekv.indexOf("МФО"),10);
+	var res1 = rekv.substr(0,rekv.indexOf(" ",7)) + "<br>" + rekv.substr(rekv.indexOf(" ",7),rekv.indexOf("МФО")-rekv.indexOf(" ",7)) + "<br>" + rekv.substr(rekv.indexOf("МФО"),10);
 	document.getElementById("bank").innerHTML = res1;
-	<br>
 </script>
 </body>
 </html>
