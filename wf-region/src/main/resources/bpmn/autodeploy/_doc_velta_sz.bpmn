@@ -71,7 +71,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sAccept" name="відправити на розгляд відповідальному підрозділу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('velta/sTable2_doc_velta_sz.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть відповідальний підрозділ" type="enum">
+          <activiti:value id="sJustice" name="Юридичний"></activiti:value>
+          <activiti:value id="sFinance" name="Фінансовий"></activiti:value>
+          <activiti:value id="sFinJust" name="Юридичний та Фінансовий"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
@@ -119,15 +123,42 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
     <sequenceFlow id="flow52" sourceRef="exclusivegateway3" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sAccept'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask5" name="переключение степа на 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask5" name="переключение степа на 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-  var sKey_GroupPostfix = '_default_Velta_head'
-  var sID_Field = 'sTable2'
-  var sKey_Step_Document_To = 'step_3'
-  var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step_Document_To)		</script>
-    </scriptTask>
+var snID_Process_Activiti = execution.getProcessInstanceId();
+var sKey_Step= 'step_2';
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step);
+
+// клонирование прав на 2-й шаг
+var who = execution.getVariable('sTable2');
+switch (who){
+case 'sFinance':
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Finance';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+break;
+case 'sJustice':
+var sKey_GroupPostfix_New = 'Velta_Justice_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Justice';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+break;
+case 'sFinJust':
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Finance';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+
+var sKey_GroupPostfix_New = 'Velta_Justice_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Justice';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+
+break;
+default:
+    alert('А так работать не должно');
+    break;
+}
+</script>
+</scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask5" name="Відповідальний підрозділ. Підготовка відповіді на пропозицію">
       <extensionElements>
