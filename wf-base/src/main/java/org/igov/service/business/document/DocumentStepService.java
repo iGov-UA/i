@@ -536,6 +536,65 @@ public class DocumentStepService {
                 sKey_GroupPostfix, sID_Field, sKey_Step_Document_To, false);
     }
 
+    
+    
+    public Boolean cancelDocumentSubmit(String snID_Process_Activiti,
+            String sKey_Group, String sKey_Step) throws Exception {
+
+        LOG.info("started...");
+        LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sKey_Step={}",
+                sKey_Group, snID_Process_Activiti, sKey_Step);
+
+        Boolean bCanceled = false;
+
+        try {
+
+                List<DocumentStep> aDocumentStep
+                        = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+                LOG.info("aDocumentStep={}", aDocumentStep);
+                final String SKEY_STEP_DOCUMENT_TO = sKey_Step;
+                DocumentStep oDocumentStep = aDocumentStep
+                        .stream()
+                        .filter(o -> SKEY_STEP_DOCUMENT_TO == null ? o.getnOrder().equals(1)
+                        : o.getsKey_Step().equals(SKEY_STEP_DOCUMENT_TO))
+                        .findAny()
+                        .orElse(null);
+                LOG.info("oDocumentStep={}", oDocumentStep);
+                if (oDocumentStep == null) {
+                    throw new IllegalStateException("There is no active Document Step, process variable sKey_Step_Document="
+                            + sKey_Step);
+                }
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
+                LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+
+                for (int i = 0; i < aDocumentStepSubjectRight.size(); i++) {
+                    DocumentStepSubjectRight oDocumentStepSubjectRight = aDocumentStepSubjectRight.get(i);
+                    if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_Group)) {
+                        if (oDocumentStepSubjectRight.getsDate() != null) {
+                            LOG.info("DocumentStepSubjectRight equals _From with date {}: "
+                                    + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                            oDocumentStepSubjectRight.setsDate(null);
+                            oDocumentStepSubjectRight.setsDateECP(null);
+                            oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                            bCanceled=true;
+                            break;
+                        }
+                    }
+                }
+
+
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " ("
+                    + "snID_Process_Activiti=" + snID_Process_Activiti + ""
+                    + ",sKey_GroupPostfix=" + sKey_Group + ""
+                    + ",sKey_Step_Document=" + sKey_Step + ")");
+            LOG.error("ERROR: ", oException);
+            throw oException;
+        }
+
+        return bCanceled;
+    }    
+    
     private List<DocumentStepSubjectRightField> mapToFields(JSONObject group, DocumentStepSubjectRight rightForGroup) {
         List<DocumentStepSubjectRightField> resultFields = new ArrayList<>();
         String[] fieldNames = JSONObject.getNames(group);
