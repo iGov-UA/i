@@ -137,7 +137,9 @@
 
 
               <div id="field-{{property.id}}" class="col-md-3"
-                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table', 'col-md-7': property.type === 'select' || property.type === 'label'}"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 
+                              'col-md-12': property.type === 'table', 
+                              'col-md-7': (property.type === 'select' && property.id !=='sID_Public_SubjectOrganJoin') || property.type === 'label'}"
                    ng-if="showFormField(property)"
                    ng-switch
                    on="property.type">
