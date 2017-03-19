@@ -54,7 +54,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
 
       $http.get(getReportParametersUrl).then(function (result) {
 
-        if (result.data != '') {
+        if (result.data != '' && !(result.data.code && result.data.code === 'BUSINESS_ERR')) {
           _.each(result.data.split("\n"), function (line) {
             var sr = line.split("=");
             if (!!sr && sr.length >= 2) {

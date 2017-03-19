@@ -368,7 +368,17 @@ module.exports = function (grunt) {
           src: [
             'package.json',
             'process.json',
-            'server/**/*'
+            'server/**/*',
+            '!server/**/*.spec.js',
+            '!server/**/*.test.js',
+            '!server/**/*.nock.js'
+          ]
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.root %>',
+          dest: '<%= yeoman.dist %>/public',
+          src: [
+            'public-js/*/*.js'
           ]
         }]
       },
@@ -468,10 +478,16 @@ module.exports = function (grunt) {
       // Inject application script files into index.html (doesn't include bower)
       scripts: {
         options: {
-          transform: function(filePath) {
-            filePath = filePath.replace('/client/', '');
-            filePath = filePath.replace('/.tmp/', '');
-            filePath = filePath.replace('/../', '');
+          transform: function (filePath) {
+            console.log('before ' + filePath);
+            if(filePath.indexOf('public-js') > -1){
+              filePath = filePath.replace('/../', './../../');
+            } else {
+              filePath = filePath.replace('/client/', '');
+              filePath = filePath.replace('/.tmp/', '');
+              filePath = filePath.replace('/../', '');
+            }
+            console.log('after ' + filePath);
             return '<script src="' + filePath + '"></script>';
           },
           starttag: '<!-- injector:js -->',
@@ -533,6 +549,7 @@ module.exports = function (grunt) {
       'injector',
       'wiredep',
       'autoprefixer',
+      'open',
       'watch'
     ]);
   });
