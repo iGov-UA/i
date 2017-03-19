@@ -29,7 +29,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="explanation_dovidka" name="Опишіть потребу отримання довідки; якщо в попередньому пункті обрали варіант &quot;інші потреби&quot;" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="dovidka_file" name="Завантажте довідку про склад сім’ї та реєстрацію (форма №2)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="sBody" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="sBody; ;bVisible=false" type="string" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="mailtask1" name="Повідомлення громадянина про успішне подання звернення" activiti:type="mail">
@@ -223,7 +223,7 @@
     <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="Kherson_uorpg_kv">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/Kherson_uorpg_kv.html]" type="invisible" default="${sBody_1}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/Kherson_uorpg_kv.html]; ;bVisible=false" type="string" default="${sBody_1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="tel" name="Укажіть контактний номер телефону" type="long" default="38" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>

@@ -198,6 +198,12 @@ public class GeneralConfig {
     @Value("${general.ECP.Self.sPassword}")
     private String sECPKeystorePasswd;
     
+    @Value("${general.ECP.SelfCert.sSubPathFile}")
+    private String sECPSelfCertPathFile;
+    
+    @Value("${general.ECP.SelfCertEncrypt.sSubPathFile}")
+    private String sECPSelfCertEncryptPathFile;
+    
     @Value("${general.Export.Agroholding.sURL}")
     private String sURL_Agroholding;
     @Value("${general.Export.Agroholding.Auth.sLogin}")
@@ -224,6 +230,12 @@ public class GeneralConfig {
 	}
 	public String getsECPKeystorePasswd() {
 		return sECPKeystorePasswd;
+	}
+	public String getsECPSelfCertPathFile() {
+		return sECPSelfCertPathFile;
+	}
+	public String getsECPSelfCertEncryptPathFile() {
+		return sECPSelfCertEncryptPathFile;
 	}
 	public boolean isSelfTest() {
         boolean b = true;

@@ -24,9 +24,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sLable24" name="" type="label" default="Якщо Ваше звернення має терміновий характер, зверніться до &lt;a href=&quot;http://www.itfseafarers.org/look_up_ship2.cfm&quot; target=&quot;_blank&quot;&gt;найближчого ITF інспектора&lt;/a&gt; у наступному порту заходу судна"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Назва країни місцезнаходження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asHavePRMTU" name="Підтвердження членства у ПРМТУ?" type="enum" required="true">
-          <activiti:value id="sHavePRMTUYes" name="так, є членом"></activiti:value>
-          <activiti:value id="sHavePRMTUNo" name="ні, не належу до ПРМТУ"></activiti:value>
+        <activiti:formProperty id="asHavePRMTU" name="Підтвердження членства у ПРМТУ" type="enum" required="true">
+          <activiti:value id="sHavePRMTUYes" name="так, є членом ПРМТУ"></activiti:value>
+          <activiti:value id="sHavePRMTUNo" name="ні, не є членом ПРМТУ"></activiti:value>
           <activiti:value id="sHavePRMTUFind" name="потрібно перевірити"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTiketNumber" name="Номер членського профспілкового квитка" type="string"></activiti:formProperty>
@@ -37,12 +37,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Посада" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Найменування судновласника (роботодавця) в останному рейсі; вказано в контракті" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCompContact" name="Вкажіть контактні дані (телефон, емейл); за наявності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sRealtorName" name="Найменування посередника з працевлашування (крюингової компанії); за наявності" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sRealtorContact" name="Вкажіть контактні дані (телефон, емейл); за наявності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sCompName" name="Найменування судновласника (роботодавця) в останньому рейсі; як вказано в контракті" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCompContact" name="Вкажіть контактні дані судновласника (роботодавця) (телефон, емейл тощо); за наявності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sRealtorName" name="Найменування посередника у працевлашуванні (крюінгової компанії); за наявності" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sRealtorContact" name="Вкажіть контактні дані (телефон, емейл тощо); за наявності" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="asProblem" name="Предмет звернення" type="enum" required="true">
-          <activiti:value id="sNoSalary" name="невиплата або затримка виплати заробітної платні"></activiti:value>
+          <activiti:value id="sNoSalary" name="невиплата або затримка виплати заробітної плати"></activiti:value>
           <activiti:value id="sNoPayments" name="невиплата компенсацій або інших платежів"></activiti:value>
           <activiti:value id="sContravention" name="порушення роботодавцем умов індивідуального трудового договору (контракту)"></activiti:value>
           <activiti:value id="sBreakContract" name="неправомірне зписання (розірвання контракту)"></activiti:value>
@@ -53,33 +53,35 @@
         </activiti:formProperty>
         <activiti:formProperty id="sShipNumb1" name="Найменування судна та/або ІМО номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWhereNow" name="Поточне місцезнаходження судна або найближчий порт заходу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="Опис проблеми чи порушення" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAction" name="Які дії ПРМТУ має зробити по Вашому зверненню" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="Описання проблеми чи порушення" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAction" name="Які дії ПРМТУ має зробити за Вашим зверненням" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSummCount" name="Сума заборгованності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sStartCount" name="Дата початку формування заборгованності" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFinishCount" name="Дата закінчення формування заборгованності" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asCurrency" name="Валюта заборгованності" type="enum" required="true">
           <activiti:value id="sUSD" name="долари США"></activiti:value>
           <activiti:value id="sEUR" name="євро"></activiti:value>
+          <activiti:value id="sOther" name="інша"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sStartCount" name="Дата початку формування заборгованності" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFinishCount" name="Дата закінчення формування заборгованності" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSummCountAll" name="Загальна сума заборгованності перед екіпажем" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMoneyCount" name="Розмір виплат з початку контракту;за наявності" type="string" default="не було" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMoneyCount" name="Розмір виплат з початку контракту;за наявності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLawyer" name="Дані довіреної особи або адвоката на місці" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEmbassy" name="Чи потрібно повідомити відповідне дипломатичне представництво або МЗС України про Ваш випадок?" type="enum" required="true">
           <activiti:value id="sEmbassyYes" name="так"></activiti:value>
           <activiti:value id="sEmbassyNo" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asQuestionPRMTU" name="Тип питання до Профспілки" type="enum" required="true">
-          <activiti:value id="sHowTo" name="як стати членом Профспілки?"></activiti:value>
-          <activiti:value id="sAdvantages" name="які переваги мають члени Профспілки?"></activiti:value>
-          <activiti:value id="sContribution" name="які внески сплачують члени Профспілки?"></activiti:value>
+        <activiti:formProperty id="asQuestionPRMTU" name="Категорія питання до Профспілки" type="enum" required="true">
+          <activiti:value id="sHowTo" name="як стати членом ПРМТУ?"></activiti:value>
+          <activiti:value id="sAdvantages" name="які переваги мають члени ПРМТУ?"></activiti:value>
+          <activiti:value id="sContribution" name="які внески сплачують члени ПРМТУ?"></activiti:value>
           <activiti:value id="sOtherPRMTU" name="інше питання"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sAnswer" type="label" default="Для отримання інформації по членству в ПРМТУ зверніться за номером +38 (0482) 42-99-02"></activiti:formProperty>
         <activiti:formProperty id="sQuestionPRMTU" name="Напишіть своє запитання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте їх у pdf-файл або zip архів"></activiti:formProperty>
-        <activiti:formProperty id="nDocContract" name="Копія або фото індивідуального контракту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocContract" name="Копія або фото контракту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocPassp" name="Копія або фото посвідчення особи моряка;обов'язково першу сторінку та сторінку з припискою до судна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocOther" name="Інші документи, які можеть допомогти при вирішенні питання" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocOther" name="Інші документи, які можуть допомогти при розгляді звернення" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/prmtu_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Електронна пошта ПРМТУ" type="string"></activiti:formProperty>
       </extensionElements>
@@ -198,12 +200,13 @@
         <activiti:formProperty id="sWhereNow" name="Поточне місцезнаходження судна або найближчий порт заходу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="Опис проблеми чи порушення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSummCount" name="Сума заборгованності" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sStartCount" name="Дата початку формування заборгованності" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFinishCount" name="Дата закінчення формування заборгованності" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asCurrency" name="Валюта заборгованності" type="enum" writable="false">
           <activiti:value id="sUSD" name="долари США"></activiti:value>
           <activiti:value id="sEUR" name="євро"></activiti:value>
+          <activiti:value id="sOther" name="інша"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sStartCount" name="Дата початку формування заборгованності" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFinishCount" name="Дата закінчення формування заборгованності" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSummCountAll" name="Загальна сума заборгованності перед екіпажем" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMoneyCount" name="Розмір виплат з початку контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLawyer" name="Дані довіреної особи або адвоката на місці" type="string"  writable="false"></activiti:formProperty>
@@ -227,7 +230,7 @@
         <activiti:formProperty id="comment" name="Вкажіть відповідь на питання громадянина у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sEmbassyMail" name="Вкажіть електронну адресу дипломатичного представництва" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCheckMail" name="Вкажіть електронну адресу для перевірки членства" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/prmtu_1.html]" type="invisible" default="Дані моряка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/prmtu_1.html]; ;bVisible=false" type="string" default="Дані моряка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/prmtu_1.html" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>

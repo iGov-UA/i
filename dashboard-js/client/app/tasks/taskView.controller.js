@@ -381,6 +381,49 @@
           });
         }
 
+        extractFieldOption($scope.taskForm);
+
+        function extractFieldOption(aProperties) {
+          angular.forEach(aProperties, function (property) {
+            var i, source, equalsIndex, key, val;
+            if(!property.options) property.options = {};
+
+            if(property.name && property.name.indexOf(';;') >= 0){
+              var as = property.name.split(';;');
+              property.name = as[0];
+              for(i = 1; i < as.length; i++){
+                source = as[i];
+                equalsIndex = source.indexOf('=');
+                key = source.substr(0, equalsIndex).trim();
+                try {
+                  val = angular.fromJson(source.substr(equalsIndex + 1).trim())
+                } catch (e){
+                  val = source.substr(equalsIndex + 1).trim();
+                }
+                property.options[key] = val;
+              }
+            }
+
+            if(property.name && property.name.indexOf(';') >= 0){
+              var sOldOptions = property.name.split(';')[2];
+              if(sOldOptions){
+                var aOptions = sOldOptions.split(',');
+                for(i = 0; i < aOptions.length; i++){
+                  source = aOptions[i];
+                  equalsIndex = source.indexOf('=');
+                  key = source.substr(0, equalsIndex).trim();
+                  try {
+                    val = angular.fromJson(source.substr(equalsIndex + 1).trim())
+                  } catch (e){
+                    val = source.substr(equalsIndex + 1).trim();
+                  }
+                  property.options[key] = val;
+                }
+              }
+            }
+          })
+        }
+
         function fillArrayWithNewAttaches() {
           angular.forEach($scope.taskForm, function (item) {
             if(item.type === 'file' || item.type === 'table') {
@@ -443,6 +486,11 @@
               return true;
           }
           return false;
+        };
+
+        $scope.correctSignName = function (name) {
+          var splitName = name.split(';');
+          return splitName.length !== 1 ? splitName[0] : name;
         };
 
         $scope.clarify = false;
@@ -754,11 +802,12 @@
               if (unpopulatedFields.length == 1) {
 
                 var nameToAdd = unpopulatedFields[0].name;
+                var idToAdd = unpopulatedFields[0].id;
                 if (nameToAdd.length > 50) {
                   nameToAdd = nameToAdd.substr(0, 50) + "...";
                 }
 
-                errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "'";
+                errorMessage = "Будь ласка, заповніть полe '" + nameToAdd + "' (id поля: '" + idToAdd + "')";
               }
               else {
                 unpopulatedFields.forEach(function (field) {
@@ -772,7 +821,7 @@
                 var comaIndex = errorMessage.lastIndexOf(',');
                 errorMessage = errorMessage.substr(0, comaIndex);
               }
-              console.error(errorMessage);
+              Modal.inform.error()(errorMessage);
               setTimeout(function () {
                 angular.element('.submitted').first().focus();
               },100);
@@ -1077,8 +1126,12 @@
         $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
         $scope.isFieldVisible = function(item) {
-          return item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
+          var bVisible = item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
               FieldMotionService.isFieldVisible(item.id, $scope.taskForm) : true);
+          if(item.options && item.options.hasOwnProperty('bVisible')){
+            bVisible = bVisible && item.options['bVisible'];
+          }
+          return bVisible;
         };
 
         $scope.creationDateFormatted = function (date) {
@@ -1400,6 +1453,19 @@
               $scope.submitTask(form);
             })
             .catch(defaultErrorHandler);
+        };
+
+        $scope.isDocumentNotSigned = function () {
+          if(!documentRights) return true;
+          var notSigned = $scope.documentLogins.filter(function (login) {
+            return !login.sDate && login.aUser.length > 0;
+          });
+          var currentUser = $scope.getCurrentUserLogin();
+          for(var i=0; i<notSigned.length; i++) {
+            if(notSigned[i].aUser[0].sLogin === currentUser) {
+              return true;
+            }
+          }
         };
 
         // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла

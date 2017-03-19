@@ -7,10 +7,12 @@
       width: inherit;
       padding-right: 10px;
     }
+
     .ui-select-match-text * {
       overflow: hidden;
       display: block;
     }
+
     .form-control.ui-select-search {
       width: 100% !important;
     }
@@ -103,45 +105,13 @@
                  ng-if="isFieldVisible(property)">
 
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
-                <table style="width: 100%; margin-bottom: 5px">
-                  <tr ng-if="insertSeparator(property.id).sText.length > 0" style="width: 100%">
-                    <!--<td style="width: 30%; display: table-cell">
-                      <table style="width: 100%">
-                        <tr>
-                          <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
-                            background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                            background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                            background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                            background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
-                          </td>
-                        </tr>
-                      </table>
-                    </td>-->
-                    <td style="max-width: 40%; margin-top: 30px; margin-bottom: 30px; padding: 0 15px 0 15px">
-                      <span style="position: relative"><b>{{insertSeparator(property.id).sText}}</b></span>
-                    </td>
-                    <td style="width: 58%; display: table-cell">
-                      <table style="width: 100%">
-                        <tr>
-                          <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
-                          background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                          background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                          background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                          background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <tr ng-if="insertSeparator(property.id).sText.length == 0" style="width: 100%">
-                    <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
-                                background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
-                                background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
-                                background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
-                                background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));">
-                    </td>
-                  </tr>
-                </table>
+                <div ng-if="insertSeparator(property.id).sText.length > 0" class="flex-hr wrap-hr" style="width: 100%">
+                  <div><b>{{insertSeparator(property.id).sText}}</b></div>
+                  <div class="line-separator"></div>
+                </div>
+                <div ng-if="insertSeparator(property.id).sText.length == 0" style="width: 100%">
+                  <div class="line-separator-full"></div>
+                </div>
               </div>
 
               <div id="label-{{property.id}}" class="col-md-5"
@@ -155,13 +125,21 @@
                   {{property.sFieldNotes}}
                 </div>
 
+                <div ng-if="isOKPOField(property.id)">
+                  <p style="font-size: 12px;color: darkgrey">Після того, як Ви напишете ЄДРПОУ, поля нижче будуть заповнені автоматично.
+                    Дані юрособи можуть бути застарілими (затримка до одного тижня), тому
+                    Ви маєте можливість їх редагувати.</p>
+                </div>
+
                 <div class="inner-html s-field-notes" ng-if="property.options && (property.options.html || property.options.HTML)" ng-bind-html="property.options.html">
                 </div>
               </div>
 
 
               <div id="field-{{property.id}}" class="col-md-3"
-                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table'}"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 
+                              'col-md-12': property.type === 'table', 
+                              'col-md-7': (property.type === 'select' && property.id !=='sID_Public_SubjectOrganJoin') || property.type === 'label'}"
                    ng-if="showFormField(property)"
                    ng-switch
                    on="property.type">
@@ -209,7 +187,7 @@
                     <tr ng-repeat="row in property.aRow track by $index" ng-init="rowIndex=$index">
 
                       <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
-                        <div ng-class="getFullCellId(property, item.id, rowIndex)">
+                        <div ng-class="getFullCellId(property, $index, rowIndex)">
 
                         <div ng-if="item.type == 'string'">
                           <input class="inputs-in-table"
@@ -515,10 +493,7 @@
                            class="form-control okpo-field"
                            ng-model-options="{debounce:1000}"
                            value="">
-                    <p style="font-size: 14px;">Після того, як Ви напишете ЗКПО, поля нижче будуть заповнені автоматично.
-                                                Дані юрособи можуть бути застарілими (затримка до одного тижня), тому
-                                                Ви маєте можливість їх редагувати.</p>
-                    <span class="small-loading okpo-spinner"
+                    <span class="small-loading-okpo okpo-spinner"
                           ng-if="orgIsLoading.status && orgIsLoading.field === property.id"></span>
                   </div>
                 </div>
@@ -758,10 +733,10 @@
                              autocomplete-name="property.autocompleteName"
                              form-data="data.formData"
                              reach-infinity="requestMoreItems($select.items)"
-                             on-select="onSelectDataList($item)">
+                             on-select="onSelectDataList($item, null, null, property)">
 
                     <ui-select-match>
-                      {{$select.selected[property.autocompleteData.valueProperty]}}
+                      {{$select.selected[property.autocompleteData.valueProperty] || data.formData.params[property.id].value}}
                     </ui-select-match>
 
                     <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"

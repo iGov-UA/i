@@ -1,11 +1,14 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
+
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
@@ -15,6 +18,7 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
@@ -66,13 +70,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.igov.model.action.event.HistoryEventType;
-import org.igov.model.action.event.HistoryEvent_Service;
+
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
@@ -1787,7 +1791,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				long totalNumber = 0;
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
 						sFilterStatus, groupsIds, soaFilterField);
-                LOG.info("taskQuery = {}", taskQuery.toString() );
+                LOG.info("taskQuery = {}", taskQuery );
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
 				LOG.info("Total number of tasks:{}", totalNumber);
@@ -2292,8 +2296,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      *
      * @param sLogin - Строка логин пользователя, меняющего пароль
-     * @param sPasswordOld - Строка старый пароль
-     * @param sPasswordNew - Строка новый пароль
+     * //@param sPasswordOld - Строка старый пароль
+     * //@param sPasswordNew - Строка новый пароль
      * @return
      * @throws CommonServiceException
      * @throws RuntimeException
@@ -2345,9 +2349,33 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     String changePassword(
             @ApiParam(value = "Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value = "sLoginOwner", required = true) String sLogin,
-            @ApiParam(value = "Строка старый пароль", required = true) @RequestParam(value = "sPasswordOld", required = true) String sPasswordOld,
-            @ApiParam(value = "Строка новый пароль", required = true) @RequestParam(value = "sPasswordNew", required = true) String sPasswordNew
-    ) throws CommonServiceException, RuntimeException {
+            @ApiParam(value = "JSON-cnрока с двумя параметрами: sPasswordOld - Строка старый пароль; sPasswordNew - Строка новый пароль", required = true) @RequestBody (required = true) String sPasswords
+    ) throws Exception {
+
+        String sPasswordOld = null;
+        String sPasswordNew = null;
+
+        if(sPasswords != null){
+            Map<String, Object> mBody;
+            try {
+                mBody = (Map<String, Object>) JSONValue.parse(sPasswords);
+            } catch (Exception e){
+                throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
+            }
+            if(mBody != null){
+                if (mBody.containsKey("sPasswordOld")) {
+                    sPasswordOld = (String) mBody.get("sPasswordOld");
+                } else {
+                    throw new Exception("The sPasswordOld in RequestBody is not defined");
+                }
+                if (mBody.containsKey("sPasswordNew")) {
+                    sPasswordNew = (String) mBody.get("sPasswordNew");
+                } else {
+                    throw new Exception("The sPasswordNew in RequestBody is not defined");
+                }
+            }
+        }
+
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         IdentityService identityService = processEngine.getIdentityService();
         User user = null;
@@ -2867,21 +2895,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
     }
 
-    @ApiOperation(value = "/setDocument", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @ApiOperation(value = "/setDocument", notes = "##### Создание документа (позже будет заменен на универсальній сервис /setProcess)#####\n\n")
     @RequestMapping(value = "/setDocument", method = RequestMethod.GET)
     public @ResponseBody
-    Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
+    Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
 
         LOG.info("SetDocument in ActionTaskCommonController started...");
-        
+        LOG.info("sLogin in setDocument is {}", sLogin);
         /*if (sID_BP.startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(sID_BP)) {
                 Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sID_BP, null);
                 LOG.info("SetDocument process count: " + count.intValue());
         }*/
         //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
         Map<String, Object> mParam = new HashMap<>();
+        mParam.put("sLoginAuthor", sLogin);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
         Map<String, Object> mReturn = new HashMap<>();
         
@@ -2908,8 +2937,212 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("HistoryEvent_Service elem in setDocument: {}", oHistoryEvent_Service.toString());*/
         
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
-        LOG.info("mReturn in setDocument: ", mReturn);
+        LOG.info("mReturn={}", mReturn);
         
         return mReturn;
     }
+
+    @ApiOperation(value = "/getProcessTemplate", notes = "##### Получение шаблона процесса#####\n\n")
+    @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public @ResponseBody
+    Map<String, Object> setProcess(
+            @ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
+            @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
+    ) throws Exception {
+
+        //Map<String, Object> mParam = new HashMap<>();
+        //mParam.put("sLoginAuthor", sLogin);
+        //ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+        Map<String, Object> mReturn = new HashMap<>();
+          
+        
+        LOG.info("Trying to get start form with ID " + sID_BP);
+        List<ProcessDefinition> resProcessDefinitions = repositoryService.createProcessDefinitionQuery().processDefinitionKey(sID_BP).active().latestVersion().list();
+        
+        LOG.info("Loaded process definition ID from repository service:" + resProcessDefinitions);
+        
+        if (resProcessDefinitions != null && resProcessDefinitions.size() > 0){
+        	 LOG.info("Processing start form of process defiition:" + resProcessDefinitions.get(0).getKey() + ":" + resProcessDefinitions.get(0).getId());
+	        StartFormData formData = formService.getStartFormData(resProcessDefinitions.get(0).getId());
+	        
+	        LOG.info("Received form " + formData);
+	        Map<String, Object> formDataDTO = new HashMap<String, Object>();
+	        formDataDTO.put("formKey", formData.getFormKey());
+	        formDataDTO.put("deploymentId", formData.getDeploymentId());
+	        formDataDTO.put("formProperties", processFormProperties(formData.getFormProperties())); 
+	        formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
+	
+	        Map[] res = new Map[1];
+	        res[0] = formDataDTO;
+	        mReturn.put("data", res);
+	        mReturn.put("total", 1);
+	        mReturn.put("start", 0);
+	        mReturn.put("sort", "name");
+	        mReturn.put("order", "asc");
+	        mReturn.put("size", 1);
+	
+	        LOG.info("mReturn={}", mReturn);
+        } else {
+        	mReturn.put("data", new String[0]);
+            mReturn.put("total", 0);
+            mReturn.put("start", 0);
+            mReturn.put("sort", "name");
+            mReturn.put("order", "asc");
+            mReturn.put("size", 0);
+        }
+        
+        return mReturn;
+    }
+    
+    protected List<Map<String, Object>> processFormProperties(List<FormProperty> formProperties) {
+    	List<Map<String, Object>> res = new LinkedList<Map<String,Object>>();
+    	for (FormProperty property : formProperties) {
+    		Map<String, Object> currProperty = new HashMap<String, Object>();
+    		currProperty.put("id", property.getId());
+    		currProperty.put("name", property.getName());
+    		currProperty.put("type", property.getType().getName());
+    		currProperty.put("value", property.getValue());
+    		currProperty.put("required", property.isRequired());
+    		currProperty.put("readable", property.isReadable());
+    		currProperty.put("writable", property.isWritable());
+    		if ("enum".equals(property.getType().getName())){
+    			Object oValues = property.getType().getInformation("values");
+    			List<Map> enumValuesPossible = new LinkedList<Map>();
+    			if (oValues instanceof Map) {
+    	            Map<String, String> mValue = (Map) oValues;
+    	            for (Map.Entry<String, String> mapEntry: mValue.entrySet()){
+    	            	Map<String, Object> currEnumValue = new HashMap<String, Object>();
+    	            	currEnumValue.put("id", mapEntry.getKey());
+    	            	currEnumValue.put("name", mapEntry.getValue());
+    	            	enumValuesPossible.add(currEnumValue);
+    	            }
+    			}
+    			currProperty.put("enumValues", enumValuesPossible);
+    		}
+    		res.add(currProperty);
+    	}
+		return res;
+	}
+
+	@ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
+    @RequestMapping(value = "/startProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public @ResponseBody
+    Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
+            @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
+            @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
+    ) throws Exception {
+
+        Map<String, Object> mParam = new HashMap<>();
+        Map<String, Object> mJsonBody;
+        try {
+            mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
+            if(mJsonBody != null){
+            	if (mJsonBody.containsKey("properties")) {
+                    LOG.info("Parsing properties: " + mJsonBody.get("properties"));
+                    
+                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")){
+                    	LOG.info("Parsing param: " + param);
+                    	mParam.put((String)param.get("id"), param.get("value"));
+                    }
+                }
+            }
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
+        }
+
+        mParam.put("sLoginAuthor", sLogin);
+        LOG.info("Processing process with key " + StringUtils.substringBefore(sID_BP, ":"));
+        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(StringUtils.substringBefore(sID_BP, ":"), mParam);
+        Map<String, Object> mReturn = new HashMap<>();
+                
+        mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(oProcessInstanceChild.getId()).active().list();
+        if (tasks != null && tasks.size() > 0){
+        	LOG.info("Found " + tasks.size() + " active tasks for the process instance " + oProcessInstanceChild.getProcessInstanceId());
+        	mReturn.put("nID_Task", tasks.get(0).getId());
+        } else {
+        	LOG.warn("There are no active tasks for process instance " + oProcessInstanceChild.getId());
+        }
+        LOG.info("mReturn={}", mReturn);
+        
+        return mReturn;
+    }   
+	
+	 @ApiOperation(value = "Обновление переменных задачи с ее опциональным завершением", notes = "#####  ActionCommonTaskController: Обновление переменных задачи с ее опциональным завершением #####\n\n"
+	            + "HTTP Context: https://alpha.test.region.igov.org.ua/wf/service/action/task/updateProcess\n\n"
+				+ "POST Метод. Принимает параметр bSaveOnly. Если bSaveOnly=true - Только обновление переменных задачи. Если false - заверешение задачи после обновления переменных:\n"
+	            + "Метод принимает json в теле запроса со списком переменных для обновления и номером задачи:\n"
+				+ "\n```json\n"
+				+ "{\n"
+				+ "  \"taskId\" : \"5\",\n"	
+				+ "  \"properties\" : [\n"
+				+ "  {\n"
+				+ "  \"id\" : \"room\",\n"
+				+ "  \"value\" : \"normal\"\n"
+				+ "  }\n"
+				+ "  ]\n"
+				+ "}\n"
+				+ "\n```\n")
+    @RequestMapping(value = "/updateProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public @ResponseBody
+    Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly, 
+            @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
+    ) throws Exception {
+
+        Map<String, Object> mParam = new HashMap<>();
+        Map<String, Object> mReturn = new HashMap<>();
+        Map<String, Object> mJsonBody;
+        String taskId = null;
+        try {
+            mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
+            if(mJsonBody != null){
+            	if (mJsonBody.containsKey("taskId")){
+            		LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
+            		taskId = (String) mJsonBody.get("taskId");
+            		LOG.info("Updating task with ID " + taskId);
+            	} else {
+            		throw new IllegalArgumentException("Object doesn't contain 'taskId' parameter");
+            	}
+            	
+            	if (mJsonBody.containsKey("properties")) {
+                    LOG.info("Parsing properties: " + mJsonBody.get("properties"));
+                    
+                    List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
+                    String executionId = null;
+                    if (tasks != null && tasks.size() > 0){
+                    	Task firstTask = tasks.get(0);
+                    	executionId = firstTask.getExecutionId();
+
+                    	for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")){
+                        	LOG.info("Updating variable : " + (String)param.get("id") + " with the value " + param.get("value"));
+                        	mParam.put((String)param.get("id"), param.get("value"));
+                        	runtimeService.setVariable(executionId, (String)param.get("id"), param.get("value"));
+                        }
+
+                    	if (!bSaveOnly){
+                    		LOG.info("Submitting task");
+                    		taskService.complete(firstTask.getId());
+                    	}
+                    } else {
+                    	LOG.info("Have not found any tasks with ID " + taskId);
+                    }
+                    if (executionId != null){
+                    	List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
+                        if (activeTasks != null && activeTasks.size() > 0){
+                        	LOG.info("Found " + activeTasks.size() + " active tasks for the execution id " + executionId);
+                        	mReturn.put("nID_Task", tasks.get(0).getId());
+                        } else {
+                        	LOG.warn("There are no active tasks for execution id " + executionId);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
+        }
+        
+        LOG.info("mReturn={}", mReturn);
+        return mReturn;
+    }   
+    
 }

@@ -43,7 +43,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
 
       var nMaxFileSizeLimit = 10; // max upload file size = 10 MB
       var aAvailableFileExtensions = ["bmp", "gif", "jpeg", "jpg", "png", "tif", "doc", "docx", "odt", "rtf", "pdf"
-        , "xls", "xlsx", "xlsm", "ods", "sxc", "wks", "csv", "zip", "rar", "7z", "p7s"];
+        , "xls", "xlsx", "xlsm", "xml", "ods", "sxc", "wks", "csv", "zip", "rar", "7z", "p7s"];
 
       try {
         console.log('scope.data.formData.params[ngModel.$name].fileName=' + scope.data.formData.params[ngModel.$name].fileName);

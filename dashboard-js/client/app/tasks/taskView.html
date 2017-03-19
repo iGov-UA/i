@@ -10,6 +10,7 @@
     position:fixed;
     top: 130px;
     right: 10px;
+    z-index: 100;
   }
   .open-full-info a {
     font-size: 24px;
@@ -63,7 +64,7 @@
   <!--форма заявки-->
   <div ng-if="tabHistoryAppeal === 'appeal' && !clarify">
     <form name="form" novalidate style="padding-bottom: 70px">
-      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)">
+      <div ng-repeat="item in taskForm track by item.id" class="task-form-property row" ng-if="isFieldVisible(item)">
         <!-- сепаратор -->
         <div class="addition-hr" ng-if="insertSeparator(item.id).bShow">
           <table style="width: 100%; height: auto">
@@ -303,31 +304,40 @@
 
       <!--document users role-->
       <div class="documentUsers">
-        <div ng-if="documentLogins" ng-repeat="users in documentLogins">
+        <hr class="hr-divider" ng-if="documentLogins && documentLogins.length !== 0">
+        <div ng-if="documentLogins" ng-repeat="users in documentLogins" class="users-list">
           <div ng-if="users.aUser.length !== 0">
 
-            <div ng-if="users.bWrite">
-              <span class="documentRole">{{users.sName}}:</span>
-              <span ng-repeat="user in users.aUser">
+            <div ng-if="users.bWrite" class="col-xs-12 user-in-users-list" style="margin-bottom: 10px">
+              <div class="col-xs-8">
+                <span class="documentRole">{{users.sName}}:</span><br>
+                <span ng-repeat="user in users.aUser">
                 <span title="{{user.sLogin}}">
                   <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
                     {{ user.sFIO }}{{$last ? '' : ', '}}
                   </span>
                 </span>
               </span>
-              <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису/Немає ознайомлення'}}</span>
+              </div>
+              <div class="col-xs-4">
+                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
+              </div>
             </div>
 
-            <div ng-if="!users.bWrite">
-              <span class="documentRole">{{users.sName}}:</span>
-              <span ng-repeat="user in users.aUser">
+            <div ng-if="!users.bWrite" class="col-xs-12" style="margin-bottom: 10px">
+              <div class="col-xs-8">
+                <span class="documentRole">{{users.sName}}:</span><br>
+                <span ng-repeat="user in users.aUser">
                 <span title="{{user.sLogin}}">
                   <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
                     {{ user.sFIO }}{{$last ? '' : ', '}}
                   </span>
                 </span>
               </span>
-              <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису/Немає ознайомлення'}}</span>
+              </div>
+              <div class="col-xs-4">
+                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає ознайомлення'}}</span>
+              </div>
             </div>
 
           </div>
@@ -364,13 +374,14 @@
               <button ng-click="assignAndSubmitDocument(form)"
                       class="btn btn-info take-to-work-button"
                       style="background-color: #337ACF; outline: none; border: none"
-                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()"
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()"
                       ng-show="selectedTask.assignee == null && isDocument()">
-                <span ng-if="documentRights.bWrite">
+                <span ng-if="documentRights.bWrite && isDocumentNotSigned()">
                   <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
                   <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
                 </span>
-                <span ng-if="!documentRights.bWrite">Ознайомлений</span>
+                <span ng-if="!isDocumentNotSigned()">Підписано</span>
+                <span ng-if="!documentRights.bWrite && isDocumentNotSigned()">Ознайомлений</span>
               </button>
               <label ng-show="isTaskInProcess() && !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
               <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Задачу направлено в роботу.</label>
@@ -399,15 +410,16 @@
                       ng-click="submitTask(form)"
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
-                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">
-                <span ng-if="documentRights.bWrite && !isDocument()">
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()">
+                <span ng-if="documentRights.bWrite && !isDocument() && isDocumentNotSigned">
                   <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
                   <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
                 </span>
+                <span ng-if="!isDocumentNotSigned()">Підписано</span>
                 <span ng-if="!documentRights.bWrite && !isDocument()">Ознайомлений</span>
-                <span ng-if="isDocument()">Створити</span>
+                <span ng-if="isDocument() && isDocumentNotSigned()">Створити</span>
               </button>
-              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished' || isDocument()"
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти

@@ -54,12 +54,12 @@
         <activiti:formProperty id="oplata_number" name="№ платіжного доручення (квитанції)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocOplata" name="Платіжний документи (квитанція) про оплату вартості послуги; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible"></activiti:formProperty>
-      	<activiti:formProperty id="sShapka228" name="шапка у принтформу" type="invisible"></activiti:formProperty>      
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця; ;bVisible=false" type="string"></activiti:formProperty>
+      	<activiti:formProperty id="sShapka228" name="шапка у принтформу; ;bVisible=false" type="string"></activiti:formProperty>      
         <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;post_ur&quot;,&quot;phone_ur&quot;, &quot;edrpo&quot;,&quot;pib_ur&quot;,&quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sDocConfidant&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
@@ -93,7 +93,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="shapka" name="шапки принтформ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -126,9 +126,9 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShapka228" name="шапка у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_229_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka228" name="шапка у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_229_print.html]; ;bVisible=false" type="string" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -155,7 +155,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="shapka" name="шапки принтформ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -189,10 +189,10 @@
           <activiti:value id="reject" name="відмовлено у наданні дозволу на рух"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapka228" name="шапка у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka228" name="шапка у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_229_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_229_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_229_print.html]; ;bVisible=false" type="string" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
       </extensionElements>
     </userTask>

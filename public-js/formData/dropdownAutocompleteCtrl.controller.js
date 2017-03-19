@@ -20,7 +20,7 @@ angular.module('autocompleteService')
             if(angular.isDefined(res.config.params.sFind) && angular.isArray(res.data)){
                 angular.forEach(res.data, function (el) {
                     if(angular.isDefined(el.sID) && angular.isDefined(el.sNote)){
-                        el.sFind = el.sNote + " " + el.sID;
+                        el.sFind = el.sID + " " + el.sNote;
                     } else if (angular.isDefined(el.sID) && angular.isDefined(el.sName_UA)) {
                         el.sFind = el.sName_UA + " " + el.sID;
                     } else if (angular.isDefined(el.sID_UA) && angular.isDefined(el.sName_UA)) {
@@ -189,7 +189,7 @@ angular.module('autocompleteService')
                 var filtered = null;
                 if(queryValue && isNaN(queryValue)){
                    filtered = items.filter(function(i){
-                        var name = i.sName_UA ? i.sName_UA : (i.sNameShort_UA ? i.sNameShort_UA : i.sName);
+                        var name = i.sName_UA ? i.sName_UA : (i.sNameShort_UA ? i.sNameShort_UA : (i.sName ? i.sName : i.sNote));
                         return name.toLowerCase().indexOf(queryValue.toLowerCase()) !== -1;
                     });  
                 }
@@ -205,7 +205,7 @@ angular.module('autocompleteService')
     $scope.onSelectDataList = function (item, tableName, rowIndex, field) {
         var additionalPropertyName = getAdditionalPropertyName();
         var nameWithPostFix = getNameWithPostFix(field);
-        if (rowIndex || rowIndex >= 0) {
+        if (rowIndex !== null && (rowIndex || rowIndex >= 0)) {
             var form = $scope.activitiForm ? $scope.activitiForm.formProperties : $scope.taskForm;
             angular.forEach(form, function (property) {
                 if (property.id === tableName) {
@@ -237,6 +237,19 @@ angular.module('autocompleteService')
                         obj[key].value = item[$scope.autocompleteData.prefixAssociatedField];
                     }
                 })
+            } else if (!$scope.taskForm && $scope.formData && !$scope.formData.params[additionalPropertyName]) {
+                for (var stuff in $scope.formData.params) {
+                    if($scope.formData.params.hasOwnProperty(stuff)) {
+                        if (nameWithPostFix && nameWithPostFix[1]) {
+                            var splited = stuff.split(/_/),
+                                postfix = splited.pop(),
+                                anotherPart = splited.join('_');
+                            if (anotherPart.indexOf(additionalPropertyName) === 0 && postfix === nameWithPostFix[nameWithPostFix.length - 1]) {
+                                $scope.formData.params[stuff].value = item[splited[0]];
+                            }
+                        }
+                    }
+                }
             }
         }
     };

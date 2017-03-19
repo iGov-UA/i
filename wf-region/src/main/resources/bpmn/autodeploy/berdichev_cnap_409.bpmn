@@ -19,16 +19,16 @@
         <activiti:formProperty id="dovirenist" name="Довіреність (доручення) – для уповноваженої особи (оригінал та копія)" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('berdichiv_409.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="lutsk" type="markers" default="${markerService.loadFromFile('berdichiv_409_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="bFlag_region" name="Перемикач регіонів" type="invisible" default="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk2" name="Пошта органу ЖКГ" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDoc" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bFlag_region" name="Перемикач регіонів; ;bVisible=false" type="string" default="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk2" name="Пошта органу ЖКГ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka409" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDoc" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -99,10 +99,10 @@ ${sNameOrgan}<br>
           <activiti:value id="sEnumDoc_bad" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDoc" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka409" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDoc" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -209,11 +209,11 @@ ${sNameOrgan}<br>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="file10" name="Завантажте скановану копію довідки" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/berdichev/berdichiv_cnap_409_print1.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDoc" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka409" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDoc" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -343,10 +343,10 @@ ${sNameOrgan}<br>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment2" name="Коментар для працівника ЦНАП" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="file10" name="Завантажте скановану копію довідки" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDoc" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka409" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDoc" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -373,11 +373,11 @@ ${sNameOrgan}<br>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment2" name="Коментар для працівника ЦНАП" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/berdichev/berdichiv_cnap_409_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/berdichev/berdichiv_cnap_409_print1.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDoc" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka409" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlase409" name="Назва міськвиконкому; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDoc" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

@@ -8,7 +8,6 @@ module.exports.getUserKeyFromSession = function (session){
 };
 
 module.exports.convertToCanonical = function (customer) {
-  customer.isAuthTypeFromBankID = false;
   customer.type = 'physical';
   delete customer.nID;
   delete customer.sSB;

@@ -14,12 +14,12 @@
         <activiti:formProperty id="adress2" name="Адреса розміщення тимчасової споруди для провадження підприємницької діяльності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Графічні матеріали із зазначенням бажаного місця розташування тимчасової споруди, виконані замовником у довільній формі на топографо-геодезичній основі М 1:500 кресленнями контурів тимчасової споруди з прив’язкою до місцевості" type="file" required="true"></activiti:formProperty>
-         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaArkh" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaArkh" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -49,7 +49,7 @@
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="email_spec" name="Електронна пошта спеціаліста УМАК" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopol_cnap_35_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopol_cnap_35_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopol_cnap_35_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

@@ -65,7 +65,7 @@ public class CloseTaskEvent {
 	@Autowired
 	protected RuntimeService runtimeService;
 
-	private JSONParser oJSONParser = new JSONParser();
+	private final JSONParser oJSONParser = new JSONParser();
 
 	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snID_Task, JSONObject omRequestBody)
 			throws ParseException {
