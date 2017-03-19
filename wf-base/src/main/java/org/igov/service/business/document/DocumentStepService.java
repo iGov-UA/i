@@ -631,11 +631,11 @@ public class DocumentStepService {
     
     
     public List<DocumentStepSubjectRight> syncDocumentSubmitersByField(String snID_Process_Activiti,
-            String sKey_Group, String sID_Field, String sKey_Step, boolean bReClone) throws Exception {
+            String sKey_Group_Default, String sID_Field, String sKey_Step, boolean bReClone) throws Exception {
 
         LOG.info("started...");
-        LOG.info("sKey_Group={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step={}",
-                sKey_Group, snID_Process_Activiti, sID_Field, sKey_Step);
+        LOG.info("snID_Process_Activiti={}, sKey_Group_Default={}, sID_Field={}, sKey_Step={}",
+                snID_Process_Activiti, sKey_Group_Default, sID_Field, sKey_Step);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Return = new ArrayList<>();
         try {
             List<String> asLogin = getLoginsFromField(snID_Process_Activiti, sID_Field);
@@ -660,7 +660,7 @@ public class DocumentStepService {
                         //break;
                         //asLogin_Update.add(HUMAN)
                         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti,
-                                sKey_Group, sLogin, sKey_Step, bReClone);
+                                sKey_Group_Default, sLogin, sKey_Step, bReClone);
                         aDocumentStepSubjectRight_Return.addAll(aDocumentStepSubjectRight_Current);
                     }else{
                         //asLogin_Add.add(sLogin);
@@ -673,7 +673,7 @@ public class DocumentStepService {
             asLogin.removeAll(asLogin_Found);
             for(String sLogin : asLogin){
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti,
-                        sKey_Group, sLogin, sKey_Step, bReClone);
+                        sKey_Group_Default, sLogin, sKey_Step, bReClone);
                 aDocumentStepSubjectRight_Return.addAll(aDocumentStepSubjectRight_Current);
             }
             
@@ -686,7 +686,7 @@ public class DocumentStepService {
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " ("
                     + "snID_Process_Activiti=" + snID_Process_Activiti + ""
-                    + ",sKey_GroupPostfix=" + sKey_Group + ""
+                    + ",sKey_GroupPostfix=" + sKey_Group_Default + ""
                     + ",sID_Field=" + sID_Field + ""
                     + ",sKey_Step_Document_To=" + sKey_Step + ")");
             LOG.error("ERROR: ", oException);
