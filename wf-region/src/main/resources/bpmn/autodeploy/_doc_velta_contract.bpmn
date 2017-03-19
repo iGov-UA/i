@@ -144,7 +144,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sComment" name="Коментар щодо помилки" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersUser1" name="Маркер видимости" type="markers" default="${markerService.loadFromFile('velta/_doc_velta_contract_ut5.json')}"></activiti:formProperty>
         <activiti:formProperty id="sMailMistake" name="Маил подразделения" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEscalationDay" name="Дата ескалації" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEscalationDay" name="Дата ескалації; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html]" type="invisible" default="Стандартний контракт" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -278,21 +278,21 @@ var sKey_GroupPostfix_New = 'Velta_Justice_Head'
 var sKey_GroupPostfix = '_default_Velta_Justice'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-var sKey_GroupPostfix_New = 'Velta_Justice_Spec1'
-var sKey_GroupPostfix = '_default_Velta_Justice'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+// var sKey_GroupPostfix_New = 'Velta_Justice_Spec1'
+// var sKey_GroupPostfix = '_default_Velta_Justice'
+// var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-var sKey_GroupPostfix_New = 'Velta_Finance_Head'
-var sKey_GroupPostfix = '_default_Velta_Finance'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+// var sKey_GroupPostfix_New = 'Velta_Finance_Head'
+// var sKey_GroupPostfix = '_default_Velta_Finance'
+// var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 var sKey_GroupPostfix_New = 'Velta_Finance_Spec1'
 var sKey_GroupPostfix = '_default_Velta_Finance'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-var sKey_GroupPostfix_New = 'Velta_Tech_Head'
-var sKey_GroupPostfix = '_default_Velta_Tech'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+// var sKey_GroupPostfix_New = 'Velta_Tech_Head'
+// var sKey_GroupPostfix = '_default_Velta_Tech'
+// var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 var sKey_GroupPostfix_New = 'Velta_Tech_Spec1'
 var sKey_GroupPostfix = '_default_Velta_Tech'
@@ -336,7 +336,7 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 // клонирование прав на 3-й шаг
 
 var sKey_GroupPostfix_New = 'Velta_Justice_Head';
-var sKey_GroupPostfix = '_default_Velta_Justice_step5';
+var sKey_GroupPostfix = '_default_Velta_Justice_step3';
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
 		</script>
     </scriptTask>
