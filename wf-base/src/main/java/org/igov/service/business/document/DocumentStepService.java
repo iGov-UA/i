@@ -514,86 +514,114 @@ public class DocumentStepService {
         return resultList;
     }
 
+    //TODO: Нужно выпилять из БП
+    @Deprecated
     public List<DocumentStepSubjectRight> cloneDocumentStepSubject(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sKey_GroupPostfix_New, String sKey_Step_Document_To) throws Exception {
         return cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix,
                 sKey_GroupPostfix_New, sKey_Step_Document_To, true); //Todo: set bReClone=false after corecting BA
     }
 
-    public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti,
-            String sKey_GroupPostfix, String sID_Field, String sKey_Step_Document_To, boolean bReClone) throws Exception {
-
-        LOG.info("cloneDocumentStepFromTable started...");
-        LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step_Document={}",
-                sKey_GroupPostfix, snID_Process_Activiti, sID_Field, sKey_Step_Document_To);
-
-        List<DocumentStepSubjectRight> resultList = new ArrayList<>();
-
+    public List<String> getLoginsFromField(String snID_Process_Activiti, String sID_Field) throws Exception{
+        List<String> asLogin=new LinkedList();
         try {
+            String sValue=(String) runtimeService.getVariable(snID_Process_Activiti, sID_Field);
+            //String soJSON=(String) runtimeService.getVariable(snID_Process_Activiti, sID_Field);
+            if(sValue.startsWith("{")){//TABLE
+                JSONParser parser = new JSONParser();
 
-            JSONParser parser = new JSONParser();
+                org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(
+                        sValue);
 
-            org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(
-                    (String) runtimeService.getVariable(snID_Process_Activiti, sID_Field));
+                InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+                        (String) oTableJSONObject.get("sKey"),
+                        (String) oTableJSONObject.get("sID_StorageType")).getInputStream();
 
-            InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
-                    (String) oTableJSONObject.get("sKey"),
-                    (String) oTableJSONObject.get("sID_StorageType")).getInputStream();
+                org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(
+                        IOUtils.toString(oAttachmet_InputStream, "UTF-8"));
+                LOG.info("oTableJSONObject in listener: " + oJSONObject.toJSONString());
 
-            org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(
-                    IOUtils.toString(oAttachmet_InputStream, "UTF-8"));
-            LOG.info("oTableJSONObject in listener: " + oJSONObject.toJSONString());
+                LOG.info("oJSONObject in cloneDocumentStepFromTable is {}", oJSONObject.toJSONString());
 
-            LOG.info("oJSONObject in cloneDocumentStepFromTable is {}", oJSONObject.toJSONString());
+                org.json.simple.JSONArray aJsonRow = (org.json.simple.JSONArray) oJSONObject.get("aRow");
 
-            org.json.simple.JSONArray aJsonRow = (org.json.simple.JSONArray) oJSONObject.get("aRow");
-
-            if (aJsonRow != null) {
-                for (int i = 0; i < aJsonRow.size(); i++) {
-                    org.json.simple.JSONObject oJsonField = (org.json.simple.JSONObject) aJsonRow.get(i);
-                    LOG.info("oJsonField in cloneDocumentStepFromTable is {}", oJsonField);
-                    if (oJsonField != null) {
-                        org.json.simple.JSONArray aJsonField = (org.json.simple.JSONArray) oJsonField.get("aField");
-                        LOG.info("aJsonField in cloneDocumentStepFromTable is {}", aJsonField);
-                        if (aJsonField != null) {
-                            for (int j = 0; j < aJsonField.size(); j++) {
-                                org.json.simple.JSONObject oJsonMap = (org.json.simple.JSONObject) aJsonField.get(j);
-                                LOG.info("oJsonMap in cloneDocumentStepFromTable is {}", oJsonMap);
-                                if (oJsonMap != null) {
-                                    Object oId = oJsonMap.get("id");
-                                    if (((String) oId).equals("sLogin_isExecute")) {
-                                        Object oValue = oJsonMap.get("value");
-                                        if (oValue != null) {
-                                            LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
-                                            List<DocumentStepSubjectRight> result = cloneDocumentStepSubject(snID_Process_Activiti,
-                                                    sKey_GroupPostfix, (String) oValue, sKey_Step_Document_To, bReClone);
-                                            resultList.addAll(result);
-                                        } else {
-                                            LOG.info("oValue in cloneDocumentStepFromTable is null");
+                if (aJsonRow != null) {
+                    for (int i = 0; i < aJsonRow.size(); i++) {
+                        org.json.simple.JSONObject oJsonField = (org.json.simple.JSONObject) aJsonRow.get(i);
+                        LOG.info("oJsonField in cloneDocumentStepFromTable is {}", oJsonField);
+                        if (oJsonField != null) {
+                            org.json.simple.JSONArray aJsonField = (org.json.simple.JSONArray) oJsonField.get("aField");
+                            LOG.info("aJsonField in cloneDocumentStepFromTable is {}", aJsonField);
+                            if (aJsonField != null) {
+                                for (int j = 0; j < aJsonField.size(); j++) {
+                                    org.json.simple.JSONObject oJsonMap = (org.json.simple.JSONObject) aJsonField.get(j);
+                                    LOG.info("oJsonMap in cloneDocumentStepFromTable is {}", oJsonMap);
+                                    if (oJsonMap != null) {
+                                        Object oId = oJsonMap.get("id");
+                                        if (((String) oId).equals("sLogin_isExecute")) {
+                                            Object oValue = oJsonMap.get("value");
+                                            if (oValue != null) {
+                                                LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
+//                                                List<DocumentStepSubjectRight> result = cloneDocumentStepSubject(snID_Process_Activiti,
+//                                                        sKey_GroupPostfix, (String) oValue, sKey_Step_Document_To, bReClone);
+//                                                resultList.addAll(result);
+                                                asLogin.add((String) oValue);
+                                            } else {
+                                                LOG.info("oValue in cloneDocumentStepFromTable is null");
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                }
-            } else {
-                LOG.info("JSON array is null in cloneDocumentStepFromTable is null");
+                } else {
+                    LOG.info("JSON array is null in cloneDocumentStepFromTable is null");
+                }                
+            }else{//Simple field with login
+                asLogin.add(sValue);
             }
-
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " ("
                     + "snID_Process_Activiti=" + snID_Process_Activiti + ""
-                    + ",sKey_GroupPostfix=" + sKey_GroupPostfix + ""
+                    //+ ",sKey_GroupPostfix=" + sKey_GroupPostfix + ""
                     + ",sID_Field=" + sID_Field + ""
-                    + ",sKey_Step_Document_To=" + sKey_Step_Document_To + ")");
+                    //+ ",sKey_Step_Document_To=" + sKey_Step_Document_To + ")"
+            );
+            LOG.error("ERROR: ", oException);
+            throw oException;
+        }        
+        return asLogin;
+    }
+    
+    public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti,
+            String sKey_Group, String sID_Field, String sKey_Step, boolean bReClone) throws Exception {
+
+        LOG.info("started...");
+        LOG.info("sKey_Group={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step={}",
+                sKey_Group, snID_Process_Activiti, sID_Field, sKey_Step);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Return = new ArrayList<>();
+        try {
+            List<String> asLogin=getLoginsFromField(snID_Process_Activiti, sID_Field);
+            for(String sLogin : asLogin){
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti,
+                        sKey_Group, sLogin, sKey_Step, bReClone);
+                aDocumentStepSubjectRight_Return.addAll(aDocumentStepSubjectRight_Current);
+            }
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " ("
+                    + "snID_Process_Activiti=" + snID_Process_Activiti + ""
+                    + ",sKey_GroupPostfix=" + sKey_Group + ""
+                    + ",sID_Field=" + sID_Field + ""
+                    + ",sKey_Step_Document_To=" + sKey_Step + ")");
             LOG.error("ERROR: ", oException);
             throw oException;
         }
-
-        return resultList;
+        return aDocumentStepSubjectRight_Return;
     }
-
+    
+    //TODO: Нужно выпилять из БП    
+    @Deprecated
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sID_Field, String sKey_Step_Document_To) throws Exception {
         return cloneDocumentStepFromTable(snID_Process_Activiti,
@@ -1297,6 +1325,7 @@ public class DocumentStepService {
                 if (sDateECP == null) {
                     if (sDate != null) {
                         oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                        LOG.info("oFindedDocumentStepSubjectRight = {}", oFindedDocumentStepSubjectRight);
                     }
 
                 } else {
@@ -1306,6 +1335,7 @@ public class DocumentStepService {
                 // Достаем nID_Process у найденного oDocumentStepSubjectRight
                 // через DocumentStep
                 String snID_Process = oFindedDocumentStepSubjectRight.getDocumentStep().getSnID_Process_Activiti();
+                LOG.info("snID_Process of oFindedDocumentStepSubjectRight: ", snID_Process);
 
                 String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
                 // через апи активити по nID_Process
