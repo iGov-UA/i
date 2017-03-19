@@ -51,8 +51,8 @@ import org.springframework.stereotype.Component;
 @Service
 public class SubjectGroupTreeService {
 
-    private static final String ORGAN = "Organ";
-    private static final String HUMAN = "Human";
+    public static final String ORGAN = "Organ";
+    public static final String HUMAN = "Human";
     /**
      * флаг определяющий, что на вход был конкрентный тип ORGAN или HUMAN
      */
@@ -80,14 +80,16 @@ public class SubjectGroupTreeService {
     //Мапа для укладывания ид родителя и его детей в методе получения иерархии  getChildrenTree
     Map<Long, List<SubjectGroup>> getChildrenTreeRes = new HashMap<>();
 
-    public SubjectGroupResultTree getCatalogSubjectGroupsTree(String sID_Group_Activiti, Long deepLevel,
-            String sFind, Boolean bIncludeRoot, Long deepLevelWidth, String sSubjectType) {
+    public SubjectGroupResultTree getCatalogSubjectGroupsTree(String sID_Group_Activiti,
+            Long deepLevel, String sFind, Boolean bIncludeRoot, Long deepLevelWidth,
+            String sSubjectType) {
 
         /**
          * Лист для ид Subject ORGAN или HUMAN для последующего анализа
          */
         List<Long> resSubjectTypeList = new ArrayList<>();
         List<SubjectGroup> aChildResult = new ArrayList<>();
+        //get all SubjectGroupTree
         List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
         LOG.info("subjectGroupRelations.size: " + subjectGroupRelations.size());
         SubjectGroupResultTree processSubjectResultTree = new SubjectGroupResultTree();
@@ -101,71 +103,76 @@ public class SubjectGroupTreeService {
             List<SubjectHuman> subjectHumans = null;
             List<SubjectOrgan> subjectOrgans = null;
 
+            //get all SubjectHuman
             if (HUMAN.equals(sSubjectType)) {
                 subjectHumans = new ArrayList<>(baseEntityDao.findAll(SubjectHuman.class));
                 LOG.info("subjectHumans.size: " + subjectHumans.size());
                 isSubjectType = true;
+                if (!subjectHumans.isEmpty()) {
+                    List<Long> subjectHumansIdSubj = Lists
+                            .newArrayList(Collections2.transform(subjectHumans, new Function<SubjectHuman, Long>() {
+                                @Override
+                                public Long apply(SubjectHuman subjectHuman) {
+                                    return subjectHuman.getoSubject().getId();
+                                }
+                            }));
+                    LOG.info("subjectHumansIdSubj.size: " + subjectHumansIdSubj.size());
+
+                    subjectGroupRelations = Lists
+                            .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
+                                @Override
+                                public boolean apply(SubjectGroupTree subjectGroupTree) {
+                                    // получить только отфильтрованный
+                                    // список по Humans
+                                    return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
+                                            && Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
+                                            && (subjectGroupTree.getoSubjectGroup_Parent().getsID_Group_Activiti().equals(sID_Group_Activiti)
+                                            || subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId()))
+                                            && subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
+                                }
+                            }));
+                    LOG.info("subjectGroupRelations.size: " + subjectGroupRelations.size());
+
+                    resSubjectTypeList.addAll(subjectHumansIdSubj);
+                    LOG.info("resSubjectTypeList.size HUMAN: " + resSubjectTypeList.size());
+                }
             }
 
+            //get all SubjectOrgan
             if (ORGAN.equals(sSubjectType)) {
                 subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
                 LOG.info("subjectOrgans.size: " + subjectOrgans.size());
                 isSubjectType = true;
+                if (!subjectOrgans.isEmpty()) {
+                    List<Long> subjectOrgansIdSubj = Lists
+                            .newArrayList(Collections2.transform(subjectOrgans, new Function<SubjectOrgan, Long>() {
+                                @Override
+                                public Long apply(SubjectOrgan subjectOrgan) {
+                                    return subjectOrgan.getoSubject().getId();
+                                }
+                            }));
+                    LOG.info("subjectOrgansIdSubj.size: " + subjectOrgansIdSubj.size());
+
+                    subjectGroupRelations = Lists
+                            .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
+                                @Override
+                                public boolean apply(SubjectGroupTree subjectGroupTree) {
+                                    // получить только отфильтрованный
+                                    // список по Organs
+                                    return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
+                                            && Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
+                                            && (subjectGroupTree.getoSubjectGroup_Parent().getsID_Group_Activiti().equals(sID_Group_Activiti)
+                                            || subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId()))
+                                            && subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
+                                }
+                            }));
+                    LOG.info("subjectGroupRelations.size: " + subjectGroupRelations.size());
+
+                    resSubjectTypeList.addAll(subjectOrgansIdSubj);
+                    LOG.info("subjectGroupRelations.size ORGAN: " + subjectGroupRelations.size());
+                }
             }
-            if (subjectHumans != null && !subjectHumans.isEmpty()) {
-                List<Long> subjectHumansIdSubj = Lists
-                        .newArrayList(Collections2.transform(subjectHumans, new Function<SubjectHuman, Long>() {
-                            @Override
-                            public Long apply(SubjectHuman subjectHuman) {
-                                return subjectHuman.getoSubject().getId();
-                            }
-                        }));
-                LOG.info("subjectHumansIdSubj.size: " + subjectHumansIdSubj.size());
-                
-                subjectGroupRelations = Lists
-                        .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
-                            @Override
-                            public boolean apply(SubjectGroupTree subjectGroupTree) {
-                                // получить только отфильтрованный
-                                // список по Humans
-                                return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
-                                        && Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
-                                        && subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
-                                        && subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
-                            }
-                        }));
-                LOG.info("subjectGroupRelations.size: " + subjectGroupRelations.size());
-                
-                resSubjectTypeList.addAll(subjectHumansIdSubj);
-                LOG.info("resSubjectTypeList.size HUMAN: " + resSubjectTypeList.size());
-            }
-            
-            if (subjectOrgans != null && !subjectOrgans.isEmpty()) {
-                List<Long> subjectOrgansIdSubj = Lists
-                        .newArrayList(Collections2.transform(subjectOrgans, new Function<SubjectOrgan, Long>() {
-                            @Override
-                            public Long apply(SubjectOrgan subjectOrgan) {
-                                return subjectOrgan.getoSubject().getId();
-                            }
-                        }));
-                LOG.info("subjectOrgansIdSubj.size: " + subjectOrgansIdSubj.size());
-                
-                subjectGroupRelations = Lists
-                        .newArrayList(Collections2.filter(subjectGroupRelations, new Predicate<SubjectGroupTree>() {
-                            @Override
-                            public boolean apply(SubjectGroupTree subjectGroupTree) {
-                                // получить только отфильтрованный
-                                // список по Organs
-                                return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
-                                        && Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
-                                        && subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
-                                        && subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
-                            }
-                        }));
-                resSubjectTypeList.addAll(subjectOrgansIdSubj);
-                LOG.info("subjectGroupRelations.size ORGAN: " + subjectGroupRelations.size());
-            }
-            
+
             for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 
                 SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
@@ -176,7 +183,7 @@ public class SubjectGroupTreeService {
                     parentSubjectGroup = new VSubjectGroupParentNode();
                     final SubjectGroup child = subjectGroupRelation.getoSubjectGroup_Child();
                     LOG.info("SubjectGroup parent" + parent.getsID_Group_Activiti()
-                    + " child: " + subjectGroupRelation.getoSubjectGroup_Child());
+                            + " child: " + subjectGroupRelation.getoSubjectGroup_Child());
                     if (!idParentList.contains(parent.getId())) {
                         idParentList.add(parent.getId());
                         // устанавливаем парентов
@@ -189,8 +196,8 @@ public class SubjectGroupTreeService {
                         parentChildren.put(parent, parentSubjectGroup.getChildren());
                         // мапа группа-ид парента
                         mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
-                        LOG.info("!add mapGroupActiviti: " + parent.getsID_Group_Activiti() 
-                                    + "nID parent: " + parent.getId());
+                        LOG.info("!add mapGroupActiviti: " + parent.getsID_Group_Activiti()
+                                + "nID parent: " + parent.getId());
                     } else {
                         for (VSubjectGroupParentNode vSubjectGroupParentNode : parentSubjectGroups) {
                             // убираем дубликаты
@@ -203,8 +210,8 @@ public class SubjectGroupTreeService {
                                 parentChildren.put(parent, parentSubjectGroup.getChildren());
                                 // мапа группа-ид парента
                                 mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
-                                LOG.info("!!add mapGroupActiviti: " + parent.getsID_Group_Activiti() 
-                                    + "nID parent: " + parent.getId());
+                                LOG.info("!!add mapGroupActiviti: " + parent.getsID_Group_Activiti()
+                                        + "nID parent: " + parent.getId());
                             }
                         }
                     }
@@ -227,7 +234,7 @@ public class SubjectGroupTreeService {
                 // детей его детей
                 children = subjToNodeMap.get(groupFiltr);
             }
-            LOG.info("children.size: " + children.size() );
+            LOG.info("children.size: " + children.size());
             Map<Long, List<SubjectGroup>> hierarchyProcessSubject = new HashMap<>();
             // children полный список первого уровня
             if (children != null && !children.isEmpty()) {
@@ -241,16 +248,16 @@ public class SubjectGroupTreeService {
                             }
                         }));
                 aChildResult.addAll(children);
-                LOG.info("idChildren.size: " + idChildren.size() );
+                LOG.info("idChildren.size: " + idChildren.size());
                 hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
                 LOG.info("hierarchyProcessSubject" + hierarchyProcessSubject);
             }
 
             List<SubjectGroup> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
-            
+
             LOG.info("aChildResultByUser" + aChildResultByUser);
 
-            List<SubjectGroup> resultTree = new ArrayList<>();
+            List<SubjectGroup> resultTree;
             if (sFind != null && !sFind.isEmpty()) {
                 resultTree = getSubjectGroupTree(hierarchyProcessSubject, aChildResultByUser);
 
@@ -258,7 +265,7 @@ public class SubjectGroupTreeService {
                 resultTree = getSubjectGroupTree(hierarchyProcessSubject, aChildResult);
             }
             LOG.info("resultTree: " + resultTree);
-            
+
             if (isDisplayRootElement(bIncludeRoot)) {
                 if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
                     if (resultTree != null && !resultTree.isEmpty()) {
@@ -270,7 +277,7 @@ public class SubjectGroupTreeService {
             } else {
                 processSubjectResultTree.setaSubjectGroupTree(resultTree);
             }
-            
+
             LOG.info("processSubjectResultTree" + processSubjectResultTree);
 
             /**
@@ -278,16 +285,17 @@ public class SubjectGroupTreeService {
              * пустой с ид Subject органа или хьманов, лист содержит groupFiltr
              * возвращаем ответ, иначе ничего не возвращаем
              */
-            if(isSubjectType && !resSubjectTypeList.isEmpty() && resSubjectTypeList.contains(groupFiltr)) {
-	        	LOG.info("processSubjectResultTree isSubjectType " + processSubjectResultTree);
-	        	return processSubjectResultTree;
-			}else if(!isSubjectType){
-				LOG.info("processSubjectResultTree !isSubjectType " + processSubjectResultTree);
-				return processSubjectResultTree;
-			}else {
-				SubjectGroupResultTree processSubjectResultTreeRes = new SubjectGroupResultTree();
-				 return processSubjectResultTreeRes;
-			}
+            /*if (isSubjectType && !resSubjectTypeList.isEmpty() 
+                    && resSubjectTypeList.contains(groupFiltr)) {
+                LOG.info("processSubjectResultTree isSubjectType " + processSubjectResultTree);
+                return processSubjectResultTree;
+            } else if (!isSubjectType) {
+                LOG.info("processSubjectResultTree !isSubjectType " + processSubjectResultTree);
+                return processSubjectResultTree;
+            } else {
+                SubjectGroupResultTree processSubjectResultTreeRes = new SubjectGroupResultTree();
+                return processSubjectResultTreeRes;
+            }*/
         }
 
         return processSubjectResultTree;

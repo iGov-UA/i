@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.HashMap;
 import java.util.List;
 
 import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
@@ -81,25 +82,73 @@ public class DocumentCommonController {
 
     }
     
-	@ApiOperation(value = "Получение списка подписанных документов без ЕЦП")
-	@RequestMapping(value = "/getDocumentSubmitedUnsigned", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-	// @Transactional
-	public @ResponseBody String getDocumentSubmitedUnsigned(
-			@ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
-			throws Exception {
+    
+    @ApiOperation(value = "Отмена сабмиченности и подписанности документа")
+    @RequestMapping(value = "/cancelDocumentSubmit", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    //@Transactional
+    public @ResponseBody
+    Map<String, Boolean> cancelDocumentSubmit(
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "группа", required = true) @RequestParam(required = true, value = "sKey_Group") String sKey_Group,
+            @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step) throws Exception {
 
-		LOG.info("sLogin: ", sLogin);
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        LOG.info("sKey_Group={}", sKey_Group);
+        LOG.info("sKey_Step={}", sKey_Step);
 
-		List<DocumentSubmitedUnsignedVO> aDocumentSubmitedUnsignedVO = documentStepService.getDocumentSubmitedUnsigned(sLogin);
+        Boolean bCanceled = documentStepService.cancelDocumentSubmit(snID_Process_Activiti, sKey_Step, sKey_Group);
+        
+        LOG.info("bCanceled={}", bCanceled);
+        
+        Map<String, Boolean> m=new HashMap();
+        m.put("bCanceled", bCanceled);
+        return m;
+    }
 
-		LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
+    
+    @ApiOperation(value = "Удаление подписанта документа")
+    @RequestMapping(value = "/removeDocumentStepSubject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    //@Transactional
+    public @ResponseBody
+    Map<String, Boolean> removeDocumentStepSubject(
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "группа", required = true) @RequestParam(required = true, value = "sKey_Group") String sKey_Group,
+            @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step) throws Exception {
 
-		if (aDocumentSubmitedUnsignedVO != null) {
-			return JSONValue.toJSONString(aDocumentSubmitedUnsignedVO);
-		}
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        LOG.info("sKey_Group={}", sKey_Group);
+        LOG.info("sKey_Step={}", sKey_Step);
 
-		return "aDocumentSubmitedUnsignedVO is null";
+        Boolean bRemoved = documentStepService.removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+        
+        LOG.info("bRemoved={}", bRemoved);
+        
+        Map<String, Boolean> m=new HashMap();
+        m.put("bRemoved", bRemoved);
+        return m;
+    }
+    
 
-	}
+
+    @ApiOperation(value = "Получение списка подписанных документов без ЕЦП")
+    @RequestMapping(value = "/getDocumentSubmitedUnsigned", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    // @Transactional
+    public @ResponseBody String getDocumentSubmitedUnsigned(
+                    @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
+                    throws Exception {
+
+            LOG.info("sLogin: ", sLogin);
+
+            List<DocumentSubmitedUnsignedVO> aDocumentSubmitedUnsignedVO = documentStepService.getDocumentSubmitedUnsigned(sLogin);
+
+            LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
+
+            if (aDocumentSubmitedUnsignedVO != null) {
+                    return JSONValue.toJSONString(aDocumentSubmitedUnsignedVO);
+            }
+
+            return "aDocumentSubmitedUnsignedVO is null";
+
+    }
 
 }

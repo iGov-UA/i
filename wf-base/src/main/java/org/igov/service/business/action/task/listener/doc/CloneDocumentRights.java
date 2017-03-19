@@ -1,28 +1,22 @@
 package org.igov.service.business.action.task.listener.doc;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.task.IdentityLink;
 import org.igov.model.document.DocumentStepSubjectRight;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
-import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.document.DocumentStepService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import org.igov.service.business.process.ProcessSubjectService;
-import org.igov.util.Tool;
 
 /**
  *
@@ -74,34 +68,19 @@ public class CloneDocumentRights implements TaskListener {
         String sKey_Step_Value = "";
         try {
             sKey_Step_Value = (this.sKey_Step != null) ? getStringFromFieldExpression(this.sKey_Step, delegateTask.getExecution()) : "";
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepService.cloneDocumentStepSubject(delegateTask.getProcessInstanceId(), sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value, sKey_Step_Value);
+        
             LOG.info("sKey_Step_Value {}", sKey_Step_Value);
         } catch (Exception ex) {
             LOG.error("sKey_GroupPostfix_New_Value: ", ex);
         }
-        
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepService.cloneDocumentStepSubject(delegateTask.getProcessInstanceId(), sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value, sKey_Step_Value);
-        
-        /*Set<String> asGroup = new HashSet<>();
-       
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-                    asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix());
-        }*/
-        
         
         Set<String> asGroup_New = new HashSet<>();
         Set<IdentityLink> groupsNew = delegateTask.getCandidates();
         groupsNew.stream().forEach((groupNew) -> {
             asGroup_New.add(groupNew.getGroupId());
         });
-        
         LOG.info("asGroup in clonedocument: {}", asGroup_New, delegateTask.getId());
-        
-        /*void addCandidateStarterGroup(String processDefinitionId,
-                              String groupId)*/
-       
-        //delegateTask.addCandidateGroups(asGroup);
-        
-        LOG.info("aDocumentStepSubjectRight in listenet is: {} ", aDocumentStepSubjectRight);
         LOG.info("CloneDocumentRights finished");
     }
 }

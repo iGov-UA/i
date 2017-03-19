@@ -1,17 +1,13 @@
 package org.igov.service.business.action.task.listener.doc;
 
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.List;
-import org.activiti.engine.HistoryService;
 import org.igov.model.document.DocumentStep;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
-import org.activiti.engine.history.HistoricProcessInstance;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.document.DocumentStepService;
 
@@ -56,11 +52,11 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
             LOG.info("aResDocumentStep in DocumentInit_iDoc is {}", aResDocumentStep);
             oDocumentStepService.syncDocumentGroups(delegateTask, aResDocumentStep);
             
-        } catch (IOException | URISyntaxException oException) {
+        } catch (Exception oException) {
             LOG.error("DocumentInit_iDoc: ", oException);
             try {
                 throw oException;
-            } catch (IOException | URISyntaxException ex) {
+            } catch (Exception ex) {
                 java.util.logging.Logger.getLogger(DocumentInit_iDoc.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
