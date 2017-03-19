@@ -1303,7 +1303,7 @@ public class DocumentStepService {
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
                 sLogin);
         LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
-        //  DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
+        DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
@@ -1317,13 +1317,13 @@ public class DocumentStepService {
                 // нужный объект, который кладем в VO-обьект-обертку
                 if (sDateECP == null) {
                     if (sDate != null) {
-                        //   oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                        oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
                         // Достаем nID_Process у найденного oDocumentStepSubjectRight
                         // через DocumentStep
-                        String snID_Process = oDocumentStepSubjectRight.getDocumentStep().getSnID_Process_Activiti();
+                        String snID_Process = oFindedDocumentStepSubjectRight.getDocumentStep().getSnID_Process_Activiti();
                         LOG.info("snID_Process of oFindedDocumentStepSubjectRight: ", snID_Process);
 
-                        String sID_Order = oDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
+                        String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
                         // через апи активити по nID_Process
                         HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
                                 .processInstanceId(snID_Process).singleResult();
@@ -1347,7 +1347,7 @@ public class DocumentStepService {
                                 // полученные поля
                                 DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
 
-                                oDocumentSubmitedUnsignedVO.setoDocumentStepSubjectRight(oDocumentStepSubjectRight);
+                                oDocumentSubmitedUnsignedVO.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
                                 oDocumentSubmitedUnsignedVO.setsNameBP(sNameBP);
                                 oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
                                 oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
