@@ -56,7 +56,7 @@ public class DocumentCommonController {
 
     }
 
-    @ApiOperation(value = "Клонирование документа")
+    @ApiOperation(value = "Клонирование подписанта-субьекта документа")
     @RequestMapping(value = "/cloneDocumentStepSubject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     //@Transactional
     public @ResponseBody
