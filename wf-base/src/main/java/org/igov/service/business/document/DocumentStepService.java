@@ -1297,6 +1297,7 @@ public class DocumentStepService {
                 if (sDateECP == null) {
                     if (sDate != null) {
                         oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                        LOG.info("oFindedDocumentStepSubjectRight = {}", oFindedDocumentStepSubjectRight);
                     }
 
                 } else {
@@ -1306,6 +1307,7 @@ public class DocumentStepService {
                 // Достаем nID_Process у найденного oDocumentStepSubjectRight
                 // через DocumentStep
                 String snID_Process = oFindedDocumentStepSubjectRight.getDocumentStep().getSnID_Process_Activiti();
+                LOG.info("snID_Process of oFindedDocumentStepSubjectRight: ", snID_Process);
 
                 String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
                 // через апи активити по nID_Process
