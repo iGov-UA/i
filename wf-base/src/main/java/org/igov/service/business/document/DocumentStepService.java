@@ -638,21 +638,7 @@ public class DocumentStepService {
 
         try {
 
-            List<DocumentStep> aDocumentStep
-                    = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-            LOG.info("aDocumentStep={}", aDocumentStep);
-            final String SKEY_STEP_DOCUMENT = sKey_Step;
-            DocumentStep oDocumentStep = aDocumentStep
-                    .stream()
-                    .filter(o -> SKEY_STEP_DOCUMENT == null ? o.getnOrder().equals(1)
-                    : o.getsKey_Step().equals(SKEY_STEP_DOCUMENT))
-                    .findAny()
-                    .orElse(null);
-            LOG.info("oDocumentStep={}", oDocumentStep);
-            if (oDocumentStep == null) {
-                throw new IllegalStateException("There is no active Document Step, process variable sKey_Step="
-                        + sKey_Step);
-            }
+            DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
 
