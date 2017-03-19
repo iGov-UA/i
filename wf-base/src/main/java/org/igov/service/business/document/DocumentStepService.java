@@ -628,6 +628,75 @@ public class DocumentStepService {
                 sKey_GroupPostfix, sID_Field, sKey_Step_Document_To, false);
     }
 
+    
+    
+    public List<DocumentStepSubjectRight> syncDocumentSubmitersByField(String snID_Process_Activiti,
+            String sKey_Group, String sID_Field, String sKey_Step, boolean bReClone) throws Exception {
+
+        LOG.info("started...");
+        LOG.info("sKey_Group={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step={}",
+                sKey_Group, snID_Process_Activiti, sID_Field, sKey_Step);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Return = new ArrayList<>();
+        try {
+            List<String> asLogin = getLoginsFromField(snID_Process_Activiti, sID_Field);
+            //List<String> asLogin_Update = new LinkedList();
+            //List<String> asLogin_Remove = new LinkedList();
+            //List<String> asLogin_Add = new LinkedList();
+            List<String> asLogin_Found = new LinkedList();
+            
+            DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight_ForRemove = new LinkedList();
+            
+            LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            //DocumentStepSubjectRight oDocumentStepSubjectRight = null;
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                if (sID_Field.equals(oDocumentStepSubjectRight.getsID_Field())) {
+                    String sLogin=oDocumentStepSubjectRight.getsKey_GroupPostfix();
+                    if (asLogin.contains(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+//                        asLogin_Update.add(sLogin);
+                        //oDocumentStepSubjectRight.
+                        //oDocumentStepSubjectRight = o;
+                        //break;
+                        //asLogin_Update.add(HUMAN)
+                        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti,
+                                sKey_Group, sLogin, sKey_Step, bReClone);
+                        aDocumentStepSubjectRight_Return.addAll(aDocumentStepSubjectRight_Current);
+                    }else{
+                        //asLogin_Add.add(sLogin);
+//                        asLogin_Remove.add(sLogin);
+                        aDocumentStepSubjectRight_ForRemove.add(oDocumentStepSubjectRight);
+                    }
+                    asLogin_Found.add(sLogin);
+                }
+            }
+            asLogin.removeAll(asLogin_Found);
+            for(String sLogin : asLogin){
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti,
+                        sKey_Group, sLogin, sKey_Step, bReClone);
+                aDocumentStepSubjectRight_Return.addAll(aDocumentStepSubjectRight_Current);
+            }
+            
+            /*
+            for(String sLogin : asLogin){
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti,
+                        sKey_Group, sLogin, sKey_Step, bReClone);
+                aDocumentStepSubjectRight_Return.addAll(aDocumentStepSubjectRight_Current);
+            }*/
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " ("
+                    + "snID_Process_Activiti=" + snID_Process_Activiti + ""
+                    + ",sKey_GroupPostfix=" + sKey_Group + ""
+                    + ",sID_Field=" + sID_Field + ""
+                    + ",sKey_Step_Document_To=" + sKey_Step + ")");
+            LOG.error("ERROR: ", oException);
+            throw oException;
+        }
+        return aDocumentStepSubjectRight_Return;
+    }
+    
+    
+        
     public Boolean cancelDocumentSubmit(String snID_Process_Activiti, String sKey_Step, String sKey_Group) throws Exception {
 
         LOG.info("started...");
