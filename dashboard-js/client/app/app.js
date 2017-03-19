@@ -1,6 +1,7 @@
 'use strict';
 angular.module('dashboardJsApp', [
   'base64',
+  'angular-md5',
   'ngCookies',
   'ngResource',
   'ngSanitize',

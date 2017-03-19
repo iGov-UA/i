@@ -123,7 +123,7 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
   this.selectKey = function (selectedKey, passwordForKey) {
     return executeIfPluginCreated(function () {
       var d = $q.defer();
-      context.plugin.selectKey(selectedKey.alias, passwordForKey.value, function () {
+      plugin.selectKey(selectedKey.alias, passwordForKey, function () {
         d.resolve();
       }, function (result) {
         if (result.code == 105 && result.source == "selectKey") {
@@ -136,11 +136,11 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
     })
   };
 
-  this.sign = function (token) {
+  this.sign = function (hash) {
     return executeIfPluginCreated(function () {
       var d = $q.defer();
 
-      var hashBase64 = $base64.encode(token);
+      var hashBase64 = $base64.encode(hash);
       plugin.getCertificate(function (data) {
         var certBase64 = data.certificate;
         plugin.CMSSign(hashBase64,
