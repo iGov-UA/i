@@ -3069,7 +3069,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }   
 	
 	 @ApiOperation(value = "Обновление переменных задачи с ее опциональным завершением", notes = "#####  ActionCommonTaskController: Обновление переменных задачи с ее опциональным завершением #####\n\n"
-	            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/updateProcess\n\n"
+	            + "HTTP Context: https://alpha.test.region.igov.org.ua/wf/service/action/task/updateProcess\n\n"
 				+ "POST Метод. Принимает параметр bSaveOnly. Если bSaveOnly=true - Только обновление переменных задачи. Если false - заверешение задачи после обновления переменных:\n"
 	            + "Метод принимает json в теле запроса со списком переменных для обновления и номером задачи:\n"
 				+ "\n```json\n"
@@ -3097,7 +3097,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
             if(mJsonBody != null){
             	if (mJsonBody.containsKey("taskId")){
-            		LOG.info("Parsing property: " + mJsonBody.get("taskId"));
+            		LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
             		taskId = (String) mJsonBody.get("taskId");
             		LOG.info("Updating task with ID " + taskId);
             	} else {
@@ -3107,9 +3107,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             	if (mJsonBody.containsKey("properties")) {
                     LOG.info("Parsing properties: " + mJsonBody.get("properties"));
                     
-                    List<Task> tasks = taskService.createTaskQuery().taskId(taskId).active().list();
+                    List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
                     String executionId = null;
-                    if (tasks == null || tasks.size() == 0){
+                    if (tasks != null && tasks.size() > 0){
                     	Task firstTask = tasks.get(0);
                     	executionId = firstTask.getExecutionId();
 
@@ -3123,6 +3123,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     		LOG.info("Submitting task");
                     		taskService.complete(firstTask.getId());
                     	}
+                    } else {
+                    	LOG.info("Have not found any tasks with ID " + taskId);
                     }
                     if (executionId != null){
                     	List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
