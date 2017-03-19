@@ -105,6 +105,29 @@ public class DocumentCommonController {
         return m;
     }
 
+    
+    @ApiOperation(value = "Удаление подписанта документа")
+    @RequestMapping(value = "/removeDocumentStepSubject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    //@Transactional
+    public @ResponseBody
+    Map<String, Boolean> removeDocumentStepSubject(
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "группа", required = true) @RequestParam(required = true, value = "sKey_Group") String sKey_Group,
+            @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step) throws Exception {
+
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        LOG.info("sKey_Group={}", sKey_Group);
+        LOG.info("sKey_Step={}", sKey_Step);
+
+        Boolean bRemoved = documentStepService.removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+        
+        LOG.info("bRemoved={}", bRemoved);
+        
+        Map<String, Boolean> m=new HashMap();
+        m.put("bRemoved", bRemoved);
+        return m;
+    }
+    
 
 
     @ApiOperation(value = "Получение списка подписанных документов без ЕЦП")

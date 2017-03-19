@@ -273,6 +273,70 @@ public class DocumentStepService {
         return oDocumentStep;
     }
 
+    
+    
+    
+    public Boolean removeDocumentStepSubject (
+            String snID_Process_Activiti
+            , String sKey_Step
+            , String sKey_Group
+    ) throws Exception {
+
+        LOG.info("started... sKey_Group={}, snID_Process_Activiti={}, sKey_Step={}",
+                sKey_Group, snID_Process_Activiti, sKey_Step);
+
+        Boolean bRemoved=false;
+
+        try {
+
+            List<DocumentStep> aDocumentStep
+                    = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+            LOG.info("aDocumentStep={}", aDocumentStep);
+
+            final String SKEY_STEP_DOCUMENT = sKey_Step;
+            DocumentStep oDocumentStep = aDocumentStep
+                    .stream()
+                    .filter(o -> SKEY_STEP_DOCUMENT == null ? o.getnOrder().equals(1)
+                    : o.getsKey_Step().equals(SKEY_STEP_DOCUMENT))
+                    .findAny()
+                    .orElse(null);
+
+            LOG.info("oDocumentStep={}", oDocumentStep);
+            if (oDocumentStep == null) {
+                throw new IllegalStateException("There is no active Document Step, process variable sKey_Step="
+                        + sKey_Step);
+            }
+
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
+            LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            DocumentStepSubjectRight oDocumentStepSubjectRight = null;
+            for (DocumentStepSubjectRight o : aDocumentStepSubjectRight) {
+                if (sKey_Group.equals(o.getsKey_GroupPostfix())) {
+                    oDocumentStepSubjectRight = o;
+                    break;
+                }
+            }
+            if (oDocumentStepSubjectRight != null) {
+                LOG.info("sKey_Group: {} oDocumentStepSubjectRight.getsKey_GroupPostfix(): {}",
+                        sKey_Group, oDocumentStepSubjectRight.getsKey_GroupPostfix());
+
+                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
+                bRemoved=true;
+            }
+
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " ("
+                    + "snID_Process_Activiti=" + snID_Process_Activiti + ""
+                    + ",sKey_Step=" + sKey_Step + ""
+                    + ",sKey_GroupPostfix=" + sKey_Group + ""
+                    + ")");
+            LOG.error("ERROR: ", oException);
+            throw oException;
+        }
+        return bRemoved;
+    }    
+    
+    
     public List<DocumentStepSubjectRight> cloneDocumentStepSubject(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sKey_GroupPostfix_New, String sKey_Step_Document_To,
             boolean bReClone) throws Exception {
