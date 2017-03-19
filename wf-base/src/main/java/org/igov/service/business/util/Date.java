@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  *
  * @author olga
  */
-@Component("date")
+@Component("dateUtil")
 @Service
 public class Date {
 
