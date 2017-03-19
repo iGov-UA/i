@@ -106,8 +106,7 @@
 
             <div class="row"
                  ng-repeat="property in activitiForm.formProperties track by property.id"
-                 ng-if="isFieldVisible(property)"
-                 ng-class="{'central-igov-okpo-block':isOKPOAutocompleteFields(property.id) === 'okpo_field' || isOKPOAutocompleteFields(property.id) === 'okpo_autocomplete'}">
+                 ng-if="isFieldVisible(property)">
 
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
                 <div ng-if="insertSeparator(property.id).sText.length > 0" class="flex-hr wrap-hr" style="width: 100%">
@@ -142,7 +141,7 @@
 
 
               <div id="field-{{property.id}}" class="col-md-3"
-                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table'}"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table', 'col-md-7': property.type === 'select' || property.type === 'label'}"
                    ng-if="showFormField(property)"
                    ng-switch
                    on="property.type">
@@ -736,7 +735,7 @@
                              autocomplete-name="property.autocompleteName"
                              form-data="data.formData"
                              reach-infinity="requestMoreItems($select.items)"
-                             on-select="onSelectDataList($item)">
+                             on-select="onSelectDataList($item, null, null, property)">
 
                     <ui-select-match>
                       {{$select.selected[property.autocompleteData.valueProperty] || data.formData.params[property.id].value}}
