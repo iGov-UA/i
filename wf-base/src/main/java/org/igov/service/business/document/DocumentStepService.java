@@ -1327,17 +1327,17 @@ public class DocumentStepService {
                         // через апи активити по nID_Process
                         HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
                                 .processInstanceId(snID_Process).singleResult();
-
+                        LOG.info("oProcessInstance = {}",oProcessInstance );
                         if (oProcessInstance != null) {
                             // вытаскиваем дату создания процесса
                             Date sDateCreateProcess = oProcessInstance.getStartTime();
                             // вытаскиваем название бп
                             String sNameBP = oProcessInstance.getName();
                             // вытаскиваем список тасок по процесу
-                            List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(snID_Process).active().list();
-                            if (tasks != null || !tasks.isEmpty()) {
+                            Task oFirstTask = oTaskService.createTaskQuery().processInstanceId(snID_Process).active().singleResult();
+                           // if (tasks != null || !tasks.isEmpty()) {
                                 // берем первую
-                                Task oFirstTask = tasks.get(0);
+                           //     Task oFirstTask = tasks.get(0);
                                 // вытаскиваем дату создания таски
                                 Date sDateCreateUserTask = oFirstTask.getCreateTime();
                                 // и ее название
@@ -1360,14 +1360,14 @@ public class DocumentStepService {
                                 LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process));
                                 throw new RecordNotFoundException();
                             }
-
-                        } else {
+                    
+                        } /*else {
                             LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process));
-                        }
-
+                        }*/
+                
                     }
 
-                }
+                
             } else {
                 LOG.info("oFindedDocumentStepSubjectRight not found");
             }
