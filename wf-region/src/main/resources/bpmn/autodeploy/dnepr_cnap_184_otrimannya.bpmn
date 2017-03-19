@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_184_otrimannya" name="Дозвіл на розміщення зовнішньої реклами" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 19.01.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 19.03.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -15,8 +15,8 @@
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdres_0" name="Адреса реєстрації ФОП" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sName_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
@@ -46,21 +46,21 @@
         <activiti:formProperty id="sObect_For_Dozvil" name="Укажіть об’єкт, на який потрібно надати дозвіл" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdres_2" name="Адреса об’єкта, на який видається дозвіл" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sStrokReklami" name="Надати дозвіл на строк (роки)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_PlacePhoto" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см." type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_PlacePhotoZP" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Advert" name="Ескіз рекламного засобу з конструктивним рішенням" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_AdvertZP" name="Ескіз рекламного засобу з конструктивним рішенням; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Roztashuvannya_M1_500" name="Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500)" type="file" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_PravoVlasnist" name="Копія документу, що підтверджує право власності на об’єкт, де буде розміщена реклама (якщо це приватна власність)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Original_Dozvolu" name="Оригінал попереднього дозволу" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Dogovor" name="Завантажте шаблон Договору пріоритету на місце розташування" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Rekvizity" name="Завантажте рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_SchemePlace" name="Схема розміщення рекламного засобу" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Prioritet" name="Пріоритет на розміщення зовнішньої реклами" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_AgreementOwner" name="Письмове узгодження власника місця розташування рекламного засобу або уповноваженого ним органу (особи); У разі розміщення реклами на об'єктах приватної власності" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_PlacePhoto" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см.;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_PlacePhotoZP" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Advert" name="Ескіз рекламного засобу з конструктивним рішенням; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_AdvertZP" name="Ескіз рекламного засобу з конструктивним рішенням; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Roztashuvannya_M1_500" name="Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500); ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PravoVlasnist" name="Копія документу, що підтверджує право власності на об’єкт, де буде розміщена реклама (якщо це приватна власність); ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Original_Dozvolu" name="Оригінал попереднього дозволу; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovor" name="Завантажте шаблон Договору пріоритету на місце розташування; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rekvizity" name="Завантажте рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_SchemePlace" name="Схема розміщення рекламного засобу; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Prioritet" name="Пріоритет на розміщення зовнішньої реклами; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_AgreementOwner" name="Письмове узгодження власника місця розташування рекламного засобу або уповноваженого ним органу (особи); У разі розміщення реклами на об'єктах приватної власності;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/6RU4HV&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; щодо отримання дозволу на розміщення зовнішньої реклами"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про надання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про надання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="invisible" default="Начальнику управління архітектури та містобудування – головному архітектору міста"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -77,7 +77,7 @@
         <activiti:formProperty id="markers12" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_12.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_13.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="Верифікація ЕЦП" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_14.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -130,7 +130,7 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Opis" name="Завантажте опис прийнятих документів " type="file" default=" " ></activiti:formProperty>
+        <activiti:formProperty id="nFile_Opis" name="Завантажте опис прийнятих документів; ;bNew=true" type="file" default=" " ></activiti:formProperty>
         <activiti:formProperty id="sRdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPf_Part" name="формулювання до принтформи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLetter" name="формулювання у лист" type="invisible"></activiti:formProperty>
@@ -142,13 +142,25 @@
         <activiti:formProperty id="markers22" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_21.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_184_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_184_opis_docs_print.html]" type="invisible" default="Опис документів" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_184_print.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PlacePhoto" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см.;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PlacePhotoZP" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Advert" name="Ескіз рекламного засобу з конструктивним рішенням; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_AdvertZP" name="Ескіз рекламного засобу з конструктивним рішенням; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Roztashuvannya_M1_500" name="Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PravoVlasnist" name="Копія документу, що підтверджує право власності на об’єкт, де буде розміщена реклама (якщо це приватна власність); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Original_Dozvolu" name="Оригінал попереднього дозволу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovor" name="Завантажте шаблон Договору пріоритету на місце розташування; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rekvizity" name="Завантажте рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SchemePlace" name="Схема розміщення рекламного засобу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Prioritet" name="Пріоритет на розміщення зовнішньої реклами; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_AgreementOwner" name="Письмове узгодження власника місця розташування рекламного засобу або уповноваженого ним органу (особи); У разі розміщення реклами на об'єктах приватної власності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про надання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_AgreementOwner}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -202,8 +214,8 @@
           <activiti:value id="decision_2_2" name="відмовлено у наданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment_2" name="У разі необхідності внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення або оригінал дозволу" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_RishenZP" name="Завантажте копію рішення або оригінал дозволу у форматі PDF з накладеним ЕЦП" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення або оригінал дозволу; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_RishenZP" name="Завантажте копію рішення або оригінал дозволу у форматі PDF з накладеним ЕЦП; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers30" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_31.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers32" name="Перевірка на ЕЦП" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_32.json')}"></activiti:formProperty>
@@ -217,13 +229,25 @@
         <activiti:formProperty id="sAddPrintSpisok" name="формулювання у email додаткового додатку (М 1:500)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_184_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_184_opis_docs_print.html]" type="invisible" default="Опис документів" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_PlacePhoto},${nFile_Advert},${nFile_Roztashuvannya_M1_500},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_Original_Dozvolu},${form_signed},${nFile_SchemePlace},${nFile_Prioritet},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_PlacePhotoZP},${nFile_AdvertZP},${nFile_Opis},${nFile_AgreementOwner}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PlacePhoto" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см.;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PlacePhotoZP" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Advert" name="Ескіз рекламного засобу з конструктивним рішенням; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_AdvertZP" name="Ескіз рекламного засобу з конструктивним рішенням; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Roztashuvannya_M1_500" name="Топогеодезичні матеріали зйомки місцевості з прив'язкою місця розташування наземної рекламної конструкції (М 1:500); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PravoVlasnist" name="Копія документу, що підтверджує право власності на об’єкт, де буде розміщена реклама (якщо це приватна власність); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Original_Dozvolu" name="Оригінал попереднього дозволу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovor" name="Завантажте шаблон Договору пріоритету на місце розташування; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rekvizity" name="Завантажте рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SchemePlace" name="Схема розміщення рекламного засобу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Prioritet" name="Пріоритет на розміщення зовнішньої реклами; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_AgreementOwner" name="Письмове узгодження власника місця розташування рекламного засобу або уповноваженого ним органу (особи); У разі розміщення реклами на об'єктах приватної власності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про надання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Opis" name="Завантажте опис прийнятих документів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_184_print.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask5" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -238,7 +262,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -258,21 +282,26 @@
           <activiti:expression>${PrintForm_1},${nFile_Opis}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо enum{[asPurpose]} перевірено та успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-&lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr} ;&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          [pattern/mail/new_design/_common_header.html]
+          [pattern/mail/new_design/_common_content_start.html]
+			&lt;p&gt;
+				Ваше звернення [sID_Order] щодо enum{[asPurpose]} перевірено та успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+				&lt;br /&gt;
+					Реєстраційний номер заяви: ${sReestr_numb} від  ${sDate_Reestr};&lt;br /&gt;
+				&lt;br /&gt;
+				Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
+				&lt;br /&gt;
+				${sNameOrgan},&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			&lt;/p&gt;	
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br /&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -294,21 +323,25 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Відхилено звернення на тему: отримання дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо enum{[asPurpose]} відхилено.&lt;br /&gt;
-&lt;br /&gt;
-Причина відмови: ${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+ 			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо enum{[asPurpose]} відхилено.&lt;br /&gt;
+					Причина відмови: ${sComment_1}&lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -336,29 +369,34 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1},${nFile_Opis},${nFile_RishenZP}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b &gt;&lt;br /&gt;&lt;br /&gt;
-${sLetter}&lt;br /&gt;
-${sComment_2}&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі (звернення [sID_Order]).&lt;br /&gt;
-&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіреність.&lt;br /&gt;
-3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
-4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб.&lt;br /&gt;
-&lt;br /&gt;
-Та оригінали відповідних додатків:&lt;br /&gt; 
-${sAdd_doc}&lt;br /&gt;
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+ 			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					${sLetter}&lt;br /&gt;
+					${sComment_2}&lt;br /&gt;
+					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі (звернення [sID_Order]).&lt;br /&gt;
+					&lt;br /&gt;
+					При собі треба мати:&lt;br /&gt;
+					1. Документ, що посвідчує особу.&lt;br /&gt;
+					2. Для уповоноваженої особи - довіреність.&lt;br /&gt;
+					3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
+					4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб.&lt;br /&gt;
+					&lt;br /&gt;
+					Та оригінали відповідних додатків:&lt;br /&gt; 
+					${sAdd_doc}&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -551,12 +589,23 @@ execution.setVariable('sAddPrintSpisok', per6)
           <activiti:string><![CDATA[Нове звернення на тему: отримання дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
-Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто.&lt;br /&gt;
+					Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br /&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -588,29 +637,34 @@ execution.setVariable('sAddPrintSpisok', per6)
           <activiti:expression>${nFile_Rishen},${nFile_Dogovor},${nFile_Rekvizity},${PrintForm_1},${nFile_RishenZP}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b &gt;&lt;br /&gt;&lt;br /&gt;
-${sLetter}&lt;br /&gt;
-${sComment_2}&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі (звернення [sID_Order]).&lt;br /&gt;
-&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіреність.&lt;br /&gt;
-3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
-4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб.&lt;br /&gt;
-&lt;br /&gt;
-Та оригінали відповідних додатків:&lt;br /&gt; 
-${sAdd_doc}&lt;br /&gt;
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					${sLetter}&lt;br /&gt;
+					${sComment_2}&lt;br /&gt;
+					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі (звернення [sID_Order]).&lt;br /&gt;
+					&lt;br /&gt;
+					При собі треба мати:&lt;br /&gt;
+					1. Документ, що посвідчує особу.&lt;br /&gt;
+					2. Для уповоноваженої особи - довіреність.&lt;br /&gt;
+					3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи - підприємця  або  уповноваженої  ними  особи.&lt;br /&gt;
+					4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб.&lt;br /&gt;
+					&lt;br /&gt;
+					Та оригінали відповідних додатків:&lt;br /&gt; 
+					${sAdd_doc}&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
