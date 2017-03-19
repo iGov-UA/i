@@ -514,6 +514,8 @@ public class DocumentStepService {
         return resultList;
     }
 
+    //TODO: Нужно выпилять из БП
+    @Deprecated
     public List<DocumentStepSubjectRight> cloneDocumentStepSubject(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sKey_GroupPostfix_New, String sKey_Step_Document_To) throws Exception {
         return cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix,
@@ -618,6 +620,8 @@ public class DocumentStepService {
         return aDocumentStepSubjectRight_Return;
     }
     
+    //TODO: Нужно выпилять из БП    
+    @Deprecated
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sID_Field, String sKey_Step_Document_To) throws Exception {
         return cloneDocumentStepFromTable(snID_Process_Activiti,
