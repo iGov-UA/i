@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_velta_contract" name="Роспорядження про створення контракту" isExecutable="true">
+  <process id="_doc_velta_contract" name="Розпорядження про створення контракту" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Роспорядження про створення контракту"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Розпорядження про створення контракту"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -39,8 +39,9 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="е-мейл контролюючого виконання завдання; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="е-мейл контролюючого виконання завдання; ;bVisible=false" type="string" default="zhigan.roman@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sEscalationDay" name="Дата ескалації; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEscalation" name="Підрозділ ескалації; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
@@ -166,7 +167,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Ескалація. Роспорядження про створення контракту]]></activiti:string>
+          <activiti:string><![CDATA[Ескалація. Розпорядження про створення контракту]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[Шановні Колеги!<br>
@@ -188,7 +189,7 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
     <userTask id="usertask6" name="Керівник. Погодження контракту">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Роспорядження про створення контракту" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Розпорядження про створення контракту" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
@@ -280,7 +281,7 @@ var sKey_GroupPostfix_New = 'Velta_Justice_Spec1'
 var sKey_GroupPostfix = '_default_Velta_Justice'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-var sKey_GroupPostfix_New = 'Velta_Finance'
+var sKey_GroupPostfix_New = 'Velta_Finance_Head'
 var sKey_GroupPostfix = '_default_Velta_Finance'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
@@ -294,7 +295,25 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 
 var sKey_GroupPostfix_New = 'Velta_Tech_Spec1'
 var sKey_GroupPostfix = '_default_Velta_Tech'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+// клонирование прав 2-й шаг
+var unixdate= Math.round((new Date()).getTime());
+var unixdate=unixdate+200;
+var new_src = new Date(unixdate);
+var d = new_src.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = new_src.getMonth();
+var m = (+m + +1);
+if (m &lt; 10) m = "0"+m;
+
+var new_year = new_src.getFullYear();
+var new_hour = new_src.getHours();
+var new_minutes = new_src.getMinutes();
+var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
+execution.setVariable('sEscalationDay', timer)
+
+</script>
     </scriptTask>
     <sequenceFlow id="flow49" sourceRef="scripttask4" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -307,28 +326,30 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <scriptTask id="scripttask5" name="переключение степа на 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
-
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_3'
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var flag = execution.getVariable('sComment');
+var sKey_Step = ' ';
+var snID_Process_Activiti = execution.getProcessInstanceId();
+if (flag == '' || flag == ' '){sKey_Step = 'step_3'};
+else (flag == '' || flag == ' '){sKey_Step = 'step_6'};
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step);
 
 // клонирование прав на 3-й шаг
 
-var sKey_GroupPostfix_New = 'Velta_Justice_Head'
-var sKey_GroupPostfix = '_default_Velta_Justice_step5'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+var sKey_GroupPostfix_New = 'Velta_Justice_Head';
+var sKey_GroupPostfix = '_default_Velta_Justice_step5';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
 		</script>
     </scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
     <scriptTask id="scripttask6" name="переключение степа на 4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_4'
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var snID_Process_Activiti = execution.getProcessInstanceId();
+var sKey_Step= 'step_4';
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step);
 
 // клонирование прав на 4-й шаг
-var who = execution.getVariable('asDivision')
+var who = execution.getVariable('asDivision');
 switch (who){
 case 'sFinance':
 var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
@@ -354,7 +375,7 @@ default:
     break;
 }
 </script>
-</scriptTask>
+    </scriptTask>
     <sequenceFlow id="flow56" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask2" targetRef="scripttask6"></sequenceFlow>
     <scriptTask id="scripttask7" name="переключение степа на 5" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -381,6 +402,53 @@ var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test',
 execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
     </scriptTask>
     <sequenceFlow id="flow60" sourceRef="scripttask8" targetRef="exclusivegateway3"></sequenceFlow>
+    <scriptTask id="scripttask9" name="ескалації" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//определение кто не отработал
+var sleep1 = ' ';
+var sleep2 = ' ';
+var sleep3 = ' ';
+var ur = execution.getVariable('sDateDoc');
+var fin = execution.getVariable('sCompName');
+var tech = execution.getVariable('sGoodType');
+if {ur == '' || ur == ' '){sleep1 = 'юридичний відділ'};
+if {fin == '' || fin == ' '){sleep2 = 'фінансовий відділ'};
+if {tech == '' || tech == ' '){sleep3 = 'технологічний відділ'};
+var sleep = sleep1 + sleep2 + sleep3;
+execution.setVariable('sEscalation', sleep);
+</script>
+    </scriptTask>
+    <serviceTask id="servicetask4" name="Письмо эскалация" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Ескалация. ТОВ ВКФ «ВЕЛТА». Погодження контракту]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Шановний Колего.<br>
+Неопрацьовано погодження контракту.<br>
+Порушник: ${sEscalation}.<br>
+<br>
+--<br>
+ТОВ ВКФ «ВЕЛТА»<br>
+Тел./факс: (056) 370-93-93, 732-04-04<br>
+e-mail: office@velta-ua.com<br>]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow61" sourceRef="scripttask9" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow62" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
+    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask3" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>${sEscalationDay}</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow63" sourceRef="escalationTimer" targetRef="scripttask9"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_velta_contract">
     <bpmndi:BPMNPlane bpmnElement="_doc_velta_contract" id="BPMNPlane__doc_velta_contract">
@@ -395,6 +463,9 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer" id="BPMNShape_escalationTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="406.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="506.0"></omgdc:Bounds>
@@ -434,6 +505,15 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
         <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="253.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="460.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="588.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="624.0" y="232.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="36.0" y="65.0"></omgdi:waypoint>
@@ -514,6 +594,18 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
         <omgdi:waypoint x="382.0" y="308.0"></omgdi:waypoint>
         <omgdi:waypoint x="382.0" y="340.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="565.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="588.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="640.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="641.0" y="232.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="436.0" y="153.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
