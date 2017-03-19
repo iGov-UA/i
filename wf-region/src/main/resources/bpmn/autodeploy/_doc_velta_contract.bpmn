@@ -63,6 +63,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар щодо помилки" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер контракту" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocCity" name="Місто підписання контракту" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string"></activiti:formProperty>
@@ -139,9 +140,9 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sTech" name="Технічний"></activiti:value>
           <activiti:value id="sFinTech" name="Технічний та Фінансовий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар щодо помилки" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersUser1" name="Маркер видимости" type="markers" default="${markerService.loadFromFile('velta/_doc_velta_contract_ut5.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sMailMistake" name="Маил подразделения" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailMistake" name="Маил подразделения; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html]" type="invisible" default="Стандартний контракт" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -331,21 +332,21 @@ var who = execution.getVariable('asDivision')
 switch (who){
 case 'sFinance':
 var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
-var sKey_GroupPostfix = '_default_Velta_Finance';
+var sKey_GroupPostfix = '_default_Velta_Finance_step4';
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
 break;
 case 'sTech':
 var sKey_GroupPostfix_New = 'Velta_Tech_Spec1';
-var sKey_GroupPostfix = '_default_Velta_Tech';
+var sKey_GroupPostfix = '_default_Velta_Tech_step4';
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
 break;
 case 'sFinTech':
 var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
-var sKey_GroupPostfix = '_default_Velta_Finance';
+var sKey_GroupPostfix = '_default_Velta_Finance_step4';
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
 
 var sKey_GroupPostfix_New = 'Velta_Tech_Spec1';
-var sKey_GroupPostfix = '_default_Velta_Tech';
+var sKey_GroupPostfix = '_default_Velta_Tech_step4';
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
 break;
 default:
