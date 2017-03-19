@@ -273,19 +273,7 @@ public class DocumentStepService {
         return oDocumentStep;
     }
 
-    public Boolean removeDocumentStepSubject(
-            String snID_Process_Activiti,
-             String sKey_Step,
-             String sKey_Group
-    ) throws Exception {
-
-        LOG.info("started... sKey_Group={}, snID_Process_Activiti={}, sKey_Step={}",
-                sKey_Group, snID_Process_Activiti, sKey_Step);
-
-        Boolean bRemoved = false;
-
-        try {
-
+    public DocumentStep getDocumentStep(String snID_Process_Activiti, String sKey_Step){
             List<DocumentStep> aDocumentStep
                     = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
             LOG.info("aDocumentStep={}", aDocumentStep);
@@ -303,7 +291,23 @@ public class DocumentStepService {
                 throw new IllegalStateException("There is no active Document Step, process variable sKey_Step="
                         + sKey_Step);
             }
+            return oDocumentStep;
+    }
+    
+    public Boolean removeDocumentStepSubject (
+            String snID_Process_Activiti
+            , String sKey_Step
+            , String sKey_Group
+    ) throws Exception {
 
+        LOG.info("started... sKey_Group={}, snID_Process_Activiti={}, sKey_Step={}",
+                sKey_Group, snID_Process_Activiti, sKey_Step);
+
+        Boolean bRemoved=false;
+
+        try {
+
+            DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
             DocumentStepSubjectRight oDocumentStepSubjectRight = null;
@@ -634,21 +638,7 @@ public class DocumentStepService {
 
         try {
 
-            List<DocumentStep> aDocumentStep
-                    = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-            LOG.info("aDocumentStep={}", aDocumentStep);
-            final String SKEY_STEP_DOCUMENT = sKey_Step;
-            DocumentStep oDocumentStep = aDocumentStep
-                    .stream()
-                    .filter(o -> SKEY_STEP_DOCUMENT == null ? o.getnOrder().equals(1)
-                    : o.getsKey_Step().equals(SKEY_STEP_DOCUMENT))
-                    .findAny()
-                    .orElse(null);
-            LOG.info("oDocumentStep={}", oDocumentStep);
-            if (oDocumentStep == null) {
-                throw new IllegalStateException("There is no active Document Step, process variable sKey_Step="
-                        + sKey_Step);
-            }
+            DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
 
