@@ -1308,6 +1308,7 @@ public class DocumentStepService {
                 if (sDateECP == null) {
                     if (sDate != null) {
                         oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                        LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
                         // Достаем nID_Process у найденного oDocumentStepSubjectRight
                         // через DocumentStep
                         String snID_Process = oFindedDocumentStepSubjectRight.getDocumentStep().getSnID_Process_Activiti();
