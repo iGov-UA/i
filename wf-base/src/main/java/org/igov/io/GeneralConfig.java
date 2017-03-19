@@ -179,9 +179,65 @@ public class GeneralConfig {
     
     @Value("${general.DFS.sURL}")
     private String sURL_DFS;
+
+    @Value("${general.Object.SubPlace.PB.Auth.sLogin}")
+    private String sObjectSubPlace_Auth_sLogin;
     
+    @Value("${general.Object.SubPlace.PB.Auth.sPassword}")
+    private String sObjectSubPlace_Auth_sPassword;
     
-    public boolean isSelfTest() {
+    @Value("${general.Object.SubPlace.PB.Auth.sURL_GenerateSID}")
+    private String sObjectSubPlace_Auth_sURL_GenerateSID;
+    
+    @Value("${general.Object.SubPlace.sURL_Send}")
+    private String sObjectSubPlace_sURL_Send;
+   
+    @Value("${general.ECP.Self.sSubPathFile}")
+    private String sECPKeystoreFilename;
+    
+    @Value("${general.ECP.Self.sPassword}")
+    private String sECPKeystorePasswd;
+    
+    @Value("${general.ECP.SelfCert.sSubPathFile}")
+    private String sECPSelfCertPathFile;
+    
+    @Value("${general.ECP.SelfCertEncrypt.sSubPathFile}")
+    private String sECPSelfCertEncryptPathFile;
+    
+    @Value("${general.Export.Agroholding.sURL}")
+    private String sURL_Agroholding;
+    @Value("${general.Export.Agroholding.Auth.sLogin}")
+    private String sLogin_Auth_Agroholding;
+    @Value("${general.Export.Agroholding.Auth.sPassword}")
+    private String sPassword_Auth_Agroholding;
+
+    
+    public String getObjectSubPlace_Auth_sLogin() {
+        return sObjectSubPlace_Auth_sLogin;
+    }
+    public String getObjectSubPlace_Auth_sPassword() {
+        return sObjectSubPlace_Auth_sPassword;
+    }
+    public String getObjectSubPlace_Auth_sURL_GenerateSID() {
+        return sObjectSubPlace_Auth_sURL_GenerateSID;
+    }
+    public String getObjectSubPlace_sURL_Send() {
+        return sObjectSubPlace_sURL_Send;
+    }
+	
+	public String getsECPKeystoreFilename() {
+		return sECPKeystoreFilename;
+	}
+	public String getsECPKeystorePasswd() {
+		return sECPKeystorePasswd;
+	}
+	public String getsECPSelfCertPathFile() {
+		return sECPSelfCertPathFile;
+	}
+	public String getsECPSelfCertEncryptPathFile() {
+		return sECPSelfCertEncryptPathFile;
+	}
+	public boolean isSelfTest() {
         boolean b = true;
         try {
             b = (sbTest_Self == null ? b : Boolean.valueOf(sbTest_Self));
@@ -556,6 +612,18 @@ public class GeneralConfig {
             LOG.debug("FAIL:", oException);
         }
         return b;
+    }
+
+    public String getsURL_Agroholding() {
+        return sURL_Agroholding;
+    }
+
+    public String getsLogin_Auth_Agroholding() {
+        return sLogin_Auth_Agroholding;
+    }
+
+    public String getsPassword_Auth_Agroholding() {
+        return sPassword_Auth_Agroholding;
     }
     
 }

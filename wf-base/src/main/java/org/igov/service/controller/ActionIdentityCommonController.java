@@ -11,16 +11,15 @@ import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.service.business.action.task.core.UsersService;
 import org.igov.service.exception.CommonServiceException;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,31 +45,72 @@ public class ActionIdentityCommonController {
      * Добавление/обновление пользователя.
      *
      * @param sLogin       строка текст, логин пользователя для определения наличия пользователя в базе
-     * @param sPassword    строка текст, логин пользователя для определения наличия пользователя в базе
-     * @param sName        строка текст, имя пользователя
-     * @param sDescription строка текст, фамилия пользователя
-     * @param sEmail       строка текст, имейл пользователя, опциональный параметр
+     * //@param sPassword    строка текст, логин пользователя для определения наличия пользователя в базе
+     * //@param sName        строка текст, имя пользователя
+     * //@param sDescription строка текст, фамилия пользователя
+     * //@param sEmail       строка текст, имейл пользователя, опциональный параметр
      */
     @ApiOperation(value = "Добавление/обновление пользователя. Если пользователь с указаным логином "
             + "существует, - то происходит перезапись существующих данных указанными."
             + "Если же пользователь с указанным логином не найден, - будет создана новая запись.")
-    @RequestMapping(value = "/setUser", method = { RequestMethod.GET })
+    @RequestMapping(value = "/setUser", method = { /*RequestMethod.GET,*/ RequestMethod.POST })
     @ResponseBody
     public void setUser(
             @ApiParam(value = "строка текст, логин пользователя для определения наличия пользователя в базе", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "строка текст, пароль для пользователя", required = true) @RequestParam(value = "sPassword", required = true) String sPassword,
-            @ApiParam(value = "строка текст, имя пользователя", required = true) @RequestParam(value = "sName", required = true) String sName,
-            @ApiParam(value = "строка текст, фамилия пользователя", required = true) @RequestParam(value = "sDescription", required = true) String sDescription,
-            @ApiParam(value = "строка текст, имейл пользователя, опциональный параметр", required = false) @RequestParam(value = "sEmail", required = false) String sEmail)
+            //@ApiParam(value = "строка текст, пароль для пользователя", required = true) @RequestParam(value = "sPassword", required = true) String sPassword,
+            //@ApiParam(value = "строка текст, имя пользователя", required = true) @RequestParam(value = "sName", required = true) String sName,
+            //@ApiParam(value = "строка текст, фамилия пользователя", required = true) @RequestParam(value = "sDescription", required = true) String sDescription,
+            //@ApiParam(value = "строка текст, имейл пользователя, опциональный параметр", required = false) @RequestParam(value = "sEmail", required = false) String sEmail,
+            @ApiParam(value = "JSON-объект с параметрами: " +
+                    "sPassword - (обязательный при создании нового пользователя) строка текст, логин пользователя для определения наличия пользователя в базе; " +
+                    "sName - (обязательный) строка текст, имя пользователя; " +
+                    "sDescription - (обязательный) строка текст, фамилия пользователя; " +
+                    "sEmail - строка текст, имейл пользователя, опциональный параметр", required = true) @RequestBody String body)
             throws Exception {
 
         log.info("Method setUser startred");
+        String sPassword = null;
+        String sName = null;
+        String sDescription = null;
+        String sEmail = null;
+
+        if(body != null){
+            Map<String, Object> mBody;
+            try {
+                mBody = (Map<String, Object>) JSONValue.parse(body);
+            } catch (Exception e){
+                throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
+            }
+            if(mBody != null){
+                if (mBody.containsKey("sPassword")) {
+                    sPassword = (String) mBody.get("sPassword");
+                }
+                if (mBody.containsKey("sName")) {
+                    sName = (String) mBody.get("sName");
+                } else {
+                    throw new Exception("The sName in RequestBody is not defined");
+                }
+                if (mBody.containsKey("sDescription")) {
+                    sDescription = (String) mBody.get("sDescription");
+                } else {
+                    throw new Exception("The sDescription in RequestBody is not defined");
+                }
+                if (mBody.containsKey("sEmail")) {
+                    sEmail = (String) mBody.get("sEmail");
+                }
+            }
+        }
+
         User oUser = identityService.createUserQuery().userId(sLogin).singleResult();
         if (oUser == null) {
             log.info("Creating new user");
             oUser = identityService.newUser(sLogin);
+            if(sPassword == null || sPassword.equals("")){
+                throw new Exception("The password for new User is not defined");
+            } else {
+                oUser.setPassword(sPassword);
+            }
         }
-        oUser.setPassword(sPassword);
         oUser.setFirstName(sName);
         oUser.setLastName(sDescription);
         if (sEmail != null) {
@@ -133,7 +173,7 @@ public class ActionIdentityCommonController {
      */
     @ApiOperation(value =
             "Возвращает список пользователей, если указан id групы, - выводит всех ее пользователей, иначе, по умолчанию"
-                    + " возвращает всех существующие пользователей.")
+                    + " возвращает всех существующих пользователей.")
     @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
     @ResponseBody
     public List<Map<String, String>> getUsers(
@@ -147,8 +187,7 @@ public class ActionIdentityCommonController {
     	} catch (Exception e) {
     		log.error("FAIL: ", e);
         }
-        
-        
+
         return amsUsers;
     }
 

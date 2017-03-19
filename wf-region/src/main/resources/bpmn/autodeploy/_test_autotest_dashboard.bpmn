@@ -8,42 +8,95 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380623155533" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable1" name=" " type="label" default="Типові типи даних"></activiti:formProperty>
-        <activiti:formProperty id="sVarString" name="Тип даних string" type="string" default="Тип даних string"></activiti:formProperty>
-        <activiti:formProperty id="sVarTextArea" name="Тип даних textArea" type="textArea" default="Тип даних textArea"></activiti:formProperty>
-        <activiti:formProperty id="sVarlong" name="Тип даних long" type="long" default="1234567890"></activiti:formProperty>
-        <activiti:formProperty id="sVarDouble" name="Тип даних double" type="double" default="1234.56789"></activiti:formProperty>
-        <activiti:formProperty id="sVarDate" name="Тип даних date" type="date"></activiti:formProperty>
-        <activiti:formProperty id="nVarFile" name="Тип даних File;Завантажте файл;bNew=true" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asEnumType" name="Тип даних enum" type="enum" default="sElementEnum_3">
+        <activiti:formProperty id="sVarString" name="Тип даних string" type="string" default="Тип даних string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextArea" name="Тип даних textArea" type="textArea" default="Тип даних textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVarlong" name="Тип даних long" type="long" default="1234567890" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVarDouble" name="Тип даних double" type="double" default="1234.56789" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVarDate" name="Тип даних date" type="date" required="true" default="2017-03-25"></activiti:formProperty>
+        <activiti:formProperty id="nVarFile" name="Тип даних File;Завантажте файл;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType" name="Тип даних enum" type="enum" default="sElementEnum_3" required="true">
           <activiti:value id="sElementEnum_1" name="Значення 1 для Enum"></activiti:value>
           <activiti:value id="sElementEnum_2" name="Значення 2 для Enum"></activiti:value>
           <activiti:value id="sElementEnum_3" name="Значення 3 для Enum"></activiti:value>
           <activiti:value id="sElementEnum_4" name="Значення 4 для Enum"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEnumTypeCheckbox" name="Тип даних enum (checkbox); ;sID_CheckboxTrue=yes" type="enum" default="no">
+        <activiti:formProperty id="asEnumTypeCheckbox" name="Тип даних enum (checkbox); ;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="warning_visitDay" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; Електронна черга тестується для sID_Public_SubjectOrganJoin = Тест _test_all_case (код черги щодо додавання слотів 408)"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible" default="250"></activiti:formProperty>
-		<activiti:formProperty id="nDiffDays_visitDay" name="Кількість днів щодо пропуску слотів черги на вибір" type="string" default="4"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nDiffDays_visitDay" name="Кількість днів щодо пропуску слотів черги на вибір" type="string" default="4"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="lable2" name=" " type="label" default="table і різні типи даних"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Інформація в таблиці 1" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables1FieldA&quot;,&quot;name&quot;:&quot;Найменування товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;300&quot;},{&quot;id&quot;:&quot;sTables1FieldB&quot;,&quot;name&quot;:&quot;Код товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldC&quot;,&quot;name&quot;:&quot;Одиниця виміру (тип enum)&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;kilogram&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;kilogram&quot;,&quot;name&quot;:&quot;кілограм|кг&quot;},{&quot;id&quot;:&quot;gram&quot;,&quot;name&quot;:&quot;грам|г&quot;},{&quot;id&quot;:&quot;gram_izotop&quot;,&quot;name&quot;:&quot;грам подільних ізотопів|г поділ. Ізотоп&quot;},{&quot;id&quot;:&quot;matrichnyi&quot;,&quot;name&quot;:&quot;карат метричний (= 200 мг)|кар&quot;},{&quot;id&quot;:&quot;square&quot;,&quot;name&quot;:&quot;квадратний метр|кв.м&quot;},{&quot;id&quot;:&quot;cub_meter&quot;,&quot;name&quot;:&quot;кубічний метр|куб.м&quot;},{&quot;id&quot;:&quot;ltr&quot;,&quot;name&quot;:&quot;літр|л&quot;},{&quot;id&quot;:&quot;meter&quot;,&quot;name&quot;:&quot;метр|м метр&quot;}]},{&quot;id&quot;:&quot;sTables1FieldD&quot;,&quot;name&quot;:&quot;Кількість товару (тип long)&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldE&quot;,&quot;name&quot;:&quot;Вартість товару (тип string);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldF&quot;,&quot;name&quot;:&quot;Вартість товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldG&quot;,&quot;name&quot;:&quot;Додаткове найменування (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Інформація в таблиці 2" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables2FieldA&quot;,&quot;name&quot;:&quot;Назва документа (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2FieldB&quot;,&quot;name&quot;:&quot;Файл документу (тип file - NEW); ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2FieldC&quot;,&quot;name&quot;:&quot;Дата укладання (тип date)&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Інформація в таблиці 1 (не более 3-х строк); ;nRowsLimit=3,bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables1FieldA&quot;,&quot;name&quot;:&quot;Найменування товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;300&quot;},{&quot;id&quot;:&quot;sTables1FieldB&quot;,&quot;name&quot;:&quot;Код товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldC&quot;,&quot;name&quot;:&quot;Одиниця виміру (тип enum)&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;kilogram&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;kilogram&quot;,&quot;name&quot;:&quot;кілограм|кг&quot;},{&quot;id&quot;:&quot;gram&quot;,&quot;name&quot;:&quot;грам|г&quot;},{&quot;id&quot;:&quot;gram_izotop&quot;,&quot;name&quot;:&quot;грам подільних ізотопів|г поділ. Ізотоп&quot;},{&quot;id&quot;:&quot;matrichnyi&quot;,&quot;name&quot;:&quot;карат метричний (= 200 мг)|кар&quot;},{&quot;id&quot;:&quot;square&quot;,&quot;name&quot;:&quot;квадратний метр|кв.м&quot;},{&quot;id&quot;:&quot;cub_meter&quot;,&quot;name&quot;:&quot;кубічний метр|куб.м&quot;},{&quot;id&quot;:&quot;ltr&quot;,&quot;name&quot;:&quot;літр|л&quot;},{&quot;id&quot;:&quot;meter&quot;,&quot;name&quot;:&quot;метр|м метр&quot;}]},{&quot;id&quot;:&quot;sTables1FieldD&quot;,&quot;name&quot;:&quot;Кількість товару (тип long)&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldE&quot;,&quot;name&quot;:&quot;Вартість товару (тип string);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldF&quot;,&quot;name&quot;:&quot;Вартість товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1FieldG&quot;,&quot;name&quot;:&quot;Додаткове найменування (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Інформація в таблиці 2 (не более 3-х строк); ;nRowsLimit=3,bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables2FieldA&quot;,&quot;name&quot;:&quot;Назва документа (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2FieldB&quot;,&quot;name&quot;:&quot;Файл документу (тип file - NEW); ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2FieldC&quot;,&quot;name&quot;:&quot;Дата укладання (тип date)&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="[Етап I] Перевірка даних" activiti:candidateGroups="tester">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить Ваше нове місце реєстрації" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить Ваше нове місце реєстрації; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable1" name=" " type="label" default="Типові типи даних"></activiti:formProperty>
+        <activiti:formProperty id="sVarString" name="Тип даних string" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextArea" name="Тип даних textArea" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarlong" name="Тип даних long" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarDouble" name="Тип даних double" type="double" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarDate" name="Тип даних date" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nVarFile" name="Тип даних File;Завантажте файл;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumType" name="Тип даних enum" type="enum" writable="false">
+          <activiti:value id="sElementEnum_1" name="Значення 1 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_2" name="Значення 2 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_3" name="Значення 3 для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_4" name="Значення 4 для Enum"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeCheckbox" name="Тип даних enum (checkbox)" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="warning_visitDay" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; Електронна черга тестується для sID_Public_SubjectOrganJoin = Тест _test_all_case (код черги щодо додавання слотів 408)"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="День та час, коли буде звернення громядянина для отримання послуги" type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable2" name=" " type="label" default="table і різні типи даних"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Інформація в таблиці 1; ;nRowsLimit=3,bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Інформація в таблиці 2; ;nRowsLimit=3,bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable20" name=" " type="label" default="====== Типові типи даних на дашборді ========"></activiti:formProperty>
+        <activiti:formProperty id="sVarStringDashboard" name="Тип даних string (на дашборді)" type="string" default="Тип даних string"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextAreaDashboard" name="Тип даних textArea  (на дашборді)" type="textArea" default="Тип даних textArea"></activiti:formProperty>
+        <activiti:formProperty id="sVarlongDashboard" name="Тип даних long  (на дашборді)" type="long" default="1234567890"></activiti:formProperty>
+        <activiti:formProperty id="sVarDoubleDashboard" name="Тип даних double  (на дашборді)" type="double" default="1234.56789"></activiti:formProperty>
+        <activiti:formProperty id="sVarDateDashboard" name="Тип даних date  (на дашборді)" type="date" default="2017-03-20"></activiti:formProperty>
+        <activiti:formProperty id="nVarFileDashboard" name="Тип даних File  (на дашборді);Завантажте файл;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeDashboard" name="Тип даних enum  (на дашборді)" type="enum" default="sElementEnum_3_Dashboard">
+          <activiti:value id="sElementEnum_1_Dashboard" name="Значення 1 (на дашборді) для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_2_Dashboard" name="Значення 2 (на дашборді) для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_3_Dashboard" name="Значення 3 (на дашборді) для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_4_Dashboard" name="Значення 4 (на дашборді) для Enum"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeCheckboxDashboard" name="Тип даних enum (checkbox) (на дашборді); ;sID_CheckboxTrue=yes" type="enum" default="no_Dashboard">
+          <activiti:value id="yes_Dashboard" name="так"></activiti:value>
+          <activiti:value id="no_Dashboard" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lable21" name=" " type="label" default="table і різні типи даних (на дашборді)"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Інформація в таблиці 3 (на дашборді); ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables3Field1&quot;,&quot;name&quot;:&quot;Найменування товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;300&quot;},{&quot;id&quot;:&quot;sTables3Field2&quot;,&quot;name&quot;:&quot;Код товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables3Field3&quot;,&quot;name&quot;:&quot;Одиниця виміру (тип enum)&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;kilogram&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;kilogram&quot;,&quot;name&quot;:&quot;кілограм|кг&quot;},{&quot;id&quot;:&quot;gram&quot;,&quot;name&quot;:&quot;грам|г&quot;},{&quot;id&quot;:&quot;gram_izotop&quot;,&quot;name&quot;:&quot;грам подільних ізотопів|г поділ. Ізотоп&quot;},{&quot;id&quot;:&quot;matrichnyi&quot;,&quot;name&quot;:&quot;карат метричний (= 200 мг)|кар&quot;},{&quot;id&quot;:&quot;square&quot;,&quot;name&quot;:&quot;квадратний метр|кв.м&quot;},{&quot;id&quot;:&quot;cub_meter&quot;,&quot;name&quot;:&quot;кубічний метр|куб.м&quot;},{&quot;id&quot;:&quot;ltr&quot;,&quot;name&quot;:&quot;літр|л&quot;},{&quot;id&quot;:&quot;meter&quot;,&quot;name&quot;:&quot;метр|м метр&quot;}]},{&quot;id&quot;:&quot;sTables3Field4&quot;,&quot;name&quot;:&quot;Кількість товару (тип long)&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables3Field5&quot;,&quot;name&quot;:&quot;Вартість товару (тип string);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables3Field6&quot;,&quot;name&quot;:&quot;Вартість товару (тип double);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;double&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables3Field7&quot;,&quot;name&quot;:&quot;Додаткове найменування (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Інформація в таблиці 4 (на дашборді); ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables4Field1&quot;,&quot;name&quot;:&quot;Назва документа (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables4Field2&quot;,&quot;name&quot;:&quot;Файл документу (тип file - NEW); ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables4Field3&quot;,&quot;name&quot;:&quot;Дата укладання (тип date)&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask2" name="[Етап II] Прийняття рішення " activiti:candidateGroups="tester">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить Ваше нове місце реєстрації; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lable1" name=" " type="label" default="Типові типи даних"></activiti:formProperty>
         <activiti:formProperty id="sVarString" name="Тип даних string" type="string" writable="false"></activiti:formProperty>
@@ -64,58 +117,48 @@
         </activiti:formProperty>
         <activiti:formProperty id="warning_visitDay" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; Електронна черга тестується для sID_Public_SubjectOrganJoin = Тест _test_all_case (код черги щодо додавання слотів 408)"></activiti:formProperty>
         <activiti:formProperty id="lable2" name=" " type="label" default="table і різні типи даних"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Інформація в таблиці 1" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Інформація в таблиці 2" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Інформація в таблиці 1; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Інформація в таблиці 2; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lable20" name=" " type="label" default="====== Типові типи даних на дашборді ========"></activiti:formProperty>
-        <activiti:formProperty id="sVarStringDashboard" name="Тип даних string (на дашборді)" type="string" default="Тип даних string"></activiti:formProperty>
-        <activiti:formProperty id="sVarTextAreaDashboard" name="Тип даних textArea  (на дашборді)" type="textArea" default="Тип даних textArea"></activiti:formProperty>
-        <activiti:formProperty id="sVarlongDashboard" name="Тип даних long  (на дашборді)" type="long" default="12345678901234567890"></activiti:formProperty>
-        <activiti:formProperty id="sVarDoubleDashboard" name="Тип даних double  (на дашборді)" type="double" default="1234.56789"></activiti:formProperty>
-        <activiti:formProperty id="sVarDateDashboard" name="Тип даних date  (на дашборді)" type="date"></activiti:formProperty>
-        <activiti:formProperty id="nVarFileDashboard" name="Тип даних File  (на дашборді);Завантажте файл;bNew=true" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asEnumTypeDashboard" name="Тип даних enum  (на дашборді)" type="enum" default="sElementEnum_3">
+        <activiti:formProperty id="sVarStringDashboard" name="Тип даних string (на дашборді)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextAreaDashboard" name="Тип даних textArea  (на дашборді)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarlongDashboard" name="Тип даних long  (на дашборді)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarDoubleDashboard" name="Тип даних double  (на дашборді)" type="double" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarDateDashboard" name="Тип даних date  (на дашборді)" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nVarFileDashboard" name="Тип даних File  (на дашборді);Завантажте файл;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeDashboard" name="Тип даних enum  (на дашборді)" type="enum" writable="false">
           <activiti:value id="sElementEnum_1_Dashboard" name="Значення 1 (на дашборді) для Enum"></activiti:value>
           <activiti:value id="sElementEnum_2_Dashboard" name="Значення 2 (на дашборді) для Enum"></activiti:value>
           <activiti:value id="sElementEnum_3_Dashboard" name="Значення 3 (на дашборді) для Enum"></activiti:value>
           <activiti:value id="sElementEnum_4_Dashboard" name="Значення 4 (на дашборді) для Enum"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEnumTypeCheckboxDashboard" name="Тип даних enum (checkbox) (на дашборді); ;sID_CheckboxTrue=yes" type="enum" default="no">
+        <activiti:formProperty id="asEnumTypeCheckboxDashboard" name="Тип даних enum (checkbox) (на дашборді); ;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes_Dashboard" name="так"></activiti:value>
           <activiti:value id="no_Dashboard" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lable21" name=" " type="label" default="table і різні типи даних (на дашборді)"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Інформація в таблиці 3 (на дашборді)" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables1Field1&quot;,&quot;name&quot;:&quot;Найменування товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;300&quot;},{&quot;id&quot;:&quot;sTables1Field2&quot;,&quot;name&quot;:&quot;Код товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1Field3&quot;,&quot;name&quot;:&quot;Одиниця виміру (тип enum)&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;kilogram&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;kilogram&quot;,&quot;name&quot;:&quot;кілограм|кг&quot;},{&quot;id&quot;:&quot;gram&quot;,&quot;name&quot;:&quot;грам|г&quot;},{&quot;id&quot;:&quot;gram_izotop&quot;,&quot;name&quot;:&quot;грам подільних ізотопів|г поділ. Ізотоп&quot;},{&quot;id&quot;:&quot;matrichnyi&quot;,&quot;name&quot;:&quot;карат метричний (= 200 мг)|кар&quot;},{&quot;id&quot;:&quot;square&quot;,&quot;name&quot;:&quot;квадратний метр|кв.м&quot;},{&quot;id&quot;:&quot;cub_meter&quot;,&quot;name&quot;:&quot;кубічний метр|куб.м&quot;},{&quot;id&quot;:&quot;ltr&quot;,&quot;name&quot;:&quot;літр|л&quot;},{&quot;id&quot;:&quot;meter&quot;,&quot;name&quot;:&quot;метр|м метр&quot;}]},{&quot;id&quot;:&quot;sTables1Field4&quot;,&quot;name&quot;:&quot;Кількість товару (тип long)&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1Field5&quot;,&quot;name&quot;:&quot;Вартість товару (тип string);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1Field6&quot;,&quot;name&quot;:&quot;Вартість товару (тип double);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;double&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables1Field7&quot;,&quot;name&quot;:&quot;Додаткове найменування (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sTable4" name="Інформація в таблиці 4 (на дашборді)" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables2Field1&quot;,&quot;name&quot;:&quot;Назва документа (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2Field2&quot;,&quot;name&quot;:&quot;Файл документу (тип file - NEW); ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables2Field3&quot;,&quot;name&quot;:&quot;Дата укладання (тип date)&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <userTask id="usertask2" name="[Етап II] Прийняття рішення " activiti:candidateGroups="tester">
-      <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить Ваше нове місце реєстрації" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name=" " type="label" default="Типові типи даних"></activiti:formProperty>
-        <activiti:formProperty id="sVarString" name="Тип даних string" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVarTextArea" name="Тип даних textArea" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVarlong" name="Тип даних long" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVarDouble" name="Тип даних double" type="double" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVarDate" name="Тип даних date" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nVarFile" name="Тип даних File;Завантажте файл;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnumType" name="Тип даних enum" type="enum" writable="false">
-          <activiti:value id="sElementEnum_1" name="Значення 1 для Enum"></activiti:value>
-          <activiti:value id="sElementEnum_2" name="Значення 2 для Enum"></activiti:value>
-          <activiti:value id="sElementEnum_3" name="Значення 3 для Enum"></activiti:value>
-          <activiti:value id="sElementEnum_4" name="Значення 4 для Enum"></activiti:value>
+        <activiti:formProperty id="sTable3" name="Інформація в таблиці 3 (на дашборді); ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Інформація в таблиці 4 (на дашборді); ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable30" name=" " type="label" default="====== Типові типи даних на дашборді (Етап 2) ========"></activiti:formProperty>
+        <activiti:formProperty id="sVarStringDashboard2" name="Тип даних string (на дашборді)" type="string" default="Тип даних string "></activiti:formProperty>
+        <activiti:formProperty id="sVarTextAreaDashboard2" name="Тип даних textArea  (на дашборді)" type="textArea" default="Тип даних textArea"></activiti:formProperty>
+        <activiti:formProperty id="sVarlongDashboard2" name="Тип даних long  (на дашборді Етап 2)" type="long" default="1234567890"></activiti:formProperty>
+        <activiti:formProperty id="sVarDoubleDashboard2" name="Тип даних double  (на дашборді Етап 2)" type="double" default="1234.56789"></activiti:formProperty>
+        <activiti:formProperty id="sVarDateDashboard2" name="Тип даних date  (на дашборді Етап 2)" type="date" default="2017-03-17"></activiti:formProperty>
+        <activiti:formProperty id="nVarFileDashboard2" name="Тип даних File  (на дашборді Етап 2);Завантажте файл;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeDashboard2" name="Тип даних enum  (на дашборді Етап 2)" type="enum" default="sElementEnum_3_Dashboard2">
+          <activiti:value id="sElementEnum_1_Dashboard2" name="Значення 1 (на дашборді Етап 2) для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_2_Dashboard2" name="Значення 2 (на дашборді Етап 2) для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_3_Dashboard2" name="Значення 3 (на дашборді Етап 2) для Enum"></activiti:value>
+          <activiti:value id="sElementEnum_4_Dashboard2" name="Значення 4 (на дашборді Етап 2) для Enum"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEnumTypeCheckbox" name="Тип даних enum (checkbox); ;sID_CheckboxTrue=yes" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+        <activiti:formProperty id="asEnumTypeCheckboxDashboard2" name="Тип даних enum (checkbox) (на дашборді Етап 2); ;sID_CheckboxTrue=yes" type="enum" default="no_Dashboard">
+          <activiti:value id="yes_Dashboard" name="так"></activiti:value>
+          <activiti:value id="no_Dashboard" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print_new.html]" type="invisible" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lable31" name=" " type="label" default="table і різні типи даних (на дашборді Етап 2)"></activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Інформація в таблиці 5 (на дашборді Етап 2); ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables5Field1&quot;,&quot;name&quot;:&quot;Найменування товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;300&quot;},{&quot;id&quot;:&quot;sTables5Field2&quot;,&quot;name&quot;:&quot;Код товару (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables5Field3&quot;,&quot;name&quot;:&quot;Одиниця виміру (тип enum)&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;default&quot;:&quot;kilogram&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;kilogram&quot;,&quot;name&quot;:&quot;кілограм|кг&quot;},{&quot;id&quot;:&quot;gram&quot;,&quot;name&quot;:&quot;грам|г&quot;},{&quot;id&quot;:&quot;gram_izotop&quot;,&quot;name&quot;:&quot;грам подільних ізотопів|г поділ. Ізотоп&quot;},{&quot;id&quot;:&quot;matrichnyi&quot;,&quot;name&quot;:&quot;карат метричний (= 200 мг)|кар&quot;},{&quot;id&quot;:&quot;square&quot;,&quot;name&quot;:&quot;квадратний метр|кв.м&quot;},{&quot;id&quot;:&quot;cub_meter&quot;,&quot;name&quot;:&quot;кубічний метр|куб.м&quot;},{&quot;id&quot;:&quot;ltr&quot;,&quot;name&quot;:&quot;літр|л&quot;},{&quot;id&quot;:&quot;meter&quot;,&quot;name&quot;:&quot;метр|м метр&quot;}]},{&quot;id&quot;:&quot;sTables5Field4&quot;,&quot;name&quot;:&quot;Кількість товару (тип long)&quot;,&quot;type&quot;:&quot;long&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables5Field5&quot;,&quot;name&quot;:&quot;Вартість товару (тип string);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables5Field6&quot;,&quot;name&quot;:&quot;Вартість товару (тип double);дані потрібно подавати з точністю до 5 знаків після коми&quot;,&quot;type&quot;:&quot;double&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables5Field7&quot;,&quot;name&quot;:&quot;Додаткове найменування (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable6" name="Інформація в таблиці 6 (на дашборді Етап 2); ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sTables6Field1&quot;,&quot;name&quot;:&quot;Назва документа (тип string)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables6Field2&quot;,&quot;name&quot;:&quot;Файл документу (тип file - NEW); ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sTables6Field3&quot;,&quot;name&quot;:&quot;Дата укладання (тип date)&quot;,&quot;type&quot;:&quot;date&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>

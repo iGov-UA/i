@@ -43,7 +43,7 @@
         <activiti:formProperty id="label1" name="- для  реєстрації технологічного транспортного засобу, що тривалий час (більше п'яти років) експлуатується суб'єктом господарювання та на який відсутні документи, що встановлюють право власності або користування, та про попередню його реєстрацію, надається копія  інвентарної  картки обліку основних засобів або витяг з балансової відомості, у яких зазначається дата введення в експлуатацію ТТЗ, скріплені підписом посадової особи  суб'єкта  господарювання та печаткою." type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="file9" name="Для реєстрації технологічного транспортного засобу, що раніше експлуатувався і перебував на обліку, подається разом з документами свідоцтво про реєстрацію ТТЗ з позначкою про зняття з обліку" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="file10" name="При першій реєстрації в Україні колісних транспортних засобів надається квитанція або платіжне доручення про сплату збору з відміткою банку про дату виконання платіжного доручення до податкових органів (р. VII Податкового кодексу України), а платники, звільнені від сплати збору, - надають відповідний документ, що дає право на користування такими пільгами" type="file" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="sBody" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="sBody; ;bVisible=false" type="string" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -190,7 +190,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар в разі відмови" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="file11" name="Якщо з документами все гаразд - завантажте скановану копію описа документів, надісланих громадянином" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_cnap_42_ur_print.html]" type="invisible" default="${sBody}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_cnap_42_ur_print.html]; ;bVisible=false" type="string" default="${sBody}" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

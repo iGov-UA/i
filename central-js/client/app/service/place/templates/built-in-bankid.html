@@ -100,61 +100,52 @@
 
             <div class="row"
                  ng-repeat="property in activitiForm.formProperties track by property.id"
-                 ng-if="isFieldVisible(property)">
+                 ng-if="isFieldVisible(property)"
+                 ng-class="{'central-igov-okpo-block':isOKPOAutocompleteFields(property.id) === 'okpo_field' || isOKPOAutocompleteFields(property.id) === 'okpo_autocomplete'}">
 
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
-                <table style="width: 100%">
-                  <tr ng-if="insertSeparator(property.id).sText.length > 0">
-                    <td style="width: 30%; text-align: right">
-                      <hr class="hr-divider side-left"
-                          style="width: 95%;
-                    height: 1px;
-                    display: inline-block;
-                    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                <table style="width: 100%; margin-bottom: 5px">
+                  <tr ng-if="insertSeparator(property.id).sText.length > 0" style="width: 100%">
+                    <!--<td style="width: 30%; display: table-cell">
+                      <table style="width: 100%">
+                        <tr>
+                          <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
+                            background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                            background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                            background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                            background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                          </td>
+                        </tr>
+                      </table>
+                    </td>-->
+                    <td style="max-width: 40%; margin-top: 30px; margin-bottom: 30px; padding: 0 15px 0 15px">
+                      <span style="position: relative"><b>{{insertSeparator(property.id).sText}}</b></span>
                     </td>
-                    <td colspan="2" style="max-width: 40%; text-align: center">
-                      <span style="position: relative">{{insertSeparator(property.id).sText}}</span>
-                    </td>
-                    <td style="width: 30%; text-align: left">
-                      <hr class="hr-divider side-right"
-                          style="width: 95%;
-                    height: 1px;
-                    display: inline-block;
-                    background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                    <td style="width: 58%; display: table-cell">
+                      <table style="width: 100%">
+                        <tr>
+                          <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
+                          background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                          background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                          background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
+                          background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                          </td>
+                        </tr>
+                      </table>
                     </td>
                   </tr>
-                  <tr ng-if="insertSeparator(property.id).sText.length == 0">
-                    <td style="width: 50%; text-align: right">
-                      <hr class="hr-divider side-left"
-                          style="width: 97%;
-                    height: 1px;
-                    display: inline-block;
-                    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75));">
-                    </td>
-                    <td style="width: 50%; text-align: left">
-                      <hr class="hr-divider side-right"
-                          style="width: 97%;
-                    height: 1px;
-                    display: inline-block;
-                    background-image: -webkit-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:    -moz-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:     -ms-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));
-                    background-image:      -o-linear-gradient(right, rgba(0,0,0,0), rgba(160,160,160,0.75));">
+                  <tr ng-if="insertSeparator(property.id).sText.length == 0" style="width: 100%">
+                    <td style="width: 100%; margin-top: 30px; margin-bottom: 30px; height: 1px; display: block;
+                                background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
+                                background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
+                                background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
+                                background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));">
                     </td>
                   </tr>
                 </table>
               </div>
 
-              <div class="col-md-5"
+              <div id="label-{{property.id}}" class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
                 <label style="color: red;"
                        ng-if="isFieldRequired(property)==true">* </label>
@@ -164,10 +155,13 @@
                      ng-if="property.sFieldNotes!=null">
                   {{property.sFieldNotes}}
                 </div>
+
+                <div class="inner-html s-field-notes" ng-if="property.options && (property.options.html || property.options.HTML)" ng-bind-html="property.options.html">
+                </div>
               </div>
 
 
-              <div class="col-md-3"
+              <div id="field-{{property.id}}" class="col-md-3"
                    ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table'}"
                    ng-if="showFormField(property)"
                    ng-switch
@@ -193,7 +187,7 @@
                                   service-data="oServiceData"
                                   ng-required="isFieldRequired(property)"></dropdown-country>
 
-                <div class="col-md-12 field-table" ng-switch-when="table">
+                <div class="col-md-12 field-table" ng-switch-when="table" ng-class="getBpAndFieldID(property)">
                   <table ng-init="tableName = property.id">
 
                     <thead>
@@ -216,6 +210,7 @@
                     <tr ng-repeat="row in property.aRow track by $index" ng-init="rowIndex=$index">
 
                       <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
+                        <div ng-class="getFullCellId(property, $index, rowIndex)">
 
                         <div ng-if="item.type == 'string'">
                           <input class="inputs-in-table"
@@ -245,6 +240,31 @@
                                   ng-disabled="!isFieldWritable(item.writable)"
                                   class="inputs-in-table">
                           </select>
+                        </div>
+
+                        <div ng-if="item.type == 'file'">
+                          <div dropdown class="dropup" style="display: inline-block; position:relative;">
+                            <div class="like-modal dropdown-menu" role="menu">
+                              <file-field style="text-align: center"
+                                          name="{{item.id + rowIndex}}"
+                                          ng-model="item.value"
+                                          ng-required="isFieldRequired(item)"
+                                          ng-if="item.upload">Add File</file-field>
+                            </div>
+                            <button style="position:relative;"
+                                    title="{{item.fileName}}"
+                                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
+                                    name="{{item.id + rowIndex}}"
+                                    ng-disabled="isFormPropertyDisabled(item) || isFileProcessUploading.bState"
+                                    ng-if="item.fileName"
+                                    type="button"
+                                    dropdown-toggle
+                                    class="btn btn-default dropdown-toggle">{{item.fileName | cut : true : 15}}</button>
+                            <file-field name="{{item.id}}"
+                                        ng-model="item.value"
+                                        ng-required="isFieldRequired(item)"
+                                        ng-if="item.upload && !item.fileName">Add File</file-field>
+                          </div>
                         </div>
 
                         <div ng-if="item.type == 'long'">
@@ -385,7 +405,7 @@
                           <!--заменить на директиву-->
                         </div>
 
-                        <div ng-if="item.type === 'select'" ng-class="getBpAndFieldID(item)">
+                        <div ng-if="item.type === 'select'">
                           <dropdown-organ ng-if="item.id==='sID_Public_SubjectOrganJoin'"
                                           ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                           ng-model="item.value"
@@ -414,7 +434,7 @@
                               {{$select.selected[autocompleteData.titleProperty] || item.value}}
                             </ui-select-match>
                             <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search)"
-                                               refresh-delay="50"
+                                               refresh-delay="300"
                                                repeat="field[item.autocompleteData.valueProperty] as field in items track by field[item.autocompleteData.orderBy]">
                                <span title="{{field[item.autocompleteData.titleProperty]}}">
                                  {{field[item.autocompleteData.titleProperty]}}
@@ -452,8 +472,9 @@
                           <span ng-message="FileSign">Підпис не валідний або відсутній</span>
                           <span ng-message="FileExtensions">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
                           <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
+                          <span ng-message="OrderValue">Такого номеру не існує</span>
                         </div>
-
+                        </div>
                       </td>
 
                       <td style="padding: 0;" ng-if="$index !== 0">
@@ -468,7 +489,7 @@
                   </table>
 
                   <div style="text-align: left; margin-top: 3px">
-                    <input type="button" ng-hide="rowLengthCheckLimit(property)" class="add-row-button" ng-click="addRow(form[tableName], property.id, tableName)" value="Додати рядок">
+                    <a ng-hide="rowLengthCheckLimit(property)" ng-click="addRow(form[tableName], property.id, tableName)">+ Додати рядок</a>
                   </div>
                 </div>
 
@@ -480,7 +501,29 @@
                        ng-required="isFieldRequired(property)"
                        ng-class="getBpAndFieldID(property)"
                        class="form-control"
+                       ng-if="!isOKPOField(property.id)"
                        value="">
+
+                <!--field for OKPO search start-->
+                <div ng-switch-when="string" ng-if="isOKPOField(property.id)">
+                  <div class="okpo" ng-if="isOKPOField(property.id)">
+                    <input type="text"
+                           name="{{property.id}}"
+                           ng-model="data.formData.params[property.id].value"
+                           ng-required="isFieldRequired(property)"
+                           ng-class="getBpAndFieldID(property)"
+                           ng-change="getOrgData(data.formData.params[property.id].value, property.id)"
+                           class="form-control okpo-field"
+                           ng-model-options="{debounce:1000}"
+                           value="">
+                    <p style="font-size: 14px;">Після того, як Ви напишете ЗКПО, поля нижче будуть заповнені автоматично.
+                                                Дані юрособи можуть бути застарілими (затримка до одного тижня), тому
+                                                Ви маєте можливість їх редагувати.</p>
+                    <span class="small-loading okpo-spinner"
+                          ng-if="orgIsLoading.status && orgIsLoading.field === property.id"></span>
+                  </div>
+                </div>
+                <!--field for OKPO search end-->
 
                 <button ng-switch-when="string"
                         type="button"
@@ -660,6 +703,7 @@
                     <input type="checkbox"
                            id="{{property.id}}"
                            name="{{property.id}}"
+                           ng-class="getBpAndFieldID(property)"
                            ng-model="data.formData.params[property.id].value"
                            ng-true-value="'{{data.checkbox[property.id].trueValue}}'"
                            ng-false-value="'{{data.checkbox[property.id].falseValue}}'"
@@ -718,11 +762,11 @@
                              on-select="onSelectDataList($item)">
 
                     <ui-select-match>
-                      {{$select.selected[property.autocompleteData.valueProperty]}}
+                      {{$select.selected[property.autocompleteData.valueProperty] || data.formData.params[property.id].value}}
                     </ui-select-match>
 
                     <ui-select-choices refresh="refreshList(property.autocompleteData.titleProperty, $select.search)"
-                                       refresh-delay="50"
+                                       refresh-delay="300"
                                        repeat="item[property.autocompleteData.valueProperty] as item in items track by item[property.autocompleteData.orderBy]">
                       <span title="{{item[property.autocompleteData.titleProperty]}}">
                         {{item[property.autocompleteData.titleProperty]}}
@@ -743,34 +787,38 @@
                        value="">
               </div>
 
-              <div class="col-md-4 validation-message"
-                   ng-if="form.$submitted"
-                   ng-messages="form[property.id].$error">
-                <div ng-message="required">Необхідно заповнити.</div>
-                <div ng-message="pattern">Значення має бути числом.</div>
-                <div ng-message="email">Помилка в email.</div>
-                <div ng-message="tel">Помилка в номері телефону.</div>
-                <div ng-message="autovin">Помилка у VIN-номері авто.</div>
-                <div ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</div>
-                <div ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</div>
-                <div ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</div>
-                <div ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
-                  х-місяців, х-років.
+              <div class="col-md-4 validation-message">
+                <div ng-if="form.$submitted" ng-messages="form[property.id].$error">
+                  <div ng-message="required">Необхідно заповнити.</div>
+                  <div ng-message="pattern">Значення має бути числом.</div>
+                  <div ng-message="email">Помилка в email.</div>
+                  <div ng-message="tel">Помилка в номері телефону.</div>
+                  <div ng-message="autovin">Помилка у VIN-номері авто.</div>
+                  <div ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</div>
+                  <div ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</div>
+                  <div ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</div>
+                  <div ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
+                    х-місяців, х-років.
+                  </div>
+                  <div ng-message="string">{{ form[property.id].lastErrorMessage }}</div>
+                  <div ng-message="long">{{ form[property.id].lastErrorMessage }}</div>
+                  <div ng-message="double">{{ form[property.id].lastErrorMessage }}</div>
+                  <div ng-message="numberbetween">{{ form[property.id].lastErrorMessage }}</div>
+                  <div ng-message="numberfractionalbetween">{{ form[property.id].lastErrorMessage }}</div>
+                  <div ng-message="numbersaccounts">{{ form[property.id].lastErrorMessage }}</div>
+                  <div ng-message="dateofbirth">{{ form[property.id].lastErrorMessage }}</div>
+                  <div ng-message="CustomFormat">{{ form[property.id].lastErrorMessage }}</div>
+                  <div ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</div>
+                  <div ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</div>
+                  <div ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</div>
+                  <div ng-message="FileSign">Підпис не валідний або відсутній</div>
+                  <div ng-message="FileExtensions">{{ form[property.id].lastErrorMessage }}</div>
+                  <div ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</div>
                 </div>
-                <div ng-message="string">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="long">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="double">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="numberbetween">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="numberfractionalbetween">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="numbersaccounts">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="dateofbirth">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="CustomFormat">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</div>
-                <div ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</div>
-                <div ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</div>
-                <div ng-message="FileSign">Підпис не валідний або відсутній</div>
-                <div ng-message="FileExtensions">{{ form[property.id].lastErrorMessage }}</div>
-                <div ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</div>
+                <div ng-if="form[property.id].$dirty" ng-messages="form[property.id].$error">
+                  <div ng-message="OrderValue">Такого номеру не існує</div>
+                </div>
+
               </div>
 
             </div>

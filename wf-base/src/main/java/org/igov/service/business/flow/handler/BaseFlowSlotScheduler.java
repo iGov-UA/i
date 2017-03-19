@@ -4,7 +4,9 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.Assert;
 import org.igov.model.flow.FlowSlot;
-import org.igov.model.flow.Flow_ServiceData;
+import org.igov.model.flow.Flow;
+
+import java.util.List;
 
 /**
  * User: goodg_000
@@ -16,8 +18,9 @@ public abstract class BaseFlowSlotScheduler implements FlowPropertyHandler<FlowS
     protected DateTime startDate;
     protected DateTime endDate;
     protected int defaultIntervalDaysLength;
-    protected Flow_ServiceData flow;
-
+    protected Flow flow;
+    protected List<ExcludeDateRange> aDateRange_Exclude;
+    
     public DateTime getStartDate() {
         return startDate;
     }
@@ -43,11 +46,11 @@ public abstract class BaseFlowSlotScheduler implements FlowPropertyHandler<FlowS
         this.defaultIntervalDaysLength = defaultIntervalDaysLength;
     }
 
-    public Flow_ServiceData getFlow() {
+    public Flow getFlow() {
         return flow;
     }
 
-    public void setFlow(Flow_ServiceData flow) {
+    public void setFlow(Flow flow) {
         this.flow = flow;
     }
 
@@ -56,6 +59,14 @@ public abstract class BaseFlowSlotScheduler implements FlowPropertyHandler<FlowS
         return FlowSlot.class;
     }
 
+    public List<ExcludeDateRange> getaDateRange_Exclude() {
+        return aDateRange_Exclude;
+    }
+
+    public void setaDateRange_Exclude(List<ExcludeDateRange> aDateRange_Exclude) {
+        this.aDateRange_Exclude = aDateRange_Exclude;
+    }
+    
     protected void prepareInterval() {
         if (startDate == null) {
             startDate = DateTime.now();

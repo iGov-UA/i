@@ -69,6 +69,11 @@ angular.module('dashboardJsApp')
             } else {
               return sID;
             }
+      },
+
+      getProcessID: function (sID) {
+        return processesDefinitions[sID].id;
       }
+
     };
   });

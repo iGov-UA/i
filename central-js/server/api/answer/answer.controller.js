@@ -17,11 +17,13 @@ function getOptions(req) {
 module.exports.getDecrypted = function (req, res) {
   var qOptions = getOptions(req);
   var fileName = req.query.fileName || 'file.txt';
-  var url = qOptions.protocol + '://' + qOptions.hostname + qOptions.path + '/object/file/download_file_from_redis_bytes';
+  // var url = qOptions.protocol + '://' + qOptions.hostname + qOptions.path + '/object/file/download_file_from_redis_bytes';
+  var url = qOptions.protocol + '://' + qOptions.hostname + qOptions.path + '/object/file/getProcessAttach';
   var options = {
     url: url,
     json: true,
-    qs: {key: req.query.signedFileID},
+    // qs: {key: req.query.signedFileID},
+    qs: {sKey: req.query.signedFileID, sID_StorageType: 'Redis'},
     auth: {username: qOptions.username, password: qOptions.password}
   };
 
@@ -43,11 +45,12 @@ module.exports.getDecrypted = function (req, res) {
 module.exports.getJSON = function(req, res){
   var qOptions = getOptions(req);
   var fileName = req.query.fileName || 'file.txt';
-  var url = qOptions.protocol + '://' + qOptions.hostname + qOptions.path + '/object/file/download_file_from_redis_bytes';
+  // var url = qOptions.protocol + '://' + qOptions.hostname + qOptions.path + '/object/file/download_file_from_redis_bytes';
+  var url = qOptions.protocol + '://' + qOptions.hostname + qOptions.path + '/object/file/getProcessAttach';
   var options = {
     url: url,
     json: true,
-    qs: {key: req.query.signedFileID},
+    qs: {sKey: req.query.signedFileID, sID_StorageType: 'Redis'},
     auth: {username: qOptions.username, password: qOptions.password}
   };
 

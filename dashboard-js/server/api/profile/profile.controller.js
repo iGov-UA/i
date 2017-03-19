@@ -35,14 +35,11 @@ exports.getSubjects = function (req, res) {
 
 
 exports.changePassword = function (req, res) {
-  console.log(req.body);
+  //console.log(req.body);
   activiti.post({
     path: 'action/task/changePassword',
     query: {
-      sLoginOwner: req.body.sLoginOwner,
-      sPasswordOld: req.body.sPasswordOld,
-      sPasswordNew: req.body.sPasswordNew,
-      sContentType: 'text/html'
+      sLoginOwner: req.body.sLoginOwner
     },
     headers: {
       'Content-Type': 'text/html;charset=utf-8'
@@ -52,6 +49,9 @@ exports.changePassword = function (req, res) {
     console.log(statusCode);
     console.log(result);
     error ? res.send(error) : res.status(statusCode).json(result);
-  }, req.body.sContent, false);
+  }, JSON.stringify({
+    sPasswordOld: req.body.sPasswordOld,
+    sPasswordNew: req.body.sPasswordNew
+  }), false);
 };
 
