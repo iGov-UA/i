@@ -92,11 +92,11 @@ public class DocumentCommonController {
             @ApiParam(value = "группа", required = true) @RequestParam(required = true, value = "sKey_Group") String sKey_Group,
             @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step) throws Exception {
 
-        LOG.info("snID_Process_Activiti in cloneDocumentStepSubject: {}", snID_Process_Activiti);
-        LOG.info("sKey_Group in cloneDocumentStepSubject: {}", sKey_Group);
-        LOG.info("sKey_Step in cloneDocumentStepSubject: {}", sKey_Step);
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        LOG.info("sKey_Group={}", sKey_Group);
+        LOG.info("sKey_Step={}", sKey_Step);
 
-        Boolean bCanceled = documentStepService.cancelDocumentSubmit(snID_Process_Activiti, sKey_Group, sKey_Step);
+        Boolean bCanceled = documentStepService.cancelDocumentSubmit(snID_Process_Activiti, sKey_Step, sKey_Group);
         
         LOG.info("bCanceled={}", bCanceled);
         

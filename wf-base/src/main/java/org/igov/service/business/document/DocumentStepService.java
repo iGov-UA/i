@@ -602,12 +602,11 @@ public class DocumentStepService {
 
     
     
-    public Boolean cancelDocumentSubmit(String snID_Process_Activiti,
-            String sKey_Group, String sKey_Step) throws Exception {
+    public Boolean cancelDocumentSubmit(String snID_Process_Activiti, String sKey_Step, String sKey_Group) throws Exception {
 
         LOG.info("started...");
-        LOG.info("sKey_GroupPostfix={}, snID_Process_Activiti={}, sKey_Step={}",
-                sKey_Group, snID_Process_Activiti, sKey_Step);
+        LOG.info("snID_Process_Activiti={}, sKey_Step={}, sKey_Group={}",
+                snID_Process_Activiti, sKey_Step, sKey_Group);
 
         Boolean bCanceled = false;
 
@@ -616,16 +615,16 @@ public class DocumentStepService {
                 List<DocumentStep> aDocumentStep
                         = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
                 LOG.info("aDocumentStep={}", aDocumentStep);
-                final String SKEY_STEP_DOCUMENT_TO = sKey_Step;
+                final String SKEY_STEP_DOCUMENT = sKey_Step;
                 DocumentStep oDocumentStep = aDocumentStep
                         .stream()
-                        .filter(o -> SKEY_STEP_DOCUMENT_TO == null ? o.getnOrder().equals(1)
-                        : o.getsKey_Step().equals(SKEY_STEP_DOCUMENT_TO))
+                        .filter(o -> SKEY_STEP_DOCUMENT == null ? o.getnOrder().equals(1)
+                        : o.getsKey_Step().equals(SKEY_STEP_DOCUMENT))
                         .findAny()
                         .orElse(null);
                 LOG.info("oDocumentStep={}", oDocumentStep);
                 if (oDocumentStep == null) {
-                    throw new IllegalStateException("There is no active Document Step, process variable sKey_Step_Document="
+                    throw new IllegalStateException("There is no active Document Step, process variable sKey_Step="
                             + sKey_Step);
                 }
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
@@ -636,7 +635,7 @@ public class DocumentStepService {
                     if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_Group)) {
                         if (oDocumentStepSubjectRight.getsDate() != null) {
                             LOG.info("DocumentStepSubjectRight equals _From with date {}: "
-                                    + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                                    + "sKey_Group is: {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
                             oDocumentStepSubjectRight.setsDate(null);
                             oDocumentStepSubjectRight.setsDateECP(null);
                             oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
