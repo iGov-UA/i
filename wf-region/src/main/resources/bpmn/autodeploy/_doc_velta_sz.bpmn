@@ -63,7 +63,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення стосовно пропозиції" type="enum" required="true">
@@ -71,7 +71,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sAccept" name="відправити на розгляд відповідальному підрозділу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('velta/sTable2_doc_velta_sz.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть відповідальний підрозділ" type="enum">
+          <activiti:value id="sJustice" name="Юридичний"></activiti:value>
+          <activiti:value id="sFinance" name="Фінансовий"></activiti:value>
+          <activiti:value id="sFinJust" name="Юридичний та Фінансовий"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
@@ -99,7 +103,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Погодження контракту]]></activiti:string>
+          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Відповідь на службову записку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[Шановний Колего<br>
@@ -107,7 +111,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 Коментар до рішення:<br>
 ${sComment}<br>
 <br>
---
+--<br>
 ТОВ ВКФ «ВЕЛТА»<br>
 Тел./факс: (056) 370-93-93, 732-04-04<br>
 e-mail: office@velta-ua.com<br>]]></activiti:expression>
@@ -119,15 +123,42 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
     <sequenceFlow id="flow52" sourceRef="exclusivegateway3" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sAccept'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask5" name="переключение степа на 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask5" name="переключение степа на 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-  var sKey_GroupPostfix = '_default_Velta_head'
-  var sID_Field = 'sTable2'
-  var sKey_Step_Document_To = 'step_3'
-  var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step_Document_To)		</script>
-    </scriptTask>
+var snID_Process_Activiti = execution.getProcessInstanceId();
+var sKey_Step= 'step_2';
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step);
+
+// клонирование прав на 2-й шаг
+var who = execution.getVariable('sTable2');
+switch (who){
+case 'sFinance':
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Finance';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+break;
+case 'sJustice':
+var sKey_GroupPostfix_New = 'Velta_Justice_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Justice';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+break;
+case 'sFinJust':
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Finance';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+
+var sKey_GroupPostfix_New = 'Velta_Justice_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Justice';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+
+break;
+default:
+    alert('А так работать не должно');
+    break;
+}
+</script>
+</scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask5" name="Відповідальний підрозділ. Підготовка відповіді на пропозицію">
       <extensionElements>
@@ -135,8 +166,8 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string" writable="false"></activiti:formProperty>
@@ -191,7 +222,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="1"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string" writable="false"></activiti:formProperty>
@@ -222,7 +253,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Погодження контракту]]></activiti:string>
+          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Відповідь на службову записку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[Шановний Колего<br>
@@ -230,7 +261,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 Результати аналізу:<br>
 ${sResult}<br>
 <br>
---
+--<br>
 ТОВ ВКФ «ВЕЛТА»<br>
 Тел./факс: (056) 370-93-93, 732-04-04<br>
 e-mail: office@velta-ua.com<br>]]></activiti:expression>
@@ -251,7 +282,7 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Погодження контракту]]></activiti:string>
+          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Відповідь на службову записку]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[Шановний Колего<br>
@@ -260,7 +291,7 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
 ${sResult}<br>
 Дуже дякуємо за важливу пропозицію.<br>
 <br>
---
+--<br>
 ТОВ ВКФ «ВЕЛТА»<br>
 Тел./факс: (056) 370-93-93, 732-04-04<br>
 e-mail: office@velta-ua.com<br>]]></activiti:expression>
