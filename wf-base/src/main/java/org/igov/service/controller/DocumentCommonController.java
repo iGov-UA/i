@@ -89,7 +89,7 @@ public class DocumentCommonController {
     String syncDocumentSubmitersByField(
             @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
             @ApiParam(value = "группа - эталон/дэфолтная", required = true) @RequestParam(required = true, value = "sKeyGroup_Default") String sKey_Group_Default,
-            @ApiParam(value = "новая группа", required = true) @RequestParam(required = true, value = "sID_Field") String sID_Field,
+            @ApiParam(value = "строка-ИД поля, в рамках значения/ний которого(логинов) пройдет синхронизация", required = true) @RequestParam(required = true, value = "sID_Field") String sID_Field,
             @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
             @ApiParam(value = "перезаписать при совпадении", required = true) @RequestParam(required = true, value = "bReClone") boolean bReClone
     ) throws Exception {
