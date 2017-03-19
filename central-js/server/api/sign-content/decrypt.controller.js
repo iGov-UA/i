@@ -23,8 +23,7 @@ module.exports.decryptContent = function (req, res) {
     , userService = authProviderRegistry.getUserService(type)
     , fileName = req.query.sName
     , restoreUrl = req.query.restoreUrl
-    , id = req.query.nID
-    , storageType = 'Redis';
+    , id = req.query.nID;
 
   var serverId = req.query.nID_Server || req.body.nID_Server;
   var nID_Server = (!serverId || serverId < 0) && serverId !== 0 ? config.activiti.nID_Server : serverId;
@@ -47,14 +46,7 @@ module.exports.decryptContent = function (req, res) {
   var objectsToSign = [];
 
   function getContentBuffersAsync(result, callbackAsync) {
-    var params = {};
-
-    if(formID && formID.indexOf('sKey') > -1) {
-      formID = JSON.parse(formID).sKey;
-    }
-    params.ID = formID;
-    params.storageType = storageType;
-    uploadFileService.downloadBuffer(params, function (error, response, buffer) {
+    uploadFileService.downloadBuffer(formID, function (error, response, buffer) {
       objectsToSign.push({
         name: 'file',
         options: {
@@ -197,12 +189,8 @@ module.exports.callback = function (req, res) {
         callback(errors.createExternalServiceError('Can\'t save signed content. Unknown error', error), null);
       } else if (body.code && body.message) {
         callback(errors.createExternalServiceError('Can\'t save content. ' + body.message, body), null);
-      // } else if (body.fileID) {
-      //   result.signedFileID = body.fileID;
-      //   callback(null, result);
-      // }
-      } else if (body.sKey) {
-        result.signedFileID = body.sKey;
+      } else if (body.fileID) {
+        result.signedFileID = body.fileID;
         callback(null, result);
       }
     }, sHost);
@@ -236,11 +224,10 @@ module.exports.callback = function (req, res) {
  */
 function loadContent(contentID, sURL, callback) {
   request.get({
-    url: sURL + 'service/object/file/getProcessAttach',
+    url: sURL + 'service/object/file/download_file_from_redis_bytes',
     auth: getAuth(),
     qs: {
-      sKey: contentID,
-      sID_StorageType : 'Redis'
+      key: contentID
     },
     json: true
   }, callback);

@@ -3,7 +3,7 @@
   <process id="_test_all_case" name="Тест всех методов" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Виберіть відділення" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Виберіть відділення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -60,16 +60,16 @@
         <activiti:formProperty id="nFileMail" name="Файл для мейла (старый листнер)" type="file"></activiti:formProperty>
         <activiti:formProperty id="warning_visitDay" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; Електронна черга тестується для sID_Public_SubjectOrganJoin = Тест _test_all_case (код черги щодо додавання слотів 408"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible" default="250"></activiti:formProperty>
 		<activiti:formProperty id="nDiffDays_visitDay" name="Кількість днів щодо пропуску слотів черги на вибір" type="string" default="4"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
 
         <activiti:formProperty id="asECP" name="Підписати ЕЦП" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/testPrint2.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/testPrint2.html"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_copy" name="markers test_all_case_copy" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_copy.json')}"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_start_style" name="markers test_all_case_start_style" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_start_style.json')}"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_start" name="markers test_all_case_start" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_start.json')}"></activiti:formProperty>
@@ -103,9 +103,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileUT1" name="Рахунок для сплати" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/testPrint2.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/testPrint2.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_user1" name="markers test_all_case_user1" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_user1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
 <!-- 
@@ -143,11 +143,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment2" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileUT2" name="Рішення" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/testPrint2.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/testPrint2.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_user2" name="markers test_all_case_user2" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_user2.json')}"></activiti:formProperty>
-
+<!-- 
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+ -->
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile0},${nFile1},${nFile2},${nFile3},${form_signed},${nFileMail},${nFileUT1}]]></activiti:expression>

@@ -62,7 +62,9 @@
 |Name|Description|Required|Schema|Default
 |afterNow||false|boolean|
 |beforeNow||false|boolean|
+|chronology||false|<<Chronology>>|
 |equalNow||false|boolean|
+|millis||false|integer (int64)|
 |===
 
 === Document
@@ -166,7 +168,6 @@
 |sData||false|string|
 |sDateTimeAt||false|string|
 |sDateTimeTo||false|string|
-|sGroup||false|string|
 |sLenType||false|string|
 |sName||false|string|
 |sRegionTime||false|string|
@@ -495,10 +496,7 @@
 [options="header"]
 |===
 |Name|Description|Required|Schema|Default
-|aSubjectGroupChilds||false|<<SubjectGroup>> array|
-|aUser||false|<<SubjectUser>> array|
 |nID||false|integer (int64)|
-|oSubject||false|<<Subject>>|
 |sChain||false|string|
 |sID_Group_Activiti||false|string|
 |sName||false|string|
@@ -512,11 +510,13 @@
 |aSubjectUser||false|<<SubjectUser>> array|
 |===
 
-=== SubjectGroupResultTree
+=== SubjectGroupTree
 [options="header"]
 |===
 |Name|Description|Required|Schema|Default
-|aSubjectGroupTree||false|<<SubjectGroup>> array|
+|nID||false|integer (int64)|
+|oSubjectGroup_Child||false|<<SubjectGroup>>|
+|oSubjectGroup_Parent||false|<<SubjectGroup>>|
 |===
 
 === SubjectHuman
@@ -524,7 +524,6 @@
 |===
 |Name|Description|Required|Schema|Default
 |aContact||false|<<SubjectContact>> array|
-|aSubjectHumanRole||false|<<SubjectHumanRole>> array|
 |nID||false|integer (int64)|
 |oDefaultEmail||false|<<SubjectContact>>|
 |oDefaultPhone||false|<<SubjectContact>>|
@@ -538,15 +537,6 @@
 |sSB||false|string|
 |sSurname||false|string|
 |subjectHumanIdType||false|enum (INN, Passport, Email, Phone)|
-|===
-
-=== SubjectHumanRole
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|aSubjectHuman||false|<<SubjectHuman>> array|
-|nID||false|integer (int64)|
-|sName||false|string|
 |===
 
 === SubjectOrgan
@@ -596,24 +586,6 @@
 |nID_SubjectOrganJoin||false|integer (int32)|
 |sID_UA||false|string|
 |sName_UA||false|string|
-|===
-
-=== SubjectRightBP
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sID_BP||false|string|
-|sID_Group||false|string|
-|sID_Place_UA||false|string|
-|===
-
-=== SubjectRightBPVO
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|oSubjectRightBP||false|<<SubjectRightBP>>|
-|sName_BP||false|string|
 |===
 
 === SubjectUser

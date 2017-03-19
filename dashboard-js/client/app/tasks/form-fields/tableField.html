@@ -28,18 +28,16 @@
 
       <tr ng-repeat="row in item.aRow track by $index" ng-init="rowIndex=$index">
 
-        <td ng-repeat="field in row.aField track by $index" style="border: 1px solid lightgrey" ng-hide="!isVisible(field)" ng-init=" $last ? onLoad(item) : angular.noop() ">
+        <td ng-repeat="field in row.aField track by $index" style="border: 1px solid lightgrey" ng-hide="!isVisible(field)">
 
           <div ng-if="['string'].indexOf(field.type) > -1">
             <input class="inputs-in-table"
-                   ng-init="field.value = ((field.value || field.default) || '')"
-                   ng-if='field.hasOwnProperty("default") && !field.hasOwnProperty("value") || !field.hasOwnProperty("default") && !field.hasOwnProperty("value")'
+                   ng-if='field.hasOwnProperty("default") || !field.hasOwnProperty("default") && !field.hasOwnProperty("value")'
                    name="{{field.id + rowIndex}}"
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-required="field.required"
-                   ng-model="field.value"
+                   ng-model="field.default"
                    ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
-                   ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                    type="text">
             <input class="inputs-in-table"
                    ng-if='field.hasOwnProperty("value")'
@@ -48,42 +46,36 @@
                    ng-required="field.required"
                    ng-model="field.value"
                    ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
-                   ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                    type="text">
           </div>
 
           <div ng-if="['enum'].indexOf(field.type) > -1">
             <select name="{{field.id + rowIndex}}"
-                    ng-init="field.value = ((field.value || field.default) || '')"
                     ng-required="field.required"
                     ng-model="field.value"
                     ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                     ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in field.a"
                     ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
-                    ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                     class="inputs-in-table">
             </select>
           </div>
 
           <div ng-if="['long', 'double'].indexOf(field.type) > -1">
             <input name="{{field.id + rowIndex}}"
-                   ng-init="field.value = ((field.value || field.default) || '')"
                    ng-if="field.hasOwnProperty('default') || !field.hasOwnProperty('default') && !field.hasOwnProperty('value')"
                    ng-required="field.required"
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                   ng-model="field.value"
+                   ng-model="field.default"
                    class="inputs-in-table"
                    ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
-                   ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                    type="number">
             <input name="{{field.id + rowIndex}}"
-                   ng-if="field.hasOwnProperty('value') && !field.hasOwnProperty('default')"
+                   ng-if="field.hasOwnProperty('value')"
                    ng-required="field.required"
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-model="field.value"
                    class="inputs-in-table"
                    ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
-                   ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                    type="number">
           </div>
 
@@ -95,11 +87,10 @@
                  ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                  ng-required="field.required"
                  ng-model="field.props.value"
-                 ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                  format="DD/MM/YYYY"/>
           </div>
 
-          <div ng-if="['select'].indexOf(field.type) > -1">
+          <div ng-if="['select'].indexOf(field.type) > -1" ng-class="getBpAndFieldID(field)">
               <ui-select dropdown-autocomplete ng-if="field.selectType=='autocomplete'"
                          ng-model="field.value"
                          name="{{field.id + rowIndex}}"
@@ -111,43 +102,17 @@
                          ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                          on-select="onSelectDataList($item, tableName, rowIndex, field)">
 
-                <ui-select-match title="{{$select.selected}}">
-                  {{selectedValue(field, $select.selected[autocompleteData.titleProperty]) || field.value}}
+                <ui-select-match>
+                  {{selectedValue(field, $select.selected[autocompleteData.titleProperty])}}
                 </ui-select-match>
                 <ui-select-choices refresh="refreshList(field.autocompleteData.titleProperty, $select.search, field.name)"
-                                   refresh-delay="300"
+                                   refresh-delay="50"
                                    repeat="item[field.autocompleteData.valueProperty] as item in items track by item[field.autocompleteData.orderBy]">
                                  <span title="{{item[field.autocompleteData.titleProperty]}}">
                                    {{item[field.autocompleteData.titleProperty]}}
                                  </span>
                 </ui-select-choices>
               </ui-select>
-          </div>
-
-          <div ng-if="['file'].indexOf(field.type) > -1">
-            <div class="dropup" style="display: inline-block; position:relative;">
-              <div class="file-modal table-file-modal dropdown-menu drop-up" role="menu">
-                <file-field name="{{field.id}}"
-                            ng-if="field.fileName"
-                            ng-disabled="isFormPropertyDisabled(field)"
-                            ng-model="field.value"
-                            ng-required="isRequired(field)">
-                </file-field>
-              </div>
-              <button style="position:relative;"
-                      ng-disabled="isFormPropertyDisabled(item) || isFileProcessUploading.bState"
-                      ng-if="field.fileName"
-                      type="button"
-                      data-toggle="dropdown"
-                      class="btn btn-default dropdown-toggle">{{field.fileName}}
-              </button>
-              <file-field name="{{field.id}}"
-                          ng-if="!field.fileName"
-                          ng-disabled="isFormPropertyDisabled(field)"
-                          ng-model="field.value"
-                          ng-required="isRequired(field)">
-              </file-field>
-            </div>
           </div>
 
           <div style="padding:5px"
@@ -177,7 +142,6 @@
             <span ng-message="FileSign">Підпис не валідний або відсутній</span>
             <span ng-message="FileExtensions">{{ form[tableName][field.id + rowIndex].lastErrorMessage }}</span>
             <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
-            <span ng-message="OrderValue">Такого номеру не існує</span>
           </div>
 
         </td>

@@ -1500,15 +1500,6 @@ angular.module('about').controller('aboutController', function ($scope) {
           "sInfo":"Координатор міста"
         },
         {
-          "sFbID":"100002941612810",
-          "sID_Group":"poltava.poltava.rada",
-          "sFIO":"Доровских Екатерина",
-          "sURL":"https://www.facebook.com/ekaterina.podporinova",
-          "sPhoto":"https://scontent.xx.fbcdn.net/v/t1.0-1/c170.50.621.621/s160x160/320408_309396579168393_2073259286_n.jpg?oh=c02b0a032da4f597a4ec23fd758709a3&oe=5904A20A",
-          "sCity":"Полтава"
-        },
-        
-         {
           "sFbID":"100000482124890",
           "sID_Group":"poltava.poltava.rada",
           "sFIO":"Гончаренко Альона",
@@ -1516,7 +1507,6 @@ angular.module('about').controller('aboutController', function ($scope) {
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12191060_1242068505819208_8508880021504014101_n.jpg?oh=e160cedada87fed81f31e1a33eae74c7&oe=5818EA92",
           "sCity":"Полтава"
         },
-        
         {
           "sFbID":"1659350875",
           "sID_Group":"poltava.poltava.rada",

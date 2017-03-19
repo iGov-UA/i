@@ -24,14 +24,6 @@ angular.module('autocompleteService', [])
             valueProperty: 'sLogin',
             additionalValueProperty: 'sName'
         },
-        SubjectRoleDept: {
-            apiUrl: './api/subject-role',
-            titleProperty: 'sName',
-            orderBy: 'sID_Group_Activiti',
-            prefixAssociatedField: 'sID_Group_Activiti',
-            valueProperty: 'sID_Group_Activiti',
-            additionalValueProperty: 'sName'
-        },
         SubjectOrganJoinTax: {
             valueProperty: 'sName_UA',
             titleProperty: 'sName_UA',

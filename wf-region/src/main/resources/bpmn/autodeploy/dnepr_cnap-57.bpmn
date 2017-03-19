@@ -79,8 +79,8 @@
           <activiti:value id="no" name="не буде використовуватись"></activiti:value>
           <activiti:value id="yes" name="буде використовуватись"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="work" name="Види робіт підвищеної небезпеки; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="avto" name="Найменування машин, механізмів устатковання підвищеної небезпеки; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="work" name="Види робіт підвищеної небезпеки" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="avto" name="Найменування машин, механізмів устатковання підвищеної небезпеки" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="brand" name="Зазначте марку, номер партії, дату виготовлення, країну походження машин" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="workspace" name="Зазначте загальну кількість робочих місць, в тому числі тих, на яких існує підвищений ризик виникнення травм" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="workspace1" name="Зазначте кількість робочих місць, на яких існує підвищений ризик виникнення травм" type="long" required="true"></activiti:formProperty>
@@ -93,8 +93,8 @@
         <activiti:formProperty id="doks" name="Надайте інформацію про експлуатаційну документацію" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="indZahist" name="Надайте інформацію про засоби індивідуального захисту" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="metodika" name="Надайте інформацію про нормативно-правову та матеріально-технічну бази, навчально-методичне забезпечення" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sClerkPost" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="Регион" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;name&quot;,&quot;Reestr&quot;,&quot;edrpou&quot;,&quot;kved&quot;,&quot;PIB&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;client&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'JUR'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bankIdPassport&quot;,&quot;bankIdAddress&quot;,&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;client&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'FOP'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;work1&quot;,&quot;work2&quot;,&quot;work3&quot;,&quot;work4&quot;,&quot;work5&quot;,&quot;work6&quot;,&quot;work7&quot;,&quot;work8&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;workYN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;avto1&quot;,&quot;avto2&quot;,&quot;avto3&quot;,&quot;brand&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;avtoYN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -173,7 +173,7 @@
           <activiti:value id="no" name="декларацію не зареєстровано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="vidpovid" name="Додайте скановану відповідь реєстратора" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_57_print.html]; ;bVisible=false" type="string" default="Декларація відповідності матеріально-технічної бази роботодавця вимогам законодавства з питань охорони праці та промислової безпеки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_57_print.html]" type="invisible" default="Декларація відповідності матеріально-технічної бази роботодавця вимогам законодавства з питань охорони праці та промислової безпеки" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="usertask4"></sequenceFlow>
@@ -295,7 +295,7 @@ ${otkaz1} &lt;br&gt;
         </activiti:formProperty>
         <activiti:formProperty id="otkaz1" name="Вкажіть, яких саме документів та(або) даних не вистачає (заповнювати не обов'язково)" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_57_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_57_print.html]; ;bVisible=false" type="string" default="Декларація відповідності матеріально-технічної бази роботодавця вимогам законодавства з питань охорони праці та промислової безпеки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_57_print.html]" type="invisible" default="Декларація відповідності матеріально-технічної бази роботодавця вимогам законодавства з питань охорони праці та промислової безпеки" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>

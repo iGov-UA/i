@@ -10,14 +10,14 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Наложение ЭЦП на дефолтную форму;;bPrintFormFileAsPDF=true" type="file"></activiti:formProperty>
         <!--<activiti:formProperty id="markers1" name="extended_marker" type="markers" default="${markerService.loadFromFile('test_folder/test_ECP_signing.json')}" ></activiti:formProperty> -->
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/_test_autosign_printform_ECP.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/_test_autosign_printform_ECP.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Прийняття рішення про надання послуги" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/_test_autosign_printform_ECP.html]; ;bVisible=false" type="string" default="_test_autosign_printform_ECP.html" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/_test_autosign_printform_ECP.html]" type="invisible" default="_test_autosign_printform_ECP.html" writable="false"></activiti:formProperty>
 <!--        <activiti:formProperty id="PrintForm_1" name="File label;File title;bPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file"></activiti:formProperty> -->
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
 

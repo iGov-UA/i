@@ -166,20 +166,11 @@ exports.post = function (options, onResult, data, json) {
  */
 exports.uploadStream = function (options, onResult) {
   var formData = {
-    nID_Process: options.nID_Process,
+    taskId: options.taskId,
     file: options.stream,
-    sFileNameAndExt: options.sFileNameAndExt.replace(new RegExp(/[*|\\:"<>?/]/g), "")
-  };
-  if(options.sID_Field){
-    formData.sID_Field = options.sID_Field;
-  }
-  if(options.sLogin){
-    formData.sLogin = options.sLogin;
-  }
-  if(options.sKey_Step){
-    formData.sKey_Step = options.sKey_Step;
-  }
-  var content = {
+    description: options.description,
+    sID_Field: options.sID_Field
+  }, content = {
     url: getRequestURL(options),
     formData: formData,
     headers: default_headers

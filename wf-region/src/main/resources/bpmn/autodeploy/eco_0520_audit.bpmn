@@ -54,8 +54,8 @@
         <activiti:formProperty id="sDocScientificDegree" name="Копія документа для підтвердження наукового ступеня;якщо декілька, завантажте архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocForeignDiploma" name="Копія довідки про визнання іноземного документа про освіту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocFoto" name="Фотокартка;3х4, з білим фоном" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNotification_day" name="нагадування; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="маркер якщо є практичний досвід роботи з екологічного аудиту" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPracticalExperience&quot;, &quot;markers9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saQuestion1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="маркер якщо є Науковий ступінь" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDocScientificDegree&quot;,&quot;sScienceDegree&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saQuestion2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="маркер якщо є Наукові праці" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sResearch&quot;, &quot;markers10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saQuestion3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
@@ -74,7 +74,7 @@
         <activiti:formProperty id="sWork" name="основне місце роботи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="посада; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresWork" name="місцезнаходження місця роботи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTotalYear" name="Всього років; діяльності у сфері охорони навколишнього природного середовища; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTotalYear" name="Всього років; діяльності у сфері охорони навколишнього природного середовища" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація;заповніть у разі необхідності" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Укажіть дату реєстрації звернення" type="date" required="true"></activiti:formProperty>
@@ -84,12 +84,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNotification_day" name="нагадування; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/eco/eco_0520_audit_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/eco/eco_0520_audit_card_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]; ;bVisible=false" type="string" default="особиста картка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]" type="invisible" default="особиста картка" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -111,7 +111,7 @@
         <activiti:formProperty id="sWork" name="основне місце роботи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="посада; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresWork" name="місцезнаходження місця роботи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTotalYear" name="Всього років; діяльності у сфері охорони навколишнього природного середовища; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTotalYear" name="Всього років; діяльності у сфері охорони навколишнього природного середовища" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація;заповніть у разі необхідності" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
@@ -125,12 +125,12 @@
         <activiti:formProperty id="comment_2" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;comment_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'відмова у допуску до іспиту'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers15" name="маркер якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sDateExam&quot;,&quot;sTimeExam&quot;,&quot;sAddressExam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'||[sClient] == 'документи заявника погоджено, призначити дату іспиту'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNotification_day" name="нагадування; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/eco/eco_0520_audit_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/eco/eco_0520_audit_card_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]; ;bVisible=false" type="string" default="особиста картка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]" type="invisible" default="особиста картка" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${sDocEmploymentHistory},${sDocInternship},${sDocDiploma},${sDocForeignDiploma},${sDocScientificDegree},${sDocLearning},${sDocFoto},${sEducation},${slanguage},${sEcoActivity},${sEducationTraining},${sPracticalExperience},${sResearch}</activiti:expression>
@@ -151,7 +151,7 @@
         <activiti:formProperty id="sWork" name="основне місце роботи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="посада; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresWork" name="місцезнаходження місця роботи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTotalYear" name="Всього років; діяльності у сфері охорони навколишнього природного середовища; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTotalYear" name="Всього років; діяльності у сфері охорони навколишнього природного середовища" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація;заповніть у разі необхідності" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
@@ -163,12 +163,12 @@
         <activiti:formProperty id="comment_3" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="маркер якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;comment_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'||[sClient] == 'рішення про відмову у видачі сертифіката'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers16" name="маркер якщо видача" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sAddressSertificate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'||[sClient] == 'рішення про видачу сертифіката'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNotification_day" name="нагадування; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="нагадування" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/eco/eco_0520_audit_print.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/eco/eco_0520_audit_card_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]; ;bVisible=false" type="string" default="особиста картка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_0520_audit_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/eco/eco_0520_audit_card_print.html]" type="invisible" default="особиста картка" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${sDocEmploymentHistory},${sDocInternship},${sDocDiploma},${sDocForeignDiploma},${sDocScientificDegree},${sDocLearning},${sDocFoto},${sEducation},${slanguage},${sEcoActivity},${sEducationTraining},${sPracticalExperience},${sResearch}</activiti:expression>

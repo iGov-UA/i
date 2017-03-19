@@ -54,7 +54,7 @@ public class DefaultFlowSlotScheduler extends BaseFlowSlotScheduler {
 
         DefaultFlowSlotGenerator generator = new DefaultFlowSlotGenerator();
         List<FlowSlot> generatedSlots = generator.generateObjects(configuration, startDate, endDate,
-                maxGeneratedSlotsCount, defaultFlowSlotName, aDateRange_Exclude);
+                maxGeneratedSlotsCount, defaultFlowSlotName);
 
         MultiValueMap<String, FlowSlot> flowSlotsGeneratedByDuration = new LinkedMultiValueMap<>();
         for (FlowSlot slot : generatedSlots) {

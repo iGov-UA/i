@@ -68,7 +68,6 @@ public class Mail extends Abstract_Mail {
 
     @Override
     public void send() throws EmailException {
-        LOG.info("send mail started...");
         LOG.info("(getFrom()={})", getFrom());
         LOG.info("(getTo()={})", getTo());
         String sTo = getTo();
@@ -121,12 +120,10 @@ public class Mail extends Abstract_Mail {
         } else {
             sendAlternativeWay(sbBody.toString());
         }
-        
-        LOG.info("send mail ended ehith sbBody: " + sbBody.toString());
+
     }
 
     public void sendOld() throws EmailException {
-        LOG.info("sendOld started...");
         LOG.info("init");
         try {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
@@ -166,15 +163,10 @@ public class Mail extends Abstract_Mail {
 
             oSession = oMultiPartEmail.getMailSession();
             MimeMessage oMimeMessage = new MimeMessage(oSession);
-            
-            LOG.info("oMimeMessage oSession: " +  oSession);
-            
+
             //oMimeMessage.setFrom(new InternetAddress(getFrom(), "iGov", DEFAULT_ENCODING));
             oMimeMessage.setFrom(new InternetAddress(getFrom(), getFrom()));
             //oMimeMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(sTo, sToName, DEFAULT_ENCODING));
-            
-            LOG.info("oMimeMessage From: " + getFrom());
-            
             String sReceiverName = "receiver";
             if (asTo.length == 1) {
                 sReceiverName = getToName();
@@ -190,24 +182,14 @@ public class Mail extends Abstract_Mail {
             //        new InternetAddress(sTo, "recipient", DEFAULT_ENCODING));
             //new InternetAddress(getTo(), "recipient", DEFAULT_ENCODING));
             oMimeMessage.setSubject(getHead(), DEFAULT_ENCODING);
-            LOG.info("oMimeMessage head: " + getHead());
-            
+
             _AttachBody(getBody());
-            LOG.info("(getBody()={})", getBody());
+            //LOG.info("(getBody()={})", getBody());
             oMimeMessage.setContent(oMultiparts);
-            LOG.info("oMimeMessage content: " + oMimeMessage.getContent().toString());
+
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
             //methodCallRunner.registrateMethod(Transport.class.getName(), "send", new Object[]{oMimeMessage});
-            
-            try{
-                
-                Transport.send(oMimeMessage);
-            }
-            catch(Exception ex){
-                LOG.info("There are some eroor during mail transport: " + ex);
-            }
-            
-            LOG.info("Mail was transported....");
+            Transport.send(oMimeMessage);
             LOG.info("Send " + getTo() + "!!!!!!!!!!!!!!!!!!!!!!!!");
         } catch (Exception oException) {
             LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
@@ -216,7 +198,6 @@ public class Mail extends Abstract_Mail {
                     + "Exception message: " + oException.getMessage(), oException);
         }
         LOG.info("SUCCESS: Sent!");
-        LOG.info("sendOld ended...");
     }
 
     public Mail _AttachBody(String sBody) {
@@ -248,7 +229,6 @@ public class Mail extends Abstract_Mail {
     }
 
     public Mail _Attach(DataSource oDataSource, String sFileName, String sDescription) {
-        LOG.info("_Attach started..");
         try {
             MimeBodyPart oMimeBodyPart = new MimeBodyPart();
             oMimeBodyPart.setHeader("Content-Type", "multipart/mixed");
@@ -260,7 +240,6 @@ public class Mail extends Abstract_Mail {
             LOG.error("FAIL: {} (sFileName={},sDescription={})", oException.getMessage(), sFileName, sDescription);
             LOG.trace("FAIL:", oException);
         }
-        LOG.info("_Attach ended..");
         return this;
     }
 
@@ -431,7 +410,6 @@ public class Mail extends Abstract_Mail {
     }
 
     private void sendAlternativeWay(String sbBody) {
-        LOG.info("sendAlternativeWay started...");
         try {
             sendOld();
         } catch (Exception oException1) {
@@ -445,7 +423,6 @@ public class Mail extends Abstract_Mail {
                         .save()
                 ;
         }
-        LOG.info("sendAlternativeWay ended...");
     }
 
 }

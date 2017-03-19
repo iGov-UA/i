@@ -41,7 +41,7 @@ public class ManagerSMS {
             .append("<body content-type=\"text/plain\" encoding=\"plain\">").append("%s")
             .append("</body>")
             .append("</message>").toString();*/
-    public String sendSms(String phone, String message, String sID_Order, boolean bTest) throws Exception {//, boolean bOldAPI
+     public String sendSms(String phone, String message, String sID_Order, boolean bTest) throws Exception {//, boolean bOldAPI
         
         String resp = "[none]";
 

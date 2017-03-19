@@ -32,12 +32,6 @@ public class MessageService {
         String sID_Order = oGeneralConfig.getOrderId_ByProcess(nID_Process);
         Map<String, String> params = new HashMap<>();
         params.put("sID_Order", sID_Order);
-        LOG.info("SelfHost in gerOrderMessagesByProcessInstanceID: {}", oGeneralConfig.getSelfHost());
-        
-        if(oGeneralConfig.getSelfHost().contains("region")){
-            params.put("isRegion", "true");
-        }
-        
         String soResponse = "";
         String sURL = oGeneralConfig.getSelfHostCentral() + "/wf/service/subject/message/getServiceMessages";
         soResponse = oHttpRequester.getInside(sURL, params);

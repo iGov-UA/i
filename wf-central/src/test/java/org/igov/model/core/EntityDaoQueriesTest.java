@@ -12,8 +12,6 @@ import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +38,7 @@ import org.junit.Ignore;
 @ActiveProfiles("default")
 @ContextConfiguration(locations = "classpath:/dao-test-context.xml")
 public class EntityDaoQueriesTest {
-    private static final Logger LOG = LoggerFactory.getLogger(EntityDaoQueriesTest.class);
+    private static final Log LOG = LogFactory.getLog(EntityDaoQueriesTest.class);
 
     private static final String[] QUERY_METHOD_PREFIXES = { "get", "search", "find" };
     private static final String LOG_SEPARATOR_LINE = StringUtils.repeat("=", 100);
@@ -198,7 +196,7 @@ public class EntityDaoQueriesTest {
     }
 
     private void handleTestedMethodException(Method testedMethod, Object[] randomParams, HibernateException e) {
-        LOG.error("Method invocation failed!", e);
+        LOG.error("Error: {}. Method invocation failed!", e.getCause());
         failedMethods
                 .add(String.format("Failed method: %s with params: %s", testedMethod, Arrays.toString(randomParams)));
     }

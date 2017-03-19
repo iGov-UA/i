@@ -149,19 +149,5 @@ public class Process extends AbstractEntity{
     public void setaAccessUser(List<AccessUser> aAccessUser) {
         this.aAccessUser = aAccessUser;
     }
-
-    @Override
-    public String toString() {
-        return "Process{" +
-                "sID_='" + sID_ + '\'' +
-                ", oSourceDB=" + oSourceDB +
-                ", oDateStart=" + oDateStart +
-                ", oDateFinish=" + oDateFinish +
-                ", sID_Data='" + sID_Data + '\'' +
-                ", aAttribute=" + aAttribute +
-                ", aProcessTask=" + aProcessTask +
-                ", aAccessGroup=" + aAccessGroup +
-                ", aAccessUser=" + aAccessUser +
-                '}';
-    }
+  
 }

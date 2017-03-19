@@ -91,7 +91,7 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
         return qb.toQuery().executeUpdate();
     }
 
-    private FlowSlot findSlotByDate(Flow flow, DateTime targetDateTime) {
+    private FlowSlot findSlotByDate(Flow_ServiceData flow, DateTime targetDateTime) {
         Criteria criteria = createCriteria();
         criteria.add(Restrictions.eq("flow", flow));
         criteria.add(Restrictions.eq("sDate", targetDateTime));

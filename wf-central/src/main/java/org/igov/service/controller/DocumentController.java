@@ -19,7 +19,7 @@ import org.igov.model.subject.Subject;
 import org.igov.service.business.access.BankIDUtils;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.business.document.access.handler.HandlerFactory;
-import org.igov.service.business.subject.SubjectActionKVEDService;
+import org.igov.service.business.subject.SubjectService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.ToolWeb;
@@ -43,7 +43,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
-import org.igov.service.business.subject.SubjectService;
 
 import static org.igov.util.JSON.JsonRestUtils.REASON_HEADER;
 import static org.igov.util.JSON.JsonRestUtils.toJsonErrorResponse;
@@ -84,8 +83,6 @@ public class DocumentController {
     private GridFsTemplate oGridFsTemplate;
     @Autowired
     private TaskService taskService;
-    @Autowired
-    private SubjectService subjectService;
 
     /**
      * получение документа по ид документа
@@ -334,7 +331,7 @@ public class DocumentController {
             @ApiParam(value = "контект в виде строки-обьекта", required = true) @RequestParam(value = "soDocumentContent") String sContent,
             HttpServletRequest request) throws IOException {
 
-        LOG.info("setDocument in documentController started");
+        SubjectService oManageSubject = new SubjectService();
 
         String sFileName = "filename.txt";
         String sFileContentType = "text/plain";
@@ -357,7 +354,7 @@ public class DocumentController {
                     "RequestParam 'nID_DocumentContentType' not found!", DocumentContentType.class);
         }
 
-        Subject subject_Upload = subjectService.syncSubject_Upload(sID_Subject_Upload);
+        Subject subject_Upload = oManageSubject.syncSubject_Upload(sID_Subject_Upload);
 
         String oSignData = BankIDUtils.checkECP(generalConfig, aoContent, sName);
 
@@ -392,6 +389,8 @@ public class DocumentController {
             @ApiParam(value = "обьект файла (тип MultipartFile)", required = false) @RequestParam(value = "oFile", required = false) MultipartFile oFile,
             @ApiParam(value = "обьект мультипартфайла", required = false) @RequestParam(value = "file", required = false) MultipartFile oFile2,
             HttpServletRequest request) throws IOException {
+
+        SubjectService oManageSubject = new SubjectService();
 
         if (oFile == null) {
             oFile = oFile2;
@@ -430,7 +429,7 @@ public class DocumentController {
         }
         byte[] aoContent = oFile.getBytes();
 
-        Subject subject_Upload = subjectService.syncSubject_Upload(sID_Subject_Upload);
+        Subject subject_Upload = oManageSubject.syncSubject_Upload(sID_Subject_Upload);
 
         String soSignData = BankIDUtils.checkECP(generalConfig, aoContent, sName);
 

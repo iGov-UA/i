@@ -5,25 +5,6 @@ var authProviderRegistry = require('../../auth/auth.provider.registry')
   , errors = require('../../components/errors');
 
 
-function removeEmptyFields(customer) {
-  iterateObj(customer, function (value, key) {
-    return value === '';
-  });
-  return customer;
-}
-
-function iterateObj(obj, filter) {
-  Object.keys(obj).forEach(function (key) {
-    if (typeof obj[key] === 'object') {
-      return iterateObj(obj[key], filter);
-    }
-    var isFiltered = filter(obj[key], key);
-    if (isFiltered) {
-      delete obj[key];
-    }
-  });
-}
-
 var finishRequest = function (req, res, err, result, userService) {
   if (err) {
     logger.info("[tryCache] error on cache search", {err: err});
@@ -45,7 +26,6 @@ var finishRequest = function (req, res, err, result, userService) {
         token: Admin.generateAdminToken()
       };
     }
-    removeEmptyFields(customer);
     res.send({
       customer: customer,
       admin: admin
@@ -58,12 +38,7 @@ module.exports.fio = function (req, res) {
   var account = req.session.account;
   var subjectID = req.session.subject.nID;
   //TODO remove subject from fio object
-  res.send({
-    firstName: account.firstName,
-    middleName: account.middleName,
-    lastName: account.lastName,
-    subjectID: subjectID
-  });
+  res.send({firstName: account.firstName, middleName: account.middleName, lastName: account.lastName, subjectID: subjectID});
 };
 
 module.exports.tryCache = function (req, res, next) {
@@ -96,12 +71,8 @@ module.exports.tryCache = function (req, res, next) {
       logger.info("[tryCache] doesn't have decrypt callback", {session_type: type});
     }
 
-    // activiti.get('/object/file/download_file_from_redis_bytes', {
-    //   key: req.session.usercacheid
-    // }, callback);
-    activiti.get('/object/file/getProcessAttach', {
-      sKey: req.session.usercacheid,
-      sID_StorageType: 'Redis'
+    activiti.get('/object/file/download_file_from_redis_bytes', {
+      key: req.session.usercacheid
     }, callback);
 
   } else {

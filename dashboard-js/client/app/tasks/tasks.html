@@ -53,59 +53,8 @@
           </div>
         </div>
 
-        <div class="row" ng-repeat="field in fieldFilter track by $index">
-        <div class="form-group col-sm-12">
-          <div class="col-sm-4 control-label">
-            <label ng-show="$index === 0">Фільтр по полях</label>
-          </div>
-          <div class="col-sm-8 filter-field-select" style="padding: 0">
-            <div class="col-sm-4">
-              <ui-select ng-model="field.select"
-                         theme="bootstrap"
-                         on-select="onSelectDataList($item, $index)">
-
-                <ui-select-match placeholder="Оберіть поле зі списку">
-                    <span title="{{$select.selected.sName}} ({{$select.selected.sID}})">
-                      {{$select.selected.sName}}
-                    </span>
-                </ui-select-match>
-
-                <ui-select-choices repeat="field in fieldList | filter:$select.search">
-                    <span title="{{field.sName}} ({{field.sID}})">
-                      {{field.sName}} ({{field.sID}})
-                    </span>
-                </ui-select-choices>
-              </ui-select>
-            </div>
-
-            <div class="col-sm-4">
-              <input placeholder="Пошук за значенням" type="text" ng-model="field.string" class="form-control">
-            </div>
-
-            <div class="col-sm-3">
-              <select class="form-control"
-                      ng-model="selectedFieldFilterValue"
-                      ng-options="opt.name for opt in filterFieldsOptions"
-                      ng-change="onSelectEnumFields(selectedFieldFilterValue, $index)"
-                      ng-if="field.select.sID_Type === 'string'">
-                <option value="{{opt.value}}"></option>
-              </select>
-            </div>
-
-            <div class="col-sm-1">
-              <button class="btn btn-default glyphicon glyphicon-remove"
-                      ng-click="removeFieldFilter($index)"
-                      style="color: red;"
-                      ng-if="$index !== 0">
-              </button>
-            </div>
-          </div>
-        </div>
-        </div>
-
         <div class="text task-filter">
           <button class="btn btn-info" ng-click="isFillterFormOpen=false;">Прийняти</button>
-          <button class="btn btn-default" ng-click="startFilter()">Фiльтрувати поля</button>
           <button class="btn btn-default" ng-click="resetTaskFilters();isFillterFormOpen=false;">Скинути фільтри</button>
         </div>
       </form>

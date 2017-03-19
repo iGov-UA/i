@@ -115,8 +115,8 @@ public class NotificationPatterns {
 
         try {
             //String sMailTo = sQuestion;
-            String sHead = "Верифікація адреси";
-            String sBody = "Код підтвердження: " + sToken;
+            String sHead = "Верификация адреса";
+            String sBody = "Код подтверждения: " + sToken;
             Mail oMail = context.getBean(Mail.class);
             oMail._To(sMailTo)
                     ._Head(sHead)

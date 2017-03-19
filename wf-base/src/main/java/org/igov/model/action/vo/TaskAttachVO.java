@@ -1,3 +1,4 @@
+
 package org.igov.model.action.vo;
 
 import java.util.List;
@@ -10,19 +11,12 @@ import java.util.Map;
 public class TaskAttachVO {
     
     private String sID_StorageType;
-    
     private String sKey;
-    
     private String sVersion;
-    
     private String sDateTime;
-    
-    private String sFileNameAndExt;
-    
+    private String sFileNameExt;
     private String sContentType;
-    
     private String nBytes;
-    
     private boolean bSigned;
     
     private List<Map<String, Object>> aAttribute;
@@ -46,8 +40,8 @@ public class TaskAttachVO {
         return sDateTime;
     }
 
-    public String getsFileNameAndExt() {
-        return sFileNameAndExt;
+    public String getsFileNameExt() {
+        return sFileNameExt;
     }
 
     public String getsContentType() {
@@ -82,8 +76,8 @@ public class TaskAttachVO {
         this.sDateTime = sDateTime;
     }
 
-    public void setsFileNameAndExt(String sFileNameExt) {
-        this.sFileNameAndExt = sFileNameExt;
+    public void setsFileNameExt(String sFileNameExt) {
+        this.sFileNameExt = sFileNameExt;
     }
 
     public void setsContentType(String sContentType) {

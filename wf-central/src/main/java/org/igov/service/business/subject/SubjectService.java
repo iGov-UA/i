@@ -5,7 +5,6 @@
  */
 package org.igov.service.business.subject;
 
-import com.google.common.base.Optional;
 import java.util.ArrayList;
 import java.util.List;
 import org.igov.model.subject.Subject;
@@ -19,8 +18,6 @@ import org.igov.model.subject.SubjectDao;
 import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.SubjectHumanIdType;
-import org.igov.model.subject.SubjectHumanRole;
-import org.igov.model.subject.SubjectHumanRoleDao;
 import org.igov.model.subject.organ.SubjectOrganDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,11 +43,9 @@ public class SubjectService {
     @Autowired
     private SubjectHumanDao subjectHumanDao;
     @Autowired
-    private SubjectContactTypeDao subjectContactTypeDao;
+    private SubjectContactTypeDao subjectContactTypeDao;    
     @Autowired
-    private SubjectActionKVEDDao subjectActionKVEDDao;
-    @Autowired
-    private SubjectHumanRoleDao subjectHumanRoleDao;
+    private SubjectActionKVEDDao subjectActionKVEDDao; 
    
     
     public Subject syncSubject_Upload(String sID_Subject_Upload) {
@@ -345,66 +340,5 @@ public class SubjectService {
     
     public List<SubjectActionKVED> getSubjectActionKVED(String sFind ) {
 	return subjectActionKVEDDao.getSubjectActionKVED(sFind);
-    }
-    public String setSubjectHumanRole(Long nID_SubjectHuman, Long nID_SubjectHumanRole) {
-        
-        try {
-            String res = "empty";    
-            Optional<SubjectHuman> oSubjectHuman = subjectHumanDao.findById(nID_SubjectHuman);
-//            System.out.println("oSubjectHuman");
-            Optional<SubjectHumanRole> oSubjectHumanRole = subjectHumanRoleDao.findById(nID_SubjectHumanRole);
-//            System.out.println("oSubjectHumanRole");
-            if (oSubjectHuman != null && oSubjectHumanRole != null) {
-
-//                System.out.println("SubjectHuman & SubjectHumanRole not null");
-//            String res = oSubjectHumanRole.toString();
-
-//            for (SubjectHumanRole oSubjectHumanRole : aSubjectHumanRole) {
-//               res = res + " " + oSubjectHumanRole.getName();
-//            }
-//            System.out.println("oSubjectHumanRole.toString(): " + res);
-                List<SubjectHumanRole> aCurrentSubjectHumanRole = oSubjectHuman.get().getaSubjectHumanRole();
-                if (aCurrentSubjectHumanRole.isEmpty()) {
-                    aCurrentSubjectHumanRole.add(oSubjectHumanRole.get());
-                } else {
-                    for (SubjectHumanRole subjectHumanRole : aCurrentSubjectHumanRole) {
-                        boolean bSubjectHumanRole = false;
-                        if (subjectHumanRole.getName().equals(oSubjectHumanRole.get().getName())) {
-                            bSubjectHumanRole = true;
-                        }
-                        if (bSubjectHumanRole == false) {
-                            aCurrentSubjectHumanRole.add(oSubjectHumanRole.get());
-                        }
-
-                    }
-                }
-                oSubjectHuman.get().setaSubjectHumanRole(aCurrentSubjectHumanRole);
-                subjectHumanDao.saveOrUpdate(oSubjectHuman.get());
-//                System.out.println("subjectHumanDao.saveOrUpdate(oSubjectHuman.get())");
-//                System.out.println("oSubjectHuman.getaSubjectHumanRole().toString(): " + oSubjectHuman.getaSubjectHumanRole().toString());
-                if (!oSubjectHuman.get().getaSubjectHumanRole().isEmpty()) {
-                    res = "";
-                    for (SubjectHumanRole oSubjectHumanRoleElem : oSubjectHuman.get().getaSubjectHumanRole()) {
-                        res = res + " " + oSubjectHumanRoleElem.getName();
-                    }
-                }
-            } else {
-//                System.out.println("SubjectHuman: " + oSubjectHuman.toString());
-//                System.out.println("SubjectHumanRole: " + oSubjectHumanRole.toString());
-            }
-            System.out.println("res: " + res);    
-            return res;
-        } catch (Exception ex) {
-            return ex.getMessage() + " : " + stackTraceToString(ex);
-        }
-    }
-
-    public String stackTraceToString(Throwable e) {
-        StringBuilder sb = new StringBuilder();
-        for (StackTraceElement element : e.getStackTrace()) {
-            sb.append(element.toString());
-            sb.append("\n");
-        }
-        return sb.toString();
     }
 }

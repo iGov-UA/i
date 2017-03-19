@@ -2,8 +2,6 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.*;
 import static java.lang.Math.toIntExact;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import org.igov.io.web.integration.queue.cherg.Cherg;
 import org.igov.model.flow.FlowProperty;
 import org.igov.model.flow.FlowSlotTicket;
@@ -38,9 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.igov.model.flow.FlowServiceDataDao;
-import org.igov.model.flow.FlowSlot;
-import org.igov.model.flow.FlowSlotDao;
-import org.igov.model.flow.Flow;
+import org.igov.model.flow.Flow_ServiceData;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
 import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
@@ -68,10 +64,7 @@ public class ActionFlowController {
     @Autowired
     private FlowServiceDataDao flowServiceDataDao;
 
-    @Autowired
-    private FlowSlotDao flowSlotDao;
 
-    
     /**
      * Получение слотов по сервису сгруппированных по дням.
      * 
@@ -138,127 +131,23 @@ public class ActionFlowController {
 	    @ApiParam(value = "булевое значение, если false то из возвращаемого объекта исключаются элементы, содержащие \"bHasFree\":false \"bFree\":false (опциональный, по умолчанию false)", required = false) @RequestParam(value = "bAll", required = false, defaultValue = "false") boolean bAll,
 	    @ApiParam(value = "число дней со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)", required = false) @RequestParam(value = "nFreeDays", required = false, defaultValue = "60") int nFreeDays,
 	    @ApiParam(value = "число дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)", required = false) @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
-            @ApiParam(value = "число рабочих дней пропуска от даты начала выборки (если не задана - от текущего), с которой начинать отображать расписание", required = false) @RequestParam(value = "nDiffDays", required = false, defaultValue = "0") int nDiffDays,
+	     @ApiParam(value = "число дней пропуска от сегодняшнего, с которого начинать отображать расписание", required = false) @RequestParam(value = "nDiffDays", required = false, defaultValue = "2") int nDiffDays,
 	    @ApiParam(value = "строка параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
-            @ApiParam(value = "число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук", required = false) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots
+		@ApiParam(value = "число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук", required = false) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots
     ) throws Exception {
-        //nDiffDays_visitDate1
-        
-        LOG.info("getFlowSlots started...");
-        
-        /*DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
+//nDiffDays_visitDate1
+        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         oDateStart = oDateStart.plusDays(nDiffDays);//2
         DateTime oDateEnd = oDateStart.plusDays(nDays);
 
         if (sDateStart != null) {
             oDateStart = JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDateStart);
             oDateEnd = oDateStart.plusDays(nDays);
-        }*/
-        
-        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay().plusDays(1);
-        DateTime oDateEnd = oDateStart.plusDays(nDays);
-        
-        SimpleDateFormat df_DayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        SimpleDateFormat df_Day = new SimpleDateFormat("yyyy-MM-dd");
-        
-        List<String> aMissDays = new ArrayList<>();
-        boolean isEmptyResult = false;
-        
-        if(nDiffDays != 0){
-            
-            Flow oFlow = null;
-            if (nID_Service != null) {
-                oFlow = oFlowService.getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
-            }
-
-            if (sDateStart != null) {
-                oDateStart = JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDateStart);
-            }
-
-            int nDiffDaysCounter = nDiffDays;
-            int stopIteration = 0;
-            DateTime currEndDateTime = oDateEnd;
-            
-            while(aMissDays.size() <= nDiffDays){
-                
-                if(stopIteration > 5){
-                    isEmptyResult = true;
-                    break;
-                }
-                
-                nDiffDaysCounter = nDiffDaysCounter + (int) Math.ceil(nDiffDaysCounter*0.3d);
-                
-                if(nDiffDaysCounter >= nDays){
-                    nDiffDaysCounter = nDays;
-                }
-                
-                currEndDateTime = oDateStart.plusDays(nDiffDaysCounter);
-                
-                LOG.info("getFlowSlots oDateStart : " + df_DayTime.format(oDateStart.toDate()));
-                LOG.info("getFlowSlots oDateEnd : " + df_DayTime.format(currEndDateTime.toDate()));
-
-                List<FlowSlot> aFlowSlot = new ArrayList<>();
-
-                if (oFlow != null) {
-                    aFlowSlot = flowSlotDao.findFlowSlotsByFlow(oFlow.getId(), oDateStart, currEndDateTime);
-                } else {
-                    if (nID_ServiceData != null) {
-                        aFlowSlot = flowSlotDao.findFlowSlotsByServiceData(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
-                    } else if (sID_BP != null) {
-                        aFlowSlot = flowSlotDao.findFlowSlotsByBP(sID_BP, nID_SubjectOrganDepartment, oDateStart, oDateEnd);
-                    } else {
-                        throw new IllegalArgumentException("nID_Service, nID_ServiceData, sID_BP are null!");
-                    }
-                }
-
-                LOG.info("aFlowSlot size is: " + aFlowSlot.size());
-
-                DateTime oMissStartDate = null;
-                boolean isDoubleDateRange = true;
-                
-                for(int i = 0; i < aFlowSlot.size(); i++){
-                    LOG.info("flowslot elem in getFlowSlots " + df_DayTime.format(aFlowSlot.get(i).getsDate().toDate()));
-
-                    boolean addDay = true;
-
-                    for(String sMissDay : aMissDays){
-                        if (sMissDay.equals(df_Day.format(aFlowSlot.get(i).getsDate().toDate()))){
-                            addDay = false;
-                            break;
-                        }
-                    }
-
-                    if(addDay){
-                        LOG.info("flowslot elem in getFlowSlots " + df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
-                        aMissDays.add(df_Day.format(aFlowSlot.get(i).getsDate().toDate()));
-                        isDoubleDateRange = false;
-                    }
-                    
-                    if(aMissDays.size() > nDiffDays){
-                        oMissStartDate = aFlowSlot.get(i).getsDate();
-                        break;
-                    }
-                }
-                
-                if(isDoubleDateRange){
-                    nDiffDaysCounter = nDiffDaysCounter*2;
-                }
-                
-                if(oMissStartDate != null){
-                    oDateStart = oMissStartDate;
-                }
-                stopIteration++;
-                LOG.info("new oDateStart: " + df_DayTime.format(oDateStart.toDate()));
-            }
         }
-        
-        Days res = new Days();
-        
-        if(nDiffDays == 0 || !isEmptyResult){
-            res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                    oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
-        }
-        
+
+        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+                oDateStart, oDateEnd, bAll, nFreeDays, nSlots);
+
         return JsonRestUtils.toJsonResponse(res);
     }
 

@@ -5,9 +5,9 @@
     .module('dashboardJsApp')
     .controller('NavbarCtrl', navbarCtrl);
 
-  navbarCtrl.$inject = ['$scope', '$rootScope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
+  navbarCtrl.$inject = ['$scope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
                         '$state', 'tasks', 'lunaService', 'Modal', '$stateParams'];
-  function navbarCtrl($scope, $rootScope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
+  function navbarCtrl($scope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
                       $state, tasks, lunaService, Modal, $stateParams) {
     $scope.menu = [{
       'title': 'Задачі',
@@ -85,16 +85,6 @@
       $location.path('/profile');
     };
 
-    var bSelectedTasksSortReverse = false;
-
-    $scope.$on('set-sort-order-reverse-true', function () {
-      bSelectedTasksSortReverse = true;
-    });
-
-    $scope.$on('set-sort-order-reverse-false', function () {
-      bSelectedTasksSortReverse = false;
-    });
-
     $scope.tasksSearch = iGovNavbarHelper.tasksSearch;
     var tempCountValue = 0;
 
@@ -119,14 +109,10 @@
             $scope.switchArchive = true;
           })
         } else {
-          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab, bSelectedTasksSortReverse)
+          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab)
             .then(function(res) {
               if(res.aIDs.length > 1){
-                if(bSelectedTasksSortReverse){
-                  tempCountValue = (res.aIDs.length - res.nCurrentIndex) + ' / ' + res.aIDs.length;
-                } else {
-                  tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
-                }
+                tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
                 $scope.tasksSearch.count = '... / ' + res.aIDs.length;
               } else {
                 tempCountValue = res.aIDs.length;
@@ -182,8 +168,8 @@
         tasks.isUserHasDocuments(user).then(function (res) {
           if(Array.isArray(res) && res.length > 0) {
             $scope.usersDocumentsBPs = res.filter(function (item) {
-              return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
-            });
+              return item.sID.charAt(0) === '_' && item.sID.split('_')[1] === 'doc';
+            })
           }
         })
       }
@@ -204,7 +190,7 @@
     };
 
     $scope.onSelectDocList = function (item) {
-      tasks.createNewDocument(item.oSubjectRightBP.sID_BP).then(function (res) {
+      tasks.createNewDocument(item.sID).then(function (res) {
         if(res.snID_Process) {
           tempCountValue = 0;
           var val = res.snID_Process + lunaService.getLunaValue(res.snID_Process);
@@ -216,28 +202,5 @@
         }
       });
     };
-
-    function setEcpStatusToLS(status) {
-      var stringifyStatus = JSON.stringify(status);
-      localStorage.setItem('auto-ecp-status', stringifyStatus);
-    }
-
-    var ecpStatusInLS = localStorage.getItem('auto-ecp-status');
-
-    if(ecpStatusInLS !== null) {
-      $rootScope.checkboxForAutoECP = JSON.parse(ecpStatusInLS);
-    }else {
-      $rootScope.checkboxForAutoECP = {status : true};
-      setEcpStatusToLS($rootScope.checkboxForAutoECP);
-    }
-
-    $scope.$watch('checkboxForAutoECP.status', function (newVal) {
-      var savedStatus = localStorage.getItem('auto-ecp-status');
-      var res = savedStatus !== null ? JSON.parse(savedStatus) : null;
-      if(res && newVal !== undefined && res.status !== newVal) {
-        setEcpStatusToLS($rootScope.checkboxForAutoECP);
-      }
-    })
-
   }
 })();

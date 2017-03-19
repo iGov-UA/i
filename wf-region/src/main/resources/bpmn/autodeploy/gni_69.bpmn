@@ -38,27 +38,27 @@
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?" type="string" required="true"></activiti:formProperty>
         
         
-		<activiti:formProperty id="sVf" name="Галочка физик; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-		<activiti:formProperty id="sVu" name="Галочка юрик; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAvtor" name="Автор звернення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAdresECP" name="адресс; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sVf" name="Галочка физик" type="invisible" default=" "></activiti:formProperty>
+		<activiti:formProperty id="sVu" name="Галочка юрик" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdresECP" name="адресс" type="invisible" default=" "></activiti:formProperty>
 
 
-        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailCler1k" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ" type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_start.json')}"></activiti:formProperty>
 
 <!--  Вставка автоподписания ЭЦП начало ->
 	    <activiti:formProperty id="form_signed" name="Заява громадянина" type="file" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/dfs/gni_69_print_ecp.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dfs/gni_69_print_ecp.html"></activiti:formProperty>
 <!-  Вставка автоподписания ЭЦП конец  -->
 
         
@@ -134,7 +134,7 @@
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dfs_dnepr_vutyag_nalog_${sID_Public_SubjectOrganJoin}_${subekt}">
       <extensionElements>      
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення фіскальної служби; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення фіскальної служби" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган обслуговування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -168,13 +168,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="Внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
 
-        <activiti:formProperty id="sAvtor" name="Автор звернення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAdresECP" name="адресс; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Автор звернення" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdresECP" name="адресс" type="invisible" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_user.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/gni_69_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/gni_69_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>

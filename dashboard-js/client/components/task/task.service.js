@@ -162,19 +162,11 @@ angular.module('dashboardJsApp')
         })
       },
 
-      getTableAttachment: function (taskId, attachId, isNewService) {
-        // old and new services requests
-        if(isNewService) {
-          return simpleHttpPromise({
-            method: 'GET',
-            url: '/api/tasks/download/' + taskId + '/attachment/' + attachId
-          })
-        } else {
-          return simpleHttpPromise({
-            method: 'GET',
-            url: '/api/tasks/' + taskId + '/attachments/' + attachId + '/table'
-          })
-        }
+      getTableAttachment: function (taskId, attachId) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks/' + taskId + '/attachments/' + attachId + '/table'
+        })
       },
 
       taskFormFromHistory: function (taskId) {
@@ -192,14 +184,8 @@ angular.module('dashboardJsApp')
       },
 
       submitTaskForm: function (taskId, formProperties, task, attachments) {
-        var self = this,
-            deferred = $q.defer(),
-            promises = [],
-            tablePromises = [],
-            items = 0,
-            def = [],
-            tablePromisesReal = [];
-
+        var self = this;
+        var promises = [];
         var createProperties = function (formProperties) {
           var properties = new Array();
           for (var i = 0; i < formProperties.length; i++) {
@@ -214,44 +200,12 @@ angular.module('dashboardJsApp')
           return properties;
         };
 
-        // upload tables sync
-        var syncTableUpload = function (i, table, defs) {
-            if (i < table.length) {
-              self.uploadTable(table[i].table, table[i].taskID, table[i].tableId, table[i].desc, table[i].isNew).then(function(resp) {
-                defs[i].resolve();
-                ++i;
-                syncTableUpload(i, table, defs);
-              })
-            }
-        };
-
         var tableFields = $filter('filter')(formProperties, function(prop){
           return prop.type == 'table';
         });
 
         if(tableFields.length > 0) {
-          for(var t=0; t<tableFields.length; t++) {
-            var table = tableFields[t];
-          /*
-            in old service we need to check that we are saving new table or update old, so if id table from form field
-            is equal attach id -> update, otherwise save as new. later it can be removed..
-          */
-            var isNotEqualsAttachments = function (table, num) {
-                var checkForNewService = table.name.split(';');
-                if (checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1) {
-                  // tablePromises.push(self.uploadTable(table, task.processInstanceId, table.id, null, true));
-                  def[num] = $q.defer();
-                  tablePromises[num] = {table:table, taskID:task.processInstanceId, tableId:table.id, desc:null, isNew:true};
-                  tablePromisesReal[num] = def[num].promise;
-                } else {
-                  var tableName = table.name.split(';')[0];
-                  // tablePromises.push(self.uploadTable(table, taskId, null, tableName));
-                  def[num] = $q.defer();
-                  tablePromises[num] = {table:table, taskID:taskId, tableId:null, desc:tableName, isNew:false};
-                  tablePromisesReal[num] = def[num].promise;
-                }
-            };
-
+          angular.forEach(tableFields, function (table) {
             if(attachments.length > 0) {
               var theSameAttachments = attachments.filter(function (item) {
                 var matchTableId = item.description.match(/(\[id=(\w+)\])/);
@@ -265,28 +219,24 @@ angular.module('dashboardJsApp')
               if(theSameAttachments.length !== 0) {
                 theSameAttachments.map(function (a) {
                   var description = a.description.split('[')[0];
-                  // tablePromises.push(self.uploadTable(table, taskId, a.id, description));
-                  def[t] = $q.defer();
-                  tablePromises[t] = {table:table, taskID:taskId, tableId:a.id, desc:description, isNew:false};
-                  tablePromisesReal[t] = def[t].promise;
+                  promises.push(self.uploadTable(table, taskId, a.id, description));
                 });
               } else {
-                isNotEqualsAttachments(table, t);
+                var name = table.name.split(';')[0];
+                promises.push(self.uploadTable(table, taskId, null, name));
               }
             } else {
-              isNotEqualsAttachments(table, t);
+              var tableName = table.name.split(';')[0];
+              promises.push(self.uploadTable(table, taskId, null, tableName));
             }
-          }
+          })
         }
-
-        syncTableUpload(items, tablePromises, def);
+        var deferred = $q.defer();
 
         // upload files before form submitting
         promises.push(this.uploadTaskFiles(formProperties, task, taskId));
-        var filesProm = $q.all(promises);
-        var tableProm = $q.all(tablePromisesReal);
 
-        $q.all([filesProm, tableProm]).then(function () {
+        $q.all(promises).then(function () {
           var submitTaskFormData = {
             'taskId': taskId,
             'properties': createProperties(formProperties)
@@ -309,39 +259,20 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
-      uploadTable: function(files, taskId, attachmentID, description, isNewService) {
-        var deferred = $q.defer(),
-            tableId = files.id,
-            stringifyTable = JSON.stringify(files),
-            data = {},
-            url;
+      uploadTable: function(files, taskId, attachmentID, description) {
+        var deferred = $q.defer();
+        var tableId = files.id;
+        var stringifyTable = JSON.stringify(files);
+        var data = {
+          sDescription: description + '[table][id='+ tableId +']',
+          sFileName: tableId + '.json',
+          sContent: stringifyTable,
+          nID_Attach: attachmentID
+        };
 
-        if(isNewService) {
-          data = {
-            sFileNameAndExt: tableId + '.json',
-            sContent: stringifyTable,
-            nID_Process: taskId,
-            nID_Attach: attachmentID
-          };
-          url = '/api/tasks/' + taskId + '/setTaskAttachmentNew';
-        } else {
-          data = {
-            sDescription: description + '[table][id='+ tableId +']',
-            sFileName: tableId + '.json',
-            sContent: stringifyTable,
-            nID_Attach: attachmentID
-          };
-          url = '/api/tasks/' + taskId + '/setTaskAttachment';
-        }
-
-        $http.post(url, data).success(function(uploadResult){
-          var parsedResponse = JSON.parse(uploadResult);
-          if(parsedResponse && parsedResponse.sKey && parsedResponse.sID_StorageType){
-            files.value = uploadResult;
-          }else {
-            files.value = parsedResponse.id;
-          }
-          deferred.resolve(uploadResult);
+        $http.post('/api/tasks/' + taskId + '/setTaskAttachment', data).success(function(uploadResult){
+          files.value = JSON.parse(uploadResult).id;
+          deferred.resolve();
         });
 
         return deferred.promise;
@@ -414,22 +345,15 @@ angular.module('dashboardJsApp')
 
         return deferred.promise;
       },
-      upload: function(files, taskId, sID_Field, newUpload) {
+      upload: function(files, taskId, sID_Field) {
         var deferred = $q.defer();
 
         var self = this;
         var scope = $rootScope.$new(true, $rootScope);
-        var url;
-
-        if(newUpload) {
-          url = '/api/uploadfile?nID_Process=' + taskId + '&sID_Field=' + sID_Field + '&sFileNameAndExt=' + files[0].name;
-        } else {
-          url = '/api/tasks/' + taskId + '/attachments/' + sID_Field + '/upload';
-        }
         uiUploader.removeAll();
         uiUploader.addFiles(files);
         uiUploader.startUpload({
-          url: url,
+          url: '/api/tasks/' + taskId + '/attachments/' + sID_Field + '/upload',
           concurrency: 1,
           onProgress: function (file) {
             scope.$apply(function () {
@@ -463,30 +387,11 @@ angular.module('dashboardJsApp')
                   }
                 }
               }
-              if(oCheckSignReq.taskId && oCheckSignReq.id ||
-                 oCheckSignReq.sKey && oCheckSignReq.sID_StorageType ||
-                 oCheckSignReq.sID_Field && oCheckSignReq.sID_Process){
-
-                self.value = {id : oCheckSignReq.id ? oCheckSignReq.id : null, signInfo: null, fromDocuments: false};
-                var params = {url:null, query:null};
-
-                if(oCheckSignReq.sKey && oCheckSignReq.sID_StorageType){
-                  params.url = '/api/tasks/sign/checkAttachmentSignNew';
-                  params.query = {
-                    sID_StorageType: oCheckSignReq.sID_StorageType,
-                    sKey: oCheckSignReq.sKey,
-                    sID_Process: oCheckSignReq.sID_Process,
-                    sID_Field: oCheckSignReq.sID_Field,
-                    sFileNameAndExt: oCheckSignReq.sFileNameAndExt
-                  }
-                } else {
-                  params.url = '/api/tasks/' + oCheckSignReq.taskId + '/attachments/' + oCheckSignReq.id + '/checkAttachmentSign';
-                }
-
+              if(oCheckSignReq.taskId && oCheckSignReq.id){
+                self.value = {id : oCheckSignReq.id, signInfo: null, fromDocuments: false};
                 simpleHttpPromise({
                     method: 'GET',
-                    url: params.url,
-                    params: params.query
+                    url: '/api/tasks/' + oCheckSignReq.taskId + '/attachments/' + oCheckSignReq.id + '/checkAttachmentSign'
                   }
                 ).then(function (signInfo) {
                   //self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
@@ -556,28 +461,17 @@ angular.module('dashboardJsApp')
               template: ''
             });
         });
-        if(formProperties.sendDefaultPrintForm){
-          filesDefers.push($q.resolve({
-            fileField: null,
-            template: '<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="style.css" /></head><body">' + $(".ng-modal-dialog-content")[0].innerHTML + '</html>'
-          }));
-        }
         // компиляция и отправка html
         $q.all(filesDefers).then(function (results) {
-          var uploadPromises = [],
-              printforms = [],
-              printPromises = [],
-              printDefer = [],
-              counter = 0;
-
-          angular.forEach(results, function (templateResult, key) {
+          var uploadPromises = [];
+          angular.forEach(results, function (templateResult) {
             var scope = $rootScope.$new();
             scope.selectedTask = task;
             scope.taskForm = formProperties;
             //scope.getPrintTemplate = function(){return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template, scope.lunaService);},
             scope.getPrintTemplate = function () {
               return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template);
-            };
+            },
               scope.containsPrintTemplate = function () {
                 return templateResult.template != '';
               };
@@ -606,100 +500,51 @@ angular.module('dashboardJsApp')
               return s;
             };
             var compiled = $compile('<print-dialog></print-dialog>')(scope);
+            var defer = $q.defer();
 
             /**
              * https://github.com/e-government-ua/i/issues/1382
              * parse name string property to get file names sPrintFormFileAsPDF and sPrintFormFileAsIs
              */
             var fileName = null;
-            var fileNameTemp = null;
             var sFileFieldID = null;
-            var sOutputFileType = null;
-            var html = null;
-            var sKey_Step_field = formProperties.filter(function (item) {
-              return item.id === "sKey_Step_Document";
-            })[0];
-            if(sKey_Step_field){
-              var sKey_Step = sKey_Step_field.value
-            }
 
-            if(templateResult.fileField) {
-              if (typeof templateResult.fileField.name === 'string') {
-                fileNameTemp = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
-                  var reduceResult = prev += current.match(/sPrintFormFileAsPDF/i) || current.match(/sPrintFormFileAsIs/i) || [];
-                  if (reduceResult !== '') {
-                    var parts = current.split(',');
-                    angular.forEach(parts, function (el) {
-                      if (el.match(/^sFileName=/)) {
-                        fileName = el.split('=')[1];
-                      }
-                    })
-                  }
-                  return reduceResult;
-                }, '');
+            if (typeof templateResult.fileField.name === 'string') {
+              fileName = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
+                return prev += current.match(/sPrintFormFileAsPDF/i) || current.match(/sPrintFormFileAsIs/i) || [];
+              }, '');
 
-                fileName = fileName || fileNameTemp;
-
-                if (fileNameTemp === 'sPrintFormFileAsPDF') {
-                  fileName = fileName + '.pdf';
-                  sOutputFileType = 'pdf';
-                }
-
-                if (fileNameTemp === 'sPrintFormFileAsIs') {
-                  fileName = fileName + '.html';
-                  sOutputFileType = 'html';
-                }
-
-                sFileFieldID = templateResult.fileField.id;
+              if(fileName === 'sPrintFormFileAsPDF'){
+                fileName = fileName + '.pdf';
               }
-              var description = templateResult.fileField.name.split(";")[0];
-            } else {
-              sOutputFileType = 'pdf';
-              fileName = 'form.pdf';
-              html = templateResult.template;
-            }
 
-            uploadPromises.push($timeout(function(){
-              if(!html){
-                html = '<html><head><meta charset="utf-8"></head><body>' + compiled.find('.print-modal-content').html() + '</body></html>';
+              if(fileName === 'sPrintFormFileAsIs'){
+                fileName = fileName + '.html';
               }
-            var data = {
-              sDescription: description,
-              sFileNameAndExt: fileName || 'User form.html',
-              sID_Field: sFileFieldID,
-              sContent: html,
-              sOutputFileType: sOutputFileType,
-              sKey_Step: sKey_Step,
-              isSendDefaultPrintForm: formProperties.sendDefaultPrintForm
-            };
 
-            printDefer[key] = $q.defer();
-            printforms[key] = {html:html, data:data};
-            printPromises[key] = printDefer[key].promise;
-            }));
+              sFileFieldID = templateResult.fileField.id;
+            }
+            var description = templateResult.fileField.name.split(";")[0];
+            $timeout(function () {
+              var html = '<html><head><meta charset="utf-8"></head><body>' + compiled.find('.print-modal-content').html() + '</body></html>';
+              var data = {
+                sDescription: description, //'User form',
+                sFileName: fileName || 'User form.html',
+                sID_Field: sFileFieldID,
+                sContent: html
+              };
 
+              $http.post('/api/tasks/' + taskId + '/upload_content_as_attachment', data)
+                .success(function (uploadResult) {
+                  templateResult.fileField.value = JSON.parse(uploadResult).id;
+                  defer.resolve();
+                })
+            });
+
+            uploadPromises.push(defer.promise);
           });
 
-          var asyncPrintUpload = function (i, print, defs) {
-            if (i < print.length) {
-              return $http.post('/api/tasks/' + task.processInstanceId + '/upload_content_as_attachment', print[i].data)
-                .then(function (uploadResult) {
-                  if(results[i].fileField && results[i].fileField.value){
-                    results[i].fileField.value = uploadResult.data;
-                  } else {
-                    results[i]['uploadDefaultPrintForm'] = uploadResult.data;
-                  }
-                  defs[i].resolve();
-                  return asyncPrintUpload(i+1, print, defs);
-                });
-            }
-          };
-
-          var first = $q.all(uploadPromises).then(function () {
-            return asyncPrintUpload(counter, printforms, printDefer);
-          });
-
-          $q.all([first, printPromises]).then(function (uploadResults) {
+          $q.all(uploadPromises).then(function (uploadResults) {
             deferred.resolve();
           });
 
@@ -770,24 +615,12 @@ angular.module('dashboardJsApp')
           data: params
         })
       },
-      checkAttachmentSign: function (nID_Task, nID_Attach, isNewService) {
-        if(isNewService) {
-          return simpleHttpPromise({
+      checkAttachmentSign: function (nID_Task, nID_Attach) {
+        return simpleHttpPromise({
             method: 'GET',
-            url: '/api/tasks/sign/checkAttachmentSignNew',
-            params: {
-              sID_Process:nID_Task,
-              sID_Field:nID_Attach
-            }
-          })
-        } else {
-          // old ecp check service, remove it later. Now checkAttachmentSignNew is new service.
-          return simpleHttpPromise({
-              method: 'GET',
-              url: '/api/tasks/' + nID_Task + '/attachments/' + nID_Attach + '/checkAttachmentSign'
-            }
-          );
-        }
+            url: '/api/tasks/' + nID_Task + '/attachments/' + nID_Attach + '/checkAttachmentSign'
+          }
+        );
       },
       unassign: function (nID_Task) {
         return simpleHttpPromise({
@@ -865,15 +698,6 @@ angular.module('dashboardJsApp')
           url: 'api/documents/setDocument',
           params: {
             sID_BP: bpID
-          }
-        })
-      },
-      getFilterFieldsList: function (login) {
-        return simpleHttpPromise({
-          method: 'GET',
-          url: '/api/fields-list',
-          params: {
-            sLogin: login
           }
         })
       }

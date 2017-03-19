@@ -11,7 +11,7 @@
 
   <div class="col-sm-6" style="margin-bottom: 15px">
     <file-field name="{{item.id}}"
-                ng-disabled="isFormPropertyDisabled(item) || !isDocumentNotSigned()"
+                ng-disabled="isFormPropertyDisabled(item)"
                 ng-model="item.value"
                 ng-required="isRequired(item)">Add File
     </file-field>
@@ -23,9 +23,6 @@
     <span ng-message="email">Помилка в email.</span>
     <span ng-message="tel">Помилка в номері телефону.</span>
     <span ng-message="autovin">Помилка у VIN-номері авто.</span>
-    <span ng-message="string">{{ form[item.id].lastErrorMessage }}</span>
-    <span ng-message="long">{{ form[item.id].lastErrorMessage }}</span>
-    <span ng-message="double">{{ form[item.id].lastErrorMessage }}</span>
     <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
     <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
     <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>

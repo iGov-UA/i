@@ -405,7 +405,6 @@
 |sData||false|string|
 |sDateTimeAt||false|string|
 |sDateTimeTo||false|string|
-|sGroup||false|string|
 |sLenType||false|string|
 |sName||false|string|
 |sRegionTime||false|string|
@@ -677,39 +676,6 @@
 |variableName||false|string|
 |variableNameLike||false|string|
 |variables||false|<<QueryVariable>> array|
-|===
-
-=== HistoryEvent_Service
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|nID_Proccess_Escalation||false|integer (int64)|
-|nID_Proccess_Feedback||false|integer (int64)|
-|nID_Protected||false|integer (int64)|
-|nID_Region||false|integer (int64)|
-|nID_Server||false|integer (int32)|
-|nID_Service||false|integer (int64)|
-|nID_ServiceData||false|integer (int64)|
-|nID_StatusType||false|integer (int64)|
-|nID_Subject||false|integer (int64)|
-|nID_Task||false|integer (int64)|
-|nRate||false|integer (int32)|
-|nTimeMinutes||false|integer (int32)|
-|sBody||false|string|
-|sDate||false|<<DateTime>>|
-|sDateClose||false|<<DateTime>>|
-|sDateCreate||false|<<DateTime>>|
-|sHead||false|string|
-|sID||false|string|
-|sID_Order||false|string|
-|sID_Rate_Indirectly||false|string|
-|sID_StatusType||false|string|
-|sID_UA||false|string|
-|sName_UA_StatusType||false|string|
-|sToken||false|string|
-|sUserTaskName||false|string|
-|soData||false|string|
 |===
 
 === IOSpecification
@@ -1246,45 +1212,11 @@
 |processDefinitionId||false|string|
 |===
 
-=== Subject
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|aSubjectAccountContact||false|<<SubjectContact>> array|
-|nID||false|integer (int64)|
-|sID||false|string|
-|sLabel||false|string|
-|sLabelShort||false|string|
-|===
-
-=== SubjectContact
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sDate||false|<<DateTime>>|
-|sValue||false|string|
-|subjectContactType||false|<<SubjectContactType>>|
-|===
-
-=== SubjectContactType
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|nID||false|integer (int64)|
-|sName_EN||false|string|
-|sName_RU||false|string|
-|sName_UA||false|string|
-|===
-
 === SubjectGroup
 [options="header"]
 |===
 |Name|Description|Required|Schema|Default
-|aSubjectGroupChilds||false|<<SubjectGroup>> array|
-|aUser||false|<<SubjectUser>> array|
 |nID||false|integer (int64)|
-|oSubject||false|<<Subject>>|
 |sChain||false|string|
 |sID_Group_Activiti||false|string|
 |sName||false|string|
@@ -1298,29 +1230,13 @@
 |aSubjectUser||false|<<SubjectUser>> array|
 |===
 
-=== SubjectGroupResultTree
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|aSubjectGroupTree||false|<<SubjectGroup>> array|
-|===
-
-=== SubjectRightBP
+=== SubjectGroupTree
 [options="header"]
 |===
 |Name|Description|Required|Schema|Default
 |nID||false|integer (int64)|
-|sID_BP||false|string|
-|sID_Group||false|string|
-|sID_Place_UA||false|string|
-|===
-
-=== SubjectRightBPVO
-[options="header"]
-|===
-|Name|Description|Required|Schema|Default
-|oSubjectRightBP||false|<<SubjectRightBP>>|
-|sName_BP||false|string|
+|oSubjectGroup_Child||false|<<SubjectGroup>>|
+|oSubjectGroup_Parent||false|<<SubjectGroup>>|
 |===
 
 === SubjectUser

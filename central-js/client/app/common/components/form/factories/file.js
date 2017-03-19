@@ -38,12 +38,11 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
     this.fileName = files[0].name;
   };
 
-  file.prototype.upload = function (oServiceData, fileFieldID) {
+  file.prototype.upload = function (oServiceData) {
     var self = this;
     var scope = $rootScope.$new(true, $rootScope);
-    var param = fileFieldID ? ActivitiService.getUploadFileURL(oServiceData, null, {name:this.fileName, id:fileFieldID}) : ActivitiService.getUploadFileURL(oServiceData);
     uiUploader.startUpload({
-      url: param,
+      url: ActivitiService.getUploadFileURL(oServiceData),
       concurrency: 1,
       onProgress: function (file) {
         self.isUploading = true;
@@ -51,25 +50,12 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
         });
       },
       onCompleted: function (file, fileid) {
-        var isJson = function (res) {
-          try {
-            JSON.parse(res);
-          } catch (e) {
-            return false;
-          }
-          return true;
-        };
-
         self.value = {id : fileid, signInfo: null, fromDocuments: false};
-
-        if(isJson(fileid)) {
-          fileid = JSON.parse(fileid).sKey;
-        }
         scope.$apply(function () {
           ActivitiService.checkFileSign(oServiceData, fileid).then(function(signInfo){
             self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
           }).catch(function(error){
-            self.value.signInfo = null
+            self.value.signInfo = null;
           }).finally(function(){
             self.isUploading = false;
           });

@@ -4,22 +4,22 @@
                   <field-title></field-title>
                 </div>
                 <div class="col-sm-6" style="margin-bottom: 15px">
-                  <div ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()">
+                  <div ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)">
                     <select name="{{item.id}}"
+                            ng-disabled="isFormPropertyDisabled(item)"
                             style="width:100%; height:25px;;"
                             ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.enumValues"
                             ng-required="isRequired(item)"
                             ng-model="item.value"
-                            ng-change="updateAssigneeName(item)"
-                            ng-disabled="isFormPropertyDisabled(item) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                            ng-disabled="isFormPropertyDisabled(item) !isDocumentWritable(item) && isDocumentReadable(item)"
                             ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
                     </select>
                   </div>
 
-                  <div ng-if="showReadableField(item) || !isDocumentNotSigned()">
+                  <div ng-if="showReadableField(item)">
                     <span class="task-form-written-right-sight"
                           style="white-space: pre-line"
-                          name="{{item.id}}">{{sEnumValue(item.enumValues,item.value)}}
+                          name="{{item.id}}">{{item.value}}
                     </span>
                   </div>
 
@@ -29,9 +29,6 @@
                     <span ng-message="email">Помилка в email.</span>
                     <span ng-message="tel">Помилка в номері телефону.</span>
                     <span ng-message="autovin">Помилка у VIN-номері авто.</span>
-                    <span ng-message="string">{{ form[item.id].lastErrorMessage }}</span>
-                    <span ng-message="long">{{ form[item.id].lastErrorMessage }}</span>
-                    <span ng-message="double">{{ form[item.id].lastErrorMessage }}</span>
                     <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
                     <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
                     <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>

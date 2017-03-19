@@ -163,8 +163,8 @@
           <activiti:value id="sAccept" name="Повідимити громадянина, що заявка прийнята до опрацювання"></activiti:value>
           <activiti:value id="sReject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата найближчого засідання комісії" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Вкажіть причину відмови або додаткові дані для отримання ліцензії у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата найближчого засідання комісії" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Вкажіть причину відмови або додаткові дані для отримання ліцензії у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/sea_license.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/sea_license.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nPassport" name="Копія паспорта керівника здобувача ліцензії (або довіреної особи);Якщо декілька сторінок об'єднайте у pdf-файл або zip архів;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -248,7 +248,8 @@
 			
 			<p>
 				Ваша заявка №[sID_Order] на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом перевірена.<br>
-				У документах помилок не виявлено.
+				У документах помилок не виявлено.<br>
+				${comment}
 			</p> 
 			<p>
 				Для того щоб закінчити процедуру видачі сліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом необхідно:<br>
@@ -309,7 +310,7 @@
           <activiti:value id="sLicenseOk" name="Комісія вирішила надати ліцензію"></activiti:value>
           <activiti:value id="sLicenseNo" name="Комісія вирішила відмовити в наданні ліцензії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment1" name="Коментар до рішення" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар до рішення" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="nKomis" name="Копія рішення комісії про надання ліцензії; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocSvid" name="Копія класифікаційного свідоцтва судна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDocKvalif1" name="Копії свідоцтва на право управління малим/маломірним судном спеціалістів, які забезпечуватимуть надання відповідних послуг;Об'єднайте у pdf-файл або zip архів;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -344,7 +345,7 @@
 			   enum{[asLicense]}.<br>
 			   Копію рішення комісії Ви знайдете у файлах, що додаються<br>
 			   Оригінал рішення комісії Ви отримаєте поштою на адресу: ${sManAdress}${sCompAdress}<br>
-			   ${sComment1}
+			   ${sComment}
 			</p> 
 			<p>
 			Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>

@@ -48,11 +48,13 @@ public class SubjectGroupService {
 	@Autowired
 	private IdentityService identityService;
 
-	public SubjectGroupAndUser getCatalogSubjectGroups(String sID_Group_Activiti, Long deepLevel,String sFind) {
+	public SubjectGroupAndUser getCatalogSubjectGroups(String sID_Group_Activiti, Long deepLevel, Boolean bIncludeRoot,
+			String sFind) {
 		List<SubjectGroup> aChildResult = new ArrayList();
 		List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
 		List<VSubjectGroupParentNode> parentSubjectGroups = new ArrayList<>();
 		Map<Long, List<SubjectGroup>> subjToNodeMap = new HashMap<>();
+		Map<SubjectGroup, List<SubjectGroup>> parentChildren = new HashMap<>();
 		Map<String, Long> mapGroupActiviti = new HashMap<>();
 		VSubjectGroupParentNode parentSubjectGroup = null;
 		Set<Long> idParentList = new LinkedHashSet<>();
@@ -71,6 +73,7 @@ public class SubjectGroupService {
 					parentSubjectGroups.add(parentSubjectGroup);
 					// мапа парент -ребенок
 					subjToNodeMap.put(parent.getId(), parentSubjectGroup.getChildren());
+					parentChildren.put(parent, parentSubjectGroup.getChildren());
 					// мапа группа-ид парента
 					mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
 				} else {
@@ -82,6 +85,7 @@ public class SubjectGroupService {
 							vSubjectGroupParentNode.getChildren().add(child);
 							// мапа парент-ребенок
 							subjToNodeMap.put(parent.getId(), vSubjectGroupParentNode.getChildren());
+							parentChildren.put(parent, parentSubjectGroup.getChildren());
 							// мапа группа-ид парента
 							mapGroupActiviti.put(parent.getsID_Group_Activiti(), parent.getId());
 						}
@@ -95,7 +99,16 @@ public class SubjectGroupService {
 		// достаем ид sID_Group_Activiti которое на вход
 		Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti);
 		// детей его детей
-		List<SubjectGroup> children = subjToNodeMap.get(groupFiltr);
+		List<SubjectGroup> children = new ArrayList<>();
+
+		// TODO: 27.12.2016
+		if (isDisplayRootElement(bIncludeRoot)) {
+			SubjectGroup rootSubjectGroup = getRootSubjectGroup(parentChildren, groupFiltr);
+			children.add(rootSubjectGroup);
+		} else {
+			// детей его детей
+			children = subjToNodeMap.get(groupFiltr);
+		}
 		// children полный список первого уровня
 		if (children != null && !children.isEmpty()) {
 
@@ -108,15 +121,15 @@ public class SubjectGroupService {
 						}
 					}));
 			aChildResult.addAll(children);
-			List<SubjectGroup> list = getChildren(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
-			
+			List<SubjectGroup> list = getChildren(children, idChildren, subjToNodeMap, idParentList,
+					checkDeepLevel(deepLevel), 1, aChildResult);
+
 			LOG.info("SubjectGrouppppppppp " + list);
 
 			// subjToNodeMapFiltr.put(groupFiltr, aChildResult);
 		}
-		
+
 		return getResultHierarchySubjectGroup(sFind, aChildResult);
-		
 
 	}
 
@@ -262,6 +275,40 @@ public class SubjectGroupService {
 
 		return amsUsers;
 
+	}
+
+	/**
+	 * Проверка флага на отображение рутового елемента:
+	 * <p>
+	 * <b>если null - устанавливать true для отображения по умолчанию</b>
+	 *
+	 * @param bIncludeRoot - флаг который прихоидит на вход (true - отображаем, false - нет)
+	 * @return bIncludeRoot - фактическое значение флага
+	 */
+	public static boolean isDisplayRootElement(Boolean bIncludeRoot) {
+		if (bIncludeRoot == null) {
+			return Boolean.TRUE;
+		}
+		return bIncludeRoot;
+	}
+
+	/**
+	 * Метод получения списка рутового елемента иерархии
+	 * @param parentChildren - список парентов
+	 * @param groupFiltr - ид, по которому строится иерархия
+	 * @return ProcessSubject - рутовый елемент
+	 */
+	public SubjectGroup getRootSubjectGroup(Map<SubjectGroup, List<SubjectGroup>> parentChildren,
+			Long groupFiltr) {
+
+		SubjectGroup rootElement = null;
+		for (Map.Entry<SubjectGroup, List<SubjectGroup>> entry : parentChildren.entrySet()) {
+			rootElement = entry.getKey();
+			if (rootElement.getId().equals(groupFiltr)) {
+				return rootElement;
+			}
+		}
+		return rootElement;
 	}
 
 }

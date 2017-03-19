@@ -21,6 +21,8 @@ public class JobEscalation extends IAutowiredSpringJob {
     @Autowired
     private EscalationService escalationService;
     @Autowired
+    private HistoryService historyService;
+    @Autowired
     protected RuntimeService runtimeService;
 
     public void execute(JobExecutionContext context) throws JobExecutionException {

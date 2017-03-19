@@ -7,12 +7,12 @@
 
   tasksCtrl.$inject = [
     '$scope', 'tasks', 'processes', 'Modal', 'identityUser', '$localStorage', '$filter', 'lunaService',
-    'taskFilterService', 'defaultSearchHandlerService', '$rootScope',
-    '$stateParams', '$q', '$timeout', '$state', 'tasksStateModel', 'stateModel', 'Auth'
+    'taskFilterService', 'defaultSearchHandlerService',
+    '$stateParams', '$q', '$timeout', '$state', 'tasksStateModel', 'stateModel'
   ];
   function tasksCtrl($scope, tasks, processes, Modal, identityUser, $localStorage, $filter, lunaService,
-                     taskFilterService, defaultSearchHandlerService, $rootScope,
-                     $stateParams, $q, $timeout, $state, tasksStateModel, stateModel, Auth) {
+                     taskFilterService, defaultSearchHandlerService,
+                     $stateParams, $q, $timeout, $state, tasksStateModel, stateModel) {
 
     $scope.tasks = null;
     $scope.sSelectedTask = $stateParams.type;
@@ -48,11 +48,7 @@
     $scope.resetTaskFilters = function () {
       $scope.model.taskDefinition = $scope.taskDefinitions[0];
       $scope.model.strictTaskDefinition = $scope.strictTaskDefinitions[0];
-      resetFieldFilter();
-      localStorage.removeItem("fieldFilter");
       $scope.resetUserProcess();
-      $scope.tasks = [];
-      loadNextTasksPage();
     };
     $scope.$on('taskFilter:strictTaskDefinitions:update', function (ev, data) {
       $scope.strictTaskDefinitions = data;
@@ -92,74 +88,6 @@
     function restoreTaskDefinitionFilter() {
       $scope.model.taskDefinition = $scope.$storage[$stateParams.type + 'TaskDefinitionFilter'];
     }
-
-    $scope.startFilter = function () {
-      if($scope.fieldFilter && $scope.fieldFilter.length !== 0) {
-        var defer = $q.defer();
-        var filters = [];
-        angular.forEach($scope.fieldFilter, function (item) {
-          var obj = item.select;
-          if(item.enum.value) {
-            switch (item.enum.value) {
-              case 0:
-                obj.sValue = item.string+"*";
-                break;
-              case 1:
-                obj.sValue = "*"+item.string+"*";
-                break;
-              case 2:
-                obj.sValue = "*"+item.string;
-                break;
-              case 3:
-                obj.sValue = item.string;
-                break;
-            }
-          } else if(item.select !== "" && item.string !== ""){
-            obj.sValue = item.string;
-          } else {
-            return
-          }
-          filters.push(obj);
-        });
-        var data = {};
-        data.soaFilterField = JSON.stringify(filters);
-        tasks.list($stateParams.type, data)
-          .then(function (oResult) {
-            try {
-              if (oResult.data.code) {
-                var e = new Error(oResult.data.message);
-                e.name = oResult.data.code;
-                throw e;
-              }
-
-              if (oResult.data !== null && oResult.data !== undefined) {
-                var aTaskFiltered = _.filter(oResult.data, function (oTask) {
-                  return oTask.endTime !== null;
-                });
-                $scope.filteredTasks = [];
-                for (var i = 0; i < aTaskFiltered.length; i++)
-                  $scope.filteredTasks.push(aTaskFiltered[i]);
-                lastTasksResult = oResult;
-                $timeout(function () {
-                  $('#tasks-list-holder').trigger('scroll');
-                });
-                defer.resolve(aTaskFiltered);
-              }
-            } catch (e) {
-              Modal.inform.error()(e);
-              defer.reject(e);
-            }
-          })
-          .catch(function (err) {
-            //Modal.inform.error()(err);
-            defer.reject(err);
-          })
-          .finally(function () {
-            $scope.tasksLoading = false;
-          });
-        return defer.promise;
-      }
-    };
 
     var filterLoadedTasks = function () {
       $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
@@ -205,14 +133,12 @@
           if ($stateParams.type == tasks.filterTypes.finished) $scope.predicate = 'startTime';
           else $scope.predicate = 'createTime';
           $scope.reverse = true;
-          $rootScope.$broadcast("set-sort-order-reverse-true");
           break;
         case 'datetime_desc':
           $scope.selectedSortOrder.selected = "datetime_asc";
           if ($stateParams.type == tasks.filterTypes.finished) $scope.predicate = 'startTime';
           else $scope.predicate = 'createTime';
           $scope.reverse = false;
-          $rootScope.$broadcast("set-sort-order-reverse-false");
           break;
       }
     };
@@ -281,7 +207,7 @@
           }
         })
         .catch(function (err) {
-          //Modal.inform.error()(err);
+          Modal.inform.error()(err);
           defer.reject(err);
         })
         .finally(function () {
@@ -430,11 +356,9 @@
         if (foundTask)
           $scope.selectTask(foundTask);
         else
-          initDefaultTaskSelection();
-        //?
-          // loadNextTasksPage().then(function (nextTasks) {
-          //   updateTaskSelection(nextTasks, nID_Task);
-          // });
+          loadNextTasksPage().then(function (nextTasks) {
+            updateTaskSelection(nextTasks, nID_Task);
+          });
       } else if ($state.current.name != 'tasks.typeof.view')
         initDefaultTaskSelection();
     };
@@ -464,60 +388,6 @@
     };
 
     $scope.applyTaskFilter();
-
-    var saveItemToLocalStorage = function (name, item) {
-      localStorage.setItem(name, JSON.stringify(item));
-    };
-
-    $scope.filterFieldsOptions = [{name:"Починаючи з",value:0},
-                                  {name:"З присутністю",value:1},
-                                  {name:"Закінчуючи на",value:2},
-                                  {name:"Дорівнює",value:3}];
-    $scope.selectedFieldFilterValue = $scope.filterFieldsOptions[0];
-
-    function resetFieldFilter() {
-      $scope.fieldFilter = [{select:'', string:'', enum:$scope.selectedFieldFilterValue}];
-    }
-
-    var filterFromStorage = localStorage.getItem('fieldFilter');
-    if(filterFromStorage !== null) {
-      $scope.fieldFilter = JSON.parse(filterFromStorage);
-    } else {
-      resetFieldFilter()
-    }
-
-    var addFilter = function () {
-      saveItemToLocalStorage('fieldFilter', $scope.fieldFilter);
-      if($scope.fieldFilter[$scope.fieldFilter.length-1].select !== "") {
-        $scope.fieldFilter.push({select: '', string: '', enum: $scope.selectedFieldFilterValue});
-      }
-    };
-
-    $scope.onSelectDataList = function ($item, index) {
-      $scope.fieldFilter[index].select = $item;
-      saveItemToLocalStorage('fieldFilter', $scope.fieldFilter);
-      addFilter();
-    };
-
-    $scope.onSelectEnumFields = function (val, index) {
-      $scope.fieldFilter[index].enum = val;
-      saveItemToLocalStorage('fieldFilter', $scope.fieldFilter);
-    };
-
-    $scope.removeFieldFilter = function (index) {
-      $scope.fieldFilter.splice(index, 1);
-      saveItemToLocalStorage('fieldFilter', $scope.fieldFilter);
-    };
-
-    function getFilterFieldsList() {
-      var user = Auth.getCurrentUser().id;
-        tasks.getFilterFieldsList(user).then(function (res) {
-          if (Array.isArray(res) && res.length > 0) {
-            $scope.fieldList = res;
-          }
-        })
-    }
-    getFilterFieldsList();
   }
 
   /**

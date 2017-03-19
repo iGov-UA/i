@@ -133,7 +133,7 @@ angular.module('dashboardJsApp')
       $scope.delete = function (group) {
         deleteFunc(group.id).then(function(data){
           if(data.code === '500'){
-            //Modal.inform.error()(data.message);
+            Modal.inform.error()(data.message);
           }else{
             fillData();
           }

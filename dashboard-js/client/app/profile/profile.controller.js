@@ -41,7 +41,7 @@
             Modal.inform.info()("Пароль змінено");
             $scope.cancel();
           }, function (err) {
-            //Modal.inform.error()(JSON.parse(err).message);
+            Modal.inform.error()(JSON.parse(err).message);
           });
         } else {
           Modal.inform.error()("Нові паролі не збігаються");

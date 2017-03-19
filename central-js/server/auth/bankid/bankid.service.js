@@ -244,8 +244,7 @@ module.exports.syncWithSubject = function (accessToken, done) {
         if (error || body.code) {
           callback(createError(body, 'error while caching data. ' + body.message, response), null);
         } else {
-          // result.usercacheid = body.fileID;
-          result.usercacheid = body.sKey;
+          result.usercacheid = body.fileID;
 
           if (result.customer.inn) {
             result.customer.inn = bankidUtil.decryptField(result.customer.inn);

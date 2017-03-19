@@ -60,7 +60,7 @@
       vm.file.fileName = files[0].name || vm.options.fileName;
 
       uiUploader.startUpload({
-        url: ActivitiService.getUploadFileURL(oServiceData, null, {name :vm.file.fileName}),
+        url: ActivitiService.getUploadFileURL(oServiceData),
         concurrency: 1,
         onProgress: function (file) {
           vm.file.isUploading = true;
@@ -116,20 +116,13 @@
       var sID_Order = $location.search().sID_Order;
       var path = $location.path();
       var restoreUrl = hostUrl + path + (sID_Order ? '?sID_Order=' + sID_Order : '');
-      var ID;
-
-      if(params.file.value.id.indexOf('sKey') > -1) {
-        ID = JSON.parse(params.file.value.id).sKey;
-      } else {
-        ID = params.file.value.id;
-      }
 
       if(vm.options.openModalViewer){
         window.localStorage.setItem("openDfsAnswerModalViewer", angular.toJson(vm.options.openModalViewer));
       }
 
       $window.location.href = hostUrl + '/api/sign-content/decrypt?formID=' +
-        ID + '&nID_Server=' +
+        params.file.value.id + '&nID_Server=' +
         nID_Server + '&sName=' + params.file.fileName + '&nID=' + params.id + '&restoreUrl=' + restoreUrl;
     }
   }

@@ -99,7 +99,7 @@ angular.module('dashboardJsApp')
             updateUserList(userToAdd);
 
           }, function (err) {
-            //Modal.inform.error()(JSON.parse(err).message);
+            Modal.inform.error()(JSON.parse(err).message);
           });
         });
       };
@@ -121,7 +121,7 @@ angular.module('dashboardJsApp')
               function (removedUser) {
                 //Modal.inform.info()();
               }, function (err) {
-                //Modal.inform.error()(JSON.parse(err).message);
+                Modal.inform.error()(JSON.parse(err).message);
               }
             );
           }
@@ -135,7 +135,7 @@ angular.module('dashboardJsApp')
               function (addedUser) {
                 //Modal.inform.info()(addedUser.sID_Group);
               }, function (err) {
-                //Modal.inform.error()(JSON.parse(err).message);
+                Modal.inform.error()(JSON.parse(err).message);
               }
             );
           }
@@ -151,7 +151,7 @@ angular.module('dashboardJsApp')
             .then(function (outData) {
               Modal.inform.info()("Пароль змінено");
             }, function (err) {
-              //Modal.inform.error()(JSON.parse(err).message);
+              Modal.inform.error()(JSON.parse(err).message);
             });
         }
       }

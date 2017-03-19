@@ -4,9 +4,9 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть регіональне відділення для отримання довідки" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="sMail_Employee; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Signature" name="sMail_Signature; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Обрана адреса; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="sMail_Employee" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="sMail_Signature" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Обрана адреса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік роботи" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string" required="true"></activiti:formProperty>
@@ -59,7 +59,7 @@
         <activiti:formProperty id="firstName_RU5" name="5. Предыдущее имя (рус.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA5" name="5. Попереднє По батькові(укр.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_RU5" name="5. Предыдущее отчество (рус.)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="regDoc_type" name="Документ, що посвідчує особу; ;bVisible=false" type="string" default="Паспорт громадянина України"></activiti:formProperty>
+        <activiti:formProperty id="regDoc_type" name="Документ, що посвідчує особу" type="invisible" default="Паспорт громадянина України"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія громадянського паспорту" type="file"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
@@ -68,8 +68,8 @@
           <activiti:value id="man" name="Чоловіча"></activiti:value>
           <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code); ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Country" name="Country Code (Code); ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_UA" name="Країна народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegionBirth" name="Регіон народження" type="string"></activiti:formProperty>
@@ -163,8 +163,8 @@
           <activiti:value id="man" name="Чоловіча"></activiti:value>
           <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code); ;bVisible=false" type="string"  ></activiti:formProperty>
-        <activiti:formProperty id="sID_Country" name="Country Code (Code); ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code)" type="invisible"  ></activiti:formProperty>
+        <activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string"  ></activiti:formProperty>
         <activiti:formProperty id="sCountry_UA" name="Країна народження" type="string"  ></activiti:formProperty>
         <activiti:formProperty id="sRegionBirth" name="Регіон народження" type="string"  ></activiti:formProperty>
@@ -188,7 +188,7 @@
           <activiti:value id="accept" name="Сповістити громадянина про дату отримання довідки"></activiti:value>
           <activiti:value id="reject" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/mvd/common_mvd1.html]; ;bVisible=false" type="string" default="Заява громадянина ( с каким-то длинющим названием )"  ></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mvd/common_mvd1.html]" type="invisible" default="Заява громадянина ( с каким-то длинющим названием )"  ></activiti:formProperty>
         <activiti:formProperty id="comment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги; Ця інформація буде відправлена на e-mail заявника - это подсказка к  текущему полю" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_usertask.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="fields for print" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_print.json')}"></activiti:formProperty>

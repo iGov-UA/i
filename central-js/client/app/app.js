@@ -20,8 +20,7 @@ angular.module('appBoilerPlate', ['ngCookies',
   'iGovMarkers',
   'autocompleteService',
   'datepickerService',
-  'iGovTable',
-  'datetimepicker']);
+  'iGovTable']);
 
 angular.module('documents', ['appBoilerPlate']);
 angular.module('auth', ['appBoilerPlate']);
@@ -48,66 +47,19 @@ angular.module('app', [
   datepickerConfig.formatMonth = 'MMM';
   datepickerConfig.startingDay = 1;
   datepickerPopupConfig.clearText = 'Очистити';
-}).run(function ($rootScope, $state, $injector, statesRepository) {
+}).run(function ($rootScope, $state, statesRepository) {
   $rootScope.state = $state;
   $rootScope.profile = {
-    isKyivCity: !!statesRepository.isKyivCity()
+    isKyivCity : !!statesRepository.isKyivCity()
   };
-
-
-  function getErrorText(error) {
-    if (error && error.code && error.message) {
-      return 'Помилка \'' + error.message +'\'';
-    } else {
-      if (error && error.data) {
-        return 'Невідома помилка \'' + JSON.stringify(error.data) + '\'';
-      } else {
-        return 'Невідома помилка \'' + JSON.stringify(error) + '\'';
-      }
-    }
-  }
-
-  var errorsFactory;
-
   $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-    event.preventDefault();
-
-    if (!errorsFactory) {
-      errorsFactory = $injector.get('ErrorsFactory');
-    }
-
-    var errorText = getErrorText(error);
-    if (errorsFactory) {
-      errorsFactory.push({
-        type: 'danger',
-        text: errorText
-      });
+    if (error && error.data) {
+      console.error('stateChangeError', error.data);
+      //TODO: Заменить на нормальный див-диалог из ErrorFactory
+      alert("Невідома помилка: " + error.data);
     } else {
-      alert(errorText);
+      console.error('stateChangeError', error);
+      alert("Невідома помилка: " + error);
     }
   });
-}).config([
-  'datetimepickerProvider',
-  function (datetimepickerProvider) {
-    datetimepickerProvider.setOptions({
-      locale: 'uk',
-      toolbarPlacement: 'default',
-      showClear: true,
-      format: 'DD/MM/YYYY',
-      tooltips:{
-        clear: 'Очистити',
-        selectMonth: 'Обрати мiсяць',
-        prevMonth: 'Попереднiй мiсяць',
-        nextMonth: 'Наступний мiсяць',
-        selectYear: 'Обрати рiк',
-        prevYear: 'Попереднiй рiк',
-        nextYear: 'Наступний рiк',
-        selectDecade: 'Обрати десятиліття',
-        prevDecade: 'Попереднє десятиліття',
-        nextDecade: 'Наступне десятиліття',
-        prevCentury: 'Попереднє століття',
-        nextCentury: 'Наступне століття'
-      }
-    });
-  }
-]);
+});

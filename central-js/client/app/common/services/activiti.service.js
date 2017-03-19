@@ -172,36 +172,19 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.getSignFormPath = function (oServiceData, formID, oService, formDataParams, bConvertToPDF) {
-    var formKey, isNewService;
-    if(formID && formID.indexOf('sKey') > -1) {
-      try {
-        formKey = JSON.parse(formID).sKey;
-      } catch (e) {}
-    }
-    var path = formKey ? formKey : formID;
     if(formDataParams.hasOwnProperty('form_signed')){
-      isNewService = formDataParams['form_signed'].newAttach ? '&isNew=true' : '';
-      return '/api/process-form/sign?formID=' + path + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName + '&bConvertToPDF=' + bConvertToPDF + isNewService;
+      return '/api/process-form/sign?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName + '&bConvertToPDF=' + bConvertToPDF;
     } else if (formDataParams.hasOwnProperty('form_signed_all')) {
-      isNewService = formDataParams['form_signed_all'].newAttach ? '&isNew=true' : '';
-      return '/api/process-form/signMultiple?formID=' + path + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName + isNewService;
+      return '/api/process-form/signMultiple?formID=' + formID + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName;
     }
   };
 
-  this.getUploadFileURL = function (oServiceData, customFileName, file) {
-    if(file){
-      return this.getUploadFileURLByServer(oServiceData.nID_Server, null, file);
-    } else {
-      return this.getUploadFileURLByServer(oServiceData.nID_Server, customFileName);
-    }
+  this.getUploadFileURL = function (oServiceData, customFileName) {
+    return this.getUploadFileURLByServer(oServiceData.nID_Server, customFileName);
   };
 
-  this.getUploadFileURLByServer = function (nID_Server, customFileName, file) {
-    if(file) {
-      return './api/uploadfile?sFileNameAndExt=' + file.name + (file.id ? '&sID_Field=' + file.id : '');
-    } else {
-      return './api/uploadfile?nID_Server=' + nID_Server + (customFileName ? 'customFileName=' + customFileName : '');
-    }
+  this.getUploadFileURLByServer = function (nID_Server, customFileName) {
+    return './api/uploadfile?nID_Server=' + nID_Server + (customFileName ? 'customFileName=' + customFileName : '');
   };
 
   this.updateFileField = function (oServiceData, formData, propertyID, fileUUID) {
@@ -209,14 +192,6 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
   };
 
   this.checkFileSign = function (oServiceData, fileID){
-
-    try{
-      var keyOrJSON = JSON.parse(fileID);
-      if(typeof keyOrJSON === 'object' && 'sKey' in keyOrJSON) {
-        fileID = JSON.parse(fileID).sKey;
-      }
-    } catch(e){}
-
     var oFuncNote = {sHead:"Перевірка ЕЦП у файлу", sFunc:"checkFileSign"};
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_ServiceData: '+oServiceData.nID, 'fileID: '+fileID]});
     return $http.get('./api/process-form/sign/check', {

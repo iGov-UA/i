@@ -31,9 +31,9 @@ public class FlowSlot extends NamedEntity {
     @Column
     private String sData;
 
-    @ManyToOne(targetEntity = Flow.class)
-    @JoinColumn(name = "nID_Flow")
-    private Flow flow;
+    @ManyToOne(targetEntity = Flow_ServiceData.class)
+    @JoinColumn(name = "nID_Flow_ServiceData")
+    private Flow_ServiceData flow;
 
     @ManyToMany(targetEntity=FlowSlotTicket.class, mappedBy = "aFlowSlot")
     private List<FlowSlotTicket> aFlowSlotTicket = new ArrayList<>();
@@ -70,11 +70,11 @@ public class FlowSlot extends NamedEntity {
         this.sDuration = sDuration;
     }
 
-    public Flow getFlow() {
+    public Flow_ServiceData getFlow() {
         return flow;
     }
 
-    public void setFlow(Flow flow) {
+    public void setFlow(Flow_ServiceData flow) {
         this.flow = flow;
     }
 

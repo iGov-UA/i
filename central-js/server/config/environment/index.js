@@ -250,10 +250,6 @@ var all = {
       && this.soccard.socCardAPIClientSecret
       && this.soccard.socCardAPIPrivateKey
       && this.soccard.socCardAPIPrivateKeyPassphrase;
-  },
-
-  databot: {
-    key: processProps.sDataBotApiKey ? processProps.sDataBotApiKey : process.env.sDataBotApiKey
   }
 };
 

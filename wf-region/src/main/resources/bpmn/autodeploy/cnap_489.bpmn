@@ -23,14 +23,14 @@
         <activiti:formProperty id="fAgree1" name="Погодження балансоутримувача об’єкту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fAgree2" name="Згода власників, співвласників на переобладнання і перепланування приміщень, що перебувають у їх спільній власності; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fProject" name="Проект переобладнання  або перепланування, погоджений в установленому порядку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="sNameOrgan; ;bVisible=false" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="sWorkTime; ;bVisible=false" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan; ;bVisible=false" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="sAddress; ;bVisible=false" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="sMailClerk; ;bVisible=false" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="sArea; ;bVisible=false" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sShapka489" name="sShapka489; ;bVisible=false" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sNameService" name="sNameService; ;bVisible=false" type="string" default="Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="sWorkTime" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="sAddress" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="sArea" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sShapka489" name="sShapka489" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sNameService" name="sNameService" type="invisible" default="Видача дозволу на переобладнання і перепланування жилого будинку (жилого приміщення)"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -49,16 +49,16 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону; ;bVisible=false" type="string" default="+380"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace" name="найменування населеного пункту (повністю); ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStreet" name="вулиця (повністю); ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumHouse" name="будинок; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumFlat" name="квартира; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka489" name="sShapka489; ;bVisible=false" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_489_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="invisible" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="найменування населеного пункту (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="вулиця (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumHouse" name="будинок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumFlat" name="квартира" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka489" name="sShapka489" type="invisible" default="."></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -175,18 +175,18 @@ ${sWorkTime} &lt;br /&gt; &lt;br /&gt;
           <activiti:value id="rejectMain" name="Заява розглянута, прийнято негативне рішення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentMain" name="У разі відмови внесіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону; ;bVisible=false" type="string" default="+380"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace" name="найменування населеного пункту (повністю); ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStreet" name="вулиця (повністю; ;bVisible=false)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumHouse" name="будинок; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNumFlat" name="квартира; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka489" name="sShapka489; ;bVisible=false" type="string" default="."></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації громадянина" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="invisible" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPlace" name="найменування населеного пункту (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStreet" name="вулиця (повністю)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumHouse" name="будинок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNumFlat" name="квартира" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka489" name="sShapka489" type="invisible" default="."></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/cnap_489_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_489_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_489_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>

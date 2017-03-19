@@ -20,33 +20,7 @@
             <td ng-repeat="item in row.aField">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</td>
           </tr>
           <tr ng-if="!openedAttachTable.content" ng-repeat="row in openedAttachTable.aRow">
-            <td ng-repeat="item in row.aField">
-              <span ng-if="item.type !== 'file'">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</span>
-
-              <div ng-if="item.type === 'file'">
-                <div class="dropup no-print" style="display: inline-block; position:relative;">
-                  <div class="file-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
-                    <p style="padding-top: 10px;">Файл: {{item.fileName | tableButtonFilter}}</p>
-                    <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id}}"
-                       target="_blank"
-                       class="btn btn-igov">Завантажити</a>
-                    <button class="btn btn-igov"
-                            ng-disabled="checkSignState.inProcess"
-                            ng-click="checkAttachmentSign(taskData.oProcess.nID, item.id, item.name, true)"
-                            ng-if="sSelectedTask=='selfAssigned'">Перевірити ЕЦП</button>
-                  </div>
-                  <button style="position:relative;"
-                          type="button"
-                          class="btn btn-default dropdown-toggle"
-                          data-toggle="dropdown"
-                          title="{{item.sFieldLabel | tableButtonFilter}}">
-                    {{item.fileName | cut : true : 25 | tableButtonFilter}}
-                  </button>
-                </div>
-                <span class="for-print">Файл додано</span>
-
-              </div>
-            </td>
+            <td ng-repeat="item in row.aField">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</td>
           </tr>
           </tbody>
         </table>

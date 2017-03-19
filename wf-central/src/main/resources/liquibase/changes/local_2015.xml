@@ -1503,7 +1503,6 @@
                                  baseTableName="Document" baseColumnNames="nID_Subject"
                                  deferrable="true" deleteCascade="false"/>
 
-
         <dropForeignKeyConstraint baseTableName="SubjectHuman" constraintName="FK_SubjectContact_SubjectContact_Email"/>
         <addForeignKeyConstraint constraintName="FK_SubjectContact_SubjectContact_Email" baseTableName="SubjectHuman" baseColumnNames="nID_SubjectContact_DefaultEmail"
                                  referencedTableName="SubjectContact" referencedColumnNames="nID"
@@ -1569,32 +1568,4 @@
         <dropColumn tableName="SubjectMessageFeedback" columnName="sBody" />
     </changeSet>
     
-    <changeSet id="issue-1488-Add-Column-for-Exception-group" author="Kovilin Yegor">
-        <addColumn tableName="FlowProperty">
-            <column name="sGroup" type="varchar(100)">
-                <constraints nullable="true"/>
-            </column>
-        </addColumn>
-    </changeSet>
-
-    <changeSet id="issue-1492" author="brunneng">
-        <addColumn tableName="ServiceTag">
-            <column name="nID_Place" type="bigint">
-                <constraints nullable="true"/>
-            </column>
-        </addColumn>
-        <addForeignKeyConstraint constraintName="FK_ServiceTag_Place"
-                                 baseTableName="ServiceTag" baseColumnNames="nID_Place"
-                                 referencedTableName="Place" referencedColumnNames="nID"
-                                 onDelete="NO ACTION"/>
-    </changeSet>
-    
-    <changeSet id="modify-type-of-soData-for-HistoryEvent_Service_" author="olga">
-        <modifyDataType tableName="HistoryEvent_Service" columnName="soData" newDataType="varchar(6000)" />
-    </changeSet>
-    
-    <changeSet id="modify-type-of-soData-for-HistoryEvent_Service_new_" author="Kovylin Yegor">
-        <modifyDataType tableName="HistoryEvent_Service" columnName="soData" newDataType="clob" />
-    </changeSet>
-
 </databaseChangeLog>

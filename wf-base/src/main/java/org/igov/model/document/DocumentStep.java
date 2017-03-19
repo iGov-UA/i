@@ -7,8 +7,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 public class DocumentStep extends AbstractEntity {
@@ -23,7 +21,6 @@ public class DocumentStep extends AbstractEntity {
     private String snID_Process_Activiti;
 
     @OneToMany(targetEntity = DocumentStepSubjectRight.class, mappedBy = "documentStep", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
     private List<DocumentStepSubjectRight> rights;
 
     public List<DocumentStepSubjectRight> getRights() {

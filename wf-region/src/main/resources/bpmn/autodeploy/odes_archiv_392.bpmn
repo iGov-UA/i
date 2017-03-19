@@ -23,11 +23,8 @@
         <activiti:formProperty id="sDateRegistration" name="Дата (рік) реєстрації (або дата події); формат ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceRegistration" name="Місце реєстрації події; Для дорадянського періоду: назва церкви, волость, повіт, губернія. Для радянського періоду: район, область" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCoustForDocument" name="Укажіть будь ласка причину для чого вам потрібен документ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nVukidTable" name="Викиди яких забруднюючих речовин плануэться здійснювати" type="table" default="${markerService.loadFromFile('test_folder/ecotest_1565_Zabrud_table.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sPosition" name="Должность" type="string" default="Директору Державного архіву Одеської області" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Должность" type="invisible" default="Директору Державного архіву Одеської області"></activiti:formProperty>
         <activiti:formProperty id="sNameDirector" name="Прізвище директора архіву" type="invisible" default="Левчуку В.В."></activiti:formProperty>
-        <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень від громадських організацій;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ)" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -41,31 +38,27 @@
     <serviceTask id="servicetask2" name="Інформування громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${privateMail}]]></activiti:expression>
+          <activiti:expression>${privateMail}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті]]></activiti:expression>
+          <activiti:expression>iGov: Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                      <h3>Шановний(-а) ${sNameDirector} ${sPosition}.</h3>
-                                      <p>
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                     </p>
-                                     <h3>Шановний(-а) ${sNameDirector} ${sPosition}.</h3>
-                                    <p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
 										Ваш запит був успішно зареєстрований у нашій системі. 
-								    </p>
-									<p>
+								    &lt;/p&gt;
+									&lt;p&gt;
 										Спеціалісти оброблять Вашу заявку та надішлють Вам email з підтвердженням та запрошенням прийти у обраний час. 
-									</p>
+									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-									Державний архів Одеської області,<br>
+									Державний архів Одеської області,&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -73,7 +66,7 @@
     <serviceTask id="servicetask3" name="Інформування посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[valery.stavitsky@gmail.com]]></activiti:expression>
+          <activiti:expression>valery.stavitsky@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -82,28 +75,28 @@
           <activiti:string><![CDATA[Нове звернення про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>
-У черзі на обробку зареєстровано нове звернення.<br>
-Опрацюйте це звернення на <a href="http://region.igov.org.ua">порталі</a>
-</p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+У черзі на обробку зареєстровано нове звернення.&lt;br&gt;
+Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;
+&lt;/p&gt;
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Форма прийняття рішення" activiti:candidateGroups="arciv_odesObl">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" readable="false" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації (за паспортом)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRealAdress" name="Поштова адреса для зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="privateMail" name="Електронна пошта (е-mail)" type="string" readable="false" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="privateMail" name="Електронна пошта (е-mail)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asApplication" name="Необхідна довідка про" type="enum" readable="false" writable="false">
+        <activiti:formProperty id="asApplication" name="Необхідна довідка про" type="enum" writable="false">
           <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
           <activiti:value id="sEnumMarried" name="шлюбу"></activiti:value>
           <activiti:value id="sEnumBreakMarried" name="розірвання шлюбу"></activiti:value>
@@ -121,12 +114,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBodyArchiv" name="[pattern/print/archiv/odessa_archiv_392_print.html]" type="invisible" default="Заявка громадянина" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fileObgrunt},${fileMDA_Povid},${nVukidTable}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -137,66 +124,66 @@
     <serviceTask id="servicetask4" name="Лист про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${privateMail}]]></activiti:expression>
+          <activiti:expression>${privateMail}</activiti:expression>
         </activiti:field>
-        <activiti:field name="from">
+		<activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті]]></activiti:expression>
+          <activiti:expression>iGov: Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    <p>
-										На жаль, Вам відмовлено у надані послуги.<br>
-										При необхідності отримати <b>Довідку про підтвердження фактів enum{[asApplication]}</b> Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>, врахувавши коментар Державного службовця.
-									</p> 
-									<p>
-										Коментар Державного службовця:<br>
-											<b><i>${decisionComment}</i></b>
-									</p>
-<p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+										На жаль, Вам відмовлено у надані послуги.&lt;br&gt;
+										При необхідності отримати &lt;b&gt;Довідку про підтвердження фактів enum{[asApplication]}&lt;/b&gt; Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;, врахувавши коментар Державного службовця.
+									&lt;/p&gt; 
+									&lt;p&gt;
+										Коментар Державного службовця:&lt;br&gt;
+											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
+									&lt;/p&gt;
+&lt;p&gt;
 За додатковою інформацієї ви можете звернутись:
-<div style="text-align:justify; font-family:'book antiqua', palatino; font-size: medium; width:400px">
-    <p style="color:#0000ff;">
+&lt;div style="text-align:justify; font-family:'book antiqua', palatino; font-size: medium; width:400px"&gt;
+    &lt;p style="color:#0000ff;"&gt;
       Головний корпус Держархіву Одеської області:
-    </p>
-    <p style="color:#000080;">
-      <b>м. Одеса, вул. Жуковського, буд. 18, каб. 13<br/>
+    &lt;/p&gt;
+    &lt;p style="color:#000080;"&gt;
+      &lt;b&gt;м. Одеса, вул. Жуковського, буд. 18, каб. 13&lt;br/&gt;
         понеділок, середа, п'ятниця: 09:00 - 13:00 
-      </b>
-    </p>    
-    <p style="color: #000080;">
-        контактний телефон: (+380 48) &nbsp;<b>725-12-19</b>
-    </p>
-    <p style="font-size: small; color: #000000;">
-      Желясков Степан Андрійович,&nbsp;Гейтан Олена Георгіївна
-    </p>
-    <hr size="2">
+      &lt;/b&gt;
+    &lt;/p&gt;    
+    &lt;p style="color: #000080;"&gt;
+        контактний телефон: (+380 48) &amp;nbsp;&lt;b&gt;725-12-19&lt;/b&gt;
+    &lt;/p&gt;
+    &lt;p style="font-size: small; color: #000000;"&gt;
+      Желясков Степан Андрійович,&amp;nbsp;Гейтан Олена Георгіївна
+    &lt;/p&gt;
+    &lt;hr size="2"&gt;
     
-    <p style="color:#0000ff;">
+    &lt;p style="color:#0000ff;"&gt;
       Корпус №2 Держархіву Одеської області:
-    </p>
-    <p style="color:#000080;">
-      <b>
-        м. Одеса, вул. Пироговська, буд. 29, каб. 1<br/>
+    &lt;/p&gt;
+    &lt;p style="color:#000080;"&gt;
+      &lt;b&gt;
+        м. Одеса, вул. Пироговська, буд. 29, каб. 1&lt;br/&gt;
         понеділок, середа, п'ятниця: 08:00 - 12:00
-      </b>
-    </p>    
-    <p style="color: #000080;">
-        контактний телефон: (+380 48) &nbsp;<b>718-95-80</b>
-    </p>
-    <p style="font-size: small; color: #000000;">
-      Дворницька Юлія Ігорівна,&nbsp;Мхатварі Євгенія Теймуразівна
-    </p>
-    <hr size="2">
-  </div>
+      &lt;/b&gt;
+    &lt;/p&gt;    
+    &lt;p style="color: #000080;"&gt;
+        контактний телефон: (+380 48) &amp;nbsp;&lt;b&gt;718-95-80&lt;/b&gt;
+    &lt;/p&gt;
+    &lt;p style="font-size: small; color: #000000;"&gt;
+      Дворницька Юлія Ігорівна,&amp;nbsp;Мхатварі Євгенія Теймуразівна
+    &lt;/p&gt;
+    &lt;hr size="2"&gt;
+  &lt;/div&gt;
 
 
 									[pattern/mail/_common_signature_start.html]
-									Державний архів Одеської області,<p>
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									Державний архів Одеської області,&lt;p&gt;
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -207,67 +194,65 @@
     <serviceTask id="servicetask5" name="Лист про виконання" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${privateMail}]]></activiti:expression>
+          <activiti:expression>${privateMail}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті]]></activiti:expression>
+          <activiti:expression>iGov: Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-                                    <h3>Шановний(-а) ${sNameDirector} ${sPosition}.</h3>
-                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-                                    
-                                    <p>
-                                        Спеціалісти успішно опрацювли Вашу заяву.<br>
-										Коментар Державного службовця:<br>
-											<b><i>${decisionComment}</i></b>
-									</p>
-									<p>                                    	
-										Ви можете отримати вашу <b>Довідку про підтвердження фактів enum{[asApplication]}</b> за адресою:<br>										
+          <activiti:expression>[pattern/mail/_common_header.html]
+                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+                                    &lt;p&gt;
+                                        Спеціалісти успішно опрацювли Вашу заяву.&lt;br&gt;
+										Коментар Державного службовця:&lt;br&gt;
+											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
+									&lt;/p&gt;
+									&lt;p&gt;                                    	
+										Ви можете отримати вашу &lt;b&gt;Довідку про підтвердження фактів enum{[asApplication]}&lt;/b&gt; за адресою:&lt;br&gt;										
 										
-<div style="text-align:justify; font-family:'book antiqua', palatino; font-size: medium; width:400px">
-    <p style="color:#0000ff;">
+&lt;div style="text-align:justify; font-family:'book antiqua', palatino; font-size: medium; width:400px"&gt;
+    &lt;p style="color:#0000ff;"&gt;
       Головний корпус Держархіву Одеської області:
-    </p>
-    <p style="color:#000080;">
-      <b>м. Одеса, вул. Жуковського, буд. 18, каб. 13<br/>
+    &lt;/p&gt;
+    &lt;p style="color:#000080;"&gt;
+      &lt;b&gt;м. Одеса, вул. Жуковського, буд. 18, каб. 13&lt;br/&gt;
         понеділок, середа, п'ятниця: 09:00 - 13:00 
-      </b>
-    </p>    
-    <p style="color: #000080;">
-        контактний телефон: (+380 48) &nbsp;<b>725-12-19</b>
-    </p>
-    <p style="font-size: small; color: #000000;">
-      Желясков Степан Андрійович,&nbsp;Гейтан Олена Георгіївна
-    </p>
-    <hr size="2">
+      &lt;/b&gt;
+    &lt;/p&gt;    
+    &lt;p style="color: #000080;"&gt;
+        контактний телефон: (+380 48) &amp;nbsp;&lt;b&gt;725-12-19&lt;/b&gt;
+    &lt;/p&gt;
+    &lt;p style="font-size: small; color: #000000;"&gt;
+      Желясков Степан Андрійович,&amp;nbsp;Гейтан Олена Георгіївна
+    &lt;/p&gt;
+    &lt;hr size="2"&gt;
     
-    <p style="color:#0000ff;">
+    &lt;p style="color:#0000ff;"&gt;
       Корпус №2 Держархіву Одеської області:
-    </p>
-    <p style="color:#000080;">
-      <b>
-        м. Одеса, вул. Пироговська, буд. 29, каб. 1<br/>
+    &lt;/p&gt;
+    &lt;p style="color:#000080;"&gt;
+      &lt;b&gt;
+        м. Одеса, вул. Пироговська, буд. 29, каб. 1&lt;br/&gt;
         понеділок, середа, п'ятниця: 08:00 - 12:00
-      </b>
-    </p>    
-    <p style="color: #000080;">
-        контактний телефон: (+380 48) &nbsp;<b>718-95-80</b>
-    </p>
-    <p style="font-size: small; color: #000000;">
-      Дворницька Юлія Ігорівна,&nbsp;Мхатварі Євгенія Теймуразівна
-    </p>
-    <hr size="2">
-  </div>
-									</p>
+      &lt;/b&gt;
+    &lt;/p&gt;    
+    &lt;p style="color: #000080;"&gt;
+        контактний телефон: (+380 48) &amp;nbsp;&lt;b&gt;718-95-80&lt;/b&gt;
+    &lt;/p&gt;
+    &lt;p style="font-size: small; color: #000000;"&gt;
+      Дворницька Юлія Ігорівна,&amp;nbsp;Мхатварі Євгенія Теймуразівна
+    &lt;/p&gt;
+    &lt;hr size="2"&gt;
+  &lt;/div&gt;
+									&lt;/p&gt;
 									[pattern/mail/_common_signature_start.html]
-									Державний архів Одеської області,<br>
+									Державний архів Одеської області,&lt;br&gt;
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -334,7 +319,7 @@
         <omgdi:waypoint x="458.0" y="226.0"></omgdi:waypoint>
         <omgdi:waypoint x="425.0" y="227.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="57.0" x="459.0" y="211.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="57.0" x="459.0" y="211.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -346,7 +331,7 @@
         <omgdi:waypoint x="464.0" y="313.0"></omgdi:waypoint>
         <omgdi:waypoint x="425.0" y="313.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="69.0" x="471.0" y="307.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="471.0" y="307.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">

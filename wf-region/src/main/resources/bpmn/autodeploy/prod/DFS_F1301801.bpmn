@@ -19,25 +19,25 @@
         <activiti:formProperty id="sHSHOT" name="Додаток до номеру будинку;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSHOT" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHCORP" name="Корпус;за місцем реєстрації;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHAPT" name="Номер квартири;за місцем реєстрації;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asStartPeriod&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asStartPeriod" name="Квартал;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G01" type="enum" required="true">
+        <activiti:formProperty id="markersLine_1" name="Період відомостей" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asStartPeriod&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asStartPeriod" name="Квартал;початок періоду;writable=true,sID_Field_SWinEd=R01G01" type="enum" required="true">
           <activiti:value id="1" name="1"></activiti:value>
           <activiti:value id="2" name="2"></activiti:value>
           <activiti:value id="3" name="3"></activiti:value>
           <activiti:value id="4" name="4"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asStartYear" name="Рік;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G02" type="enum" required="true">
+        <activiti:formProperty id="asStartYear" name="Рік;початок періоду;writable=true,sID_Field_SWinEd=R01G02" type="enum" required="true">
           <activiti:value id="2014" name="2014"></activiti:value>
           <activiti:value id="2015" name="2015"></activiti:value>
           <activiti:value id="2016" name="2016"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEndPeriod" name="Квартал;кінець періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R02G01" type="enum" required="true">
+        <activiti:formProperty id="asEndPeriod" name="Квартал;кінець періоду;writable=true,sID_Field_SWinEd=R02G01" type="enum" required="true">
           <activiti:value id="1" name="1"></activiti:value>
           <activiti:value id="2" name="2"></activiti:value>
           <activiti:value id="3" name="3"></activiti:value>
           <activiti:value id="4" name="4"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEndYear" name="Рік;кінець періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R02G02" type="enum" required="true">
+        <activiti:formProperty id="asEndYear" name="Рік;кінець періоду;writable=true,sID_Field_SWinEd=R02G02" type="enum" required="true">
           <activiti:value id="2014" name="2014"></activiti:value>
           <activiti:value id="2015" name="2015"></activiti:value>
           <activiti:value id="2016" name="2016"></activiti:value>
@@ -188,8 +188,9 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Ви зробили запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків.<br />
+<p><b>Ви зробили запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків. </b><br /><br>
 Максимальний час очікування відповіді - 1 доба (але зазвичай відповідь надається швидше). Ви отримаєте повідомлення через SMS та на цей email. 
+<br><br>
 Документ буде розміщено у розділі <a href="https://igov.org.ua/journal">Мій журнал</a>. Щоб переглянути його, Вам знадобиться той самий електронно-цифровий підпис, який Ви використали для цього запиту.
  </p>
 
@@ -291,6 +292,9 @@ execution.setVariable('sCounter', src)</script>
           </activiti:field>
           <activiti:field name="snCountYear">
             <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sFile_XML_SWinEd_Filter">
+            <activiti:expression><![CDATA[ ]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

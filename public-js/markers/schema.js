@@ -139,9 +139,7 @@ angular.module('iGovMarkers')
                         		aField_ID: {"$ref": "#/definitions/stringArray"},
                         		sTitleField: {type: "string"}, 
                         		sPatternPath: {type: "string"}, 
-                        		sName: {type: "string"}, 
-                                sCondition: {type: "string"}, 
-                                asEnumField_ID: {type: "object", patternProperties: {"^[A-Za-z]": {type: "string" }} } 
+                        		sName: {type: "string"}
                         	}, 
                         	required: ["aField_ID", "sName"], 
                         	additionalProperties: false 
@@ -383,14 +381,6 @@ angular.module('iGovMarkers')
                             additionalProperties: false
                         },
                         "FieldNotEmptyAndNonZero": {
-                            type: "object",
-                            properties: {
-                                aField_ID: {"$ref": "#/definitions/stringArray"}
-                            },
-                            required: ["aField_ID"],
-                            additionalProperties: false
-                        },
-                        "^OrderValue": {
                             type: "object",
                             properties: {
                                 aField_ID: {"$ref": "#/definitions/stringArray"}

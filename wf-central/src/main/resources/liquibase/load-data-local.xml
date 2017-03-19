@@ -20,268 +20,38 @@
         Она означает, что все констрейнты надо проверять толкько при коммите транзакции, а коммит транзакции наступает
         после выполнения всех команд внутри changeSet. Таким образом, можно временно нарушать целостность данных, но
         в самом конце перед коммитом целостность должна быть восстановлена.
-
-        Важно! Перезагрузку данных нужно выполнять в одном changeSet-е, только это дает максимальный контроль над
-        целостностью данных. Именно поэтому был убран файл load-data-base.xml и его ченжсет "Update data" и перенесен в этот файл.
-        Тем не менее в base остался load-data-local.xml нужный для тестов в base, но он перезаписывается этим файлом при сборке
-        проекта central.
     -->
     <changeSet id="Update data" author="brunneng" runOnChange="true">
 
         <sql splitStatements="true" dbms="postgresql"><![CDATA[
             SET CONSTRAINTS ALL DEFERRED;
 
-            DELETE FROM "SubjectGroupTree";
-            DELETE FROM "SubjectGroup";
-            DELETE FROM "SubjectOrganDepartment";
-
-            DELETE FROM "SubjectOrganJoinAttribute";
-            DELETE FROM "SubjectOrganJoin";
-            DELETE FROM "SubjectAccount" where "nID" < 20000;
-            DELETE FROM "SubjectContact" where "nID" < 20000;
-            DELETE FROM "Subject" where "nID" < 20000;
-            DELETE FROM "Service";
-            DELETE FROM "ServiceData";
-            DELETE FROM "ServiceType";
             DELETE FROM "Region";
             DELETE FROM "City";
             DELETE FROM "Category";
             DELETE FROM "Subcategory";
-
             DELETE FROM "ServiceTagRelation";
             DELETE FROM "ServiceTagLink";
             DELETE FROM "ServiceTag";
             DELETE FROM "ServiceTagType";
+            DELETE FROM "ServiceType";
+            DELETE FROM "Service";
+            DELETE FROM "ServiceData";
+            DELETE FROM "SubjectOrganJoinAttribute";
             DELETE FROM "SubjectOrganJoinTax";
+            DELETE FROM "SubjectOrganJoin";
             DELETE FROM "ObjectCustoms";
-
-            DELETE FROM "FlowProperty";
-            DELETE FROM "FlowPropertyClass";
-            DELETE FROM "FlowLink";
-
-            DELETE FROM "EscalationRule";
-            DELETE FROM "EscalationRuleFunction";
-
-            DELETE FROM "AccessServiceLoginRole";
-            DELETE FROM "AccessServiceRoleRightInclude";
-            DELETE FROM "AccessServiceRoleRight";
-            DELETE FROM "AccessServiceRole";
-            DELETE FROM "AccessServiceRight";
-
+            DELETE FROM "SubjectAccount" where "nID" < 20000;
+            DELETE FROM "SubjectContact" where "nID" < 20000;
+            DELETE FROM "Subject" where "nID" < 20000;
         ]]></sql>
 
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Region.csv" tableName="Region" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sID_UA" type="STRING"/>
-        </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/City.csv" tableName="City" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="nID_Region" type="NUMERIC"/>
-            <column name="sID_UA" type="STRING"/>
-        </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Category.csv" tableName="Category" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sID" type="STRING"/>
-            <column name="sName" type="STRING"/>
-            <column name="nOrder" type="NUMERIC"/>
-            <column name="nID_Category" type="NUMERIC"/>
-        </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Subcategory.csv" tableName="Subcategory" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sID" type="STRING"/>
-            <column name="sName" type="STRING"/>
-            <column name="nOrder" type="NUMERIC"/>
-        </loadUpdateData>
-
-        <loadData encoding="UTF-8" file="data/SubjectOrganDepartment.csv"
-                  tableName="SubjectOrganDepartment" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sGroup_Activiti" type="STRING"/>
-            <column name="nID_SubjectOrgan" type="NUMERIC"/>
-        </loadData>
-
-        <!-- Используем временную таблицу Flow_Tmp, чтобы удалить строки из Flow которых нет в Flow.csv -->
-        <createTable tableName="Flow_Tmp">
-            <column name="nID" type="bigint">
-                <constraints primaryKey="true" nullable="false" unique="true"/>
-            </column>
-            <column name="sName" type="varchar(300)"/>
-            <column name="nID_ServiceData" type="bigint"/>
-            <column name="nID_SubjectOrganDepartment" type="bigint"/>
-            <column name="sID_BP" type="varchar(200)"/>
-            <column name="sGroup" type="varchar(100)"/>
-            <column name="nCountAutoGenerate" type="NUMERIC"/>
-        </createTable>
-
-        <loadData encoding="UTF-8" file="data/Flow.csv" tableName="Flow_Tmp" separator=";">
-            <column name="nID" type="NUMERIC"/>
-        </loadData>
-
-        <sql splitStatements="true" dbms="postgresql">
-            delete from "Flow" where "nID" not in (select "nID" from "Flow_Tmp");
-        </sql>
-
-        <dropTable tableName="Flow_Tmp"/>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Flow.csv" tableName="Flow" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="nID_ServiceData" type="NUMERIC"/>
-            <column name="nID_SubjectOrganDepartment" type="NUMERIC"/> <!-- no foreign key constraint here -->
-            <column name="sID_BP" type="STRING"/>
-            <column name="nCountAutoGenerate" type="NUMERIC"/>
-        </loadUpdateData>
-
-        <loadData encoding="UTF-8" file="data/FlowLink.csv" tableName="FlowLink" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_Flow" type="NUMERIC"/>
-            <column name="nID_Service" type="NUMERIC"/>
-            <column name="nID_SubjectOrganDepartment"  type="NUMERIC"/>
-        </loadData>
-
-        <loadData encoding="UTF-8" file="data/FlowPropertyClass.csv" tableName="FlowPropertyClass" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sPath" type="STRING"/>
-            <column name="sBeanName" type="STRING"/>
-        </loadData>
-
-        <loadData encoding="UTF-8" file="data/FlowProperty.csv" tableName="FlowProperty" separator=";">
-            <column name="nID_FlowPropertyClass" type="NUMERIC"/>
-            <column name="sData" type="STRING"/>
-            <column name="nID_Flow" type="NUMERIC"/>
-            <column name="bExclude" type="BOOLEAN" defaultValueBoolean="true"/>
-            <column name="sName" type="STRING" defaultValue=""/>
-            <column name="sRegionTime" type="STRING" defaultValue=""/>
-            <column name="saRegionWeekDay" type="STRING" defaultValue=""/>
-            <column name="sDateTimeAt" type="STRING" defaultValue=""/>
-            <column name="sDateTimeTo" type="STRING" defaultValue=""/>
-            <column name="nLen" type="NUMERIC"/>
-            <column name="sLenType" type="STRING" defaultValue=""/>
-        </loadData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowSlot.csv" tableName="FlowSlot" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sDate" type="DATETIME"/>
-            <column name="sData" type="STRING"/>
-            <column name="nID_Flow" type="NUMERIC"/>
-        </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/FlowSlotTicket.csv" tableName="FlowSlotTicket" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_FlowSlot" type="NUMERIC"/>
-            <column name="nID_Subject" type="NUMERIC"/>
-            <column name="nID_Task_Activiti" type="NUMERIC"/>
-            <column name="sDateStart" type="DATETIME"/>
-            <column name="sDateFinish" type="DATETIME"/>
-            <column name="sDateEdit" type="DATETIME"/>
-        </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID_FlowSlotTicket,nID_FlowSlot" encoding="UTF-8" file="data/FlowSlotTicket_FlowSlot.csv" tableName="FlowSlotTicket_FlowSlot" separator=";">
-            <column name="nID_FlowSlotTicket" type="NUMERIC"/>
-            <column name="nID_FlowSlot" type="NUMERIC"/>
-        </loadUpdateData>
-
-        <loadData encoding="UTF-8" file="data/EscalationRuleFunction.csv" tableName="EscalationRuleFunction" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sBeanHandler" type="STRING"/>
-        </loadData>
-
-        <loadData encoding="UTF-8" file="data/EscalationRule.csv" tableName="EscalationRule" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sID_BP" type="STRING"/>
-            <column name="sID_UserTask" type="STRING"/>
-            <column name="sCondition" type="STRING"/>
-            <column name="soData" type="STRING"/>
-            <column name="sPatternFile" type="STRING"/>
-            <column name="nID_EscalationRuleFunction" type="NUMERIC"/>
-        </loadData>
-
-        <loadUpdateData tableName="EscalationStatus" primaryKey="nID" file="data/EscalationStatus.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sID" type="STRING"/>
-            <column name="sNote" type="STRING"/>
-        </loadUpdateData>
-
-        <loadUpdateData tableName="EscalationHistory" primaryKey="nID" file="data/EscalationHistory.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sDate" type="DATETIME"/>
-            <column name="nID_Process" type="NUMERIC"/>
-            <column name="nID_Process_Root" type="NUMERIC"/>
-            <column name="nID_UserTask" type="NUMERIC"/>
-            <column name="nID_EscalationStatus" type="NUMERIC"/>
-        </loadUpdateData>
-
-        <loadUpdateData tableName="ActionTaskLinkType" primaryKey="nID" file="data/ActionTaskLinkType.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sID" type="STRING"/>
-            <column name="sName" type="STRING"/>
-        </loadUpdateData>
-
-        <loadUpdateData tableName="ActionProcessCount" primaryKey="nID" file="data/ActionProcessCount.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sID_BP" type="STRING"/>
-            <column name="nID_Service" type="NUMERIC"/>
-            <column name="nCountYear" type="NUMERIC"/>
-            <column name="nYear" type="NUMERIC"/>
-        </loadUpdateData>
-
-        <loadData tableName="AccessServiceRight" file="data/AccessServiceRight.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sService" type="STRING"/>
-            <column name="saMethod" type="STRING"/>
-            <column name="sHandlerBean" type="STRING"/>
-            <column name="bDeny" type="BOOLEAN"/>
-            <column name="nOrder" type="NUMERIC"/>
-        </loadData>
-
-        <loadData tableName="AccessServiceRole" file="data/AccessServiceRole.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-        </loadData>
-
-        <loadData tableName="AccessServiceRoleRight" file="data/AccessServiceRoleRight.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_AccessServiceRole" type="NUMERIC"/>
-            <column name="nID_AccessServiceRight" type="NUMERIC"/>
-        </loadData>
-
-        <loadData tableName="AccessServiceRoleRightInclude" file="data/AccessServiceRoleRightInclude.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="nID_AccessServiceRole" type="NUMERIC"/>
-            <column name="nID_AccessServiceRole_Include" type="NUMERIC"/>
-        </loadData>
-
-        <loadData tableName="AccessServiceLoginRole" file="data/AccessServiceLoginRole.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sLogin" type="STRING"/>
-            <column name="nID_AccessServiceRole" type="NUMERIC"/>
-        </loadData>
-
-        <delete tableName="ProcessSubjectStatus"/>
-
-        <loadData tableName="ProcessSubjectStatus" file="data/ProcessSubjectStatus.csv" encoding="UTF-8" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sID" type="STRING"/>
-        </loadData>
 
         <loadData encoding="UTF-8" file="data/Subject.csv" tableName="Subject" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sID" type="STRING"/>
             <column name="sLabel" type="STRING"/>
             <column name="sLabelShort" type="STRING"/>
-            <!--column name="nID_SubjectOrgan" type="NUMERIC"/>
-            <column name="nID_SubjectHuman" type="NUMERIC"/-->
         </loadData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectContactType.csv" tableName="SubjectContactType" separator=";">
@@ -323,103 +93,44 @@
             <column name="sNameFull" type="STRING"/>
         </loadUpdateData>
 
-        <loadData encoding="UTF-8" file="data/SubjectGroup.csv" tableName="SubjectGroup" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sID_Group_Activiti" type="STRING"/>
-            <column name="sChain" type="STRING"/>
-            <column name="nID_Subject" type="NUMERIC"/>
-        </loadData>
-
-        <loadData encoding="UTF-8" file="data/SubjectGroupTree.csv" tableName="SubjectGroupTree" separator=";">
-            <column name="nID_SubjectGroup_Parent" type="NUMERIC"/>
-            <column name="nID_SubjectGroup_Child" type="NUMERIC"/>
-        </loadData>
-
-
-        <!-- 3 связанные таблицы SubjectOrganJoin, SubjectOrganJoinAttribute
-        перезагружаются каждый раз -->
-        <loadData encoding="UTF-8" file="data/SubjectOrganJoin.csv" tableName="SubjectOrganJoin" separator=";">
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/DocumentOperator_SubjectOrgan.csv" tableName="DocumentOperator_SubjectOrgan" separator=";">
             <column name="nID"              type="NUMERIC"/>
+            <column name="sName"            type="STRING"/>
             <column name="nID_SubjectOrgan" type="NUMERIC"/>
-            <column name="sNameUa"          type="STRING"/>
-            <column name="sNameRu"          type="STRING"/>
-            <column name="sID_Privat"       type="STRING"/>
-            <column name="sID_Public"       type="STRING"/>
-            <column name="sGeoLongitude"    type="STRING"/>
-            <column name="sGeoLatitude"     type="STRING"/>
-            <column name="nID_Region"       type="NUMERIC"/>
-            <column name="nID_City"         type="NUMERIC"/>
-            <column name="sID_UA"           type="STRING"/>
-        </loadData>
+            <column name="sHandlerClass"    type="String"/>
+        </loadUpdateData>
 
-        <loadData tableName="SubjectOrganJoinAttribute" file="data/SubjectOrganJoinAttribute.csv"  encoding="UTF-8" separator=";">
-            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="sValue" type="STRING"/>
-        </loadData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/HistoryEvent_Service.csv"
-                        tableName="HistoryEvent_Service" separator=";">
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ServiceOperator_SubjectOrgan.csv" tableName="ServiceOperator_SubjectOrgan" separator=";">
             <column name="nID" type="NUMERIC"/>
-            <column name="sID" type="STRING"/>
-            <column name="nID_Process" type="NUMERIC"/>
-            <column name="nID_Subject" type="NUMERIC"/>
-            <column name="sUserTaskName" type="STRING"/>
-            <column name="sDate" type="STRING"/>
-            <column name="nID_Service" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="nID_SubjectOrgan" type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Region.csv" tableName="Region" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sID_UA" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/City.csv" tableName="City" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
             <column name="nID_Region" type="NUMERIC"/>
             <column name="sID_UA" type="STRING"/>
-            <column name="soData" type="STRING"/>
-            <column name="sToken" type="STRING"/>
-            <column name="sHead" type="STRING"/>
-            <column name="sBody" type="STRING"/>
-            <column name="nTimeMinutes" type="NUMERIC"/>
-            <column name="sID_Order" type="STRING"/>
-            <column name="nID_Server" type="NUMERIC"/>
-            <column name="nID_Proccess_Feedback" type="NUMERIC"/>
-            <column name="nID_Proccess_Escalation" type="NUMERIC"/>
-            <column name="nID_ServiceData" type="NUMERIC"/>
         </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectMessageType.csv" tableName="SubjectMessageType" separator=";">
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Category.csv" tableName="Category" separator=";">
             <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
             <column name="sName" type="STRING"/>
-            <column name="sDescription" type="STRING"/>
+            <column name="nOrder" type="NUMERIC"/>
         </loadUpdateData>
-
-        <loadUpdateData tableName="SubjectMessage" primaryKey="nID" encoding="UTF-8" file="data/SubjectMessage.csv" separator=";">
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Subcategory.csv" tableName="Subcategory" separator=";">
             <column name="nID" type="NUMERIC"/>
-            <column name="sHead" type="STRING"/>
-            <column name="sBody" type="STRING"/>
-            <column name="sDate" type="STRING"/>
-            <column name="nID_Subject" type="STRING"/>
-            <column name="sMail" type="STRING"/>
-            <column name="sContacts" type="STRING"/>
-            <column name="sData" type="STRING"/>
-            <column name="nID_SubjectMessageType" type="STRING"/>
-            <column name="sBody_Indirectly" type="STRING"/>
-            <column name="nID_HistoryEvent_Service" type="NUMERIC"/>
-            <column name="sSubjectInfo" type="STRING"/>
-            <column name="sID_DataLink" type="STRING"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName" type="STRING"/>
+            <column name="nID_Category" type="NUMERIC"/>
+            <column name="nOrder" type="NUMERIC"/>
         </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectAccountType.csv" tableName="SubjectAccountType" separator=";">
-            <column name="nID"     type="NUMERIC"/>
-            <column name="sID"     type="STRING"/>
-            <column name="sNote"   type="STRING"/>
-        </loadUpdateData>
-
-        <loadData encoding="UTF-8" file="data/SubjectAccount.csv" tableName="SubjectAccount" separator=";">
-            <column name="nID"     type="NUMERIC"/>
-            <column name="sLogin"  type="STRING"/>
-            <column name="sNote"   type="STRING"/>
-            <column name="nID_SubjectAccountType"     type="NUMERIC"/>
-            <column name="nID_Server"     type="NUMERIC"/>
-            <column name="nID_Subject"    type="NUMERIC"/>
-        </loadData>
-
-
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ServiceType.csv" tableName="ServiceType" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sName" type="STRING"/>
@@ -437,6 +148,28 @@
             <column name="sLaw" type="STRING"/>
             <column name="nOpenedLimit" type="NUMERIC"/>
             <column name="sSubjectOperatorName" type="STRING"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTagType.csv" tableName="ServiceTagType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTag.csv" tableName="ServiceTag" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName_RU" type="STRING"/>
+            <column name="sName_UA" type="STRING"/>
+            <column name="nID_ServiceTagType" type="NUMERIC"/>
+            <column name="nOrder" type="NUMERIC"/>
+            <column name="sLinkImage" type="STRING"/>
+            <column name="sNote" type="STRING"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTagLink.csv" tableName="ServiceTagLink" separator=";">
+            <column name="nID_Service" type="NUMERIC"/>
+            <column name="nID_ServiceTag" type="NUMERIC"/>
+        </loadData>
+        <loadData encoding="UTF-8" file="data/ServiceTagRelation.csv" tableName="ServiceTagRelation" separator=";">
+            <column name="nID_ServiceTag_Parent" type="NUMERIC"/>
+            <column name="nID_ServiceTag_Child" type="NUMERIC"/>
         </loadData>
 
         <loadUpdateData primaryKey  = "nID"
@@ -475,6 +208,16 @@
             <column name="nID_Place_Parent" type="NUMERIC"/>
         </loadUpdateData>
 
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Server.csv" tableName="Server" separator=";">
+            <column name="nID"          type="NUMERIC"/>
+            <column name="sID"          type="STRING"/>
+            <column name="sType"        type="STRING"/>
+            <column name="sURL_Alpha"   type="STRING"/>
+            <column name="sURL_Beta"    type="STRING"/>
+            <column name="sURL_Omega"   type="STRING"/>
+            <column name="sURL"         type="STRING"/>
+        </loadUpdateData>
+
         <loadData encoding="UTF-8" file="data/ServiceData.csv" tableName="ServiceData" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="nID_Service" type="NUMERIC"/>
@@ -491,63 +234,6 @@
             <column name="asAuth" type="STRING"/>
             <column name="nID_Server" type="NUMERIC"/>
         </loadData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectHumanRole.csv" tableName="SubjectHumanRole" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-        </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID_SubjectHumanRole,nID_SubjectHuman" encoding="UTF-8" file="data/SubjectHumanRole_SubjectHuman.csv" tableName="SubjectHumanRole_SubjectHuman" separator=";">
-            <column name="nID_SubjectHumanRole" type="NUMERIC"/>
-            <column name="nID_SubjectHuman" type="NUMERIC"/>
-        </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/DocumentOperator_SubjectOrgan.csv" tableName="DocumentOperator_SubjectOrgan" separator=";">
-            <column name="nID"              type="NUMERIC"/>
-            <column name="sName"            type="STRING"/>
-            <column name="nID_SubjectOrgan" type="NUMERIC"/>
-            <column name="sHandlerClass"    type="String"/>
-        </loadUpdateData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ServiceOperator_SubjectOrgan.csv" tableName="ServiceOperator_SubjectOrgan" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-            <column name="nID_SubjectOrgan" type="NUMERIC"/>
-        </loadUpdateData>
-
-        <loadData encoding="UTF-8" file="data/ServiceTagType.csv" tableName="ServiceTagType" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sName" type="STRING"/>
-        </loadData>
-        <loadData encoding="UTF-8" file="data/ServiceTag.csv" tableName="ServiceTag" separator=";">
-            <column name="nID" type="NUMERIC"/>
-            <column name="sID" type="STRING"/>
-            <column name="sName_RU" type="STRING"/>
-            <column name="sName_UA" type="STRING"/>
-            <column name="nID_ServiceTagType" type="NUMERIC"/>
-            <column name="nOrder" type="NUMERIC"/>
-            <column name="sLinkImage" type="STRING"/>
-            <column name="sNote" type="STRING"/>
-            <column name="nID_Place" type="NUMERIC"/>
-        </loadData>
-        <loadData encoding="UTF-8" file="data/ServiceTagLink.csv" tableName="ServiceTagLink" separator=";">
-            <column name="nID_Service" type="NUMERIC"/>
-            <column name="nID_ServiceTag" type="NUMERIC"/>
-        </loadData>
-        <loadData encoding="UTF-8" file="data/ServiceTagRelation.csv" tableName="ServiceTagRelation" separator=";">
-            <column name="nID_ServiceTag_Parent" type="NUMERIC"/>
-            <column name="nID_ServiceTag_Child" type="NUMERIC"/>
-        </loadData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Server.csv" tableName="Server" separator=";">
-            <column name="nID"          type="NUMERIC"/>
-            <column name="sID"          type="STRING"/>
-            <column name="sType"        type="STRING"/>
-            <column name="sURL_Alpha"   type="STRING"/>
-            <column name="sURL_Beta"    type="STRING"/>
-            <column name="sURL_Omega"   type="STRING"/>
-            <column name="sURL"         type="STRING"/>
-        </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/DocumentContentType.csv" tableName="DocumentContentType" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -590,11 +276,56 @@
             <column name="sDateAnswerExpire" type="STRING"/>
         </loadUpdateData>
 
+        <!-- 3 связанные таблицы SubjectOrganJoin, SubjectOrganJoinTax, SubjectOrganJoinAttribute
+        перезагружаются каждый раз -->
+        <loadData encoding="UTF-8" file="data/SubjectOrganJoin.csv" tableName="SubjectOrganJoin" separator=";">
+            <column name="nID"              type="NUMERIC"/>
+            <column name="nID_SubjectOrgan" type="NUMERIC"/>
+            <column name="sNameUa"          type="STRING"/>
+            <column name="sNameRu"          type="STRING"/>
+            <column name="sID_Privat"       type="STRING"/>
+            <column name="sID_Public"       type="STRING"/>
+            <column name="sGeoLongitude"    type="STRING"/>
+            <column name="sGeoLatitude"     type="STRING"/>
+            <column name="nID_Region"       type="NUMERIC"/>
+            <column name="nID_City"         type="NUMERIC"/>
+            <column name="sID_UA"           type="STRING"/>
+        </loadData>
+
         <loadData tableName="SubjectOrganJoinTax" file="data/SubjectOrganJoinTax.csv" encoding="UTF-8" separator=";">
             <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
             <column name="sID_UA" type="STRING"/>
             <column name="sName_UA" type="STRING"/>
         </loadData>
+
+        <loadData tableName="SubjectOrganJoinAttribute" file="data/SubjectOrganJoinAttribute.csv"  encoding="UTF-8" separator=";">
+            <column name="nID_SubjectOrganJoin" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sValue" type="STRING"/>
+        </loadData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/HistoryEvent_Service.csv"
+                        tableName="HistoryEvent_Service" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="nID_Process" type="NUMERIC"/>
+            <column name="nID_Subject" type="NUMERIC"/>
+            <column name="sUserTaskName" type="STRING"/>
+            <column name="sDate" type="STRING"/>
+            <column name="nID_Service" type="NUMERIC"/>
+            <column name="nID_Region" type="NUMERIC"/>
+            <column name="sID_UA" type="STRING"/>
+            <column name="soData" type="STRING"/>
+            <column name="sToken" type="STRING"/>
+            <column name="sHead" type="STRING"/>
+            <column name="sBody" type="STRING"/>
+            <column name="nTimeMinutes" type="NUMERIC"/>
+            <column name="sID_Order" type="STRING"/>
+            <column name="nID_Server" type="NUMERIC"/>
+            <column name="nID_Proccess_Feedback" type="NUMERIC"/>
+            <column name="nID_Proccess_Escalation" type="NUMERIC"/>
+            <column name="nID_ServiceData" type="NUMERIC"/>
+        </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/HistoryEvent.csv" tableName="HistoryEvent" separator=";">
             <column name="nID" type="NUMERIC"/>
@@ -606,6 +337,12 @@
             <column name="nID_HistoryEvent_Service" type="NUMERIC"/>
             <column name="nID_Document" type="NUMERIC"/>
             <column name="sSubjectInfo" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectMessageType.csv" tableName="SubjectMessageType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sDescription" type="STRING"/>
         </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Merchant.csv" tableName="Merchant" separator=";">
@@ -635,6 +372,22 @@
             <column name="sMeasure_UA" type = "STRING" />
         </loadData>
 
+        <loadUpdateData tableName="SubjectMessage" primaryKey="nID" encoding="UTF-8" file="data/SubjectMessage.csv" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sHead" type="STRING"/>
+            <column name="sBody" type="STRING"/>
+            <column name="sDate" type="STRING"/>
+            <column name="nID_Subject" type="STRING"/>
+            <column name="sMail" type="STRING"/>
+            <column name="sContacts" type="STRING"/>
+            <column name="sData" type="STRING"/>
+            <column name="nID_SubjectMessageType" type="STRING"/>
+            <column name="sBody_Indirectly" type="STRING"/>
+            <column name="nID_HistoryEvent_Service" type="NUMERIC"/>
+            <column name="sSubjectInfo" type="STRING"/>
+            <column name="sID_DataLink" type="STRING"/>
+        </loadUpdateData>
+
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Currency.csv" tableName="Currency" separator=";">
             <column name="nID"          type="NUMERIC"/>
             <column name="sID_UA"       type="STRING"/>
@@ -649,6 +402,21 @@
             <column name="sName_UA"   type="STRING"/>
         </loadUpdateData>
 
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectAccountType.csv" tableName="SubjectAccountType" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sID"     type="STRING"/>
+            <column name="sNote"   type="STRING"/>
+        </loadUpdateData>
+
+        <loadData encoding="UTF-8" file="data/SubjectAccount.csv" tableName="SubjectAccount" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sLogin"  type="STRING"/>
+            <column name="sNote"   type="STRING"/>
+            <column name="nID_SubjectAccountType"     type="NUMERIC"/>
+            <column name="nID_Server"     type="NUMERIC"/>
+            <column name="nID_Subject"    type="NUMERIC"/>
+        </loadData>
+
          <loadUpdateData tableName="SubjectActionKVED" primaryKey="nID" encoding="UTF-8" file="data/SubjectActionKVED.csv" separator=";" >
             <column name="nID" type = "NUMERIC" />
             <column name="sID" type = "STRING" />
@@ -662,5 +430,12 @@
             <column name="nID_PlaceType" type = "NUMERIC" />
         </loadUpdateData>
     </changeSet>
+
+    <!--changeSet id="Drop out-of-date HistoryEvent_Service" author="brunneng" runOnChange="true" runAlways="true" dbms="postgresql">
+        <sql splitStatements="true" dbms="postgresql">
+            delete from "HistoryEvent_Service" where "nID_ServiceData" is not null and "nID_ServiceData" not in (select "nID" from "ServiceData");
+        </sql>
+    </changeSet-->
+
 
 </databaseChangeLog>

@@ -17,7 +17,7 @@
         <activiti:formProperty id="cldeathdate" name="Дата загибелі" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="clfuneraldate" name="Дата поховання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="originalCementary" name="На якому кладовищі поховано загиблого;вкажіть назву або адресу кладовища і місто, у якому воно розташоване" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="act_no" name="Актовий запис про поховання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cementary" name="Адреса кладовища для перепоховання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
@@ -28,10 +28,10 @@
         <activiti:formProperty id="scan5" name="Копія листа КЗ &quot;Дніпропетровське обласне бюро судово-медичної експертизи&quot; про підтвердження факту смерті та дати поховання загиблого" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="scan6" name="Копія дозволу або довідки виконавчого органу відповідної сільської, селищної, міської ради на перепоховання загиблого на іншому кладовищі (за місцем, куди вивозиться загибла особа для поховання)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dover" name="Завантажте довіреність;якщо документи подаються довіреною особою" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="group" name="Группа; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="regionFile" name="Файл подстановки данных в письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="group" name="Группа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_23&quot;: {&quot;aField_ID&quot;: [&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;: [&quot;23&quot;,&quot;woobraja@mail.ru&quot;,&quot;Начальнику Головного управління Держсанепідслужби у Дніпропетровській області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_prav&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'prav'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_24&quot;: {&quot;aField_ID&quot;: [&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;: [&quot;24&quot;,&quot;Luda17_@ukr.net&quot;,&quot;Начальнику Головного управління Держсанепідслужби у Дніпропетровській області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_lev&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'lev'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker25" name="Вільногірський ЦНАП" type="markers" default="{&quot;motion&quot;: {&quot;ValuesFieldsOnCondition_25&quot;: {&quot;aField_ID&quot;: [&quot;region&quot;,&quot;clerkPost&quot;,&quot;shapka41&quot;,&quot;regionFile&quot;,&quot;group&quot;],&quot;asID_Field_sValue&quot;: [&quot;25&quot;,&quot;cnap.vilnogirsk@gmail.com&quot;,&quot;Начальнику Головного управління Держсанепідслужби у Дніпропетровській області&quot;,&quot;dnepr_reg_cnap.csv&quot;,&quot;dnepr_cnap_vilnogirskT&quot;],&quot;asID_Field&quot;: {&quot;sReason&quot;: &quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;: &quot;[sReason] == 'vilnogirskT'&quot;}}}"></activiti:formProperty>
@@ -97,12 +97,12 @@
         <activiti:formProperty id="clrodna" name="Ступінь спорідненості із загиблим" type="string" default="${rodna}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfuneraldate" name="Дата поховання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="originalCementary" name="Кладовище, де поховано загиблого" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clact_no" name="Номер акта про поховання" type="string" default="${act_no}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clcementary" name="Місце перезахоронення" type="string" default="${cementary}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cldeathdate" name="Дата загибелі" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/PerezahoroneniaATO.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/PerezahoroneniaATO.html]; ;bVisible=false" type="string" default="Заява на видачу листа-довідки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/PerezahoroneniaATO.html]" type="invisible" default="Заява на видачу листа-довідки" writable="false"></activiti:formProperty>
         <activiti:formProperty id="perevirka1" name="Оберіть результат первинної перевірки документів:" type="enum" required="true">
           <activiti:value id="ok" name="Документи прийнято, формується опис, документи передаються для подальшої обробки"></activiti:value>
           <activiti:value id="bad" name="Поданих документів недостатньо для обробки"></activiti:value>
@@ -193,7 +193,7 @@ ${comPer1} &lt;br&gt;
         <activiti:formProperty id="clrodna" name="Ступінь спорідненості із загиблим" type="string" default="${rodna}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clfuneraldate" name="Дата поховання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="originalCementary" name="Кладовище, де поховано загиблого" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clact_no" name="Номер акта про поховання" type="string" default="${act_no}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clcementary" name="Місце перезахоронення" type="string" default="${cementary}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cldeathdate" name="Дата загибелі" type="date" writable="false"></activiti:formProperty>
@@ -203,7 +203,7 @@ ${comPer1} &lt;br&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар: Якщо заявнику відмовлено, вкажіть причину." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте файл з результатом подання (позитивним або негативним)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/PerezahoroneniaATO.html]; ;bVisible=false" type="string" default="Заява на видачу листа-довідки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/PerezahoroneniaATO.html]" type="invisible" default="Заява на видачу листа-довідки" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

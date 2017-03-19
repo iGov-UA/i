@@ -135,6 +135,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
     //@Autowired
     //public ManagerSMS_New oManagerSMS;
+    
     @Autowired
     public ManagerSMS ManagerSMS;
 
@@ -324,24 +325,22 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                         LOG.info("(form_ID={})", form_ID);
                         FormProperty formProperty = mProperty.get(form_ID);
                         LOG.info("Found form property : {}", formProperty);
-
-                        if (formProperty != null && formProperty.getValue() != null) {
-                            replacement = formProperty.getValue();
-                            LOG.info("(formVariable={})", formProperty.getValue());
-                        } else {
-                            List<String> aID = new ArrayList<>();
-                            aID.add(form_ID);
-                            List<String> proccessVariable = AbstractModelTask
-                                    .getVariableValues(execution, aID);
-                            LOG.info("(proccessVariable={})",
-                                    proccessVariable);
-                            if (!proccessVariable.isEmpty()
-                                    && proccessVariable.get(0) != null) {
-                                replacement = proccessVariable.get(0);
-                            }
-                        }
-
                         if (formProperty != null) {
+                            if (formProperty.getValue() != null) {
+                                replacement = formProperty.getValue();
+                            } else {
+                                List<String> aID = new ArrayList<>();
+                                aID.add(formProperty.getId());
+                                List<String> proccessVariable = AbstractModelTask
+                                        .getVariableValues(execution, aID);
+                                LOG.info("(proccessVariable={})",
+                                        proccessVariable);
+                                if (!proccessVariable.isEmpty()
+                                        && proccessVariable.get(0) != null) {
+                                    replacement = proccessVariable.get(0);
+                                }
+                            }
+
                             String sType = formProperty.getType().getName();
                             if ("date".equals(sType)) {
                                 if (formProperty.getValue() != null) {
@@ -351,7 +350,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                                     replacement = getFormattedDateS(formProperty
                                             .getValue());
                                 }
+                            } else {
+                                //replacement = formProperty.getValue();
                             }
+
                         }
                     }
                 }
@@ -519,14 +521,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         //LOG.info("(soResponse={})", soResponse);
         return sName;//soResponse
     }*/
+
     private String replaceTags_sURL_FEEDBACK_MESSAGE(String textWithoutTags,
             DelegateExecution execution, Long nID_Order) throws Exception {
 
-        LOG.info("Replace tags(textWithoutTags= {}, nID={})", textWithoutTags, nID_Order);
-
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher oMatcher = TAG_sURL_FEEDBACK_MESSAGE.matcher(textWithoutTags);
-        LOG.info("Replace tags (oMatcher= {})", oMatcher.find());
         while (oMatcher.find()) {
             String tag_sURL_FEEDBACK_MESSAGE = oMatcher.group();
             List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
@@ -557,8 +557,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
                 if (oFormProperty != null) {
                     String sID = oFormProperty.getId();
-                    LOG.info("(id={})", sID);
-
+                    //LOG.info("(id={})", id);
                     if ("email".equalsIgnoreCase(sID) && oFormProperty.getValue() != null && !"null".equalsIgnoreCase(oFormProperty.getValue())) {
                         sAuthorMail = oFormProperty.getValue();
                     }
@@ -573,11 +572,9 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     }
                     if ("clFIO".equalsIgnoreCase(sID) && oFormProperty.getValue() != null && !"null".equalsIgnoreCase(oFormProperty.getValue())) {
                         sAuthorFIO_Original = oFormProperty.getValue();
-//                        LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
+                        //LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
+
                     }
-                    LOG.info("oFormProperty != null :"
-                            + "(sAuthorMail={}, sAuthorLastName= {}, sAuthorFirstName= {}, sAuthorMiddleName= {}, sAuthorFIO_Original= {})",
-                            sAuthorMail, sAuthorLastName, sAuthorFirstName, sAuthorMiddleName, sAuthorFIO_Original);
                 }
             }
 
@@ -778,11 +775,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         matcher.appendTail(outputTextBuffer);
         return outputTextBuffer.toString();
     }
-
+    
     /*
 	 * Access modifier changed from private to default to enhance testability
      */
-    private static String getPatternContentReplacement(Matcher matcher) throws IOException,
+    private  static String getPatternContentReplacement(Matcher matcher) throws IOException,
             URISyntaxException {
         String sPath = matcher.group(1);
         LOG.info("Found content group! (sPath={})", sPath);
@@ -854,7 +851,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         //mParam.put("nID_Subject", "0");
         //mParam.put("sContacts", "0");
         //params.put("sData", "0");
-
+        
         mParam.put("nID_SubjectMessageType", "" + 10L);
         mParam.put("sID_DataLinkSource", "Region");
         mParam.put("sID_DataLinkAuthor", "System");
@@ -863,7 +860,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         mParam.put("sID_DataLink", sID_DataLink);
 
         mParam.put("RequestMethod", RequestMethod.GET.name());
-
+        
         ScheduledExecutorService oScheduledExecutorService = Executors
                 .newSingleThreadScheduledExecutor();
         Runnable oRunnable = new Runnable() {

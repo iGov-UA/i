@@ -314,8 +314,17 @@ angular.module('app').controller('ServiceStatisticsController', function ($scope
 
 // контроллер для загрузки статистики во вкладке "О портале" https://github.com/e-government-ua/i/issues/1230
 angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'ServiceService', 'AdminService', function ($scope, ServiceService, AdminService) {
+
+  // поскольку статистика видна только админу, делаем проверку.
   $scope.bAdmin = AdminService.isAdmin();
-  var sCodepage = 'utf-8';
+
+  $scope.statisticDateBegin = {
+    value: new Date(2016, 0, 1, 0, 0)
+  };
+  $scope.statisticDateEnd = {
+    value: new Date(2016, 0, 1, 0, 0)
+  };
+
 
   // сортировка по клику на заголовок в шапке
   $scope.predicate = 'sID_Order';
@@ -325,6 +334,7 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
     $scope.predicate = predicate;
   };
 
+  //проверка процесса загрузки таблицы. в процессе загрузки true, загружен - false
   $scope.isStatisticLoading = {
     bState: false
   };
@@ -333,32 +343,128 @@ angular.module('app').controller('ServiceHistoryReportController', ['$scope', 'S
     $scope.isStatisticLoading.bState = !$scope.isStatisticLoading.bState
   };
 
-  // загрузка статистики в формате .csv
-  $scope.downloadStatistic = function () {
-    ServiceService.getServiceHistoryReport($scope.statisticDateBegin.value, $scope.statisticDateEnd.value, $scope.sanIDServiceExclude, sCodepage).
-    then(function(data) {
-      var anchor = angular.element('<a/>');
-      anchor.attr({
-        href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data.data),
-        target: '_blank',
-        download: 'statistic.csv'
-      })[0].click();
-    })
+  var result;
+  var dateFrom;
+  var dateTo;
+  var exclude;
+
+  // конвертируем дату и время с datepicker'а в нужный для запроса формат YYYY-MM-DD hh:mm:ss
+  $scope.getTimeInterval = function (date) {
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var chosenDate = date.value.toString();
+    var dateSplited = chosenDate.split(' ');
+    var selectedTime = dateSplited[4];
+    var selectedDay = dateSplited[2];
+    var selectedYear = dateSplited[3];
+    var selectedMonth = '';
+
+    // меняем буквенное обозначение мес на числовое
+    if (dateSplited[1].indexOf(months)) {
+      selectedMonth = months.indexOf(dateSplited[1]) + 1;
+      if (selectedMonth < 10) {
+        selectedMonth = '0' + selectedMonth;
+      }
+    }
+    result = selectedYear + '-' + selectedMonth + '-' + selectedDay + ' ' + selectedTime;
+    return result
+
   };
 
-  // загрузка и отображение таблицы
+  // загрузка статистики в формате .csv . проверка на корректность фильтра (если он есть),
+  // а также если он используеться - исключение отфильтрованных тасок с файла
+  $scope.downloadStatistic = function () {
+    var prot = location.protocol;
+    if ($scope.statistics !== undefined) {
+      if ($scope.sanIDServiceExclude !== undefined) {
+        if ($scope.sanIDServiceExclude.match(/^(\d+,)*\d+$/)) {
+          window.open(prot + "/wf/service/action/event/getServiceHistoryReport?sDateAt=" + dateFrom + "&sDateTo=" + dateTo + '&sanID_Service_Exclude=' + exclude)
+          return
+        } else {
+          return false
+        }
+      }
+      window.open(prot + "/wf/service/action/event/getServiceHistoryReport?sDateAt=" + dateFrom + "&sDateTo=" + dateTo)
+    }
+  };
+
+  // загрузка и формирование таблицы
   $scope.getStatisticTable = function () {
+    //блокируем возможность повторно нажатия "Завантажити" пока предыдущий запрос находиться в работе
     $scope.switchStatisticLoadingStatus();
 
-    ServiceService.getServiceHistoryReport($scope.statisticDateBegin.value, $scope.statisticDateEnd.value, $scope.sanIDServiceExclude, sCodepage).then(function (res) {
-      Papa.parse(res.data, {
-        header: true,
-        dynamicTyping: true,
-        complete: function(results) {
-          $scope.historyParsedCSV = results.data;
-          $scope.switchStatisticLoadingStatus();
-        }
+    dateFrom = $scope.getTimeInterval($scope.statisticDateBegin);
+    dateTo = $scope.getTimeInterval($scope.statisticDateEnd);
+    exclude = $scope.sanIDServiceExclude;
+    var sCodepage = 'utf-8';
+
+    ServiceService.getServiceHistoryReport(dateFrom, dateTo, exclude, sCodepage).then(function (res) {
+      var resp = res.data;
+      var responseSplited = resp.split(new RegExp(/\n/g));
+      var correct = [];
+      angular.forEach(responseSplited, function (row) {
+        correct.push(row.split(';'));
       });
+      var columnID = {
+        sID_Order: null,
+        nID_Server: null,
+        nID_Service: null,
+        sID_Place: null,
+        nID_Subject: null,
+        nRate: null,
+        sTextFeedback: null,
+        sUserTaskName: null,
+        sHead: null,
+        sBody: null,
+        nTimeMinutes: null,
+        sPhone: null,
+        nID_ServiceData: null,
+        sDateCreate: null,
+        sDateClose: null
+      };
+      for (var j = 0; j < correct[0].length; j++){
+        columnID = {
+          sID_Order: 'sID_Order' === correct[0][j] ? j : columnID.sID_Order,
+          nID_Server: 'nID_Server' === correct[0][j] ? j : columnID.nID_Server,
+          nID_Service: 'nID_Service' === correct[0][j] ? j : columnID.nID_Service,
+          sID_Place: 'sID_Place' === correct[0][j] ? j : columnID.sID_Place,
+          nID_Subject: 'nID_Subject' === correct[0][j] ? j : columnID.nID_Subject,
+          nRate: 'nRate' === correct[0][j] ? j : columnID.nRate,
+          sTextFeedback: 'sTextFeedback' === correct[0][j] ? j : columnID.sTextFeedback,
+          sUserTaskName: 'sUserTaskName' === correct[0][j] ? j : columnID.sUserTaskName,
+          sHead: 'sHead' === correct[0][j] ? j : columnID.sHead,
+          sBody: 'sBody' === correct[0][j] ? j : columnID.sBody,
+          nTimeMinutes: 'nTimeMinutes' === correct[0][j] ? j : columnID.nTimeMinutes,
+          sPhone: 'sPhone' === correct[0][j] ? j : columnID.sPhone,
+          nID_ServiceData: 'nID_ServiceData' === correct[0][j] ? j : columnID.nID_ServiceData,
+          sDateCreate: 'sDateCreate' === correct[0][j] ? j : columnID.sDateCreate,
+          sDateClose: 'sDateClose' === correct[0][j] ? j : columnID.sDateClose
+        };
+      }
+
+      $scope.statistics = [];
+      var statistic = {};
+
+      for (var i = 1; i < correct.length; i++) {
+        statistic = {
+          sID_Order: angular.isNumber(columnID.sID_Order) ? correct[i][columnID.sID_Order] : '',
+          nID_Server: angular.isNumber(columnID.nID_Server) ? Number(correct[i][columnID.nID_Server]) : '',
+          nID_Service: angular.isNumber(columnID.nID_Service) ? Number(correct[i][columnID.nID_Service]) : '',
+          sID_Place: angular.isNumber(columnID.sID_Place) ? Number(correct[i][columnID.sID_Place]) : '',
+          nID_Subject: angular.isNumber(columnID.nID_Subject) ? Number(correct[i][columnID.nID_Subject]) : '',
+          nRate: angular.isNumber(columnID.nRate) ? Number(correct[i][columnID.nRate]) : '',
+          sTextFeedback: angular.isNumber(columnID.sTextFeedback) ? correct[i][columnID.sTextFeedback] : '',
+          sUserTaskName: angular.isNumber(columnID.sUserTaskName) ? correct[i][columnID.sUserTaskName] : '',
+          sHead: angular.isNumber(columnID.sHead) ? correct[i][columnID.sHead] : '',
+          sBody: angular.isNumber(columnID.sBody) ? correct[i][columnID.sBody] : '',
+          nTimeMinutes: angular.isNumber(columnID.nTimeMinutes) ? Number(correct[i][columnID.nTimeMinutes]) : '',
+          sPhone: angular.isNumber(columnID.sPhone) ? correct[i][columnID.sPhone] : '',
+          nID_ServiceData: angular.isNumber(columnID.nID_ServiceData) ? Number(correct[i][columnID.nID_ServiceData]) : ''
+        };
+
+        $scope.statistics.push(statistic);
+        statistic = {};
+      }
+      $scope.switchStatisticLoadingStatus();
     });
   }
 

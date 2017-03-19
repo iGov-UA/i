@@ -11,7 +11,7 @@ import org.igov.service.business.flow.FlowService;
 import java.util.Date;
 import java.util.List;
 import org.igov.model.flow.FlowServiceDataDao;
-import org.igov.model.flow.Flow;
+import org.igov.model.flow.Flow_ServiceData;
 import org.igov.service.business.flow.slot.FlowSlotVO;
 import org.joda.time.DateTime;
 

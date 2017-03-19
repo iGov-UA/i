@@ -183,18 +183,6 @@ module.exports.uploadContent = function (apiURL, params, content, callback, sHos
 
   var uploadRequest;
 
-  if(!params.qs) {
-    params.qs = {};
-    if(content.length === 1 && content[0].options) {
-      params.qs.sFileNameAndExt = content[0].options.filename ? content[0].options.filename : 'data.json';
-      params.qs.sID_StorageType = 'Redis';
-    } else if (content.length > 1) {
-      params.qs.sFileNameAndExt = 'formData.json';
-      params.qs.sID_StorageType = 'Redis';
-    }
-  }
-
-
   if(params.qs || params.headers){
     //params is object with query string and/or headers
     var hasCustomAuth = params.headers && params.headers.Authorization ? true : false;

@@ -29,7 +29,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.igov.service.business.action.ActionItemService.SUPPORTED_PLACE_IDS;
@@ -360,7 +359,8 @@ public class ActionItemControllerScenario {
         Assert.assertTrue(jsonData.contains("success"));
     }
 
-    
+
+    @Ignore
     @Test
     public void shouldSuccessfullyGetCatalogTreeTag() throws Exception {
         dbManager.recreateDb();
@@ -376,57 +376,6 @@ public class ActionItemControllerScenario {
 
         Assert.assertTrue(tree.getaNode().size() > 0);
         Assert.assertTrue(tree.getaService().size() > 0);
-    }
-
-    @Test
-    public void shouldSuccessfullyGetCatalogTreeTagOldFormat1() throws Exception {
-        dbManager.recreateDb();
-        String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTag").
-                param("nID_Category", "1").
-                param("bShowEmptyFolders", "false")).
-                andExpect(status().isOk()).
-                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andExpect(jsonPath("$", not(empty()))).
-                andReturn().getResponse().getContentAsString();
-        ServiceTagTreeNodeVO[] tableDataList = JsonRestUtils.readObject(jsonData, ServiceTagTreeNodeVO[].class);
-
-        Assert.assertTrue(tableDataList.length > 1);
-    }
-
-    @Test
-    public void shouldSuccessfullyGetCatalogTreeTagService2() throws Exception {
-        dbManager.recreateDb();
-
-        String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTagService").
-                param("nID_Category", "").
-                param("nID_ServiceTag_Child", "17").
-                param("nID_ServiceTag_Root", "2")).
-                andExpect(status().isOk()).
-                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andExpect(jsonPath("$", not(empty()))).
-                andReturn().getResponse().getContentAsString();
-        ServiceTagTreeNodeVO[] tableDataList = JsonRestUtils.readObject(jsonData, ServiceTagTreeNodeVO[].class);
-
-        Assert.assertTrue(tableDataList.length == 1);
-        Assert.assertTrue(tableDataList[0].getaService().size() > 0);
-    }
-
-    @Test
-    public void shouldSuccessfullyGetEmptyCatalogTreeTag() throws Exception {
-        dbManager.recreateDb();
-        String jsonData = mockMvc.perform(get("/action/item/getCatalogTreeTag").
-                param("nID_Category", "1").
-                param("sFind", "реєстрація").
-                param("bNew", "true").
-                param("nID_Place_Profile", "543")).
-                andExpect(status().isOk()).
-                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
-                andExpect(jsonPath("$", not(empty()))).
-                andReturn().getResponse().getContentAsString();
-        ServiceTagTreeVO tree = JsonRestUtils.readObject(jsonData, ServiceTagTreeVO.class);
-
-        Assert.assertTrue(tree.getaNode().size() == 0);
-        Assert.assertTrue(tree.getaService().size() == 0);
     }
 
     @Test
