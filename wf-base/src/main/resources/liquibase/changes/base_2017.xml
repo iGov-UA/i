@@ -24,14 +24,14 @@
             </column>
         </addColumn>
     </changeSet>
-    <!-- 
+    <!--  -->
     <changeSet id="issue-1385-subjectAddColums_3" author="olga">
         <sql splitStatements="true" dbms="postgresql">
             update "Subject" s set "nID_SubjectOrgan" = (select so."nID" from "SubjectOrgan" so where so."nID_Subject" = s."nID") ;
             update "Subject" s set "nID_SubjectHuman" = (select sh."nID" from "SubjectHuman" sh where sh."nID_Subject" = s."nID") ;
         </sql>
     </changeSet>
-     -->
+    
     
     <changeSet id="issue-1488-rename-Flow_ServiceData" author="Kovylin Yegor">
         
