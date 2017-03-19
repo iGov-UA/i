@@ -3,7 +3,8 @@
   <process id="common_zags_1" name="Заява про державну реєстрацію шлюбу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-      <activiti:formProperty id="sText16" name=" " type="label" default="Також Ви можете скористатися послугою подачі &lt;a href=&quot;https://igov.org.ua/service/180/general&quot; target=&quot;_blank&quot;&gt;заяви про державну реєстрацію шлюбу за одну добу&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sText16" name=" " type="label" default="Також Ви можете скористатися послугою подачі &lt;a href=&quot;https://igov.org.ua/service/180/general&quot; target=&quot;_blank&quot;&gt;заяви про державну реєстрацію шлюбу за одну добу&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="markersStyle_1" name="Маркер стилю" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_style.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
@@ -16,7 +17,7 @@
           <activiti:value id="sEnum1" name="Скорочений обряд (15 хвилин, вартість - 140 грн. )"></activiti:value>
           <activiti:value id="sEnum2" name="Повний обряд (45 хвилин, вартість - 337 грн.)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText6" name="Зверніть увагу" type="label" default="&lt;b&gt;Реквізити для сплати обраного типу обряду Ви отримаєте в електронному листі після перевірки данних реєстратором&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sText6" name=" " type="label" default="Реквізити для сплати обраного типу обряду Ви отримаєте в електронному листі після перевірки данних реєстратором"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.);Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Сплатити карткою через Інтернет"></activiti:value>
@@ -31,7 +32,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію" type="file"></activiti:formProperty>
         <activiti:formProperty id="sText3" name="Зверніть увагу" type="label" default="&lt;font color='#FF0000'&gt;&lt;b&gt; На жаль, для обраного ДРАЦС тимчасово неможливо сплатити держм. мито онлайн&lt;/b&gt;&lt;/font&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sText5" name="Зверніть увагу" type="label" default="&lt;b&gt;Після замовлення послуги на електронну адресу прийде повідомлення з можливістю оплатити держ. мито онлайн&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sText5" name=" " type="label" default="Після замовлення послуги на електронну адресу прийде повідомлення з можливістю оплати державного мита онлайн"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="label" default=" "></activiti:formProperty>
@@ -41,6 +42,7 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCodeDRACS" name="sCodeDRACS" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
@@ -148,6 +150,7 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCodeDRACS" name="sCodeDRACS" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="sWeddingDay" name="Бажана дата церемонії; ;writable=false" type="string"></activiti:formProperty>
@@ -238,7 +241,7 @@
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_1.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_1.html]" type="invisible" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html]" type="invisible" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
@@ -266,6 +269,7 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCodeDRACS" name="sCodeDRACS" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="sWeddingDay" name="Бажана дата церемонії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі заяви" type="string" writable="false"></activiti:formProperty>
@@ -429,6 +433,7 @@
 МФО: <b>820172</b><br>
 Код ЄДРПОУ: <b>34984907</b><br>
 Розрахунковий рахунок: <b>31258232100157</b><br>
+Призначення платежу: <b>Надання платних послуг. Код відділу ${sCodeDRACS}, код послуги 4.1.3.</b><br>
 Вартість скороченого обряду (15 хвилин): <b> 140 грн </b><br>
 <br>
 Телефон для довідок: ${sPhoneOrgan} <br> 
@@ -558,6 +563,7 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCodeDRACS" name="sCodeDRACS" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sWeddingDay" name="Бажана дата церемонії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі заяви" type="string" writable="false"></activiti:formProperty>
@@ -848,6 +854,7 @@ execution.setVariable('sCountPayment', src)</script>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCodeDRACS" name="sCodeDRACS" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWeddingDay" name="Бажана дата церемонії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Обрана дата/час церемонії" type="queueData"></activiti:formProperty>
@@ -1021,6 +1028,7 @@ execution.setVariable('sCountPayment', src)</script>
 МФО: <b>820172</b><br>
 Код ЄДРПОУ: <b>34984907</b><br>
 Розрахунковий рахунок: <b>31258232100157</b><br>
+Призначення платежу: <b>Надання платних послуг. Код відділу ${sCodeDRACS}, код послуги 4.1.1.</b><br>
 Вартість повного обряду (45 хвилин): <b> 337 грн </b><br>
 <br>
 Телефон для довідок: ${sPhoneOrgan} <br>                                 
