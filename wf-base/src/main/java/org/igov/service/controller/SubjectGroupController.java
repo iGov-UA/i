@@ -1,10 +1,16 @@
 
 package org.igov.service.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.igov.model.subject.SubjectGroupAndUser;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupService;
 import org.igov.service.business.subject.SubjectGroupTreeService;
+import org.igov.service.business.subject.SubjectRightBPService;
+import org.igov.service.business.subject.SubjectRightBPVO;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +39,10 @@ public class SubjectGroupController {
     @Autowired
     private SubjectGroupTreeService subjectGroupTreeService;
     
-    
-    
+		
+	@Autowired
+	SubjectRightBPService subjectRightBPService;
+
     
     @ApiOperation(value = "Получение организационной иерархии", notes = "##### Пример:\n"
 	        + "https://alpha.test.region.igov.org.ua/wf/service/subject/group/getSubjectGroups?sID_Group_Activiti=MJU_Dnipro&nDeepLevel=1 \n"
@@ -95,4 +103,23 @@ public class SubjectGroupController {
         }
 		return subjectGroupResultTree;
     }
+
+	@RequestMapping(value = "/getSubjectRightBPs", method = RequestMethod.GET)
+	@ResponseBody
+	public List<SubjectRightBPVO> getSubjectRightBPs(
+			@ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
+			throws Exception {
+
+		LOG.info("sLogin: ", sLogin);
+
+		List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getSubjectRightBPs(sLogin);
+
+		LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
+
+		if (aResSubjectRightBPVO != null) {
+			return aResSubjectRightBPVO;
+		}
+
+		return new ArrayList<>();
+	}
 }

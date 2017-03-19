@@ -1088,23 +1088,6 @@ public class ObjectFileCommonController {
 
         return oAttachmentCover.apply(attachment);
     }
-    @ApiOperation(value = "проверка подписано ли ЕЦП")
-    @RequestMapping(value = "/isDocumentAllSigned", method = RequestMethod.GET)
-    @Transactional
-    public @ResponseBody
-    Map<String, Boolean> isDocumentAllSigned(
-            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
-            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
-            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
-                   HttpServletResponse httpResponse) throws Exception {
-
-        LOG.info("snID_Process_Activiti: " + nID_Process);
-        LOG.info("sLogin: " + sLogin);
-        LOG.info("sKey_Step: " + sKey_Step);
-        
-        return attachmetService.isDocumentAllSigned(nID_Process, sLogin, sKey_Step);
-
-        
-    }
+   
 
 }

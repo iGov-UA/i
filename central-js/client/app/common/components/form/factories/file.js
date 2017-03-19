@@ -59,22 +59,17 @@ angular.module('app').factory('FileFactory', function ($q, $rootScope, ActivitiS
           }
           return true;
         };
-        if(isJson(fileid)) {
-          self.value = fileid;
-          fileid = JSON.parse(fileid).sKey;
-        }else {
-          self.value = {id : fileid, signInfo: null, fromDocuments: false};
-        }
 
+        self.value = {id : fileid, signInfo: null, fromDocuments: false};
+
+        if(isJson(fileid)) {
+          fileid = JSON.parse(fileid).sKey;
+        }
         scope.$apply(function () {
           ActivitiService.checkFileSign(oServiceData, fileid).then(function(signInfo){
-            if(typeof self.value === 'object') {
-              self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
-            } else {
-              self.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
-            }
+            self.value.signInfo = Object.keys(signInfo).length === 0 ? null : signInfo;
           }).catch(function(error){
-            typeof self.value === 'object' ?  self.value.signInfo = null : self.signInfo = null;
+            self.value.signInfo = null
           }).finally(function(){
             self.isUploading = false;
           });

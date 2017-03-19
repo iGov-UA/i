@@ -62,26 +62,25 @@
 
 
         <div class="nav navbar-nav navbar-right right-menu-group">
-
           <div class="nav navbar-nav document-button" ng-if="usersDocumentsBPs.length > 0 && showCreateDocButton()">
             <a ng-click="openCloseUsersSelect()"
                class="btn btn-info">Створити документ
             </a>
             <div class="document-select-block" ng-show="showOrHideSelect">
-                <ui-select style="border: 6px solid white; bottom: 6px; border-radius: 5px;"
-                           ng-model="document.selected"
-                           theme="bootstrap"
-                           on-select="onSelectDocList($item)">
+              <ui-select style="border: 6px solid white; bottom: 6px; border-radius: 5px;"
+                ng-model="document.selected"
+                theme="bootstrap"
+                on-select="onSelectDocList($item)">
 
                   <ui-select-match placeholder="Оберіть документ зі списку">
-                    <span title="{{$select.selected.sName}} ({{$select.selected.sID}})">
-                      {{$select.selected.sName}}
+                    <span title="{{$select.selected.sName_BP}} ({{$select.selected.oSubjectRightBP.sID_BP}})">
+                      {{$select.selected.sName_BP}}
                     </span>
                   </ui-select-match>
 
                   <ui-select-choices repeat="doc in usersDocumentsBPs | filter:$select.search">
-                    <span title="{{doc.sName}} ({{doc.sID}})">
-                      {{doc.sName}} ({{doc.sID}})
+                    <span title="{{doc.sName_BP}} ({{doc.oSubjectRightBP.sID_BP}})">
+                      {{doc.sName_BP}} ({{doc.oSubjectRightBP.sID_BP}})
                     </span>
                   </ui-select-choices>
                 </ui-select>

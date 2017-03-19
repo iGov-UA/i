@@ -19,14 +19,14 @@
         <activiti:formProperty id="sDocNoOffense" name="Заява від імені землевпорядної організації" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність" type="file"></activiti:formProperty>
       
-        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailCnap" name="пошта співробітника ЦНАП" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka628" name="Управління культури, національностей та релігій Дніпропетровської ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailCnap" name="пошта співробітника ЦНАП; ;bVisible=false" type="string" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця; ;bVisible=false" type="string" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="назва населеного пункту; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka628" name="Управління культури, національностей та релігій Дніпропетровської ОДА; ;bVisible=false" type="string"></activiti:formProperty>
         </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="kultura_${sID_Public_SubjectOrganJoin}">
@@ -47,10 +47,10 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_628_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka628" name="шапка у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_628_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -78,11 +78,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію дозволу" type="file"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka628" name="шапка у принтформу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka628" name="шапка у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_628_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_628_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_628_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

@@ -972,9 +972,10 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         }      
       }
 
-      if(sFileName === "" && modelValue && typeof modelValue === 'string') {
+      if(sFileName === "" && modelValue && (typeof modelValue === 'string' || typeof modelValue === 'object' && modelValue.id)) {
+        var key = modelValue.id ? modelValue.id : modelValue;
         try {
-          var isNewAttaches = JSON.parse(modelValue);
+          var isNewAttaches = JSON.parse(key);
           if(typeof isNewAttaches === 'object' && isNewAttaches.sFileNameAndExt) {
             sFileName = isNewAttaches.sFileNameAndExt;
           }

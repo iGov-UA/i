@@ -37,28 +37,54 @@ public class ECPServiceImpl implements ECPService {
 				+ generalConfig.getsECPKeystorePasswd());
 
 		File keyFile = new File(environment.getProperty("catalina.home") + "/conf/" + generalConfig.getsECPKeystoreFilename());
+		File certFile = new File(environment.getProperty("catalina.home") + "/conf/" + generalConfig.getsECPSelfCertPathFile());
 
-		if (keyFile.exists()) {
+
+		if (keyFile.exists() && certFile.exists()) {
 			LOG.info("Creating KeyStore with parameters. keystore path:"
 					+ keyFile.getPath());
 			final KeyStore keyStore = new KeyStore(keyFile.getPath(), generalConfig.getsECPKeystorePasswd());
 			
-			final Path keyFilePath = Paths.get(keyFile.getPath());
-			final byte[] keyFileData = Files.readAllBytes(keyFilePath);
-			String tspUrl = TSP_URL;
-
+			final Path pathCert = Paths.get(certFile.getPath());
+			final byte[] dataCert = Files.readAllBytes(pathCert);
+			
 			LOG.info("Signing the document. Size of original document:"
 					+ (content != null ? content.length : "0"));
-			final byte[] signedDoc = CryptoniteX.cmsSignData(keyStore, content, true, keyFileData, true, TSP_URL, true);
+			final byte[] signedDoc = CryptoniteX.cmsSignHash(keyStore, content, dataCert, true, null, true);
 
 			LOG.info("Signed the document. Size of signed document:"
 					+ (signedDoc != null ? signedDoc.length : "0"));
 
 			return signedDoc;
 		} else {
-			LOG.info("KeyStore file has not found in classpath");
+			LOG.info("Either KeyStore file or certificate sign file are not found in classpath. Paths:" + keyFile.getAbsolutePath() + " " + certFile.getAbsolutePath());
 		}
 		return null;
 	}
+    
+	@Override
+	public byte[] signFileByCustomSign(byte[] content, byte[] keyFile, byte[] certFile, String sPassword) throws Exception {
+		LOG.info("Creating KeyStore with parameters. FileName:" + (environment.getProperty("catalina.home") + "/conf/" + generalConfig.getsECPKeystoreFilename()) + " Passwd:"
+				+ generalConfig.getsECPKeystorePasswd());
+		//File certFile = new File(environment.getProperty("catalina.home") + "/conf/" + generalConfig.getsECPSelfCertPathFile());
 
+
+		if (keyFile!=null && keyFile.length>0 && certFile!=null && certFile.length>0) {
+
+			final KeyStore keyStore = new KeyStore(keyFile, sPassword);
+			final byte[] dataCert = certFile;
+			
+			LOG.info("Signing the document. Size of original document:"
+					+ (content != null ? content.length : "0"));
+			final byte[] signedDoc = CryptoniteX.cmsSignHash(keyStore, content, dataCert, true, null, true);
+
+			LOG.info("Signed the document. Size of signed document:"
+					+ (signedDoc != null ? signedDoc.length : "0"));
+
+			return signedDoc;
+		} else {
+			LOG.info("Either KeyStore file or certificate sign file are not found in classpath. ");
+		}
+		return null;
+	}
 }

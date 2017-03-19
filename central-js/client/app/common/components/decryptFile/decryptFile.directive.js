@@ -124,6 +124,10 @@
         ID = params.file.value.id;
       }
 
+      if(vm.options.openModalViewer){
+        window.localStorage.setItem("openDfsAnswerModalViewer", angular.toJson(vm.options.openModalViewer));
+      }
+
       $window.location.href = hostUrl + '/api/sign-content/decrypt?formID=' +
         ID + '&nID_Server=' +
         nID_Server + '&sName=' + params.file.fileName + '&nID=' + params.id + '&restoreUrl=' + restoreUrl;

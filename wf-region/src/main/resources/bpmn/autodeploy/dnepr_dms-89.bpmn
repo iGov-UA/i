@@ -3,7 +3,8 @@
   <process id="dnepr_dms-89" name="Реєстрація місця проживання особи (із опцією одночасного зняття з реєстрації з попереднього місця)" isExecutable="true">
     <documentation>Смоктій К.В.  (получено на сопровождение от Жигана Ромы) Последние правки: 07.03.2017</documentation>
     <startEvent id="startevent1" name="Start">
-      <extensionElements>
+      <extensionElements>             
+      
         <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї особи, що подає звернення! &lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="warning2" name=" " type="label" default="УВАГА! Для реєстрації місця проживання дитини віком до 14 років використовуйте, будь ласка, &lt;a href=&quot; https://igov.org.ua/service/184/general&quot; target=&quot;_blank&quot;&gt;іншу &lt;/a&gt; послугу!"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -235,10 +236,10 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regBk.html]" type="invisible" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_10" name="[pattern/print/dms/1zajava_znFr.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_11" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_regFr.html,sFileName=Zayava_pro_reyestratsiyu_Page1_of_2,bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_regBk.html,sFileName=Zayava_pro_reyestratsiyu_Page2_of_2,bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_znFr.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page1_of_2,bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_znBk.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page2_of_2,bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_regFr.html,sFileName=Zayava_pro_reyestratsiyu_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_regBk.html,sFileName=Zayava_pro_reyestratsiyu_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_znFr.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_znBk.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка, свідоцтва про приписку або документу що їм відповідають;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSvidOwn" name="Документ щодо права властності; cвідоцтво про право власності, договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно. Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>

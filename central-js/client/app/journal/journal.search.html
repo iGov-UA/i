@@ -51,7 +51,7 @@
             {{oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.oSubjectMessageType.nID == 8 || oOrderMessage.nID_HistoryEventType == 1 ? 'Я' : 'iGov'}}
           </dt>
           <dd ng-repeat-end class="u31">
-            <time class="u33" datetime="{{oOrderMessage.sDate}}">{{oOrderMessage.sDate | date: 'dd.MM.yyyy HH:mm'}}</time>
+            <time class="u33" datetime="{{oOrderMessage.sDate}}">{{oOrderMessage.sDate | date: 'dd MMM yyyy HH:mm'}}</time>
             <span class="u53"></span>
             <p>{{oOrderMessage.sHead}}</p>
             &nbsp;
@@ -75,13 +75,13 @@
 
             <p style="padding-bottom: 20px" ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
-              <span ng-if="oFile.sFileName && oFile.sFileName.trim()">Прикріплено файл: "{{::oFile.sFileName}}"</span>
+              <span ng-if="oFile.sFileName && oFile.sFileName.trim() && oFile.sID_DataLinkAuthor !== 'SFS'">Прикріплено файл: "{{::oFile.sFileName}}"</span>
               <div ng-if="oOrderMessage.oSubjectMessageType &&
                       oOrderMessage.oSubjectMessageType.nID === 12 &&
                       oOrderMessage.osData &&
                       oFile.sID_DataLinkAuthor === 'SFS'">
                 <answer-dfs
-                        options="{ id: oOrderMessage.nID, mode: 'AUTO', text: 'Завантажити', fileName: oFile.sFileName }"
+                        options="{ id: oOrderMessage.nID, mode: 'AUTO', text: 'Переглянути відповідь', hideIcon : true, openModalViewer : true, fileName: oFile.sFileName }"
                         signed-file-id="vm.signedFileID"
                         file-name="oFile.sFileName"
                         redirect-url="vm.redirectUrl"></answer-dfs>

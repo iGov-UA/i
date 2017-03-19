@@ -35,12 +35,12 @@
         <activiti:formProperty id="nFile4" name="Довідка з Державного земельного кадастру про наявність у Державному земельному кадастрі відомостей про отримання у власність земельної ділянки в межах норм безоплатної приватизації за певним видом її цільового призначення (використання)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile5" name="Технічні матеріали та документи, що підтверджують розмір земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile6" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sHead_Document_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Status UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDistr" name="Район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="NumberGov" type="invisible" default="12345678"></activiti:formProperty>
+        <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHead_Document_UkrDoc" name="Status UkrDoc; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Status UkrDoc; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistr" name="Район; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="NumberGov; ;bVisible=false" type="string" default="12345678"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -119,8 +119,8 @@
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки;(обслуговування жилого будинку господарських будівель і споруд)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sHead_Document_UkrDoc" name="Head_Document_UkrDoc" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Body_UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sHead_Document_UkrDoc" name="Head_Document_UkrDoc; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Body_UkrDoc; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">

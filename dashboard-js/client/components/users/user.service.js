@@ -66,13 +66,14 @@ angular.module('dashboardJsApp')
       var request = {
         method: 'POST',
         url: url,
-        data: {},
-        params: {
-          sLogin: sLogin,
+        data: {
           sPassword: sPassword,
           sName: sName,
           sDescription: sDescription,
           sEmail: sEmail
+        },
+        params: {
+          sLogin: sLogin
         }
       };
 
