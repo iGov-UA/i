@@ -40,7 +40,7 @@ public class AccessCommonLoginControllerScenario {
         mockMvc.perform(post("/access/login").
                 accept(MediaType.APPLICATION_JSON).
                 param("sLogin", "kermit").
-                param("sPassword", "kermit").
+                //param("sPassword", "kermit").
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType("application/json;charset=UTF-8")).
@@ -54,7 +54,7 @@ public class AccessCommonLoginControllerScenario {
         mockMvc.perform(post("/access/login").
                 accept(MediaType.APPLICATION_JSON).
                 param("sLogin", "test").
-                param("sPassword", "test").
+                //param("sPassword", "test").
                 header("Authorization", "Basic YWN0aXZpdGktbWFzdGVyOlVqaHRKbkV2ZiE=")).
                 andExpect(status().isUnauthorized()).
                 andExpect(content().contentType("application/json;charset=UTF-8")).
