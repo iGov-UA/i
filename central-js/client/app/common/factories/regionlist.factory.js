@@ -20,6 +20,26 @@ angular.module('app').factory('RegionListFactory', function($http, PlacesService
       sFind: search
     };
     return this.typeahead.load('./api/places/regions', search, data).then(function(regions) {
+      angular.forEach(regions, function (region) {
+        if(region.aCity){
+          region.aCity.sort(function (a, b) {
+            if (a.sName.toLowerCase() > b.sName.toLowerCase())
+              return 1;
+            if (a.sName.toLowerCase() < b.sName.toLowerCase())
+              return -1;
+            else
+              return 0;
+          });
+        }
+      });
+      regions.sort(function (a, b) {
+        if (a.sName.toLowerCase() > b.sName.toLowerCase())
+          return 1;
+        if (a.sName.toLowerCase() < b.sName.toLowerCase())
+          return -1;
+        else
+          return 0;
+      });
       if (service === null) {
         return regions;
       }
