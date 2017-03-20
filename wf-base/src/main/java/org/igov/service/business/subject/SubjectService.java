@@ -375,7 +375,7 @@ public class SubjectService {
         return sb.toString();
     }
 
-    private String getLoginSubjectAccountByLoginIgovAccount(
+    public String getLoginSubjectAccountByLoginIgovAccount(
             String sID_Login_Activiti, String sID_SubjectAccountType) {
         String result = null;
         try {

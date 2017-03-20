@@ -17,6 +17,7 @@ import org.igov.io.fs.FileSystemData;
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import org.igov.service.business.export.AgroholdingService;
+import org.igov.service.business.subject.SubjectService;
 import static org.igov.service.business.util.Date.getDateDiff;
 import static org.igov.util.Tool.parseData;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom implement
     private HistoryService oHistoryService;
 
     @Autowired
-    private SubjectAccountDao subjectAccountDao;
+    private SubjectService oSubjectService;
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
@@ -106,7 +107,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom implement
                 LOG.info("historicTaskInstance.getName(): " + historicTaskInstance.getName());
                 String assigneeUser = historicTaskInstance.getAssignee();
                 LOG.info("assigneeUser: " + assigneeUser);
-                return getLoginSubjectAccountByLoginIgovAccount(assigneeUser, sID_SubjectAccountType);
+                return oSubjectService.getLoginSubjectAccountByLoginIgovAccount(assigneeUser, sID_SubjectAccountType);
             }
         } catch (Exception ex) {
             LOG.error("getLoginSubjectAccountByLoginIgovAccount: ", ex);
