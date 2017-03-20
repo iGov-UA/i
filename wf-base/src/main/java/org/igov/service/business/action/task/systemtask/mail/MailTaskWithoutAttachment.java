@@ -20,7 +20,8 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
         try {
             LOG.info("MailTaskWithoutAttachment...");
             Mail oMail = Mail_BaseFromTask(oExecution);
-            oMail.send();
+            //oMail.send();
+            sendMailOfTask(oMail, oExecution);
             LOG.info("MailTaskWithoutAttachment ok!");
         } catch (Exception ex) {
             LOG.error("MailTaskWithoutAttachment: ", ex);
