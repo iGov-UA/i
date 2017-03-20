@@ -252,10 +252,10 @@
     });
 
     $scope.showSignDialog = function () {
-      signDialog.signContent("sign this string", function () {
-        console.log('Sign Dismissed');
-      }, function (signedContent) {
+      signDialog.signContent({id: "someid", content: "sign this string"}, function (signedContent) {
         console.log('Sign Result ' + JSON.stringify(signedContent));
+      }, function () {
+        console.log('Sign Dismissed');
       })
     }
 
