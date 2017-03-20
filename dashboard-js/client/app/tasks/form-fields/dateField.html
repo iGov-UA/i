@@ -4,7 +4,7 @@
                                                       style="color: red">*</span></label>
             </span>
   <div class="col-sm-6">
-    <div class="input-group" ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)">
+    <div class="input-group" ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()">
       <!--todo после тестов удалить с dateTimeRangePicker.directive.js-->
       <!--<input datetimepicker-->
              <!--format='DD/MM/YYYY'-->
@@ -27,7 +27,7 @@
                ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
       </div>
     </div>
-    <div ng-if="showReadableField(item)">
+    <div ng-if="showReadableField(item) || !isDocumentNotSigned()">
         <span class="task-form-written-right-sight"
               name="{{item.id | date:'yyyy.MM.dd'}}">
               {{item.value | checkDate}}

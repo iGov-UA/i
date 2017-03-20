@@ -70,8 +70,7 @@ public class DfsService {
     @Autowired
     private IBytesDataStorage durableBytesDataStorage;
 
-    public String getAnswer(String sID_Task, String snID_Process, String sINN, String snCountYear, 
-            String sFile_XML_SWinEd_Filter) {
+    public String getAnswer(String sID_Task, String snID_Process, String sINN, String snCountYear, String sFile_XML_SWinEd_Filter) {
         StringBuilder asID_Attach_Dfs = new StringBuilder();
         List<ByteArrayMultipartFile> aByteArrayMultipartFile = getAnswer(sINN, snCountYear);
         LOG.info("snID_Process: " + snID_Process + " snCountYear: " + snCountYear
@@ -87,8 +86,7 @@ public class DfsService {
             if (oAttachment_Document != null) {
                 String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
                 String sAttachmentName_Document = oAttachment_Document.getName();
-                LOG.info("sAttachmentName_Document=" + sAttachmentName_Document + ", sID_Order=" + sID_Order
-                + " sFile_XML_SWinEd_Filter: " + sFile_XML_SWinEd_Filter);
+                LOG.info("sAttachmentName_Document=" + sAttachmentName_Document + ", sID_Order=" + sID_Order);
                 sAttachmentName_Document = sAttachmentName_Document.replaceAll(".xml", "");
 
                 for (ByteArrayMultipartFile oByteArrayMultipartFile : aByteArrayMultipartFile) {
@@ -231,10 +229,8 @@ public class DfsService {
                     List<String> fileNames = getContentFromXml(responseBody, "fileName");
                     List<String> fileContents = getContentFromXml(responseBody, "messageData");
                     LOG.info("receive fileNames: " + fileNames);
-                    if (fileNames != null && fileNames.size() > 0 
-                            && fileContents != null && fileContents.size() > 0
-                            && fileNames.get(0) != null && snCountYear != null 
-                            && fileNames.get(0).contains(snCountYear)) {
+                    if (fileNames != null && fileNames.size() > 0 && fileContents != null && fileContents.size() > 0
+                            && fileNames.get(0) != null && snCountYear != null && fileNames.get(0).contains(snCountYear)) {
                         String fileName = fileNames.get(0);
                         byte[] fileContent = Base64.decodeBase64(fileContents.get(0));
                         if (fileName != null && fileContent != null && fileContent.length > 0) {

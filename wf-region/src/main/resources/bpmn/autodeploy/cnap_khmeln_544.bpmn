@@ -36,13 +36,13 @@
         <activiti:formProperty id="sVlasn4" name="ПІБ власника №5;(вкажіть повністю)" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sVlasn5" name="ПІБ власника №6;(вкажіть повністю)" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_asVlasn_kilk" name="marker_asVlasn_kilk" type="markers" default="${markerService.loadFromFile('neruhomist/khmeln_544.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="шапка ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Зняття одноповерхових приватизованих житлових будинків та квартир з балансу житлово-експлуатаційних контор"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка ЦНАП; ;bVisible=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="invisible" default="Зняття одноповерхових приватизованих житлових будинків та квартир з балансу житлово-експлуатаційних контор"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -132,9 +132,9 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/khmelnitsky/cnap_khmeln_544_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка оформлена вірно заявнику прийде лист про можливість отримати документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/khmelnitsky/cnap_khmeln_544_print.html]; ;bVisible=false" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст; ;bVisible=false" type="invisible" default="Якщо заявка оформлена вірно заявнику прийде лист про можливість отримати документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="Printmarker" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam1&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam1'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam2&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam2'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam3&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam3'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam4&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam4'&quot;},&quot;ShowElementsOnTrue_5&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam5&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam5'&quot;},&quot;ShowElementsOnTrue_6&quot;:{&quot;aElement_ID&quot;:[&quot;sEnam6&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVlasn_kilk&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnam6'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

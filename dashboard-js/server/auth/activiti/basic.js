@@ -38,7 +38,8 @@ exports.logout = function (req, res) {
     res.statusCode = statusCode;
 
     if (error) {
-      res.send(error);
+//       res.send(error);
+      res.send({message: 'Error during basic authentication', nested: error});
     } else {
       var currentUser;
       try{

@@ -72,11 +72,10 @@
              ng-if="isTableAttachment(item.description)"
              class="btn btn-info">Переглянути
           </a>
-          <button
-            class="btn btn-info"
-            ng-disabled="checkSignState.inProcess"
-            ng-click="checkAttachmentSign(taskId, item.id, item.description)"
-            ng-if="sSelectedTask=='selfAssigned' && !isTableAttachment(item.description)">Перевірити ЕЦП
+          <button class="btn btn-info"
+                  ng-disabled="checkSignState.inProcess"
+                  ng-click="checkAttachmentSign(taskId, item.id, item.description)"
+                  ng-if="sSelectedTask=='selfAssigned' && !isTableAttachment(item.description)">Перевірити ЕЦП
           </button>
         </div>
         <button style="position:relative;"
@@ -84,9 +83,7 @@
                 type="button"
                 class="btn btn-link attach-btn dropdown-toggle"
                 data-toggle="dropdown"
-                ng-model="some"
                 title="{{item.description}}">
-          <!--ng-click="openModalWindow($event)">-->
           {{item.description | cut : true : 25}}
         </button>
       </div>

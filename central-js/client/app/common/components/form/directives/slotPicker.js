@@ -33,8 +33,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.formData.params[scope.property.id].value = null;
         var formObj = scope.$parent.form;
         if(formObj[scope.property.id]){
-          //formObj[scope.property.id].$viewValue = null;
-          //formObj[scope.property.id].$modelValue = null;
+          formObj[scope.property.id].$viewValue = null;
+          formObj[scope.property.id].$modelValue = null;
         }
       };
 

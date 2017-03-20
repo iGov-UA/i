@@ -20,21 +20,75 @@ angular.module('autocompleteService')
             if(angular.isDefined(res.config.params.sFind) && angular.isArray(res.data)){
                 angular.forEach(res.data, function (el) {
                     if(angular.isDefined(el.sID) && angular.isDefined(el.sNote)){
-                        el.sFind = el.sNote + " " + el.sID;
+                        el.sFind = el.sID + " " + el.sNote;
                     } else if (angular.isDefined(el.sID) && angular.isDefined(el.sName_UA)) {
                         el.sFind = el.sName_UA + " " + el.sID;
                     } else if (angular.isDefined(el.sID_UA) && angular.isDefined(el.sName_UA)) {
                         el.sFind = el.sName_UA + " " + el.sID_UA;
                     }
                 });
-            } else if(typeof res.data === 'object' && res.data.aSubjectUser) {
-                angular.forEach(res.data.aSubjectUser, function (user) {
-                    user.sName = user.sFirstName + " " + user.sLastName;
-                })
+            } else if(typeof res.data === 'object' && res.config.params.sID_SubjectRole) {
+                var response;
+                if(res.config.params.sID_SubjectRole === 'Executor') {
+                    response = subjectUserFilter(res.data.aSubjectGroupTree);
+                    angular.forEach(response, function (user) {
+                        user.sName = user.sFirstName + " " + user.sLastName;
+                    })
+                } else if(res.config.params.sID_SubjectRole === 'ExecutorDepart') {
+                    response = departmentFilter(res.data.aSubjectGroupTree);
+                }
             }
             return res;
         });
     }
+
+    // filter for resp from getSubjectGroupsTree, with tree list
+    var subjectUserFilter = function (arr) {
+        var allUsers = [], filteredUsers = [], logins = [];
+
+        (function loop(arr) {
+            angular.forEach(arr, function(item) {
+                if(item.aUser) {
+                    angular.forEach(item.aUser, function(user) {
+                        allUsers.push(user);
+                    })
+                }
+                if(item.aSubjectGroupChilds && item.aSubjectGroupChilds.length > 0){
+                    loop(item.aSubjectGroupChilds)
+                }
+            })
+        })(arr);
+
+        for(var i=0; i<allUsers.length; i++) {
+            if(logins.indexOf(allUsers[i].sLogin) === -1) {
+                filteredUsers.push(allUsers[i]);
+                logins.push(allUsers[i].sLogin);
+            }
+        }
+        return filteredUsers;
+    };
+
+    //filter with departments from resp
+    var departmentFilter = function (arr) {
+        var allDeps = [], filteredDeps = [], logins = [];
+
+        (function loop(arr) {
+            angular.forEach(arr, function(item) {
+                allDeps.push({sID_Group_Activiti:item.sID_Group_Activiti, sName:item.sName});
+                if(item.aSubjectGroupChilds && item.aSubjectGroupChilds.length > 0){
+                    loop(item.aSubjectGroupChilds)
+                }
+            })
+        })(arr);
+
+        for(var i=0; i<allDeps.length; i++) {
+            if(logins.indexOf(allDeps[i].sID_Group_Activiti) === -1) {
+                filteredDeps.push(allDeps[i]);
+                logins.push(allDeps[i].sID_Group_Activiti);
+            }
+        }
+        return filteredDeps;
+    };
 
     var getAdditionalPropertyName = function() {
         return ($scope.autocompleteData.additionalValueProperty ? $scope.autocompleteData.additionalValueProperty : $scope.autocompleteData.prefixAssociatedField) + '_' + $scope.autocompleteName;
@@ -51,7 +105,12 @@ angular.module('autocompleteService')
 
         return ($scope.autocompleteData ? getInfinityScrollChunk() : $timeout(getInfinityScrollChunk, 200))
             .then(function(response) {
-                var resp = response.data.aSubjectUser ? response.data.aSubjectUser : response.data;
+                var resp = response.data.aSubjectGroupTree ? response.data.aSubjectGroupTree : response.data;
+                if(response.config.params.sID_SubjectRole === 'Executor') {
+                    resp = subjectUserFilter(response.data.aSubjectGroupTree);
+                } else if(response.config.params.sID_SubjectRole === 'ExecutorDepart') {
+                    resp = departmentFilter(response.data.aSubjectGroupTree);
+                }
                 Array.prototype.push.apply(collection, $filter('orderBy')(resp, $scope.autocompleteData.orderBy));
                 if (!$scope.autocompleteData.hasPaging || response.data.length < count) {
                     hasNextChunk = false;
@@ -81,9 +140,15 @@ angular.module('autocompleteService')
             $scope.isRequestMoreItems = false;
             hasNextChunk = true;
             var ps = params ? params.split(';')[2] : null;
-            if(ps && ps.indexOf('sID_SubjectRole=Executor') > -1) {
+            if(ps && ps.indexOf('sID_SubjectRole') > -1) {
                 var param = ps.split(',');
                 angular.forEach(param, function (p) {
+
+                    if(p.indexOf('sID_SubjectRole') > -1) {
+                        var role = p.split('=');
+                        queryParams.params[role[0]] = role[1];
+                    }
+
                     angular.forEach($scope.taskForm, function (field, key) {
                         if('aRow' in field) {
                             angular.forEach(field.aRow, function (row, rkey) {
@@ -121,7 +186,14 @@ angular.module('autocompleteService')
                 // $timeout(function () {
                 //   $scope.$select.items = items;
                 // }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
-                $scope.$select.items = items;
+                var filtered = null;
+                if(queryValue && isNaN(queryValue)){
+                   filtered = items.filter(function(i){
+                        var name = i.sName_UA ? i.sName_UA : (i.sNameShort_UA ? i.sNameShort_UA : (i.sName ? i.sName : i.sNote));
+                        return name.toLowerCase().indexOf(queryValue.toLowerCase()) !== -1;
+                    });  
+                }
+                $scope.$select.items = filtered ? filtered : items;
                 !angular.equals(queryParams.params[queryKey], queryValue);
             });
         } else {
@@ -146,8 +218,11 @@ angular.module('autocompleteService')
                             }
                         }
                         if(nameWithPostFix && nameWithPostFix[1]) {
-                            if(nameWithPostFix[1] === field.id.split('_')[1]) {
-                                obj[key].value = item[field.id.split('_')[0]];
+                            var splited = field.id.split(/_/),
+                                postfix = splited.pop(),
+                                anotherPart =  splited.join('_');
+                            if(isNaN(parseInt(nameWithPostFix[1])) && nameWithPostFix[1] === postfix) {
+                                obj[key].value = item[anotherPart];
                             }
                         }
                     });

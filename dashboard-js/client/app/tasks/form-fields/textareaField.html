@@ -3,7 +3,7 @@
     <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && !inUnassigned() && item.writable" style="color: red">*</span></label>
   </div>
   <div class="col-sm-6" style="padding-right: 0">
-    <textarea ng-if="!isFormPropertyDisabled(item) && isDocumentWritable(item)"
+    <textarea ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()"
               ng-readonly="isFormPropertyDisabled(item)"
               name="{{item.id}}"
               ng-required="isRequired(item)"
@@ -13,7 +13,7 @@
     </textarea>
     <span class="task-form-written-right-sight"
           style="white-space: pre-line"
-          ng-if="showReadableField(item)"
+          ng-if="showReadableField(item) || !isDocumentNotSigned()"
           name="{{item.id}}"
           ng-model="item.value">{{item.value}}
     </span>
@@ -24,6 +24,9 @@
       <span ng-message="email">Помилка в email.</span>
       <span ng-message="tel">Помилка в номері телефону.</span>
       <span ng-message="autovin">Помилка у VIN-номері авто.</span>
+      <span ng-message="string">{{ form[item.id].lastErrorMessage }}</span>
+      <span ng-message="long">{{ form[item.id].lastErrorMessage }}</span>
+      <span ng-message="double">{{ form[item.id].lastErrorMessage }}</span>
       <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
       <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
       <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
@@ -42,6 +45,7 @@
       <span ng-message="FileSign">Підпис не валідний або відсутній</span>
       <span ng-message="documentdate">Дата може бути тільки формату ДД.ММ.PPPP.</span>
       <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
+      <span ng-message="OrderValue">Такого номеру не існує</span>
     </span>
   </div>
 </div>

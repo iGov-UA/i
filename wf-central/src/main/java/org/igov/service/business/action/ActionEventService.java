@@ -31,7 +31,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
-
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
@@ -45,17 +45,25 @@ import static org.igov.service.business.subject.SubjectMessageService.sMessageHe
 public class ActionEventService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionEventService.class);
+    
     @Autowired
     HttpRequester httpRequester;
+    
     @Autowired
     private HistoryEventService historyEventService;
+    
     @Autowired
     private HistoryEventDao historyEventDao;
+    
     @Autowired
     private DocumentDao documentDao;
+    
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
-
+    
+    @Autowired
+    private  ActionEventHistoryService actionEventHistoryService;
+    
     @Autowired
     private SubjectMessagesDao subjectMessagesDao;
 
@@ -302,7 +310,7 @@ public class ActionEventService {
         }
         return aRowReturn;
     }
-
+ 
     public void setHistoryEvent(HistoryEventType eventType,
             Long nID_Subject, Map<String, String> mParamMessage, Long nID_HistoryEvent_Service, Long nID_Document, String sSubjectInfo) {
         try {
@@ -317,6 +325,7 @@ public class ActionEventService {
             LOG.trace("FAIL:", e);
         }
     }
+
 
     public HistoryEvent_Service getHistoryEventService(String sID_Order)
             throws CommonServiceException, CRCInvalidException {
@@ -469,6 +478,7 @@ public class ActionEventService {
         return oHistoryEvent_Service;
     }
 
+
     public HistoryEvent_Service addActionStatus_Central(
             String sID_Order,
             Long nID_Subject,
@@ -518,5 +528,4 @@ public class ActionEventService {
         setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
         return oHistoryEvent_Service;
     }
-
 }

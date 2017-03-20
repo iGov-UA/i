@@ -195,15 +195,12 @@
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -217,6 +214,8 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" variable="sName_SubjectRole"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="MJU_Dnipro_0"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
@@ -393,7 +392,6 @@
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" required="true">
-          <activiti:value id="sEnumNothing" name=" "></activiti:value>
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
           <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
@@ -408,21 +406,18 @@
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[system_task]]></activiti:string>
+            <activiti:string><![CDATA[_task_justice]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
@@ -619,7 +614,6 @@
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
-          <activiti:value id="sEnumNothing" name=" "></activiti:value>
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
           <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
@@ -648,15 +642,12 @@
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMainExecutor" name="Основний виконавець логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -845,7 +836,6 @@
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
-          <activiti:value id="sEnumNothing" name=" "></activiti:value>
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
           <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
@@ -881,15 +871,261 @@
         <activiti:formProperty id="markers5" name="Якщо доопрацювання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;asDecisionNoText&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDecisionNo'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
+          <activiti:field name="snID_Process_Activiti">
+            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[unactual]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask4" name="Канцелярія - формування відповіді заявнику" activiti:candidateGroups="justice_common">
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Звернення громадян" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="MJU_Dnipro_0"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberRegistration" name="Лист № (вихідний номер кореспондента)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateDoc" name="Дата (вихідна дата кореспондента)" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDoc" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nCountSheets" name="Кількість аркушів" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeDelivery" name="Вид доставки" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="пошта"></activiti:value>
+          <activiti:value id="sEnum2" name="особистий прийом"></activiti:value>
+          <activiti:value id="sEnum3" name="через уповноважену особу"></activiti:value>
+          <activiti:value id="sEnum4" name="через органи влади"></activiti:value>
+          <activiti:value id="sEnum5" name="через ЗМІ"></activiti:value>
+          <activiti:value id="sEnum6" name="від інших органів, установ"></activiti:value>
+          <activiti:value id="sEnum7" name="електронна пошта"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeIncoming" name="Ознака надходження звернення" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="первинне"></activiti:value>
+          <activiti:value id="sEnum2" name="повторне"></activiti:value>
+          <activiti:value id="sEnum3" name="дублет"></activiti:value>
+          <activiti:value id="sEnum4" name="неодноразове"></activiti:value>
+          <activiti:value id="sEnum5" name="масове"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSocialStatus" name="Соціальний стан" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="пенсіонер"></activiti:value>
+          <activiti:value id="sEnum2" name="робітник"></activiti:value>
+          <activiti:value id="sEnum3" name="селянин"></activiti:value>
+          <activiti:value id="sEnum4" name="працівник бюджетної сфери"></activiti:value>
+          <activiti:value id="sEnum5" name="державний службовець"></activiti:value>
+          <activiti:value id="sEnum6" name="військовослужбовець"></activiti:value>
+          <activiti:value id="sEnum7" name="підприємець"></activiti:value>
+          <activiti:value id="sEnum8" name="безробітний"></activiti:value>
+          <activiti:value id="sEnum9" name="учень, студент"></activiti:value>
+          <activiti:value id="sEnum10" name="служитель релігійної організації"></activiti:value>
+          <activiti:value id="sEnum11" name="особа, що позбавлена волі (особа, воля якої обмежена)"></activiti:value>
+          <activiti:value id="sEnum12" name="інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
+          <activiti:value id="sEnumMen" name="чоловіча"></activiti:value>
+          <activiti:value id="sEnumWomen" name="жіноча"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeAppeal" name="Тип звернення" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="лист"></activiti:value>
+          <activiti:value id="sEnum2" name="телеграма"></activiti:value>
+          <activiti:value id="sEnum3" name="усне"></activiti:value>
+          <activiti:value id="sEnum4" name="електронне"></activiti:value>
+          <activiti:value id="sEnum5" name="петиція"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asKindAppeal" name="Вид звернення" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="заява (клопотання)"></activiti:value>
+          <activiti:value id="sEnum2" name="скарга"></activiti:value>
+          <activiti:value id="sEnum3" name="пропозиція (зауваження)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asCategory" name="Категорія" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="багатодітна сім’я"></activiti:value>
+          <activiti:value id="sEnum2" name="ветеран праці"></activiti:value>
+          <activiti:value id="sEnum3" name="герой РС"></activiti:value>
+          <activiti:value id="sEnum4" name="герой соц. праці"></activiti:value>
+          <activiti:value id="sEnum5" name="герой України"></activiti:value>
+          <activiti:value id="sEnum6" name="дитина"></activiti:value>
+          <activiti:value id="sEnum7" name="дитина війни"></activiti:value>
+          <activiti:value id="sEnum8" name="дитина інвалід"></activiti:value>
+          <activiti:value id="sEnum9" name="інвалід ВВВ"></activiti:value>
+          <activiti:value id="sEnum10" name="інвалід I групи"></activiti:value>
+          <activiti:value id="sEnum11" name="інвалід II групи"></activiti:value>
+          <activiti:value id="sEnum12" name="інвалід III групи"></activiti:value>
+          <activiti:value id="sEnum13" name="ліквідатор аварії на ЧАЕС"></activiti:value>
+          <activiti:value id="sEnum14" name="мати-героїня"></activiti:value>
+          <activiti:value id="sEnum15" name="одинока мати"></activiti:value>
+          <activiti:value id="sEnum16" name="учасник бойових дій"></activiti:value>
+          <activiti:value id="sEnum17" name="учасник війни"></activiti:value>
+          <activiti:value id="sEnum18" name="чорнобилець"></activiti:value>
+          <activiti:value id="sEnum19" name="інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSubject" name="Суб’єкт" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="анонімне"></activiti:value>
+          <activiti:value id="sEnum2" name="індивідуальне"></activiti:value>
+          <activiti:value id="sEnum3" name="колективне"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asFrom" name="Звернення від" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="Урядова гаряча лінія"></activiti:value>
+          <activiti:value id="sEnum2" name="Гаряча лінія Голови облдержадміністрації"></activiti:value>
+          <activiti:value id="sEnum3" name="МЮ"></activiti:value>
+          <activiti:value id="sEnum4" name="Апарат Верховної Ради"></activiti:value>
+          <activiti:value id="sEnum5" name="Адміністрація Президента"></activiti:value>
+          <activiti:value id="sEnum6" name="Прокуратура області"></activiti:value>
+          <activiti:value id="sEnum7" name="Районні прокуратури"></activiti:value>
+          <activiti:value id="sEnum8" name="Районні ВДРАЦС"></activiti:value>
+          <activiti:value id="sEnum9" name="Районні ВДВС"></activiti:value>
+          <activiti:value id="sEnum10" name="Обл. Держ. Адміністрація"></activiti:value>
+          <activiti:value id="sEnum11" name="Обласна Рада"></activiti:value>
+          <activiti:value id="sEnum12" name="Депутати"></activiti:value>
+          <activiti:value id="sEnum13" name="Суди"></activiti:value>
+          <activiti:value id="sEnum14" name="МВС"></activiti:value>
+          <activiti:value id="sEnum15" name="МЧС"></activiti:value>
+          <activiti:value id="sEnum16" name="Виправні колонії"></activiti:value>
+          <activiti:value id="sEnum17" name="Газета обласної ради «Зоря»"></activiti:value>
+          <activiti:value id="sEnum18" name="КРУ"></activiti:value>
+          <activiti:value id="sEnum19" name="Верховний суд України"></activiti:value>
+          <activiti:value id="sEnum20" name="Судова Адміністрація"></activiti:value>
+          <activiti:value id="sEnum21" name="Апеляційний суд"></activiti:value>
+          <activiti:value id="sEnum22" name="Дніпропетровський обласний контактний центр"></activiti:value>
+          <activiti:value id="sEnum23" name="СУВРУ з прав людини"></activiti:value>
+          <activiti:value id="sEnum24" name="Інші"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPlace" name="Місто/район" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="Апостолівський"></activiti:value>
+          <activiti:value id="sEnum2" name="Васильківський"></activiti:value>
+          <activiti:value id="sEnum3" name="Верхньодніпровський"></activiti:value>
+          <activiti:value id="sEnum4" name="Дніпровський"></activiti:value>
+          <activiti:value id="sEnum5" name="Криворізький"></activiti:value>
+          <activiti:value id="sEnum6" name="Криничанський"></activiti:value>
+          <activiti:value id="sEnum7" name="Магдалинівський"></activiti:value>
+          <activiti:value id="sEnum8" name="Межівський"></activiti:value>
+          <activiti:value id="sEnum9" name="Нікопольський"></activiti:value>
+          <activiti:value id="sEnum10" name="Новомосковський"></activiti:value>
+          <activiti:value id="sEnum11" name="Павлоградський"></activiti:value>
+          <activiti:value id="sEnum12" name="Петриківський"></activiti:value>
+          <activiti:value id="sEnum13" name="Петропавлівський"></activiti:value>
+          <activiti:value id="sEnum14" name="Покровський"></activiti:value>
+          <activiti:value id="sEnum15" name="П'ятихатський"></activiti:value>
+          <activiti:value id="sEnum16" name="Синельниківський"></activiti:value>
+          <activiti:value id="sEnum17" name="Солонянський"></activiti:value>
+          <activiti:value id="sEnum18" name="Софіївський"></activiti:value>
+          <activiti:value id="sEnum19" name="Томаківський"></activiti:value>
+          <activiti:value id="sEnum20" name="Царичанський"></activiti:value>
+          <activiti:value id="sEnum21" name="Широківський"></activiti:value>
+          <activiti:value id="sEnum22" name="Юр'ївський"></activiti:value>
+          <activiti:value id="sEnum23" name="м. Вільногірськ"></activiti:value>
+          <activiti:value id="sEnum24" name="м. Кам'янське"></activiti:value>
+          <activiti:value id="sEnum25" name="м. Дніпро"></activiti:value>
+          <activiti:value id="sEnum26" name="м. Жовті Води"></activiti:value>
+          <activiti:value id="sEnum27" name="м. Кривий Ріг"></activiti:value>
+          <activiti:value id="sEnum28" name="м. Марганець"></activiti:value>
+          <activiti:value id="sEnum29" name="м. Нікополь"></activiti:value>
+          <activiti:value id="sEnum30" name="м. Новомосковськ"></activiti:value>
+          <activiti:value id="sEnum31" name="м. Павлоград"></activiti:value>
+          <activiti:value id="sEnum32" name="м. Покров"></activiti:value>
+          <activiti:value id="sEnum33" name="м. Першотравенськ"></activiti:value>
+          <activiti:value id="sEnum34" name="м. Синельникове"></activiti:value>
+          <activiti:value id="sEnum35" name="м. Тернівка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
+          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
+          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" writable="false">
+          <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
+          <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateBegin" name="Дата початку" type="date"></activiti:formProperty>
+        <activiti:formProperty id="asPeriodicity" name="Періодичність" type="enum">
+          <activiti:value id="sEnumDay" name="щоденно"></activiti:value>
+          <activiti:value id="sEnumWeek" name="щотижнево"></activiti:value>
+          <activiti:value id="sEnumMonth" name="щомісяця"></activiti:value>
+          <activiti:value id="sEnumQuarter" name="щокварталу"></activiti:value>
+          <activiti:value id="sEnumYear" name="щороку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asControl" name="Контроль; ;sID_CheckboxTrue=sEnumYesControl" type="enum" writable="false">
+          <activiti:value id="sEnumYesControl" name="взяти на особливий контроль"></activiti:value>
+          <activiti:value id="sEnumNoControl" name="не брати на особливий контроль"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asJustified" name="Обґрунтовано; ;sID_CheckboxTrue=sEnumJustified" type="enum" writable="false">
+          <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
+          <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
+          <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
+          <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
+          <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
+          <activiti:value id="sEnumToAttention" name="До відома"></activiti:value>
+          <activiti:value id="sEnumToPerform" name="До виконання"></activiti:value>
+          <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
+          <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Структурний підрозділ, що здійснює розгляд; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" writable="false">
+          <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
+          <activiti:value id="sEnum2" name="нарочно"></activiti:value>
+          <activiti:value id="sEnum3" name="самостійно"></activiti:value>
+          <activiti:value id="sEnum4" name="електронною поштою та поштою"></activiti:value>
+          <activiti:value id="sEnum5" name="електронною поштою"></activiti:value>
+          <activiti:value id="sEnum6" name="замовленою кореспонденцією"></activiti:value>
+          <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDecision" name="Прийняття рішення про виконання завдання" type="enum" writable="false">
+          <activiti:value id="sEnumDecisionYes" name="Завдання виконано - сформувати вихідний документ"></activiti:value>
+          <activiti:value id="sEnumDecisionNo" name="Повернути документ на доопрацювання"></activiti:value>
+          <activiti:value id="sEnumDecisionYesBut" name="Завдання виконано - не формувати вихідний документ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sExecutor" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sAutorResolution" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date"></activiti:formProperty>
+        <activiti:formProperty id="asResult" name="Результати розгляду" type="enum">
+          <activiti:value id="sEnumResultYes" name="вирішено позитивно"></activiti:value>
+          <activiti:value id="sEnumResultNo" name="відмовлено у задоволенні"></activiti:value>
+          <activiti:value id="sEnumResultExplain" name="дано роз’яснення"></activiti:value>
+          <activiti:value id="sEnumResultReturn" name="звернення повернуто авторові"></activiti:value>
+          <activiti:value id="sEnumResultBelong" name="за належністю"></activiti:value>
+          <activiti:value id="sEnumResultNoConsider" name="не підлягає розгляду"></activiti:value>
+        </activiti:formProperty>
+      
+        <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -934,11 +1170,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 </script>
     </scriptTask>
-    <scriptTask id="scripttask3" name="перетворення дати энд" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable("sDateEnd", execution.getVariable("sDateEnd").format("yyyy-MM-dd"))
-
-      </script>
-    </scriptTask>
     <scriptTask id="scripttask4" name="отримання основного виконавця" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId = execution.getVariable('processInstanceId');
 var obj = processSubjectTreeService.getCatalogProcessSubjectTree(processInstanceId, 1, null, false, 1);
@@ -973,7 +1204,7 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="usertask3" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="scripttask5">
+    <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnumDecisionYes'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="usertask2_yellow" targetRef="usertask3"></sequenceFlow>
@@ -981,7 +1212,7 @@ execution.setVariable('sExecutor', sExecutor)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnumDecisionNo'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow44" sourceRef="exclusivegateway2" targetRef="exclusivegateway3">
+    <sequenceFlow id="flow44" sourceRef="exclusivegateway2" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAutorResolution != null}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow45" name="керівника не призначено" sourceRef="exclusivegateway2" targetRef="usertask1">
@@ -990,182 +1221,114 @@ execution.setVariable('sExecutor', sExecutor)</script>
     <sequenceFlow id="flow49" sourceRef="exclusivegateway1" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnumDecisionYesBut'}]]></conditionExpression>
     </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow51" sourceRef="exclusivegateway3" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asRegular == 'sEnumNotRegularDoc'}]]></conditionExpression>
-    </sequenceFlow>
-    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
-      <timerEventDefinition>
-        <timeCycle>R3/PT1M/${sDateEnd}</timeCycle>
-      </timerEventDefinition>
-    </intermediateCatchEvent>
-    <sequenceFlow id="flow53" sourceRef="timerintermediatecatchevent1" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow54" name="регулярний док" sourceRef="exclusivegateway3" targetRef="scripttask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asRegular == 'sEnumRegularDoc'}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow58" sourceRef="scripttask3" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="usertask2" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask4" targetRef="usertask2_yellow"></sequenceFlow>
-    <callActivity id="callactivity1" name="виклик шаблона _doc_justice_22" calledElement="_doc_justice_22">
-      <extensionElements>
-        <activiti:in source="sIncomingNumber" target="sIncomingNumber"></activiti:in>
-        <activiti:in source="sApplicant" target="sApplicant"></activiti:in>
-        <activiti:in source="sReportCommon" target="sReportCommon"></activiti:in>
-        <activiti:in source="sExecutor" target="sExecutor"></activiti:in>
-        <activiti:in source="sAutorResolution" target="sAutorResolution"></activiti:in>
-        <activiti:in source="asTypeDispatch" target="asTypeDispatch"></activiti:in>
-        <activiti:in source="sDoc2" target="sDoc2"></activiti:in>
-      </extensionElements>
-    </callActivity>
-    <sequenceFlow id="flow61" sourceRef="callactivity1" targetRef="endevent1"></sequenceFlow>
-    <scriptTask id="scripttask5" name="перетворення вхідного номера для передачі в вихідний шаблон" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//1. преобразование входящего номера для передачи в исходящий шаблон
-var number=execution.getVariable('sID_Custom_GovPublic')
-execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
-    </scriptTask>
-    <sequenceFlow id="flow62" sourceRef="scripttask5" targetRef="callactivity1"></sequenceFlow>
+    <sequenceFlow id="flow62" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_4">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_4" id="BPMNPlane__doc_justice_4">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="18.0" y="170.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="48.0" y="85.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="84.0" width="130.0" x="370.0" y="145.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="130.0" x="400.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="84.0" width="131.0" x="800.0" y="145.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="131.0" x="561.0" y="185.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
-        <omgdc:Bounds height="84.0" width="131.0" x="800.0" y="365.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="131.0" x="399.0" y="295.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="84.0" width="130.0" x="801.0" y="471.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="130.0" x="246.0" y="295.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="84.0" width="130.0" x="82.0" y="388.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="734.0" y="492.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="292.0" y="409.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="628.0" y="583.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="294.0" y="473.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="84.0" width="121.0" x="220.0" y="145.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="74.0" width="130.0" x="581.0" y="250.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="121.0" x="250.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="83.0" width="132.0" x="800.0" y="260.0"></omgdc:Bounds>
+        <omgdc:Bounds height="83.0" width="132.0" x="561.0" y="295.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="84.0" width="116.0" x="74.0" y="146.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="116.0" x="104.0" y="61.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="555.0" y="166.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="625.0" y="166.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="484.0" y="269.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="callactivity1" id="BPMNShape_callactivity1">
-        <omgdc:Bounds height="84.0" width="109.0" x="420.0" y="471.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
-        <omgdc:Bounds height="84.0" width="130.0" x="581.0" y="471.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="606.0" y="81.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="341.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="370.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="371.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="102.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="53.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="74.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="83.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="104.0" y="103.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="190.0" y="188.0"></omgdi:waypoint>
-        <omgdi:waypoint x="220.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="103.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="102.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="801.0" y="513.0"></omgdi:waypoint>
-        <omgdi:waypoint x="774.0" y="512.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="379.0"></omgdi:waypoint>
+        <omgdi:waypoint x="312.0" y="409.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="734.0" y="512.0"></omgdi:waypoint>
-        <omgdi:waypoint x="711.0" y="513.0"></omgdi:waypoint>
+        <omgdi:waypoint x="292.0" y="429.0"></omgdi:waypoint>
+        <omgdi:waypoint x="212.0" y="430.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="865.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="866.0" y="471.0"></omgdi:waypoint>
+        <omgdi:waypoint x="399.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="376.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="754.0" y="492.0"></omgdi:waypoint>
-        <omgdi:waypoint x="753.0" y="407.0"></omgdi:waypoint>
-        <omgdi:waypoint x="800.0" y="407.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="429.0"></omgdi:waypoint>
+        <omgdi:waypoint x="464.0" y="429.0"></omgdi:waypoint>
+        <omgdi:waypoint x="464.0" y="379.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="81.0" x="696.0" y="426.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="81.0" x="369.0" y="409.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="595.0" y="186.0"></omgdi:waypoint>
-        <omgdi:waypoint x="625.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="626.0" y="121.0"></omgdi:waypoint>
+        <omgdi:waypoint x="626.0" y="185.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="575.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="574.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="435.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="435.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="626.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="626.0" y="45.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="45.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="60.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="453.0" y="81.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="526.0" y="20.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="754.0" y="532.0"></omgdi:waypoint>
-        <omgdi:waypoint x="754.0" y="600.0"></omgdi:waypoint>
-        <omgdi:waypoint x="663.0" y="600.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="665.0" y="186.0"></omgdi:waypoint>
-        <omgdi:waypoint x="800.0" y="187.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="484.0" y="286.0"></omgdi:waypoint>
-        <omgdi:waypoint x="435.0" y="286.0"></omgdi:waypoint>
-        <omgdi:waypoint x="435.0" y="229.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="645.0" y="206.0"></omgdi:waypoint>
-        <omgdi:waypoint x="646.0" y="250.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="78.0" x="650.0" y="216.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
+        <omgdi:waypoint x="312.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="473.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="500.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="555.0" y="186.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="581.0" y="287.0"></omgdi:waypoint>
-        <omgdi:waypoint x="519.0" y="286.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="606.0" y="101.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="865.0" y="229.0"></omgdi:waypoint>
-        <omgdi:waypoint x="866.0" y="260.0"></omgdi:waypoint>
+        <omgdi:waypoint x="626.0" y="269.0"></omgdi:waypoint>
+        <omgdi:waypoint x="627.0" y="295.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="866.0" y="343.0"></omgdi:waypoint>
-        <omgdi:waypoint x="865.0" y="365.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="474.0" y="555.0"></omgdi:waypoint>
-        <omgdi:waypoint x="474.0" y="600.0"></omgdi:waypoint>
-        <omgdi:waypoint x="628.0" y="600.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="336.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="581.0" y="513.0"></omgdi:waypoint>
-        <omgdi:waypoint x="529.0" y="513.0"></omgdi:waypoint>
+        <omgdi:waypoint x="147.0" y="472.0"></omgdi:waypoint>
+        <omgdi:waypoint x="146.0" y="490.0"></omgdi:waypoint>
+        <omgdi:waypoint x="294.0" y="490.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

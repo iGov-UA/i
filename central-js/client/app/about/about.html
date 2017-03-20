@@ -18,57 +18,55 @@
     border-top: 1px solid #ddd;
   }
 
-  table > thead > tr > th {
-    text-align: center;
-    font-size: 12px;
-    padding: 5px;
-    cursor: default;
-  }
-
-  table > thead > tr {
-    border-bottom: 2px solid #ddd;
-  }
-
-  table > tbody > tr > th {
-    font-size: 12px;
-    text-align: center;
-    border-top: 1px solid #ddd;
-    padding: 5px;
-    font-weight: normal;
-    background: #f9f9f9;
-  }
-
 </style>
 
 <div class="container">
   <div class="container" ng-show="bAdmin" style="margin-top: 50px">
     <div class="row">
+
       <div class="col-sm-3">
         <label for="date-from">Почати вибірку з дати : </label>
         <br>
-        <input type="datetime-local" id="date-from" ng-model="statisticDateBegin.value">
+        <div class='input-group date' style="width:100%;">
+          <input type="text" class="form-control"
+                 id="date-from"
+                 datetimepickeroptions="{format: 'YYYY-MM-DD HH:mm:ss'}"
+                 datetimepicker
+                 ng-model="statisticDateBegin.value">
+        </div>
       </div>
       <div class="col-sm-3">
         <label for="date-to">Закінчити вибірку на даті : </label>
         <br>
-        <input type="datetime-local" id="date-to" ng-model="statisticDateEnd.value">
+        <div class='input-group date' style="width:100%;">
+          <input type="text" class="form-control"
+                 id="date-to"
+                 datetimepickeroptions="{format: 'YYYY-MM-DD HH:mm:ss'}"
+                 datetimepicker
+                 ng-model="statisticDateEnd.value">
+        </div>
       </div>
+
       <div class="col-sm-1">
         <br>
-        <input type="button" value="Отримати дані" ng-disabled="isStatisticLoading.bState" class="load-statistic" ng-click="getStatisticTable()">
+        <input type="button"
+               value="Отримати дані"
+               ng-disabled="isStatisticLoading.bState"
+               class="load-statistic btn btn-info"
+               ng-click="getStatisticTable()">
       </div>
     </div>
     <br>
 
     <div class="row">
       <div class="col-sm-1">
-        <button class="about-filter-button" style="width:80px;" ng-click="showFilter = ! showFilter">
-          <i class="glyphicon glyphicon-filter"></i>Фільтр
+        <button class="btn btn-default" ng-click="showFilter = ! showFilter">
+          <i class="glyphicon glyphicon-filter"></i> Фільтр
         </button>
       </div>
       <div class="col-sm-2">
         <div ng-show="showFilter">
-          <input type="text" ng-model="sanIDServiceExclude" id="fiter" required>
+          <input type="text" class="form-control" ng-model="sanIDServiceExclude" id="fiter" required>
           <label for="fiter" style="color:grey; font-size: 12px">Введіть nID_Service заявки, які будуть проігноровані (через кому)</label>
         </div>
       </div>
@@ -76,48 +74,53 @@
 
     <div class="row">
       <div class="col-sm-2">
-        <button class="about-save-button" ng-click="downloadStatistic()"><i class="glyphicon glyphicon-save"></i>Зберегти</button>
+        <button class="btn btn-default" ng-click="downloadStatistic()">
+          <i class="glyphicon glyphicon-save"></i> Зберегти
+        </button>
       </div>
     </div>
     <br>
 
-    <table>
-      <thead>
-      <tr>
-        <th ng-click="order('sID_Order')">sID_Order</th>
-        <th ng-click="order('nID_Server')">nID_Server</th>
-        <th ng-click="order('nID_Service')">nID_Service</th>
-        <th ng-click="order('sID_Place')">sID_Place</th>
-        <th ng-click="order('nID_Subject')">nID_Subject</th>
-        <th ng-click="order('nRate')">nRate</th>
-        <th ng-click="order('sTextFeedback')">sTextFeedback</th>
-        <th ng-click="order('sUserTaskName')">sUserTaskName</th>
-        <th ng-click="order('sHead')">sHead</th>
-        <th ng-click="order('sBody')">sBody</th>
-        <th ng-click="order('nTimeMinutes')">nTime Minutes</th>
-        <th ng-click="order('sPhone')">sPhone</th>
-        <th ng-click="order('nID_ServiceData')">nID_Service Data</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr ng-repeat="item in statistics | orderBy:predicate:reverse">
-        <th style="width:84px;">{{item.sID_Order}}</th>
-        <th>{{item.nID_Server}}</th>
-        <th>{{item.nID_Service}}</th>
-        <th>{{item.sID_Place}}</th>
-        <th>{{item.nID_Subject}}</th>
-        <th>{{item.nRate}}</th>
-        <th>{{item.sTextFeedback}}</th>
-        <th>{{item.sUserTaskName}}</th>
-        <th>{{item.sHead}}</th>
-        <th>{{item.sBody}}</th>
-        <th>{{item.nTimeMinutes}}</th>
-        <th style="width:110px;">{{item.sPhone}}</th>
-        <th>{{item.nID_ServiceData}}</th>
-      </tr>
-      </tbody>
-    </table>
-
+    <div class="historyTable" ng-if="historyParsedCSV">
+      <table>
+        <thead>
+        <tr>
+          <th ng-click="order('sID_Order')">sID_Order</th>
+          <th ng-click="order('nID_Server')">nID_Server</th>
+          <th ng-click="order('nID_Service')">nID_Service</th>
+          <th ng-click="order('sID_Place')">sID_Place</th>
+          <th ng-click="order('nID_Subject')">nID_Subject</th>
+          <th ng-click="order('nRate')">nRate</th>
+          <th ng-click="order('sTextFeedback')">sTextFeedback</th>
+          <th ng-click="order('sUserTaskName')">sUserTaskName</th>
+          <th ng-click="order('sHead')">sHead</th>
+          <th ng-click="order('sBody')">sBody</th>
+          <th ng-click="order('nTimeMinutes')">nTime Minutes</th>
+          <th ng-click="order('sPhone')">sPhone</th>
+          <th ng-click="order('nID_ServiceData')">nID_Service Data</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in historyParsedCSV | orderBy:predicate:reverse"
+            ng-class-odd="'tableOdd'"
+            ng-class-even="'tableEven'">
+          <td style="width:84px;">{{item.sID_Order}}</td>
+          <td>{{item.nID_Server}}</td>
+          <td>{{item.nID_Service}}</td>
+          <td>{{item.sID_Place}}</td>
+          <td>{{item.nID_Subject}}</td>
+          <td>{{item.nRate}}</td>
+          <td>{{item.sTextFeedback}}</td>
+          <td>{{item.sUserTaskName}}</td>
+          <td>{{item.sHead}}</td>
+          <td>{{item.sBody}}</td>
+          <td>{{item.nTimeMinutes}}</td>
+          <td style="width:110px;">{{item.sPhone}}</td>
+          <td>{{item.nID_ServiceData}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <hr style="background: lightgrey; border-top: none;">
     <br>
   </div>

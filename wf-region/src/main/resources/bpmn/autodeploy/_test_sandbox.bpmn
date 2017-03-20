@@ -4,48 +4,54 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         
-        <activiti:formProperty id="info_01" name="" type="label" default="== ОКПО 01 =="></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="ОКПО" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Наименование полное" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Наименование краткое" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Местонахождение" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО директора" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_01" name="КВЕДы" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата информации" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_02" name="" type="label" default="== ОКПО 02 =="></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="ОКПО" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Наименование полное" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Наименование краткое" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Местонахождение" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФИО директора" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_02" name="КВЕДы" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateActual_SubjectOrgan_02" name="Дата информации" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 01&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Найменування скорочене" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
+<!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_01" name="КВЕД" type="textArea"></activiti:formProperty>-->
+        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="markers_02" name="лінія ЄДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 02&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Найменування скорочене" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_02" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
+<!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_02" name="КВЕД" type="textArea"></activiti:formProperty>-->
+        <activiti:formProperty id="sDateActual_SubjectOrgan_02" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
 		
 		</extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
 
-        <activiti:formProperty id="info_01" name="" type="label" default="== ОКПО 01 =="></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 01&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="ОКПО" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Наименование полное" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Наименование краткое" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Местонахождение" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО директора" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_01" name="КВЕДы" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
+<!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_01" name="КВЕД" type="textArea"></activiti:formProperty>-->
         <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата информации" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info_02" name="" type="label" default="== ОКПО 02 =="></activiti:formProperty>
+
+        <activiti:formProperty id="markers_02" name="лінія ЄДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 02&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="ОКПО" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Наименование полное" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Наименование краткое" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Местонахождение" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФИО директора" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_02" name="КВЕДы" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_02" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
+<!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_02" name="КВЕД" type="textArea"></activiti:formProperty>-->
         <activiti:formProperty id="sDateActual_SubjectOrgan_02" name="Дата информации" type="string" writable="false"></activiti:formProperty>
 		
-        <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/CourtOfCassation_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]; ;bVisible=false" type="string" default="Супровідний лист" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/CourtOfCassation_print.html"  type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
   
       </extensionElements>

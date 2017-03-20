@@ -49,11 +49,60 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     var result = factories.filter(function (factory) {
       return factory.prototype.isFit(property);
     });
+
+    if(!property.options) property.options = {};
+
     if (result.length > 0) {
       params[property.id] = result[0].prototype.createFactory();
       params[property.id].value = property.value;
       params[property.id].required = property.required;
       params[property.id].writable = property.hasOwnProperty('writable') ? property.writable : true;
+
+      var i, source, equalsIndex, key, val;
+
+      if(property.name && property.name.indexOf(';;') >= 0){
+        var as = property.name.split(';;');
+        property.name = as[0];
+        for(i = 1; i < as.length; i++){
+          source = as[i];
+          equalsIndex = source.indexOf('=');
+          key = source.substr(0, equalsIndex).trim();
+          if(!property.options) property.options = {};
+          try {
+            val = angular.fromJson(source.substr(equalsIndex + 1).trim())
+          } catch (e){
+            val = source.substr(equalsIndex + 1).trim();
+          }
+          property.options[key] = val;
+        }
+      }
+
+      if(property.name && property.name.indexOf(';') >= 0){
+        var sOldOptions = property.name.split(';')[2];
+        if(sOldOptions){
+          var aOptions = sOldOptions.split(',');
+          for(i = 0; i < aOptions.length; i++){
+            source = aOptions[i];
+            equalsIndex = source.indexOf('=');
+            key = source.substr(0, equalsIndex).trim();
+            if(!property.options) property.options = {};
+            try {
+              val = angular.fromJson(source.substr(equalsIndex + 1).trim())
+            } catch (e){
+              val = source.substr(equalsIndex + 1).trim();
+            }
+            property.options[key] = val;
+          }
+        }
+      }
+
+      if(property.id === 'bankId_scan_passport' || property.id === 'bankId_scan_inn' || property.id === 'form_signed' || property.id === 'form_signed_all') {
+        var isNew = property.name.split(';');
+        if(isNew.length === 3 && isNew[2].indexOf('bNew') > -1) {
+          params[property.id].newAttach = true;
+        }
+      }
+
     }
   };
 
@@ -230,7 +279,11 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
     for (var key in self.params) {
       var param = self.params[key];
       if (param instanceof ScanFactory && !param.value) {
-        paramsForUpload.push({key: key, scan: param.getScan()});
+        if(param.newAttach) {
+          paramsForUpload.push({key: key, scan: param.getScan(), isNew: true});
+        } else {
+          paramsForUpload.push({key: key, scan: param.getScan()});
+        }
       }
     }
 

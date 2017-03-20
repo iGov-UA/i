@@ -121,6 +121,31 @@ angular.module('iGovMarkers')
             },
 
           /**
+           * function getEnumItemById 
+           *  Returns for field enum by Id 
+           * 
+           * @returns enumItem for enumValue or null 
+           * @author Sysprog 
+           */ 
+            getEnumItemById: function ( field, enumValue ) { 
+
+              var result = null; 
+
+              if(field.type == "enum" && field.a != null) { 
+ 
+                angular.forEach( field.a, function(enumItem, enumKey) { 
+
+                    if(enumItem.id == enumValue ) { 
+                        result = enumItem; 
+                        return; 
+                        } 
+                    }); 
+                } 
+
+              return result;
+            },
+            
+          /**
            * Интерполяция строки с подстановкой значения полей формы
            * @param strPattern - исходная строка с паттерном
            * @param objData - сам объект, из которого будут подставляться значения

@@ -34,20 +34,24 @@ exports.getUsers = function (groupID, callback) {
 };
 
 exports.setUser = function (params, callback) {
-  //GET identity/users
-  var options = {
+  var oBody = {
+    sName: params.sName,
+    sDescription: params.sDescription,
+    sEmail: params.sEmail
+  };
+  if(params.sPassword){
+    oBody.sPassword = params.sPassword;
+  }
+
+  activiti.post({
     path: 'action/identity/setUser',
     query: {
-      sLogin: params.sLogin,
-      sPassword: params.sPassword,
-      sName: params.sName,
-      sDescription: params.sDescription,
-      sEmail: params.sEmail
+      sLogin: params.sLogin
     },
-    json: true
-  };
-
-  activiti.get(options, callback);
+    headers: {
+      'Content-Type': 'text/html;charset=utf-8'
+    }
+  }, callback, JSON.stringify(oBody), false);
 };
 
 exports.removeUser = function (params, callback) {

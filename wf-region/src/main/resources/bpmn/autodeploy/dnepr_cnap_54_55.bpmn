@@ -38,15 +38,15 @@
         <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються або реалізуються, за підписом заявника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerkVet" name="пошта ветеринарів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nFlag" name="регионы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="район; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта району; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerkVet" name="пошта ветеринарів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFlag" name="регионы; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers" name="markers" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_54_55.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -89,17 +89,17 @@
         <activiti:formProperty id="nReestr" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sReestrDate" name="Укажіть дату реєстрації звернення" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;sObject_pf&quot;,&quot;sObject_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sImya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpou_pf&quot;,&quot;sPib_ur_pf&quot;,&quot;sAdres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;sObject_pf&quot;,&quot;sObject_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sPib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява;Заява;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява;Заява;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -145,12 +145,12 @@
           <activiti:value id="accept" name="надано експлуатаційний дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні експлуатаційного дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -384,12 +384,12 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sDozvNumb" name="Номер Експлуатаційного дозволу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника ветеринарної служби" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55vet.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]" type="invisible" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55vet.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]; ;bVisible=false" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_inn" name="показать инн" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_edrpo" name="показать едрпо" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_15&quot;:{&quot;aElement_ID&quot;:[&quot;edrpou&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -454,14 +454,14 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sEndDateVet" name="Дата закінчення строку дії Експлуатаційного дозволу (у форматі ДД місяць РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDozvNumb" name="Номер Експлуатаційного дозволу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника ветеринарної служби" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="kved_text" name="Впишіть види діяльності, відповідно до вказаних кодів КВЕД" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="perelic_text" name="Впишіть ассортимент продукції, відповідно до доданих заявником документів (прикріплених файлів)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55vet.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]" type="invisible" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="kved_text" name="Впишіть види діяльності, відповідно до вказаних кодів КВЕД; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="perelic_text" name="Впишіть ассортимент продукції, відповідно до доданих заявником документів (прикріплених файлів); ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55vet.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]; ;bVisible=false" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

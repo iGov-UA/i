@@ -16,12 +16,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * Сервис получения списка пользователей, если указан id групы
  *
  * @author inna
  */
+@Component("usersService")
 @Service
 public class UsersService {
 
@@ -41,7 +43,7 @@ public class UsersService {
             Map<String, String> mUserInfo = new LinkedHashMap();
 
             mUserInfo.put("sLogin", oUser.getId() == null ? "" : oUser.getId());
-            mUserInfo.put("sPassword", oUser.getPassword() == null ? "" : oUser.getPassword());
+           // mUserInfo.put("sPassword", oUser.getPassword() == null ? "" : oUser.getPassword());
             mUserInfo.put("sFirstName", oUser.getFirstName() == null ? "" : oUser.getFirstName());
             mUserInfo.put("sLastName", oUser.getLastName() == null ? "" : oUser.getLastName());
             mUserInfo.put("sEmail", oUser.getEmail() == null ? "" : oUser.getEmail());
@@ -55,6 +57,17 @@ public class UsersService {
 		return amsUsers;
 
     }
-
+	
+    public List<String> getUsersLoginByGroup(String sID_Group) {
+    	
+    	List<String> aUsers = new ArrayList<>(); // для возвращения результата, ибо возникает JsonMappingException и NullPointerException при записи картинки
+        List<User> aoUsers = sID_Group != null ?
+                identityService.createUserQuery().memberOfGroup(sID_Group).list() :
+                identityService.createUserQuery().list();
+        for (User oUser : aoUsers) {
+            aUsers.add(oUser.getId());
+        }
+        return aUsers;
+    }
 
 }

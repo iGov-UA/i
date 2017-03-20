@@ -8,14 +8,13 @@ import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.Place;
 import org.igov.service.controller.ActionItemController;
 import org.igov.util.cache.CachedInvocationBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * User: goodg_000
@@ -39,7 +38,9 @@ public class ServiceTagService {
     GeneralConfig generalConfig;
 
     public List<ServiceTagTreeNodeVO> getCatalogTreeTag(Long nID_Category, String sFind,
-                                                        List<String> asID_Place_UA, boolean bShowEmptyFolders,
+                                                        List<String> asID_Place_UA, Long nID_Place_Profile,
+                                                        boolean bShowEmptyFolders,
+                                                        boolean includeTestTags,
                                                         boolean includeServices,
                                                         Long nID_ServiceTag_Root, Long nID_ServiceTag_Child) {
         List<ServiceTagTreeNodeVO> res = new ArrayList<>();
@@ -48,17 +49,22 @@ public class ServiceTagService {
         boolean hasRootIdFilter = nID_ServiceTag_Root != null;
         boolean hasChildIdFilter = nID_ServiceTag_Child != null;
 
-        ServiceTagTree tree = getServiceTagTreeCached(includeTestEntities);
+        ServiceTagTree tree = getServiceTagTreeCached(includeTestTags, includeTestEntities);
         LOG.info("!!! tree.rootTagNodes.size: " + (tree != null ? tree.rootTagNodes.size() : 0));
-        Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached(includeTestEntities);
+        Map<Long, List<Service>> tagIdToServices = getTagIdToServicesMapCached(includeTestTags, includeTestEntities);
         LOG.info("!!! tagIdToServices.size: " + tagIdToServices.size());
 
         for (ServiceTagTreeNode rootTagNode : tree.getRootTagNodes()) {
-            LOG.info("!!! rootTagNode: " + rootTagNode.getTag().getsID() + " " + rootTagNode.getTag().getsName_RU());
             final ServiceTag parentTag = rootTagNode.getTag();
+            LOG.info("!!! rootTagNode: " + parentTag.getsID() + " " + parentTag.getsName_RU());
 
-            final Long rootTagId = rootTagNode.getTag().getId();
+            final Long rootTagId = parentTag.getId();
+            //final Long rootTagId = rootTagNode.getTag().getId();
             if (hasRootIdFilter && !rootTagId.equals(nID_ServiceTag_Root)) {
+                continue;
+            }
+
+            if (nID_Place_Profile != null && !nID_Place_Profile.equals(parentTag.getnID_Place())) {
                 continue;
             }
 
@@ -66,8 +72,12 @@ public class ServiceTagService {
             nodeVO.setoServiceTag_Root(parentTag);
             for (ServiceTagTreeNode childNode : rootTagNode.getChildren()) {
                 final ServiceTag childTag = childNode.getTag();
-
+                
                 if (hasChildIdFilter && !childNode.getTag().getId().equals(nID_ServiceTag_Child)) {
+                    continue;
+                }
+                 
+                if (nID_Place_Profile != null && !nID_Place_Profile.equals(childTag.getnID_Place())) {
                     continue;
                 }
 
@@ -87,7 +97,11 @@ public class ServiceTagService {
 
             if (!nodeVO.getaServiceTag_Child().isEmpty() || bShowEmptyFolders) {
                 res.add(nodeVO);
-
+                
+                LOG.info("nodeVO.getaServiceTag_Child: ", nodeVO.getaServiceTag_Child());
+                LOG.info("nodeVO.nodeVO.getaService: ", nodeVO.getaService());
+                LOG.info("nodeVO.getoServiceTag_Root: ", nodeVO.getoServiceTag_Root());
+                
                 if (!includeServices) {
                     continue;
                 }
@@ -184,17 +198,17 @@ public class ServiceTagService {
         return source != null && source.toLowerCase().contains(target.toLowerCase());
     }
 
-    private ServiceTagTree getServiceTagTreeCached(boolean includeTestEntities) {
+    private ServiceTagTree getServiceTagTreeCached(boolean includeTestTags, boolean includeTestEntities) {
         return cachedInvocationBean.invokeUsingCache(new CachedInvocationBean.Callback<ServiceTagTree>(
-                GET_SERVICE_TAG_TREE_CACHE_KEY, includeTestEntities) {
+                GET_SERVICE_TAG_TREE_CACHE_KEY, includeTestTags, includeTestEntities) {
             @Override
             public ServiceTagTree execute() {
-                return getServiceTagTree(includeTestEntities);
+                return getServiceTagTree(includeTestTags, includeTestEntities);
             }
         });
     }
 
-    private ServiceTagTree getServiceTagTree(boolean includeTestEntities) {
+    private ServiceTagTree getServiceTagTree(boolean includeTestTags, boolean includeTestEntities) {
         List<ServiceTagRelation> relations = new ArrayList<>(baseEntityDao.findAll(ServiceTagRelation.class));
         Map<ServiceTag, ServiceTagTreeNode> tagToNodeMap = new HashMap<>();
 
@@ -206,11 +220,11 @@ public class ServiceTagService {
             final ServiceTag child = relation.getServiceTag_Child();
 
             LOG.info("parent: " + parent.getsID() + " child: " + child.getsID());
-            /*if (isExcludeTestEntity(includeTestEntities, parent) || 
-            isExcludeTestEntity(includeTestEntities, child)) {
+            if (!includeTestTags && (isExcludeTestEntity(includeTestEntities, parent) ||
+                    isExcludeTestEntity(includeTestEntities, child))) {
                 LOG.info("parent: " + parent.getsID() + " child: " + child.getsID() + " continue!!!");
                 continue;
-            }*/
+            }
 
             ServiceTagTreeNode parentNode = null;
             if (parent.getId() != FAKE_ROOT_TAG_ID) {
@@ -246,17 +260,17 @@ public class ServiceTagService {
         return isExcludeTestEntity(includeTestEntity, serviceTag.getsID());
     }
 
-    private Map<Long, List<Service>> getTagIdToServicesMapCached(boolean includeTestEntities) {
+    private Map<Long, List<Service>> getTagIdToServicesMapCached(boolean includeTestTags, boolean includeTestEntities) {
         return cachedInvocationBean.invokeUsingCache(new CachedInvocationBean.Callback<Map<Long, List<Service>>>(
-                GET_TAG_ID_TO_SERVICES_CACHE_KEY, includeTestEntities) {
+                GET_TAG_ID_TO_SERVICES_CACHE_KEY, includeTestTags, includeTestEntities) {
             @Override
             public Map<Long, List<Service>> execute() {
-                return getTagIdToServicesMap(includeTestEntities);
+                return getTagIdToServicesMap(includeTestTags, includeTestEntities);
             }
         });
     }
 
-    private Map<Long, List<Service>> getTagIdToServicesMap(boolean includeTestEntities) {
+    private Map<Long, List<Service>> getTagIdToServicesMap(boolean includeTestTags, boolean includeTestEntities) {
         Map<Long, List<Service>> res = new HashMap<>();
 
         List<ServiceTagLink> links = new ArrayList<>(baseEntityDao.findAll(ServiceTagLink.class));
@@ -264,9 +278,8 @@ public class ServiceTagService {
             final ServiceTag serviceTag = link.getServiceTag();
             final Service service = link.getService();
 
-            if (//isExcludeTestEntity(includeTestEntities, serviceTag) || 
-            isExcludeTestEntity(includeTestEntities, service)
-            ) {
+            if ((!includeTestTags && isExcludeTestEntity(includeTestEntities, serviceTag)) ||
+                    isExcludeTestEntity(includeTestEntities, service)) {
                 continue;
             }
 

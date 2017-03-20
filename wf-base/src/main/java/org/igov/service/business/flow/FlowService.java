@@ -37,6 +37,12 @@ import org.activiti.engine.form.FormProperty;
 import org.igov.service.business.action.task.form.QueueDataFormType;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
+import org.igov.service.business.flow.handler.ExcludeDateRange;
+import org.igov.util.JSON.JsonDateSerializer;
+import org.igov.util.JSON.JsonRestUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.quartz.CronExpression;
 
 /**
  * User: goodg_000
@@ -99,7 +105,7 @@ public class FlowService implements ApplicationContextAware {
                              int nFreeDays, int nSlots) {
 
         List<FlowSlot> aFlowSlot;
-        Flow_ServiceData oFlow = null;
+        Flow oFlow = null;
         if (nID_Service != null) {
             oFlow = getFlowByLink(nID_Service, nID_SubjectOrganDepartment);
         }
@@ -205,7 +211,7 @@ public class FlowService implements ApplicationContextAware {
         return res;
     }
 
-    public Flow_ServiceData getFlowByLink(Long nID_Service, Long nID_SubjectOrganDepartment) {
+    public Flow getFlowByLink(Long nID_Service, Long nID_SubjectOrganDepartment) {
         FlowLink flow = flowLinkDao.findLinkByService(nID_Service, nID_SubjectOrganDepartment);
         return flow != null ? flow.getFlow_ServiceData() : null;
     }
@@ -276,7 +282,8 @@ public class FlowService implements ApplicationContextAware {
         LOG.info("(saveOrUpdate oFlowSlotTicket={} ok!)", oFlowSlotTicket.getId());
         return oFlowSlotTicket;
     }
-
+   
+    
     /**
      * Generates FlowSlots in given interval for specified flow. Slots will not be generated if they are already exist.
      *
@@ -286,25 +293,146 @@ public class FlowService implements ApplicationContextAware {
      * @return generated slots.
      */
     public List<FlowSlotVO> buildFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
-
-        Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
-
+        Flow flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+        
         List<FlowSlotVO> res = new ArrayList<>();
+        List<ExcludeDateRange> aoDateRange_Exclude = new ArrayList<>();
+        CronExpression cronExpression = null;
+        
+        DateTimeFormatter format = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
+        SimpleDateFormat rangeformat = new SimpleDateFormat("dd.MM.yyyy");
+        
+        
+        List<FlowProperty> aoFlowPropertyGroup = flowPropertyDao.findAllBy("sGroup", flow.getsGroup());
+                
+        for (FlowProperty flowProperty : aoFlowPropertyGroup){
+            if(flowProperty.getbExclude() && flowProperty.getsGroup() != null){
+                
+                if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
+                  ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
+                    
+                    List<DateTime> aCronExcludeRange = new ArrayList<>();
+                    Map<String, String> configuration = JsonRestUtils.readObject(flowProperty.getsData(), Map.class);
+                    
+                    for (Map.Entry<String, String> entry : configuration.entrySet()) {
+                        DateTime currDateTime = new DateTime(format.parseDateTime(flowProperty.getsDateTimeAt()));
+                        DateTime endDateTime = new DateTime(format.parseDateTime(flowProperty.getsDateTimeTo()));
+                        
+                        String cronExpressionString = entry.getKey();
+        
+                        try {
+                            cronExpression = new CronExpression(cronExpressionString);
+                        } catch (ParseException e) {
+                            LOG.info("There is no valid expression for cron parsing");
+                        }
+                        
+                        if(cronExpression != null){
+                            while (currDateTime.isBefore(endDateTime)) {
+                                
+                                currDateTime = new DateTime(cronExpression.getNextValidTimeAfter(currDateTime.toDate()));
+                                
+                                if (endDateTime.compareTo(currDateTime) <= 0) {
+                                    break;
+                                }
+                                
+                                aCronExcludeRange.add(currDateTime);
+                                LOG.info("currDateTime for exclude is : " + currDateTime.toString());
+                            }
+                        }
+                    }
+                    
+                    if(!aCronExcludeRange.isEmpty()){
+                        
+                        List<String> asPointDates = new ArrayList<>();
+                        
+                        for(int i = 0; i < aCronExcludeRange.size(); i++){
+                            asPointDates.add(rangeformat.format(aCronExcludeRange.get(i).toDate()));
+                        }
+                        
+                        Set<String> asUniquePoindDates = new HashSet(asPointDates);
+                        LOG.info("asUniquePoindDates: ", asUniquePoindDates);
+                        
+                        Map<String, List<DateTime>> mDates = new HashMap<>();
+                        
+                        for (Iterator<String> it = asUniquePoindDates.iterator(); it.hasNext();)
+                        {
+                            String sUniqueDate = it.next();
+                            List<DateTime> aDateRange = new ArrayList<>();
+                            for(int i = 0; i < aCronExcludeRange.size(); i++){
+                                if(sUniqueDate.equals(rangeformat.format(aCronExcludeRange.get(i).toDate()))){
+                                    aDateRange.add(aCronExcludeRange.get(i));
+                                }
+                            }
+                            mDates.put(sUniqueDate, aDateRange);
+                        }
+                        
+                        for(String sKey : mDates.keySet()){
+                            List<DateTime> aDateRange = mDates.get(sKey);
+                            ExcludeDateRange oExcludeDateRange = new ExcludeDateRange();
+                            oExcludeDateRange.setsDateTimeAt(aDateRange.get(0));
+                            oExcludeDateRange.setsDateTimeTo(aDateRange.get(aDateRange.size() - 1));
+                            aoDateRange_Exclude.add(oExcludeDateRange);
+                            
+                            LOG.info("sKey cron exclude date: " + sKey);
+                            LOG.info("start cron exclude date: " + oExcludeDateRange.getsDateTimeAt());
+                            LOG.info("stop cron exclude date:: " + oExcludeDateRange.getsDateTimeTo());
+                            LOG.info("---------------");
+                        }
+                    }
+                    else
+                    {
+                        ExcludeDateRange oExcludeDateRange = new ExcludeDateRange();
+                        oExcludeDateRange.setsDateTimeAt(format.parseDateTime(flowProperty.getsDateTimeAt()));
+                        oExcludeDateRange.setsDateTimeTo(format.parseDateTime(flowProperty.getsDateTimeTo())); 
+                        aoDateRange_Exclude.add(oExcludeDateRange);
+                    }
 
+                    LOG.info("aDateRange_Exclude is: ", aoDateRange_Exclude);
+                }
+            }
+        }
+        
+        for(ExcludeDateRange oExcludeDateRange : aoDateRange_Exclude){
+            LOG.info("-----");
+            LOG.info("start cron exclude date before apply: " + oExcludeDateRange.getsDateTimeAt());
+            LOG.info("stop cron exclude date before apply: " + oExcludeDateRange.getsDateTimeTo());
+            LOG.info("-----");    
+        }
+        
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
             if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
                 Class<FlowPropertyHandler> flowPropertyHandlerClass = getFlowPropertyHandlerClass(flowProperty);
                 if (BaseFlowSlotScheduler.class.isAssignableFrom(flowPropertyHandlerClass)) {
-
+                        
                     BaseFlowSlotScheduler handler = getFlowPropertyHandlerInstance(
-                            flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
+                    flowProperty.getoFlowPropertyClass().getsBeanName(), flowPropertyHandlerClass);
+                    
+                    try{
+                    
+                        if (startDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt()))||
+                            startDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo())))
+                        {
+                            startDate = format.parseDateTime(flowProperty.getsDateTimeAt());
+                        }
+
+                        if (stopDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo()))||
+                            stopDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt())))
+                        {
+                            stopDate = format.parseDateTime(flowProperty.getsDateTimeTo());
+                        }
+                    }
+                    catch(IllegalArgumentException ex){
+                        LOG.info("Illegal date format in flowProperty");
+                    }
+                    
+                    
                     handler.setStartDate(startDate);
                     handler.setEndDate(stopDate);
                     handler.setFlow(flow);
-
+                    handler.setaDateRange_Exclude(aoDateRange_Exclude);
                     LOG.info("(startDate={}, stopDate={}, flowProperty.getsData()={})",
                             startDate, stopDate, flowProperty.getsData());
-
+                    
                     if (flowProperty.getsData() != null && !"".equals(flowProperty.getsData().trim())) {
                         List<FlowSlot> generatedSlots = handler.generateObjects(flowProperty.getsData());
                         for (FlowSlot slot : generatedSlots) {
@@ -314,7 +442,45 @@ public class FlowService implements ApplicationContextAware {
                 }
             }
         }
+        
+        if(!aoDateRange_Exclude.isEmpty()){
+            List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
+            List<FlowSlot> flowSlotsToDelete = new ArrayList<>();
 
+            for (FlowSlot oFlowSlot : aFlowSlot) {
+                
+                Boolean bBusy = false;
+                
+                for(FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()){
+                    bBusy = bBusy||FlowSlotVO.bBusy(oFlowSlotTicket);
+                }
+                
+                for(ExcludeDateRange oExcludeRange : aoDateRange_Exclude){
+                    if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())&&
+                        oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))||
+                        oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())||
+                        oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo()))&&(!bBusy))
+                    {
+                        LOG.info("oFlowSlot to delete date:" + oFlowSlot.getsDate());
+                        flowSlotsToDelete.add(oFlowSlot);
+                    }
+                    
+                    if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())&&
+                        oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))||
+                        oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())||
+                        oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo()))&&(bBusy))
+                    {
+                        LOG.info("oFlowSlot to delete when it busy:" + oFlowSlot.getsDate());
+                    }
+                }
+            }
+            
+            if(!flowSlotsToDelete.isEmpty())
+            {
+                flowSlotDao.delete(flowSlotsToDelete);
+            }
+        }
+        
         return res;
     }
 
@@ -487,7 +653,7 @@ public class FlowService implements ApplicationContextAware {
         }
 
         LOG.info("(nID_Flow_ServiceData={})", nID_Flow_ServiceData);
-        Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+        Flow flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
         List<FlowProperty> res = new LinkedList<FlowProperty>();
         if (flowServiceData != null) {
             if (flowServiceData.getFlowProperties() != null && !flowServiceData.getFlowProperties().isEmpty()) {
@@ -630,7 +796,7 @@ public class FlowService implements ApplicationContextAware {
 
             FlowPropertyClass flowPropertyClass = flowPropertyClassDao.findByIdExpected(DEFAULT_FLOW_PROPERTY_CLASS);
             LOG.info("Loaded flow propetry service class: {}", flowPropertyClass);
-            Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+            Flow flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
             LOG.info("Loaded flow service data class: ", flowServiceData);
 
             flowProperty = fillFlowProperty(sName, sRegionTime, saRegionWeekDay, sDateTimeAt, sDateTimeTo, nLen,
@@ -657,7 +823,7 @@ public class FlowService implements ApplicationContextAware {
      */
     public List<FlowProperty> removeSheduleFlow(Long nID, Long nID_Flow_ServiceData, Boolean bExclude){
 
-        Flow_ServiceData flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+        Flow flowServiceData = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
 
         Iterator<FlowProperty> iterator = flowServiceData.getFlowProperties().iterator();
         while (iterator.hasNext()) {
@@ -691,7 +857,10 @@ public class FlowService implements ApplicationContextAware {
      */
     public List<Map<String, String>> getFlowSlotTickets(String sLogin, Boolean bEmployeeUnassigned, String sDateFilter)
             throws ParseException {
+    
         List<Map<String, String>> mReturn = new LinkedList<>();
+    try{
+        
         SimpleDateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date oDateFilter = null;
         if (sDateFilter != null) {
@@ -791,6 +960,11 @@ public class FlowService implements ApplicationContextAware {
                 }
             }            
         }
+        }
+        catch(Exception ex){
+            LOG.info("Error during gettion of flowservice: {}", ex);
+        }
+        
         return mReturn;
     }
 
@@ -800,10 +974,10 @@ public class FlowService implements ApplicationContextAware {
      * @return
      */
     public SubjectOrganDepartment[] getSubjectOrganDepartments(String sID_BP) {
-        List<Flow_ServiceData> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
+        List<Flow> serviceDataList = flowServiceDataDao.findAllBy("sID_BP", sID_BP);
         SubjectOrganDepartment[] result = new SubjectOrganDepartment[serviceDataList.size()];
         for (int i = 0; i < serviceDataList.size(); i++) {
-            Flow_ServiceData sd = serviceDataList.get(i);
+            Flow sd = serviceDataList.get(i);
             Long nID_SubjectOrganDepartment = sd.getnID_SubjectOrganDepartment();
             SubjectOrganDepartment subjectOrganDepartment = subjectOrganDepartmentDao
                     .findByIdExpected(nID_SubjectOrganDepartment);
@@ -813,7 +987,7 @@ public class FlowService implements ApplicationContextAware {
     }
       public List<FlowSlotVO> buildFlowSlotsTest(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
 
-        Flow_ServiceData flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
+        Flow flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
 
         List<FlowSlotVO> res = new ArrayList<>();
 
@@ -847,8 +1021,8 @@ public class FlowService implements ApplicationContextAware {
     public void buildFlowSlots(){
       DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         LOG.info(" oDateStart = {}", oDateStart);
-        List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
-        for (Flow_ServiceData flow : aFlowServiceData) {
+        List<Flow> aFlowServiceData = flowServiceDataDao.findAll();
+        for (Flow flow : aFlowServiceData) {
                 if (flow.getsID_BP().endsWith(SUFFIX_AUTO) && flow.getnCountAutoGenerate() != null) {
                 LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
                 LOG.info("SUFFIX_AUTO: " + flow.getsID_BP().endsWith(SUFFIX_AUTO) + " flow.getnCountAutoGenerate(): " + flow.getnCountAutoGenerate());
@@ -858,7 +1032,7 @@ public class FlowService implements ApplicationContextAware {
         }
         
     } 
-    public void checkAndBuildFlowSlots(Flow_ServiceData flow, DateTime oDateStart) {
+    public void checkAndBuildFlowSlots(Flow flow, DateTime oDateStart) {
         //Maxline: TODO добавить исключения
         Long nID_Flow_ServiceData = flow.getId();
         Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
@@ -867,7 +1041,19 @@ public class FlowService implements ApplicationContextAware {
         Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
         LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
                 nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
-
+        
+        List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
+        
+        for (FlowProperty flowProperty : flow.getFlowProperties()){
+            if(flowProperty.getbExclude()){
+                
+                if((flow.getsGroup()!= null && flow.getsGroup().equals(flowProperty.getsGroup()))
+                  ||(flow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())){
+                    aExcludeFlowProperty.add(flowProperty);
+                }
+            }
+        }
+        
         int nStartDay = 0;
         DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
         DateTime dateEnd;

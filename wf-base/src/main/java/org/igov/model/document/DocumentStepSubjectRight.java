@@ -1,107 +1,158 @@
 package org.igov.model.document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.lang.invoke.MethodHandles;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.persistence.*;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Entity
 public class DocumentStepSubjectRight extends AbstractEntity {
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "nID_DocumentStep")
-    private DocumentStep documentStep;
+	private static final transient Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @JsonProperty(value = "sKey_GroupPostfix")
-    private String sKey_GroupPostfix;
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "nID_DocumentStep")
+	private DocumentStep documentStep;
 
-    @JsonProperty(value = "sName")
-    private String sName;
+	@JsonProperty(value = "sKey_GroupPostfix")
+	private String sKey_GroupPostfix;
 
-    @JsonProperty(value = "bWrite")
-    private Boolean bWrite;
+	@JsonProperty(value = "sName")
+	private String sName;
 
-    @JsonProperty(value = "sLogin")
-    private String sLogin;
+	@JsonProperty(value = "bWrite")
+	private Boolean bWrite;
 
-    @JsonProperty(value = "sDate")
-    @Type(type = DATETIME_TYPE)
-    private DateTime sDate;
+	@JsonProperty(value = "bNeedECP")
+	private Boolean bNeedECP;
 
-    @OneToMany(mappedBy = "documentStepSubjectRight", cascade = CascadeType.ALL)
-    private List<DocumentStepSubjectRightField> documentStepSubjectRightFields;
+	@JsonProperty(value = "sLogin")
+	private String sLogin;
 
-    public List<DocumentStepSubjectRightField> getDocumentStepSubjectRightFields() {
-        return documentStepSubjectRightFields;
-    }
+	@JsonProperty(value = "sID_File_ForSign")
+	private String sID_File_ForSign;
 
-    public void setDocumentStepSubjectRightFields(List<DocumentStepSubjectRightField> documentStepSubjectRightFields) {
-        this.documentStepSubjectRightFields = documentStepSubjectRightFields;
-    }
+	@JsonProperty(value = "sDate")
+	@Type(type = DATETIME_TYPE)
+	private DateTime sDate;
 
-    public DocumentStep getDocumentStep() {
-        return documentStep;
-    }
+	@JsonProperty(value = "sDateECP")
+	@Type(type = DATETIME_TYPE)
+	private DateTime sDateECP;
 
-    public void setDocumentStep(DocumentStep documentStep) {
-        this.documentStep = documentStep;
-    }
+	@OneToMany(mappedBy = "documentStepSubjectRight", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<DocumentStepSubjectRightField> documentStepSubjectRightFields;
 
-    public String getsKey_GroupPostfix() {
-        return sKey_GroupPostfix;
-    }
+	public List<DocumentStepSubjectRightField> getDocumentStepSubjectRightFields() {
+		return documentStepSubjectRightFields;
+	}
 
-    public void setsKey_GroupPostfix(String sKey_GroupPostfix) {
-        this.sKey_GroupPostfix = sKey_GroupPostfix;
-    }
+	public void setDocumentStepSubjectRightFields(List<DocumentStepSubjectRightField> documentStepSubjectRightFields) {
+		this.documentStepSubjectRightFields = documentStepSubjectRightFields;
+	}
 
-    public String getsName() {
-        return sName;
-    }
+	public DocumentStep getDocumentStep() {
+		return documentStep;
+	}
 
-    public void setsName(String sName) {
-        this.sName = sName;
-    }
+	public void setDocumentStep(DocumentStep documentStep) {
+		this.documentStep = documentStep;
+	}
 
-    public Boolean getbWrite() {
-        return bWrite;
-    }
+	public String getsKey_GroupPostfix() {
+		return sKey_GroupPostfix;
+	}
 
-    public void setbWrite(Boolean bWrite) {
-        this.bWrite = bWrite;
-    }
+	public void setsKey_GroupPostfix(String sKey_GroupPostfix) {
+		this.sKey_GroupPostfix = sKey_GroupPostfix;
+	}
 
-    public String getsLogin() {
-        return sLogin;
-    }
+	public String getsName() {
+		return sName;
+	}
 
-    public void setsLogin(String sLogin) {
-        this.sLogin = sLogin;
-    }
+	public void setsName(String sName) {
+		this.sName = sName;
+	}
 
-    public DateTime getsDate() {
-        return sDate;
-    }
+	public Boolean getbWrite() {
+		return bWrite;
+	}
 
-    public void setsDate(DateTime sDate) {
-        this.sDate = sDate;
-    }
+	public void setbWrite(Boolean bWrite) {
+		this.bWrite = bWrite;
+	}
 
-    @Override
-    public String toString() {
-        return "DocumentStepSubjectRight{" +
-                "id=" + getId() + ", " +
-                "documentStep=" + documentStep +
-                ", sKey_GroupPostfix='" + sKey_GroupPostfix + '\'' +
-                ", sName='" + sName + '\'' +
-                ", bWrite=" + bWrite +
-                ", sLogin='" + sLogin + '\'' +
-                ", sDate=" + sDate +
-                '}';
-    }
+	public Boolean getbNeedECP() {
+		return bNeedECP;
+	}
+
+	public void setbNeedECP(Boolean bNeedECP) {
+		this.bNeedECP = bNeedECP;
+	}
+
+	public String getsLogin() {
+		return sLogin;
+	}
+
+	public void setsLogin(String sLogin) {
+		this.sLogin = sLogin;
+	}
+
+	public String getsID_File_ForSign() {
+		return sID_File_ForSign;
+	}
+
+	public void setsID_File_ForSign(String sID_File_ForSign) {
+		this.sID_File_ForSign = sID_File_ForSign;
+	}
+
+	public DateTime getsDate() {
+		return sDate;
+	}
+
+	public void setsDate(DateTime sDate) {
+		this.sDate = sDate;
+	}
+
+	public DateTime getsDateECP() {
+		return sDateECP;
+	}
+
+	public void setsDateECP(DateTime sDateECP) {
+		this.sDateECP = sDateECP;
+	}
+
+	@Override
+	public String toString() {
+		try {
+			return new ObjectMapper().configure(SerializationFeature.WRAP_ROOT_VALUE, true)
+					.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			LOG.info(String.format("error [%s]", e.getMessage()));
+		}
+		return null;
+	}
+
 }

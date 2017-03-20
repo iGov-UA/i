@@ -49,6 +49,7 @@ module.exports = function (app) {
     app.use('/api/markers', require('./api/markers'));
     app.use('/api/sign-content', require('./api/sign-content'));
     app.use('/api/answer', require('./api/answer'));
+    app.use('/api/organization-info', require('./api/organization-info'));
     // All undefined asset or api routes should return a 404
     app.route('/:url(api|auth|components|app|bower_components|assets|public-js)/*')
       .get(errors[404]);
