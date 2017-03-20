@@ -13,10 +13,6 @@
       display: block;
     }
 
-    .ui-select-bootstrap .ui-select-choices-row a {
-      white-space: normal;
-    }
-
     .form-control.ui-select-search {
       width: 100% !important;
     }
@@ -25,27 +21,21 @@
       padding-top: 0;
     }
 
-    .line-separator {
-      flex: 1;
-      height: 1px;
-      margin: 0 0 0 5px;
-      background-image: -webkit-linear-gradient(right, rgba(0, 0, 0, 0), rgba(160, 160, 160, 0.75));
-      background-image: -moz-linear-gradient(right, rgba(0, 0, 0, 0), rgba(160, 160, 160, 0.75));
-      background-image: -ms-linear-gradient(right, rgba(0, 0, 0, 0), rgba(160, 160, 160, 0.75));
-      background-image: -o-linear-gradient(right, rgba(0, 0, 0, 0), rgba(160, 160, 160, 0.75));
+    @media (max-width: 767px) {
+      .ui-select-bootstrap>.ui-select-choices {
+        width: 400px;
+      }
     }
-
-    .line-separator-full {
-      flex: 1;
-      height: 1px;
-      margin-top: 30px;
-      margin-bottom: 30px;
-      background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
-      background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
-      background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
-      background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(160,160,160,0.75), rgba(0,0,0,0));
+    @media (min-width: 768px) and (max-width: 1199px) {
+      .ui-select-bootstrap>.ui-select-choices {
+        width: 620px;
+      }
     }
-
+    @media (min-width: 1200px) {
+      .ui-select-bootstrap>.ui-select-choices {
+        width: 620px;
+      }
+    }
   </style>
 
   <div class="list-group-item disabled" ng-if="!spinner">
@@ -128,8 +118,7 @@
 
             <div class="row"
                  ng-repeat="property in activitiForm.formProperties track by property.id"
-                 ng-if="isFieldVisible(property)"
-                 ng-class="{'central-igov-okpo-block':isOKPOAutocompleteFields(property.id) === 'okpo_field' || isOKPOAutocompleteFields(property.id) === 'okpo_autocomplete'}">
+                 ng-if="isFieldVisible(property)">
 
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
                 <div ng-if="insertSeparator(property.id).sText.length > 0" class="flex-hr wrap-hr" style="width: 100%">
@@ -758,7 +747,7 @@
                              autocomplete-name="property.autocompleteName"
                              form-data="data.formData"
                              reach-infinity="requestMoreItems($select.items)"
-                             on-select="onSelectDataList($item)">
+                             on-select="onSelectDataList($item, null, null, property)">
 
                     <ui-select-match>
                       {{$select.selected[property.autocompleteData.valueProperty] || data.formData.params[property.id].value}}

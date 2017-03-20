@@ -3066,6 +3066,83 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("mReturn={}", mReturn);
         
         return mReturn;
-    }    
+    }   
+	
+	 @ApiOperation(value = "Обновление переменных задачи с ее опциональным завершением", notes = "#####  ActionCommonTaskController: Обновление переменных задачи с ее опциональным завершением #####\n\n"
+	            + "HTTP Context: https://alpha.test.region.igov.org.ua/wf/service/action/task/updateProcess\n\n"
+				+ "POST Метод. Принимает параметр bSaveOnly. Если bSaveOnly=true - Только обновление переменных задачи. Если false - заверешение задачи после обновления переменных:\n"
+	            + "Метод принимает json в теле запроса со списком переменных для обновления и номером задачи:\n"
+				+ "\n```json\n"
+				+ "{\n"
+				+ "  \"taskId\" : \"5\",\n"	
+				+ "  \"properties\" : [\n"
+				+ "  {\n"
+				+ "  \"id\" : \"room\",\n"
+				+ "  \"value\" : \"normal\"\n"
+				+ "  }\n"
+				+ "  ]\n"
+				+ "}\n"
+				+ "\n```\n")
+    @RequestMapping(value = "/updateProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public @ResponseBody
+    Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly, 
+            @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
+    ) throws Exception {
+
+        Map<String, Object> mParam = new HashMap<>();
+        Map<String, Object> mReturn = new HashMap<>();
+        Map<String, Object> mJsonBody;
+        String taskId = null;
+        try {
+            mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
+            if(mJsonBody != null){
+            	if (mJsonBody.containsKey("taskId")){
+            		LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
+            		taskId = (String) mJsonBody.get("taskId");
+            		LOG.info("Updating task with ID " + taskId);
+            	} else {
+            		throw new IllegalArgumentException("Object doesn't contain 'taskId' parameter");
+            	}
+            	
+            	if (mJsonBody.containsKey("properties")) {
+                    LOG.info("Parsing properties: " + mJsonBody.get("properties"));
+                    
+                    List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
+                    String executionId = null;
+                    if (tasks != null && tasks.size() > 0){
+                    	Task firstTask = tasks.get(0);
+                    	executionId = firstTask.getExecutionId();
+
+                    	for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")){
+                        	LOG.info("Updating variable : " + (String)param.get("id") + " with the value " + param.get("value"));
+                        	mParam.put((String)param.get("id"), param.get("value"));
+                        	runtimeService.setVariable(executionId, (String)param.get("id"), param.get("value"));
+                        }
+
+                    	if (!bSaveOnly){
+                    		LOG.info("Submitting task");
+                    		taskService.complete(firstTask.getId());
+                    	}
+                    } else {
+                    	LOG.info("Have not found any tasks with ID " + taskId);
+                    }
+                    if (executionId != null){
+                    	List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
+                        if (activeTasks != null && activeTasks.size() > 0){
+                        	LOG.info("Found " + activeTasks.size() + " active tasks for the execution id " + executionId);
+                        	mReturn.put("nID_Task", tasks.get(0).getId());
+                        } else {
+                        	LOG.warn("There are no active tasks for execution id " + executionId);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
+        }
+        
+        LOG.info("mReturn={}", mReturn);
+        return mReturn;
+    }   
     
 }
