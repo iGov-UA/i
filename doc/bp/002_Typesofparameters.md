@@ -4,7 +4,7 @@
 ```xml
 <activiti:formProperty id="Place" name="Обраний населений пункт" type="string"></activiti:formProperty>
 ```
-* ![2_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
+* ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
 ***
 ### long
 число (целое) - для ввода ЦЕЛЫХ чисел
@@ -20,6 +20,7 @@
   <activiti:value id="no" name="ні"></activiti:value>
 </activiti:formProperty>
 ```
+* ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
 ***
 ### enum (checkbox)
 чекбокс - доступно только 2 выбора да/нет.
