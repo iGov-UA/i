@@ -190,6 +190,7 @@ public class NotificationPatterns {
         try {
             sHead = ((sHead == null || "".equals(sHead.trim())) ? 
                     "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
+            LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
             String sClientFIO = null;
             String sEmployerFIO = null;
             try {
