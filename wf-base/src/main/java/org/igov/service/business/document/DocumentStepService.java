@@ -1387,17 +1387,19 @@ public class DocumentStepService {
                         // через апи активити по nID_Process
                         HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
                                 .processInstanceId(snID_Process).singleResult();
-                        LOG.info("oProcessInstance = {}",oProcessInstance );
+                        LOG.info("oProcessInstance = {} ",oProcessInstance );
                         if (oProcessInstance != null) {
                             // вытаскиваем дату создания процесса
                             Date sDateCreateProcess = oProcessInstance.getStartTime();
+                            LOG.info("sDateCreateProcess", sDateCreateProcess);
                             // вытаскиваем название бп
                             String sNameBP = oProcessInstance.getName();
+                            LOG.info("sNameBP", sNameBP);
                             // вытаскиваем список тасок по процесу
-                            Task oFirstTask = oTaskService.createTaskQuery().processInstanceId(snID_Process).active().singleResult();
-                           // if (tasks != null || !tasks.isEmpty()) {
+                            List<Task> tasks = oTaskService.createTaskQuery().processInstanceId(snID_Process).list();                           // if (tasks != null || !tasks.isEmpty()) {
                                 // берем первую
-                           //     Task oFirstTask = tasks.get(0);
+                                Task oFirstTask = tasks.get(0);
+                                LOG.info("oTask", oFirstTask.toString());
                                 // вытаскиваем дату создания таски
                                 Date sDateCreateUserTask = oFirstTask.getCreateTime();
                                 // и ее название
