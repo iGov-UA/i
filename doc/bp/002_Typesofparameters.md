@@ -4,10 +4,11 @@
 ```xml
 <activiti:formProperty id="Place" name="Обраний населений пункт" type="string"></activiti:formProperty>
 ```
-* ![1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_1.jpg)
+* ![2_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_1.jpg)
 ***
 ### long
 число (целое) - для ввода ЦЕЛЫХ чисел
+* ![2_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_2.jpg)
 ***
 ### double
 число (дробное) - для ввода ДРОБНЫХ чисел (разделитель - точка)  
