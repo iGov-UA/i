@@ -12,7 +12,11 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
         },
         resolve: {
           BankIDLogin: function ($q, $state, $location, $stateParams, UserService) {
-             return UserService.isLoggedIn()
+             return UserService.isLoggedIn().then(function () {
+               return true;
+             }, function () {
+               return false;
+             })
                .catch(function () {
                  return false;
                });
@@ -75,7 +79,11 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
             }
           },
           BankIDLogin: function ($q, $state, $location, $stateParams, UserService) {
-             return UserService.isLoggedIn()
+             return UserService.isLoggedIn().then(function (data) {
+               return true;
+             }, function (err) {
+               return false;
+             })
                .catch(function () {
                  return false;
                });
