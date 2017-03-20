@@ -20,6 +20,22 @@
     .dropdown-menu {
       padding-top: 0;
     }
+
+    @media (max-width: 767px) {
+      .ui-select-bootstrap>.ui-select-choices {
+        width: 400px;
+      }
+    }
+    @media (min-width: 768px) and (max-width: 1199px) {
+      .ui-select-bootstrap>.ui-select-choices {
+        width: 620px;
+      }
+    }
+    @media (min-width: 1200px) {
+      .ui-select-bootstrap>.ui-select-choices {
+        width: 620px;
+      }
+    }
   </style>
 
   <div class="list-group-item disabled" ng-if="!spinner">
@@ -137,9 +153,7 @@
 
 
               <div id="field-{{property.id}}" class="col-md-3"
-                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 
-                              'col-md-12': property.type === 'table', 
-                              'col-md-7': (property.type === 'select' && property.id !=='sID_Public_SubjectOrganJoin') || property.type === 'label'}"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table'}"
                    ng-if="showFormField(property)"
                    ng-switch
                    on="property.type">

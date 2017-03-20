@@ -23,11 +23,11 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява про прийнятя на роботу"></activiti:formProperty>
         <activiti:formProperty id="sAvtorName" name="ПІБ заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nZP" name="Рівень доходу" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nZP" name="Посадовий оклад" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressa" name="Місце проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPasspot" name="Серія та номер паспорту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPhone" name="Номер телефону" type="long" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="eMail" name="адреса E-mail " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="адреса E-mail " type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Author]]></activiti:string>
@@ -46,8 +46,81 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)</script>
     </scriptTask>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
+    <userTask id="usertask2" name="Обробка заяви">
+      <extensionElements>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява про прийнятя на роботу"></activiti:formProperty>
+        <activiti:formProperty id="sAvtorName" name="ПІБ заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada" name="Посада" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nZP" name="Посадовий оклад" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLogin" name="Логін співробітника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sParol" name="Пароль співробітника" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow5" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Лист-погодження" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Вітаємо! Вашу кандидатуру підтверджено</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>Шановний колего!  Ваш логін $(sLogin)  та пароль $(sParol). Будь ласка, перейдіть за посиланням для підтвердження: https://alpha.test.region.igov.org.ua/</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow6" sourceRef="usertask2" targetRef="servicetask1"></sequenceFlow>
+    <scriptTask id="scripttask3" name="переход на след степ" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_3'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав
+
+var sKey_GroupPostfix_New ='iGov_Pavlenko'
+var sKey_GroupPostfix = '_default_Staff'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="scripttask3"></sequenceFlow>
+    <userTask id="usertask3" name="кінцевий етап">
+      <extensionElements>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtorName" name="ПІБ заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosada" name="Посада" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sZP" name="Посадовий оклад" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLogin" name="Логін" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sParol" name="Пароль" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asZgoda" name="Надайте згоду;sID_CheckboxTrue=sEnumYes" type="enum" required="true">
+          <activiti:value id="sEnumYes" name="так"></activiti:value>
+          <activiti:value id="sEnumNo" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow8" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_iGov_employ">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_iGov_employ" id="BPMNPlane__doc_test_iGov_employ">
@@ -63,8 +136,20 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="58.0" width="131.0" x="580.0" y="132.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="58.0" width="161.0" x="780.0" y="132.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="990.0" y="134.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="71.0" width="105.0" x="990.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="808.0" y="258.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="418.0" y="260.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="722.0" y="268.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="125.0" y="160.0"></omgdi:waypoint>
@@ -74,9 +159,29 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
         <omgdi:waypoint x="311.0" y="160.0"></omgdi:waypoint>
         <omgdi:waypoint x="370.0" y="161.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="435.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="435.0" y="260.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="501.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="161.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="711.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="161.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="941.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="990.0" y="161.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="1042.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1042.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="990.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="913.0" y="285.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="808.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="757.0" y="285.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
