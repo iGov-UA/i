@@ -188,7 +188,8 @@ public class NotificationPatterns {
     public void sendTaskEmployeeMessageEmail(String sHead, String sBody, String sMailTo, String sID_Order, String soParams)
             throws EmailException {
         try {
-            sHead = sHead == null ? "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead;
+            sHead = ((sHead == null || "".equals(sHead.trim())) ? 
+                    "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
             String sClientFIO = null;
             String sEmployerFIO = null;
             try {
