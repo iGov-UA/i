@@ -7,6 +7,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -27,6 +30,8 @@ public class DocumentStep extends AbstractEntity {
     private List<DocumentStepSubjectRight> rights;
     
     @JsonProperty(value = "nID_DocumentStepType")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "nID_DocumentStepType")
     private DocumentStepType oDocumentStepType;
 
     public List<DocumentStepSubjectRight> getRights() {
