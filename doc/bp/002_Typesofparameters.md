@@ -38,7 +38,7 @@
 ```xml
 <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" required="true"></activiti:formProperty>
 ```
-* [2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
+* ![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
 ***
 ### boolean
 true / false
