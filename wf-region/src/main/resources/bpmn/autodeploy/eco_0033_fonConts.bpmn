@@ -30,7 +30,7 @@
           <activiti:value id="sPost" name="поштою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="&lt;a href=&quot; https://drive.google.com/open?id=1eT5aMmb8GxhzcPL4kUzWJQ7BNJ9WtggAnqftMVvi-SM&quot; target=&quot;_blank&quot;&gt;Вимоги до характеристики розташування проммайданчика&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="nDocComp" name="Характеристика розташування проммайданчика підприємства на карті-схемі міста підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocComp" name="Характеристика розташування проммайданчика підприємства на карті-схемі міста підписаний ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asDocTime&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCompType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBuild'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса департаменту екології; ;bVisible=false" type="string" default="м. Дніпро, вул. Лабораторна, 69"></activiti:formProperty>
@@ -202,12 +202,8 @@
           <activiti:value id="sMyself" name="особисто"></activiti:value>
           <activiti:value id="sPost" name="поштою"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nDovidka" name="Довідка підписана ЕЦП" type="file"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocComp}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nDocComp" name="Характеристика розташування проммайданчика підприємства на карті-схемі міста підписаний ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDovidka" name="Довідка підписана ЕЦП; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow46" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>

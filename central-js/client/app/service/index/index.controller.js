@@ -11,6 +11,10 @@ angular.module('app').controller('IndexController', function ($scope, $rootScope
     });
   };
 
+  $scope.$on('event.logout.without.session', function () {
+    $scope.logout();
+  });
+
   UserService.isLoggedIn().then(function (result) {
     $scope.navBarStatusVisible = result;
     UserService.fio().then(function (res) {
