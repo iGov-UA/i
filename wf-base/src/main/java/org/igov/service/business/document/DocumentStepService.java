@@ -57,7 +57,6 @@ public class DocumentStepService {
     private GenericEntityDao<Long, DocumentStep> documentStepDao;
 
     @Autowired
-    @Qualifier("documentStepTypeDao")
     private GenericEntityDao<Long, DocumentStepType> documentStepType;
 
     @Autowired
