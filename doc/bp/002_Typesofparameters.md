@@ -112,6 +112,7 @@ true / false
 <activiti:formProperty id="application_name" name="В цьому полі надайте перелік усіх додатків та специфікацій до договору" 
 type="textArea"></activiti:formProperty>
 ``` 
+* ![2_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_9.JPG)
 ***
 ### queueData
 дата/время - Электронная очередь.
