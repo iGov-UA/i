@@ -341,6 +341,71 @@ public class DocumentStepService {
         }
         return bRemoved;
     }
+    
+    private void reCloneRight(List<DocumentStepSubjectRight> aDocumentStepSubjectRight_To,
+            DocumentStepSubjectRight oDocumentStepSubjectRight_From, String sKey_GroupPostfix_New) {
+
+        try {
+            
+            for (int i = 0; i < aDocumentStepSubjectRight_To.size(); i++) {
+                DocumentStepSubjectRight oDocumentStepSubjectRight_To = aDocumentStepSubjectRight_To.get(i);
+                if (oDocumentStepSubjectRight_To.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
+                    if (oDocumentStepSubjectRight_To.getsDate() != null) {
+                        LOG.info("DocumentStepSubjectRight_From when sDate isn't null: {}", oDocumentStepSubjectRight_From);
+                        LOG.info("DocumentStepSubjectRight_To equals _From with date {}", oDocumentStepSubjectRight_To);
+                        oDocumentStepSubjectRight_To.setsDate(null);
+                        oDocumentStepSubjectRight_To.setsDateECP(null);
+                        List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New
+                                = oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields();
+
+                        DocumentStepSubjectRightField oDocumentStepSubjectRightFieldRead_From = null;
+                        DocumentStepSubjectRightField oDocumentStepSubjectRightFieldWrite_From = null;
+
+                        if (aDocumentStepSubjectRightField_New.get(0).getbWrite() == true) {
+                            oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(0);
+                            oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(1);
+                        } else {
+                            oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(1);
+                            oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(0);
+                        }
+
+                        if (oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).getbWrite() == true) {
+
+                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().
+                                    get(0).setbWrite(oDocumentStepSubjectRightFieldWrite_From.getbWrite());
+                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields()
+                                    .get(0).setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
+                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().
+                                    get(1).setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
+                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields()
+                                    .get(1).setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
+
+                        } else {
+
+                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().
+                                    get(1).setbWrite(oDocumentStepSubjectRightFieldWrite_From.getbWrite());
+                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields()
+                                    .get(1).setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
+                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().
+                                    get(0).setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
+                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields()
+                                    .get(0).setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
+                        }
+
+                        LOG.info("DocumentStepSubjectRight_To before saving is: {}", oDocumentStepSubjectRight_To);
+                        oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
+                        break;
+                    }
+                }
+            }
+
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " ("
+                    + ",sKey_GroupPostfix_New=" + sKey_GroupPostfix_New +" )");
+            LOG.error("ERROR: ", oException);
+            throw oException;
+        }
+    }
 
     public List<DocumentStepSubjectRight> cloneDocumentStepSubject(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sKey_GroupPostfix_New, String sKey_Step_Document_To,
@@ -445,57 +510,8 @@ public class DocumentStepService {
                         sKey_GroupPostfix_New)) {
                     asID_Group_Activiti_New_Selected.add(sID_Group_Activiti_New);
                 } else if (bReClone) {
-                    for (int i = 0; i < aDocumentStepSubjectRight_To.size(); i++) {
-                        DocumentStepSubjectRight oDocumentStepSubjectRight_To = aDocumentStepSubjectRight_To.get(i);
-                        if (oDocumentStepSubjectRight_To.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
-                            if (oDocumentStepSubjectRight_To.getsDate() != null) {
-                                LOG.info("DocumentStepSubjectRight_From when sDate isn't null: {}", oDocumentStepSubjectRight_From);
-                                LOG.info("DocumentStepSubjectRight_To equals _From with date {}", oDocumentStepSubjectRight_To);
-                                oDocumentStepSubjectRight_To.setsDate(null);
-                                oDocumentStepSubjectRight_To.setsDateECP(null);
-                                List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New
-                                        = oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields();
-                                
-                                DocumentStepSubjectRightField oDocumentStepSubjectRightFieldRead_From = null;
-                                DocumentStepSubjectRightField oDocumentStepSubjectRightFieldWrite_From = null;
-                                
-                                if (aDocumentStepSubjectRightField_New.get(0).getbWrite() == true) {
-                                    oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(0);
-                                    oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(1);
-                                } else {
-                                    oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(1);
-                                    oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(0);
-                                }
-                                
-                                if (oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).getbWrite() == true) {
-                                    
-                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().
-                                            get(0).setbWrite(oDocumentStepSubjectRightFieldWrite_From.getbWrite());
-                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields()
-                                            .get(0).setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
-                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().
-                                            get(1).setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
-                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields()
-                                            .get(1).setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
-                                    
-                                } else {
-                                    
-                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().
-                                            get(1).setbWrite(oDocumentStepSubjectRightFieldWrite_From.getbWrite());
-                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields()
-                                            .get(1).setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
-                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().
-                                            get(0).setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
-                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields()
-                                            .get(0).setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
-                                }
-                                
-                                LOG.info("DocumentStepSubjectRight_To before saving is: {}", oDocumentStepSubjectRight_To);
-                                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
-                                break;
-                            }
-                        }
-                    }
+                    reCloneRight(aDocumentStepSubjectRight_To, oDocumentStepSubjectRight_From, sKey_GroupPostfix_New);
+                }else{
                     LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}",
                             sKey_GroupPostfix_New, oDocumentStep_To.getsKey_Step());
                 }
