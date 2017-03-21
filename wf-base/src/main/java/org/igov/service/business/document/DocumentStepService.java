@@ -449,15 +449,13 @@ public class DocumentStepService {
                         DocumentStepSubjectRight oDocumentStepSubjectRight_To = aDocumentStepSubjectRight_To.get(i);
                         if (oDocumentStepSubjectRight_To.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
                             if (oDocumentStepSubjectRight_To.getsDate() != null) {
-                                LOG.info("DocumentStepSubjectRight_From when sDate isn't null: "
-                                        + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
-                                LOG.info("DocumentStepSubjectRight_To equals _From with date {}: "
-                                        + "sKey_GroupPostfix is: {}", oDocumentStepSubjectRight_To.getsKey_GroupPostfix());
+                                LOG.info("DocumentStepSubjectRight_From when sDate isn't null: {}", oDocumentStepSubjectRight_From);
+                                LOG.info("DocumentStepSubjectRight_To equals _From with date {}", oDocumentStepSubjectRight_To);
                                 oDocumentStepSubjectRight_To.setsDate(null);
                                 oDocumentStepSubjectRight_To.setsDateECP(null);
                                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRight_New
                                         = oDocumentStepSubjectRight_From.getDocumentStepSubjectRightFields();
-                                //осторожно! ужасный код! 2 часа ночи, потом переделаю
+                                
                                 for (DocumentStepSubjectRightField oDocumentStepSubjectRightField_From : aDocumentStepSubjectRight_New) {
                                     if (oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).getbWrite() == true) {
                                         oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).setbWrite(oDocumentStepSubjectRightField_From.getbWrite());
@@ -467,6 +465,7 @@ public class DocumentStepService {
                                         oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1).setsMask_FieldID(oDocumentStepSubjectRightField_From.getsMask_FieldID());
                                     }
                                 }
+                                LOG.info("DocumentStepSubjectRight_To before saving is: {}", oDocumentStepSubjectRight_To);
                                 oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                                 break;
                             }
