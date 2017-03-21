@@ -130,6 +130,7 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
 ```
+* ![2_30](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_30.JPG)
 ***
 ### select
 Тип данных, который формирует динамические выпадающие списки (в зависимости от параметров).
