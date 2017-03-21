@@ -206,7 +206,8 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask2" name="Transform Date" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>// Date to E-mail
+      <script>var snID_Process = execution.getProcessInstanceId()
+// Date to E-mail
 var sDateVacationBegin_Email = dateUtil.getDateFormatted_ByField(snID_Process, 'sDateVacationBegin', 'dd.MM.yyyy')
 var sDateVacationEnd_Email = dateUtil.getDateFormatted_ByField(snID_Process, 'sDateVacationEnd', 'dd.MM.yyyy')
 
