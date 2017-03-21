@@ -8,6 +8,7 @@ import static org.igov.util.Tool.sCut;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
@@ -30,6 +31,7 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
@@ -47,6 +49,7 @@ import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -207,7 +210,46 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("-----------------------------------------------");
             }
                     
-            
+            if (isUpdateProcess(oRequest)){
+
+            	LOG.info("--------------ALL PARAMS IN UPDATE PROCESS(REGION)--------------");
+                LOG.info("protocolize sURL is: " + sURL);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sResponseBody: {}", sResponseBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("mRequestParam {}", mRequestParam);        
+                LOG.info("-----------------------------------------------");
+            	
+        		DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+
+        		Map mJsonBody = JsonRestUtils.readObject(sRequestBody, Map.class);
+                if(mJsonBody != null){
+                	if (mJsonBody.containsKey("taskId")){
+                		LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
+                		List<Task> tasks = taskService.createTaskQuery().taskId((String) mJsonBody.get("taskId")).list();
+                        String executionId = null;
+                        if (tasks != null && tasks.size() > 0){
+                        	Task firstTask = tasks.get(0);
+                        	executionId = firstTask.getExecutionId();
+                        	
+                        	String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(firstTask.getProcessInstanceId()));
+                        	
+                        	Map<String, String> mParam = new HashMap<>();
+                            
+                            LOG.info("updateProcess nID_StatusType in interceptor {}", HistoryEvent_Service_StatusType.CREATED.getnID());
+                            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                            LOG.info("updateProcess sID_Process in interceptor {}", firstTask.getProcessInstanceId().toString());
+                            LOG.info("updateProcess sID_Order in interceptor {}", sID_Order);
+                            LOG.info("updateProcess sHead in interceptor {}", firstTask.getName());
+                            mParam.put("sHead", firstTask.getName());
+                        	
+                        	oActionEventHistoryService.addHistoryEvent(sID_Order, firstTask.getName(), mParam, 11L);
+                        }
+                	}
+                }
+            }
             if (isDocumentSubmit(oRequest)) {
                 
                 LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
@@ -775,6 +817,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     
     private boolean isDocumentSubmit(HttpServletRequest oRequest) {
         return (oRequest != null && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                && POST.equalsIgnoreCase(oRequest.getMethod().trim()));
+    }
+    
+    private boolean isUpdateProcess(HttpServletRequest oRequest) {
+        return (oRequest != null && oRequest.getRequestURL().toString().indexOf("task/updateProcess") > 0
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
     

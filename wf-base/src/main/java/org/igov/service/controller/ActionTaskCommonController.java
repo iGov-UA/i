@@ -3219,7 +3219,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 					}
 				}
 
-				addEditHistoryEvent(oProcessInstance.getActivityId(), sNewHistoryData, sOldHistoryData, null, null);
+				addEditHistoryEvent(oProcessInstance.getActivityId(), sNewHistoryData, sOldHistoryData, null, HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID());
 			}
 		}
 	}
