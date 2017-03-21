@@ -37,7 +37,7 @@ exports.getLoginBPs = function (req, res) {
     'sLogin' : user.id
   };
   var options = {
-    path: 'action/task/getLoginBPs',
+    path: 'subject/group/getSubjectRightBPs',
     query: query
   };
   var cacheKey = JSON.stringify(options);
