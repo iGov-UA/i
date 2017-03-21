@@ -480,6 +480,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow45" sourceRef="exclusivegateway6" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocCreate == 'sEnumCreateDeny'}]]></conditionExpression>
     </sequenceFlow>
+
     <scriptTask id="scripttask12" name="step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
@@ -492,7 +493,8 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 var sKey_GroupPostfix_New = 'OE_Department_Top'
 var sKey_GroupPostfix = '_default_Author'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+
+    </script>
     </scriptTask>
     <sequenceFlow id="flow48" sourceRef="scripttask12" targetRef="usertask1"></sequenceFlow>
   </process>

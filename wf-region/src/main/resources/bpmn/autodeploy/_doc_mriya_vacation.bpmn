@@ -29,17 +29,17 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="получение ID текущего процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 
-//3. получение ИД текущего процесса
+// получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 
 </script>
     </scriptTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <userTask id="usertask1" name="Подача заяви про відпустку" activiti:candidateGroups="mriya_common">
+    <userTask id="usertask1" name="Подача заяви про відпустку">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
@@ -74,11 +74,18 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_Author]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask2" name="Результати розгляду нач. цеху" activiti:candidateGroups="${sChoiceSectionChief}">
+    <userTask id="usertask2" name="Розгляд заяви">
       <extensionElements>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
@@ -86,7 +93,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Mriya_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина!" type="invisible" default="2"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="invisible"></activiti:formProperty>
@@ -107,76 +114,44 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар робітника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDecisionSectionChief" name="Статус рішення" type="enum" required="true">
+        <activiti:formProperty id="sDecisionSectionChief" name="Статус рішення (узгодження)" type="enum">
           <activiti:value id="allowed" name="Дозволити"></activiti:value>
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string" default=" "></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:formProperty id="sNoteSectionChief" name="Коментар" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDecisionPredicating" name="Статус рішення (затвердження)" type="enum">
+          <activiti:value id="allowed" name="Дозволити"></activiti:value>
+          <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNotePredicating" name="Коментар" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecisionSectionChief=='allowed'&&sDecisionPredicating=='allowed'}]]></conditionExpression>
     </sequenceFlow>
-    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="Результати розгляду директор" activiti:candidateGroups="${sChoicePredicating}">
-      <extensionElements>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Mriya_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина!" type="invisible" default="2"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKeyOrgan" name="Организация_Key" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationBegin" name="Дата початку відпустки" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateVacationEnd" name="Остання дата відпустки" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" writable="false">
-          <activiti:value id="34876682-a87d-4637-95e8-b9110d96cd47" name="Додаткова щорічна відпустка"></activiti:value>
-          <activiti:value id="80d8f0d1-1c0d-43d3-961a-2c119c5cc6ed" name="Додаткова відпустка на дітей"></activiti:value>
-          <activiti:value id="cce0b4e5-4623-4edb-8c49-78829203392e" name="Основна щорічна відпустка"></activiti:value>
-          <activiti:value id="e8d50a27-8506-4dec-9584-531961cf445d" name="Відпустка за свій рахунок (обов'язкова)"></activiti:value>
-          <activiti:value id="9c5d9dcb-cb72-4431-bb6d-aed3244c975b" name="Відпустка за свій рахунок (за згодою сторін)"></activiti:value>
-          <activiti:value id="47bbd0bd-aed9-4b7d-9c9d-263095b53cff" name="Інша додаткова відпустка"></activiti:value>
-          <activiti:value id="7b77fc48-4feb-4a82-98ce-ef1dec8b0566" name="Учбова відпустка"></activiti:value>
-          <activiti:value id="813ade4b-40b0-43dc-8a29-50a876ebcd0f" name="Учбова відпустка без оплати"></activiti:value>
-          <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чорнобильська відпустка"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Коментар робітника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDecisionPredicating" name="Статус рішення" type="enum" required="true">
-          <activiti:value id="allowed" name="Дозволити"></activiti:value>
-          <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
-        </activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask3"></sequenceFlow>
-    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
-    <sequenceFlow id="flow8" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="usertask2" targetRef="scripttask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow10" sourceRef="parallelgateway2" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення з відмовою" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам не затверджена відпустка. &lt;br&gt;
-Коментар: ${sNote}</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
+Вам не затверджена відпустка. <br>
+Коментар: ${sNote}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -191,7 +166,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[documentVacation]]></activiti:string>
         </activiti:field>
         <activiti:field name="soData">
-          <activiti:string><![CDATA[sDateVacationBegin::value{[sDateVacationBegin]};;sDateVacationEnd::value{[sDateVacationEnd]};;sTypeVacation::value{[sTypeVacation]};;sNote::value{[sNote]};;sKeyResponsible::value{[sKeyResponsible]};;sKeyOrgan::value{[sKeyOrgan]};;sKeySubjectType::value{[sKeySubjectType]}]]></activiti:string>
+          <activiti:string><![CDATA[sDateVacationBegin::value{[sDateVacationBegin]};;sDateVacationEnd::value{[sDateVacationEnd]};;sTypeVacation::value{[sTypeVacation]};;sNote::value{[sNotePredicating]};;sKeyResponsible::value{[sKeyResponsible]};;sKeyOrgan::value{[sKeyOrgan]};;sKeySubjectType::value{[sKeySubjectType]}]]></activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -202,15 +177,15 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Повідомлення щодо надання відпустки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Шановний колего.&lt;/b&gt;&lt;br&gt;
-Вам надано відпустку з ${sDateVacationBegin_Email} по ${sDateVacationEnd_Email}. &lt;br&gt;
-Гарного відпочинку!</activiti:expression>
+          <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
+Вам надано відпустку з ${sDateVacationBegin_Email} по ${sDateVacationEnd_Email}. <br>
+Гарного відпочинку!]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -247,17 +222,39 @@ execution.setVariable('sDateVacationBegin1C', outputBegin1C);
 execution.setVariable('sDateVacationEnd1C', outputEnd1C);
 </script>
     </scriptTask>
-    <serviceTask id="servicetask5" name="Service Task" activiti:delegateExpression="#{Transfer_DocumentVacation}">
-      <extensionElements>
-        <activiti:field name="sID_Pattern">
-          <activiti:string><![CDATA[documentVacation]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="soData">
-          <activiti:string><![CDATA[sDateVacationBegin::value{[sDateVacationBegin]};;sDateVacationEnd::value{[sDateVacationEnd]};;;sDateVacationBegin1C::value{[sDateVacationBegin1C]};;sDateVacationEnd1C::value{[sDateVacationEnd1C]}]]></activiti:string>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow15" sourceRef="usertask1" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="usertask1" targetRef="scripttask3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway2" targetRef="usertask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="exclusivegateway2" targetRef="exclusivegateway1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'true'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask3" name="Степ 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав 2-й шаг
+
+var sKey_GroupPostfix_New = 'Mriya_'
+var sKey_GroupPostfix = '_default_Mriya_Approver'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+var sKey_GroupPostfix_New = 'Mriya_Top3'
+var sKey_GroupPostfix = '_default_Mriya_Matching'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <sequenceFlow id="flow18" sourceRef="scripttask3" targetRef="usertask2"></sequenceFlow>
+    <scriptTask id="scripttask4" name="Проверка подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKey_Step = execution.getVariable('sKey_Step_Document')
+var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow19" sourceRef="scripttask4" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_mriya_vacation">
     <bpmndi:BPMNPlane bpmnElement="_doc_mriya_vacation" id="BPMNPlane__doc_mriya_vacation">
@@ -265,109 +262,104 @@ execution.setVariable('sDateVacationEnd1C', outputEnd1C);
         <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="156.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="146.0"></omgdc:Bounds>
+        <omgdc:Bounds height="69.0" width="105.0" x="150.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="290.0" y="146.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="105.0" x="290.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="146.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="105.0" x="440.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="71.0" width="105.0" x="780.0" y="71.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="690.0" y="157.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="81.0" width="105.0" x="780.0" y="230.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="950.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="740.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="1030.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1119.0" y="152.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="68.0" width="105.0" x="998.0" y="243.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="105.0" x="1087.0" y="235.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="1033.0" y="360.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1122.0" y="352.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="68.0" width="105.0" x="1111.0" y="147.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="105.0" x="1200.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="1420.0" y="163.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1509.0" y="155.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="68.0" width="105.0" x="1271.0" y="147.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="105.0" x="1360.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="550.0" y="51.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="567.0" y="249.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="1029.0" y="153.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="70.0" width="105.0" x="590.0" y="139.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="68.0" width="105.0" x="890.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="150.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="255.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="290.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="255.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="174.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="395.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="420.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="395.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="1070.0" y="180.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1111.0" y="181.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="710.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="709.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="780.0" y="106.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="710.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="710.0" y="270.0"></omgdi:waypoint>
-        <omgdi:waypoint x="780.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1159.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1200.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="885.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="970.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="970.0" y="160.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="885.0" y="270.0"></omgdi:waypoint>
-        <omgdi:waypoint x="970.0" y="270.0"></omgdi:waypoint>
-        <omgdi:waypoint x="970.0" y="200.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="990.0" y="180.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1030.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="845.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="890.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="1050.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1050.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1139.0" y="192.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1139.0" y="235.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="1050.0" y="311.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1050.0" y="360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1139.0" y="303.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1139.0" y="352.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="1216.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1271.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1305.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1360.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="1376.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1420.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1465.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1509.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="525.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="690.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="545.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="174.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="1049.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1049.0" y="256.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="256.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="209.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="1069.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1119.0" y="172.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="695.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="173.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="995.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1029.0" y="173.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

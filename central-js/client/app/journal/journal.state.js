@@ -12,7 +12,8 @@ angular.module('journal').config(function ($stateProvider, statesRepositoryProvi
         },
         resolve: {
           BankIDLogin: function ($q, $state, $location, $stateParams, UserService) {
-             return UserService.isLoggedIn().then(function () {
+             return UserService.isLoggedIn()
+             .then(function () {
                return true;
              }, function () {
                return false;
