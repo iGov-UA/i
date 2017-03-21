@@ -75,6 +75,7 @@ true / false
 ```
 где file_id - id файла, который нужно отобразить
 можно в виде ${file1},${file2},${file1} если файлов несколько
+* ![2_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_8.JPG)
 
 ***
 ### file (New)
