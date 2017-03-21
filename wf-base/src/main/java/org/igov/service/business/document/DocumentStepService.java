@@ -132,7 +132,7 @@ public class DocumentStepService {
             String[] asKey_Step_Split = sKey_Step.split(";");
             sKey_Step = asKey_Step_Split[0];
             if (asKey_Step_Split.length == 2) {
-                oDocumentStepType = documentStepType.findByExpected("", asKey_Step_Split[1]);
+                oDocumentStepType = documentStepType.findByExpected("name", asKey_Step_Split[1]);
             }
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
