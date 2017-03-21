@@ -49,6 +49,9 @@ public class SubjectGroup extends NamedEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_Subject")
     private Subject oSubject;
+    
+    @JsonProperty(value = "nID_SubjectHumanPositionCustom")
+    private SubjectHumanPositionCustom oSubjectHumanPositionCustom;
 
     public List<SubjectUser> getaUser() {
         return aUser;
@@ -81,8 +84,14 @@ public class SubjectGroup extends NamedEntity {
     public void setsChain(String sChain) {
         this.sChain = sChain;
     }
-    
-    
+
+    public SubjectHumanPositionCustom getoSubjectHumanPositionCustom() {
+        return oSubjectHumanPositionCustom;
+    }
+
+    public void setoSubjectHumanPositionCustom(SubjectHumanPositionCustom oSubjectHumanPositionCustom) {
+        this.oSubjectHumanPositionCustom = oSubjectHumanPositionCustom;
+    }
 
     public Subject getoSubject() {
 		return oSubject;
@@ -95,7 +104,7 @@ public class SubjectGroup extends NamedEntity {
 	@Override
     public String toString() {
         return "SubjectGroup [sID_Group_Activiti=" + sID_Group_Activiti + ", sChain=" + sChain + ", getName()="
-                + getName() + ", getId()=" + getId() + "]";
+                + getName() + ", nID=" + getId() + ", nID_SubjectHumanPositionCustom=" + oSubjectHumanPositionCustom.getId() + "]";
     }
 
 }

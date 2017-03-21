@@ -25,6 +25,9 @@ public class DocumentStep extends AbstractEntity {
     @OneToMany(targetEntity = DocumentStepSubjectRight.class, mappedBy = "documentStep", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<DocumentStepSubjectRight> rights;
+    
+    @JsonProperty(value = "nID_DocumentStepType")
+    private DocumentStepType oDocumentStepType;
 
     public List<DocumentStepSubjectRight> getRights() {
         return rights;
@@ -58,6 +61,14 @@ public class DocumentStep extends AbstractEntity {
         this.snID_Process_Activiti = snID_Process_Activiti;
     }
 
+    public DocumentStepType getoDocumentStepType() {
+        return oDocumentStepType;
+    }
+
+    public void setoDocumentStepType(DocumentStepType oDocumentStepType) {
+        this.oDocumentStepType = oDocumentStepType;
+    }
+
     @Override
     public String toString() {
         return "DocumentStep{" +
@@ -65,6 +76,6 @@ public class DocumentStep extends AbstractEntity {
                 "sKey_Step='" + sKey_Step + '\'' +
                 ", nOrder=" + nOrder +
                 ", snID_Process_Activiti='" + snID_Process_Activiti + '\'' +
-                '}';
+                ", nID_DocumentStepType='"+ oDocumentStepType.getId() + "'}'";
     }
 }
