@@ -51,6 +51,7 @@ true / false
  type="label" default="Ви можете здійснити оплату зручним для Вас способом за 
  &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
 ```
+* ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
 ***
 ### file
 файл - кнопка для ручной загрузки файлов гражданином на форме подачи обращения и для возможности просмотра  прикрепленного файла на форме обработки обращения.
