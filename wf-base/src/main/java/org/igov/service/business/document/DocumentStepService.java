@@ -90,6 +90,9 @@ public class DocumentStepService {
         Object oStep_Common = oJSON.opt("_");
         LOG.info("Common step is - {}", oStep_Common);
 
+        DocumentStepType oDocumentStepType = new DocumentStepType();
+        oDocumentStepType.setId(1L);
+            
         List<DocumentStepSubjectRight> aDocumentStepSubjectRightToSet_Common = new ArrayList<>();
 
         if (oStep_Common != null) {
@@ -97,7 +100,7 @@ public class DocumentStepService {
             oDocumentStep_Common.setnOrder(0L);//common step with name "_" has order 0
             oDocumentStep_Common.setsKey_Step("_");
             oDocumentStep_Common.setSnID_Process_Activiti(snID_Process_Activiti);
-
+            oDocumentStep_Common.setoDocumentStepType(oDocumentStepType);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRightToSet = oDocumentStep_Common.getRights();
             if (aDocumentStepSubjectRightToSet != null) {
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRightToSet) {
@@ -128,8 +131,6 @@ public class DocumentStepService {
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(sKey_Step);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
-            DocumentStepType oDocumentStepType = new DocumentStepType();
-            oDocumentStepType.setId(1L);
             oDocumentStep.setoDocumentStepType(oDocumentStepType);
             LOG.info("before add: snID_Process_Activiti is: {} sKey_Step is: {} rights size is: {}",
                     oDocumentStep.getSnID_Process_Activiti(), oDocumentStep.getsKey_Step(), oDocumentStep.getRights().size());
