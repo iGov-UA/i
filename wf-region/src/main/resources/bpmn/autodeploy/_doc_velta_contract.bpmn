@@ -130,18 +130,10 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sGoodConditions" name="Умови поставки товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodCity" name="Місто зберігання товару" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGoodStorage" name="Склад зберігання товару" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asReady" name="Ступінь готовності контракту" type="enum">
+        <activiti:formProperty id="asReady" name="Ступінь готовності контратку" type="enum">
           <activiti:value id="sGood" name="контракт готовий, передати на затвердження"></activiti:value>
           <activiti:value id="sMistake" name="потрібно виправити помилку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDivision" name="Підрозділ, який допустив помилку" type="enum">
-          <activiti:value id="sFinance" name="Фінансовий"></activiti:value>
-          <activiti:value id="sTech" name="Технічний"></activiti:value>
-          <activiti:value id="sFinTech" name="Технічний та Фінансовий"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersUser1" name="Маркер видимости" type="markers" default="${markerService.loadFromFile('velta/_doc_velta_contract_ut5.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sMailMistake" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html]" type="invisible" default="Стандартний контракт" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -159,7 +151,7 @@ execution.setVariable('processInstanceId', processInstanceId)
     <serviceTask id="servicetask2" name="Письмо об ошибке" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailMistake}]]></activiti:expression>
+          <activiti:expression><![CDATA[msvidran@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -168,16 +160,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:string><![CDATA[Ескалація. Роспорядження про створення контракту]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Шановні Колеги!<br>
-Ваш підрозділ допустив помилку при офорленні контракту: <br>
-${sComment}
-Якщо будуть питання - з радістю відповімо.<br>
-<br>
---<br>
-Юридичний підрозділ<br>
-ТОВ ВКФ «ВЕЛТА»<br>
-Тел./факс: (056) 370-93-93, 732-04-04<br>
-e-mail: office@velta-ua.com<br>]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -244,8 +227,8 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
           <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Погодження контракту]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Шановні Колеги.<br>
-Направляємо Вам на погодження контракт на поставку ${sGoodType}.<br>
+          <activiti:expression><![CDATA[Шановні Колеги<br>
+Направляємо Вам на погодження контракт на поставку ${sGoodType}<br>
 Якщо будуть питання - з радістю відповімо.<br>
 <br>
 --<br>
@@ -279,13 +262,13 @@ var sKey_GroupPostfix_New = 'Velta_Justice_Spec1'
 var sKey_GroupPostfix = '_default_Velta_Justice'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-var sKey_GroupPostfix_New = 'Velta_Finance'
+var sKey_GroupPostfix_New = 'Velta_Finance_Head'
 var sKey_GroupPostfix = '_default_Velta_Finance'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-// var sKey_GroupPostfix_New = 'Velta_Finance_Spec1'
-// var sKey_GroupPostfix = '_default_Velta_Finance'
-// var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1'
+var sKey_GroupPostfix = '_default_Velta_Finance'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 var sKey_GroupPostfix_New = 'Velta_Tech_Head'
 var sKey_GroupPostfix = '_default_Velta_Tech'
@@ -327,33 +310,26 @@ var sKey_Step= 'step_4'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав на 4-й шаг
-var who = execution.getVariable('asDivision')
-switch (who){
-case 'sFinance':
-var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
-var sKey_GroupPostfix = '_default_Velta_Finance';
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
-break;
-case 'sTech':
-var sKey_GroupPostfix_New = 'Velta_Tech_Spec1';
-var sKey_GroupPostfix = '_default_Velta_Tech';
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
-break;
-case 'sFinTech':
-var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
-var sKey_GroupPostfix = '_default_Velta_Finance';
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
 
-var sKey_GroupPostfix_New = 'Velta_Tech_Spec1';
-var sKey_GroupPostfix = '_default_Velta_Tech';
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
-break;
-default:
-    alert('А так работать не должно');
-    break;
-}
-</script>
-</scriptTask>
+var sKey_GroupPostfix_New = 'Velta_Finance_Head'
+var sKey_GroupPostfix = '_default_Velta_Finance'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1'
+var sKey_GroupPostfix = '_default_Velta_Finance'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+var sKey_GroupPostfix_New = 'Velta_Tech_Head'
+var sKey_GroupPostfix = '_default_Velta_Tech'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+
+
+var sKey_GroupPostfix_New = 'Velta_Tech_Spec1'
+var sKey_GroupPostfix = '_default_Velta_Tech'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
     <sequenceFlow id="flow56" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask2" targetRef="scripttask6"></sequenceFlow>
     <scriptTask id="scripttask7" name="переключение степа на 5" scriptFormat="javascript" activiti:autoStoreVariables="false">

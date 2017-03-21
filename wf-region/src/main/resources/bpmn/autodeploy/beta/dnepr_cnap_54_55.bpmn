@@ -98,7 +98,7 @@
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;sObject_pf&quot;,&quot;sObject_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sImya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpou_pf&quot;,&quot;sPib_ur_pf&quot;,&quot;sAdres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;sObject_pf&quot;,&quot;sObject_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sPib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява;Заява;pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява;Заява;pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -149,7 +149,7 @@
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -386,8 +386,8 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в " type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_55vet.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_55vet.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]" type="invisible" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_inn" name="показать инн" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
@@ -458,8 +458,8 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="kved_text" name="Впишіть види діяльності, відповідно до вказаних кодів КВЕД" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="rdozvil" name="назви документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="perelic_text" name="Впишіть ассортимент продукції, відповідно до доданих заявником документів (прикріплених файлів)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_55vet.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_55vet.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]" type="invisible" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>

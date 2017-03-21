@@ -243,7 +243,11 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 
 // клонирование прав на юр.отдел
 
-var sKey_GroupPostfix_New = 'Velta_Justice'
+var sKey_GroupPostfix_New = 'Velta_Justice_Head'
+var sKey_GroupPostfix = '_default_Velta_Justice'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+var sKey_GroupPostfix_New = 'Velta_Justice_Spec1'
 var sKey_GroupPostfix = '_default_Velta_Justice'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 </script>
@@ -281,11 +285,13 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 
 // клонирование прав на возврат на доработку
 
-var sKey_GroupPostfix_New = 'Velta_Finance'
+var sKey_GroupPostfix_New = 'Velta_Finance_Head'
 var sKey_GroupPostfix = '_default_Velta_Finance'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-</script>
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1'
+var sKey_GroupPostfix = '_default_Velta_Finance'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow56" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask2" targetRef="scripttask6"></sequenceFlow>

@@ -32,6 +32,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.HistoryEventType;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
 import org.igov.model.action.task.core.entity.*;
@@ -52,6 +53,7 @@ import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.db.queryloader.QueryLoader;
+import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -74,6 +76,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -1533,7 +1536,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер - ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "JSON-щбъект с параметрами: saField - строка-массива полей (required = true); soParams - строка-обьекта параметров (required = true); sBody - строка тела сообщения-коммента (общего) (required = false)", required = true) @RequestBody String sJsonBody
     ) throws CommonServiceException, CRCInvalidException {
-
+        sHead = ((sHead == null || "".equals(sHead.trim())) ? 
+                    "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
         String saField = "";
         String soParams = null;
         String sBody = null;
@@ -3123,6 +3127,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     		LOG.info("Submitting task");
                     		taskService.complete(firstTask.getId());
                     	}
+                    	
+                    	updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
                     } else {
                     	LOG.info("Have not found any tasks with ID " + taskId);
                     }
@@ -3145,4 +3151,118 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return mReturn;
     }   
     
+	public void updateProcessHistoryEvent(String processInstanceId, Map<String, Object> mParamDocument) throws ParseException {
+
+		DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+
+		ProcessInstance oProcessInstance = runtimeService
+				.createProcessInstanceQuery()
+				.processInstanceId(processInstanceId).includeProcessVariables()
+				.active().singleResult();
+
+		if (oProcessInstance != null) {
+			Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+			LOG.info("mProcessVariable: " + mProcessVariable);
+
+			for (String sProcessVariable : mProcessVariable.keySet()) {
+
+				try {
+					mProcessVariable.replace(sProcessVariable, df_StartProcess.format(mProcessVariable.get(sProcessVariable)));
+				} catch (Exception ex) {}
+
+				try {
+					mProcessVariable.replace(sProcessVariable, df_StartProcess.format(parseDate((String) mProcessVariable
+									.get(sProcessVariable))));
+				} catch (Exception ex) {}
+
+			}
+
+			for (String sParamDocument : mProcessVariable.keySet()) {
+				LOG.info("mProcessVariable param : " + " name: " + sParamDocument + " value: "
+						+ mProcessVariable.get(sParamDocument));
+			}
+
+			Map<String, Object> mParamDocumentNew = new HashMap<>();
+
+			for (String mKey : mParamDocument.keySet()) {
+
+				Object oParamDocument = mParamDocument.get(mKey);
+				Object oProcessVariable = mProcessVariable.get(mKey);
+				if (oParamDocument != null) {
+					if (oProcessVariable != null) {
+						if (!(((String) oParamDocument).equals((String) oProcessVariable))) {
+							mParamDocumentNew.put(mKey, oParamDocument);
+						}
+					} else {
+						mParamDocumentNew.put(mKey, null);
+					}
+				} else if (oProcessVariable != null) {
+					mParamDocumentNew.put(mKey, oProcessVariable);
+				}
+			}
+
+			LOG.info("mParamDocumentNew: " + mParamDocumentNew);
+
+			String sOldHistoryData = "<tr><td>";
+			String sNewHistoryData = "<td>";
+
+			if (!mParamDocumentNew.isEmpty()) {
+
+				for (String mKey : mParamDocumentNew.keySet()) {
+					LOG.info("mProcessVariable.get(mKey): " + mProcessVariable.get(mKey));
+					LOG.info("mParamDocumentNew.get(mKey): " + mParamDocumentNew.get(mKey));
+
+					if (!mProcessVariable.get(mKey).equals(
+							mParamDocumentNew.get(mKey))) {
+						sOldHistoryData = sOldHistoryData + mKey + " : " + mProcessVariable.get(mKey) + "\n";
+						sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey) + "\n";
+					}
+				}
+
+				addEditHistoryEvent(oProcessInstance.getActivityId(), sNewHistoryData, sOldHistoryData, null, null);
+			}
+		}
+	}
+
+	private Date parseDate(String sDate) throws java.text.ParseException {
+		DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+		DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+		Date oDateReturn;
+		try {
+			oDateReturn = df.parse(sDate);
+		} catch (java.text.ParseException ex) {
+			oDateReturn = df_StartProcess.parse(sDate);
+		}
+		return oDateReturn;
+	}
+
+	public void addEditHistoryEvent(String snID_Process_Activiti,
+			String sNewHistoryData, String sOldHistoryData, String sLogin,
+			Long nID_Status) {
+
+		String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(snID_Process_Activiti));
+
+		LOG.info("history data during task updating - snID_Process_Activiti: " + snID_Process_Activiti);
+		LOG.info("history data during task updating - sID_Order: " + sID_Order);
+		LOG.info("history data during task updating - sNewHistoryData: " + sNewHistoryData);
+		LOG.info("history data during task updating - sOldHistoryData: " + sOldHistoryData);
+		LOG.info("history data during task updating - sLogin: " + sLogin);
+
+		Map<String, String> historyParam = new HashMap<>();
+
+		historyParam.put("newData", sNewHistoryData + "</td></tr>");
+		historyParam.put("oldData", sOldHistoryData + "</td>");
+		historyParam.put("nID_StatusType", nID_Status.toString());
+		historyParam.put("sLogin", sLogin);
+
+		try {
+			actionEventHistoryService
+					.addHistoryEvent(sID_Order, sLogin, historyParam,
+							HistoryEventType.ACTIVITY_STATUS_NEW.getnID());
+		} catch (Exception ex) {
+			LOG.info("Error saving history during document editing: {}", ex);
+		}
+
+	}
+
 }

@@ -35,7 +35,7 @@ public class ExportCommonController {
         String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
         File oFile = FileSystemData.getFile(filePath, "documentVacation.xml");
         String documentVacation = Files.toString(oFile, Charset.defaultCharset());
-        String result = agroholdingService.transferDocumentVacation(documentVacation);
+        String result = agroholdingService.transferDocument(documentVacation, "/Document_ОтпускаОрганизаций");
         LOG.info("transferDocumentVacation result = " + result);
         return result;
     }

@@ -66,9 +66,9 @@ public class DocumentCommonController {
             @ApiParam(value = "новая группа", required = false) @RequestParam(required = false, value = "sKeyGroupPostfix_New") String sKey_GroupPostfix_New,
             @ApiParam(value = "степ документа", required = false) @RequestParam(required = false, value = "sID_Step") String sID_Step) throws Exception {
 
-        LOG.info("snID_Process_Activiti in cloneDocumentStepSubject: {}", snID_Process_Activiti);
-        LOG.info("sKey_GroupPostfix in cloneDocumentStepSubject: {}", sKey_GroupPostfix);
-        LOG.info("sKey_GroupPostfix_New in cloneDocumentStepSubject: {}", sKey_GroupPostfix_New);
+        LOG.info("snID_Process_Activiti: {}", snID_Process_Activiti);
+        LOG.info("sKey_GroupPostfix: {}", sKey_GroupPostfix);
+        LOG.info("sKey_GroupPostfix_New: {}", sKey_GroupPostfix_New);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sID_Step);
         
@@ -81,6 +81,38 @@ public class DocumentCommonController {
         return "DocumentStepSubjectRight is null";
 
     }
+    
+    @ApiOperation(value = "Синхронизация сабмитеров на степе по полю ")
+    @RequestMapping(value = "/syncDocumentSubmitersByField", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    //@Transactional
+    public @ResponseBody
+    String syncDocumentSubmitersByField(
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "группа - эталон/дэфолтная", required = true) @RequestParam(required = true, value = "sKeyGroup_Default") String sKey_Group_Default,
+            @ApiParam(value = "строка-ИД поля, в рамках значения/ний которого(логинов) пройдет синхронизация", required = true) @RequestParam(required = true, value = "sID_Field") String sID_Field,
+            @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
+            @ApiParam(value = "перезаписать при совпадении", required = true) @RequestParam(required = true, value = "bReClone") boolean bReClone
+    ) throws Exception {
+
+        LOG.info("snID_Process_Activiti: {}", snID_Process_Activiti);
+        LOG.info("sKey_Group_Default: {}", sKey_Group_Default);
+        LOG.info("sID_Field: {}", sID_Field);
+        LOG.info("sKey_Step: {}", sKey_Step);
+        LOG.info("bReClone: {}", bReClone);
+
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = documentStepService.syncDocumentSubmitersByField(snID_Process_Activiti, sKey_Group_Default, sID_Field, sKey_Step, bReClone);
+        //List<DocumentStepSubjectRight> aDocumentStepSubjectRight = documentStepService.syncDocumentSubmitersByField(snID_Process_Activiti, sID_Field, sKey_Group_Default, sID_Step);
+        
+        LOG.info("oDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+        
+        if (aDocumentStepSubjectRight != null) {
+            return JSONValue.toJSONString(aDocumentStepSubjectRight);
+        }
+
+        return "DocumentStepSubjectRight is null";
+    }
+    
+
     
     
     @ApiOperation(value = "Отмена сабмиченности и подписанности документа")
@@ -128,7 +160,6 @@ public class DocumentCommonController {
         return m;
     }
     
-
 
     @ApiOperation(value = "Получение списка подписанных документов без ЕЦП")
     @RequestMapping(value = "/getDocumentSubmitedUnsigned", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
