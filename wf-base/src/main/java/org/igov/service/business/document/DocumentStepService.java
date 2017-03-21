@@ -129,7 +129,7 @@ public class DocumentStepService {
             oDocumentStep.setsKey_Step(sKey_Step);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
             DocumentStepType oDocumentStepType = new DocumentStepType();
-            oDocumentStepType.setId(1);
+            oDocumentStepType.setId(1L);
             oDocumentStep.setoDocumentStepType(oDocumentStepType);
             LOG.info("before add: snID_Process_Activiti is: {} sKey_Step is: {} rights size is: {}",
                     oDocumentStep.getSnID_Process_Activiti(), oDocumentStep.getsKey_Step(), oDocumentStep.getRights().size());
