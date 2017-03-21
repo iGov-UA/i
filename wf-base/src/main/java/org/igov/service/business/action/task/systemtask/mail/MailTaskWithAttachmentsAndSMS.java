@@ -175,7 +175,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             LOG.info("Error during new file mail processing ", ex);
         }
 
-//=        oMail.send();
+        //oMail.send();
         sendMailOfTask(oMail, oExecution);
             
             /*

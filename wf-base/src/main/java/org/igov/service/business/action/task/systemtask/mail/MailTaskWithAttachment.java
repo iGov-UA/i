@@ -76,7 +76,7 @@ public class MailTaskWithAttachment extends Abstract_MailTaskCustom {
 
         // send the email
         //oMultiPartEmail.send();
-//=        oMail.send();
+        //oMail.send();
         sendMailOfTask(oMail, oExecution);
     }
 

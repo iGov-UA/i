@@ -1536,7 +1536,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер - ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "JSON-щбъект с параметрами: saField - строка-массива полей (required = true); soParams - строка-обьекта параметров (required = true); sBody - строка тела сообщения-коммента (общего) (required = false)", required = true) @RequestBody String sJsonBody
     ) throws CommonServiceException, CRCInvalidException {
-
+        sHead = ((sHead == null || "".equals(sHead.trim())) ? 
+                    "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
         String saField = "";
         String soParams = null;
         String sBody = null;
