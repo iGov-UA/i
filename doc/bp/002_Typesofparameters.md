@@ -120,6 +120,7 @@ type="textArea"></activiti:formProperty>
 <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації народження?"
 type="queueData" required="true"></activiti:formProperty>
 ```
+* ![2_31](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_31.JPG)
 
 ***
 ### [markers](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B)
@@ -130,6 +131,7 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
 ```
+* ![2_30](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_30.JPG)
 ***
 ### select
 Тип данных, который формирует динамические выпадающие списки (в зависимости от параметров).
@@ -184,6 +186,7 @@ default=” “ - в дефолте в виде json - объекта пропи
 ```xml
 <activiti:formProperty id="markers16" name="тейбл3 вынесенный в отдельный файл" type="table" default="${markerService.loadFromFile('table/VED/_test_ved_table3.json')}"></activiti:formProperty>
 ```
+* ![2_32](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_32.JPG)
 Если объявляете тейбл на втором шаге, и хотите чтоб тейбл был недоступен для редактирвоания - ставите флаг writable="false", при этом убираете весь параметр **default**.  
 
 **на дашборде**
@@ -239,6 +242,7 @@ default=” “ - в дефолте в виде json - объекта пропи
   }
 }
 ```
+* ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 ***
 ## Атрибуты переменных
 
