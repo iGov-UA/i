@@ -325,7 +325,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="scripttask12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecideDirection =='sEnumDirDeny'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="scripttask2">
+    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="scripttask13">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecidePersonnel == 'sEnumPersDeny'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="scripttask3">
@@ -480,7 +480,6 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
     <sequenceFlow id="flow45" sourceRef="exclusivegateway6" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocCreate == 'sEnumCreateDeny'}]]></conditionExpression>
     </sequenceFlow>
-
     <scriptTask id="scripttask12" name="step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
@@ -497,6 +496,21 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </script>
     </scriptTask>
     <sequenceFlow id="flow48" sourceRef="scripttask12" targetRef="usertask1"></sequenceFlow>
+    <scriptTask id="scripttask13" name="step_2, ridhts New " scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав 
+
+var sKey_GroupPostfix_New = 'OE_Direction_Top'
+var sKey_GroupPostfix = '_default_Chief_New'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+    </scriptTask>
+    <sequenceFlow id="flow49" sourceRef="scripttask13" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_oe_premium">
     <bpmndi:BPMNPlane bpmnElement="_doc_oe_premium" id="BPMNPlane__doc_oe_premium">
@@ -584,6 +598,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNShape bpmnElement="scripttask12" id="BPMNShape_scripttask12">
         <omgdc:Bounds height="55.0" width="105.0" x="333.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask13" id="BPMNShape_scripttask13">
+        <omgdc:Bounds height="55.0" width="105.0" x="826.0" y="126.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="55.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="80.0" y="73.0"></omgdi:waypoint>
@@ -623,9 +640,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="720.0" y="364.0"></omgdi:waypoint>
         <omgdi:waypoint x="792.0" y="364.0"></omgdi:waypoint>
-        <omgdi:waypoint x="792.0" y="23.0"></omgdi:waypoint>
-        <omgdi:waypoint x="562.0" y="23.0"></omgdi:waypoint>
-        <omgdi:waypoint x="562.0" y="46.0"></omgdi:waypoint>
+        <omgdi:waypoint x="859.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="878.0" y="181.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="770.0" y="677.0"></omgdi:waypoint>
@@ -719,6 +735,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
         <omgdi:waypoint x="385.0" y="126.0"></omgdi:waypoint>
         <omgdi:waypoint x="385.0" y="106.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="878.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="104.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
