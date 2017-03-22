@@ -195,6 +195,28 @@
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
+          <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
+          <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
+          <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
+          <activiti:value id="sEnumToAttention" name="До відома"></activiti:value>
+          <activiti:value id="sEnumToPerform" name="До виконання"></activiti:value>
+          <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
+          <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+		  <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date" writable="false"></activiti:formProperty>
+		   <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
+          <activiti:value id="sEnumResultYes" name="вирішено позитивно"></activiti:value>
+          <activiti:value id="sEnumResultNo" name="відмовлено у задоволенні"></activiti:value>
+          <activiti:value id="sEnumResultExplain" name="дано роз’яснення"></activiti:value>
+          <activiti:value id="sEnumResultReturn" name="звернення повернуто авторові"></activiti:value>
+          <activiti:value id="sEnumResultBelong" name="за належністю"></activiti:value>
+          <activiti:value id="sEnumResultNoConsider" name="не підлягає розгляду"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
@@ -405,7 +427,19 @@
         <activiti:formProperty id="sTable1" name="Структурний підрозділ, що здійснює розгляд; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_justice_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
-        <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
+       
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+		  <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date" writable="false"></activiti:formProperty>
+		   <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
+          <activiti:value id="sEnumResultYes" name="вирішено позитивно"></activiti:value>
+          <activiti:value id="sEnumResultNo" name="відмовлено у задоволенні"></activiti:value>
+          <activiti:value id="sEnumResultExplain" name="дано роз’яснення"></activiti:value>
+          <activiti:value id="sEnumResultReturn" name="звернення повернуто авторові"></activiti:value>
+          <activiti:value id="sEnumResultBelong" name="за належністю"></activiti:value>
+          <activiti:value id="sEnumResultNoConsider" name="не підлягає розгляду"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
@@ -642,6 +676,18 @@
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMainExecutor" name="Основний виконавець логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date" writable="false"></activiti:formProperty>
+		   <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
+          <activiti:value id="sEnumResultYes" name="вирішено позитивно"></activiti:value>
+          <activiti:value id="sEnumResultNo" name="відмовлено у задоволенні"></activiti:value>
+          <activiti:value id="sEnumResultExplain" name="дано роз’яснення"></activiti:value>
+          <activiti:value id="sEnumResultReturn" name="звернення повернуто авторові"></activiti:value>
+          <activiti:value id="sEnumResultBelong" name="за належністю"></activiti:value>
+          <activiti:value id="sEnumResultNoConsider" name="не підлягає розгляду"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sBody_21" name="[pattern/print/minust/_doc_justice_171_rkk21.html]" type="invisible" default="РКК2 лицо" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_22" name="[pattern/print/minust/_doc_justice_171_rkk22.html]" type="invisible" default="РКК2 обратка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
@@ -868,6 +914,19 @@
         </activiti:formProperty>
         <activiti:formProperty id="sMainExecutor" name="Основний виконавець" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+       
+		  <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date" writable="false"></activiti:formProperty>
+		   <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
+          <activiti:value id="sEnumResultYes" name="вирішено позитивно"></activiti:value>
+          <activiti:value id="sEnumResultNo" name="відмовлено у задоволенні"></activiti:value>
+          <activiti:value id="sEnumResultExplain" name="дано роз’яснення"></activiti:value>
+          <activiti:value id="sEnumResultReturn" name="звернення повернуто авторові"></activiti:value>
+          <activiti:value id="sEnumResultBelong" name="за належністю"></activiti:value>
+          <activiti:value id="sEnumResultNoConsider" name="не підлягає розгляду"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="markers5" name="Якщо доопрацювання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;asDecisionNoText&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDecisionNo'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
