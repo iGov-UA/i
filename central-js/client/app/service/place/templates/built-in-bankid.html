@@ -855,12 +855,11 @@
                 </button>
               </div>
 
-              <div class="col-md-3" ng-if="!bSending(form) && isSignNeeded">
+              <div class="col-md-3" ng-if="!bSending(form) && (isSignNeeded || isSignNeededRequired)">
                 <br/>
                 <button class="btn btn-warning"
                         ng-click="processForm(form, activitiForm.formProperties, true)"
-                        ng-disable="cantSubmit(form)"
-                        ng-hide="bSending(form)">Замовити послугу з ЕЦП
+                        ng-disable="cantSubmit(form)">Замовити послугу з ЕЦП
                 </button>
               </div>
 
