@@ -8,6 +8,8 @@ package org.igov.service.business.util;
 import java.text.SimpleDateFormat;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class Date {
 
+    private static final Logger LOG = LoggerFactory.getLogger(Date.class);
+
     @Autowired
     private RuntimeService oRuntimeService;
 
@@ -27,6 +31,7 @@ public class Date {
         SimpleDateFormat sdf = new SimpleDateFormat(sFormat);
         ProcessInstance processInstance = oRuntimeService.createProcessInstanceQuery().processInstanceId(snID_Process)
                 .includeProcessVariables().singleResult();
+        LOG.info("sID_Field: " + processInstance.getProcessVariables().get(sID_Field));
         java.util.Date oDate = (java.util.Date) processInstance.getProcessVariables().get(sID_Field);
         return sdf.format(oDate);
     }

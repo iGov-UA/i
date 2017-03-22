@@ -31,9 +31,6 @@ public class ObjectPlaceCommonService {
     @Autowired
     GeneralConfig generalConfig;
 
-    @Autowired
-    private ProminSession_Singleton prominSession_Singleton;
-
     private String sURLSendAddressByType = null;
     private String sURLSendAddressByName = null;
     private String sAuth_sLogin = null;
@@ -104,20 +101,6 @@ public class ObjectPlaceCommonService {
 	LOG.debug("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, idParent, type,
 		language, sTypeCode, sFromId);
 
-	String sessionId;
-	try {
-	    sessionId = prominSession_Singleton.getSid_Auth_PB_ObjectSubPlace();
-	} catch (Exception e) {
-	    LOG.error("Error get Promin session id", e);
-	    return NULL_RESPONSE;
-	}
-	LOG.debug("Promin session id={}", sessionId);
-	
-	if (sessionId == null) {
-	    LOG.error("Promin session id is null");
-	    return NULL_RESPONSE;
-	}
-
 	String ret = "";
 	HttpURLConnection oHttpURLConnection = null;
 	try {
@@ -125,7 +108,6 @@ public class ObjectPlaceCommonService {
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("GET");
 	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-	    oHttpURLConnection.setRequestProperty("sid", sessionId);
 	    oHttpURLConnection.setRequestProperty("type", type.getIdString());
 	    oHttpURLConnection.setRequestProperty("language", language.name());
 	    if (sTypeCode != null) {
@@ -173,15 +155,6 @@ public class ObjectPlaceCommonService {
 
 	sName = sName.trim();
 
-	String sessionId;
-	try {
-	    sessionId = prominSession_Singleton.getSid_Auth_PB_ObjectSubPlace();
-	} catch (Exception e) {
-	    LOG.error("Error get Session ID", e);
-	    return NULL_RESPONSE;
-	}
-	LOG.debug("Session ID={}", sessionId);
-
 	String ret = "";
 	HttpURLConnection oHttpURLConnection = null;
 	try {
@@ -189,7 +162,6 @@ public class ObjectPlaceCommonService {
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("GET");
 	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-	    oHttpURLConnection.setRequestProperty("sid", sessionId);
 	    oHttpURLConnection.setRequestProperty("type", type.getIdString());
 	    if (language != null) {
 		oHttpURLConnection.setRequestProperty("language", language.name());

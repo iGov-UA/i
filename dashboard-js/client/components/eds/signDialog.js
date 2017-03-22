@@ -1,11 +1,8 @@
 angular.module('dashboardJsApp')
-  .factory('signDialog', function ($rootScope, $modal) {
-    function openModal(scope, modalScope, modalClass) {
+  .factory('signDialog', function ($rootScope, $modal, $q) {
+    function openModal(modalScope, modalClass) {
       modalScope = modalScope ? modalScope : $rootScope.$new();
-      scope = scope || {};
       modalClass = modalClass || 'modal-info';
-
-      angular.extend(modalScope, scope);
 
       return $modal.open({
         templateUrl: 'components/eds/signDialog.html',
@@ -15,26 +12,37 @@ angular.module('dashboardJsApp')
       });
     }
 
-    function signContent(content, scope, dismissCallback, resultCallback) {
+    function signContent(contentDataOrLoader, resultCallback, dismissCallback, errorCallback) {
       var modalScope = $rootScope.$new();
-      modalScope.content = content;
-      var signModal = openModal(scope, modalScope);
+      var signModal = openModal(modalScope);
 
-      signModal.result.then(function () {
-        dismissCallback();
-      }, function (signedContent) {
-        resultCallback(signedContent);
-      });
+      $q.when(contentDataOrLoader).then(function (contentData) {
+        modalScope.contentData = contentData;
+        signModal.result.then(function (signedContent) {
+          resultCallback(signedContent);
+        }, function () {
+          dismissCallback();
+        });
+      }).catch(errorCallback);
     }
 
     return {
+      /**
+       * pass contentData = { id : "id of data", content : "real data content"}
+       * or pass promise that will return contentData object
+       *
+       * resultCallback will return :
+       * {
+       *    id : contentData.id,
+       *    content: contentData.content,
+       *    signedContentHash : signedContentHash
+       *  }
+       */
       signContent: signContent
     }
   });
 
 var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5, $q) {
-  var initialized = signService.init();
-
   function removeLastError() {
     $scope.lastError = undefined;
   }
@@ -42,6 +50,10 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
   function catchLastError(error) {
     $scope.lastError = error;
   }
+
+  var isInitialized = signService.init();
+
+  $scope.isInitialized = isInitialized;
 
   $scope.signedContent = {};
 
@@ -98,11 +110,14 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
       $q.when(edsContext.selectedKey.needPassword && edsContext.selectedKey.password ?
         signService.selectKey(edsContext.selectedKey.key, edsContext.selectedKey.password)
         : true).then(function () {
-        var contentHash = md5.createHash($scope.content);
-        return signService.sign(contentHash).then(function (signedContent) {
-          $scope.signedContent = signedContent;
-          console.log($scope.signedContent);
-          $modalInstance.close($scope.signedContent);
+        var contentHash = md5.createHash($scope.contentData.content);
+        return signService.sign(contentHash).then(function (signedContentHash) {
+          console.log(signedContentHash);
+          $modalInstance.close({
+            id: $scope.contentData.id,
+            content: $scope.contentData.content,
+            signedContentHash: signedContentHash
+          });
         });
       }).catch(catchLastError);
     } else {
