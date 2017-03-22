@@ -242,6 +242,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 boolean bProcessClosed = aTask == null || aTask.size() == 0;
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 
+                if(sUserTaskName.equals("закрита")){
+                    LOG.info("process is colsed!!!");
+                    oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
+                }
+                
                 Map<String, String> mParam = new HashMap<>();
                 
                 LOG.info("document nID_StatusType in interceptor {}", HistoryEvent_Service_StatusType.CREATED.getnID());
@@ -779,11 +784,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
                 //Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
                 //LOG.info("RequestProcessInterceptor process count: " + count.intValue());
-            }
-            
-            if(sUserTaskName.equals("закрита")){
-                LOG.info("process is colsed!!!");
-                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
             }
         }
     }
