@@ -385,6 +385,31 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("-----------------------------------------------");
                 
                 processDocumentSubmit(mRequestParam, omRequestBody);
+                
+                if(isCloseTask(oRequest, sResponseBody)){
+                    if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+                        String sTaskId = (String) omRequestBody.get("taskId");
+                        LOG.info("sTaskId is: {}", sTaskId);
+                        HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                        String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+
+                        LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
+
+                        if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+
+                            LOG.info("Close document is started...");
+                            Map<String, String> mParam = new HashMap<>();
+                            String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                            
+                            List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                            boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                            String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                            
+                            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
+                        }
+                    }
+                }
 
             }
             
@@ -507,10 +532,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 13L);
                     }
                     
-                    if(isCloseTask(oRequest, sResponseBody)){
-                        LOG.info("Close document is started...");
-                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
-                    }
+
                 }
             }
         }
