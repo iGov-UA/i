@@ -370,7 +370,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         }
     }
     
-    private void processDocumentSubmit(Map<String, String> mRequestParam, JSONObject omRequestBody) {
+    private void processDocumentSubmit(Map<String, String> mRequestParam, JSONObject omRequestBody) throws Exception {
         
         
         if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
@@ -455,6 +455,17 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     for (DocumentStep oNewCurrDocumentStep : aNewDocumentStep) {
                         LOG.info("aDocumentStep new rights  in interceptor is {}", oNewCurrDocumentStep.getRights());
                     }
+                    
+                    List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                    boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                    String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+
+                    Map<String, String> mParam = new HashMap<>();
+                    String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                    mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                    mParam.put("sLogin", sAssignLogin);
+                    oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 12L);
+                    
                 }
             }
         }
