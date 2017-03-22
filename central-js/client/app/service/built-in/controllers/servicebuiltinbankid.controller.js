@@ -249,6 +249,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         })
       }
 
+      $scope.fieldHasVisibleType = function (field) {
+        if(field && field.type) {
+          return field.type !== 'markers' && field.type !== 'invisible';
+        }
+      };
+
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
