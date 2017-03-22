@@ -18,6 +18,7 @@
 * **bankIdphone** - string -телефон гражданина
 * **bankIdsID_Country** - string - гражданство
 * **bankId_scan_inn** - file - Скан копия ИНН гражданина
+* ![3_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_0.JPG)
 
 ## Зарезервированные переменные для электронных очередей
 * **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
@@ -33,6 +34,7 @@
 * **sArea** - string/invisible/label - yазвание нас.пункта/района куда подается заявка
 * **nArea** - string/invisible/label - yомер в справочнике нас.пункта/района куда подается заявка
 * **sShapka** - string/invisible/label - шапка принтформы
+* ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
 
 
 ## Переменные принтформ
@@ -50,13 +52,16 @@
 ## Валидируемые переменные
 * **vin_code, vin_code1, vin** - string - VIN-код авто.
 Набор из 17 символов. Разрешено использовать все арабские цифры и латинские буквы (А В C D F Е G Н J К L N М Р R S Т V W U X Y Z) , за исключением букв Q, O, I. Эти буквы запрещены для использования, поскольку O и Q похожи между собой, а I и O можно спутать с 0 и 1.
+* ![3_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_4.JPG)
 * **privatePhone, workPhone, phone** - string - номер телефона.
 Первый символ “+”, остальные 12 цифр
 * **lastName_UA1,  firstName_UA1, middleName_UA1, lastName_UA2,  firstName_UA2, middleName_UA2**  - string - Название или ФИО с украинскими буквами. Разрешена только кириллица, дефис, апостроф.
 * **lastName_RU1,  firstName_RU1, middleName_RU1, lastName_RU2,  firstName_RU2, middleName_RU2** - string - Название или ФИО с русскими буквами. Разрешена только кириллица, дефис.
 * **date_of_birth** - date - дата рождения. Не разрешено выбирать дату больше текущей.
 * **kved** - string - вид экономической деятельности по КВЕД. Две цифры точка две цифры (первые две цифры не могут быть 04, 34, 40, 44, 48, 54, 57, 67, 76, 83, 89).
+* ![3_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_2.JPG)
 * **edrpou** - string - восемь цифр.
+* ![3_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_3.JPG)
 * **mfo** - string - шесть цифр.
 * **kids_Birth** - date - не разрешено выбирать дату больше текущей, разница между текущей датой и выбранной не должна превышать 14 лет.
 * **privateMail, email** - string - емейлы
