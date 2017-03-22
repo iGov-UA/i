@@ -274,11 +274,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sID_Process));
                 }
                 
-                HistoricProcessInstance oHistoricProcessInstance
+                /*HistoricProcessInstance oHistoricProcessInstance
                     = historyService.createHistoricProcessInstanceQuery().processInstanceId(sID_Process).singleResult();
                 ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
                         .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
-                String sProcessName = oProcessDefinition.getName() != null ? oProcessDefinition.getName() : "";
+                String sProcessName = oProcessDefinition.getName() != null ? oProcessDefinition.getName() : "";*/
                 
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(sID_Process).active().list();
                 boolean bProcessClosed = aTask == null || aTask.size() == 0;
@@ -290,8 +290,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                 LOG.info("document sID_Process in interceptor {}", sID_Process);
                 LOG.info("document sID_Order in interceptor {}", sID_Order);
-                LOG.info("document sHead in interceptor {}", sProcessName);
-                mParam.put("sHead", sProcessName);
+                //LOG.info("document sHead in interceptor {}", sProcessName);
+                //mParam.put("sHead", sProcessName);
                 
                 LOG.info("document sUserTaskName in interceptor {}", sUserTaskName);
                 
