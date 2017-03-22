@@ -170,7 +170,15 @@ public class ActionEventHistoryService {
 
         if (saveHistoryEventService) {
             LOG.info("save HistoryEvent_Service started...");
-            oHistoryEvent_Service = new HistoryEvent_Service();
+            oHistoryEvent_Service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
+            
+            boolean addFlag = false;
+            
+            if(oHistoryEvent_Service == null){
+                oHistoryEvent_Service = new HistoryEvent_Service();
+                addFlag = true;
+            }
+            
             oHistoryEvent_Service.setnID_Process(nID_Process);
             oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
             oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
@@ -187,7 +195,11 @@ public class ActionEventHistoryService {
             oHistoryEvent_Service.setnID_Server(nID_Server);
             oHistoryEvent_Service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
             oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
-            oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
+            if (addFlag){
+                oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
+            }else{
+                oHistoryEvent_Service = historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+            }
         }
 
         if (saveHistoryEvent) {
