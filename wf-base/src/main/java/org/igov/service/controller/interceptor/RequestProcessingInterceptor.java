@@ -780,6 +780,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 //Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
                 //LOG.info("RequestProcessInterceptor process count: " + count.intValue());
             }
+            
+            if(sUserTaskName.equals("закрита")){
+                LOG.info("process is colsed!!!");
+                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
+            }
         }
     }
     
