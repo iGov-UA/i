@@ -22,46 +22,23 @@
 			"sCondition" : "[sReason]=='yes'"
 		}, 
 		"ShowFieldsOnCondition_4" : {
-			"aField_ID" : ["form_signed"], 
+			"aField_ID" : ["asOwnerMan"], 
 			"asID_Field" : {
-				"sClient" : "asGetResult"
+				"sReason" : "asOwnerType"
 			}, 
-			"sCondition" : "[sClient] == 'sPost' || [sClient] == 'sCourier'"
+			"sCondition" : "[sReason]=='sMan'"
 		}, 
-		"RequiredFieldsOnCondition_1" : {
-			"aField_ID" : ["form_signed"], 
-			"asID_Field" : {
-				"sClient" : "asGetResult"
-			}, 
-			"sCondition" : "[sClient] == 'sPost' || [sClient] == 'sCourier'"
-		},
 		"ValuesFieldsOnCondition_1" : {
 			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport","privatePhone","privateMail"], 
 			"asID_Field_sValue" : ["[bankIdlastName]", "[bankIdfirstName]", "[bankIdmiddleName]", "[sBankIdPassport]","[phone]","[email]"], 
 			"asID_Field" : {
-				"sClient" : "asOwnerType"
+				"sClient" : "asOwnerType",
+				"sClient1" : "asOwnerMan"
 			}, 
-			"sCondition" : "[sClient] == 'fiz'"
-		}, 
-		"ValuesFieldsOnCondition_2" : {
-			"aField_ID" : ["sAvtor", "sAdresECP"], 
-			"asID_Field_sValue" : ["[sCompName]", "[sCompAdress]"], 
-			"asID_Field" : {
-				"sClient" : "asOwnerType"
-			}, 
-			"sCondition" : "[sClient] == 'ur'"
-		}, 
-		"ValuesFieldsOnCondition_3" : {
-			"aField_ID" : ["sAvtor", "sAdresECP"], 
-			"asID_Field_sValue" : ["[lastName_UA2] [firstName_UA2] [middleName_UA2]", "[sManAdress]"], 
-			"asID_Field" : {
-				"sClient" : "asOwnerType"
-			}, 
-			"sCondition" : "[sClient] == 'fiz'"
-		}, 
-		 
+			"sCondition" : "[sClient] == 'sMan' && [sClient1] == 'sYes'"
+		},
 		"ShowFieldsOnCondition_inv01" : {
-			"aField_ID" : ["PrintFormAutoSign_1", "sAvtor", "sAdresECP", "markersStart", "markersStart2"], 
+			"aField_ID" : ["markersStart", "markersStart2"], 
 			"asID_Field" : {
 				
 			}, 

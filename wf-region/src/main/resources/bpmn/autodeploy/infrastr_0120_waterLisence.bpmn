@@ -13,6 +13,10 @@
           <activiti:value id="sCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sMan" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
+		<activiti:formProperty id="asOwnerMan" name="Документи подаєте особисто" type="enum" required="true">
+          <activiti:value id="sYes" name="так"></activiti:value>
+          <activiti:value id="sNo" name="ні"></activiti:value>
+        </activiti:formProperty>
 		<activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" required="true"></activiti:formProperty>
 		<activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
@@ -165,8 +169,19 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата найближчого засідання комісії" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Вкажіть причину відмови або додаткові дані для отримання ліцензії у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/sea_license.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/sea_license.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocSvid" name="Копія класифікаційного свідоцтва судна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocKvalif1" name="Копії свідоцтва на право управління малим/маломірним судном спеціалістів, які забезпечуватимуть надання відповідних послуг;Об'єднайте у pdf-файл або zip архів;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nShipTiket" name="Копія суднового білета; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; Для пасажирських суден; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocKvalif" name="Копії кваліфікаційних документів членів екіпажу;Об'єднайте у pdf-файл або zip архів;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocSafety" name="Копія свідоцтва про управління безпекою;В разі наявності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocSysSafety" name="Копія документа про відповідність системи управління безпекою;В разі наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocCharter" name=" Копія договору бербоут-чартеру;В разі наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPassport" name="Копія паспорта керівника здобувача ліцензії (або довіреної особи);Якщо декілька сторінок об'єднайте у pdf-файл або zip архів;bNew=true" type="file" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="nDocVidom" name="Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="sBody_1" name="[pattern/print/infr/sea_license.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/sea_license.html,sFileName=ZayavaNaLitsenziyu,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license_user.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
