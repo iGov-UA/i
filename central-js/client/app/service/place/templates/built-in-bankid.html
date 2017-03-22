@@ -111,12 +111,13 @@
                 <a class="pull-right" ng-hide="paramsBackup === null" href ng-click="fillSelfPreviousBack()">Відмінити авто-заповнені дані</a>
             </div>
 
-              <div class="row col-md-8 col-md-push-2 update-bankid-message" ng-show="isShowMessageRequiringToValidateUserData()">
+              <div class="row col-md-12 update-bankid-message" ng-show="isShowMessageRequiringToValidateUserData()">
                   Якщо ці або будь-які інші дані, які були передані з Вашого банку, вже не актуальні,
                   просимо Вас звернутися до цього банку для актуалізації.
               </div>
 
             <div class="row"
+                 style="margin-bottom: 20px"
                  ng-repeat="property in activitiForm.formProperties track by property.id"
                  ng-if="isFieldVisible(property)">
 
@@ -132,9 +133,10 @@
 
               <div id="label-{{property.id}}" class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
-                <label style="color: red;"
-                       ng-if="isFieldRequired(property)==true">* </label>
                 <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}:</span>
+
+                <label class="red-star"
+                       ng-if="isFieldRequired(property)==true">* </label>
 
                 <div class="s-field-notes"
                      ng-if="property.sFieldNotes!=null">
@@ -810,48 +812,61 @@
               </div>
 
             </div>
-            <div class="row">
-              <div class="col-md-5"></div>
-              <div class="col-md-3">
+            <!--<div class="row">-->
+              <!--<div class="col-md-5"></div>-->
+              <!--<div class="col-md-3">-->
 
 
-                  <label ng-hide="!sign.checked">Після натискання "Замовити послугу"
-                    Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом
-                  </label>
-                  <label  ng-if="isSignNeeded" ng-hide="isSignNeededRequired">Накласти ЕЦП :
-                  <input type="checkbox"
-                         ng-model="sign.checked"
-                         name="{{data.formData.getSignFieldID()}}">
-                </label>
-                  <!--label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"-->
-                         <!--ng-model="isSignNeededRequired ? true : sign.checked"-->
+                  <!--<label ng-hide="!sign.checked">Після натискання "Замовити послугу"-->
+                    <!--Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом.-->
+                    <!--Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність-->
+                  <!--</label>-->
+                  <!--<label  ng-if="isSignNeeded" ng-hide="isSignNeededRequired">Накласти ЕЦП :-->
+                  <!--<input type="checkbox"-->
+                         <!--ng-model="sign.checked"-->
+                         <!--name="{{data.formData.getSignFieldID()}}">-->
+                <!--</label>-->
+                  <!--&lt;!&ndash;label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"&ndash;&gt;-->
+                         <!--&lt;!&ndash;ng-model="isSignNeededRequired ? true : sign.checked"&ndash;&gt;-->
 
-              </div>
-              <div class="col-md-4"></div>
-              </div>
-            <div class="row col-md-8 col-md-push-3">
+              <!--</div>-->
+              <!--<div class="col-md-4"></div>-->
+              <!--</div>-->
+            <div class="row col-md-12 igov-info-label" ng-if="isSignNeeded">
+              Після натискання "Замовити послугу з ЕЦП"
+              Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом.
               Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність
             </div>
-              <div class="row">
-                <div class="col-md-5"></div>
-                <div class="col-md-3">
-                  <br/>
-                  <button class="btn btn-info"
-                          ng-click="processForm(form, activitiForm.formProperties)"
-                          ng-disable="cantSubmit(form)"
-                          ng-hide="bSending(form)">
-                    Замовити послугу
-                  </button>
-                  <!--<button class="btn btn-info"-->
-                          <!--ng-click="signForm(form)"-->
-                          <!--ng-disable="cantSubmit(form)"-->
-                          <!--ng-hide="bSending(form)">-->
-                    <!--Підписати-->
-                  <!--</button>-->
-                  <br><label ng-show="bSending(form)">Зачекайте...</label>
-                </div>
-                <div class="col-md-4"></div>
+
+            <div class="row col-md-12 igov-info-label" ng-if="!isSignNeeded">
+              Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність
+            </div>
+
+            <div class="row">
+              <div class="col-md-3" ng-class="{'col-md-5': isSignNeededRequired || !isSignNeeded}"></div>
+
+              <div class="col-md-3" ng-if="!bSending(form) && !isSignNeededRequired">
+                <br/>
+                <button class="btn btn-info"
+                        ng-click="processForm(form, activitiForm.formProperties, false)"
+                        ng-disable="cantSubmit(form)">Замовити послугу без ЕЦП
+                </button>
               </div>
+
+              <div class="col-md-3" ng-if="!bSending(form) && isSignNeeded">
+                <br/>
+                <button class="btn btn-warning"
+                        ng-click="processForm(form, activitiForm.formProperties, true)"
+                        ng-disable="cantSubmit(form)"
+                        ng-hide="bSending(form)">Замовити послугу з ЕЦП
+                </button>
+              </div>
+
+              <div class="col-md-3">
+                <br><label ng-show="bSending(form)">Зачекайте...</label>
+              </div>
+            </div>
+
             </form>
           </div>
         </div>
