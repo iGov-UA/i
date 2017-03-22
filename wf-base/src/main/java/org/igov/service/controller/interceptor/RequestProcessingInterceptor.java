@@ -535,6 +535,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         Map<String, String> mParam = new HashMap<>();
                         String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                        String sAssignLogin = oHistoricTaskInstance.getAssignee();
                         mParam.put("sLogin", sAssignLogin);
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 12L);
                     }
