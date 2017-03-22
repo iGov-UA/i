@@ -99,6 +99,7 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
    * #{setMessageFeedback_Indirectly}
    * #{fileTaskUpload} - для электронных очередей. Достает дату из объекта в переменной типа _queueData_ и передает ее в системную переменную _date_of_visit_ . Сервистаска с этим выражением должна следовать сразу за стартивентом.
    * #{MailTaskWithoutAttachment} - для отправки емейлов без  вложений
+   * ![5_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_1.jpg)
    * #{MailTaskWithAttachments} - для отправки емейлов c  вложениями
    * #{MailTaskWithAttachmentsAndSMS} - для отправки емейлов смс обязательно должно быть вложение, при отсутствии вложения в поле saAttachmentsForSend должен быть пробел " "
    * #{ProcessCountTaskListener}
