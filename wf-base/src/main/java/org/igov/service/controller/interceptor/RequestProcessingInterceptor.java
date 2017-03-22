@@ -196,21 +196,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("Error parsing sRequestBody: {}", ex);
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
-            
-            if (isSaveTask(oRequest, sResponseBody)) {
-                
-                LOG.info("--------------ALL PARAMS IN SUBMIT (CENTRAL)--------------");
-                LOG.info("protocolize sURL is: " + sURL);
-                LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("sResponseBody: {}", sResponseBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("mRequestParam {}", mRequestParam);        
-                LOG.info("-----------------------------------------------");
-            }
                     
-            if (isUpdateProcess(oRequest)){
+            /*if (isUpdateProcess(oRequest)){
 
             	LOG.info("--------------ALL PARAMS IN UPDATE PROCESS(REGION)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
@@ -222,9 +209,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
             	
-        		DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
-
-        		Map mJsonBody = JsonRestUtils.readObject(sRequestBody, Map.class);
+        	Map mJsonBody = JsonRestUtils.readObject(sRequestBody, Map.class);
                 if(mJsonBody != null){
                 	if (mJsonBody.containsKey("taskId")){
                 		LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
@@ -249,7 +234,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         }
                 	}
                 }
-            }
+            }*/
             if (isDocumentSubmit(oRequest)) {
                 
                 LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
@@ -259,103 +244,17 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("-----------------------------------------------");
                 LOG.info("sResponseBody: {}", sResponseBody);
                 LOG.info("-----------------------------------------------");
-                LOG.info("mRequestParam {}", mRequestParam);        
+                LOG.info("mRequestParam {}", mRequestParam);
                 LOG.info("-----------------------------------------------");
                 
-                if(omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty())
-                {
-                    String sTaskId = (String)omRequestBody.get("taskId");
-                    LOG.info("sTaskId is: {}", sTaskId);
-                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
-                    String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
-                    
-                    LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
-                    
-                    if(oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")){
-                        LOG.info("We catch document submit (ECP)");
-                        JSONArray properties = (JSONArray) omRequestBody.get("properties");
-                        
-                        Iterator<JSONObject> iterator = properties.iterator();
-                        String sKey_Step_Document = null;
-                        while (iterator.hasNext()) {
-                            JSONObject jsonObject = iterator.next();
+                processDocumentSubmit(mRequestParam, omRequestBody);
 
-                            String sId = (String) jsonObject.get("id");
-                            String sValue = (String) jsonObject.get("value");
-                            
-                            if (sId.equals("sKey_Step_Document")) {
-                                    sKey_Step_Document = sValue;
-                                    break;
-                            }
-                        }
-                        
-                        LOG.info("sKey_Step_Document is {}", sKey_Step_Document);
-                        
-                        if(sKey_Step_Document != null){
-                            List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", processInstanceId);
-                            LOG.info("aDocumentStep in interceptor is {}", aDocumentStep);
-                            
-                            DocumentStep oCurrDocumentStep = null;
-                            
-                            for(DocumentStep oDocumentStep : aDocumentStep){
-                            
-                                if(oDocumentStep.getsKey_Step().equals(sKey_Step_Document)){
-                                   oCurrDocumentStep = oDocumentStep;
-                                   break;
-                                }
-                            }
-                            
-                            LOG.info("oCurrDocumentStep in interceptor is {}", oCurrDocumentStep);
-                            
-                            String sAssignLogin = oHistoricTaskInstance.getAssignee();
-                            LOG.info("sAssignLogin in interceptor is {}", sAssignLogin);
-                            List<Group> aUserGroup = identityService.createGroupQuery().groupMember(sAssignLogin).list();
-
-                            LOG.info("aUserGroup is {}", aUserGroup);
-                            
-                            if(oCurrDocumentStep != null){
-                                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
-                                for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
-                                    for(Group oGroup : aUserGroup){
-                                        LOG.info("oGroup name: {}", oGroup.getName());
-                                        LOG.info("oGroup id: {}", oGroup.getId());
-                                        if(oGroup.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
-                                            List<User> aUser = identityService.createUserQuery().memberOfGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix()).list();
-                                            LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
-                                            for(User oUser : aUser){
-                                                LOG.info("oUser id is {}", oUser.getId());
-                                                if(oUser.getId().equals(sAssignLogin)){
-                                                    LOG.info("We set date for login: {}", sAssignLogin);
-                                                    oDocumentStepSubjectRight.setsDate(new DateTime());
-                                                    oDocumentStepSubjectRight.setsLogin(sAssignLogin);
-                                                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                                                    break;
-                                                }
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-                                LOG.info("oCurrDocumentStep.getRights() in interceptor is {}", oCurrDocumentStep.getRights());
-                            }
-                            
-                            List<DocumentStep> aNewDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", processInstanceId);
-                            LOG.info("aDocumentStep new in interceptor is {}", aNewDocumentStep);
-                            
-                            for(DocumentStep oNewCurrDocumentStep: aNewDocumentStep){
-                                LOG.info("aDocumentStep new rights  in interceptor is {}", oNewCurrDocumentStep.getRights());
-                            }
-                        }        
-                    }
-                }
-                
             }
             
             if(((mRequestParam.containsKey("sID_BP")||mRequestParam.containsKey("snID_Process_Activiti"))&&
                mRequestParam.get("sID_BP").startsWith("_doc")))
             {
-                LOG.info("We found a document! Uhhuu!!");
-                LOG.info("--------------NEW DOCUMENT PARAMS--------------");
+                LOG.info("--------------ALL REQUEST DOCUMENT PARAMS--------------");
                 sURL = oRequest.getRequestURL().toString();
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
@@ -366,7 +265,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
             
-                
                 
                 String sID_Process = null;
                 String sID_Order = null;
@@ -410,6 +308,96 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         }
         catch (Exception ex){
             LOG.info("Error during document processing in interceptor: {} ", ex);
+        }
+    }
+    
+    private void processDocumentSubmit(Map<String, String> mRequestParam, JSONObject omRequestBody) {
+        
+        
+        if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+            String sTaskId = (String) omRequestBody.get("taskId");
+            LOG.info("sTaskId is: {}", sTaskId);
+            HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+            String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+
+            LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
+
+            if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+                LOG.info("We catch document submit (ECP)");
+                JSONArray properties = (JSONArray) omRequestBody.get("properties");
+
+                Iterator<JSONObject> iterator = properties.iterator();
+                String sKey_Step_Document = null;
+                while (iterator.hasNext()) {
+                    JSONObject jsonObject = iterator.next();
+
+                    String sId = (String) jsonObject.get("id");
+                    String sValue = (String) jsonObject.get("value");
+
+                    if (sId.equals("sKey_Step_Document")) {
+                        sKey_Step_Document = sValue;
+                        break;
+                    }
+                }
+
+                LOG.info("sKey_Step_Document is {}", sKey_Step_Document);
+
+                if (sKey_Step_Document != null) {
+                    List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", processInstanceId);
+                    LOG.info("aDocumentStep in interceptor is {}", aDocumentStep);
+
+                    DocumentStep oCurrDocumentStep = null;
+
+                    for (DocumentStep oDocumentStep : aDocumentStep) {
+
+                        if (oDocumentStep.getsKey_Step().equals(sKey_Step_Document)) {
+                            oCurrDocumentStep = oDocumentStep;
+                            break;
+                        }
+                    }
+
+                    LOG.info("oCurrDocumentStep in interceptor is {}", oCurrDocumentStep);
+
+                    String sAssignLogin = oHistoricTaskInstance.getAssignee();
+                    LOG.info("sAssignLogin in interceptor is {}", sAssignLogin);
+                    List<Group> aUserGroup = identityService.createGroupQuery().groupMember(sAssignLogin).list();
+
+                    LOG.info("aUserGroup is {}", aUserGroup);
+
+                    if (oCurrDocumentStep != null) {
+                        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
+                        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                            for (Group oGroup : aUserGroup) {
+                                LOG.info("oGroup name: {}", oGroup.getName());
+                                LOG.info("oGroup id: {}", oGroup.getId());
+                                if (oGroup.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                                    List<User> aUser = identityService.createUserQuery().memberOfGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix()).list();
+                                    LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                                    for (User oUser : aUser) {
+                                        LOG.info("oUser id is {}", oUser.getId());
+                                        if (oUser.getId().equals(sAssignLogin)) {
+                                            LOG.info("We set date for login: {}", sAssignLogin);
+                                            oDocumentStepSubjectRight.setsDate(new DateTime());
+                                            oDocumentStepSubjectRight.setsLogin(sAssignLogin);
+                                            oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        LOG.info("oCurrDocumentStep.getRights() in interceptor is {}", oCurrDocumentStep.getRights());
+                    }
+
+                    List<DocumentStep> aNewDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", processInstanceId);
+                    LOG.info("aDocumentStep new in interceptor is {}", aNewDocumentStep);
+
+                    for (DocumentStep oNewCurrDocumentStep : aNewDocumentStep) {
+                        LOG.info("aDocumentStep new rights  in interceptor is {}", oNewCurrDocumentStep.getRights());
+                    }
+                }
+            }
         }
     }
 
