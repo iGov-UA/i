@@ -10,6 +10,7 @@ import org.igov.io.web.HttpRequester;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.igov.util.ToolLuna;
 import org.slf4j.Logger;
@@ -170,7 +171,13 @@ public class ActionEventHistoryService {
 
         if (saveHistoryEventService) {
             LOG.info("save HistoryEvent_Service started...");
-            oHistoryEvent_Service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
+            
+            try{
+                oHistoryEvent_Service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
+            }
+            catch(EntityNotFoundException ex){
+                LOG.info("oHistoryEvent_Service not found");
+            }
             
             boolean addFlag = false;
             
