@@ -295,7 +295,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
 
-      $scope.processForm = function (form, aFormProperties) {
+      $scope.processForm = function (form, aFormProperties, signNeeded) {
+
+        if(signNeeded !== undefined) {
+          $scope.sign.checked = signNeeded;
+        }
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
@@ -1131,5 +1135,4 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
     /*
      *поиски организации по окпо конец
     */
-
 });
