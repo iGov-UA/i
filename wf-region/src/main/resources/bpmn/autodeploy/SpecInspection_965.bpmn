@@ -37,7 +37,7 @@
         <activiti:formProperty id="sAdressLive_Applicant" name="Адреса проживання" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceWork_Applicant" name="Місце роботи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Post" name="Назва посади, на яку претендує особа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Zapit" name="Копія Запиту про перевірку відомостей щодо особи з накладеним ЕЦП керівника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zapit" name="Копія Запиту про перевірку відомостей щодо особи з накладеним ЕЦП керівника" type="file"  required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Agreement" name="Копія згоди особи на проведення спеціальної перевірки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Autobiography" name="Копія автобіографії" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
@@ -166,7 +166,7 @@
         <activiti:formProperty id="sNumber_Organ" name="Номер оргструктури" type="invisible" default="1"></activiti:formProperty>
         <activiti:formProperty id="markers01" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/SpecInspection_965_01_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/SpecInspection_965_01_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/skv/SpecInspection_965_01_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -223,7 +223,7 @@
         <activiti:formProperty id="sNumber_Organ" name="Номер оргструктури" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="markers02" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/skv/SpecInspection_965_02_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/skv/SpecInspection_965_02_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/skv/SpecInspection_965_02_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -269,7 +269,7 @@
           <activiti:value id="reject" name="НЕ ПРОЙДЕНО перевірку, висновок негативний (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment_03" name="У разі виявлення інформації, що перешкоджає зайняттю посади, внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid03" name="Копiя висновка за результатами розгляду звернення" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid03" name="Копiя висновка за результатами розгляду звернення"  type="file" writable="false" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
@@ -280,7 +280,7 @@
         <activiti:formProperty id="sNumber_Organ" name="Номер оргструктури" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="markers03" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/skv/SpecInspection_965_03_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/skv/SpecInspection_965_03_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/skv/SpecInspection_965_03_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -336,7 +336,7 @@
         <activiti:formProperty id="sWorkTime04" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers04" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/skv/SpecInspection_965_04_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/skv/SpecInspection_965_04_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/skv/SpecInspection_965_04_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -392,7 +392,7 @@
         <activiti:formProperty id="sWorkTime05" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers05" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/skv/SpecInspection_965_05_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_5" name="File label;File title;pattern/print/skv/SpecInspection_965_05_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_5" name="File label;File title;pattern/print/skv/SpecInspection_965_05_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -448,7 +448,7 @@
         <activiti:formProperty id="sWorkTime06" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers06" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_6" name="[pattern/print/skv/SpecInspection_965_06_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_6" name="File label;File title;pattern/print/skv/SpecInspection_965_06_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_6" name="File label;File title;pattern/print/skv/SpecInspection_965_06_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -504,7 +504,7 @@
         <activiti:formProperty id="sWorkTime07" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers07" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/skv/SpecInspection_965_07_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_7" name="File label;File title;pattern/print/skv/SpecInspection_965_07_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_7" name="File label;File title;pattern/print/skv/SpecInspection_965_07_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -560,7 +560,7 @@
         <activiti:formProperty id="sWorkTime08" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers08" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/skv/SpecInspection_965_08_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_8" name="File label;File title;pattern/print/skv/SpecInspection_965_08_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_8" name="File label;File title;pattern/print/skv/SpecInspection_965_08_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -616,7 +616,7 @@
         <activiti:formProperty id="sWorkTime09" name="Графік роботи оргструктури 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers09" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/SpecInspection_965_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/skv/SpecInspection_965_09_print.html]" type="invisible" default="Запит про перевірку відомостей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_9" name="File label;File title;pattern/print/skv/SpecInspection_965_09_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_9" name="File label;File title;pattern/print/skv/SpecInspection_965_09_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

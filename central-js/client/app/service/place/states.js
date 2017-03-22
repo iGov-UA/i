@@ -18,6 +18,8 @@ angular.module('app').config(function($stateProvider) {
         isLoggedIn : function(UserService){
           return UserService.isLoggedIn().then(function () {
             return true;
+          }, function (err) {
+            return false;
           }).catch(function () {
             return false;
           });
@@ -45,6 +47,8 @@ angular.module('app').config(function($stateProvider) {
         isLoggedIn : function(UserService){
           return UserService.isLoggedIn().then(function () {
             return true;
+          }, function (err) {
+            return false;
           }).catch(function () {
             return false;
           });
@@ -63,6 +67,8 @@ angular.module('app').config(function($stateProvider) {
         isLoggedIn : function(UserService){
           return UserService.isLoggedIn().then(function () {
             return true;
+          }, function (err) {
+            return false;
           }).catch(function () {
             return false;
           });
@@ -122,17 +128,23 @@ angular.module('app').config(function($stateProvider) {
             return {
               loggedIn: true
             };
+          }, function (err) {
+            return $q.reject('Користувач не авторизован');
           }).catch(function(error) {
-            return $q.reject('Пользователь не авторизован');
+            return $q.reject('Користувач не авторизован');
           });
         },
         BankIDAccount: function($q, UserService) {
           return UserService.account().then(function(result){
-            if(result.hasOwnProperty('code') && result.hasOwnProperty('message')){
-              return $q.reject('Ошибка при получении данных пользователя ' + result.message);
+            if(!result){
+              return $q.reject('Помилка при отриманні данних користувача');
+            } else if(result.hasOwnProperty('code') && result.hasOwnProperty('message')){
+              return $q.reject('Помилка при отриманні данних користувача ' + result.message);
             } else {
               return result;
             }
+          }, function (err) {
+            return $q.reject('Помилка при отриманні данних користувача');
           })
         },
         processDefinitions: function(ServiceService, oServiceData) {
