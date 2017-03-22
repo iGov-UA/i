@@ -198,6 +198,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
             
+            if(isUpdateTask(oRequest)){
+                LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (POSTPROCESSING)--------------");
+                LOG.info("protocolize sURL is: " + sURL);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sResponseBody: {}", sResponseBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("mRequestParam {}", mRequestParam);
+                LOG.info("-----------------------------------------------");
+            }
+            
             if(((mRequestParam.containsKey("sID_BP")||mRequestParam.containsKey("snID_Process_Activiti"))&&
                mRequestParam.get("sID_BP").startsWith("_doc")))
             {
@@ -263,6 +275,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     {
         try
         {
+            
             Map<String, String> mRequestParam = new HashMap<>();
             Enumeration<String> paramsName = oRequest.getParameterNames();
         
@@ -348,6 +361,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 	}
                 }
             }*/
+            if(isUpdateTask(oRequest)){
+                LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (PREPROCESSING)--------------");
+                LOG.info("protocolize sURL is: " + sURL);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("sResponseBody: {}", sResponseBody);
+                LOG.info("-----------------------------------------------");
+                LOG.info("mRequestParam {}", mRequestParam);
+                LOG.info("-----------------------------------------------");
+            }
+            
             if (isDocumentSubmit(oRequest)) {
                 
                 LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
