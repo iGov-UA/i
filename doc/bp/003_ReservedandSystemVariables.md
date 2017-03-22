@@ -18,6 +18,7 @@
 * **bankIdphone** - string -телефон гражданина
 * **bankIdsID_Country** - string - гражданство
 * **bankId_scan_inn** - file - Скан копия ИНН гражданина
+* ![3_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_0.JPG)
 
 ## Зарезервированные переменные для электронных очередей
 * **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
