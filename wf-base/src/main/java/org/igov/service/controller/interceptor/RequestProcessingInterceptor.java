@@ -504,8 +504,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                         mParam.put("sLogin", sAssignLogin);
-                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 13L);
-                        
+                        if(!aDocumentStep.get(1).getsKey_Step().equals(oCurrDocumentStep.getsKey_Step())){
+                            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 13L);
+                        }
+                        else{
+                            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 12L);
+                        }
                     }
                     /*else{
                         List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
@@ -527,7 +531,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     }
                     
                 } 
-                else{
+                /*else{
                         List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
                         boolean bProcessClosed = aTask == null || aTask.size() == 0;
                         String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
@@ -538,7 +542,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         String sAssignLogin = oHistoricTaskInstance.getAssignee();
                         mParam.put("sLogin", sAssignLogin);
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 12L);
-                    }
+                    }*/
             }
         }
     }
