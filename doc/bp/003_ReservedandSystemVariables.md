@@ -58,7 +58,9 @@
 * **lastName_RU1,  firstName_RU1, middleName_RU1, lastName_RU2,  firstName_RU2, middleName_RU2** - string - Название или ФИО с русскими буквами. Разрешена только кириллица, дефис.
 * **date_of_birth** - date - дата рождения. Не разрешено выбирать дату больше текущей.
 * **kved** - string - вид экономической деятельности по КВЕД. Две цифры точка две цифры (первые две цифры не могут быть 04, 34, 40, 44, 48, 54, 57, 67, 76, 83, 89).
+* ![3_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_2.JPG)
 * **edrpou** - string - восемь цифр.
+* ![3_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_3.JPG)
 * **mfo** - string - шесть цифр.
 * **kids_Birth** - date - не разрешено выбирать дату больше текущей, разница между текущей датой и выбранной не должна превышать 14 лет.
 * **privateMail, email** - string - емейлы
