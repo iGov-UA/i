@@ -18,6 +18,7 @@
 * **bankIdphone** - string -телефон гражданина
 * **bankIdsID_Country** - string - гражданство
 * **bankId_scan_inn** - file - Скан копия ИНН гражданина
+* ![3_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_0.JPG)
 
 ## Зарезервированные переменные для электронных очередей
 * **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
@@ -33,6 +34,7 @@
 * **sArea** - string/invisible/label - yазвание нас.пункта/района куда подается заявка
 * **nArea** - string/invisible/label - yомер в справочнике нас.пункта/района куда подается заявка
 * **sShapka** - string/invisible/label - шапка принтформы
+* ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
 
 
 ## Переменные принтформ
