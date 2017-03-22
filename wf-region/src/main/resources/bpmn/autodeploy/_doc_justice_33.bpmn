@@ -10,7 +10,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask4" name="Канцелярія - формування та реєстрація наказу з основної діяльності" activiti:candidateGroups="justice_common">
+    <userTask id="usertask4" name="Канцелярія - формування та реєстрація рішення">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Рішення колегії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
@@ -49,13 +49,13 @@
         <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSupervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
-             <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_MJU]]></activiti:string>
+            <activiti:string><![CDATA[justice_common]]></activiti:string>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
@@ -69,7 +69,7 @@
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sTableViewed::${sTableViewed};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor}sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sTableViewed::${sTableViewed};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
@@ -83,12 +83,12 @@
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <scriptTask id="scripttask1" name="2 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="лічільник| отримання ІД та назви БП|+30 днів додати виконання" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 //1. счетчик добавления номера в поле входящего номера
 var number=execution.getVariable('sID_Custom_GovPublic')
@@ -126,7 +126,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:string><![CDATA[[sID_Custom_GovPublic]]]></activiti:string>
         </activiti:field>
         <activiti:field name="nDigits">
-          <activiti:string><![CDATA[3]]></activiti:string>
+          <activiti:string><![CDATA[5]]></activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -134,7 +134,115 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="scripttask1" targetRef="usertask4"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow60" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask5" name="Ознайомлення з рішенням">
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Рішення колегії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="MJU_Dnipro_0"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер наказу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameDoc" name="Назва наказу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
+          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
+          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" writable="false">
+          <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
+          <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateBegin" name="Дата початку" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPeriodicity" name="Періодичність" type="enum" writable="false">
+          <activiti:value id="sEnumDay" name="щоденно"></activiti:value>
+          <activiti:value id="sEnumWeek" name="щотижнево"></activiti:value>
+          <activiti:value id="sEnumMonth" name="щомісяця"></activiti:value>
+          <activiti:value id="sEnumQuarter" name="щокварталу"></activiti:value>
+          <activiti:value id="sEnumYear" name="щороку"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSupervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="invisible"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_MJU]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[_task_justice]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sTableViewed::${sTableViewed};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[system_task_mu_read]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTableViewed}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask2" name="перемикання степа та клонування прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//перемикання степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
+
+//клонування для юзерів в таблиці
+    		var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU', 'sTableViewed', 'step_2')
+	 
+
+	 </script>
+    </scriptTask>
+    <sequenceFlow id="flow60" sourceRef="usertask4" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow61" sourceRef="scripttask2" targetRef="usertask5"></sequenceFlow>
+    <scriptTask id="scripttask3" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+		var nID_Process = execution.getProcessInstanceId();
+		var sKey_Step = execution.getVariable('sKey_Step_Document')
+		var obj3= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
+		
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow62" sourceRef="usertask5" targetRef="scripttask3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow63" sourceRef="scripttask3" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow64" name="true" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow65" name="false" sourceRef="exclusivegateway1" targetRef="usertask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == false}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_33">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_33" id="BPMNPlane__doc_justice_33">
@@ -142,7 +250,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="75.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="84.0" width="130.0" x="392.0" y="50.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="130.0" x="396.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="84.0" width="121.0" x="232.0" y="50.0"></omgdc:Bounds>
@@ -151,7 +259,19 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <omgdc:Bounds height="84.0" width="116.0" x="86.0" y="51.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="550.0" y="75.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="880.0" y="273.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="84.0" width="130.0" x="556.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="84.0" width="121.0" x="400.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="84.0" width="121.0" x="720.0" y="161.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="760.0" y="270.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="65.0" y="92.0"></omgdi:waypoint>
@@ -163,11 +283,38 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="353.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="392.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="396.0" y="92.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="522.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="550.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="461.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="521.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="556.0" y="202.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
+        <omgdi:waypoint x="686.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="203.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="780.0" y="245.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="800.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="880.0" y="290.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="19.0" x="814.0" y="273.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="760.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="621.0" y="244.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="639.0" y="273.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
