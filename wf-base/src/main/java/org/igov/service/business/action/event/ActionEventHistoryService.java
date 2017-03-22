@@ -84,7 +84,7 @@ public class ActionEventHistoryService {
             Long nID_Proccess_Feedback = params.get("nID_Proccess_Feedback") == null ? null : Long.parseLong(params.get("nID_Proccess_Feedback"));
             Long nID_Proccess_Escalation = params.get("nID_Proccess_Escalation") == null ? null : Long.parseLong(params.get("nID_Proccess_Escalation"));
             Long nID_StatusType = params.get("nID_StatusType") == null ? null : Long.parseLong(params.get("nID_StatusType"));
-
+            
             addActionStatus(
                     sID_Order,
                     nID_Subject,
@@ -104,6 +104,7 @@ public class ActionEventHistoryService {
                     params.get("newData"),
                     params.get("oldData"),
                     params.get("sLogin"),
+                    params.get("new_BP_ID"),
                     true,
                     true,
                     false
@@ -151,6 +152,7 @@ public class ActionEventHistoryService {
             String newData,
             String oldData,
             String sLogin,
+            String new_BP_ID,
             boolean saveHistoryEventService,
             boolean saveHistoryEvent,
             boolean saveSubjectMessage
@@ -215,6 +217,7 @@ public class ActionEventHistoryService {
             mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
             mParamMessage.put(HistoryEventMessage.ORDER_ID, sID_Order);
+            mParamMessage.put(HistoryEventMessage.BP_ID, new_BP_ID);
             mParamMessage.put(HistoryEventMessage.FIO, sLogin);
             mParamMessage.put(HistoryEventMessage.NEW_DATA, newData);
             mParamMessage.put(HistoryEventMessage.OLD_DATA, oldData);

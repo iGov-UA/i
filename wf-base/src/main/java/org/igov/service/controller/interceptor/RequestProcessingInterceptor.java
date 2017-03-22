@@ -224,7 +224,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("mRequestParam {}", mRequestParam);        
                 LOG.info("-----------------------------------------------");
             
-                
                 String sID_Process = null;
                 String sID_Order = null;
                 
@@ -485,7 +484,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     boolean bProcessClosed = aTask == null || aTask.size() == 0;
                     String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                     
-                   String sTaskAssignee = null;
+                    String sTaskAssignee = null;
                     
                     for(Task oTask : aTask)
                     {
@@ -506,6 +505,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 12L);
                     }else{
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 13L);
+                    }
+                    
+                    if(isCloseTask(oRequest, sResponseBody)){
+                        LOG.info("Close document is started...");
+                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
                     }
                 }
             }
