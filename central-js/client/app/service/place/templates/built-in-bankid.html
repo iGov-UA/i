@@ -119,7 +119,7 @@
             <div class="row"
                  style="margin-bottom: 20px"
                  ng-repeat="property in activitiForm.formProperties track by property.id"
-                 ng-if="isFieldVisible(property)">
+                 ng-if="isFieldVisible(property) && property.id !== 'form_signed' && property.id !== 'form_signed_all' && fieldHasVisibleType(property)">
 
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
                 <div ng-if="insertSeparator(property.id).sText.length > 0" class="flex-hr wrap-hr" style="width: 100%">
@@ -133,7 +133,7 @@
 
               <div id="label-{{property.id}}" class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
-                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}:</span>
+                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}</span>
 
                 <label class="red-star"
                        ng-if="isFieldRequired(property)==true">* </label>
@@ -834,7 +834,7 @@
               <!--</div>-->
             <div class="row col-md-12 igov-info-label" ng-if="isSignNeeded">
               Після натискання "Замовити послугу з ЕЦП"
-              Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом.
+              Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом. <br />
               Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність
             </div>
 
@@ -849,7 +849,9 @@
                 <br/>
                 <button class="btn btn-info"
                         ng-click="processForm(form, activitiForm.formProperties, false)"
-                        ng-disable="cantSubmit(form)">Замовити послугу без ЕЦП
+                        ng-disable="cantSubmit(form)">
+                  <span ng-if="isSignNeeded">Замовити послугу без ЕЦП</span>
+                  <span ng-if="!isSignNeeded">Замовити послугу</span>
                 </button>
               </div>
 
