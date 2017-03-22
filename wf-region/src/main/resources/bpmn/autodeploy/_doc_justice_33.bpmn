@@ -3,16 +3,16 @@
   <process id="_doc_justice_33" name="33 - Рішення колегії" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Наказ з основної діяльності"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Рішення колегії"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask4" name="Канцелярія - формування та реєстрація рішення" activiti:candidateGroups="justice_common">
+    <userTask id="usertask4" name="Канцелярія - формування та реєстрація рішення">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Наказ з основної діяльності" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Рішення колегії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -48,7 +48,6 @@
         <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSupervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-      
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -135,9 +134,9 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="scripttask1" targetRef="usertask4"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <userTask id="usertask5" name="Ознайомлення з наказом">
+    <userTask id="usertask5" name="Ознайомлення з рішенням">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Наказ з основної діяльності" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Рішення колегії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -172,7 +171,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSupervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="invisible"></activiti:formProperty>
