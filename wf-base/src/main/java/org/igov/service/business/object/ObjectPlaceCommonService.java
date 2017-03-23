@@ -22,10 +22,10 @@ import org.springframework.stereotype.Service;
 public class ObjectPlaceCommonService {
     private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonService.class);
 
-//    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
-//    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
-    private static final String SUB_URL_ADDRESS_BY_TYPE = "/listAddressByType.do";
-    private static final String SUB_URL_ADDRESS_BY_NAME = "/searchByName.do";
+    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
+    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
+//    private static final String SUB_URL_ADDRESS_BY_TYPE = "/listAddressByType.do";
+//    private static final String SUB_URL_ADDRESS_BY_NAME = "/searchByName.do";
     private static final String NULL_RESPONSE = "{}";
 
     @Autowired
