@@ -74,7 +74,7 @@ value != enum.
 [pattern/mail/_common_signature.html]  
 [pattern/mail/_common_feedback.html]  
 [pattern/mail/_common_footer.html]  
-
+* ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
 кастомизированная подпись в письме с использованием  шаблонов  
 [pattern/mail/_common_signature_start.html]  
 %любой необходимый текст%  
