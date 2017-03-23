@@ -7,6 +7,7 @@
    * ${GetDocument_UkrDoc}
    * ${UpdateStatusTask}
    * ${DocumentInit_iDoc}  
+   * ![5_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_3.jpg)
 
 ***
 ### ${SetTasks}
