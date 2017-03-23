@@ -127,17 +127,14 @@ public class ObjectPlaceCommonService {
 
 	    } catch (java.io.FileNotFoundException e) {
 		ret = NULL_RESPONSE;
-		LOG.error("Error request: url={}, properties={}", sUrl, oHttpURLConnection.getRequestProperties());
 		LOG.error("http code:{}\n", responseCode, e);
 	    }
 
 	} catch (MalformedURLException e) {
 	    ret = NULL_RESPONSE;
-	    LOG.error("Error request: url={}, properties={}", sUrl, oHttpURLConnection.getRequestProperties());
 	    LOG.error("Error:", e);
 	} catch (IOException e) {
 	    ret = NULL_RESPONSE;
-	    LOG.error("Error request: url={}, properties={}", sUrl, oHttpURLConnection.getRequestProperties());
 	    LOG.error("Error:", e);
 	} finally {
 	    if (oHttpURLConnection != null) {
