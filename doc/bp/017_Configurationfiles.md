@@ -81,7 +81,8 @@
 **nID** - номер по порядку  
 **sID** - оставляем пустым  
 **sLabel** - имя чиновника или название органа, название органа должно начинаться с нижнего подчеркивания  
-**sLabelShort** - оставляем пустым  
+**sLabelShort** - оставляем пустым 
+* ![17_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_2.JPG)
 ***
 ### SubjectAccount
 **nID** - номер по порядку  ## 
@@ -89,7 +90,8 @@
 **sNote** - имя чиновника или название органа (рекомендуется синхронизировать с sLabel из файла Subject.csv)  
 **nID_SubjectAccountType** - ставим всегда 1  
 **nID_Server** - ставим всегда 0
-**nID_Subject** - номер строки из файла Subject - связка с конкретным чиновником или органом  
+**nID_Subject** - номер строки из файла Subject - связка с конкретным чиновником или органом 
+* ![17_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_3.JPG)
 ***
 
 ### SubjectAccountType
@@ -120,7 +122,7 @@
 **nID_Region**  
 **nID_City**  
 **sID_UA**  
-
+* ![17_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_4.JPG)
 ### SubjectOrganJoinAttribute
 ### SubjectOrganJoinTax
 
