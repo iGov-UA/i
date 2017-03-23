@@ -107,19 +107,22 @@ public class ObjectPlaceCommonService {
 	String ret = NULL_RESPONSE;
 	HttpURLConnection oHttpURLConnection = null;
 	try {
-	    URL oURL = new URL(sUrl);
+//	    URL oURL = new URL(sUrl);
+	    URL oURL = new URL("https://service-street.tech.igov.org.ua/AddressReference/address/typeNames.do");
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("GET");
-//	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-	    oHttpURLConnection.setRequestProperty("id", sIdParent);
-	    oHttpURLConnection.setRequestProperty("type", eType.getIdString());
-	    oHttpURLConnection.setRequestProperty("language", eLanguage.name());
-	    if (sTypeCode != null) {
-		oHttpURLConnection.setRequestProperty("typeCode", sTypeCode);
-	    }
-	    if (sFromId != null) {
-		oHttpURLConnection.setRequestProperty("fromId", sFromId);
-	    }
+	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+	    oHttpURLConnection.setRequestProperty("typeId", "4");
+	    
+//	    oHttpURLConnection.setRequestProperty("id", sIdParent);
+//	    oHttpURLConnection.setRequestProperty("type", eType.getIdString());
+//	    oHttpURLConnection.setRequestProperty("language", eLanguage.name());
+//	    if (sTypeCode != null) {
+//		oHttpURLConnection.setRequestProperty("typeCode", sTypeCode);
+//	    }
+//	    if (sFromId != null) {
+//		oHttpURLConnection.setRequestProperty("fromId", sFromId);
+//	    }
 
 	    int responseCode = oHttpURLConnection.getResponseCode();
 	    if (responseCode == 200 ) {
@@ -139,6 +142,8 @@ public class ObjectPlaceCommonService {
 		    LOG.error("http code:{}\n", responseCode, e);
 	    	}
 	    } else {
+		LOG.error("Error request: sUrl={}, id={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType.getIdString(),
+		    eLanguage.name(), sTypeCode, sFromId);
 		LOG.error("http code:{} is not 200\n", responseCode);
 	    }
 
