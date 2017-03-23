@@ -9,9 +9,9 @@
 ```
 * ![13_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_0.JPG)
 * в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
-*
+
 * ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG)
-*
+
 * в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
 
 ```xml
