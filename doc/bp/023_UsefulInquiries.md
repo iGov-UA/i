@@ -16,6 +16,7 @@ https://alpha.test.region.igov.org.ua/wf/service/action/task/delete-process?nID_
 ```
 https://alpha.test.region.igov.org.ua/wf/service/action/task/getTaskData?sID_Order=0-219200017&bIncludeStartForm=true&bIncludeGroups=true
 ```
+* ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
 
 ***
 
