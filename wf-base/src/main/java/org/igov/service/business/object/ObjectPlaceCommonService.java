@@ -99,10 +99,10 @@ public class ObjectPlaceCommonService {
 	}
     }
 
-    private String listAddressByType(String sUrl, String idParent, ObjectPlaceType type, ObjectPlaceLang language,
+    private String listAddressByType(String sUrl, String sIdParent, ObjectPlaceType eType, ObjectPlaceLang eLanguage,
 	    String sTypeCode, String sFromId) {
-	LOG.debug("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, idParent, type,
-		language, sTypeCode, sFromId);
+	LOG.debug("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType,
+		eLanguage, sTypeCode, sFromId);
 
 	String ret = "";
 	HttpURLConnection oHttpURLConnection = null;
@@ -111,8 +111,9 @@ public class ObjectPlaceCommonService {
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("GET");
 	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-	    oHttpURLConnection.setRequestProperty("type", type.getIdString());
-	    oHttpURLConnection.setRequestProperty("language", language.name());
+	    oHttpURLConnection.setRequestProperty("id", sIdParent);
+	    oHttpURLConnection.setRequestProperty("type", eType.getIdString());
+	    oHttpURLConnection.setRequestProperty("language", eLanguage.name());
 	    if (sTypeCode != null) {
 		oHttpURLConnection.setRequestProperty("typeCode", sTypeCode);
 	    }
