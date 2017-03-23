@@ -104,7 +104,7 @@ public class ObjectPlaceCommonService {
 	LOG.debug("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType,
 		eLanguage, sTypeCode, sFromId);
 
-	String ret = "";
+	String ret = NULL_RESPONSE;
 	HttpURLConnection oHttpURLConnection = null;
 	try {
 	    URL oURL = new URL(sUrl);
@@ -122,21 +122,24 @@ public class ObjectPlaceCommonService {
 	    }
 
 	    int responseCode = oHttpURLConnection.getResponseCode();
-	    
-	    try (BufferedReader oBufferedReader = new BufferedReader(
+	    if (responseCode == 200 ) {
+		try (BufferedReader oBufferedReader = new BufferedReader(
 		    new InputStreamReader(oHttpURLConnection.getInputStream()))) {
-		StringBuilder os = new StringBuilder();
-		String s;
-		while ((s = oBufferedReader.readLine()) != null) {
-		    os.append(s);
-		}
-		ret = os.toString();
+		    StringBuilder os = new StringBuilder();
+		    String s;
+		    while ((s = oBufferedReader.readLine()) != null) {
+			os.append(s);
+		    }
+			ret = os.toString();
 
-	    } catch (java.io.FileNotFoundException e) {
-		ret = NULL_RESPONSE;
-		LOG.error("Error request: sUrl={}, id={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType.getIdString(),
+		} catch (java.io.FileNotFoundException e) {
+		    ret = NULL_RESPONSE;
+		    LOG.error("Error request: sUrl={}, id={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType.getIdString(),
 			    eLanguage.name(), sTypeCode, sFromId);
-		LOG.error("http code:{}\n", responseCode, e);
+		    LOG.error("http code:{}\n", responseCode, e);
+	    	}
+	    } else {
+		LOG.error("http code:{} is not 200\n", responseCode);
 	    }
 
 	} catch (MalformedURLException e) {
