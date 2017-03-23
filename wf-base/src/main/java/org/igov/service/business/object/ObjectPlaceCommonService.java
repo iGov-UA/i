@@ -92,10 +92,10 @@ public class ObjectPlaceCommonService {
 
 	if (sFind != null) {
 	    return searchByName(sURLSendAddressByName, sID_SubPlace_PB, ObjectPlaceType.STREET, sFind,
-		    ObjectPlaceLang.UAN);
+		    ObjectPlaceLang.RUS);
 	} else {
 	    return listAddressByType(sURLSendAddressByType, sID_SubPlace_PB, ObjectPlaceType.STREET,
-		    ObjectPlaceLang.UAN, null, null);
+		    ObjectPlaceLang.RUS, null, null);
 	}
     }
 
@@ -110,7 +110,7 @@ public class ObjectPlaceCommonService {
 	    URL oURL = new URL(sUrl);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("GET");
-	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+//	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 	    oHttpURLConnection.setRequestProperty("id", sIdParent);
 	    oHttpURLConnection.setRequestProperty("type", eType.getIdString());
 	    oHttpURLConnection.setRequestProperty("language", eLanguage.name());
