@@ -101,7 +101,7 @@ public class ObjectPlaceCommonService {
 
     private String listAddressByType(String sUrl, String sIdParent, ObjectPlaceType eType, ObjectPlaceLang eLanguage,
 	    String sTypeCode, String sFromId) {
-	LOG.debug("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType,
+	LOG.info("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType,
 		eLanguage, sTypeCode, sFromId);
 
 	String ret = NULL_RESPONSE;
