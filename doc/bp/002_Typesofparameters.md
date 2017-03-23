@@ -32,6 +32,7 @@
   <activiti:value id="no" name="ні"></activiti:value>
 </activiti:formProperty>
 ```
+* ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
 ***
 ### date
 дата - календарь для выбора даты

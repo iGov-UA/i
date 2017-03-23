@@ -69,9 +69,9 @@ public class ObjectPlaceCommonService {
 	    return;
 	}
 //	sURLSendAddressByType = sURL_Send + SUB_URL_ADDRESS_BY_TYPE;
-//	sURLSendAddressByName = sURL_Send + SUB_URL_ADDRESS_BY_NAME;
-	sURLSendAddressByType = "https://service-street.tech.igov.org.ua" + SUB_URL_ADDRESS_BY_TYPE;
-	sURLSendAddressByName = "https://service-street.tech.igov.org.ua" + SUB_URL_ADDRESS_BY_NAME;
+	sURLSendAddressByName = sURL_Send + SUB_URL_ADDRESS_BY_NAME;
+	sURLSendAddressByType = "http://service-street.tech.igov.org.ua" + SUB_URL_ADDRESS_BY_TYPE;
+//	sURLSendAddressByName = "https://service-street.tech.igov.org.ua" + SUB_URL_ADDRESS_BY_NAME;
 	
 	
 	isReadyWork = true;
@@ -101,22 +101,24 @@ public class ObjectPlaceCommonService {
 
     private String listAddressByType(String sUrl, String sIdParent, ObjectPlaceType eType, ObjectPlaceLang eLanguage,
 	    String sTypeCode, String sFromId) {
-	LOG.debug("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType,
+	LOG.info("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType,
 		eLanguage, sTypeCode, sFromId);
 
 	String ret = NULL_RESPONSE;
 	HttpURLConnection oHttpURLConnection = null;
 	try {
 	    URL oURL = new URL(sUrl);
-//	    URL oURL = new URL("https://service-street.tech.igov.org.ua/AddressReference/address/typeNames.do");
+//	    URL oURL = new URL("http://service-street.tech.igov.org.ua/AddressReference/address/listAddressByType.do?id=1A4101J4VRPD00&type=8&language=RUS");
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("GET");
-//	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+//	    oHttpURLConnection.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
 //	    oHttpURLConnection.setRequestProperty("typeId", "4");
 	    
 	    oHttpURLConnection.setRequestProperty("id", sIdParent);
 	    oHttpURLConnection.setRequestProperty("type", eType.getIdString());
 	    oHttpURLConnection.setRequestProperty("language", eLanguage.name());
+	    
+	    LOG.info("properties={} ", oHttpURLConnection.getRequestProperties());
 //	    if (sTypeCode != null) {
 //		oHttpURLConnection.setRequestProperty("typeCode", sTypeCode);
 //	    }
@@ -125,7 +127,7 @@ public class ObjectPlaceCommonService {
 //	    }
 
 	    int responseCode = oHttpURLConnection.getResponseCode();
-	    if (responseCode == 200 ) {
+//	    if (responseCode == 200 ) {
 		try (BufferedReader oBufferedReader = new BufferedReader(
 		    new InputStreamReader(oHttpURLConnection.getInputStream()))) {
 		    StringBuilder os = new StringBuilder();
@@ -141,11 +143,11 @@ public class ObjectPlaceCommonService {
 			    eLanguage.name(), sTypeCode, sFromId);
 		    LOG.error("http code:{}\n", responseCode, e);
 	    	}
-	    } else {
-		LOG.error("Error request: sUrl={}, id={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType.getIdString(),
-		    eLanguage.name(), sTypeCode, sFromId);
-		LOG.error("http code:{} is not 200\n", responseCode);
-	    }
+//	    } else {
+//		LOG.error("Error request: sUrl={}, id={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType.getIdString(),
+//		    eLanguage.name(), sTypeCode, sFromId);
+//		LOG.error("http code:{} is not 200\n", responseCode);
+//	    }
 
 	} catch (MalformedURLException e) {
 	    LOG.error("Error request: sUrl={}, id={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType.getIdString(),
