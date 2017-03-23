@@ -12,7 +12,7 @@
     </startEvent>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="получение ИД текущего процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
-<script>// получение ИД текущего процесса
+      <script>// получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 </script>
@@ -54,7 +54,7 @@ var sKey_GroupPostfix_New = 'Velta_Head'
 var sKey_GroupPostfix = '_default_Velta_head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 </script>
-</scriptTask>
+    </scriptTask>
     <sequenceFlow id="flow64" sourceRef="scripttask9" targetRef="usertask3"></sequenceFlow>
     <userTask id="usertask3" name="Керівник - попередній розгляд пропозиції">
       <extensionElements>
@@ -71,7 +71,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sAccept" name="відправити на розгляд відповідальному підрозділу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('velta/sTable2_doc_velta_sz.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть відповідальний підрозділ" type="enum">
+          <activiti:value id="sJustice" name="Юридичний"></activiti:value>
+          <activiti:value id="sFinance" name="Фінансовий"></activiti:value>
+          <activiti:value id="sFinJust" name="Юридичний та Фінансовий"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
@@ -122,11 +126,38 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
     <scriptTask id="scripttask5" name="переключение степа на 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-  var sKey_GroupPostfix = '_default_Velta_head'
-  var sID_Field = 'sTable2'
-  var sKey_Step_Document_To = 'step_3'
-  var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step_Document_To)		</script>
+var snID_Process_Activiti = execution.getProcessInstanceId();
+var sKey_Step= 'step_3';
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step);
+
+// клонирование прав на 2-й шаг
+var who = execution.getVariable('sTable2');
+switch (who){
+case 'sFinance':
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Finance';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+break;
+case 'sJustice':
+var sKey_GroupPostfix_New = 'Velta_Justice_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Justice';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+break;
+case 'sFinJust':
+var sKey_GroupPostfix_New = 'Velta_Finance_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Finance';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+
+var sKey_GroupPostfix_New = 'Velta_Justice_Spec1';
+var sKey_GroupPostfix = '_default_Velta_Justice';
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step);
+
+break;
+default:
+    alert('А так работать не должно');
+    break;
+}
+</script>
     </scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask5" name="Відповідальний підрозділ. Підготовка відповіді на пропозицію">
@@ -154,7 +185,7 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow39" sourceRef="usertask5" targetRef="scripttask8"></sequenceFlow>
-     <scriptTask id="scripttask8" name="Проверка подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask8" name="Проверка подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
 var sKey_Step = execution.getVariable('sKey_Step_Document')
 var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
@@ -280,14 +311,35 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="71.0" width="105.0" x="182.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
+        <omgdc:Bounds height="55.0" width="141.0" x="320.0" y="38.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="75.0" width="141.0" x="320.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="215.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="469.0" y="208.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="620.0" y="218.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="61.0" width="141.0" x="320.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="91.0" width="141.0" x="320.0" y="361.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
+        <omgdc:Bounds height="55.0" width="141.0" x="320.0" y="470.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="564.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
+        <omgdc:Bounds height="61.0" width="141.0" x="320.0" y="630.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
         <omgdc:Bounds height="62.0" width="141.0" x="320.0" y="720.0"></omgdc:Bounds>
@@ -301,29 +353,8 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="508.0" y="900.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="215.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
-        <omgdc:Bounds height="61.0" width="141.0" x="320.0" y="280.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
-        <omgdc:Bounds height="61.0" width="141.0" x="320.0" y="630.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
-        <omgdc:Bounds height="55.0" width="141.0" x="320.0" y="470.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="469.0" y="208.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="55.0" x="620.0" y="218.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="55.0" width="105.0" x="473.0" y="814.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
-        <omgdc:Bounds height="55.0" width="141.0" x="320.0" y="38.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="36.0" y="65.0"></omgdi:waypoint>
@@ -337,27 +368,9 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
         <omgdi:waypoint x="287.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="390.0" y="452.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="470.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="370.0" y="584.0"></omgdi:waypoint>
-        <omgdi:waypoint x="249.0" y="584.0"></omgdi:waypoint>
-        <omgdi:waypoint x="249.0" y="407.0"></omgdi:waypoint>
-        <omgdi:waypoint x="320.0" y="406.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="390.0" y="782.0"></omgdi:waypoint>
-        <omgdi:waypoint x="391.0" y="821.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="391.0" y="861.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="890.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="411.0" y="841.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="841.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="390.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="390.0" y="195.0"></omgdi:waypoint>
@@ -367,6 +380,10 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
         <omgdi:waypoint x="410.0" y="235.0"></omgdi:waypoint>
         <omgdi:waypoint x="469.0" y="235.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="574.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="235.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="390.0" y="255.0"></omgdi:waypoint>
         <omgdi:waypoint x="390.0" y="280.0"></omgdi:waypoint>
@@ -375,33 +392,47 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
         <omgdi:waypoint x="390.0" y="341.0"></omgdi:waypoint>
         <omgdi:waypoint x="390.0" y="361.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="390.0" y="691.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="720.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="461.0" y="917.0"></omgdi:waypoint>
-        <omgdi:waypoint x="508.0" y="917.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="390.0" y="452.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="470.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
         <omgdi:waypoint x="390.0" y="525.0"></omgdi:waypoint>
         <omgdi:waypoint x="390.0" y="564.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="574.0" y="235.0"></omgdi:waypoint>
-        <omgdi:waypoint x="620.0" y="235.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="370.0" y="584.0"></omgdi:waypoint>
+        <omgdi:waypoint x="249.0" y="584.0"></omgdi:waypoint>
+        <omgdi:waypoint x="249.0" y="407.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="406.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
         <omgdi:waypoint x="390.0" y="604.0"></omgdi:waypoint>
         <omgdi:waypoint x="390.0" y="630.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
+        <omgdi:waypoint x="390.0" y="691.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="720.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="390.0" y="782.0"></omgdi:waypoint>
+        <omgdi:waypoint x="391.0" y="821.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="391.0" y="861.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="890.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="461.0" y="917.0"></omgdi:waypoint>
+        <omgdi:waypoint x="508.0" y="917.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="411.0" y="841.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="841.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
         <omgdi:waypoint x="525.0" y="869.0"></omgdi:waypoint>
         <omgdi:waypoint x="525.0" y="900.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="390.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

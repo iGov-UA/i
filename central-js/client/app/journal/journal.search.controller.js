@@ -34,7 +34,16 @@ angular.module('journal').controller('JournalSearchController', function (
   $scope.sOrderCommentNew = '';
   $scope.sOrderAnswerCommentNew = '';
   $scope.bAuth = UserService.isLoggedIn().then(function () {
-    $scope.bAuth = true;
+    //$scope.bAuth = true;
+    UserService.account().then(function (result) {
+      $scope.bAuth = !(!result || (result.hasOwnProperty('code') && result.hasOwnProperty('message')));
+    }, function (err) {
+      $scope.bAuth = false;
+    }).catch(function () {
+      $scope.bAuth = false;
+    });
+  }, function (err) {
+    $scope.bAuth = false;
   }).catch(function () {
     $scope.bAuth = false;
   });

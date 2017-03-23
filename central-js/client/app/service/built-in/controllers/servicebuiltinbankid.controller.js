@@ -249,6 +249,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         })
       }
 
+      $scope.fieldHasVisibleType = function (field) {
+        if(field && field.type) {
+          return field.type !== 'markers' && field.type !== 'invisible';
+        }
+      };
+
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -295,7 +301,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
 
-      $scope.processForm = function (form, aFormProperties) {
+      $scope.processForm = function (form, aFormProperties, signNeeded) {
+
+        if(signNeeded !== undefined) {
+          $scope.sign.checked = signNeeded;
+        }
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
@@ -1069,10 +1079,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         *поиски организации по окпо начало
       */
       $scope.getOrgData = function (code, id) {
+        var fields = Object.keys($scope.data.formData.params);
         var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
         var keys = {activities:'sID_SubjectActionKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
         function findAndFillOKPOFields(res) {
-          angular.forEach(res.data, function (i, key, obj) {
+          angular.forEach(res.data, function (i, key) {
             if (key in keys) {
               for (var prop in $scope.data.formData.params) {
                 if ($scope.data.formData.params.hasOwnProperty(prop) && prop.indexOf(keys[key]) === 0) {
@@ -1080,8 +1091,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
                     elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
                   if (elementPostfix !== null && elementPostfix === fieldPostfix)
                     if(prop.indexOf('sID_SubjectActionKVED') > -1) {
-                      var onlyKVEDNum = i.match(/\d{1,2}[\.]\d{1,2}/);
+                      var onlyKVEDNum = i.match(/\d{1,2}[\.]\d{1,2}/),
+                          onlyKVEDText = i.split(onlyKVEDNum)[1].trim(),
+                          pieces = prop.split('_');
                       onlyKVEDNum.length !== 0 ? $scope.data.formData.params[prop].value = onlyKVEDNum[0] : $scope.data.formData.params[prop].value = i
+
+                      pieces.splice(0, 1, 'sNote_ID');
+                      var autocompleteKVED = pieces.join('_');
+                      $scope.data.formData.params[autocompleteKVED].value = onlyKVEDText;
                     } else {
                       $scope.data.formData.params[prop].value = i;
                     }

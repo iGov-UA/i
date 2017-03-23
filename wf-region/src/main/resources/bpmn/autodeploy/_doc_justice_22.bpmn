@@ -72,7 +72,14 @@
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+           <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_MJU]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask1" name="2 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">

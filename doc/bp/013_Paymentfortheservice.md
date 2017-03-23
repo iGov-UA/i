@@ -7,10 +7,16 @@
 <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
 <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция"></activiti:formProperty>
 ```
-в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
-в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
+* ![13_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_0.JPG)
+* в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
+
+* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG)
+
+* в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
 
 ```xml
 <activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false" ></activiti:formProperty`>
 ```
+* ![13_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_2.JPG)
+
 На бэке (wf-base) доработана обработка тэга **[paymentButton_LiqPay]** так, чтоб он поддерживал множественные кнопки оплаты LiqPay в рамках одного письма. [Issue 789](https://github.com/e-government-ua/i/issues/789) 

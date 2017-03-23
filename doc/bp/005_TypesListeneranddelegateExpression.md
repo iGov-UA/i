@@ -1,7 +1,8 @@
 # Listener
 
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
-   * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей.   
+   * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
+   * ![5_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_0.jpg)
    * ${CreateDocument_UkrDoc}
    * ${GetDocument_UkrDoc}
    * ${UpdateStatusTask}
@@ -98,8 +99,10 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
    * #{setMessageFeedback_Indirectly}
    * #{fileTaskUpload} - для электронных очередей. Достает дату из объекта в переменной типа _queueData_ и передает ее в системную переменную _date_of_visit_ . Сервистаска с этим выражением должна следовать сразу за стартивентом.
    * #{MailTaskWithoutAttachment} - для отправки емейлов без  вложений
+   * ![5_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_1.JPG)
    * #{MailTaskWithAttachments} - для отправки емейлов c  вложениями
    * #{MailTaskWithAttachmentsAndSMS} - для отправки емейлов смс обязательно должно быть вложение, при отсутствии вложения в поле saAttachmentsForSend должен быть пробел " "
+   * ![5_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_2.JPG)
    * #{ProcessCountTaskListener}
    * #{SendObject_Corezoid_New}
    * #{releaseTicketsOfQueue} - При создании сервистаски с таким параметром инициализируется отмена заявки и высвобождение слота  электронной очереди по инициативе сотрудника или системы 

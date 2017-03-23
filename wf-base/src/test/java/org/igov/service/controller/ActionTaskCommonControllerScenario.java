@@ -45,4 +45,11 @@ public class ActionTaskCommonControllerScenario {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
+    
+    @Ignore
+    @Test
+    public void shouldSuccessfullyGetTaskData() throws Exception {
+
+
+    }
 }

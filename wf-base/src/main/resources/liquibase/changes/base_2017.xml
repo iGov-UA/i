@@ -280,5 +280,67 @@
             <column name="sID_Group_Activiti"/>
         </createIndex>
     </changeSet-->
+
+     <changeSet id="issue-1579-Add-fields" author="BW">
+        <addColumn tableName="DocumentStepSubjectRight">
+            <column name="sID_Field" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
     
+    
+    
+    
+    <changeSet id="issue-1573-create_table_DocumentStepType" author="olha">
+        
+        <createTable tableName="DocumentStepType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNote" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>    
+        </createTable>
+  
+    </changeSet>
+    
+    
+    <changeSet id="issue-1573-addForeignKey_DocumentStep" author="olga" failOnError="false">
+        <addColumn tableName="DocumentStep">
+            <column name="nID_DocumentStepType" type="bigint" defaultValue="1">
+                <constraints nullable="false" foreignKeyName="FK_Subject_DocumentStepType"
+                             referencedTableName="DocumentStepType" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="issue-1573-create_table_SubjectHumanPositionCustom" author="olha">
+        
+        <createTable tableName="SubjectHumanPositionCustom">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNote" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>    
+        </createTable>
+  
+    </changeSet>
+    
+    <changeSet id="issue-1573-addForeignKey_SubjectGroup" author="olga" failOnError="false">
+        <addColumn tableName="SubjectGroup">
+            <column name="nID_SubjectHumanPositionCustom" type="bigint" defaultValue="1">
+                <constraints nullable="false" foreignKeyName="FK_SubjectHumanPositionCustom"
+                             referencedTableName="SubjectHumanPositionCustom" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+            
 </databaseChangeLog>

@@ -48,6 +48,9 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 
 	@JsonProperty(value = "sLogin")
 	private String sLogin;
+        
+	@JsonProperty(value = "sID_Field")
+	private String sID_Field;
 
 	@JsonProperty(value = "sID_File_ForSign")
 	private String sID_File_ForSign;
@@ -118,6 +121,14 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 
 	public void setsLogin(String sLogin) {
 		this.sLogin = sLogin;
+	}
+        
+	public String getsID_Field() {
+		return sID_Field;
+	}
+
+	public void setsID_Field(String sID_Field) {
+		this.sID_Field = sID_Field;
 	}
 
 	public String getsID_File_ForSign() {

@@ -4,6 +4,7 @@
 ```xml
 <activiti:formProperty id="Place" name="Обраний населений пункт" type="string"></activiti:formProperty>
 ```
+* ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
 ***
 ### long
 число (целое) - для ввода ЦЕЛЫХ чисел
@@ -19,6 +20,7 @@
   <activiti:value id="no" name="ні"></activiti:value>
 </activiti:formProperty>
 ```
+* ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
 ***
 ### enum (checkbox)
 чекбокс - доступно только 2 выбора да/нет.
@@ -30,12 +32,14 @@
   <activiti:value id="no" name="ні"></activiti:value>
 </activiti:formProperty>
 ```
+* ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
 ***
 ### date
 дата - календарь для выбора даты
 ```xml
 <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" required="true"></activiti:formProperty>
 ```
+* ![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
 ***
 ### boolean
 true / false
@@ -48,6 +52,7 @@ true / false
  type="label" default="Ви можете здійснити оплату зручним для Вас способом за 
  &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
 ```
+* ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
 ***
 ### file
 файл - кнопка для ручной загрузки файлов гражданином на форме подачи обращения и для возможности просмотра  прикрепленного файла на форме обработки обращения.
@@ -71,6 +76,7 @@ true / false
 ```
 где file_id - id файла, который нужно отобразить
 можно в виде ${file1},${file2},${file1} если файлов несколько
+* ![2_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_8.JPG)
 
 ***
 ### file (New)
@@ -107,6 +113,7 @@ true / false
 <activiti:formProperty id="application_name" name="В цьому полі надайте перелік усіх додатків та специфікацій до договору" 
 type="textArea"></activiti:formProperty>
 ``` 
+* ![2_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_9.JPG)
 ***
 ### queueData
 дата/время - Электронная очередь.
@@ -114,6 +121,7 @@ type="textArea"></activiti:formProperty>
 <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації народження?"
 type="queueData" required="true"></activiti:formProperty>
 ```
+* ![2_31](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_31.JPG)
 
 ***
 ### [markers](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B)
@@ -124,6 +132,7 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
 ```
+* ![2_30](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_30.JPG)
 ***
 ### select
 Тип данных, который формирует динамические выпадающие списки (в зависимости от параметров).
@@ -178,6 +187,7 @@ default=” “ - в дефолте в виде json - объекта пропи
 ```xml
 <activiti:formProperty id="markers16" name="тейбл3 вынесенный в отдельный файл" type="table" default="${markerService.loadFromFile('table/VED/_test_ved_table3.json')}"></activiti:formProperty>
 ```
+* ![2_32](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_32.JPG)
 Если объявляете тейбл на втором шаге, и хотите чтоб тейбл был недоступен для редактирвоания - ставите флаг writable="false", при этом убираете весь параметр **default**.  
 
 **на дашборде**
@@ -233,6 +243,7 @@ default=” “ - в дефолте в виде json - объекта пропи
   }
 }
 ```
+* ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 ***
 ## Атрибуты переменных
 
