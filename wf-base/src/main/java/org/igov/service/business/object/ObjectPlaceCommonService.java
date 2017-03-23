@@ -107,16 +107,16 @@ public class ObjectPlaceCommonService {
 	String ret = NULL_RESPONSE;
 	HttpURLConnection oHttpURLConnection = null;
 	try {
-	    URL oURL = new URL(sUrl);
-//	    URL oURL = new URL("https://service-street.tech.igov.org.ua/AddressReference/address/typeNames.do");
+//	    URL oURL = new URL(sUrl);
+	    URL oURL = new URL("http://service-street.tech.igov.org.ua/AddressReference/address/listAddressByType.do?id=1A4101J4VRPD00&type=8&language=RUS");
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("GET");
-	    oHttpURLConnection.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
+//	    oHttpURLConnection.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
 //	    oHttpURLConnection.setRequestProperty("typeId", "4");
 	    
-	    oHttpURLConnection.setRequestProperty("id", sIdParent);
-	    oHttpURLConnection.setRequestProperty("type", eType.getIdString());
-	    oHttpURLConnection.setRequestProperty("language", eLanguage.name());
+//	    oHttpURLConnection.setRequestProperty("id", sIdParent);
+//	    oHttpURLConnection.setRequestProperty("type", eType.getIdString());
+//	    oHttpURLConnection.setRequestProperty("language", eLanguage.name());
 	    
 	    LOG.info("properties={} ", oHttpURLConnection.getRequestProperties());
 //	    if (sTypeCode != null) {
