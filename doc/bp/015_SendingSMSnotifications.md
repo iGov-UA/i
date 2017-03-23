@@ -42,7 +42,7 @@
         </activiti:field>
       
 ```
-* ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
+* ![14_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_1.JPG)
 
 * Если  емейл не предусматривает отправку файла, то  указываем “ “ в качестве  значения  параметра файла для отправки:  
 ```xml
