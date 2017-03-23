@@ -136,9 +136,13 @@ public class ObjectPlaceCommonService {
 	    }
 
 	} catch (MalformedURLException e) {
+	    LOG.error("sUrl={}, id={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType.getIdString(),
+		    eLanguage.name(), sTypeCode, sFromId);
 	    LOG.error("Error:", e);
 	    ret = NULL_RESPONSE;
 	} catch (IOException e) {
+	    LOG.error("sUrl={}, id={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType.getIdString(),
+		    eLanguage.name(), sTypeCode, sFromId);
 	    LOG.error("Error:", e);
 	    ret = NULL_RESPONSE;
 	} finally {

@@ -54,6 +54,7 @@
 ```xml 
 <activiti:formProperty id="visitDate" name="Бажана дата візиту" type="queueData" required="true"></activiti:formProperty>
 ```
+* ![12_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_0.JPG)
 в эту переменную будут передаваться данные по свободным слотам выбранной электронной очереди.
 
 * на этой же  таске указываем переменную с id = **nID_Department_visitDate**, где **_visitDate** - это ИД необходимой переменной с нужной нам электронной очередью. 
