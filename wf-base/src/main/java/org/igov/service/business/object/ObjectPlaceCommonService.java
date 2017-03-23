@@ -68,9 +68,9 @@ public class ObjectPlaceCommonService {
 	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
-	sURLSendAddressByType = sURL_Send + SUB_URL_ADDRESS_BY_TYPE;
+//	sURLSendAddressByType = sURL_Send + SUB_URL_ADDRESS_BY_TYPE;
 	sURLSendAddressByName = sURL_Send + SUB_URL_ADDRESS_BY_NAME;
-//	sURLSendAddressByType = "https://service-street.tech.igov.org.ua" + SUB_URL_ADDRESS_BY_TYPE;
+	sURLSendAddressByType = "http://service-street.tech.igov.org.ua" + SUB_URL_ADDRESS_BY_TYPE;
 //	sURLSendAddressByName = "https://service-street.tech.igov.org.ua" + SUB_URL_ADDRESS_BY_NAME;
 	
 	
