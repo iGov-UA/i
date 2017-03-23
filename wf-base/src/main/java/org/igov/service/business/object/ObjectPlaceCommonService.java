@@ -135,10 +135,10 @@ public class ObjectPlaceCommonService {
 	    }
 
 	} catch (MalformedURLException e) {
-	    LOG.error("Error:", e.getMessage());
+	    LOG.error("Error:", e);
 	    ret = NULL_RESPONSE;
 	} catch (IOException e) {
-	    LOG.error("Error:", e.getMessage());
+	    LOG.error("Error:", e);
 	    ret = NULL_RESPONSE;
 	} finally {
 	    if (oHttpURLConnection != null) {
