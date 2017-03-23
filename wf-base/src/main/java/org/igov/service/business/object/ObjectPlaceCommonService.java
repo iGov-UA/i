@@ -89,9 +89,9 @@ public class ObjectPlaceCommonService {
 	} else {
 	    HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json; charset=utf-8");
-            headers.set("id", sID_SubPlace_PB);
             headers.set("type", "8");
             headers.set("language", "RUS");
+            headers.set("id", sID_SubPlace_PB);
             
             String resp = new RestRequest().get(sURLSendAddressByType, null, StandardCharsets.UTF_8, String.class, headers);
             
