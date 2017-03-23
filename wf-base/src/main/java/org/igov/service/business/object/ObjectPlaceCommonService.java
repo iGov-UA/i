@@ -111,12 +111,14 @@ public class ObjectPlaceCommonService {
 //	    URL oURL = new URL("https://service-street.tech.igov.org.ua/AddressReference/address/typeNames.do");
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("GET");
-//	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+	    oHttpURLConnection.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
 //	    oHttpURLConnection.setRequestProperty("typeId", "4");
 	    
 	    oHttpURLConnection.setRequestProperty("id", sIdParent);
 	    oHttpURLConnection.setRequestProperty("type", eType.getIdString());
 	    oHttpURLConnection.setRequestProperty("language", eLanguage.name());
+	    
+	    LOG.info("properties={} ", oHttpURLConnection.getRequestProperties());
 //	    if (sTypeCode != null) {
 //		oHttpURLConnection.setRequestProperty("typeCode", sTypeCode);
 //	    }
