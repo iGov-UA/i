@@ -198,6 +198,31 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
             
+            if(isCloseTask(oRequest, sResponseBody)){
+                    if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+                        String sTaskId = (String) omRequestBody.get("taskId");
+                        LOG.info("sTaskId is: {}", sTaskId);
+                        HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                        String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+
+                        LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
+
+                        if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+
+                            LOG.info("Close document is started...");
+                            Map<String, String> mParam = new HashMap<>();
+                            String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                            
+                            List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                            boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                            String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                            
+                            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
+                        }
+                    }
+                }
+            
             if(isUpdateTask(oRequest)){
                 LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (POSTPROCESSING)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
@@ -251,10 +276,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("document sID_Process in interceptor {}", sID_Process);
                 LOG.info("document sID_Order in interceptor {}", sID_Order);
                 
-                if(sUserTaskName.equals("закрита")){
-                    LOG.info("process is colsed!!!");
-                    oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
-                }
                 //LOG.info("document sHead in interceptor {}", sProcessName);
                 //mParam.put("sHead", sProcessName);
                 
