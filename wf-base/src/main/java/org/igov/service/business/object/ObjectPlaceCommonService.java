@@ -76,7 +76,7 @@ public class ObjectPlaceCommonService {
 	    return "{}";
 	}
 
-	LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+	LOG.info("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
 
 	if (sID_SubPlace_PB == null) {
 	    LOG.error("Error sID_SubPlace_PB is null");
