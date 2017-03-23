@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.PostConstruct;
 
@@ -15,6 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import org.igov.io.web.HttpRequester;
+import org.igov.io.web.RestRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 @Component("ObjectPlaceCommonService")
 @Service
@@ -81,8 +87,20 @@ public class ObjectPlaceCommonService {
 	    return searchByName(sURLSendAddressByName, sID_SubPlace_PB, ObjectPlaceType.STREET, sFind,
 		    ObjectPlaceLang.RUS);
 	} else {
-	    return listAddressByType(sURLSendAddressByType, sID_SubPlace_PB, ObjectPlaceType.STREET,
-		    ObjectPlaceLang.RUS, null, null);
+	    HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", "application/json; charset=utf-8");
+            headers.set("id", sID_SubPlace_PB);
+            headers.set("type", "8");
+            headers.set("language", "RUS");
+            
+            String resp = new RestRequest().get(sURLSendAddressByType, null, StandardCharsets.UTF_8, String.class, headers);
+            
+            LOG.info("response={}", resp);
+            return resp;
+	    
+	    
+//	    return listAddressByType(sURLSendAddressByType, sID_SubPlace_PB, ObjectPlaceType.STREET,
+//		    ObjectPlaceLang.RUS, null, null);
 	}
     }
 
