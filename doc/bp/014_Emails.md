@@ -54,6 +54,7 @@ value != enum.
 Например:  
 для того чтобы из справочника бралось значение в зависимости от значения переменной ${region} используем выражение такого типа:
 [pattern_dictonary:zhytomir_reg_cnap.csv:value{[region]}:4]
+* ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
 
 **Важно:** замена полей происходит если у таски навешан какой-либо из следующих компонентов.  
 `activiti:delegateExpression="#{MailTaskWithAttachments}"`  
