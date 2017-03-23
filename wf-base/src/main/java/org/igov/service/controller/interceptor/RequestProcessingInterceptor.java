@@ -215,10 +215,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                             mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                             
                             List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                            
                             boolean bProcessClosed = aTask == null || aTask.size() == 0;
                             String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                             
-                            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
+                            if(aTask.isEmpty()){
+                                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
+                            }
                         }
                     }
                 }
