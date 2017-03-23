@@ -64,6 +64,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+import org.igov.service.business.subject.ProcessInfoShortVO;
+import org.igov.service.business.subject.SubjectRightBPService;
+import org.igov.service.business.subject.SubjectRightBPVO;
 import static org.igov.util.Tool.sO;
 
 //import org.igov.service.business.access.BankIDConfig;
@@ -115,6 +118,8 @@ public class ActionTaskService {
     @Autowired
     private CachedInvocationBean cachedInvocationBean;
 
+    @Autowired
+    SubjectRightBPService subjectRightBPService;
 
     
     public static String parseEnumValue(String sEnumName) {
@@ -1299,7 +1304,11 @@ public class ActionTaskService {
         }
 
         List<Map<String, String>> result = new LinkedList<>();
-        List<ProcessDefinition> resultProcessDefinitionList = new LinkedList<>();
+        //List<ProcessDefinition> resultProcessDefinitionList = new LinkedList<>();
+        
+        List<ProcessInfoShortVO> aProcessInfoShortVO = new LinkedList<>();
+        
+        
 
         LOG.info(String.format(
                 "Selecting business processes for the user with login: %s",
@@ -1311,23 +1320,33 @@ public class ActionTaskService {
             LOG.info(String.format("Found %d active process definitions",
                     processDefinitionsList.size()));
 
-            resultProcessDefinitionList = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
+            //resultProcessDefinitionList = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
+            aProcessInfoShortVO = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
         } else {
             LOG.info("Have not found active process definitions.");
         }
 
+        for (ProcessInfoShortVO oProcessInfoShortVO : aProcessInfoShortVO){
+            Map<String, String> process = new HashMap<>();
+            process.put("sID", oProcessInfoShortVO.getsID());
+            process.put("sName", oProcessInfoShortVO.getsName());
+            LOG.info(String.format("Added record to response %s", process.toString()));
+            result.add(process);
+        }
+        /*
         for (ProcessDefinition processDef : resultProcessDefinitionList){
             Map<String, String> process = new HashMap<>();
             process.put("sID", processDef.getKey());
             process.put("sName", processDef.getName());
             LOG.info(String.format("Added record to response %s", process.toString()));
             result.add(process);
-        }
+        }*/
 
+        
         return result;
     }
 
-    private List<ProcessDefinition> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> aProcessDefinition) {
+    private List<ProcessInfoShortVO> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> aProcessDefinition) {
 
         List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
 
@@ -1351,7 +1370,42 @@ public class ActionTaskService {
                 aProcessDefinition_Return.add(oProcessDefinition);
             }
         }
-        return aProcessDefinition_Return;
+        
+        
+        List<ProcessInfoShortVO> aProcessInfoShortVO = new LinkedList();
+        
+        for (ProcessDefinition processDef : aProcessDefinition_Return){
+            ProcessInfoShortVO oProcessInfoShortVO=new ProcessInfoShortVO();
+            oProcessInfoShortVO.setsID(processDef.getKey());
+            oProcessInfoShortVO.setsName(processDef.getName());
+            aProcessInfoShortVO.add(oProcessInfoShortVO);
+            /*
+            Map<String, String> process = new HashMap<>();
+            process.put("sID", processDef.getKey());
+            process.put("sName", processDef.getName());
+            LOG.info(String.format("Added record to response %s", process.toString()));
+            result.add(process);*/
+        }
+
+        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getSubjectRightBPs(sLogin);
+        LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
+
+        if (aResSubjectRightBPVO != null) {
+            for(SubjectRightBPVO oSubjectRightBPVO : aResSubjectRightBPVO){
+                //aProcessDefinition_Return.add(oSubjectRightBPVO.getoSubjectRightBP().getsID_BP() );
+                ProcessInfoShortVO oProcessInfoShortVO=new ProcessInfoShortVO();
+                oProcessInfoShortVO.setsID(oSubjectRightBPVO.getoSubjectRightBP().getsID_BP());
+                oProcessInfoShortVO.setsName(oSubjectRightBPVO.getsName_BP());
+                aProcessInfoShortVO.add(oProcessInfoShortVO);
+                
+                
+            }
+        }
+        
+        
+        //return aProcessDefinition_Return;
+        return aProcessInfoShortVO;
+        
     }
 
     private Set<String> getGroupsByProcessDefinition(ProcessDefinition oProcessDefinition) {
@@ -1365,9 +1419,9 @@ public class ActionTaskService {
     private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> aGroup, Set<String> asProcessGroupMask){
         for (Group oGroup : aGroup) {
             for (String sProcessGroupMask : asProcessGroupMask) {
-                if (sProcessGroupMask.contains("${")) {
+                /*if (sProcessGroupMask.contains("${")) {
                     sProcessGroupMask = sProcessGroupMask.replaceAll("\\$\\{?.*}", "(.*)");
-                }
+                }*/
                 if (oGroup.getId().matches(sProcessGroupMask)) {
                     return true;
                 }
@@ -2544,9 +2598,13 @@ public class ActionTaskService {
         List<ProcessDefinition> aBP_Task = new LinkedList<>();
         aBP_Task.add(BP_Task);
 
-        List<ProcessDefinition> result = getAvailabilityProcessDefinitionByLogin(sLogin, aBP_Task);
+        //List<ProcessDefinition> result = getAvailabilityProcessDefinitionByLogin(sLogin, aBP_Task);
 
-        if (CollectionUtils.isNotEmpty(result)){
+        List<ProcessInfoShortVO> aProcessInfoShortVO = new LinkedList<>();
+            aProcessInfoShortVO = getAvailabilityProcessDefinitionByLogin(sLogin, aBP_Task);
+        
+        //if (CollectionUtils.isNotEmpty(result)){
+        if (CollectionUtils.isNotEmpty(aProcessInfoShortVO)){
             return true;
         }
 
