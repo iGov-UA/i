@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_GetInfo_Common_1148" name="Надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 04.10.2016, id=1554</documentation>
+    <documentation>Смоктій К.В. Последние правки: 02.03.2017, id=1554</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто, де отримували довідку ВПО" type="select" default="0" required="true"></activiti:formProperty>
@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAdressPropiska" name="Реєстраційна адреса (по паспорту)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressFact" name="Фактична адреса проживання (перебування)" type="string" required="true"></activiti:formProperty>
@@ -21,11 +21,11 @@
           <activiti:value id="sEnumElement_Yes" name="Так, є файл з описом запиту"></activiti:value>
           <activiti:value id="sEnumElement_No" name="Ні, немає файлу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFile_Question" name="Файл з описом запиту" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Documents" name="Копія документів, що стосуються запиту" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Question" name="Файл з описом запиту; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Documents" name="Копія документів, що стосуються запиту; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -62,7 +62,7 @@
           <activiti:value id="reject" name="Відмовити у розгляді звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="Внесіть, будь ласка, відповідь щодо запиту, яку буде надіслано громадянину" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину" type="file" default=" " ></activiti:formProperty>
+        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину; ;bNew=true" type="file" default=" " ></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -71,12 +71,10 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Question" name="Файл з описом запиту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Documents" name="Копія документів, що стосуються запиту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Question},${nFile_Documents}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -93,8 +91,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Звернення [sID_Order].&lt;br /&gt;
-          	[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -111,19 +108,21 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>
-[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;br /&gt;
+				Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
+				&lt;br /&gt;
+				Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
+				${sNameOrgan}&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -148,21 +147,24 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Відхилено звернення на тему: Надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;br /&gt;
+				На жаль, Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, відхилено.&lt;/p&gt;
+				&lt;p&gt;Причина в наступному:&lt;/p&gt;
+				&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
+				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+				${sNameOrgan}&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan},&lt;br/&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -187,22 +189,25 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Перевірено звернення на тему: Надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, успішно перевірено.&lt;br /&gt;
-&lt;br /&gt;
-&lt;p&gt;Коментар чиновника:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;br /&gt;
+				Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, успішно перевірено.&lt;br /&gt;
+				&lt;br /&gt;
+				&lt;p&gt;Коментар чиновника:&lt;/p&gt;
+				&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
+				&lt;br /&gt;
+				${sNameOrgan}&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan},&lt;br/&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>

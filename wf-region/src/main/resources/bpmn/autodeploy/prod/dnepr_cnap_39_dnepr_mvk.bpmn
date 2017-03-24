@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_39_dnepr_mvk" name="Копії рішень міської (селищної) ради про надання дозволу на розроблення проекту відведення земельної ділянки" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 11.01.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 22.03.2017</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -102,7 +102,7 @@
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації зверення у форматі ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали співробітника, що опрацював звернення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень ЦНАП" type="invisible"></activiti:formProperty>
@@ -183,12 +183,7 @@
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="docTyp" name="Тип очіківаного документу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_39_dnepr_mvk_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${rishen}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask3" name="УКРПОШТА" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
@@ -234,19 +229,21 @@
           <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-							    &lt;p&gt;
-							    Ваше звернення [sID_Order] щодо копії рішень міської ради успішно зареєстроване.&lt;br&gt;
-								Для того щоб закінчити процедуру Вам необхідно буде прийти (після підтвердження виготовлення копії рішення) за адресою: ${sAddress}&lt;br&gt;
-								З собою потрібно мати документ, що посвідчує особу.&lt;br&gt;
-								Графік прийому громадян:&lt;br&gt;
-								${sWorkTime}
-								&lt;/p&gt;
-								[pattern/mail/_common_signature_start.html]
-								Дніпровська міська рада,&lt;br&gt;
- 								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          [pattern/mail/new_design/_common_header.html]
+          [pattern/mail/new_design/_common_content_start.html]
+			&lt;p&gt;
+				Ваше звернення [sID_Order] щодо копії рішень міської ради успішно зареєстроване.&lt;br&gt;
+				Для того щоб закінчити процедуру Вам необхідно буде прийти (після підтвердження виготовлення копії рішення) за адресою: ${sAddress}&lt;br&gt;
+				З собою потрібно мати документ, що посвідчує особу.&lt;br&gt;
+				Графік прийому громадян:&lt;br&gt;
+				${sWorkTime}
+			&lt;/p&gt;	
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				Дніпровська міська рада,&lt;br&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -275,18 +272,20 @@
           <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської ради (необхідно сплатити послуги Укрпошти)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
-							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-							    &lt;p&gt;
-							    Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].&lt;br&gt;
-								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти.&lt;br&gt;
-								${sSumNote}.&lt;br&gt;
-								[paymentButton_LiqPay]
-								&lt;/p&gt;
-								[pattern/mail/_common_signature_start.html]
-								Дніпровська міська рада,&lt;br&gt;
- 								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer_with_payment.html]</activiti:expression>
+          <activiti:expression>
+          [pattern/mail/new_design/_common_header.html]
+          [pattern/mail/new_design/_common_content_start.html]
+			&lt;p&gt;
+				Ваш запит був успішно зареєстрований у нашій системі №[sID_Order].&lt;br&gt;
+				Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти.&lt;br&gt;
+				${sSumNote}.&lt;br&gt;
+				[paymentButton_LiqPay]
+			&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				Дніпровська міська рада,&lt;br&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -325,16 +324,19 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		На жаль, Ви не сплатили за послугу, тому не можемо надіслати Вам листа з копією рішення міської ради.&lt;br&gt; 
-                              		Якщо потрібно, Ви можете подати ще одну заявку на порталі &lt;a href="igov.org.ua"&gt;igov.org.ua&lt;/a&gt; 
-                              		&lt;/p&gt;
-                              		[pattern/mail/_common_signature_start.html]
-									Дніпровська міська рада,&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                	На жаль, Ви не сплатили за послугу, тому не можемо надіслати Вам листа з копією рішення міської ради.&lt;br&gt; 
+                	Якщо потрібно, Ви можете подати ще одну заявку на порталі &lt;a href="igov.org.ua"&gt;igov.org.ua&lt;/a&gt; 
+                &lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+				Дніпровська міська рада,&lt;br&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -365,23 +367,25 @@
           <activiti:string><![CDATA[Опрацьовано звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Копії рішень міської ради була надіслана Вам за адресою:&lt;br&gt;
-                              		${sPostAddress}.&lt;br&gt; 
-                              		Тип відправлення - enum{[asTypeMail]}.
-                              		&lt;/p&gt;
-                              		&lt;p&gt;
-                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br&gt;
-                              		Дякуємо.
-									&lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									Дніпровська міська рада,&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                	Копії рішень міської ради була надіслана Вам за адресою:&lt;br&gt;
+                	${sPostAddress}.&lt;br&gt; 
+                	Тип відправлення - enum{[asTypeMail]}.
+                &lt;/p&gt;
+                &lt;p&gt;
+                	Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br&gt;
+                 	Дякуємо.
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+				Дніпровська міська рада,&lt;br&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
@@ -411,16 +415,19 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		На жаль, не можемо оформити Вам копії рішень міської ради.&lt;br&gt; 
-                              		Причина: ${sDecisionComment}.
-                              		&lt;/p&gt;
-                              		[pattern/mail/_common_signature_start.html]
-									Дніпровська міська рада,&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+ 			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                	На жаль, не можемо оформити Вам копії рішень міської ради.&lt;br&gt; 
+                	Причина: ${sDecisionComment}.
+                &lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+				Дніпровська міська рада,&lt;br&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -518,18 +525,26 @@ execution.setVariable('docTyp', per2)
           <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        На жаль, змушені Вам відмовити в реєстрації звернення [sID_Order].
-                                    &lt;/p&gt;
-									&lt;p&gt;
-									   	Причина в наступному:&lt;br&gt;
-                                    	${comment2}
-									&lt;/p&gt;
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan}.&lt;/p&gt;   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                	На жаль, змушені Вам відмовити в реєстрації звернення [sID_Order].&lt;br /&gt;
+					Причина в наступному:&lt;br&gt;
+              		${comment2}&lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -562,27 +577,31 @@ execution.setVariable('docTyp', per2)
           <activiti:string><![CDATA[Опрацьовано звернення на тему: Копії рішень міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                             		Ваша копія рішень міської ради готова (звернення [sID_Order]).
-                             		&lt;/p&gt;
-									&lt;p&gt;
-                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати копію особисто під підпис у ЦНАП.&lt;br&gt;
-									При собі треба мати:&lt;br&gt;
-									1. Документ, що посвідчує особу.&lt;br&gt;
-									2. Для уповоноваженої особи - довіренність.&lt;br&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-                             		Отримати документ можна:&lt;br&gt;
-                             		${sAddress}&lt;br&gt;
-                             		${sWorkTime}&lt;br&gt;
-									${sPhoneOrgan}&lt;br&gt;&lt;/p&gt;		
-                            		[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                	Ваша копія рішень міської ради готова (звернення [sID_Order]).
+                &lt;/p&gt;
+				&lt;p&gt;
+                	Ви або уповноважена Вами особа (при наявності довіреності) можете отримати копію особисто під підпис у ЦНАП.&lt;br&gt;
+					При собі треба мати:&lt;br&gt;
+					1. Документ, що посвідчує особу.&lt;br&gt;
+					2. Для уповоноваженої особи - довіренність.&lt;br&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+                	Отримати документ можна:&lt;br&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen}</activiti:expression>
