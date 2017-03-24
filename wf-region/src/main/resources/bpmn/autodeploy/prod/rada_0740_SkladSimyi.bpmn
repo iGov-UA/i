@@ -24,7 +24,7 @@
           <activiti:value id="sOther" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sKud" name="Додайте свій варіант необхідності довідки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asBuilding" name="Чи потрібні дані про квартиру/будинок?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum">
+        <activiti:formProperty id="asBuilding" name="Чи потрібні дані про квартиру/будинок?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -93,9 +93,7 @@
         <activiti:formProperty id="Doc8" name="№, серія паспорта або свідоцтва про народження" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nPasport" name="Скан-копія паспорту з пропискою;Якщо декілька сторінок завантажте ZIP-архівом;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFlag" name="Флаг переведення; ;bVisible=false" type="string" default="false"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса державного органу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Графік роботи державного органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Pasportyst" name="в прінтформу 1; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Nachalnyk" name="в прінтформу 2; ;bVisible=false" type="string"></activiti:formProperty>
@@ -118,7 +116,7 @@
           <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[${sMailClerk}]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: Довідка про склад сім'ї]]></activiti:string>
@@ -284,7 +282,7 @@ ${sNameOrgan}<br>
     <sequenceFlow id="flow24" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" name="${asDecide=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sAccept'&&sFlag=='true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sAccept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="E-Mail про візит з чергою" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -331,7 +329,7 @@ ${sNameOrgan},<br>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="exclusivegateway1" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sAccept'&&sID_Public_SubjectOrganJoin!='riv_rivneT'&&sFlag=='false'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sAccept'&&sID_Public_SubjectOrganJoin!='riv_rivneT'&&visitDay==''}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask10" name="E-Mail про візит без черги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -351,7 +349,7 @@ ${sNameOrgan},<br>
 Спеціалісти органу місцевого самоврядування успішно опрацювли Вашу заявку.<br>
 Для того щоб закінчити процедуру отримання довідки про склад сім'ї необхідно звернутись до уповноваженого органу:<br>
 ${sAddress}<br>
-${sWorkTime}.
+${sVizitData}.
 </p>
 <p>
 <b>Необхідні документи, які треба принести для отримання довідки про склад сім'ї:</b><br>
@@ -374,7 +372,7 @@ ${sNameOrgan},<br>
     </serviceTask>
     <sequenceFlow id="flow29" sourceRef="servicetask10" targetRef="usertask2_red"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="exclusivegateway1" targetRef="servicetask11">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sAccept'&&sID_Public_SubjectOrganJoin=='riv_rivneT'&&sFlag=='false'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sAccept'&&sID_Public_SubjectOrganJoin=='riv_rivneT'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask11" name="E-Mail про візит Рівне" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
