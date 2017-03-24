@@ -273,15 +273,6 @@ ${sNameOrgan}<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow33" sourceRef="exclusivegateway3" targetRef="endevent3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay==''}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow32" sourceRef="exclusivegateway3" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay!=''}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask8" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow24" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" name="${asDecide=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sAccept'&&sFlag=='true'}]]></conditionExpression>
@@ -564,14 +555,13 @@ ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
-[pattern/mail/new_design/_common_feedback.html][pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow22" sourceRef="servicetask7" targetRef="servicetask9"></sequenceFlow>
-    <serviceTask id="servicetask9" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow25" sourceRef="servicetask9" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="servicetask7" targetRef="endevent4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0740_SkladSimyi">
     <bpmndi:BPMNPlane bpmnElement="rada_0740_SkladSimyi" id="BPMNPlane_rada_0740_SkladSimyi">
@@ -602,12 +592,6 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="71.0" width="105.0" x="709.0" y="215.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="740.0" y="320.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="804.0" y="308.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="839.0" y="379.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -634,9 +618,6 @@ ${sNameOrgan},<br>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="61.0" width="105.0" x="665.0" y="545.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="804.0" y="548.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
@@ -670,20 +651,8 @@ ${sNameOrgan},<br>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="761.0" y="286.0"></omgdi:waypoint>
-        <omgdi:waypoint x="856.0" y="379.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="760.0" y="360.0"></omgdi:waypoint>
-        <omgdi:waypoint x="760.0" y="396.0"></omgdi:waypoint>
-        <omgdi:waypoint x="839.0" y="396.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="780.0" y="340.0"></omgdi:waypoint>
-        <omgdi:waypoint x="804.0" y="335.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="856.0" y="363.0"></omgdi:waypoint>
+        <omgdi:waypoint x="814.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="856.0" y="251.0"></omgdi:waypoint>
         <omgdi:waypoint x="856.0" y="379.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -741,10 +710,7 @@ ${sNameOrgan},<br>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="770.0" y="575.0"></omgdi:waypoint>
-        <omgdi:waypoint x="804.0" y="575.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="856.0" y="548.0"></omgdi:waypoint>
+        <omgdi:waypoint x="857.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="856.0" y="531.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
