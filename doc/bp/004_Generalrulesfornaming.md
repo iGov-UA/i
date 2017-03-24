@@ -62,3 +62,5 @@ eco_0521
 * "_yellow" - подкрашивать строку - желтым цветом (класс: "bg_yellow")
 * "_green" - подкрашивать строку - зеленым цветом (класс: "bg_green")
 * "usertask1" - подкрашивать строку - салатовым цветом (класс: "bg_first")
+* ![4_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_2.jpg)
+* ![4_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_3.JPG)

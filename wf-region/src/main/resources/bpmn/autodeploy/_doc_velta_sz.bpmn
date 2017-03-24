@@ -28,6 +28,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Службова записка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Емейл, на який Ви отримаєте рішення після розгяду записки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
@@ -61,12 +62,16 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
+          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
+          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        
         <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення стосовно пропозиції" type="enum" required="true">
           <activiti:value id="sReject" name="відмовити у розгляді"></activiti:value>
@@ -74,15 +79,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_velta_sz.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть відповідальний підрозділ" type="enum">
-          <activiti:value id="sJustice" name="Юридичний"></activiti:value>
-          <activiti:value id="sFinance" name="Фінансовий"></activiti:value>
-          <activiti:value id="sFinJust" name="Юридичний та Фінансовий"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
-          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
-          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersUser1" name="Маркер видимости" type="markers" default="${markerService.loadFromFile('velta/_doc_velta_sz_ut3.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -131,7 +129,7 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 
-// клонирование прав на утверждающего
+// клонирование прав
 var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_Velta_Answ', 'sTable1', 'step_3')</script>
     </scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
@@ -143,14 +141,18 @@ var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sResult" name="Результат аналізу пропозиції" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="sName_SubjectRole" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sResultJustice" name="Результат аналізу пропозиції (Юридичний відділ)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sResultFinance" name="Результат аналізу пропозиції (Фінансовий відділ)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sResultTech" name="Результат аналізу пропозиції (Технічний відділ)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
