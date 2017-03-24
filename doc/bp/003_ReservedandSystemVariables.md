@@ -80,7 +80,9 @@
 ## Автокомплиты
 * **sObjectCustoms** - select - Товар 
 * **sID_UA_ObjectCustoms** - Код товара (заполнится автоматически после выбора в селекте sObjectCustoms)
+* ![3_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_8.JPG)
 * **sCountry** - select - Страна 
+* ![3_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_7.JPG)
 * **sID_UA_Country** - Код страны (заполнится автоматически после выбора в селекте sCountry)
 * **sCurrency** - select - Валюта 
 * **sID_UA_Currenc**y - Код валюти (заполнится автоматически после выбора в селекте sCurrency)
