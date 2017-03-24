@@ -10,6 +10,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть огран, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="asTop" name="Оберіть тему звернення" type="enum" required="true">
           <activiti:value id="sEnumTop1" name="Ремонт ліфта"></activiti:value>
           <activiti:value id="sEnumTop2" name="Підтоплення будинку"></activiti:value>
@@ -33,6 +34,9 @@
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Опишіть суть звернення" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -102,7 +106,7 @@
     </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення в міської ради" activiti:candidateGroups="cnap_mvk_rivn_OstrogT">
+    <userTask id="usertask1" name="Обробка звернення в міської ради" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -130,6 +134,9 @@
           <activiti:value id="sEnumTop17" name="Фінансування робіт ремонту будинків"></activiti:value>
           <activiti:value id="sEnumTop18" name="Інші питання утримання будинків"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="До якого державного органу звертається заявник" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Суть звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка звернення" type="enum">
@@ -169,9 +176,9 @@
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
 &lt;p&gt;${comment}&lt;/p&gt;
 &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-Телефон для довідок: (03654) 2-22-60&lt;br /&gt;
+&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Острозька міська рада,&lt;br /&gt;
+${sNameOrgan},&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -215,7 +222,7 @@
 &lt;p&gt;&lt;/p&gt;
 &lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Острозька міська рада,&lt;br /&gt;
+${sNameOrgan},&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
