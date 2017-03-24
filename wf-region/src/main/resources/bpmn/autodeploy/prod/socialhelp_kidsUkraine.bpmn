@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="socialhelp_kidsUkraine" name="Призначення соціальної допомоги при народженні дитини (ЕЦП)" isExecutable="true">
+  <process id="socialhelp_kidsUkraine" name="Допомога при народженні дитини (ЕЦП)" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
-        <activiti:formProperty id="infoECP" name="Зверніть увагу" type="label" default="Для отримання &lt;b&gt;рішення щодо призначення допомоги &lt;/b&gt;Вам буде необхідно підписати заяву Електронно-цифровим підписом. &lt;br&gt;&lt;br&gt;&lt;b&gt;У разі відсутності ЕЦП на заяві, Вам буде необхідно відвідати УПСЗН після первинної перевірки &lt;/b&gt;даних і особисто підписати Заяву для подальшого розгляду.&lt;br&gt;&lt;br&gt; Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="info1" name=" " type="label" default="Для отримання &lt;b&gt;рішення щодо призначення допомоги &lt;/b&gt;Вам буде необхідно підписати заяву Електронно-цифровим підписом. &lt;br&gt;&lt;br&gt;&lt;b&gt;У разі відсутності ЕЦП на заяві, Вам буде необхідно відвідати УПСЗН після первинної перевірки &lt;/b&gt;даних і особисто підписати Заяву для подальшого розгляду.&lt;br&gt;&lt;br&gt; Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="markersStyle_1" name="Маркер стилю" type="markers" default="${markerService.loadFromFile('soczah/upszn_format_label.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -15,11 +16,11 @@
         <activiti:formProperty id="email" name="Ваша електронна адреса; на неї Ви будете отримувати повідомлення про обробку Вашої заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress1" name="Ваша адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Ваша адреса проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="label1" name="Зверніть увагу" type="label" default="Якщо звернення про призначення допомоги подається за місцем фактичного проживання, а не реєстрації, то ОБОВ'ЯЗКОВО необхідно додати довідку про неотримання такої допомоги за місцем реєстрації. Замовити таку довідку можливо також  &lt;a href=&quot;https://igov.org.ua/service/786/general&quot;&gt;онлайн на iGov &lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="nNoHelp" name="Довідка про неодержання допомоги при народженні дитини в органах соціального захисту населення за місцем реєстрації" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="inn_scan" name="Завантажте копію довідки про присвоєння ІПН; індивідуальний податковий номер" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="birthdocument_scan" name="Завантажте скановану копію свідоцтва про народження Вашої дитини" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="info2" name=" " type="label" default="Якщо звернення про призначення допомоги подається за місцем фактичного проживання, а не реєстрації, то ОБОВ'ЯЗКОВО необхідно додати довідку про неотримання такої допомоги за місцем реєстрації. Замовити таку довідку можливо також  &lt;a href=&quot;https://igov.org.ua/service/786/general&quot;&gt;онлайн на iGov &lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nNoHelp" name="Довідка про неодержання допомоги при народженні дитини в органах соціального захисту населення за місцем реєстрації; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="inn_scan" name="Копія довідки про присвоєння ІПН; індивідуальний податковий номер;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="birthdocument_scan" name="Сканована копія свідоцтва про народження Вашої дитини; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="transfer_type" name="Прошу в разі призначення допомоги кошти перераховувати; оберіть зручний для Вас спосіб перерахування коштів" type="enum" required="true">
           <activiti:value id="attr1_post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="attr2_bank" name="на рахунок у банку"></activiti:value>
@@ -29,13 +30,13 @@
         <activiti:formProperty id="bank_mfo" name="МФО банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="string"></activiti:formProperty>
         <activiti:formProperty id="bank_okpo" name="ЄДРПОУ банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="string"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер Вашого рахунку/картки в банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами рахунку;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами рахунку;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="вибір варіанту отримання грошей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sTransfer&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sTransfer] == 'attr1_post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;bank_mfo&quot;,&quot;bank_okpo&quot;,&quot;bank_account&quot;,&quot;bankticket&quot;],&quot;asID_Field&quot;:{&quot;sTransfer&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sTransfer] == 'attr2_bank'&quot;},&quot;RequiredFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;ECP&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ecp_yes'&quot;},&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;ECP&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ecp_yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="ECP" name="Чи подаєте звернення з ЕЦП або без ЕЦП?" type="enum" required="true">
           <activiti:value id="ecp_yes" name="з ЕЦП (для отримання електронної послуги про призначення допомги"></activiti:value>
           <activiti:value id="ecp_no" name="без ЕЦП (погоджуєтесь на особистий візит після перевірки правильності даних)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/UPSZN/socialhelp_kids_zayava.html"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
@@ -126,24 +127,23 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="bank_mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_okpo" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку перерахування коштів" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
-          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення допомоги)"></activiti:value>
-          <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
-        </activiti:formProperty>
+        
         <activiti:formProperty id="comment1" name="Коментар до заявки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="decision_step1" name="Рішення етап 1" type="enum" required="true">
           <activiti:value id="attr1_ok" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="sign" name="запросити громадянина до підписання (якщо заявка без ЕЦП)"></activiti:value>
           <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина (обов'язково впишіть коментар вище)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/UPSZN/socialhelp_kids_zayava.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/UPSZN/socialhelp_kids_zayava.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nNoHelp" name="Довідка про неодержання допомоги при народженні дитини в органах соціального захисту населення за місцем реєстрації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="inn_scan" name="Копія довідки про присвоєння ІПН; індивідуальний податковий номер;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="birthdocument_scan" name="Сканована копія свідоцтва про народження Вашої дитини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами рахунку;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку) ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file"  writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankticket},${birthdocument_scan},${inn_scan},${bankId_scan_passport},${form_signed},${nNoHelp}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -244,9 +244,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="adress2" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса; на неї Ви будете отримувати повідомлення про обробку Вашої заяви" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="inn_scan" name="Завантажте копію довідки про присвоєння ІПН; індивідуальний податковий номер" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="birthdocument_scan" name="Завантажте скановану копію свідоцтва про народження Вашої дитини" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="transfer_type" name="Прошу в разі призначення допомоги кошти перераховувати; оберіть зручний для Вас спосіб перерахування коштів" type="enum" writable="false">
           <activiti:value id="attr1_post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="attr2_bank" name="на рахунок у банку"></activiti:value>
@@ -256,16 +253,11 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="bank_mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_okpo" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами соціального рахунку" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment1" name="Коментар до заяви на етапі 1" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_step1" name="Рішення на етапі 1" type="enum" writable="false">
           <activiti:value id="attr1_ok" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="sign" name="запросити громадянина до підписання (якщо заявка без ЕЦП)"></activiti:value>
           <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина (обов'язково впишіть коментар вище)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
-          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення допомоги)"></activiti:value>
-          <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment2" name="Коментар до заяви на етапі 2" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="decision_step2" name="Рішення до заяви на етапі 2" type="enum" required="true">
@@ -274,12 +266,13 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="document" name="Сканована копія рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html]" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankticket},${bankId_scan_passport},${inn_scan},${birthdocument_scan},${form_signed},${nNoHelp}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="nNoHelp" name="Довідка про неодержання допомоги при народженні дитини в органах соціального захисту населення за місцем реєстрації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="inn_scan" name="Копія довідки про присвоєння ІПН; індивідуальний податковий номер;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="birthdocument_scan" name="Сканована копія свідоцтва про народження Вашої дитини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами рахунку;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку) ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file"  writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>

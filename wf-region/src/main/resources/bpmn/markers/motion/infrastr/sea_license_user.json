@@ -1,18 +1,39 @@
 {
 	"motion" : {
 		"ShowFieldsOnCondition_1" : {
+			"aField_ID" : ["sVlasnPIB"], 
+			"asID_Field" : {
+				"sReason" : "asOwnerType"
+			}, 
+			"sCondition" : "[sReason] == 'фізична особа-підприємець' || [sReason] == 'sMan'"
+		},
+		"ShowFieldsOnCondition_2" : {
+			"aField_ID" : ["sCompPIB"], 
+			"asID_Field" : {
+				"sReason" : "asOwnerType"
+			}, 
+			"sCondition" : "[sReason] == 'юридична особа' || [sReason] == 'sCompany'"
+		},
+		"ShowFieldsOnCondition_3" : {
 			"aField_ID" : ["sDate"], 
 			"asID_Field" : {
 				"sReason" : "asDecide"
 			}, 
-			"sCondition" : "[sReason]=='sAccept'"
+			"sCondition" : "[sReason]=='sAccept' || [sReason] == 'Повідимити громадянина, що заявка прийнята до опрацювання'"
 		},
 		"RequiredFieldsOnCondition_1" : {
 			"aField_ID" : ["sComment"], 
 			"asID_Field" : {
 				"sReason" : "asDecide"
 			}, 
-			"sCondition" : "[sReason]=='sReject'"
+			"sCondition" : "[sReason]=='sReject' || [sReason] == 'Повідомити громадянина про відмову в наданні послуги'"
+		},
+		"RequiredFieldsOnCondition_2" : {
+			"aField_ID" : ["nBill"], 
+			"asID_Field" : {
+				"sReason" : "asLicense"
+			}, 
+			"sCondition" : "[sReason]== 'Комісія вирішила надати ліцензію' || [sReason] == 'sLicenseOk'"
 		},
 		"ValuesFieldsOnCondition_1" : {
 			"aField_ID" : ["sComment"], 
@@ -20,7 +41,7 @@
 			"asID_Field" : {
 				"sReason" : "asDecide"
 			}, 
-			"sCondition" : "[sReason]=='sAccept'"
+			"sCondition" : "[sReason]=='sAccept' || [sReason] == 'Повідимити громадянина, що заявка прийнята до опрацювання'"
 		}
 	}, 
 	"attributes" : {

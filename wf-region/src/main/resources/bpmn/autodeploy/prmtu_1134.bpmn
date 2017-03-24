@@ -79,9 +79,9 @@
         <activiti:formProperty id="sAnswer" type="label" default="Для отримання інформації по членству в ПРМТУ зверніться за номером +38 (0482) 42-99-02"></activiti:formProperty>
         <activiti:formProperty id="sQuestionPRMTU" name="Напишіть своє запитання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте їх у pdf-файл або zip архів"></activiti:formProperty>
-        <activiti:formProperty id="nDocContract" name="Копія або фото контракту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocPassp" name="Копія або фото посвідчення особи моряка;обов'язково першу сторінку та сторінку з припискою до судна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocOther" name="Інші документи, які можуть допомогти при розгляді звернення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocContract" name="Копія або фото контракту; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocPassp" name="Копія або фото посвідчення особи моряка;обов'язково першу сторінку та сторінку з припискою до судна;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocOther" name="Інші документи, які можуть допомогти при розгляді звернення; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/prmtu_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Електронна пошта ПРМТУ" type="string"></activiti:formProperty>
       </extensionElements>
@@ -231,7 +231,10 @@
         <activiti:formProperty id="sEmbassyMail" name="Вкажіть електронну адресу дипломатичного представництва" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCheckMail" name="Вкажіть електронну адресу для перевірки членства" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/prmtu_1.html]" type="invisible" default="Дані моряка" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/prmtu_1.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/prmtu_1.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocContract" name="Копія або фото контракту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocPassp" name="Копія або фото посвідчення особи моряка; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDocOther" name="Інші документи, які можуть допомогти при розгляді звернення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
