@@ -41,6 +41,15 @@ public enum Form {
         public Dimension getDimension() {
             return new Dimension("100", "300");
         }
+    },
+    FILE_HTML {
+        /**
+         * Возвращает размер текстового окна для ввода html
+         */
+        @Override
+        public Dimension getDimension() {
+            return new Dimension("100", "300");
+        }
     };
 
     /**
