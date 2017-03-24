@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_184_get_copy" name="Видача дублікату дозволу на розміщення зовнішньої реклами" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 05.01.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 19.03.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання послуги" type="select" default="0" required="true"></activiti:formProperty>
@@ -14,7 +14,7 @@
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -40,8 +40,8 @@
         <activiti:formProperty id="sINN_fiz" name="ІПН фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Original_Dozvolu" name="Копія непридатного для використання дозволу на розміщення зовнішньої реклами" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Original_Dozvolu" name="Копія непридатного для використання дозволу на розміщення зовнішньої реклами; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="Керівнику якого робочого органу" type="invisible" default="Начальнику управління архітектури та містобудування – головному архітектору міста"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -50,7 +50,7 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_get_copy_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name=" " type="file"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -102,13 +102,12 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_get_copy_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_184_Get_Copy_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_184_Get_Copy_print.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_184_Get_Copy_print.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Original_Dozvolu" name="Копія непридатного для використання дозволу на розміщення зовнішньої реклами; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Roztashuvannya_M1_500},${nFile_Roztashuvannya},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_PravoVlasnistReklama},${nFile_Original_Dozvolu},${form_signed},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_Original_DozvoluZP}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -156,17 +155,16 @@
           <activiti:value id="decision_2_2" name="Відмовлено у видачі дублікату дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment_2" name="У разі необхідності внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Rishen" name="Завантажте дублікат дозволу або відмову у видачі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Rishen" name="Завантажте дублікат дозволу або відмову у видачі; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_get_copy_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_184_Get_Copy_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Roztashuvannya_M1_500},${nFile_Roztashuvannya},${nFile_AdvertLicense},${nFile_PravoVlasnist},${nFile_PravoVlasnistReklama},${nFile_Original_Dozvolu},${form_signed},${nFile_Zayava_EZP},${nFile_authorizedDocsZP},${nFile_Original_DozvoluZP}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Original_Dozvolu" name="Копія непридатного для використання дозволу на розміщення зовнішньої реклами; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_184_Get_Copy_print.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask5" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -181,7 +179,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -201,20 +199,26 @@
           <activiti:expression>${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо видачі дублікату дозволу на розміщення зовнішньої реклами перевірено і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-&lt;br /&gt;
-Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          [pattern/mail/new_design/_common_header.html]
+          [pattern/mail/new_design/_common_content_start.html]
+			&lt;p&gt;
+				Ваше звернення [sID_Order] щодо видачі дублікату дозволу на розміщення зовнішньої реклами перевірено і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+				&lt;br /&gt;
+				Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
+				&lt;br /&gt;
+				Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
+				&lt;br /&gt;
+				${sNameOrgan},&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			&lt;/p&gt;	
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br /&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -236,21 +240,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Відхилено звернення на тему: видача дублікату дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо видачі дублікату дозволу на розміщення зовнішньої реклами відхилено.&lt;br /&gt;
-&lt;br /&gt;
-Причина відмови: ${sComment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо видачі дублікату дозволу на розміщення зовнішньої реклами відхилено.&lt;br /&gt;
+					&lt;br /&gt;
+					Причина відмови: ${sComment_1}&lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;					
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -278,25 +287,30 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${nFile_Rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b &gt;&lt;br /&gt;&lt;br /&gt;
-${sComment_2}&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі (звернення [sID_Order]).&lt;br /&gt;
-&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіреність.&lt;br /&gt;
-3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді.&lt;br /&gt;
-4. Оригінал пошкодженого дозволу на розміщення зовнішньої реклами (у разі наявності).&lt;br /&gt;
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+ 			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					${sComment_2}&lt;br /&gt;
+					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі (звернення [sID_Order]).&lt;br /&gt;
+					&lt;br /&gt;
+					При собі треба мати:&lt;br /&gt;
+					1. Документ, що посвідчує особу.&lt;br /&gt;
+					2. Для уповоноваженої особи - довіреність.&lt;br /&gt;
+					3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді.&lt;br /&gt;
+					4. Оригінал пошкодженого дозволу на розміщення зовнішньої реклами (у разі наявності).&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -347,12 +361,23 @@ var per1 = ' '
           <activiti:string><![CDATA[Нове звернення на тему: видача дублікату дозволу на розміщення зовнішньої реклами]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
-Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+ 			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто.&lt;br /&gt;
+					Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br /&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -384,27 +409,31 @@ var per1 = ' '
           <activiti:expression>${nFile_Rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b &gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо видачі дублікату дозволу на розміщення зовнішньої реклами відхилено.&lt;br /&gt;
-&lt;br /&gt;
-Причина відмови: ${sComment_2}&lt;br /&gt;
-
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати це рішення собисто під підпис у ЦНАПі (звернення [sID_Order]).&lt;br /&gt;
-&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Для уповоноваженої особи - довіреність.&lt;br /&gt;
-3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді.&lt;br /&gt;
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо видачі дублікату дозволу на розміщення зовнішньої реклами відхилено.&lt;br /&gt;
+					&lt;br /&gt;
+					Причина відмови: ${sComment_2}&lt;br /&gt;
+					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати це рішення собисто під підпис у ЦНАПі (звернення [sID_Order]).&lt;br /&gt;
+					&lt;br /&gt;
+					При собі треба мати:&lt;br /&gt;
+					1. Документ, що посвідчує особу.&lt;br /&gt;
+					2. Для уповоноваженої особи - довіреність.&lt;br /&gt;
+					3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді.&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>

@@ -124,7 +124,7 @@ execution.setVariable('sWorkDay', workTime);
     <serviceTask id="servicetask13" name="Не треба було замовляти" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -133,57 +133,56 @@ execution.setVariable('sWorkDay', workTime);
           <activiti:string><![CDATA[Звернення на тему: Отримання довідки про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>
-Ваш запит не буде оброблено, так як ваш будинок знаходиться в районі, який не підключено до системи.<br>
-Також, можливо ваш будинок відноситься до житлово-будівельного кооперативу або приватного сектору.<br>
-Заявку скасовано.<br><br>
-</p>
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+Ваш запит не буде оброблено, так як ваш будинок знаходиться в районі, який не підключено до системи.&lt;br&gt;
+Також, можливо ваш будинок відноситься до житлово-будівельного кооперативу або приватного сектору.&lt;br&gt;
+Заявку скасовано.&lt;br&gt;&lt;br&gt;
+&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,<br>
+Дніпропетровська міська рада,&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    
     <serviceTask id="servicetask10" name="Заяву прийнято" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Заявка про ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Заявка про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо ${sPosluga_name} прийнято в роботу. <br />
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail протягом доби.</p>
-В разі підтвердження можливості надати послугу, Вам буде необхідно оплатити поштову доставку протягом 3х діб.<br />
-Після цього вам надійде лист з довідкою.<br />
-<br />
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;p&gt; Ваше звернення щодо ${sPosluga_name} прийнято в роботу. &lt;br /&gt;
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail протягом доби.&lt;/p&gt;
+В разі підтвердження можливості надати послугу, Вам буде необхідно оплатити поштову доставку протягом 3х діб.&lt;br /&gt;
+Після цього вам надійде лист з довідкою.&lt;br /&gt;
+&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,<br>
+Дніпропетровська міська рада,&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -193,13 +192,13 @@ execution.setVariable('sWorkDay', workTime);
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нова заявка про ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -236,7 +235,7 @@ execution.setVariable('sWorkDay', workTime);
     <serviceTask id="servicetask6" name="особистий візит" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -245,28 +244,28 @@ execution.setVariable('sWorkDay', workTime);
           <activiti:string><![CDATA[Звернення на тему: Отримання довідки про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-Довідка може бути надана!<br>
-Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}<br>
-Заявка через портал дає вам право на позачергове отримання послуги.<br>
-З собою мати документ, що посвідчує особу та підтверджує реєстрацію за вказаною в заявці адресою.<br>
-Графік прийому громадян:<br>
+Довідка може бути надана!&lt;br&gt;
+Для того щоб закінчити процедуру необхідно прийти за адресою: ${sAddress}&lt;br&gt;
+Заявка через портал дає вам право на позачергове отримання послуги.&lt;br&gt;
+З собою мати документ, що посвідчує особу та підтверджує реєстрацію за вказаною в заявці адресою.&lt;br&gt;
+Графік прийому громадян:&lt;br&gt;
 ${sWorkDay}
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,<br>
+Дніпропетровська міська рада,&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -279,7 +278,7 @@ ${sWorkDay}
     <serviceTask id="servicetask7" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -288,33 +287,33 @@ ${sWorkDay}
           <activiti:string><![CDATA[Звернення на тему: Отримання довідки про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
-							    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-							    <p>
-							    Ваш запит №[sID_Order] перевірено, довідку можна надати.<br>
-								Для того щоб закінчити процедуру необхідно протягом двух діб сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)<br>
+          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
+							    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+							    &lt;p&gt;
+							    Ваш запит №[sID_Order] перевірено, довідку можна надати.&lt;br&gt;
+								Для того щоб закінчити процедуру необхідно протягом двух діб сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)&lt;br&gt;
 								[paymentButton_LiqPay]
-								</p>
+								&lt;/p&gt;
 								[pattern/mail/_common_signature_start.html]
-								Дніпропетровська міська рада,<br>
+								Дніпропетровська міська рада,&lt;br&gt;
  								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
+								[pattern/mail/_common_footer_with_payment.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask8" name="Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -323,19 +322,19 @@ ${sWorkDay}
           <activiti:string><![CDATA[Звернення на тему: Отримання довідки про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>
-На жаль, не можемо надіслати Вам листа з довідкою про склад сім'ї.<br> 
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+На жаль, не можемо надіслати Вам листа з довідкою про склад сім'ї.&lt;br&gt; 
 Причина: ${comment}.
-</p>
+&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,<br>
+Дніпропетровська міська рада,&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -365,7 +364,7 @@ execution.setVariable('sCountPayment', src)
     <serviceTask id="servicetask9" name="Несплата" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -374,18 +373,18 @@ execution.setVariable('sCountPayment', src)
           <activiti:string><![CDATA[Звернення на тему: Отримання довідки про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>
-На жаль, Ви не сплатили за послугу, тому не можемо надіслати Вам листа з довідкою про склад сім'ї.<br> 
-Якщо потрібно, Ви можете подати ще одну заявку на порталі <a href="igov.org.ua">igov.org.ua</a> 
-</p>
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+На жаль, Ви не сплатили за послугу, тому не можемо надіслати Вам листа з довідкою про склад сім'ї.&lt;br&gt; 
+Якщо потрібно, Ви можете подати ще одну заявку на порталі &lt;a href="igov.org.ua"&gt;igov.org.ua&lt;/a&gt; 
+&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,<br>
+Дніпропетровська міська рада,&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -424,7 +423,7 @@ execution.setVariable('sCountPayment', src)
     <serviceTask id="servicetask12" name="Довідка готова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -433,27 +432,27 @@ execution.setVariable('sCountPayment', src)
           <activiti:string><![CDATA[Звернення на тему: Отримання довідки про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>
-Ваш запит №[sID_Order] остаточно оброблено. <br>
-Довідка виготовлена і передана Укрпошті для доставки за вказаною вами адресою.<br>
-</p>
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+Ваш запит №[sID_Order] остаточно оброблено. &lt;br&gt;
+Довідка виготовлена і передана Укрпошті для доставки за вказаною вами адресою.&lt;br&gt;
+&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,<br>
+Дніпропетровська міська рада,&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Dovidka peredana Ukrposhti. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Dovidka peredana Ukrposhti. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -483,7 +482,7 @@ execution.setVariable('sCountPayment', src)
     <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -492,17 +491,17 @@ execution.setVariable('sCountPayment', src)
           <activiti:string><![CDATA[Звернення на тему: Отримання довідки про склад сім'ї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>
-Довідка про склад сім'ї була надіслана за вказаною Вами адресою<br>
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+Довідка про склад сім'ї була надіслана за вказаною Вами адресою&lt;br&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-УкрПошта<br>
+УкрПошта&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -517,7 +516,7 @@ execution.setVariable('sCountPayment', src)
     <sequenceFlow id="flow43" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow49" sourceRef="servicetask8" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow49" sourceRef="servicetask8" targetRef="endevent5"></sequenceFlow>
     <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="servicetask12"></sequenceFlow>
     <sequenceFlow id="flow51" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
@@ -547,10 +546,7 @@ execution.setVariable('sCountPayment', src)
         <omgdc:Bounds height="40.0" width="40.0" x="190.0" y="148.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
-        <omgdc:Bounds height="55.0" width="105.0" x="158.0" y="61.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="290.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="158.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="55.0" width="105.0" x="267.0" y="141.0"></omgdc:Bounds>
@@ -560,6 +556,9 @@ execution.setVariable('sCountPayment', src)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="55.0" width="105.0" x="393.0" y="221.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="290.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="105.0" x="393.0" y="363.0"></omgdc:Bounds>
@@ -589,10 +588,10 @@ execution.setVariable('sCountPayment', src)
         <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="641.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="906.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="680.0" y="786.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="554.0" y="986.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="810.0" y="796.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="425.0" y="297.0"></omgdc:Bounds>
@@ -604,13 +603,13 @@ execution.setVariable('sCountPayment', src)
         <omgdc:Bounds height="40.0" width="40.0" x="551.0" y="793.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="302.0" y="373.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="193.0" y="562.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="554.0" y="848.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="618.0" y="796.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="193.0" y="1.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="193.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="660.0" y="300.0"></omgdc:Bounds>
@@ -627,19 +626,19 @@ execution.setVariable('sCountPayment', src)
         <omgdi:waypoint x="465.0" y="317.0"></omgdi:waypoint>
         <omgdi:waypoint x="519.0" y="317.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="529.0" y="271.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="63.0" x="529.0" y="271.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="230.0" y="168.0"></omgdi:waypoint>
         <omgdi:waypoint x="267.0" y="168.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="279.0" y="121.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="50.0" x="279.0" y="128.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="210.0" y="148.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="116.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
         <omgdi:waypoint x="425.0" y="317.0"></omgdi:waypoint>
@@ -652,7 +651,7 @@ execution.setVariable('sCountPayment', src)
         <omgdi:waypoint x="445.0" y="337.0"></omgdi:waypoint>
         <omgdi:waypoint x="445.0" y="363.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="460.0" y="345.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="77.0" x="460.0" y="345.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
@@ -683,12 +682,12 @@ execution.setVariable('sCountPayment', src)
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="319.0" y="552.0"></omgdi:waypoint>
-        <omgdi:waypoint x="319.0" y="408.0"></omgdi:waypoint>
+        <omgdi:waypoint x="267.0" y="579.0"></omgdi:waypoint>
+        <omgdi:waypoint x="228.0" y="579.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="571.0" y="833.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="848.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="813.0"></omgdi:waypoint>
+        <omgdi:waypoint x="618.0" y="813.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="445.0" y="688.0"></omgdi:waypoint>
@@ -711,20 +710,20 @@ execution.setVariable('sCountPayment', src)
         <omgdi:waypoint x="445.0" y="297.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="319.0" y="345.0"></omgdi:waypoint>
-        <omgdi:waypoint x="319.0" y="373.0"></omgdi:waypoint>
+        <omgdi:waypoint x="267.0" y="317.0"></omgdi:waypoint>
+        <omgdi:waypoint x="228.0" y="317.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="445.0" y="770.0"></omgdi:waypoint>
         <omgdi:waypoint x="445.0" y="786.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="571.0" y="961.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="986.0"></omgdi:waypoint>
+        <omgdi:waypoint x="785.0" y="813.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="813.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="571.0" y="883.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="906.0"></omgdi:waypoint>
+        <omgdi:waypoint x="653.0" y="813.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="813.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
         <omgdi:waypoint x="445.0" y="466.0"></omgdi:waypoint>
@@ -743,8 +742,8 @@ execution.setVariable('sCountPayment', src)
         <omgdi:waypoint x="445.0" y="221.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="210.0" y="61.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="36.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="265.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="300.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
         <omgdi:waypoint x="624.0" y="317.0"></omgdi:waypoint>

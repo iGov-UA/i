@@ -36,7 +36,7 @@ import java.util.List;
 
 import org.igov.io.GeneralConfig;
 import org.igov.model.flow.FlowServiceDataDao;
-import org.igov.model.flow.Flow_ServiceData;
+import org.igov.model.flow.Flow;
 import org.igov.service.business.finance.PaymentProcessorService;
 import org.igov.service.business.flow.FlowService;
 import org.igov.service.business.flow.slot.Days;
@@ -205,7 +205,7 @@ public class DebugCommonController {
         }
         DateTime oDateStart;
         DateTime oDateEnd;
-        Flow_ServiceData flow;
+        Flow flow;
         Long nID_SubjectOrganDepartment;
 
         LOG.info(" sDateStart = {}", sDateStart);
@@ -214,8 +214,8 @@ public class DebugCommonController {
 
         switch (sOperation) {
             case "auto":
-                List<Flow_ServiceData> aFlowServiceData = flowServiceDataDao.findAll();
-                for(Flow_ServiceData item:aFlowServiceData){
+                List<Flow> aFlowServiceData = flowServiceDataDao.findAll();
+                for(Flow item:aFlowServiceData){
                     if (item.getsID_BP().endsWith(SUFFIX_AUTO)){
                         LOG.info(" Flow_ServiceData ID {}, sID_BP = {} ", item.getId(), item.getsID_BP());
                     }

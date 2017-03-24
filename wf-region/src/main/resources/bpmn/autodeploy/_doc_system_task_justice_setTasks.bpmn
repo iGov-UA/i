@@ -51,6 +51,7 @@
           <activiti:value id="sEnumReportNo" name="коментарій до звіту не потрібен"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="додати текст звіту" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sReport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asReport&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRepotYes'||[sClient] == 'потрібно додати коментарій'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sTable2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -65,7 +66,7 @@
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sContent::${sContent};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sContent::${sContent};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">

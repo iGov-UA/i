@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_doc_comp_mriya_holiday" name="Заява на відпустку" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//1. счетчик добавления номера в поле входящего номера
+var number=execution.getVariable('sID_Custom_GovPublic')
+number = number&lt;&lt;0
+var fullNumber="вх-"+number+"/"
+execution.setVariable('sID_Custom_GovPublic', fullNumber)
+
+//2. назначение даты исполнения - по умолчанию + 30 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
+var updatedDate = new Date();
+var days = 30;
+updatedDate.setDate(new Date().getDate() + days);
+var d = updatedDate.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = updatedDate.getMonth() + 1;
+if (m &lt; 10) m = "0"+m;
+var sNewDate = (d + "/" + m + "/" + updatedDate.getFullYear());
+execution.setVariable('sDateExecution', sNewDate)
+
+//3. получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+
+//4. получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <userTask id="usertask1" name="Подача заяви про відпустку" activiti:candidateGroups="mriya_common">
+      <extensionElements>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="comp_Mriya_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDateHolidayBegin" name="Дата початку відпустки" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateHolidayEnd" name="Остання дата відпустки" type="date"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSigned" name="Підписав" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mriya/holiday_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/mriya/holiday_print.html"  type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask2" name="Розгляд керівником 1">
+    <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" variable="sName_SubjectRole"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSigned" name="Підписав" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cloneDocumentStepSubject" name="cloneDocumentStepSubject" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html]" type="invisible" default="РКК1" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[system_task]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sName_SubjectRole::${sName_SubjectRole};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <userTask id="usertask3" name="Розгляд керівником 2"></userTask>
+    <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="usertask3"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow6" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_comp_mriya_holiday">
+    <bpmndi:BPMNPlane bpmnElement="_doc_comp_mriya_holiday" id="BPMNPlane__doc_comp_mriya_holiday">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="510.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="810.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="960.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="155.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="305.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="465.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="615.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="765.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="915.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="960.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

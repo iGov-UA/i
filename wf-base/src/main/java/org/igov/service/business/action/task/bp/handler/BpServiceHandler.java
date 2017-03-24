@@ -111,6 +111,7 @@ public class BpServiceHandler {
             variables.put("email", processVariables.get("email"));
             variables.put("sLoginAssigned", processVariables.get("sLoginAssigned"));
             variables.put("Place", placeService.getPlaceByProcess(snID_Process));
+            LOG.info("snID_Process in variables is ", snID_Process);
             variables.put("clfio", processVariables.get("bankIdlastName") + " "+processVariables.get("bankIdfirstName")+ " "+processVariables.get("bankIdmiddleName"));
             variables.put("region", processVariables.get("region"));
             variables.put("info", processVariables.get("info"));
@@ -155,16 +156,16 @@ public class BpServiceHandler {
 
     public String startFeedbackProcessNew(String snID_Process) throws Exception {
         String feedbackProcessId = null;
-            
+        LOG.info("Method startFeedbackProcessNew started.....");
             Map<String, Object> variables = new HashMap<>();
             Integer nID_Server = generalConfig.getSelfServerId();
-           
+            LOG.info("nID_Server is =====", nID_Server);
             List<HistoricTaskInstance> details = historyService
                     .createHistoricTaskInstanceQuery()
                     .includeProcessVariables().taskId(snID_Process)
                     .list();
             String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(details.get(0).getProcessInstanceId()));
-            
+            LOG.info("snID_Proccess is =====", snID_Process);
             if (details != null && details.get(0).getProcessVariables() != null) {
             variables.put("processName", details.get(0).getProcessDefinitionId());
             	 LOG.info("sProcessNameeeeeeeeeeeee  ", details.get(0).getProcessDefinitionId());
@@ -186,6 +187,7 @@ public class BpServiceHandler {
             variables.put("sEmployeeContacts", processVariables.get("sEmployeeContacts"));
             variables.put("sBody_Indirectly", processVariables.get("sBody_Indirectly")); 
             variables.put("nID_Rate_Indirectly", processVariables.get("nID_Rate_Indirectly"));
+            LOG.info(String.format("{variables }...[%s]", variables));
             Set<String> organ = new TreeSet<>();
             Set<String> sLoginAssigned = new TreeSet<>();
             //get process variables

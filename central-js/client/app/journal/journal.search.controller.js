@@ -13,6 +13,7 @@ angular.module('journal').controller('JournalSearchController', function (
   order,
   events,
   $http,
+  $timeout,
   ErrorsFactory,
   JournalHelperService,
   DatepickerFactory,
@@ -33,7 +34,16 @@ angular.module('journal').controller('JournalSearchController', function (
   $scope.sOrderCommentNew = '';
   $scope.sOrderAnswerCommentNew = '';
   $scope.bAuth = UserService.isLoggedIn().then(function () {
-    $scope.bAuth = true;
+    //$scope.bAuth = true;
+    UserService.account().then(function (result) {
+      $scope.bAuth = !(!result || (result.hasOwnProperty('code') && result.hasOwnProperty('message')));
+    }, function (err) {
+      $scope.bAuth = false;
+    }).catch(function () {
+      $scope.bAuth = false;
+    });
+  }, function (err) {
+    $scope.bAuth = false;
   }).catch(function () {
     $scope.bAuth = false;
   });
@@ -331,6 +341,14 @@ angular.module('journal').controller('JournalSearchController', function (
           templateUrl: 'app/journal/letterModal.html',
           controller: function ($scope, $modalInstance, message, $sce) {
             $scope.message = $sce.trustAsHtml(message);
+
+            var opened = $modalInstance.opened;
+            opened.then(function (modal) {
+              $timeout(function () {
+                fixRatesLinks()
+              }, 1000)
+            });
+
             $scope.close = function () {
               $modalInstance.close();
             }
@@ -346,5 +364,23 @@ angular.module('journal').controller('JournalSearchController', function (
         ErrorsFactory.push({type:"danger", text: "Виникла помилка при отриманні тексту листа"});
       }
     })
+
+    function fixRatesLinks() {
+      var aLinks = angular.element.find('a');
+      angular.forEach(aLinks, function (el) {
+        if(el.pathname === '/wf/service/subject/message/setFeedbackExternal'){
+          /*
+          var params = {};
+          angular.forEach(searchAttr, function (sr) {
+            if(sr.indexOf('=') > 0){
+              var param = sr.split('=');
+              params[param[0]] = param[1] ? param[1] : null;
+            }
+          });
+          */
+          angular.element.attr(el, 'target', '_parent');
+        }
+      })
+    }
   };
 });

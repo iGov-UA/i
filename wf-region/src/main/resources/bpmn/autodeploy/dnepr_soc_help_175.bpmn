@@ -11,7 +11,7 @@
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileScanPassport" name="Сканований паспорт громадянина;Сторінки 1, 2, та сторінка з останньою пропискою. Скан копії можуть бути завантажені у вигляді одного ZIP-архіву чи pdf-файлу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканована копія ІПН" type="file" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
@@ -40,8 +40,6 @@
           <activiti:value id="do_6" name="догляд за дитиною-інвалідом віком до 6 років"></activiti:value>
           <activiti:value id="vid_6_do_18" name="догляд за дитиною-інвалідом віком від 6 до 18 років"></activiti:value>
         </activiti:formProperty>
-
-                
         
         <activiti:formProperty id="asEmployment" name="Ви працевлаштовані?" type="enum" required="true">
           <activiti:value id="no" name="не працюю - фактично здійснюю догляд за дитиною-інвалідом"></activiti:value>
@@ -53,9 +51,8 @@
         <activiti:formProperty id="nFileUr" name="довідка державного реєстратора про проведення (відсутність) державної реєстрації особи" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileEmploymentHistory" name="Копія трудової книжки" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileCentreJob" name="довідка з центру зайнятості про те, що особа не перебуває на обліку як безробітна" type="file"></activiti:formProperty>
-                
         
-        
+
 		<!-- ***********         Дорослі        ***************** -->        
         <activiti:formProperty id="asSinglePerson" name="Чи маєте Ви статус одинокої особи?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -63,7 +60,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileSinglePerson" name="оригінал довідки про перебування (не перебування) на обліку як одинокої особи" type="file"></activiti:formProperty>
 		<!-- **************************************************** -->
-
 
 
 		<!-- ***********         Діти           ***************** -->
@@ -93,9 +89,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileEducation" name="довідка з місця навчання; із зазначенням факту перебування на повному  державному утриманні" type="file"></activiti:formProperty>
 		<!-- **************************************************** -->                
-        
-
-
 
 
         <activiti:formProperty id="asNationality" name="Чи маєте Ви українське громадянство?" type="enum" required="true">
@@ -125,6 +118,7 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку" type="file"></activiti:formProperty>
 
 
 		<!-- ***********         Діти           ***************** -->
@@ -140,7 +134,7 @@
         <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
 
@@ -244,24 +238,18 @@
         <activiti:formProperty id="sRoom" name="укажіть кабінет - куди прийти громадянці" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
 
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cc_3_5" name="на догляд за інвалідом з дитинства підгрупи А I групи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cc_3_6" name="на догляд за інвалідом з дитинства підгрупи Б I групи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cc_3_7" name="одиноким інвалідам з дитинства II і III груп" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cc_3_8" name="догляд за дитиною-інвалідом віком до 6 років" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="cc_3_9" name="догляд за дитиною-інвалідом віком від 6 до 18 років" type="invisible"></activiti:formProperty>
-        
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер UT1" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_175_user.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFileBirthCertificate},${nFileResidence},${nFileEducation},${nFileAttestat},${nFileNotRegisterAsRecipient},${nFileForeigner},${nFileGuardian},${nFileFamily},${nFileSinglePerson},${nFileTogether},${nFileAdopter},${nFileCentreJob},${nFileEmploymentHistory},${nFileFOP},${nFileUr},${nFileMedical2},${bankId_scan_inn},${bankId_scan_passport}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="прийняття рішення" activiti:candidateGroups="upszn${nArea}">
+    <userTask id="usertask2_green" name="прийняття рішення" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -333,15 +321,25 @@
           <activiti:value id="reject" name="відмовлено у призначенні надбавки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment2" name="Будь ласка, вкажіть причину відмови" type="textArea"></activiti:formProperty>
-
         <activiti:formProperty id="nFileRishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+
+
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_3_5" name="на догляд за інвалідом з дитинства підгрупи А I групи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="cc_3_6" name="на догляд за інвалідом з дитинства підгрупи Б I групи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="cc_3_7" name="одиноким інвалідам з дитинства II і III груп" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="cc_3_8" name="догляд за дитиною-інвалідом віком до 6 років" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="cc_3_9" name="догляд за дитиною-інвалідом віком від 6 до 18 років" type="invisible"></activiti:formProperty>
+
         <activiti:formProperty id="markersUser2" name="Маркер UT2" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_175_user2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
+
+
     <serviceTask id="servicetask5" name="Повідомлення співробітника соц.захисту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -596,11 +594,11 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow37" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="servicetask6" targetRef="usertask2_green"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="usertask2_green" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow6" name="відмова" sourceRef="exclusivegateway1" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision2=='reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -628,7 +626,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="servicetask9" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="servicetask7" targetRef="usertask2_green"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_soc_help_175">
@@ -639,7 +637,7 @@
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="191.0" x="360.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
         <omgdc:Bounds height="55.0" width="189.0" x="362.0" y="310.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">

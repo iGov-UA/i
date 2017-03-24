@@ -20,13 +20,13 @@
         <activiti:formProperty id="street" name="Вулиця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_house" name="Будинок" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc" name="Викопіювання з ситуаційного плану міста М 1:500 з зазначенням бажаного місця розташування тимчасової споруди погоджене з балансоутримувачами інженерних мереж міста; (ЦТП №12 ДФ ПАТ «Укртелеком», КП «Теплові мережі», ПрАТ «ПЕЕМ»ЦЕК», КП «Жилсервіс», місцева дільниця УЕГГ)." type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
@@ -115,7 +115,7 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_274_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_274_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -194,8 +194,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови у наданні дозволу внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_274_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_274_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_274_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_274_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow33" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>

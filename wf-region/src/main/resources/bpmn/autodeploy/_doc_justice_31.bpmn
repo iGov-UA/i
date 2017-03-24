@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_justice_31" name="(31) Наказ з основної діяльності" isExecutable="true">
+  <process id="_doc_justice_31" name="31 - Наказ з основної діяльності" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Наказ з основної діяльності"></activiti:formProperty>
@@ -66,19 +66,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
       
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_print.html]" type="invisible" default="РКК" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html]" type="invisible" default="бланк ДВС" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html]" type="invisible" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html]" type="invisible" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_6" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк колегії" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[system_task]]></activiti:string>
+            <activiti:string><![CDATA[_task_justice]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
             <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>

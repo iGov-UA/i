@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:annotation>
+		<xs:documentation>Звіт про суми нарахованої заробітної плати (доходу, грошового забезпечення, допомоги, компенсації) застрахованих осіб та суми нарахованого єдиного внеску на загальнообов’язкове державне соціальне страхування до органів доходів і зборів. (Додаток 4 до Порядку формування та подання страхувальниками звіту щодо сум нарахованого єдиного внеску на загальнообов’язкове державне соціальне страхування (пункт 1 розділу ІІІ)). (Наказ Міністерства фінансів України від 11.04.2016 № 441)</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="common_types.xsd"/>
+	<xs:element name="DECLAR" type="DeclarContent"/>
+	<xs:complexType name="DeclarContent">
+		<xs:sequence>
+			<xs:element name="DECLARHEAD" type="DHead"/>
+			<xs:element name="DECLARBODY" type="DBody"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DHead">
+		<xs:sequence>
+			<xs:element name="TIN" type="DGLong"/>
+			<xs:element name="C_DOC" type="xs:string" fixed="F30"/>
+			<xs:element name="C_DOC_SUB" type="xs:string" fixed="004"/>
+			<xs:element name="C_DOC_VER" type="xs:string" fixed="10"/>
+			<xs:element name="C_DOC_TYPE" type="xs:nonNegativeInteger"/>
+			<xs:element name="C_DOC_CNT" type="xs:nonNegativeInteger"/>
+			<xs:element name="C_REG" type="DGsti"/>
+			<xs:element name="C_RAJ" type="DGsti"/>
+			<xs:element name="PERIOD_MONTH" type="DGMonth"/>
+			<xs:element name="PERIOD_TYPE" type="DGPType"/>
+			<xs:element name="PERIOD_YEAR" type="DGYear"/>
+			<xs:element name="C_STI_ORIG" type="DGc_dpi"/>
+			<xs:element name="C_DOC_STAN" type="DGSTAN"/>
+			<xs:element name="LINKED_DOCS" nillable="true" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DOC" minOccurs="1" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="C_DOC" type="DGC_DOC"/>
+									<xs:element name="C_DOC_SUB" type="DGC_DOC_SUB"/>
+									<xs:element name="C_DOC_VER" type="DGC_DOC_VER"/>
+									<xs:element name="C_DOC_TYPE" type="xs:nonNegativeInteger"/>
+									<xs:element name="C_DOC_CNT" type="xs:nonNegativeInteger"/>
+									<xs:element name="C_DOC_STAN" type="DGSTAN"/>
+									<xs:element name="FILENAME" type="DGFilename"/>
+								</xs:sequence>
+								<xs:attribute name="NUM" type="xs:nonNegativeInteger"/>
+								<xs:attribute name="TYPE" type="DGTypeLinkDoc"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+				<xs:unique name="UH_DOC_NUM">
+					<xs:selector xpath="DOC"/>
+					<xs:field xpath="@NUM"/>
+				</xs:unique>
+			</xs:element>
+			<xs:element name="D_FILL" type="DGDate"/>
+			<xs:element name="SOFTWARE" type="xs:string" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DBody">
+		<xs:sequence>
+			<!--HEAD-->
+			<xs:element name="HZM" type="DGMonth"/>
+			<xs:element name="HZY" type="DGYear"/>
+			<xs:choice>
+				<xs:element name="HZB" type="DGchk"/>
+				<xs:element name="HZS" type="DGchk"/>
+				<xs:element name="HZD" type="DGchk"/>
+			</xs:choice>
+			<xs:element name="HTIN" type="DGHTINF"/>
+			<xs:element name="HTIN1" type="DGLong" nillable="true" minOccurs="0"/>
+			<xs:element name="HNAME" type="DGHNAME"/>
+			<xs:element name="HLOC" type="DGHLOC"/>
+			<xs:element name="HTEL" type="DGHTEL" nillable="true" minOccurs="0"/>
+			<xs:element name="HKSTI" type="DGc_dpi"/>
+			<!--BODY-->
+			<xs:element name="R001G3" type="DGchk" nillable="true" minOccurs="0"/>
+			<xs:element name="R004G3" type="DGchk" nillable="true" minOccurs="0"/>
+			<xs:element name="R005G3" type="DGchk" nillable="true" minOccurs="0"/>
+			<xs:element name="R006G3" type="DGchk" nillable="true" minOccurs="0"/>
+			<xs:element name="R007G3" type="DGchk" nillable="true" minOccurs="0"/>
+			<!--FOOTER-->
+			<xs:element name="HKBOS" type="DGLong"/>
+			<xs:element name="HBOS" type="DGHBOS"/>
+			<xs:element name="HKBUH" type="DGLong" nillable="true" minOccurs="0"/>
+			<xs:element name="HBUH" type="DGHBUH" nillable="true" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

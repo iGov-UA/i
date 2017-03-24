@@ -26,7 +26,7 @@
 
   <div class="row">
     <div class="col-md-11 col-md-offset-1">
-      <div ng-show="bOrderOwner">
+      <dic ng-show="bOrderOwner">
         <div class="col-md-10" ng-show="!bOrderQuestion && getOrderStatusString(oOrder.nID_StatusType) !== 'closed'">
           <div class="row">
             <div class="col-md-11">
@@ -45,13 +45,14 @@
                                 o-service-data="oOrder">Додати файл</button-file-upload>
           </div>
         </div>
-
+      </dic>
+      <div ng-if="bAuth && bOrderOwner">
         <dl class="col-md-10">
           <dt ng-repeat-start="oOrderMessage in aOrderMessages | filter: {nID_HistoryEventType: '!9'} | orderBy: '-sDate'" class="u21" ng-class="{'my': oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.oSubjectMessageType.nID == 8 || oOrderMessage.nID_HistoryEventType == 1}">
             {{oOrderMessage.oSubjectMessageType.nID == 4 || oOrderMessage.oSubjectMessageType.nID == 8 || oOrderMessage.nID_HistoryEventType == 1 ? 'Я' : 'iGov'}}
           </dt>
           <dd ng-repeat-end class="u31">
-            <time class="u33" datetime="{{oOrderMessage.sDate}}">{{oOrderMessage.sDate | date: 'dd.MM.yyyy HH:mm'}}</time>
+            <time class="u33" datetime="{{oOrderMessage.sDate}}">{{oOrderMessage.sDate | date: 'dd MMM yyyy HH:mm'}}</time>
             <span class="u53"></span>
             <p>{{oOrderMessage.sHead}}</p>
             &nbsp;
@@ -75,13 +76,13 @@
 
             <p style="padding-bottom: 20px" ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
-              <span ng-if="oFile.sFileName && oFile.sFileName.trim()">Прикріплено файл: "{{::oFile.sFileName}}"</span>
+              <span ng-if="oFile.sFileName && oFile.sFileName.trim() && oFile.sID_DataLinkAuthor !== 'SFS'">Прикріплено файл: "{{::oFile.sFileName}}"</span>
               <div ng-if="oOrderMessage.oSubjectMessageType &&
                       oOrderMessage.oSubjectMessageType.nID === 12 &&
                       oOrderMessage.osData &&
                       oFile.sID_DataLinkAuthor === 'SFS'">
                 <answer-dfs
-                        options="{ id: oOrderMessage.nID, mode: 'AUTO', text: 'Завантажити', fileName: oFile.sFileName }"
+                        options="{ id: oOrderMessage.nID, mode: 'AUTO', text: 'Переглянути відповідь', hideIcon : true, openModalViewer : true, fileName: oFile.sFileName }"
                         signed-file-id="vm.signedFileID"
                         file-name="oFile.sFileName"
                         redirect-url="vm.redirectUrl"></answer-dfs>
@@ -177,11 +178,11 @@
           </dd>
         </dl>
       </div>
-      <div ng-show="bAuth && !bOrderOwner"><br /><hr class="sexy" /><br />
+      <div ng-if="bAuth && !bOrderOwner"><br /><hr class="sexy" /><br />
         <p>Ви не є автором цього звернення.</p>
         <p>Для перегляду детальної інформації, автору звернення потрібно увійти  в систему.</p>
       </div>
-      <div ng-hide="bAuth"><br /><hr class="sexy" /><br />
+      <div ng-if="!bAuth"><br /><hr class="sexy" /><br />
         <div class="row">
           <div service-auth-block
             redirect-uri="{{getRedirectUrl()}}"

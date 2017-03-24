@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_cancel_spravka_1126" name="Зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 04.10.2016, id=1522</documentation>
+    <documentation>Смоктій К.В. Последние правки: 02.03.2017, id=1522</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAdressPropiska" name="Реєстраційна адреса (по паспорту)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressFact" name="Фактична адреса проживання (перебування)" type="string" required="true"></activiti:formProperty>
@@ -17,15 +17,15 @@
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReasonEdit" name="Причина зняття з обліку внутрішньо переміщеної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumGet_Help" name="Чи надавалася Вам щомісячна адресна допомога внутрішньо переміщеним особам для покриття витрат на проживання, в тому числі на оплату житлово-комунальних послуг?" type="enum" default=" " required="true">
           <activiti:value id="sEnumElement_Yes" name="Так, надавалася щомісячна допомога"></activiti:value>
           <activiti:value id="sEnumElement_No" name="Ні, щомісячна допомога не надавалася"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sLabelInfo_1" name=" " type="label" default="Заповніть, будь ласка, &lt;a href=&quot;https://goo.gl/HHftiB&quot; target=&quot;_blank&quot;&gt; заяву &lt;/a&gt; щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для зняття з обліку внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Comment" name="Копія документів щодо причини зняття з обліку (якщо є)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для зняття з обліку внутрішньо переміщеної особи; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Comment" name="Копія документів щодо причини зняття з обліку (якщо є); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
@@ -67,7 +67,7 @@
           <activiti:value id="reject" name="Відмовити у розгляду звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="При необхідності або у разі відмови у розгляду звернення внесіть, будь ласка, коментар, що буде надіслано громадянину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину (не обов'язково)" type="file" default=" " ></activiti:formProperty>
+        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину (не обов'язково); ;bNew=true" type="file" default=" " ></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -76,12 +76,11 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Zayava" name="Копія підписаної заяви для зняття з обліку внутрішньо переміщеної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Comment" name="Копія документів щодо причини зняття з обліку (якщо є); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka},${nFile_Zayava},${nFile_Comment}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -98,8 +97,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Звернення [sID_Order].&lt;br /&gt;
-          	[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -116,19 +114,21 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>
-[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена) успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;br /&gt;
+				Ваше звернення [sID_Order] щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена) успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
+				&lt;br /&gt;
+				Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
+				${sNameOrgan}&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -153,21 +153,24 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Відхилено звернення на тему: Зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена) відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]          
+				&lt;br /&gt;
+				На жаль, Ваше звернення [sID_Order] щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена) відхилено.&lt;/p&gt;
+				&lt;p&gt;Причина в наступному:&lt;/p&gt;
+				&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
+				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+				${sNameOrgan}&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan},&lt;br/&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -192,34 +195,38 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Перевірено звернення на тему: зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена) успішно перевірено.&lt;br /&gt;
-&lt;br /&gt;
-&lt;p&gt;Коментар чиновника:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;br /&gt;
+				Ваше звернення [sID_Order] щодо зняття з обліку внутрішньо переміщеної особи (з припиненням виплати грошової допомоги, якщо вона була оформлена) успішно перевірено.&lt;br /&gt;
+				&lt;br /&gt;
+				&lt;p&gt;Коментар чиновника:&lt;/p&gt;
+				&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
 
-Чекаємо Вас за адресою: &lt;br /&gt;
-${sAddress}&lt;br /&gt;&lt;br /&gt;
-Дата та час роботи: &lt;br /&gt; 
-${sWorkTime}&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
+				Чекаємо Вас за адресою: &lt;br /&gt;
+				${sAddress}&lt;br /&gt;&lt;br /&gt;
+				Дата та час роботи: &lt;br /&gt; 
+				${sWorkTime}&lt;br /&gt;
+				&lt;br /&gt;
+				&lt;br /&gt;
 
-${sAdd_SpisokDocs}
-&lt;br /&gt;
-&lt;br /&gt;
+				${sAdd_SpisokDocs}
+				&lt;br /&gt;
+				&lt;br /&gt;
+	
+				&lt;br /&gt;
+				${sNameOrgan}&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
 
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan},&lt;br/&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>

@@ -35,6 +35,7 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р)" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку" type="file"></activiti:formProperty>
 
         <activiti:formProperty id="asLandShare" name="У Вас є у володінні земельна частка (пай)" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
@@ -48,23 +49,24 @@
         </activiti:formProperty>
         <activiti:formProperty id="sBusinessman" name="Укажіть групу оподаткування до якої групи належить" type="string"></activiti:formProperty>
         
-        <activiti:formProperty id="bankId_scan_passport" name="Завантажте копію паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileScanPassport" name="Сканований паспорт громадянина;Сторінки 1, 2, та сторінка з останньою пропискою. Скан копії можуть бути завантажені у вигляді одного ZIP-архіву чи pdf-файлу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Завантажте копію ІПН" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileFamilyMembers" name="Завантажте довідку про склад сім'ї" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileIncomeFamily" name="Завантажте довідки о доходах всіх членів сімї" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileNotRegisterDistrict" name="Довідка з управління праці за місцем реєстрації про не перебування на обліку в іншому районі" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="bFlagForDrohobuch" name="Флаг Дрогобича" type="invisible" default="false"></activiti:formProperty>
 		<activiti:formProperty id="markersDrohobuch" name="Маркер для Дрогобича" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_154_drohobuch.json')}"></activiti:formProperty>
 
-        <activiti:formProperty id="lInfo_2" name="Заповніть декларацію" type="label" default="Завантажте &lt;a href=&quot;https://www.dropbox.com/s/jyrbb4d12dt9vui/blank-deklaratsiya-dopomogi.doc?dl=0&quot; target=&quot;_blank&quot;&gt;декларацію&lt;/a&gt;, роздрукуйте, заповніть, та додайте у наступному полі."></activiti:formProperty>
+        <activiti:formProperty id="nFileIncomeFamily" name="Завантажте довідки про доходи всіх членів сімї;за останні 6-ть місяців" type="file" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="lInfoDeclaration" name="Заповніть декларацію" type="label" default="Завантажте &lt;a href=&quot;https://www.dropbox.com/s/jyrbb4d12dt9vui/blank-deklaratsiya-dopomogi.doc?dl=0&quot; target=&quot;_blank&quot;&gt;декларацію&lt;/a&gt;, роздрукуйте, заповніть, та додайте у наступному полі."></activiti:formProperty>
         <activiti:formProperty id="nFileDeclaration" name="Заповнена декларація" type="file" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="asECP" name="Чи подаєте звернення з ЕЦП або без ЕЦП?" type="enum" required="true">
           <activiti:value id="online" name="з ЕЦП (для отримання електронної послуги про призначення допомги)"></activiti:value>
           <activiti:value id="offline" name="без ЕЦП (погоджуєтесь на особистий візит після перевірки правильності даних)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з накладено ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява, з накладеним ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для накладення ЭЦП" type="invisible" default="pattern/print/minsoc/min_soc_help_441_print_ECP.html"></activiti:formProperty>
         <activiti:formProperty id="bFlagFullBP" name="Флаг полного процесса" type="invisible" default="true"></activiti:formProperty>
         <activiti:formProperty id="bFlagECP" name="Флаг ЕЦП" type="invisible" default="false"></activiti:formProperty>
@@ -148,15 +150,16 @@
         <activiti:formProperty id="sRoom" name="укажіть кабінет - куди прийти громадянці" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
 
+        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cc_2" name="Галка на прінтформі" type="invisible"></activiti:formProperty>
-        
-        <activiti:formProperty id="markersUT1" name="Маркер UT1" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_154_user.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="PrintForm_1" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/minsoc/min_soc_help_441_print_ECP.html" type="file"></activiti:formProperty>		
+		<activiti:formProperty id="PrintForm_1" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/minsoc/min_soc_help_441_print_ECP.html" type="file" writable="false"></activiti:formProperty>		
+
+
+        <activiti:formProperty id="markersUT1" name="Маркер UT1" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_154_user.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -206,17 +209,12 @@
         </activiti:formProperty>
 
         <activiti:formProperty id="sComment2" name="Поясніть причину відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markersUser2" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_154_user2.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="nFileDecision" name="Завантажте копію рішення по наданню послуги" type="file" required="true"></activiti:formProperty>       
-        <!-- 
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${nFileFamilyMembers},${nFileDeclaration},${nFileLandShare},${nFileIncomeFamily},${nFileNotRegisterDistrict}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-           -->
-           
+
+        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_2" name="Галка на прінтформі" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersUser2" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_154_user2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     

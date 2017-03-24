@@ -29,7 +29,7 @@
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="mark" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Region" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_234.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Region" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/DGK_0045_DGK_on.json')}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
@@ -55,7 +55,7 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="15.78"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="18.01"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюти" type="invisible" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера" type="invisible" default="0"></activiti:formProperty>
@@ -131,10 +131,11 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
 Ваше звернення [sID_Order] про ${sPosluga_nameZV} успішно зареєстроване.&lt;br /&gt;
 Ви отримаєте відповідь протягом десяти робочих днів.
 &lt;/p&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -166,14 +167,14 @@ ${sNameOrgan}.&lt;br /&gt;
 Ваше звернення №[sID_Order] було успішно зареєстроване у нашій системі.&lt;br /&gt;
 Ви отримаєте відповідь протягом 10 робочих днів.&lt;br /&gt;&lt;br /&gt;
 
-Ви обрали доставку відповіді поштою. Після обробки звернення в ДГК вам надійде лист з посиланням для оплати.&lt;br /&gt;&lt;br /&gt;
+Ви обрали доставку відповіді поштою. Після обробки звернення в Державному Геологічному Кадастрі (ДГК) вам надійде лист з посиланням для оплати.&lt;br /&gt;&lt;br /&gt;
 
 Порядок обробки:&lt;br&gt;
 Спочатку вашу заяву перевірить ЦНАП.&lt;br /&gt;
-Потім звернення надійде до Державного Геологічного Кадастру (ДГК) і буде ним оброблене.&lt;br /&gt;
+Потім, звернення надійде до ДГК і буде ним оброблене.&lt;br /&gt;
 Якщо помилки будуть критичні, в наданні послуги буде відмовлено.&lt;br /&gt;&lt;br /&gt;
-Після обробки в ДГК відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.&lt;br /&gt;&lt;br /&gt;
-У випадку позитивного результату обробки в листі буде посилання для оплати доставки поштою.&lt;br /&gt;
+Після обробки в ДГК відповідь буде передана до ЦНАПу. Про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.&lt;br /&gt;&lt;br /&gt;
+У випадку позитивного результату обробки, в листі буде посилання для оплати доставки поштою.&lt;br /&gt;
 На оплату буде надано 48 годин.&lt;br /&gt;
 У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь нарочно в ЦНАПі.&lt;br /&gt; 
 [pattern/mail/new_design/_common_content_end.html]
@@ -243,7 +244,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -276,10 +277,11 @@ ${sNameOrgan}&lt;br /&gt;
 [pattern/mail/new_design/_common_content_start.html]
 &lt;p&gt;Ваше звернення про ${sPosluga_nameZV} пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі.&lt;br&gt;
 За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}.&lt;br /&gt;
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -377,7 +379,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="commentDGK" name="Вкажіть підставу відмови у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Відповідь ДГК" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidmovaDGK.json')}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -439,7 +441,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="commentDGK" name="Вкажіть підставу відмови у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Відповідь ДГК" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidmovaDGK.json')}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -523,9 +525,9 @@ ${sNameOrgan}&lt;br /&gt;
 &lt;p&gt;Ваше звернення [sID_Order] про ${sPosluga_nameZV} опрацьоване.&lt;/p&gt;
 Заявка задоволена, відповідь готова.&lt;br/&gt;
 Ви можете завантажити її з додатку до цього листа, та отримати оригінал за адресою:&lt;br/&gt;
-${sAddress}.&lt;br/&gt;
-${sWorkTime}.&lt;br/&gt;
-${sPhoneOrgan}.&lt;br/&gt;
+${sAddress}&lt;br/&gt;
+${sWorkTime}&lt;br/&gt;
+${sPhoneOrgan}&lt;br/&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
@@ -563,11 +565,12 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
 Причина відмови:&lt;br&gt;
 &lt;p&gt;${commentDGK}&lt;/p&gt;
 За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}&lt;br/&gt;
+${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -758,12 +761,11 @@ ${sNameOrgan}&lt;br/&gt;
     </userTask>
     <userTask id="usertask5" name="УКРПОШТА" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="markersLine_post1" name="Інформація про послугу і орган" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sPosluga_name&quot;],&quot;sValue&quot;:&quot;Інформація про послугу і орган&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_201" name="Інформація про послугу і орган" type="markers" default="{&quot;attributes&quot;:{&quot;Line_201&quot;:{&quot;aElement_ID&quot;:[&quot;sPosluga_name&quot;],&quot;sValue&quot;:&quot;Інформація про послугу і орган&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу де забрати документи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса органу де забрати документи" type="string" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine__post2" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_202" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_202&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -771,7 +773,7 @@ ${sNameOrgan}&lt;br/&gt;
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine__post3" name="Інформація про поштове відправлення" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sIndex&quot;],&quot;sValue&quot;:&quot;Інформація про поштове відправлення&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_203" name="Інформація про поштове відправлення" type="markers" default="{&quot;attributes&quot;:{&quot;Line_203&quot;:{&quot;aElement_ID&quot;:[&quot;sIndex&quot;],&quot;sValue&quot;:&quot;Інформація про поштове відправлення&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sIndex" name="Індекс заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">

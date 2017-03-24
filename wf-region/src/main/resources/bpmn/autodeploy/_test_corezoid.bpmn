@@ -521,13 +521,13 @@
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bReferent" name="Referent" type="invisible" writable="true" default="false"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="Referent" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;asConsultTr&quot;],&quot;asID_Field&quot; : {&quot;bClient&quot;: &quot;bReferent&quot;}, &quot;sCondition&quot; : &quot;[bClient] == 'true'&quot; }}}"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswer" name="Ответ кол-центра; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerStatus" name="Статус ответа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bReferent" name="Referent; ;bVisible=false" type="string" writable="true" default="false"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="Referent; ;bVisible=false" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;asConsultTr&quot;],&quot;asID_Field&quot; : {&quot;bClient&quot;: &quot;bReferent&quot;}, &quot;sCondition&quot; : &quot;[bClient] == 'true'&quot; }}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -1072,12 +1072,12 @@
         <activiti:formProperty id="sAdditionalInformation" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationNumberRGA" name="Реєстраційний номер ОДА" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneCall_SubjectContact_Client" name="Телефон, с которого поступил звонок" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerChannel" name="Канал відповіді; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAnswer_UkrDoc" name="Відповідь УкрДок" type="string" variable="Відповідь УкрДок"></activiti:formProperty>
         <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Ответ кол-центра" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAnswerStatus" name="Статус ответа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
             <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sAnswer_UkrDoc]}"}</activiti:expression>

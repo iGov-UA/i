@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="vpl_GetInfo_Why_Block_1144" name="Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 04.10.2016, id=1545</documentation>
+    <documentation>Смоктій К.В. Последние правки: 02.03.2017, id=1545</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто, де отримували довідку ВПО" type="select" default="0" required="true"></activiti:formProperty>
@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAdressPropiska" name="Реєстраційна адреса (по паспорту)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressFact" name="Фактична адреса проживання (перебування)" type="string" required="true"></activiti:formProperty>
@@ -17,7 +17,7 @@
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_Dovidka" name="Дата довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNomer_Dovidka" name="Номер довідки про взяття на облік внутрішньо переміщеної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReasonEdit" name="Додаткова інформація щодо запиту про причини припинення виплати щомісячної адресної допомоги;наприклад, вкажіть коли Ви отримали адресну допомогу в останній раз та іншу інформацію, якщо це стосується запиту" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
@@ -56,7 +56,7 @@
           <activiti:value id="reject" name="Відмовити у розгляді звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="Внесіть, будь ласка, відповідь щодо запиту, яку буде надіслано громадянину" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину" type="file" default=" " ></activiti:formProperty>
+        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину; ;bNew=true" type="file" default=" " ></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -65,12 +65,9 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka_vpl" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік документів, що потрібно надавати" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканована копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovidka" name="Копія довідки про взяття на облік внутрішньо переміщеної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${nFile_Dovidka}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -87,8 +84,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Звернення [sID_Order].&lt;br /&gt;
-          	[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -105,19 +101,21 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>
-[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо надання консультації про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;br /&gt;
+				Ваше звернення [sID_Order] щодо надання консультації про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
+				&lt;br /&gt;
+				Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
+				${sNameOrgan}&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -142,21 +140,25 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Відхилено звернення на тему: Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо надання консультації про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+    			&lt;br /&gt;
+				На жаль, Ваше звернення [sID_Order] щодо надання консультації про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам відхилено.&lt;/p&gt;
+				&lt;p&gt;Причина в наступному:&lt;/p&gt;
+				&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
+				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+				${sNameOrgan}&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan},&lt;br/&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -181,35 +183,38 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Перевірено звернення на тему: Надання консультації щодо причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо надання консультації про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам успішно перевірено.&lt;br /&gt;
-&lt;br /&gt;
-&lt;p&gt;Коментар чиновника:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;br /&gt;
+				Ваше звернення [sID_Order] щодо надання консультації про причини припинення виплати щомісячної адресної допомоги внутрішньо переміщеним особам успішно перевірено.&lt;br /&gt;
+				&lt;br /&gt;
+				&lt;p&gt;Коментар чиновника:&lt;/p&gt;
+				&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
 
-&lt;b&gt;Пам'ятка для внутрішньо переміщеної особи.&lt;/b&gt;&lt;br /&gt;
-&lt;br /&gt;
-&lt;b&gt;1. Внутрішньо переміщена особа зобов’язана:&lt;/b&gt;&lt;br /&gt;
- - повідомляти про зміну місця проживання структурний підрозділ з питань соціального захисту населення районних за новим місцем проживання протягом 10 днів з дня прибуття до нового місця проживання;&lt;br /&gt;
- - у разі добровільного повернення до покинутого постійного місця проживання внутрішньо переміщена особа зобов’язана повідомити про це структурний підрозділ з питань соціального захисту населення за місцем отримання довідки не пізніш як за три дні до дня від’їзду.&lt;br /&gt;
-&lt;br /&gt;
-&lt;b&gt;2. Підстави для скасування дії довідки, що має наслідки призупинення соціальних виплат:&lt;/b&gt;&lt;br /&gt;
- а) особиста заява про відмову від довідки;&lt;br /&gt;
- б) подача завідомо недостовірних відомостей;&lt;br /&gt;
- в) особа повернулася до покинутого місця постійного проживання (тривала відсутність (понад 60 днів) особи за місцем фактичного проживання дає обґрунтовані підстави вважати, що внутрішньо переміщена особа повернулася до покинутого місця постійного проживання);&lt;br /&gt;
- г) виїхала на постійне місце проживання за кордон;&lt;br /&gt;
- д) скоїла терористичний акт, злочин або дії, спрямовані на захоплення державної влади, посягання на територіальну цілісність і недоторканність України та інше.&lt;br /&gt;
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+				&lt;b&gt;Пам'ятка для внутрішньо переміщеної особи.&lt;/b&gt;&lt;br /&gt;
+				&lt;br /&gt;
+				&lt;b&gt;1. Внутрішньо переміщена особа зобов’язана:&lt;/b&gt;&lt;br /&gt;
+ 				- повідомляти про зміну місця проживання структурний підрозділ з питань соціального захисту населення районних за новим місцем проживання протягом 10 днів з дня прибуття до нового місця проживання;&lt;br /&gt;
+ 				- у разі добровільного повернення до покинутого постійного місця проживання внутрішньо переміщена особа зобов’язана повідомити про це структурний підрозділ з питань соціального захисту населення за місцем отримання довідки не пізніш як за три дні до дня від’їзду.&lt;br /&gt;
+				&lt;br /&gt;
+				&lt;b&gt;2. Підстави для скасування дії довідки, що має наслідки призупинення соціальних виплат:&lt;/b&gt;&lt;br /&gt;
+ 				а) особиста заява про відмову від довідки;&lt;br /&gt;
+ 				б) подача завідомо недостовірних відомостей;&lt;br /&gt;
+ 				в) особа повернулася до покинутого місця постійного проживання (тривала відсутність (понад 60 днів) особи за місцем фактичного проживання дає обґрунтовані підстави вважати, що внутрішньо переміщена особа повернулася до покинутого місця постійного проживання);&lt;br /&gt;
+ 				г) виїхала на постійне місце проживання за кордон;&lt;br /&gt;
+ 				д) скоїла терористичний акт, злочин або дії, спрямовані на захоплення державної влади, посягання на територіальну цілісність і недоторканність України та інше.&lt;br /&gt;
+				&lt;br /&gt;
+				${sNameOrgan}&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan},&lt;br/&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>

@@ -57,7 +57,8 @@ function FieldAttributesService(MarkersFactory) {
 		  if( styles.oCommonStyle != null || styles["oCommonStyle"] != null ) { 
 			  commonStyle = styles.oCommonStyle; 
 			  
-			  console.log("iGovMarkers.enableStyles -> oCommonStyle for '" + styles + "' is set"); 
+			  console.log("iGovMarkers.enableStyles -> oCommonStyle for '" + styles.oCommonStyle + "' is set"); 
+			  console.log(styles); 
 		  }
 		  
 		  if( styles.oCentralStyle != null || styles["oCentralStyle"] != null ) { 

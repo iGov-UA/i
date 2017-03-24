@@ -31,12 +31,12 @@
         <activiti:formProperty id="objReestr" name="Заповнена реєстраційна картка про створення відокремленого підрозділу" type="file"></activiti:formProperty>
         <activiti:formProperty id="decision_create" name="Рішення органу управління юридичної особи про створення відокремленого підрозділу" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця; ;bVisible=false" type="string" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sDocConfidant&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;customer&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо створення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;info_2&quot;,&quot;objReestr&quot;,&quot;decision_create&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'create'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо закриття" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;number&quot;,&quot;RegDate&quot;,&quot;branch_name&quot;,&quot;branch_inn&quot;,&quot;branch_address&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;try&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'close'&quot;}}}"></activiti:formProperty>
@@ -71,7 +71,7 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_218_print.html]" type="invisible" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_218_print.html]; ;bVisible=false" type="string" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -111,8 +111,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі залишення документів без розгляду - внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="завантажте відповідний документ" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_218_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_218_print.html]" type="invisible" default="заява про про зміни громадського об’єднання" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_218_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_218_print.html]; ;bVisible=false" type="string" default="заява про про зміни громадського об’єднання" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">

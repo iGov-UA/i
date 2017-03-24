@@ -140,6 +140,14 @@ function decryptValue(value, privateKey) {
   }
 }
 
+function decrypt(value, key, privateKey) {
+  if (isEncrypted(value, key)) {
+    return decryptValue(value, privateKey, key);
+  } else {
+    return value;
+  }
+}
+
 module.exports.encryptData = function (customerData, publicKey) {
   iterateObj(customerData, function (value, key) {
     return isEncrypted(value, key)

@@ -77,17 +77,17 @@ angular.module('iGovMarkers')
         ,LongNumber: {
           aField_ID: ['long'],
           aField_Type: ['long'],
-          nMin: 1,
-          nMax: 1000000000000000,
+          nMin: 0,
+          nMax: 999999999999999,
           sMessage: 'Повинно бути цілим числом.'
         }
         ,DoubleNumber: { // Подільне число
           aField_ID: ['double'],
           aField_Type: ['double'],
-          nMin: 1,
+          nMin: 0,
           nMax: 1000000000000000,
           //sSeparator: '.',
-          sMessage: 'Повинно бути подільним числом та розділене ",".'
+          sMessage: 'Повинно бути числом, яке розділене крапкою "."'
         }
         ,NumberBetween: { //Целочисленное между
           aField_ID: ['numberBetween'],
@@ -165,6 +165,9 @@ angular.module('iGovMarkers')
           sID_Element_sValue: "registration-service"
         },
 
+        /* 
+         * Demo PrintForm   
+         *  
         PrintForm_Table12: {
           aField_ID: ["tbl1", "oPrescription1"],
           sPatternPath: "/print/kiev/kiev_mda_273_print.html",
@@ -175,14 +178,10 @@ angular.module('iGovMarkers')
           aField_ID: ["oPrescription2"],
           sTitleField: "sPrescriptionName",
           sPatternPath: "/print/kiev/kiev_mda_273_print.html",
-          sName: "Звіт за сектором"
-        },
-
-        PrintForm_Table4: {
-          aField_ID: ["oPrescription2"],
-          sPatternPath: "/print/kiev/kiev_mda_273_print.html",
-          sName: "Звіт за блоком"
-        }
+          sName: "Звіт за сектором", 
+          asEnumField_ID: {'sCondition1': "asType"}, 
+          sCondition: " [sCondition1] == 'sEnumPr1' ", 
+        */ 
 
       }
     };

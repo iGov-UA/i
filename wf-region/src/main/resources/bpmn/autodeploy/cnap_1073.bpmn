@@ -30,12 +30,12 @@
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="markers" name="markers" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_1073.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -121,15 +121,15 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="nReestr" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sReestrDate" name="Укажіть дату реєстрації звернення" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Задовільнити заяву"></activiti:value>
           <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;sImya_ur&quot;,&quot;edrpou&quot;,&quot;sPib_ur&quot;,&quot;sAdres_1&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sPib_fiz&quot;,&quot;bankIdinn&quot;,&quot;sAdres_0&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/cnap_1073_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/cnap_1073_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/cnap_1073_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/cnap_1073_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

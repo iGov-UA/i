@@ -52,18 +52,18 @@
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArkhPost" name="Пошта департамента архітектури або ГоловАПУ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArchShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArchName" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Надання містобудівних умов та обмежень забудови земельної ділянки"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="надання містобудівних умов та обмежень забудови земельної ділянки"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArkhPost" name="Пошта департамента архітектури або ГоловАПУ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchName" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Надання містобудівних умов та обмежень забудови земельної ділянки"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="надання містобудівних умов та обмежень забудови земельної ділянки"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask5" name="Повідомлення громадянина  про успішну реєстрацію зверення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -84,7 +84,7 @@
 			Ваше звернення щодо Надання містобудівних умов та обмежень забудови земельної ділянки успішно зареєстроване.<br />
 			Ви отримаєте відповідь протягом семи робочих днів.
 			</p>
-<p>Якщо у Вас з`явились питання, Ви можете звернутись до 
+<p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
 ${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.<br />
@@ -141,15 +141,15 @@ ${sNameOrgan}.<br />
           <activiti:value id="vlasnik" name="Замовник-забудовник"></activiti:value>
           <activiti:value id="koristuvach" name="Довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sArchShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArchName" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchName" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="decide1" name="Результат перевірки документів" type="enum" required="true">
-          <activiti:value id="accept" name="Документи пройшли перевірку і передані до ГоловАПУ"></activiti:value>
+          <activiti:value id="accept" name="Документи пройшли перевірку і передані до архітектури"></activiti:value>
           <activiti:value id="reject" name="В опрацюванні заявки відмовлено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]" type="invisible" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment1" name="Примітка:" type="string" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -185,10 +185,10 @@ ${sNameOrgan}.<br />
 			<p>Ваше звернення пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі. За кілька днів ви отримаєте результат опрацювання на цей email.<br />Ви можете роздрукувати надану Вами заяву з прикріплення до цього листа.<br />
 			<p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
 ${sAddress}.<br />
-${sWorkTime}.<br />
-${sPhoneOrgan}.<br />
+${sWorkTime}<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -222,7 +222,7 @@ ${sNameOrgan}.<br />
 			За необхідності Ви можете подати ще одне звернення на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 <p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
 ${sAddress}.<br />
-${sWorkTime}.<br />
+${sWorkTime}<br />
 ${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.<br />
@@ -260,8 +260,8 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="finNo" name="Номер довідки фінансово-економічного департаменту про розмір пайової участі на розвиток соціальної та інженерно-транспортної інфраструктури" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="finDate" name="Дата довідки фінансово-економічного департаменту про розмір пайової участі на розвиток соціальної та інженерно-транспортної інфраструктури" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="user" name="Заяву подає" type="enum" writable="false">
           <activiti:value id="vlasnik" name="Замовник-забудовник"></activiti:value>
           <activiti:value id="koristuvach" name="Довірена особа"></activiti:value>
@@ -270,12 +270,12 @@ ${sNameOrgan}.<br />
           <activiti:value id="ok" name="містобудівні умови та обмеження надані"></activiti:value>
           <activiti:value id="bad" name="надати містобудівні умови та обмеження неможливо"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sArchShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArchName" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchName" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]" type="invisible" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -347,16 +347,16 @@ ${sNameOrgan}.<br />
           <activiti:value id="vlasnik" name="Замовник-забудовник"></activiti:value>
           <activiti:value id="koristuvach" name="Довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sArchShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArchName" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchName" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Відповідь Головного архітектурно-планувального управління" type="enum">
           <activiti:value id="ok" name="містобудівні умови та обмеження надані"></activiti:value>
           <activiti:value id="bad" name="надати містобудівні умови та обмеження неможливо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]" type="invisible" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask3" name="Лист з відповіддю" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -374,9 +374,9 @@ ${sNameOrgan}.<br />
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>Ваше звернення опрацьоване.<br />
-			Ви можете завантажити офіційну відповідь з додатку до цього листа, та отримати оригінал у </p>
+			Ви можете завантажити офіційну відповідь з додатку до цього листа, та отримати оригінал у ${sNameOrgan}</p>
 ${sAddress}.<br />
-${sWorkTime}.<br />
+${sWorkTime}<br />
 ${sPhoneOrgan}.<br />
 <p>Для цього Вам потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт) та оригіналами документів (документ про право власності, містобудівніий розрахунок, згода власника земельної ділянки на її забудову (якщо заяву подає користувач ділянки)). </p>
 [pattern/mail/_common_signature_start.html]
@@ -397,7 +397,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask4" name="Відповідбь. Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask4" name="Відповідь. Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -415,9 +415,10 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
 			<p>У додатку до листа міститься офіційна відповідь</p>
 			За необхідності Ви можете подати ще одне звернення на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a>
 			<p>Якщо у вас виникли питання, Ви можете звернутись до:</p>
-${sAddress}.<br />
-${sWorkTime}.<br />
-${sPhoneOrgan}.<br />
+${sNameOrgan}<br />
+${sAddress}<br />
+${sWorkTime}<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
 ${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]   
@@ -476,7 +477,7 @@ execution.setVariable('assignment', per6);
 			У вашому випадку (не змінюються габарити та функціональне призначення) містобудівні умови не надаються. Підстава - <a href="https://docs.google.com/document/d/1J_NJ2k4Da89zbnFa0A5xL3pMq4g4r0SZ7H5M7d_aSGs/edit?usp=sharing"> ПЕРЕЛІК об'єктів будівництва, для проектування яких містобудівні умови та обмеження не надаються</a></p>
 <p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}.<br /><br />
 ${sAddress}.<br />
-${sWorkTime}.<br />
+${sWorkTime}<br />
 ${sPhoneOrgan}.<br />
 			[pattern/mail/_common_signature_start.html]
 			Державна реєстраційна служба,<br />
@@ -734,16 +735,16 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="vlasnik" name="Замовник-забудовник"></activiti:value>
           <activiti:value id="koristuvach" name="Довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sArchShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArchName" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchName" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати листи заявнику та в ЦНАП"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]" type="invisible" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

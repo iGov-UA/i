@@ -12,6 +12,7 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
       }).error(function (data, status) {
         bankIDLogin = undefined;
         bankIDAccount = undefined;
+        $rootScope.$broadcast('event.logout.without.session');
         deferred.reject(true);
         ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
         ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['data: '+data,'status: '+status]});
@@ -80,7 +81,11 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
           AdminService.processAccountResponse(oResponse);
           if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return bankIDAccount = oResponse.data;
+          } else {
+            return $q.reject(oResponse.data);
           }
+        }, function (err) {
+          $rootScope.$broadcast('event.logout.without.session');
         }).catch(function (oResponse) {
           /*
            var err = oResponse.data ? oResponse.data.err || {} : {};
@@ -89,7 +94,7 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
           bankIDLogin = undefined;
           bankIDAccount = undefined;
           ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['soResponse: '+JSON.stringify(oResponse)]});
-          return oResponse.data;
+          return  $q.reject(oResponse.data);
         }));
     }
   };

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_38" name="Копії рішення міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 13.07.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 22.03.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -27,7 +27,7 @@
         <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sIsSelo" name="Флаг щодо села" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Hide invisible" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_36.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -51,7 +51,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -68,16 +68,23 @@
           <activiti:string><![CDATA[Нове звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                      Ваше звернення [sID_Order] щодо копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності успішно зареєстроване.&lt;br&gt;
-                                      Спеціалісти Центру надання адміністративних послуг повинні дати відповідь найближчім часом.
-									&lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-                                    [pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          [pattern/mail/new_design/_common_header.html]
+          [pattern/mail/new_design/_common_content_start.html]
+			&lt;p&gt;
+                Ваше звернення [sID_Order] щодо копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності успішно зареєстроване.&lt;br&gt;
+                Спеціалісти Центру надання адміністративних послуг повинні дати відповідь найближчім часом.&lt;br /&gt;
+				&lt;br /&gt;
+				${sNameOrgan},&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			&lt;/p&gt;	
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br /&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -116,14 +123,13 @@
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kopi" name="копія рішення" type="invisible" default="передачу в оренду земельних ділянок державної або комунальної власності"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_36.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_36.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dneprOblSnap/dnepr_cnap_36.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Set Print" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_36_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -143,18 +149,26 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        На жаль, змушені Вам відмовити в реєстрації звернення [sID_Order].
-                                    &lt;/p&gt;
-									&lt;p&gt;
-									   	Причина в наступному:&lt;br&gt;
-                                    	${comment}
-									&lt;/p&gt;
-									[pattern/mail/_common_signature_start.html]
-									${sNameOrgan}.&lt;/p&gt;   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                	На жаль, змушені Вам відмовити в реєстрації звернення [sID_Order].&lt;br&gt;
+				   	Причина в наступному:&lt;br&gt;
+                    ${comment}&lt;br&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -184,16 +198,24 @@
           <activiti:string><![CDATA[Перевірено звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                      Ваше звернення [sID_Order] щодо копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності передане на опрацювання.&lt;br&gt;
-                                      Спеціалісти державного Органу повинні дати відповідь у відведений Законом термін.
-									&lt;/p&gt;
-                                    [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-                                    [pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+  			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                   Ваше звернення [sID_Order] щодо копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності передане на опрацювання.&lt;br&gt;
+                    Спеціалісти державного Органу повинні дати відповідь у відведений Законом термін.&lt;br /&gt;
+					Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -227,7 +249,7 @@
           <activiti:value id="decline" name="Неможливо видати копію рішень міської (селищної) ради"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment1" name="Коментар адміністратора у разі неможливості видати копію рішень міської (селищної) ради" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
@@ -251,28 +273,32 @@
           <activiti:string><![CDATA[Опрацьовано звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                             		Ваша копія рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності готова (звернення [sID_Order]).
-                             		&lt;/p&gt;
-									&lt;p&gt;
-                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати копію особисто під підпис у ЦНАП.&lt;br&gt;
-									При собі треба мати:&lt;br&gt;
-									1. Документ, що посвідчує особу.&lt;br&gt;
-									2. Для уповоноваженої особи - довіренність.&lt;br&gt;
-									3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.
-									&lt;/p&gt;
-									&lt;p&gt;
-                             		Отримати документ можна:&lt;br&gt;
-                             		${sAddress}&lt;br&gt;
-                             		${sWorkTime}&lt;br&gt;
-									${sPhoneOrgan}&lt;br&gt;&lt;/p&gt;		
-                            		[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+ 			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+                	Ваша копія рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності готова (звернення [sID_Order]).
+                &lt;/p&gt;
+				&lt;p&gt;
+                	Ви або уповноважена Вами особа (при наявності довіреності) можете отримати копію особисто під підпис у ЦНАП.&lt;br&gt;
+					При собі треба мати:&lt;br&gt;
+					1. Документ, що посвідчує особу.&lt;br&gt;
+					2. Для уповоноваженої особи - довіренність.&lt;br&gt;
+					3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.
+				&lt;/p&gt;
+				&lt;p&gt;
+                    Отримати документ можна:&lt;br&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
@@ -301,30 +327,33 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: Копії рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                             		На жаль, неможливо видати Вам копію рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності (звернення [sID_Order]).
-                             		&amp;lt;br /&amp;gt;
-									Підстава: ${comment1}&amp;lt;br /&amp;gt;
-                             		&lt;/p&gt;
-									&lt;p&gt;
-                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати офіційну відмову особисто під підпис у ЦНАП.&lt;br&gt;
-									При собі треба мати:&lt;br&gt;
-									1. Документ, що посвідчує особу.&lt;br&gt;
-									2. Для уповоноваженої особи - довіренність.&lt;br&gt;
-									3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.
-									&lt;/p&gt;
-									&lt;p&gt;
-									Отримати документ можна:&lt;br&gt;
-                             		${sAddress}&lt;br&gt;
-                             		${sWorkTime}&lt;br&gt;
-									${sPhoneOrgan}&lt;br&gt;&lt;/p&gt;		
-                            		[pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+               		На жаль, неможливо видати Вам копію рішень міської (селищної) ради про передачу в оренду земельних ділянок державної або комунальної власності (звернення [sID_Order]).&lt;br&gt;
+					Підстава: ${comment1}&lt;br&gt;
+                &lt;/p&gt;
+				&lt;p&gt;
+                	Ви або уповноважена Вами особа (при наявності довіреності) можете отримати офіційну відмову особисто під підпис у ЦНАП.&lt;br&gt;
+					При собі треба мати:&lt;br&gt;
+					1. Документ, що посвідчує особу.&lt;br&gt;
+					2. Для уповоноваженої особи - довіренність.&lt;br&gt;
+					3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку), засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи.&lt;br&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					Отримати документ можна:&lt;br&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>

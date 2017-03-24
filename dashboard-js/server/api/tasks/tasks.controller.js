@@ -95,8 +95,11 @@ exports.index = function (req, res) {
   //var user = JSON.parse(localStorage.getItem('user'));
   var query = {};
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
-  query.size = 50;
-  query.start = (req.query.page || 0) * query.size;
+  if(req.query.soaFilterField) {
+    query.soaFilterField = req.query.soaFilterField;
+  }
+  query.nSize = 50;
+  query.nStart = (req.query.page || 0) * query.nSize;
 
   if (req.query.filterType === 'all') {
     async.waterfall([
@@ -112,19 +115,24 @@ exports.index = function (req, res) {
       }
     });
   } else {
-    var path = 'runtime/tasks';
+    var path = 'action/task/getTasks';
     if (req.query.filterType === 'selfAssigned') {
-      query.assignee = user.id;
+      query.sLogin = user.id;
+      query.sFilterStatus = 'OpenedAssigned';
       query.includeProcessVariables = true;
     } else if (req.query.filterType === 'unassigned') {
-      query.candidateUser = user.id;
-      query.unassigned = true;
+      query.sLogin = user.id;
+      query.sFilterStatus = 'OpenedUnassigned';
       query.includeProcessVariables = false;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
-      query.taskAssignee = user.id;
+      query.size = query.nSize;
+      query.start = query.nStart;
+      query.taskInvolvedUser = user.id;
+      query.finished = true;
     } else if (req.query.filterType === 'documents') {
-      query.candidateOrAssigned = user.id;
+      query.sFilterStatus = 'Opened';
+      query.sLogin = user.id;
       query.size = 100;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
@@ -291,6 +299,17 @@ exports.getAttachmentContent = function (req, res) {
   activiti.filedownload(req, res, options);
 };
 
+exports.getAttachmentFile = function (req, res) {
+  var options = {
+    path: 'object/file/getProcessAttach',
+    query: {
+      'nID_Process': req.params.processID,
+      'sID_Field': req.params.attachID
+    }
+  };
+  activiti.filedownload(req, res, options);
+};
+
 exports.getAttachmentContentTable = function (req, res) {
   var options = {
     path: 'object/file/download_file_from_db',
@@ -364,7 +383,8 @@ exports.getTasksByText = function (req, res) {
     query: {
       'sFind': req.params.text,
       'sLogin': user.id,//finished,unassigned, selfAssigned
-      'bAssigned': req.params.sType === 'selfAssigned' ? true : req.params.sType === 'unassigned' ? false : null //bAssigned
+      'bAssigned': req.params.sType === 'selfAssigned' ? true : req.params.sType === 'unassigned' ? false : null, //bAssigned
+      'bSortByStartDate': true
     }
   };
   activiti.get(options, function (error, statusCode, result) {
@@ -401,7 +421,7 @@ exports.getPatternFile = function (req, res) {
   var options = {
     path: 'object/file/getPatternFile',
     query: {
-      'sPathFile': req.query.sPathFile
+      'sPathFile': req.query.sPathFile.split(',')[0]
     }
   };
 
@@ -414,9 +434,9 @@ exports.getPatternFile = function (req, res) {
  * added pdf conversion if file name is sPrintFormFileAsPDF
  */
 exports.upload_content_as_attachment = function (req, res) {
-  async.waterfall([
-    function (callback) {
-      if (req.body.sFileName === 'sPrintFormFileAsPDF.pdf') {
+  if(req.body.sOutputFileType === 'pdf') {
+    async.waterfall([
+      function (callback) {
         var options = {
           html: req.body.sContent,
           allowLocalFilesAccess: true,
@@ -428,63 +448,95 @@ exports.upload_content_as_attachment = function (req, res) {
           settings: {
             javascriptEnabled: true
           },
-          format: {
+           format: {
             quality: 100
           }
         };
+        if(req.body.isSendDefaultPrintForm){
+          req.body.url = "setDocumentImage";
+        } else {
+          req.body.url = 'setProcessAttach';
+        }
         pdfConversion(options, function (err, pdf) {
-          callback(err, {content: pdf.stream, contentType: 'application/json', url: 'upload_file_as_attachment'});
+          callback(err, {content: pdf.stream, contentType: 'application/json'});
         });
-      } else {
-        callback(null, {content: req.body.sContent, contentType: 'text/html', url: 'upload_content_as_attachment'});
+      },
+      function (data, callback) {
+        if (req.body.url === 'setProcessAttach') {
+          activiti.uploadStream({
+            path: 'object/file/' + req.body.url,
+            nID_Process: req.params.taskId,
+            stream: data.content,
+            sFileNameAndExt: req.body.sFileNameAndExt,
+            sID_Field: req.body.sID_Field,
+            headers: {
+              'Content-Type': data.contentType + ';charset=utf-8'
+            }
+          }, function (error, statusCode, result) {
+            pdfConversion.kill();
+            error ? res.send(error) : res.status(statusCode).json(result);
+          });
+        } else if(req.body.url === "setDocumentImage"){
+          var user = JSON.parse(req.cookies.user);
+          activiti.uploadStream({
+            path: 'object/file/' + req.body.url,
+            nID_Process: req.params.taskId,
+            stream: data.content,
+            sFileNameAndExt: req.body.sFileNameAndExt,
+            sKey_Step: req.body.sKey_Step,
+            sLogin: user.id,
+            headers: {
+              'Content-Type': data.contentType + ';charset=utf-8'
+            }
+          }, function (error, statusCode, result) {
+            pdfConversion.kill();
+            error ? res.send(error) : res.status(statusCode).json(result);
+          });
+        }
       }
-    },
-    function (data, callback) {
-      if (data.url === 'upload_content_as_attachment') {
-        activiti.post({
-          path: 'object/file/' + data.url,
-          query: {
-            nTaskId: req.params.taskId,
-            sContentType: data.contentType,
-            sDescription: req.body.sDescription,
-            sFileName: req.body.sFileName,
-            sID_Field: req.body.sID_Field
-          },
-          headers: {
-            'Content-Type': data.contentType + ';charset=utf-8'
-          }
-        }, function (error, statusCode, result) {
-          error ? res.send(error) : res.status(statusCode).json(result);
-        }, data.content, false);
+    ]);
+  } else {
+    activiti.post({
+      path: 'object/file/setProcessAttachText',
+      query: {
+        nID_Process: req.params.taskId,
+        sFileNameAndExt: req.body.sFileNameAndExt,
+        sID_Field: req.body.sID_Field
+      },
+      headers: {
+        'Content-Type': 'text/html;charset=utf-8'
       }
+    }, function (error, statusCode, result) {
+      error ? res.send(error) : res.status(statusCode).json(result);
+    }, req.body.sContent, false);
+  }
 
-      if (data.url === 'upload_file_as_attachment') {
-        activiti.uploadStream({
-          path: 'object/file/' + data.url,
-          taskId: req.params.taskId,
-          stream: data.content,
-          description: req.body.sDescription,
-          sID_Field: req.body.sID_Field,
-          headers: {
-            'Content-Type': data.contentType + ';charset=utf-8'
-          }
-        }, function (error, statusCode, result) {
-          pdfConversion.kill();
-          error ? res.send(error) : res.status(statusCode).json(result);
-        });
-      }
-    }
-  ]);
 };
 
 exports.setTaskQuestions = function (req, res) {
-  activiti.get({
+  var query = {
+    nID_Process: req.body.nID_Process,
+    sMail: req.body.sMail,
+    sHead: req.body.sHead,
+    sSubjectInfo: req.body.sSubjectInfo,
+    nID_Subject: req.body.nID_Subject
+  };
+
+  var data = {
+    saField : req.body.saField,
+    soParams : req.body.soParams,
+    sBody : req.body.sBody
+  };
+
+  activiti.post({
     path: 'action/task/setTaskQuestions',
-    query: req.body
+    query: query,
+    headers: {
+      'Content-Type': 'text/html;charset=utf-8'
+    }
   }, function (error, statusCode, result) {
-    res.statusCode = statusCode;
-    res.send(result);
-  });
+    error ? res.send(error) : res.status(statusCode).json(result);
+  }, data);
 };
 
 // отправка комментария от чиновника, сервис работает на централе, поэтому с env конфигов берем урл.
@@ -710,4 +762,56 @@ exports.setTaskAttachment = function (req, res) {
       }
     }
   ]);
+};
+
+exports.setTaskAttachmentNew = function (req, res) {
+  var query = {
+    nID_Process: req.params.taskId,
+    sFileNameAndExt: req.body.sFileNameAndExt,
+    sID_Field: req.body.nID_Attach
+  };
+
+  activiti.post({
+    path: 'object/file/setProcessAttachText',
+    query: query,
+    headers: {
+      'Content-Type': 'text/html;charset=utf-8'
+      }
+  }, function (error, statusCode, result) {
+      error ? res.send(error) : res.status(statusCode).json(result);
+  }, req.body.sContent, false);
+
+};
+
+
+exports.checkAttachmentSignNew = function (req, res) {
+  var properties = {
+    sKey : req.query.sKey,
+    sID_StorageType : req.query.sID_StorageType || null,
+    sID_Process : req.query.sID_Process || null,
+    sID_Field : req.query.sID_Field || null,
+    sFileNameAndExt : req.query.sFileNameAndExt || null
+  };
+
+  for(var key in properties) {
+   if(!properties[key]) {
+     delete properties[key];
+   }
+  }
+
+  var options = {
+    path: 'object/file/checkProcessAttach',
+    query: properties,
+    json: true
+  };
+
+  activiti.get(options, function (error, statusCode, body) {
+    if (error) {
+      error = errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR, 'Error while checking file\'s sign', error);
+      res.status(500).send(error);
+      return;
+    }
+
+    res.status(200).send(body);
+  });
 };

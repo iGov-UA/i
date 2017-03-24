@@ -16,10 +16,32 @@
         <activiti:formProperty id="sNameCity" name="Назва населеного пункту;за місцем реєстрації ;writable=true,sID_Field_SWinEd=HCITY" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameStreet" name="Назва вулиці ;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSTREET" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberBuild" name="Номер будинку;за місцем реєстрації;writable=true,sID_Field_SWinEd=HBUILD" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sStartPeriod" name="Квартал;початок періоду;writable=true,sID_Field_SWinEd=R01G01" type="string" default="4"></activiti:formProperty>
-        <activiti:formProperty id="sStartYear" name="Рік;початок періоду;writable=true,sID_Field_SWinEd=R01G02" type="string" default="2015"></activiti:formProperty>
-        <activiti:formProperty id="sEndPeriod" name="Квартал;кінець періоду;writable=true,sID_Field_SWinEd=R02G01" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sEndYear" name="Рік;кінець періоду;writable=true,sID_Field_SWinEd=R02G02" type="string" default="2016"></activiti:formProperty>
+        <activiti:formProperty id="sHSHOT" name="Додаток до номеру будинку;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSHOT" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHCORP" name="Корпус;за місцем реєстрації;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHAPT" name="Номер квартири;за місцем реєстрації;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asStartPeriod&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asStartPeriod" name="Квартал;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G01" type="enum" required="true">
+          <activiti:value id="1" name="1"></activiti:value>
+          <activiti:value id="2" name="2"></activiti:value>
+          <activiti:value id="3" name="3"></activiti:value>
+          <activiti:value id="4" name="4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStartYear" name="Рік;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G02" type="enum" required="true">
+          <activiti:value id="2014" name="2014"></activiti:value>
+          <activiti:value id="2015" name="2015"></activiti:value>
+          <activiti:value id="2016" name="2016"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEndPeriod" name="Квартал;кінець періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R02G01" type="enum" required="true">
+          <activiti:value id="1" name="1"></activiti:value>
+          <activiti:value id="2" name="2"></activiti:value>
+          <activiti:value id="3" name="3"></activiti:value>
+          <activiti:value id="4" name="4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEndYear" name="Рік;кінець періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R02G02" type="enum" required="true">
+          <activiti:value id="2014" name="2014"></activiti:value>
+          <activiti:value id="2015" name="2015"></activiti:value>
+          <activiti:value id="2016" name="2016"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string" default="04"></activiti:formProperty>
         <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string" default="63"></activiti:formProperty>
         <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string"></activiti:formProperty>
@@ -59,7 +81,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -68,14 +90,27 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему  Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків]]></activiti:expression>
+          <activiti:expression><![CDATA[Відповідь на Ваш запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків <br />
+<p>Вітаємо, Ви отримали  віповідь на запит про суми виплачених доходів та утриманих податків від ДФС.  Щоб переглянути відповідь, Вам потрібно: </p>
 
-Ви можете відкрити криптопакет відповіді ДФС з допомогою  <a href="https://alpha.test.igov.org.ua/journal/answer/DFS">цього інструменту</a> із використанням своєї ЕЦП, що ви використали під час подання запиту. <br /> <br />
+<br >
+<ul>
+<li> <b> Крок 1.</b> Перейти на сторінку Вашого звернення   <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>. </li>
+<br >
+<li><b> Крок 2.</b>Увійти в систему за допомогою свого електронно-цифрового підпису (ЕЦП).</li>
+<br >
+<li><b> Крок 3.</b>Натиснути на "Переглянути відповідь", обрати свій ЕЦП та ввести пароль до нього.
+ </li>
+<br >
+</ul>
+
+
+Дякуємо, що скористалися сервісом iGov.
+
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
@@ -83,6 +118,12 @@
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vy otrymaly vidpovid' na Vash zapyt u reyestr dokhodiv na Vash Email. Nomer zayavky  [sID_Order]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -133,7 +174,7 @@
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow18" sourceRef="escalationTimer1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -142,20 +183,32 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему  Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків]]></activiti:expression>
+          <activiti:expression><![CDATA[Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Ви зробили запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків.
-Максимальний час очікування відповіді - 3 доби.   <br />
-Інформармація буде надана Вам на електронну пошту та буде доступна у розділі <a href="https://alpha.test.igov.org.ua/journal">Мій журнал</a>
+<p><b>Ви зробили запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків.</b></p>
+<br ><br >
+Максимальний час очікування відповіді - 1 доба (але зазвичай відповідь надається швидше). Ви отримаєте повідомлення через SMS та на цей email. 
+<br ><br >
+<p>Документ буде розміщено у розділі <a href="https://igov.org.ua/journal">Мій журнал</a>. Щоб переглянути його, Вам знадобиться той самий електронно-цифровий підпис, який Ви використали для цього запиту.
+ </p>
 
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Nomer Vashoyi zayavky [sID_Order]. Chas vidpovidi — do doby. Vy otrymayete povidomlennya po SMS ta Email.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -167,10 +220,10 @@ src=(+src + +1)
 execution.setVariable('sCounter', src)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 15}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 205}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -179,14 +232,28 @@ execution.setVariable('sCounter', src)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему  Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків]]></activiti:expression>
+          <activiti:expression><![CDATA[Відповідь на Ваш запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-На жаль, ні.   <br />
-Інформармація буде надана Вам на електронну пошту та буде доступна у розділі <a href="https://alpha.test.igov.org.ua/journal">Мій журнал</a>
+<p>
+Раніше Ви подавали запит у Державний реєстр фізичних осіб – платників податків про суми виплачених доходів та утриманих податків. На жаль, Державна фіскальна служба відмовилась надати Вам відповідь. <br>
+ Щоб переглянути підстави для відмови, Вам потрібно:</p>
 
+<br >
+<ul>
+<li> <b> Крок 1.</b> Перейти на сторінку Вашого звернення   <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>. </li>
+<br >
+<li><b> Крок 2.</b>Увійти в систему за допомогою свого електронно-цифрового підпису (ЕЦП).</li>
+<br >
+<li><b> Крок 3.</b>Натиснути на "Переглянути відповідь", обрати свій ЕЦП та ввести пароль до нього.
+ </li>
+<br >
+</ul>
+
+
+Дякуємо, що скористалися сервісом iGov.
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -196,10 +263,16 @@ execution.setVariable('sCounter', src)</script>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vy otrymaly vidpovid' na Vash zapyt u reyestr dokhodiv na Vash Email. Nomer zayavky [sID_Order]]]></activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 15}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 205}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End">
       <extensionElements>
@@ -220,6 +293,9 @@ execution.setVariable('sCounter', src)</script>
           </activiti:field>
           <activiti:field name="snCountYear">
             <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sFile_XML_SWinEd_Filter">
+            <activiti:expression><![CDATA[ ]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -272,7 +348,7 @@ execution.setVariable('sCounter', src)</script>
         <omgdc:Bounds height="55.0" width="105.0" x="384.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="704.0" y="187.0"></omgdc:Bounds>
+        <omgdc:Bounds height="63.0" width="105.0" x="704.0" y="183.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="844.0" y="197.0"></omgdc:Bounds>
