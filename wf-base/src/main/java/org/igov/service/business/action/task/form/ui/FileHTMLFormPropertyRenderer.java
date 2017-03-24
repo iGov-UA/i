@@ -4,16 +4,16 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.explorer.ui.form.AbstractFormPropertyRenderer;
-import org.igov.service.business.action.task.form.HTMLFormType;
+import org.igov.service.business.action.task.form.FileHTMLFormType;
 
-public class HTMLFormPropertyRenderer extends AbstractFormPropertyRenderer {
+public class FileHTMLFormPropertyRenderer extends AbstractFormPropertyRenderer {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    public HTMLFormPropertyRenderer() {
-        super(HTMLFormType.class);
+    public FileHTMLFormPropertyRenderer() {
+        super(FileHTMLFormType.class);
     }
 
     @Override
@@ -24,8 +24,8 @@ public class HTMLFormPropertyRenderer extends AbstractFormPropertyRenderer {
         htmlField.setRequiredError(getMessage("form.field.required", new Object[] { getPropertyLabel(formProperty) }));
         
         htmlField.setImmediate(true);
-        htmlField.setWidth(Form.HTML.getDimension().getWidth());
-        htmlField.setHeight(Form.HTML.getDimension().getHeight());
+        htmlField.setWidth(Form.FILE_HTML.getDimension().getWidth());
+        htmlField.setHeight(Form.FILE_HTML.getDimension().getHeight());
 
         if (formProperty.getValue() != null) {
             htmlField.setValue(formProperty.getValue());

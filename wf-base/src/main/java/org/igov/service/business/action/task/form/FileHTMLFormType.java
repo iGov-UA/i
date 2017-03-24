@@ -5,9 +5,9 @@ import org.activiti.engine.form.AbstractFormType;
 /**
  * Created by Olga.
  */
-public class HTMLFormType extends AbstractFormType {
+public class FileHTMLFormType extends AbstractFormType {
 
-    public static final String TYPE_NAME = "html";
+    public static final String TYPE_NAME = "fileHTML";
 
     @Override
     public String convertFormValueToModelValue(String propertyValue) {

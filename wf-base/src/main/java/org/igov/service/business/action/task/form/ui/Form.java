@@ -42,7 +42,7 @@ public enum Form {
             return new Dimension("100", "300");
         }
     },
-    HTML {
+    FILE_HTML {
         /**
          * Возвращает размер текстового окна для ввода html
          */
