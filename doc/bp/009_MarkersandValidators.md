@@ -85,7 +85,7 @@
   }
 }
 ```
-
+* ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 ***
 
 ### ValuesFieldsOnCondition
