@@ -1419,10 +1419,9 @@ public class ActionTaskService {
     private boolean checkIncludeProcessDefinitionIntoGroupList(List<Group> aGroup, Set<String> asProcessGroupMask){
         for (Group oGroup : aGroup) {
             for (String sProcessGroupMask : asProcessGroupMask) {
-                /*if (sProcessGroupMask.contains("${")) {
+                if (sProcessGroupMask.contains("${")) {
                     sProcessGroupMask = sProcessGroupMask.replaceAll("\\$\\{?.*}", "(.*)");
-                }*/
-                if (oGroup.getId().matches(sProcessGroupMask)) {
+                }else if (oGroup.getId().matches(sProcessGroupMask)) {
                     return true;
                 }
             }
