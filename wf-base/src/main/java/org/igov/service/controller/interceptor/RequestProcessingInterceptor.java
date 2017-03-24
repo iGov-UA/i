@@ -198,6 +198,34 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
             
+            if(isCloseTask(oRequest, sResponseBody)){
+                    if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+                        String sTaskId = (String) omRequestBody.get("taskId");
+                        LOG.info("sTaskId is: {}", sTaskId);
+                        HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                        String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+
+                        LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
+
+                        if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+
+                            LOG.info("Close document is started...");
+                            Map<String, String> mParam = new HashMap<>();
+                            String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                            
+                            List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                            
+                            boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                            String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                            
+                            if(aTask.isEmpty()){
+                                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
+                            }
+                        }
+                    }
+                }
+            
             if(isUpdateTask(oRequest)){
                 LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (POSTPROCESSING)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
@@ -242,12 +270,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 boolean bProcessClosed = aTask == null || aTask.size() == 0;
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 
+                
+                
                 Map<String, String> mParam = new HashMap<>();
                 
                 LOG.info("document nID_StatusType in interceptor {}", HistoryEvent_Service_StatusType.CREATED.getnID());
                 mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                 LOG.info("document sID_Process in interceptor {}", sID_Process);
                 LOG.info("document sID_Order in interceptor {}", sID_Order);
+                
                 //LOG.info("document sHead in interceptor {}", sProcessName);
                 //mParam.put("sHead", sProcessName);
                 
@@ -386,7 +417,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 
                 processDocumentSubmit(mRequestParam, omRequestBody);
                 
-                if(isCloseTask(oRequest, sResponseBody)){
+                /*if(isCloseTask(oRequest, sResponseBody)){
                     if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
                         String sTaskId = (String) omRequestBody.get("taskId");
                         LOG.info("sTaskId is: {}", sTaskId);
@@ -409,7 +440,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                             oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
                         }
                     }
-                }
+                }*/
 
             }
             
@@ -496,7 +527,32 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                             }
                         }
                         LOG.info("oCurrDocumentStep.getRights() in interceptor is {}", oCurrDocumentStep.getRights());
+                        List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                        boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                        String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+
+                        Map<String, String> mParam = new HashMap<>();
+                        String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                        mParam.put("sLogin", sAssignLogin);
+                        if(!aDocumentStep.get(1).getsKey_Step().equals(oCurrDocumentStep.getsKey_Step())){
+                            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 13L);
+                        }
+                        else{
+                            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 12L);
+                        }
                     }
+                    /*else{
+                        List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                        boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                        String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+
+                        Map<String, String> mParam = new HashMap<>();
+                        String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                        mParam.put("sLogin", sAssignLogin);
+                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 12L);
+                    }*/
 
                     List<DocumentStep> aNewDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", processInstanceId);
                     LOG.info("aDocumentStep new in interceptor is {}", aNewDocumentStep);
@@ -505,35 +561,19 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         LOG.info("aDocumentStep new rights  in interceptor is {}", oNewCurrDocumentStep.getRights());
                     }
                     
-                    List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
-                    boolean bProcessClosed = aTask == null || aTask.size() == 0;
-                    String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
-                    
-                    String sTaskAssignee = null;
-                    
-                    for(Task oTask : aTask)
-                    {
-                        LOG.info("oTask.getId() is: {}", oTask.getId());
-                        LOG.info("sTaskId is: {}", sTaskId);
-                        if(oTask.getId().equals(sTaskId)){
-                            sTaskAssignee = oTask.getAssignee();
-                            LOG.info("oTask.getAssignee is {}", oTask.getAssignee());
-                        }
-                    }
-                            
-                    Map<String, String> mParam = new HashMap<>();
-                    String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
-                    mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
-                    mParam.put("sLogin", sAssignLogin);
-                    
-                    if(sTaskAssignee != null){
-                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 12L);
-                    }else{
-                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 13L);
-                    }
-                    
+                } 
+                /*else{
+                        List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                        boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                        String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
 
-                }
+                        Map<String, String> mParam = new HashMap<>();
+                        String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                        String sAssignLogin = oHistoricTaskInstance.getAssignee();
+                        mParam.put("sLogin", sAssignLogin);
+                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 12L);
+                    }*/
             }
         }
     }

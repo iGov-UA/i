@@ -24,6 +24,7 @@
 * **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
 * **nID_Department_visitDay** - string/invisible/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
 * **nSlots_visitDay** - string/invisible/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
+* ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
 
 ## Зарезервированные переменные атрибутов
 * **sNameOrgan** - string/invisible/label - название органа в подписи письма

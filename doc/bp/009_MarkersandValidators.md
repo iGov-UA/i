@@ -23,6 +23,7 @@
   }
 }
 ```
+* ![6_2M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_2%D0%9C.JPG)
 
 ***
 
@@ -166,7 +167,7 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
 Допускается использование вложенных подпапок  
 ```default="${markerService.loadFromFile('folder_name/testmarkers.json')}" ```  
 Маркеры хранятся в папке /wf-region/src/main/resources/bpmn/markers/motion
-
+* ![6_1M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_1%D0%9C.JPG)
 ****
 
 ## Маркеры группы validate
@@ -299,6 +300,7 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
+* ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 ***
 ### Style
 Для внедрения стилей css на страницу с услугой с целью изменения стандартного отображения элементов на форме

@@ -32,6 +32,7 @@
   <activiti:value id="no" name="ні"></activiti:value>
 </activiti:formProperty>
 ```
+* ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
 ***
 ### date
 дата - календарь для выбора даты
@@ -87,6 +88,7 @@ true / false
 ```xml
     <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
 ```
+* ![2_13](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_13.JPG)
 Чтобы этот файл появился на следующем шаге процесса, Вам снова его нужно объявить как обычное поле. Не забудьте указать параметр  writable="false"
 ```xml
 <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>

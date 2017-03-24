@@ -6,26 +6,29 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.PostConstruct;
 
 import org.igov.io.GeneralConfig;
-import org.igov.service.business.promin.ProminSession_Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import org.igov.io.web.HttpRequester;
+import org.igov.io.web.RestRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
 @Component("ObjectPlaceCommonService")
 @Service
 public class ObjectPlaceCommonService {
     private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonService.class);
 
-//    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
-//    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
-    private static final String SUB_URL_ADDRESS_BY_TYPE = "/listAddressByType.do";
-    private static final String SUB_URL_ADDRESS_BY_NAME = "/searchByName.do";
+    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
+    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
     private static final String NULL_RESPONSE = "{}";
 
     @Autowired
@@ -33,9 +36,6 @@ public class ObjectPlaceCommonService {
 
     private String sURLSendAddressByType = null;
     private String sURLSendAddressByName = null;
-    private String sAuth_sLogin = null;
-    private String sAuth_sPassword = null;
-    private String sAuth_sURL_GenerateSID = null;
 
     // Признак готовности сервиса к работе
     private boolean isReadyWork = false;
@@ -48,28 +48,24 @@ public class ObjectPlaceCommonService {
     private void init() {
 	String sURL_Send = null;
 	if (generalConfig != null) {
-	    sAuth_sLogin = generalConfig.getObjectSubPlace_Auth_sLogin();
-	    sAuth_sPassword = generalConfig.getObjectSubPlace_Auth_sPassword();
-	    sAuth_sURL_GenerateSID = generalConfig.getObjectSubPlace_Auth_sURL_GenerateSID();
 	    sURL_Send = generalConfig.getObjectSubPlace_sURL_Send();
 	}
-	if (sURL_Send == null || sAuth_sLogin == null || sAuth_sPassword == null || sAuth_sURL_GenerateSID == null) {
-	    LOG.warn(
-		    "Сервис не готов к отсылке сообщений. Не заданы необходимые параметры. sURL_Send={}, sAuth_sLogin={}, sAuth_sPassword={}, sAuth_sURL_GenerateSID={}",
-		    sURL_Send, sAuth_sLogin, sAuth_sPassword, sAuth_sURL_GenerateSID);
+	if (sURL_Send == null ) {
+	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры. sURL_Send={}", sURL_Send);
 	    return;
 	}
 
-	LOG.debug("sURL_Send={}, sAuth_sLogin={}, sAuth_sPassword={}, sAuth_sURL_GenerateSID={}", sURL_Send,
-		sAuth_sLogin, sAuth_sPassword, sAuth_sURL_GenerateSID);
+	LOG.debug("sURL_Send={}", sURL_Send);
 
-	if (sURL_Send.startsWith("${") || sAuth_sLogin.startsWith("${") || sAuth_sPassword.startsWith("${")
-		|| sAuth_sURL_GenerateSID.startsWith("${")) {
+	if (sURL_Send.startsWith("${")) {
 	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
 	    return;
 	}
 	sURLSendAddressByType = sURL_Send + SUB_URL_ADDRESS_BY_TYPE;
 	sURLSendAddressByName = sURL_Send + SUB_URL_ADDRESS_BY_NAME;
+//	sURLSendAddressByType = "http://service-street.tech.igov.org.ua" + SUB_URL_ADDRESS_BY_TYPE;
+//	sURLSendAddressByName = "https://service-street.tech.igov.org.ua" + SUB_URL_ADDRESS_BY_NAME;
+	
 	
 	isReadyWork = true;
     }
@@ -80,7 +76,7 @@ public class ObjectPlaceCommonService {
 	    return "{}";
 	}
 
-	LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+	LOG.info("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
 
 	if (sID_SubPlace_PB == null) {
 	    LOG.error("Error sID_SubPlace_PB is null");
@@ -89,27 +85,42 @@ public class ObjectPlaceCommonService {
 
 	if (sFind != null) {
 	    return searchByName(sURLSendAddressByName, sID_SubPlace_PB, ObjectPlaceType.STREET, sFind,
-		    ObjectPlaceLang.UAN);
+		    ObjectPlaceLang.RUS);
 	} else {
-	    return listAddressByType(sURLSendAddressByType, sID_SubPlace_PB, ObjectPlaceType.STREET,
-		    ObjectPlaceLang.UAN, null, null);
+	    HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", "application/json; charset=utf-8");
+            headers.set("type", "8");
+            headers.set("language", "RUS");
+            headers.set("id", sID_SubPlace_PB);
+            
+            String resp = new RestRequest().get(sURLSendAddressByType, null, StandardCharsets.UTF_8, String.class, headers);
+            
+            LOG.info("response={}", resp);
+            return resp;
+	    
+	    
+//	    return listAddressByType(sURLSendAddressByType, sID_SubPlace_PB, ObjectPlaceType.STREET,
+//		    ObjectPlaceLang.RUS, null, null);
 	}
     }
 
-    private String listAddressByType(String sUrl, String idParent, ObjectPlaceType type, ObjectPlaceLang language,
+    private String listAddressByType(String sUrl, String sIdParent, ObjectPlaceType eType, ObjectPlaceLang eLanguage,
 	    String sTypeCode, String sFromId) {
-	LOG.debug("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, idParent, type,
-		language, sTypeCode, sFromId);
+	LOG.debug("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, sIdParent, eType,
+		eLanguage, sTypeCode, sFromId);
 
-	String ret = "";
+	String ret = NULL_RESPONSE;
 	HttpURLConnection oHttpURLConnection = null;
 	try {
 	    URL oURL = new URL(sUrl);
 	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 	    oHttpURLConnection.setRequestMethod("GET");
-	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-	    oHttpURLConnection.setRequestProperty("type", type.getIdString());
-	    oHttpURLConnection.setRequestProperty("language", language.name());
+//	    oHttpURLConnection.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
+	    
+	    oHttpURLConnection.setRequestProperty("id", sIdParent);
+	    oHttpURLConnection.setRequestProperty("type", eType.getIdString());
+	    oHttpURLConnection.setRequestProperty("language", eLanguage.name());
+	    
 	    if (sTypeCode != null) {
 		oHttpURLConnection.setRequestProperty("typeCode", sTypeCode);
 	    }
@@ -117,26 +128,32 @@ public class ObjectPlaceCommonService {
 		oHttpURLConnection.setRequestProperty("fromId", sFromId);
 	    }
 
+	    LOG.info("request properties={} ", oHttpURLConnection.getRequestProperties());
+	    
+	    int responseCode = oHttpURLConnection.getResponseCode();
 	    try (BufferedReader oBufferedReader = new BufferedReader(
 		    new InputStreamReader(oHttpURLConnection.getInputStream()))) {
+		
 		StringBuilder os = new StringBuilder();
 		String s;
+		
 		while ((s = oBufferedReader.readLine()) != null) {
 		    os.append(s);
 		}
+		
 		ret = os.toString();
 
 	    } catch (java.io.FileNotFoundException e) {
 		ret = NULL_RESPONSE;
-		LOG.error("http code:{}\n", oHttpURLConnection.getResponseCode(), e);
+		LOG.error("http code:{}\n", responseCode, e);
 	    }
 
 	} catch (MalformedURLException e) {
-	    LOG.error("Error:", e.getMessage());
 	    ret = NULL_RESPONSE;
+	    LOG.error("Error:", e);
 	} catch (IOException e) {
-	    LOG.error("Error:", e.getMessage());
 	    ret = NULL_RESPONSE;
+	    LOG.error("Error:", e);
 	} finally {
 	    if (oHttpURLConnection != null) {
 		oHttpURLConnection.disconnect();
