@@ -667,7 +667,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } catch (NullPointerException e) {
             String message = String.format("Incorrect Task ID [id = %s]. Record not found.", nID_Task);
             LOG.info(message);
-            //throw new RecordNotFoundException(message);
+            throw new RecordNotFoundException(message);
         }
 
         List<FormProperty> aField = null;
@@ -706,9 +706,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 response.put("aMessage", oMessageService.gerOrderMessagesByProcessInstanceID(nID_Process));
             } catch (Exception oException) {
                 LOG.error("Can't get: {}", oException.getMessage());
-                /*throw new CommonServiceException(
+                throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);*/
+                        "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
             }
         }
         if (bIncludeProcessVariables.equals(Boolean.TRUE) && nID_Process != null) {
