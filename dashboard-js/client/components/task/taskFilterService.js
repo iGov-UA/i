@@ -129,7 +129,7 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       return userProcesses;
     },
     getProcesses: function () {
-      var promise = processes.getUserProcesses().then(function (data) {
+      var promise = processes.getUserProcesses(true).then(function (data) {
         var retval = userProcesses.concat(data);
         return retval;
       });
