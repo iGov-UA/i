@@ -91,9 +91,9 @@ public class ObjectPlaceCommonService {
 			StringBuffer sb = new StringBuffer("?id=");
 			sb.append(sID_SubPlace_PB);
 			sb.append("&type=");
-			sb.append(ObjectPlaceType.STREET);
+			sb.append(ObjectPlaceType.STREET.getIdString());
 			sb.append("&language=");
-			sb.append(ObjectPlaceLang.RUS);
+			sb.append(ObjectPlaceLang.RUS.name());
 
 			String resp = new RestRequest().get(sURLSendAddressByType + sb.toString(), null, StandardCharsets.UTF_8,
 					String.class, headers);
