@@ -325,6 +325,8 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
    }
 }
 ```
+* ![9_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_5.JPG)
+
 Маркер анализирует правила в свойствах aElement_ID и aSelectors и добавляет стили перечисленный из свойства oCommonStyle в блок ```<head>``` в виде отдельного стиля. Причем стилями можно влиять не только на элементы формы но на всю страницу.
 
 Свойства маркера aElement_ID и aSelectors работают параллельно и **может быть задан только один из них**. 
