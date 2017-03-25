@@ -272,6 +272,7 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
+* ![9_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_6.JPG)
 ### Алгоритм Луна
 Применяется для поля, в которое пользователь должен будет внести вручную номер заявки  
 [Issues 1513](https://github.com/e-government-ua/i/issues/1513)  
