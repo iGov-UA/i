@@ -115,7 +115,7 @@
   }
 }
 ```
-
+* ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
 ***
 
 ### WritableFieldsOnCondition
