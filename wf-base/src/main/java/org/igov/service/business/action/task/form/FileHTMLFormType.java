@@ -16,7 +16,13 @@ public class FileHTMLFormType extends AbstractFormType {
 
     @Override
     public String convertModelValueToFormValue(Object modelValue) {
-        return modelValue.toString();
+        String sReturn = null;
+        try{
+            sReturn=modelValue==null?null:modelValue.toString();
+        }catch(Exception oException){
+            System.err.println(oException.getMessage());
+        }
+        return sReturn;
     }
 
     @Override
