@@ -136,7 +136,7 @@
   }
 }
 ```
-     
+* ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG)     
 
 ***
 ### SplitTextHalf_1 - разделение значения по  знаку разделителя
