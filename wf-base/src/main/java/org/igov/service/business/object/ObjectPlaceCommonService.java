@@ -102,12 +102,6 @@ public class ObjectPlaceCommonService {
 		String ret = NULL_RESPONSE;
 		HttpURLConnection oHttpURLConnection = null;
 		try {
-			URL oURL = new URL(sUrl);
-			oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
-			oHttpURLConnection.setRequestMethod("GET");
-			oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			oHttpURLConnection.setDoOutput(true);
-
 			StringBuffer sb = new StringBuffer("?id=");
 			sb.append(sIdParent);
 			sb.append("&type=");
@@ -124,29 +118,29 @@ public class ObjectPlaceCommonService {
 				sb.append(sFromId);
 			}
 
-			try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
-				oDataOutputStream.write(sb.toString().getBytes("UTF-8"));
-				oDataOutputStream.flush();
-				oDataOutputStream.close();
+			URL oURL = new URL(sUrl + sb.toString());
+			
+			oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
+			oHttpURLConnection.setRequestMethod("GET");
+			oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			oHttpURLConnection.setDoOutput(true);
 
-				try (BufferedReader oBufferedReader = new BufferedReader(
-						new InputStreamReader(oHttpURLConnection.getInputStream()))) {
+			try (BufferedReader oBufferedReader = new BufferedReader(
+					new InputStreamReader(oHttpURLConnection.getInputStream()))) {
 
-					StringBuilder os = new StringBuilder();
-					String s;
+				StringBuilder os = new StringBuilder();
+				String s;
 
-					while ((s = oBufferedReader.readLine()) != null) {
-						os.append(s);
-					}
-
-					ret = os.toString();
-
-				} catch (java.io.FileNotFoundException e) {
-					ret = NULL_RESPONSE;
-					LOG.error("http code:{}\n", e);
+				while ((s = oBufferedReader.readLine()) != null) {
+					os.append(s);
 				}
-			}
 
+				ret = os.toString();
+
+			} catch (java.io.FileNotFoundException e) {
+				ret = NULL_RESPONSE;
+				LOG.error("http code:{}\n", e);
+			}
 		} catch (MalformedURLException e) {
 			ret = NULL_RESPONSE;
 			LOG.error("Error:", e);
