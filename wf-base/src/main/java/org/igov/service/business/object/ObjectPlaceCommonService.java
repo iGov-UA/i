@@ -123,7 +123,6 @@ public class ObjectPlaceCommonService {
 			oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 			oHttpURLConnection.setRequestMethod("GET");
 			oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-			oHttpURLConnection.setDoOutput(true);
 
 			try (BufferedReader oBufferedReader = new BufferedReader(
 					new InputStreamReader(oHttpURLConnection.getInputStream()))) {
