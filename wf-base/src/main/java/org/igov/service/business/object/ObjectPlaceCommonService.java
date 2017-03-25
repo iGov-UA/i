@@ -64,10 +64,6 @@ public class ObjectPlaceCommonService {
 		}
 		sURLSendAddressByType = sURL_Send + SUB_URL_ADDRESS_BY_TYPE;
 		sURLSendAddressByName = sURL_Send + SUB_URL_ADDRESS_BY_NAME;
-		// sURLSendAddressByType = "http://service-street.tech.igov.org.ua" +
-		// SUB_URL_ADDRESS_BY_TYPE;
-		// sURLSendAddressByName = "https://service-street.tech.igov.org.ua" +
-		// SUB_URL_ADDRESS_BY_NAME;
 
 		isReadyWork = true;
 	}
@@ -89,8 +85,24 @@ public class ObjectPlaceCommonService {
 			return searchByName(sURLSendAddressByName, sID_SubPlace_PB, ObjectPlaceType.STREET, sFind,
 					ObjectPlaceLang.RUS);
 		} else {
-			return listAddressByType(sURLSendAddressByType, sID_SubPlace_PB, ObjectPlaceType.STREET,
-					ObjectPlaceLang.RUS, null, null);
+			HttpHeaders headers = new HttpHeaders();
+			headers.set("Content-Type", "application/json; charset=utf-8");
+
+			StringBuffer sb = new StringBuffer("?id=");
+			sb.append(sID_SubPlace_PB);
+			sb.append("&type=");
+			sb.append(ObjectPlaceType.STREET);
+			sb.append("&language=");
+			sb.append(ObjectPlaceLang.RUS);
+
+			String resp = new RestRequest().get(sURLSendAddressByType + sb.toString(), null, StandardCharsets.UTF_8,
+					String.class, headers);
+
+			return resp;
+
+			// return listAddressByType(sURLSendAddressByType, sID_SubPlace_PB,
+			// ObjectPlaceType.STREET,
+			// ObjectPlaceLang.RUS, null, null);
 		}
 	}
 
@@ -119,7 +131,7 @@ public class ObjectPlaceCommonService {
 			}
 
 			URL oURL = new URL(sUrl + sb.toString());
-			
+
 			oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
 			oHttpURLConnection.setRequestMethod("GET");
 			oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
