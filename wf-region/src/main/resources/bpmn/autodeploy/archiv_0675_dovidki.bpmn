@@ -10,6 +10,7 @@
         <activiti:formProperty id="sRealAdress" name="Поштова адреса для зворотнього зв’язку; за якою зараз проживаєте" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ архіву, до якого Ви подаєте запит" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="asApplication" name="Прошу видати архівну довідку про" type="enum" required="true">
           <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
           <activiti:value id="sEnumMarried" name="одруження"></activiti:value>
@@ -27,9 +28,12 @@
         <activiti:formProperty id="sOther" name="Додаткові відомості" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersStart" name="Маркер на СтарТаске" type="markers" default="${markerService.loadFromFile('archiv/archiv_Poltava1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sPosition" name="Должность; ;bVisible=false" type="string" default="Директору Державного архіву Одеської області" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameDirector" name="Прізвище директора архіву; ;bVisible=false" type="string" default="Левчуку В.В."></activiti:formProperty>
-     </extensionElements>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan1" name="Назва органу відмінок; ;bVisible=false" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу; ;bVisible=false" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи; ;bVisible=false" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу; ;bVisible=false" type="string" readable="false"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -55,11 +59,11 @@
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
 				Ваша заявка на видачу архівних довідок, копій, витягів успішно зареєстрована [sID_Order].<br>
-				Спеціалісти Державного архіву Полтавської області повинні дати відповідь найближчим часом.
+				Спеціалісти ${sNameOrgan1} повинні дати відповідь найближчим часом.
 			</p>
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			Державний архів Полтавської області,<br>
+			${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -92,7 +96,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Форма прийняття рішення" activiti:candidateGroups="Poltava_archive">
+    <userTask id="usertask1" name="Форма прийняття рішення" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я громадянина" type="string" writable="false"></activiti:formProperty>
@@ -156,7 +160,7 @@
 			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			Державний архів Полтавської області,<br>
+			${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -191,9 +195,9 @@
 			[pattern/mail/new_design/_common_content_start.html]
 			 <p>
                Спеціалісти успішно опрацювли Вашу заяву.<br>
-			   Ви можете отримати вашу довідку про enum{[asApplication]} через 30 днів за адресою: Адреса архіву<br>
-			   графік роботи пн-чт. з 8.00 по 17.15, пт. з 8.00 до 16.00, перерва 12.00-13.00 (пн-пт)<br>
-			   тел. 0532 56 30 35									
+			   Ви можете отримати вашу довідку про enum{[asApplication]} через 30 днів за адресою: ${sAddress}<br>
+			   графік роботи ${sWorkTime}<br>
+			   ${sPhoneOrgan}								
 			</p>
 			<p> При собі потрібно мати документ, який посвідчує особу
 			</p>							
@@ -205,7 +209,7 @@
             </p>
             [pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			Державний архів Полтавської області,<br>
+			${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
