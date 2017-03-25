@@ -663,7 +663,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> response = new HashMap<>();
 
         try {
-            response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+            response.put("oProcess", oActionTaskService.getProcessInfo(nID_Process, nID_Task, sID_Order));
         } catch (NullPointerException e) {
             String message = String.format("Incorrect Task ID [id = %s]. Record not found.", nID_Task);
             LOG.info(message);
@@ -713,7 +713,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
         }
         if (bIncludeProcessVariables.equals(Boolean.TRUE) && nID_Process != null) {
-            Map<String, Object> mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+            Map<String, Object> mProcessVariable = null;
+            try {
+                mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+            } catch (ActivitiObjectNotFoundException oException){
+                LOG.error("Can't get: {}", oException.getMessage());
+            }
             response.put("mProcessVariable", mProcessVariable);
         }
 
