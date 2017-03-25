@@ -713,7 +713,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
         }
         if (bIncludeProcessVariables.equals(Boolean.TRUE) && nID_Process != null) {
-            Map<String, Object> mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+            Map<String, Object> mProcessVariable = null;
+            try {
+                mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+            } catch (ActivitiObjectNotFoundException oException){
+                LOG.error("Can't get: {}", oException.getMessage());
+            }
             response.put("mProcessVariable", mProcessVariable);
         }
 
