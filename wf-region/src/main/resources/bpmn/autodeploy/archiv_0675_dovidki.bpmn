@@ -128,6 +128,7 @@
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта;у форматі pdf;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBodyArchiv" name="[pattern/print/archiv/poltavaArchiv.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersUser" name="Маркер на ЮзерТаске" type="markers" default="${markerService.loadFromFile('archiv/archiv_PoltavaUser.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan1" name="Назва органу відмінок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -195,11 +196,12 @@
 			[pattern/mail/new_design/_common_content_start.html]
 			 <p>
                Спеціалісти успішно опрацювли Вашу заяву.<br>
-			   Ви можете отримати вашу довідку про enum{[asApplication]} через 30 днів за адресою: ${sAddress}<br>
-			   графік роботи ${sWorkTime}<br>
+			   Ви можете отримати вашу довідку про enum{[asApplication]} через 30 днів.<br>
+			   ${sAddress}<br><br>
+			   Графік роботи: ${sWorkTime}<br><br>
 			   ${sPhoneOrgan}								
 			</p>
-			<p> При собі потрібно мати документ, який посвідчує особу
+			<p> При собі потрібно мати документ, який посвідчує особу.
 			</p>							
 			<p>
 			${sComment}
@@ -215,7 +217,7 @@
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nBill},${PrintForm_1}]]></activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
