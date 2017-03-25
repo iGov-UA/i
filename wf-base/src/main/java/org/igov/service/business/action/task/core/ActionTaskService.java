@@ -1640,8 +1640,11 @@ public class ActionTaskService {
      * @param nID_Task - номер-ИД таски
      * @return DTO-объект ProcessDTOCover
      */
-    public ProcessDTOCover getProcessInfoByTaskID(Long nID_Task) {
+    public ProcessDTOCover getProcessInfo(Long nID_Process, Long nID_Task, String sID_Order) throws CRCInvalidException, RecordNotFoundException {
         LOG.info("start process getting Task Data by nID_Task = {}", nID_Task);
+        if(nID_Task == null){
+            nID_Task = getTaskIDbyProcess(nID_Process, sID_Order, Boolean.FALSE);
+        }
 
         HistoricTaskInstance oHistoricTaskInstance = oHistoryService.createHistoricTaskInstanceQuery()
                 .taskId(nID_Task.toString()).singleResult();
@@ -1656,41 +1659,58 @@ public class ActionTaskService {
         String sName = ProcessDefinition.getName();
         LOG.info("название услуги (БП) sName={}", sName);
 
+        String sProcessInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+        Long nID = null;
         String sPlace = "";
         String sDateCreate = "";
         String sDateClose = "";
 
-        try {
-            HistoricProcessInstance historicProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
-                    processInstanceId(oHistoricTaskInstance.getProcessInstanceId()).
-                    includeProcessVariables().singleResult();
-            sPlace = historicProcessInstance.getProcessVariables().containsKey("sPlace") ? (String) historicProcessInstance.getProcessVariables().get("sPlace") : "";
-            LOG.info("Found process instance with variables. sPlace {}", sPlace);
-            sPlace = sPlace + " ";
-
-            DateTimeFormatter oDateTimeFormatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-            Date oDateCreate = historicProcessInstance.getStartTime();
-            sDateCreate = oDateTimeFormatter.print(oDateCreate.getTime());
-            LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
-            Date oDateClose = historicProcessInstance.getEndTime();
-            sDateClose = oDateClose == null ? null : oDateTimeFormatter.print(oDateClose.getTime());
-            LOG.info("дата создания процесса sDateClose={}", sDateClose);
-
-        } catch (Exception e){
-            LOG.info("Error during getting HistoricProcessInstance: " + e.getMessage());
-            ProcessInstanceHistoryLog oProcessInstanceHistoryLog = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
-                            nID_Task.toString())).singleResult();
-            DateTimeFormatter oDateTimeFormatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
-            Date oDateCreate = oProcessInstanceHistoryLog.getStartTime();
-            sDateCreate = oDateTimeFormatter.print(oDateCreate.getTime());
-            LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
-            Date oDateClose = oProcessInstanceHistoryLog.getEndTime();
-            sDateClose = oDateClose == null ? null : oDateTimeFormatter.print(oDateClose.getTime());
-            LOG.info("дата создания процесса sDateClose={}", sDateClose);
+        HistoricProcessInstance historicProcessInstance = null;
+        if(nID_Process != null){
+            nID = nID_Process;
+        } else if (sProcessInstanceId == null || sProcessInstanceId.equals("")){
+            LOG.info("Can't get getProcessInstanceId from HistoricTaskInstance by TaskId");
+        } else {
+            nID = Long.valueOf(sProcessInstanceId);
         }
 
-        Long nID = Long.valueOf(oHistoricTaskInstance.getProcessInstanceId());
-        LOG.info("id процесса (nID={})", nID.toString());
+        if(nID != null){
+            LOG.info("id процесса (nID={})", nID.toString());
+            historicProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
+                    processInstanceId(sProcessInstanceId).
+                    includeProcessVariables().singleResult();
+            if (historicProcessInstance != null){
+                if(historicProcessInstance.getProcessVariables() != null && historicProcessInstance.getProcessVariables().containsKey("sPlace")){
+                    sPlace = (String) historicProcessInstance.getProcessVariables().get("sPlace");
+                } else {
+                    sPlace = "";
+                }
+                LOG.info("Found process instance with variables. sPlace {}", sPlace);
+                sPlace = sPlace + " ";
+
+                DateTimeFormatter oDateTimeFormatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+                Date oDateCreate = historicProcessInstance.getStartTime();
+                sDateCreate = oDateTimeFormatter.print(oDateCreate.getTime());
+                LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
+                Date oDateClose = historicProcessInstance.getEndTime();
+                sDateClose = oDateClose == null ? null : oDateTimeFormatter.print(oDateClose.getTime());
+                LOG.info("дата окончания процесса sDateClose={}", sDateClose);
+            } else {
+                LOG.info("HistoricProcessInstance not found");
+                ProcessInstanceHistoryLog oProcessInstanceHistoryLog = oHistoryService.createProcessInstanceHistoryLogQuery(sProcessInstanceId).singleResult();
+                if(oProcessInstanceHistoryLog != null){
+                    DateTimeFormatter oDateTimeFormatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
+                    Date oDateCreate = oProcessInstanceHistoryLog.getStartTime();
+                    sDateCreate = oDateTimeFormatter.print(oDateCreate.getTime());
+                    LOG.info("дата создания процесса sDateCreate={}", sDateCreate);
+                    Date oDateClose = oProcessInstanceHistoryLog.getEndTime();
+                    sDateClose = oDateClose == null ? null : oDateTimeFormatter.print(oDateClose.getTime());
+                    LOG.info("дата окончания процесса sDateClose={}", sDateClose);
+                } else {
+                    LOG.info("ProcessInstanceHistoryLog not found");
+                }
+            }
+        }
 
         ProcessDTOCover oProcess = new ProcessDTOCover(sPlace + sName, sBP, nID, sDateCreate, sDateClose);
         LOG.info("Created ProcessDTOCover={}", oProcess.toString());
