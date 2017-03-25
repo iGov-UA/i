@@ -1676,7 +1676,8 @@ public class ActionTaskService {
             sDateClose = oDateClose == null ? null : oDateTimeFormatter.print(oDateClose.getTime());
             LOG.info("дата создания процесса sDateClose={}", sDateClose);
 
-        } catch (NullPointerException e){
+        } catch (Exception e){
+            LOG.info("Error during getting HistoricProcessInstance: " + e.getMessage());
             ProcessInstanceHistoryLog oProcessInstanceHistoryLog = oHistoryService.createProcessInstanceHistoryLogQuery(getProcessInstanceIDByTaskID(
                             nID_Task.toString())).singleResult();
             DateTimeFormatter oDateTimeFormatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
