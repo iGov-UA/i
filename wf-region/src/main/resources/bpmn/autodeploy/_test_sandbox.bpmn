@@ -3,12 +3,12 @@
   <process id="_test_sandbox" name="_test_sandbox" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="comment" name="Поле с возможностью редактирования" type="fileHTML" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Поле с возможностью редактирования" type="fileHTML" required="true" default="поле"></activiti:formProperty>
 		</extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
-        <activiti:formProperty id="comment" name="Поле с возможностью редактирования" type="fileHTML" required="false"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Поле с возможностью редактирования" type="fileHTML" required="false" default="поле"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="повідомлення громадянина про реєстрацію документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
