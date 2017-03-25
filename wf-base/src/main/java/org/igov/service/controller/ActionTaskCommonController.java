@@ -687,11 +687,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
         }
 
-        LOG.info("Attach is not triggered!");
 
         if (bIncludeAttachments.equals(Boolean.TRUE)) {
             LOG.info("Attach is triggered!");
             response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
+        } else {
+            LOG.info("Attach is not triggered!");
         }
         if (bIncludeMessages.equals(Boolean.TRUE)) {
             if (nID_Process == null) {
