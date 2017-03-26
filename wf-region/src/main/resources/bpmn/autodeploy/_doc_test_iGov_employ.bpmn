@@ -19,15 +19,21 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <userTask id="usertask1" name="Заява про прийнятя на роботу">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява про прийнятя на роботу"></activiti:formProperty>
-        <activiti:formProperty id="sAvtorName" name="ПІБ заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id групи" type="invisible" default="iGov_Departament_BA_New"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_1" name="id групи" type="invisible" default="iGov_Grek"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEmployee" name="ПІБ найманого працівника; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nZP" name="Посадовий оклад" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressa" name="Місце проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPasspot" name="Серія та номер паспорту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPhone" name="Номер телефону" type="long" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="адреса E-mail " type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_test_iGov_employ.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Author]]></activiti:string>
@@ -39,19 +45,32 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask2" name="переход на след. степ" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="перехід на след. степ , клонування прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для узгоджувачів
+var sKey_GroupPostfix = '_default_Accept'
+var sID_Field = 'sTable'
+var sKey_Step = 'step_2'
+     
+var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step)
+	 
+</script>
     </scriptTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask2" name="Обробка заяви">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява про прийнятя на роботу"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" variable="sName_SubjectRole"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="логин" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAvtorName" name="ПІБ заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nZP" name="Посадовий оклад" type="long" writable="false"></activiti:formProperty>
@@ -81,7 +100,6 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow6" sourceRef="usertask2" targetRef="servicetask1"></sequenceFlow>
     <scriptTask id="scripttask3" name="переход на след степ" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
@@ -90,11 +108,11 @@ var sKey_Step= 'step_3'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав
-
-var sKey_GroupPostfix_New ='iGov_Pavlenko'
+var sID_Field='sName_SubjectRole'
+var sKey_GroupPostfix_New =execution.getVariable(sID_Field)
 var sKey_GroupPostfix = '_default_Staff'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)
+
 </script>
     </scriptTask>
     <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="scripttask3"></sequenceFlow>
@@ -121,6 +139,21 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)
     <sequenceFlow id="flow8" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
+    <scriptTask id="scripttask4" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKey_Step = execution.getVariable('sKey_Step_Document')
+var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="scripttask4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow11" sourceRef="scripttask4" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway1" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'true'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="exclusivegateway1" targetRef="usertask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_iGov_employ">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_iGov_employ" id="BPMNPlane__doc_test_iGov_employ">
@@ -137,10 +170,10 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)
         <omgdc:Bounds height="58.0" width="131.0" x="580.0" y="132.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="58.0" width="161.0" x="780.0" y="132.0"></omgdc:Bounds>
+        <omgdc:Bounds height="58.0" width="161.0" x="790.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="990.0" y="134.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1150.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="71.0" width="105.0" x="990.0" y="250.0"></omgdc:Bounds>
@@ -150,6 +183,12 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="722.0" y="268.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="1030.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="1182.0" y="147.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="125.0" y="160.0"></omgdi:waypoint>
@@ -165,15 +204,11 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="711.0" y="161.0"></omgdi:waypoint>
-        <omgdi:waypoint x="780.0" y="161.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="941.0" y="161.0"></omgdi:waypoint>
-        <omgdi:waypoint x="990.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="162.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="1042.0" y="189.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1042.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1150.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1095.0" y="285.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="990.0" y="285.0"></omgdi:waypoint>
@@ -182,6 +217,25 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="808.0" y="285.0"></omgdi:waypoint>
         <omgdi:waypoint x="757.0" y="285.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="951.0" y="162.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1030.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="1135.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1182.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="1202.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1202.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="1202.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1199.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1033.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="133.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
