@@ -71,7 +71,7 @@ var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, s
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява про прийнятя на роботу"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" readable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nZP" name="Посадовий оклад" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmployee" name="ПІБ співробітника" type="select" writable="false"></activiti:formProperty>
@@ -145,7 +145,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <script>var nID_Process = execution.getProcessInstanceId()
 var sKey_Step = execution.getVariable('sKey_Step_Document')
 var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
-execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
+execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())
+
+execution.setVariable('bVerificationSignatures', 'true')</script>
     </scriptTask>
     <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="scripttask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
