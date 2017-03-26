@@ -16,9 +16,10 @@
         "sCopyDovidk"
       ],
       "asID_Field": {
-        "sClient":"asResultWay"
+        "sClient":"asResultWay",
+        "sClient1":"asResultWay"
       },
-      "sCondition":"[sClient]=='sDigital' || [sClient]=='Електронна версія'"
+      "sCondition":"([sClient]=='sDigital' || [sClient]=='Електронна версія') && ([sClient1]=='sAccept' || [sClient1] == 'Повідимити громадянина, що довідка підготовлена до отримання')"
   },
   "RequiredFieldsOnCondition_1" : {
 			"aField_ID" : ["sComment"], 
@@ -33,7 +34,7 @@
 			"asID_Field" : {
 				"sReason" : "asDecision"
 			}, 
-			"sCondition" : "[sReason]=='sAccept' || [sReason] == 'Повідомити громадянина про відмову в наданні послуги'"
+			"sCondition" : "[sReason]=='sAccept' || [sReason] == 'Повідимити громадянина, що довідка підготовлена до отримання'"
 		}
 	}
 }
