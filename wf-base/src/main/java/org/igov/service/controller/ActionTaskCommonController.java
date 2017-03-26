@@ -3142,7 +3142,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     	List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
                         if (activeTasks != null && activeTasks.size() > 0){
                         	LOG.info("Found " + activeTasks.size() + " active tasks for the execution id " + executionId);
-                        	mReturn.put("nID_Task", tasks.get(0).getId());
+                        	mReturn.put("taskId", tasks.get(0).getId());
                         } else {
                         	LOG.warn("There are no active tasks for execution id " + executionId);
                         }
