@@ -25,16 +25,16 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sID_Group_Activiti" name="id групи" type="invisible" default="iGov_Departament_BA_New"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження" type="invisible" default="iGov_Grek"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="логін" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEmployee" name="ПІБ найманого працівника; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEmployee" name="ПІБ найманого працівника; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nZP" name="Посадовий оклад" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressa" name="Місце проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPasspot" name="Серія та номер паспорту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPhone" name="Номер телефону" type="long" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="адреса E-mail " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_test_iGov_employ.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sActivitiGroup_Emploee" name="Узгоджуючі" type="enum" required="true">
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_test_iGov_employ.json')}" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sActivitiGroup_Acept" name="Узгоджуючі" type="enum" required="true">
           <activiti:value id="iGov_Prodan" name="Продан Юлія По-батькові"></activiti:value>
           <activiti:value id="iGov_Svidran" name="Свідрань Максим По-батькові"></activiti:value>
         </activiti:formProperty>
@@ -62,7 +62,7 @@ var sKey_GroupPostfix = '_default_Accept'
 var sKey_Step = 'step_2'
      
 //var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step)
-var sKey_GroupPostfix_New=xecution.getVariable('sActivitiGroup_Emploee')
+var sKey_GroupPostfix_New=xecution.getVariable('sActivitiGroup_Acept')
 var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 	 
 </script>
