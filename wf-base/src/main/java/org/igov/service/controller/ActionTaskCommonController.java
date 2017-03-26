@@ -10,10 +10,7 @@ import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.history.HistoricTaskInstanceQuery;
-import org.activiti.engine.history.HistoricVariableInstance;
-import org.activiti.engine.history.HistoricVariableInstanceQuery;
+import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.form.FormPropertyImpl;
@@ -716,6 +713,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             try {
                 mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
             } catch (ActivitiObjectNotFoundException oException){
+                /*
                 List<HistoricVariableInstance> variables = historyService.createHistoricVariableInstanceQuery().taskId(nID_Task.toString()).list();
                 if(variables != null && variables.size() > 0){
                     LOG.info("Getting variables from HistoricVariableInstance");
@@ -726,6 +724,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 } else {
                     LOG.error("Can't get: {}", oException.getMessage());
                 }
+                */
+                HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processDefinitionId(Long.toString(nID_Process)).singleResult();
+                if(historicProcessInstance == null){
+                    LOG.error("Can't get: {}", oException.getMessage());
+                } else {
+                    LOG.info("Getting variables from HistoricVariableInstance");
+                    mProcessVariable = historicProcessInstance.getProcessVariables();
+                }
+
             }
             response.put("mProcessVariable", mProcessVariable);
         }
