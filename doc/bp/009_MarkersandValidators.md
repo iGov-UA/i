@@ -206,7 +206,7 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
-
+* ![9_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_8.JPG)
 ***
 
 ### NumberBetween - принадлежность значения  диапазону значений  (целочисленные)
