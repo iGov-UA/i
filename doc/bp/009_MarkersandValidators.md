@@ -352,3 +352,4 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
+* ![9_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_9.JPG)
