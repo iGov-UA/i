@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_529_mode_worktime_chernigov" name="Погодження режиму роботи об’єкта торгівлі, закладу ресторанного господарства та сфери послуг" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 09.02.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 24.03.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -539,7 +539,7 @@
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -548,7 +548,7 @@
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_1_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print_chernigov.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з наложеною ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з наложеною ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Заява з наложеною ЕЦП" type="invisible" default="pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov_start.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -1095,9 +1095,9 @@
         <activiti:formProperty id="sPRN7E" name="Інформація щодо закінчення роботи в відповідний день" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
-        </activiti:taskListener>
+        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з наложеною ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -1151,7 +1151,7 @@
           <activiti:value id="reject" name="У встановленні режиму роботи відмовлено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid" name="Копiя повідомлення про встановлення режиму роботи здійснено з ЕЦП" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid" name="Копiя повідомлення про встановлення режиму роботи здійснено з ЕЦП; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -1643,12 +1643,8 @@
         <activiti:formProperty id="sPRN7E" name="Інформація щодо закінчення роботи в відповідний день" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${PrintFormAutoSign_1},${form_signed}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з наложеною ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відпрвка e-mail з відмовою + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
