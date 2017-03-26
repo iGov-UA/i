@@ -93,13 +93,15 @@ public class ObjectPlaceCommonService {
 		// Берем или из кеша, или запрашиваем сервис
 		if (mListAddress.containsKey(sID_SubPlace_PB)) {
 			LOG.debug("Берем данные из кеша");
-			List<ObjectAddress> lObjectAddress2 = (List<ObjectAddress>) mListAddress.get(sID_SubPlace_PB);
+			List<ObjectAddress> lObjectAddressCache = (List<ObjectAddress>) mListAddress.get(sID_SubPlace_PB);
 
-			if (sFind != null) {
+			if (sFind == null) {
+				lObjectAddress = lObjectAddressCache;
+			} else {
 				lObjectAddress = new ArrayList<>();
 
-				String sFind2 = sFind.toUpperCase();
-				for (ObjectAddress objectAddress : lObjectAddress2) {
+				String sFind2 = sFind.toUpperCase().trim();
+				for (ObjectAddress objectAddress : lObjectAddressCache) {
 					if (objectAddress.getName().toUpperCase().contains(sFind2)) {
 						lObjectAddress.add(objectAddress);
 					}
@@ -107,9 +109,9 @@ public class ObjectPlaceCommonService {
 			}
 
 		} else {
-			
+
 			LOG.debug("Берем данные из сервиса");
-			
+
 			try {
 				String ret = getSubPlacesFromService(sID_SubPlace_PB, sFind);
 				lObjectAddress = parseDataFromXML(ret);
@@ -127,7 +129,6 @@ public class ObjectPlaceCommonService {
 
 		if (lObjectAddress == null) {
 			return NULL_RESPONSE;
-
 		}
 
 		StringBuffer sb = new StringBuffer(lObjectAddress.size() * 50);
