@@ -102,7 +102,7 @@ public class ObjectPlaceCommonService {
 
 				String sFind2 = sFind.toUpperCase().trim();
 				for (ObjectAddress objectAddress : lObjectAddressCache) {
-					if (objectAddress.getName().toUpperCase().contains(sFind2)) {
+					if (objectAddress.getDesc().toUpperCase().contains(sFind2)) {
 						lObjectAddress.add(objectAddress);
 					}
 				}
@@ -169,9 +169,9 @@ public class ObjectPlaceCommonService {
 
 					String code = element.getAttribute("code");
 					String desc = element.getAttribute("desc");
-					String name = element.getAttribute("nodeTypeName");
+					String type = element.getAttribute("nodeTypeName");
 
-					ObjectAddress objectAddress = new ObjectAddress(code, desc, name);
+					ObjectAddress objectAddress = new ObjectAddress(code, desc, type);
 					lObjectAddress.add(objectAddress);
 				}
 
