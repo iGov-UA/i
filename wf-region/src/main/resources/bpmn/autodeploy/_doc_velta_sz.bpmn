@@ -140,7 +140,6 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 // клонирование прав
 var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_Velta_Answ', 'sTable1', 'step_3')</script>
     </scriptTask>
-    <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask5" name="Відповідальний підрозділ. Підготовка відповіді на пропозицію">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -168,18 +167,12 @@ var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow39" sourceRef="usertask5" targetRef="scripttask8"></sequenceFlow>
     <scriptTask id="scripttask8" name="Проверка подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
 var sKey_Step = execution.getVariable('sKey_Step_Document')
 var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
 execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
     </scriptTask>
-    <sequenceFlow id="flow60" sourceRef="scripttask8" targetRef="exclusivegateway1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow40" sourceRef="exclusivegateway1" targetRef="usertask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
-    </sequenceFlow>
     <scriptTask id="scripttask7" name="переключение степа на 4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
@@ -316,9 +309,6 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
         <omgdc:Bounds height="55.0" width="141.0" x="88.0" y="499.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="138.0" y="590.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
         <omgdc:Bounds height="61.0" width="141.0" x="320.0" y="630.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -368,24 +358,6 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="390.0" y="255.0"></omgdi:waypoint>
         <omgdi:waypoint x="390.0" y="630.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="158.0" y="362.0"></omgdi:waypoint>
-        <omgdi:waypoint x="158.0" y="380.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="158.0" y="471.0"></omgdi:waypoint>
-        <omgdi:waypoint x="158.0" y="499.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="158.0" y="554.0"></omgdi:waypoint>
-        <omgdi:waypoint x="158.0" y="590.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="138.0" y="610.0"></omgdi:waypoint>
-        <omgdi:waypoint x="13.0" y="609.0"></omgdi:waypoint>
-        <omgdi:waypoint x="13.0" y="425.0"></omgdi:waypoint>
-        <omgdi:waypoint x="88.0" y="425.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
         <omgdi:waypoint x="390.0" y="691.0"></omgdi:waypoint>
