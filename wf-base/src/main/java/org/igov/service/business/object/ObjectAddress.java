@@ -3,9 +3,9 @@ package org.igov.service.business.object;
 public class ObjectAddress {
 	private String code = "";
 	private String desc = "";
-	private String name = "";
+	private String type = "";
 
-	public ObjectAddress(String code, String desc, String name) {
+	public ObjectAddress(String code, String desc, String type) {
 		if (code != null) {
 			this.code = code;
 		}
@@ -14,8 +14,8 @@ public class ObjectAddress {
 			this.desc = desc;
 		}
 
-		if (name != null) {
-			this.name = name;
+		if (type != null) {
+			this.type = type;
 		}
 	}
 
@@ -27,8 +27,8 @@ public class ObjectAddress {
 		return desc;
 	}
 
-	public String getName() {
-		return name;
+	public String getType() {
+		return type;
 	}
 
 	public String toString() {
@@ -37,8 +37,8 @@ public class ObjectAddress {
 		sb.append(this.code);
 		sb.append(",\"desc\":\"");
 		sb.append(this.desc);
-		sb.append(",\"name\":\"");
-		sb.append(this.name);
+		sb.append(",\"type\":\"");
+		sb.append(this.type);
 		sb.append("}");
 
 		return sb.toString();
