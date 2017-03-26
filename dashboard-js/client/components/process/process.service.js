@@ -14,9 +14,10 @@ angular.module('dashboardJsApp')
     var processesDefinitions = null;
 
     return {
-      getUserProcesses: function () {
+      getUserProcesses: function (isOldService) {
+        var params = isOldService ? {params: {isOld: isOldService}} : '';
 
-        return $http.get('/api/processes/getLoginBPs')
+        return $http.get('/api/processes/getLoginBPs', params)
           .then(function (response) {
             try {
               var result = JSON.parse(response.data);

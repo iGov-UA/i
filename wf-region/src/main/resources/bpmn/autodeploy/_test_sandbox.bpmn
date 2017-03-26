@@ -3,27 +3,10 @@
   <process id="_test_sandbox" name="_test_sandbox" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        
-        <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 01&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Найменування скорочене" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
-<!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_01" name="КВЕД" type="textArea"></activiti:formProperty>-->
-        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
-
-        <activiti:formProperty id="markers_02" name="лінія ЄДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 02&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Найменування скорочене" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_02" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
-<!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_02" name="КВЕД" type="textArea"></activiti:formProperty>-->
-        <activiti:formProperty id="sDateActual_SubjectOrgan_02" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
-		
+        <activiti:formProperty id="sTextWarning" name="Увага!; ;lableType='warning'" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
+        <activiti:formProperty id="sTextSuccess" name="Успiх!; ;lableType='success'" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
+        <activiti:formProperty id="sTextInformation" name="Iнформацiя!; ;lableType='info'" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
+        <activiti:formProperty id="sTextDanger" name="Небезпека!; ;lableType='danger'" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
 		</extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
@@ -35,7 +18,8 @@
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Наименование краткое" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Местонахождение" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО директора" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVEDName_SubjectOrgan_01" name="" type="textArea" writable="false"></activiti:formProperty>
 <!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_01" name="КВЕД" type="textArea"></activiti:formProperty>-->
         <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата информации" type="string" writable="false"></activiti:formProperty>
 
@@ -45,7 +29,8 @@
         <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Наименование краткое" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Местонахождение" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФИО директора" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_02" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_02" name="Основний КВЕД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sKVEDName_SubjectOrgan_02" name="" type="textArea" writable="false"></activiti:formProperty>
 <!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_02" name="КВЕД" type="textArea"></activiti:formProperty>-->
         <activiti:formProperty id="sDateActual_SubjectOrgan_02" name="Дата информации" type="string" writable="false"></activiti:formProperty>
 		

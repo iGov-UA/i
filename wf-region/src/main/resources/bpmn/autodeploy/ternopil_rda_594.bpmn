@@ -67,12 +67,12 @@
         <activiti:formProperty id="nDoc_hroshi" name="Документ, що підтверджує право володіння дитини грошовими заощадженнями" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDoc_zemlya" name="Документ, що підтверджує право власності (кориcтування) на земельну ділянку" type="file"></activiti:formProperty>
         <activiti:formProperty id="nDocument" name="Документ, що підтверджує право власності, володіння або користування дитини; стосовно чого вчинятиметься правочин" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapka494" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/tern_594.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -146,13 +146,13 @@
         <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka494" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('ternopil/tern_594_cont1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_rda_594.html]" type="invisible" default="Заява громадянина першого з батьків на 1 дитину" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/tern_rda_594_1.html]" type="invisible" default="Заява громадянина другого з батьків на 1 дитину" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/tern_rda_594_dity.html]" type="invisible" default="Заява громадянина першого з батьків на декількох дітей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/ternopil/tern_rda_594_2_dity.html]" type="invisible" default="Заява громадянина другого з батьків на декількох дітей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_rda_594.html]; ;bVisible=false" type="string" default="Заява громадянина першого з батьків на 1 дитину" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/tern_rda_594_1.html]; ;bVisible=false" type="string" default="Заява громадянина другого з батьків на 1 дитину" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/tern_rda_594_dity.html]; ;bVisible=false" type="string" default="Заява громадянина першого з батьків на декількох дітей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/ternopil/tern_rda_594_2_dity.html]; ;bVisible=false" type="string" default="Заява громадянина другого з батьків на декількох дітей" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -214,7 +214,7 @@
         <activiti:formProperty id="pib_posadovec" name="П.І.Б. посадової особи, що проводитиме співбесіду" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Результат послуги " type="enum" required="true">
           <activiti:value id="accept" name="Дозвіл готовий"></activiti:value>
           <activiti:value id="reject" name="Готова відмова у отриманні дозволу"></activiti:value>

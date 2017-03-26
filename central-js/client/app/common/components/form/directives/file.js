@@ -131,7 +131,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
     },
     // todo: Замінити цей темплейт на використування директиви buttonFileUpload
     template: '<p>' +
-    ' <button type="button" ng-class="{\'btn-default\':item, \'btn-success\':!item}" class="btn" ng-disabled="isFileProcessUploading.bState">' +
+    ' <button type="button" ng-class="{\'btn-default\':item, \'igov-upload-button\':!item}" class="btn" ng-disabled="isFileProcessUploading.bState">' +
     '  <span class="glyphicon glyphicon-file" aria-hidden="true"></span>' +
     '  <span ng-disabled="data.formData.params[property.id].isUploading">' +
     '   <span>{{item && item.value ? "Обрати iнший файл" : "Обрати файл"}}<span>' +

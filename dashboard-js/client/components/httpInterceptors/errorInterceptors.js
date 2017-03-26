@@ -42,11 +42,27 @@
           if(rejection.status == 401) {
             console.log("Unauthorized");
             return rejection;
+          } else if (isTemplateFileNotFound(rejection)){
+            return rejection;
           } else if (rejection.data && rejection.data.statusCode == 401) {
             return $q.reject(rejection);
           }
+          try {
+            rejection.data = angular.fromJson(rejection.data);
+          } catch (e) {
 
+          }
           Modal.inform.error()(rejection.data.message || rejection.data.serverMessage || (rejection.statusText === '' ? 'Виникла помилка: ' + rejection.status : rejection.statusText));
+
+          function isTemplateFileNotFound(rejection){
+            var isTrue = true;
+            isTrue = isTrue && rejection.status == 403;
+            isTrue = isTrue && rejection.data && rejection.data.code && rejection.data.code === 'BUSINESS_ERR';
+            isTrue = isTrue && rejection.data && rejection.data.message && rejection.data.message === 'oURL == null';
+            isTrue = isTrue && rejection.config.url.indexOf('api/reports/template') >= 0;
+            return isTrue;
+          }
+
           return $q.reject(rejection);
         }
       };

@@ -35,6 +35,7 @@ var finishRequest = function (req, res, err, result, userService) {
     req.session.bAdmin = result.admin;
 
     var customer = userService.convertToCanonical(result.customer);
+    customer.sUsedAuthType = req.session.type;
     var admin = result.admin;
 
     logger.info("[tryCache] user is found", {result: customer});

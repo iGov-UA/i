@@ -23,14 +23,14 @@
         <activiti:formProperty id="sVid_plem_res" name="Вид племінних ресурсів" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPorod_plem_res" name="Порода племінних ресурсів" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sKilk_plem_res" name="Кількість племінних ресурсів" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk_agro" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPovne_Imja" name="Повна назва заявника" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видачі сертифікатів племінних (генетичних) ресурсів"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_agro" name="Пошта органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPovne_Imja" name="Повна назва заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Видачі сертифікатів племінних (генетичних) ресурсів"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -119,9 +119,9 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sVid_plem_res" name="Вид племінних ресурсів; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPorod_plem_res" name="Порода племінних ресурсів; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKilk_plem_res" name="Кількість племінних ресурсів; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPovne_Imja" name="Повна назва заявника" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPovne_Imja" name="Повна назва заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заяву прийнято, видати сертифікат племінних ресурсів"></activiti:value>
           <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова"></activiti:value>
@@ -238,12 +238,12 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sVid_plem_res" name="Вид племінних ресурсів" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPorod_plem_res" name="Порода племінних ресурсів" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKilk_plem_res" name="Кількість племінних ресурсів" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asVudacha" name="Видача відповіді" type="enum" required="true">
           <activiti:value id="sEnamVud_ok" name="Сертифікат надано заявнику"></activiti:value>
           <activiti:value id="sEnamVud_bad" name="Заяник не з'явився, надіслати лист нагадування"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>

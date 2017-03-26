@@ -26,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -374,5 +373,47 @@ public class SubjectService {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    public String getLoginSubjectAccountByLoginIgovAccount(
+            String sID_Login_Activiti, String sID_SubjectAccountType) {
+        String result = null;
+        try {
+            if (sID_Login_Activiti != null) {
+                Optional<SubjectAccount> subjectAccount = subjectAccountDao.findBy("sLogin", sID_Login_Activiti);
+                if (subjectAccount.isPresent()) {
+                    LOG.info("subjectAccount: " + subjectAccount);
+                    Long nID_Subject = subjectAccount.get().getnID_Subject();
+                    LOG.info("nID_Subject: " + nID_Subject);
+                    if (nID_Subject != null) {
+                        List<SubjectAccount> aSubjectAccount = subjectAccountDao.findAllBy("nID_Subject", nID_Subject);
+                        if (aSubjectAccount.size() > 0) {
+                            LOG.info("aSubjectAccount: " + aSubjectAccount);
+                            for (SubjectAccount oSubjectAccount : aSubjectAccount) {
+                                LOG.info("oSubjectAccount.getSubjectAccountType().getId(): " + oSubjectAccount.getSubjectAccountType().getId());
+                                if (oSubjectAccount.getSubjectAccountType().getsID().equals(sID_SubjectAccountType)) {
+                                    result = oSubjectAccount.getsLogin();
+                                    LOG.info("result: " + result);
+                                    break;
+                                } else {
+                                    LOG.error("Can't find 1C account");
+                                }
+                            }
+                        } else {
+                            LOG.error("Can't find SubjectAccount by Subject");
+                        }
+                    } else {
+                        LOG.error("Subject is null ");
+                    }
+                } else {
+                    LOG.error("Can't find SubjectAccount by Login");
+                }
+            } else {
+                LOG.error("Can't find assigneeUser");
+            }
+        } catch (Exception ex) {
+            LOG.error("getLoginSubjectAccountByLoginIgovAccount: ", ex);
+        }
+        return result;
     }
 }
