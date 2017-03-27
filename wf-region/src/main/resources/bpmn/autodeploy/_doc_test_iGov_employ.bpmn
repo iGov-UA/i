@@ -141,7 +141,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow8" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
-    <scriptTask id="scripttask4" name="перевірка підписів" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask4" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
 var sKey_Step = execution.getVariable('sKey_Step_Document')
 var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
