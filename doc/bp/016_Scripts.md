@@ -275,5 +275,5 @@ execution.setVariable('sLastName', obj.aProcessSubjectTree[0].aUser[i].sLastName
 var sExecutor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProcessSubjectTree[0].aUser[i].sLastName
 execution.setVariable('sExecutor', sExecutor)
 ```
-
+* ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
 ***
