@@ -117,6 +117,7 @@ var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds //склеив
 execution.setVariable('sNotification_day', timer)  //возвращаем в процесс итоговую переменную в нужном формате для таймера
 ```
 * ![16_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_5.JPG)
+
 **sNotification_day**  - это заранее созданная в процессе переменная, в которую вернем результат работы скрипта 
 
 ## Вычисление любой даты до (для напоминания) или после (для удаления заявки) даты визита:
