@@ -165,7 +165,13 @@ angular.module('autocompleteService')
                     })
                 });
                 function setParams(field, key, rowKey, fieldKey) {
-                    queryParams.params[field.id] = field.value;
+                    if (field.id.indexOf('sID_Group_Activiti') === 0) {
+                        queryParams.params['sID_Group_Activiti'] = field.value;
+                    } else if (field.id.indexOf('nDeepLevel') === 0) {
+                        queryParams.params['nDeepLevel'] = field.value;
+                    } else {
+                        queryParams.params[field.id] = field.value;
+                    }
                     if(key && rowKey && fieldKey) {
                         $scope.$watch('taskForm['+ key +'].aRow['+ rowKey + '].aField[' + fieldKey + '].value', function (newValue) {
                             $scope.refreshList(field.id, newValue);
