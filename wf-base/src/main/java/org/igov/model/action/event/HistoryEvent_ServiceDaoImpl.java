@@ -56,7 +56,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
                     historyEventService.getnID_Server());
             if (duplicateEvent != null) {
                 throw new IllegalArgumentException(
-                        "Cannot create historyEventService with the same nID_Process and nID_Server!");
+                            "Cannot create historyEventService with the same nID_Process and nID_Server!");
             }
         } catch (EntityNotFoundException ex) {
             LOG.info("create new historyEventService");/*NOP*/

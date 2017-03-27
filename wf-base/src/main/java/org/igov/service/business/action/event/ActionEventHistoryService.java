@@ -10,6 +10,7 @@ import org.igov.io.web.HttpRequester;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
+import org.igov.service.exception.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.igov.util.ToolLuna;
 import org.slf4j.Logger;
@@ -83,7 +84,7 @@ public class ActionEventHistoryService {
             Long nID_Proccess_Feedback = params.get("nID_Proccess_Feedback") == null ? null : Long.parseLong(params.get("nID_Proccess_Feedback"));
             Long nID_Proccess_Escalation = params.get("nID_Proccess_Escalation") == null ? null : Long.parseLong(params.get("nID_Proccess_Escalation"));
             Long nID_StatusType = params.get("nID_StatusType") == null ? null : Long.parseLong(params.get("nID_StatusType"));
-
+            
             addActionStatus(
                     sID_Order,
                     nID_Subject,
@@ -103,6 +104,7 @@ public class ActionEventHistoryService {
                     params.get("newData"),
                     params.get("oldData"),
                     params.get("sLogin"),
+                    params.get("new_BP_ID"),
                     true,
                     true,
                     false
@@ -150,6 +152,7 @@ public class ActionEventHistoryService {
             String newData,
             String oldData,
             String sLogin,
+            String new_BP_ID,
             boolean saveHistoryEventService,
             boolean saveHistoryEvent,
             boolean saveSubjectMessage
@@ -170,7 +173,21 @@ public class ActionEventHistoryService {
 
         if (saveHistoryEventService) {
             LOG.info("save HistoryEvent_Service started...");
-            oHistoryEvent_Service = new HistoryEvent_Service();
+            
+            try{
+                oHistoryEvent_Service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
+            }
+            catch(EntityNotFoundException ex){
+                LOG.info("oHistoryEvent_Service not found");
+            }
+            
+            boolean addFlag = false;
+            
+            if(oHistoryEvent_Service == null){
+                oHistoryEvent_Service = new HistoryEvent_Service();
+                addFlag = true;
+            }
+            
             oHistoryEvent_Service.setnID_Process(nID_Process);
             oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
             oHistoryEvent_Service.setnID_StatusType(nID_StatusType);
@@ -187,7 +204,11 @@ public class ActionEventHistoryService {
             oHistoryEvent_Service.setnID_Server(nID_Server);
             oHistoryEvent_Service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
             oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
-            oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
+            if (addFlag){
+                oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
+            }else{
+                oHistoryEvent_Service = historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+            }
         }
 
         if (saveHistoryEvent) {
@@ -196,6 +217,7 @@ public class ActionEventHistoryService {
             mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
             mParamMessage.put(HistoryEventMessage.ORDER_ID, sID_Order);
+            mParamMessage.put(HistoryEventMessage.BP_ID, new_BP_ID);
             mParamMessage.put(HistoryEventMessage.FIO, sLogin);
             mParamMessage.put(HistoryEventMessage.NEW_DATA, newData);
             mParamMessage.put(HistoryEventMessage.OLD_DATA, oldData);

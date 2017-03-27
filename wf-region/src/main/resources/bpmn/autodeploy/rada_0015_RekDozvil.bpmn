@@ -36,7 +36,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="fRekFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fRekEskiz" name="Езкіз рекламної конструкції; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fRefMap" name="Мапа місцевості з позначеним місцем розташування рекламної конструкції (М 1:500); ;bNew=true" type="file" required="true"></activiti:formProperty>
         
         
         
@@ -108,7 +107,7 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка" activiti:candidateGroups="test_reklama">
       <extensionElements>
-        <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про керівника замовника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
@@ -123,7 +122,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekNazv&quot;],&quot;sValue&quot;:&quot;Інформація про керівника замовника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про рекламу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekNazv&quot;],&quot;sValue&quot;:&quot;Інформація про рекламу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
@@ -136,7 +135,6 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="fRekFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fRekEskiz" name="Езкіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fRefMap" name="Мапа місцевості з позначеним місцем розташування рекламної конструкції (М 1:500); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно! Запросити на укладення договору"></activiti:value>
@@ -258,7 +256,6 @@ ${sPhoneOrgan}&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="fRekFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fRekEskiz" name="Езкіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fRefMap" name="Мапа місцевості з позначеним місцем розташування рекламної конструкції (М 1:500); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decideUzg" name="Результат узгодження" type="enum" required="true">
           <activiti:value id="accept" name="Дозвіл узгоджено з іншими органами"></activiti:value>
@@ -359,7 +356,6 @@ ${sPhoneOrgan}&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="fRekFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fRekEskiz" name="Езкіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fRefMap" name="Мапа місцевості з позначеним місцем розташування рекламної конструкції (М 1:500); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decideVuk" name="Рішення Ради" type="enum" required="true">
           <activiti:value id="accept" name="Виконком ради затвердив дозвіл"></activiti:value>

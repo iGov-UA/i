@@ -51,7 +51,7 @@
           <activiti:value id="attr1_yes" name="Отримаю власноруч"></activiti:value>
           <activiti:value id="attr2_no" name="Надішліть поштою на адресу, зазначену вище"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="doclist" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="doclist" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/rezhRob.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -218,8 +218,8 @@ execution.setVariable('doclist', res)</script>
           <activiti:value id="attr2_bad" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів (п.4.3. Регламенту роботи ЦНАП)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="doclist" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/ternopil/ternopol_rezhym_print11.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doclist" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/ternopil/ternopol_rezhym_print11.html]; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа ліст документів" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;doc_list_1&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;object_trade&quot;},&quot;sCondition&quot;:&quot;[sCond]=='attr1'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;doc_list_2&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;object_trade&quot;},&quot;sCondition&quot;:&quot;[sCond]=='attr2'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;doc_list_3&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;object_trade&quot;},&quot;sCondition&quot;:&quot;[sCond]=='attr3'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;doc_list_4&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;object_trade&quot;},&quot;sCondition&quot;:&quot;[sCond]=='attr4'&quot;},&quot;ShowElementsOnTrue_5&quot;:{&quot;aElement_ID&quot;:[&quot;doc_list_5&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;object_trade&quot;},&quot;sCondition&quot;:&quot;[sCond]=='attr5'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

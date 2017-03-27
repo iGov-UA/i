@@ -766,10 +766,13 @@ exports.setTaskAttachment = function (req, res) {
 
 exports.setTaskAttachmentNew = function (req, res) {
   var query = {
-    nID_Process: req.params.taskId,
     sFileNameAndExt: req.body.sFileNameAndExt,
     sID_Field: req.body.nID_Attach
   };
+
+  if(req.body.nID_Process) {
+    query['nID_Process'] = req.body.nID_Process;
+  }
 
   activiti.post({
     path: 'object/file/setProcessAttachText',

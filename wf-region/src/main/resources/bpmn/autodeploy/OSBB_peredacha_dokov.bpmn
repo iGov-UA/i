@@ -18,15 +18,15 @@
         <activiti:formProperty id="sDate_Registr" name="Дата державної реєстрації ОСББ" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocRegistr" name="Документ що підтверджує реєстрацію;(якщо файлів кілька, завантажте архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocProtocol" name="Протокол установчих зборів про створення ОСББ;(якщо файлів кілька, завантажте архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMyPhone" name="Телефон контролю" type="invisible" default="+380993527640"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Передача документів від попереднього балансоутримувача об'єднанню співвласників"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ" type="invisible" default="передачі документів від попереднього балансоутримувача об'єднанню співвласників"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMyPhone" name="Телефон контролю; ;bVisible=false" type="string" default="+380993527640"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Передача документів від попереднього балансоутримувача об'єднанню співвласників"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="передачі документів від попереднього балансоутримувача об'єднанню співвласників"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження фалів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -98,8 +98,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмова у наданні відповіді"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Peredacha_Dokov.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Peredacha_Dokov.html]; ;bVisible=false" type="string" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -202,8 +202,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="accept2" name="Документи передано"></activiti:value>
           <activiti:value id="reject2" name="Заявник не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Peredacha_Dokov.html]" type="invisible" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Peredacha_Dokov.html]; ;bVisible=false" type="string" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

@@ -32,6 +32,7 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
+import org.igov.model.action.event.HistoryEventType;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDefinitionCover;
 import org.igov.model.action.task.core.entity.*;
@@ -52,6 +53,7 @@ import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.db.queryloader.QueryLoader;
+import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -74,6 +76,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -2944,7 +2947,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     @ApiOperation(value = "/getProcessTemplate", notes = "##### Получение шаблона процесса#####\n\n")
-    @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public @ResponseBody
     Map<String, Object> setProcess(
             @ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
@@ -3026,7 +3029,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 	}
 
 	@ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
-    @RequestMapping(value = "/startProcess", method = RequestMethod.POST)
+    @RequestMapping(value = "/startProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public @ResponseBody
     Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
@@ -3057,9 +3060,209 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> mReturn = new HashMap<>();
                 
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(oProcessInstanceChild.getId()).active().list();
+        if (tasks != null && tasks.size() > 0){
+        	LOG.info("Found " + tasks.size() + " active tasks for the process instance " + oProcessInstanceChild.getProcessInstanceId());
+        	mReturn.put("nID_Task", tasks.get(0).getId());
+        } else {
+        	LOG.warn("There are no active tasks for process instance " + oProcessInstanceChild.getId());
+        }
         LOG.info("mReturn={}", mReturn);
         
         return mReturn;
-    }    
+    }   
+	
+	 @ApiOperation(value = "Обновление переменных задачи с ее опциональным завершением", notes = "#####  ActionCommonTaskController: Обновление переменных задачи с ее опциональным завершением #####\n\n"
+	            + "HTTP Context: https://alpha.test.region.igov.org.ua/wf/service/action/task/updateProcess\n\n"
+				+ "POST Метод. Принимает параметр bSaveOnly. Если bSaveOnly=true - Только обновление переменных задачи. Если false - заверешение задачи после обновления переменных:\n"
+	            + "Метод принимает json в теле запроса со списком переменных для обновления и номером задачи:\n"
+				+ "\n```json\n"
+				+ "{\n"
+				+ "  \"taskId\" : \"5\",\n"	
+				+ "  \"properties\" : [\n"
+				+ "  {\n"
+				+ "  \"id\" : \"room\",\n"
+				+ "  \"value\" : \"normal\"\n"
+				+ "  }\n"
+				+ "  ]\n"
+				+ "}\n"
+				+ "\n```\n")
+    @RequestMapping(value = "/updateProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    public @ResponseBody
+    Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly, 
+            @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
+    ) throws Exception {
+
+        Map<String, Object> mParam = new HashMap<>();
+        Map<String, Object> mReturn = new HashMap<>();
+        Map<String, Object> mJsonBody;
+        String taskId = null;
+        try {
+            mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
+            if(mJsonBody != null){
+            	if (mJsonBody.containsKey("taskId")){
+            		LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
+            		taskId = (String) mJsonBody.get("taskId");
+            		LOG.info("Updating task with ID " + taskId);
+            	} else {
+            		throw new IllegalArgumentException("Object doesn't contain 'taskId' parameter");
+            	}
+            	
+            	if (mJsonBody.containsKey("properties")) {
+                    LOG.info("Parsing properties: " + mJsonBody.get("properties"));
+                    
+                    List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
+                    String executionId = null;
+                    if (tasks != null && tasks.size() > 0){
+                    	Task firstTask = tasks.get(0);
+                    	executionId = firstTask.getExecutionId();
+
+                    	for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")){
+                        	LOG.info("Updating variable : " + (String)param.get("id") + " with the value " + param.get("value"));
+                        	mParam.put((String)param.get("id"), param.get("value"));
+                        	runtimeService.setVariable(executionId, (String)param.get("id"), param.get("value"));
+                        }
+
+                    	if (!bSaveOnly){
+                    		LOG.info("Submitting task");
+                    		taskService.complete(firstTask.getId());
+                    	}
+                    	
+                    	updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
+                    } else {
+                    	LOG.info("Have not found any tasks with ID " + taskId);
+                    }
+                    if (executionId != null){
+                    	List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
+                        if (activeTasks != null && activeTasks.size() > 0){
+                        	LOG.info("Found " + activeTasks.size() + " active tasks for the execution id " + executionId);
+                        	mReturn.put("nID_Task", tasks.get(0).getId());
+                        } else {
+                        	LOG.warn("There are no active tasks for execution id " + executionId);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e){
+            throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
+        }
+        
+        LOG.info("mReturn={}", mReturn);
+        return mReturn;
+    }   
     
+	public void updateProcessHistoryEvent(String processInstanceId, Map<String, Object> mParamDocument) throws ParseException {
+
+		DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+
+		ProcessInstance oProcessInstance = runtimeService
+				.createProcessInstanceQuery()
+				.processInstanceId(processInstanceId).includeProcessVariables()
+				.active().singleResult();
+
+		if (oProcessInstance != null) {
+			Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+			LOG.info("mProcessVariable: " + mProcessVariable);
+
+			for (String sProcessVariable : mProcessVariable.keySet()) {
+
+				try {
+					mProcessVariable.replace(sProcessVariable, df_StartProcess.format(mProcessVariable.get(sProcessVariable)));
+				} catch (Exception ex) {}
+
+				try {
+					mProcessVariable.replace(sProcessVariable, df_StartProcess.format(parseDate((String) mProcessVariable
+									.get(sProcessVariable))));
+				} catch (Exception ex) {}
+
+			}
+
+			for (String sParamDocument : mProcessVariable.keySet()) {
+				LOG.info("mProcessVariable param : " + " name: " + sParamDocument + " value: "
+						+ mProcessVariable.get(sParamDocument));
+			}
+
+			Map<String, Object> mParamDocumentNew = new HashMap<>();
+
+			for (String mKey : mParamDocument.keySet()) {
+
+				Object oParamDocument = mParamDocument.get(mKey);
+				Object oProcessVariable = mProcessVariable.get(mKey);
+				if (oParamDocument != null) {
+					if (oProcessVariable != null) {
+						if (!(((String) oParamDocument).equals((String) oProcessVariable))) {
+							mParamDocumentNew.put(mKey, oParamDocument);
+						}
+					} else {
+						mParamDocumentNew.put(mKey, null);
+					}
+				} else if (oProcessVariable != null) {
+					mParamDocumentNew.put(mKey, oProcessVariable);
+				}
+			}
+
+			LOG.info("mParamDocumentNew: " + mParamDocumentNew);
+
+			String sOldHistoryData = "<tr><td>";
+			String sNewHistoryData = "<td>";
+
+			if (!mParamDocumentNew.isEmpty()) {
+
+				for (String mKey : mParamDocumentNew.keySet()) {
+					LOG.info("mProcessVariable.get(mKey): " + mProcessVariable.get(mKey));
+					LOG.info("mParamDocumentNew.get(mKey): " + mParamDocumentNew.get(mKey));
+
+					if (!mProcessVariable.get(mKey).equals(
+							mParamDocumentNew.get(mKey))) {
+						sOldHistoryData = sOldHistoryData + mKey + " : " + mProcessVariable.get(mKey) + "\n";
+						sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey) + "\n";
+					}
+				}
+
+				addEditHistoryEvent(oProcessInstance.getActivityId(), sNewHistoryData, sOldHistoryData, null, HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID());
+			}
+		}
+	}
+
+	private Date parseDate(String sDate) throws java.text.ParseException {
+		DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+		DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+		Date oDateReturn;
+		try {
+			oDateReturn = df.parse(sDate);
+		} catch (java.text.ParseException ex) {
+			oDateReturn = df_StartProcess.parse(sDate);
+		}
+		return oDateReturn;
+	}
+
+	public void addEditHistoryEvent(String snID_Process_Activiti,
+			String sNewHistoryData, String sOldHistoryData, String sLogin,
+			Long nID_Status) {
+
+		String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(snID_Process_Activiti));
+
+		LOG.info("history data during task updating - snID_Process_Activiti: " + snID_Process_Activiti);
+		LOG.info("history data during task updating - sID_Order: " + sID_Order);
+		LOG.info("history data during task updating - sNewHistoryData: " + sNewHistoryData);
+		LOG.info("history data during task updating - sOldHistoryData: " + sOldHistoryData);
+		LOG.info("history data during task updating - sLogin: " + sLogin);
+
+		Map<String, String> historyParam = new HashMap<>();
+
+		historyParam.put("newData", sNewHistoryData + "</td></tr>");
+		historyParam.put("oldData", sOldHistoryData + "</td>");
+		historyParam.put("nID_StatusType", nID_Status.toString());
+		historyParam.put("sLogin", sLogin);
+
+		try {
+			actionEventHistoryService
+					.addHistoryEvent(sID_Order, sLogin, historyParam,
+							HistoryEventType.ACTIVITY_STATUS_NEW.getnID());
+		} catch (Exception ex) {
+			LOG.info("Error saving history during document editing: {}", ex);
+		}
+
+	}
+
 }
