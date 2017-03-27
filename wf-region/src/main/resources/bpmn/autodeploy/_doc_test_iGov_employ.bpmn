@@ -32,8 +32,8 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sPasspot" name="Серія та номер паспорту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPhone" name="Номер телефону" type="long" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="адреса E-mail " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_test_iGov_employ.json')}" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sActivitiGroup_Acept" name="Узгоджуючі" type="enum" required="true">
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_test_iGov_employ.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sActivitiGroup_Acept" name="Узгоджуючі" type="enum" readable="false" writable="false">
           <activiti:value id="iGov_Prodan" name="Продан Юлія По-батькові"></activiti:value>
           <activiti:value id="iGov_Svidran" name="Свідрань Максим По-батькові"></activiti:value>
         </activiti:formProperty>
@@ -50,19 +50,18 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask2" name="перехід на след. степ , клонування прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
-
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для узгоджувачів
 var sKey_GroupPostfix = '_default_Accept'
-//var sID_Field = 'sTable'
+var sID_Field = 'sTable'
 var sKey_Step = 'step_2'
-     
-//var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step)
-var sKey_GroupPostfix_New=execution.getVariable('sActivitiGroup_Acept')
-var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step)
+
+//var sKey_GroupPostfix_New=execution.getVariable('sActivitiGroup_Acept')
+//var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 	 
 </script>
     </scriptTask>
