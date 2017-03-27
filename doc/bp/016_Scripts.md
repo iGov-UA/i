@@ -255,6 +255,7 @@ var executeProcessDefinitionId = execution.getProcessDefinitionId();
 var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 ```
+* ![16_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_4.JPG)
 
 ***
 
