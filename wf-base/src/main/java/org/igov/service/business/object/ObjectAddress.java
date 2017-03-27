@@ -35,11 +35,11 @@ public class ObjectAddress {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{\"code\":\"");
 		sb.append(this.code);
-		sb.append(",\"desc\":\"");
+		sb.append("\",\"desc\":\"");
 		sb.append(this.desc);
-		sb.append(",\"type\":\"");
+		sb.append("\",\"type\":\"");
 		sb.append(this.type);
-		sb.append("}");
+		sb.append("\"}");
 
 		return sb.toString();
 	}
