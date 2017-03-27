@@ -14,6 +14,7 @@
 ```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
+* ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
 а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
 ## Использование переменных в шаблонах емейлов
@@ -91,6 +92,7 @@ value != enum.
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 ```
+* ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
 здесь мы пишем наш контент
 ```
 [pattern/mail/new_design/_common_content_end.html]
