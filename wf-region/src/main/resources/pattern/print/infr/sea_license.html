@@ -156,14 +156,19 @@
 	
 </table>
 <script>
-	var PassSmalShip = "";
-	var PassShip = "";
-	var ScrapShip = "";
-	var TrashShip = "";
-	if "[asPassSmalShip]" == "Так" {PassSmalShip = "перевезення пасажирів малими/маломірними суднами";}
-	if "[asPassShip]" == "Так" {PassShip = "перевезення пасажирів річковим, морським транспортом";}
-	if "[asScrapShip]" == "Так" {ScrapShip = "перевезення небезпечних вантажів річковим, морським транспортом";}
-	if "[asTrashShip]" == "Так" {TrashShip = "перевезення небезпечних відходів річковим, морським транспортом";}
+	var PassSmalShip = "[asPassSmalShip]";
+	var PassShip = "[asPassShip]";
+	var ScrapShip = "[asScrapShip]";
+	var TrashShip = "[asTrashShip]";
+	if (PassSmalShip == "Так" || PassSmalShip == "sPassSmalShipOk") 
+	{PassSmalShip = "перевезення пасажирів малими/маломірними суднами ";}
+	else {PassSmalShip = ""}
+	if (PassShip == "Так" || PassShip == "sPassShipOk") {PassShip = "перевезення пасажирів річковим, морським транспортом ";}
+	else {PassShip = ""}
+	if (ScrapShip == "Так" || ScrapShip == "sScrapShipOk") {ScrapShip = "перевезення небезпечних вантажів річковим, морським транспортом ";}
+	else {ScrapShip = ""}
+	if (TrashShip == "Так" || TrashShip == "sTrashShipOk") {TrashShip = "перевезення небезпечних відходів річковим, морським транспортом ";}
+	else {TrashShip = ""}
 	var sTypeBiz = PassSmalShip + PassShip + ScrapShip + TrashShip;
 	document.getElementById("license").innerHTML = sTypeBiz;
 </script>
