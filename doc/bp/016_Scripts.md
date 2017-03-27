@@ -206,6 +206,7 @@ execution.setVariable('sListDocumentsPrint', res)
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 ```
+* ![16_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_2.JPG)
 
 ## Формирование динамического названия юзертаски
 ```javaScript 
@@ -230,7 +231,7 @@ var number=execution.getVariable('sID_Order_GovPublic')
 var fullNumber="вх-"+number+"/"
 execution.setVariable('sID_Order_GovPublic', fullNumber)
 ```
-
+* ![16_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_3.JPG)
 ***
 
 ## Назначение даты исполнения - по умолчанию + 30 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
