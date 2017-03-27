@@ -85,6 +85,9 @@ public class DocumentStepService {
 
 	@Autowired
 	private SubjectGroupTreeService oSubjectGroupTreeService;
+	
+	@Autowired
+	private TaskService taskService;
 
 	public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
 		JSONObject oJSON = new JSONObject(soJSON);
@@ -1436,7 +1439,10 @@ public class DocumentStepService {
 							String sNameBP = oProcessInstance.getName();
 							LOG.info("sNameBP", sNameBP);
 							// вытаскиваем список тасок по процесу
-							List<Task> aTask = oTaskService.createTaskQuery()
+							Task task = taskService.createTaskQuery().processInstanceId(snID_Process_Activiti.trim()).active().singleResult();
+					        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + snID_Process_Activiti));
+							
+							/*List<Task> aTask = oTaskService.createTaskQuery()
 									.processInstanceId(snID_Process_Activiti).list();
 							if (aTask.size() < 1 || aTask.get(0) == null) {
 								throw new IllegalArgumentException(
@@ -1444,12 +1450,12 @@ public class DocumentStepService {
 							}
 							// берем первую
 							Task oTaskCurr = aTask.get(0);
-							LOG.info("oTaskCurr ={} ", oTaskCurr);
+							LOG.info("oTaskCurr ={} ", oTaskCurr);*/
 
 							// вытаскиваем дату создания таски
-							Date sDateCreateUserTask = oTaskCurr.getCreateTime();
+							Date sDateCreateUserTask = task.getCreateTime();
 							// и ее название
-							String sUserTaskName = oTaskCurr.getName();
+							String sUserTaskName = task.getName();
 
 							// Создаем обьект=обертку, в который сетим нужные полученные поля
 							DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
