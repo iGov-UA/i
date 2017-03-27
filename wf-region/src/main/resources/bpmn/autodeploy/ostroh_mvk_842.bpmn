@@ -10,7 +10,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть огран, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="asTop" name="Оберіть тему звернення" type="enum" required="true">
           <activiti:value id="sEnumTop1" name="Ремонт ліфта"></activiti:value>
           <activiti:value id="sEnumTop2" name="Підтоплення будинку"></activiti:value>
@@ -55,7 +55,7 @@
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення громадянина до Управління житлового господарства міської ради.&lt;br /&gt;
+У Вас в черзі на обробку нове звернення громадянина до міської ради.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Номер звернення: [sID_Order]&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
@@ -83,9 +83,9 @@
 &lt;p&gt; Ваше звернення до міської ради було зареєстровано у системі.&lt;br/&gt;
 Відповідь Ви отримаєте протягом 45-ти календарних днів.&lt;br/&gt;
 Повідомлення про розгляд звернення буде спрямоване на Ваш e-mail.&lt;/p&gt;
-Телефон для довідок: (03654) 2-22-60&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-Острозька міська рада,&lt;br /&gt;
+${sNameOrgan},&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -145,6 +145,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику, вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileAnswer" name="Завантажте скан-копію відповіді громадянину" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaM" name="Шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/ostroh_mvk_481_print.html]; ;bVisible=false" type="string" default="Форма ззвернення громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
