@@ -20,7 +20,7 @@ public class FileHTMLFormType extends AbstractFormType {
         try{
             sReturn=modelValue==null?null:modelValue.toString();
         }catch(Exception oException){
-            System.err.println(oException.getMessage());
+            throw new RuntimeException("Can't convert Value of type "+TYPE_NAME+". Error: "+oException.getMessage());
         }
         return sReturn;
     }

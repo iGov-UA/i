@@ -187,7 +187,7 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
-
+* ![9_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_7.JPG) 
 ***
 
 ### расширений
@@ -206,7 +206,7 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
-
+* ![9_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_8.JPG)
 ***
 
 ### NumberBetween - принадлежность значения  диапазону значений  (целочисленные)
@@ -352,3 +352,4 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
+* ![9_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_9.JPG)
