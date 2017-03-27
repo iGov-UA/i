@@ -14,6 +14,7 @@
 ```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
+* ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
 а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
 ## Использование переменных в шаблонах емейлов
