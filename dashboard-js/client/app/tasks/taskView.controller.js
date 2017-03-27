@@ -493,6 +493,10 @@
           return splitName.length !== 1 ? splitName[0] : name;
         };
 
+        $scope.takeTheKeyFromJSON = function (item) {
+          return JSON.parse(item.value).sKey;
+        };
+
         $scope.clarify = false;
 
         $scope.clarifyToggle = function () {
