@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_529_mode_worktime_chernigov_3_steps" name="Погодження режиму роботи об’єктів торгівлі та сфери послуг" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 24.03.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 27.03.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -854,21 +854,27 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг відхилено.&lt;/p&gt;
-&lt;p&gt;Коментар: ${sDecisionComment_Citizen}.&lt;/p&gt;
-&lt;p&gt;Відповідь наведено в додатку до листа&lt;/p&gt;
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг відхилено.&lt;br /&gt;
+					Коментар: ${sDecisionComment_Citizen}.&lt;br /&gt;
+					Відповідь наведено в додатку до листа &lt;br /&gt;
+					&lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${nFile_Report}"</activiti:expression>
@@ -895,21 +901,25 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення опрацьовано: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг - опрацьовано.&lt;br /&gt;
-Реєстраційні дані щодо встановлення режиму роботи об’єкта надані у документі, що вкладено в цій email, та який може бути підписано електроним цифровим підписом.
-Для підтвердження електроного цифрового підпису Ви можете скористуватися &lt;a href="https://igov.org.ua/ecp" target="_blank"&gt; посиланням &lt;/a&gt;&lt;br /&gt; або отримати рішення у ЦНАПі. 
-&lt;br /&gt; 
-${sNameOrgan}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг - опрацьовано.&lt;br /&gt;
+					Реєстраційні дані щодо встановлення режиму роботи об’єкта надані у документі, що вкладено в цій email, та який може бути підписано електроним цифровим підписом.&lt;br /&gt;
+					Для підтвердження електроного цифрового підпису Ви можете скористуватися &lt;a href="https://igov.org.ua/ecp" target="_blank"&gt; посиланням &lt;/a&gt;&lt;br /&gt; або отримати рішення у ЦНАПі. 
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${nFile_Report}"</activiti:expression>
@@ -945,7 +955,7 @@ ${sPhoneOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Нове звернення на тему: Погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -961,19 +971,24 @@ ${sPhoneOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Зареєстровано звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          [pattern/mail/new_design/_common_header.html]
+          [pattern/mail/new_design/_common_content_start.html]
+			&lt;p&gt;
+				Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+				&lt;br /&gt;
+				Ви отримаєте додаткове повідомлення за результатами розгляду звернення на Ваш e-mail.&lt;br /&gt;
+				&lt;br /&gt;
+				${sNameOrgan},&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			&lt;/p&gt;	
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br /&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
 	    <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -998,21 +1013,26 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Відхилено звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] про надання інформації щодо видачи довідки про встановлення режиму роботи об’єкта відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] про надання інформації щодо видачи довідки про встановлення режиму роботи об’єкта відхилено. &lt;br /&gt;
+					Причина в наступному: &lt;br /&gt;
+					${sDecisionComment_1} &lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt; &lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
 	    <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -1037,19 +1057,24 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення прийнятто на розгляд: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-&lt;p&gt;Вхідний реєстраційний номер Вашого замовлення: ${sExtension_Number_In} від ${sDate_Registrastion_In}.&lt;/p&gt; &lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+  			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+					Вхідний реєстраційний номер Вашого замовлення: ${sExtension_Number_In} від ${sDate_Registrastion_In}.&lt;br /&gt;
+					Ви отримаєте додаткове повідомлення за результатами розгляду звернення на цю email-адресу.&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
 	    <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -1074,7 +1099,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Нове звернення на тему: Погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
