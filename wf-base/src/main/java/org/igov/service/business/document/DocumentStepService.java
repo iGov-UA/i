@@ -609,14 +609,6 @@ public class DocumentStepService {
 											Object oValue = oJsonMap.get("value");
 											if (oValue != null) {
 												LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
-												// List<DocumentStepSubjectRight>
-												// result =
-												// cloneDocumentStepSubject(snID_Process_Activiti,
-												// sKey_GroupPostfix, (String)
-												// oValue,
-												// sKey_Step_Document_To,
-												// bReClone);
-												// resultList.addAll(result);
 												asLogin.add((String) oValue);
 											} else {
 												LOG.info("oValue in cloneDocumentStepFromTable is null");
@@ -635,11 +627,7 @@ public class DocumentStepService {
 			}
 		} catch (Exception oException) {
 			LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
-			// + ",sKey_GroupPostfix=" + sKey_GroupPostfix + ""
-					+ ",sID_Field=" + sID_Field + ""
-			// + ",sKey_Step_Document_To=" + sKey_Step_Document_To + ")"
-			);
-			LOG.error("ERROR: ", oException);
+					+ ",sID_Field=" + sID_Field + ")", oException);
 			throw oException;
 		}
 		return asLogin;
