@@ -27,7 +27,24 @@ public class ObjectPlaceCommonController {
 	@Autowired
 	ObjectPlaceCommonService objectPlaceCommonService;
 
-	@ApiOperation(value = "Получение списка улиц", notes = "Полученаем список улиц. " + "Пример:\n")
+	@ApiOperation(value = "Получение списка улиц", notes = "Получем список улиц. Пример:\n"
+		            + "https://alpha.test.igov.org.ua/wf/service/object/place/sub/PB/getSubPlaces_/?sID_SubPlace_PB=UA40773&sFind=южн\n\n"
+		            + "Ответ:\n\n"
+		            + "\n```json\n"
+		            + "{"
+		            + "  \"listAddress\":"
+		            + "   [{"
+		            + "      \"code\": \"23TFD62IDSDX00\","
+		            + "	     \"desc\": \"1-я Южная\","
+		            + "	     \"type\": \"улица\""
+		            + "    }, {"
+		            + "	     \"code\": \"23T149MQULAP00\","
+		            + "	     \"desc\": \"Южная Сторона\","
+		            + "	     \"type\": \"улица\""
+		            + "    }"
+		            + "   ]"
+		            + "}"	            
+		            + "\n```\n")
 	@RequestMapping(value = "/PB/getSubPlaces_", method = RequestMethod.GET, headers = {
 			JSON_TYPE }, produces = APPLICATION_JSON_CHARSET_UTF_8)
 	public @ResponseBody String getSubPlaces_(

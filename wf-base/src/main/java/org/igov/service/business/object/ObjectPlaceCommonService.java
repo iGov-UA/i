@@ -35,7 +35,8 @@ public class ObjectPlaceCommonService {
 	private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
 	private static final String NULL_RESPONSE = "{}";
 
-	private HashMap<String, List<ObjectAddress>> mListAddress = new HashMap<String, List<ObjectAddress>>();
+	// Кеш списка адресов
+	private HashMap<String, List<ObjectAddress>> mCacheListAddress = new HashMap<String, List<ObjectAddress>>();
 
 	@Autowired
 	GeneralConfig generalConfig;
@@ -73,13 +74,28 @@ public class ObjectPlaceCommonService {
 		isReadyWork = true;
 	}
 
+	/*
+	 * Возвращает список адресов в виде
+	 * 
+	 * {"listAddress":[
+	 * 	{"code":"23TFD62IDSDX00","desc":"1-я Южная","type":"улица"},
+	 * 	{"code":"23TFDOBMJPIO00","desc":"2-я Южная","type":"улица"}
+	 * ]}
+	 * 
+	 * Адреса ищуться по коду места sID_SubPlace_PB, опционально можно отфильтровать результат указав подстроку в наименовании адреса.
+	 * 
+	 * Программа кеширует объекты запросов. Объекты заносяться в кеш - sID_SubPlace_PB, там они привязаны к ключу sID_SubPlace_PB.
+	 * 
+	 * Данные в кеш добавляются только если не задан, ограничивающий запрос, параметр sFind.
+	 * 
+	 */
 	public String getSubPlaces_(String sID_SubPlace_PB, String sFind) {
 		if (!isReadyWork) {
 			LOG.warn("Сервис не готов к работе.");
 			return "{}";
 		}
 
-		LOG.info("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+		LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
 
 		if (sID_SubPlace_PB == null) {
 			LOG.error("Error sID_SubPlace_PB is null");
@@ -91,10 +107,11 @@ public class ObjectPlaceCommonService {
 		List<ObjectAddress> lObjectAddress = null;
 
 		// Берем или из кеша, или запрашиваем сервис
-		if (mListAddress.containsKey(sID_SubPlace_PB)) {
+		if (mCacheListAddress.containsKey(sID_SubPlace_PB)) {
 			LOG.debug("Берем данные из кеша");
-			List<ObjectAddress> lObjectAddressCache = (List<ObjectAddress>) mListAddress.get(sID_SubPlace_PB);
+			List<ObjectAddress> lObjectAddressCache = (List<ObjectAddress>) mCacheListAddress.get(sID_SubPlace_PB);
 
+			// Отдаем или полный список или фильтруем его по названию
 			if (sFind == null) {
 				lObjectAddress = lObjectAddressCache;
 			} else {
@@ -109,17 +126,15 @@ public class ObjectPlaceCommonService {
 			}
 
 		} else {
-
 			LOG.debug("Берем данные из сервиса");
-
 			try {
-				String ret = getSubPlacesFromService(sID_SubPlace_PB, sFind);
-				lObjectAddress = parseDataFromXML(ret);
+				String xmlString = getSubPlacesFromService(sID_SubPlace_PB, sFind);
+				lObjectAddress = parseDataFromXMLString(xmlString);
 
 				// В кеш добавляем только полный список адресов по коду
 				if (sFind == null && lObjectAddress != null) {
-					mListAddress.put(sID_SubPlace_PB, lObjectAddress);
-					LOG.info("add cache, key={}", sID_SubPlace_PB);
+					mCacheListAddress.put(sID_SubPlace_PB, lObjectAddress);
+					LOG.info("Add cache: key={}, size={}", sID_SubPlace_PB, lObjectAddress.size());
 				}
 
 			} catch (Exception e) {
@@ -128,7 +143,7 @@ public class ObjectPlaceCommonService {
 		}
 
 		if (lObjectAddress == null) {
-			return NULL_RESPONSE;
+		    return NULL_RESPONSE;
 		}
 
 		StringBuffer sb = new StringBuffer(lObjectAddress.size() * 50);
@@ -144,10 +159,54 @@ public class ObjectPlaceCommonService {
 		}
 		sb.append("]}");
 
+		LOG.debug("Response:\n{}\n", sb.toString());
+
 		return sb.toString();
 	}
+	
+	/*
+	 * Получение данных из сервиса. Документация:
+	 * 
+	 * https://docs.google.com/document/d/1SppaZgDRNU9LFbE4ngOIrg9Ebu83WkyJD4wHPP6g7fc/edit#heading=h.4ovb807m5oaa 
+	 */
+	private String getSubPlacesFromService(String sID_SubPlace_PB, String sFind) {
+		LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", "application/xml; charset=utf-8");
 
-	private List<ObjectAddress> parseDataFromXML(String sListAddressXML) {
+		if (sFind != null) {
+			StringBuffer sb = new StringBuffer("?idParent=");
+			sb.append(sID_SubPlace_PB);
+			sb.append("&type=");
+			sb.append(ObjectPlaceType.STREET.getIdString());
+			sb.append("&language=");
+			sb.append(ObjectPlaceLang.RUS.name());
+			sb.append("&name=");
+			sb.append(sFind);
+
+			String resp = new RestRequest().get(sURLSendAddressByName + sb.toString(), null, StandardCharsets.UTF_8,
+					String.class, headers);
+
+			return resp;
+		} else {
+			StringBuffer sb = new StringBuffer("?id=");
+			sb.append(sID_SubPlace_PB);
+			sb.append("&type=");
+			sb.append(ObjectPlaceType.STREET.getIdString());
+			sb.append("&language=");
+			sb.append(ObjectPlaceLang.RUS.name());
+
+			String resp = new RestRequest().get(sURLSendAddressByType + sb.toString(), null, StandardCharsets.UTF_8,
+					String.class, headers);
+
+			return resp;
+
+		}
+	}
+
+	
+	private List<ObjectAddress> parseDataFromXMLString(String sListAddressXML) {
 		List<ObjectAddress> lObjectAddress = null;
 
 		try {
@@ -187,55 +246,5 @@ public class ObjectPlaceCommonService {
 
 		return lObjectAddress;
 	}
-
-	private String getSubPlacesFromService(String sID_SubPlace_PB, String sFind) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Content-Type", "application/xml; charset=utf-8");
-
-		if (sFind != null) {
-			StringBuffer sb = new StringBuffer("?idParent=");
-			sb.append(sID_SubPlace_PB);
-			sb.append("&type=");
-			sb.append(ObjectPlaceType.STREET.getIdString());
-			sb.append("&language=");
-			sb.append(ObjectPlaceLang.RUS.name());
-			sb.append("&name=");
-			sb.append(sFind);
-
-			String resp = new RestRequest().get(sURLSendAddressByName + sb.toString(), null, StandardCharsets.UTF_8,
-					String.class, headers);
-
-			return resp;
-		} else {
-			StringBuffer sb = new StringBuffer("?id=");
-			sb.append(sID_SubPlace_PB);
-			sb.append("&type=");
-			sb.append(ObjectPlaceType.STREET.getIdString());
-			sb.append("&language=");
-			sb.append(ObjectPlaceLang.RUS.name());
-
-			String resp = new RestRequest().get(sURLSendAddressByType + sb.toString(), null, StandardCharsets.UTF_8,
-					String.class, headers);
-
-			return resp;
-
-		}
-	}
+	
 }
-
-// HTTP GET на
-// {url}/AddressReference/address/listAddressByType.do?id={idParent}&type={type}&language={language}&typeCode={typeCode}&fromId={fromId}
-// где {idParent} - внешний идентификатор адреса-предка,
-// {type} - тип требуемого узла,
-// {language} - язык отображения,
-// {typeCode} - (необязательный параметр) код узла (для 'type=4':"T" - города,
-// "V" - сёла),
-// {fromId} - (необязательный параметр) начальный идентификатор с которого будет
-// производиться поиск.
-
-// HTTP GET на
-// {url}/AddressReference/address/searchByName.do?idParent={idParent}&type={type}&name={name}&language={language}
-// где {idParent} - внешний идентификатор адреса-предка,
-// {type} - тип требуемого узла,
-// {name} - наименование или часть наименования узла-потомка,
-// {language} - (необязательный параметр, по умолчанию - RUS) язык отображения.
