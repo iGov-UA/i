@@ -300,12 +300,22 @@ exports.getAttachmentContent = function (req, res) {
 };
 
 exports.getAttachmentFile = function (req, res) {
+  var qs = {};
+
+  if(req.params.typeOrAttachID === 'Mongo') {
+    qs = {
+      'sKey': req.params.keyOrProcessID,
+      'sID_StorageType': req.params.typeOrAttachID
+    }
+  } else {
+    qs = {
+      'nID_Process': req.params.keyOrProcessID,
+      'sID_Field': req.params.typeOrAttachID
+    }
+  }
   var options = {
     path: 'object/file/getProcessAttach',
-    query: {
-      'nID_Process': req.params.processID,
-      'sID_Field': req.params.attachID
-    }
+    query: qs
   };
   activiti.filedownload(req, res, options);
 };
