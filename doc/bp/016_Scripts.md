@@ -36,7 +36,7 @@ execution.setVariable('var2', value) - запись  значения value в �
   </script>
 </scriptTask>
 ```
-* ![16_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_6.JPG)
+* ![16_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_7.JPG)
 [описание операторов и переменных для написания скриптов Javascript](http://javascript.ru/)  
 
 Для получения значения даты на момент срабатывания скрипта можно использовать:
@@ -54,6 +54,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 ```groovy
 execution.setVariable("docDateFormat", execution.getVariable("docDate").format("yyyy-MM-dd"))
 ```
+* ![16_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_6.JPG)
 где  
 **docDate** - имя параметра даты в процессе с форматом типа date.  Дата выбиралась из календарика.  
 **yyyy-MM-dd** - итоговый требуемый формат даты.  регистрозависимо!!!   
