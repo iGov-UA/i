@@ -92,6 +92,7 @@ value != enum.
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 ```
+* ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
 здесь мы пишем наш контент
 ```
 [pattern/mail/new_design/_common_content_end.html]
