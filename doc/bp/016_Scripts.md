@@ -54,7 +54,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 ```groovy
 execution.setVariable("docDateFormat", execution.getVariable("docDate").format("yyyy-MM-dd"))
 ```
-* ![16_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_6.JPG)
+* ![16_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_8.JPG)
 где  
 **docDate** - имя параметра даты в процессе с форматом типа date.  Дата выбиралась из календарика.  
 **yyyy-MM-dd** - итоговый требуемый формат даты.  регистрозависимо!!!   
@@ -72,6 +72,7 @@ execution.setVariable("docDateFormat", execution.getVariable("docDate").format("
   </script>
 </scriptTask>
 ```
+* ![16_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_6.JPG)
 где
 **dCreate** - это поле в которое поместится результат (Время берется по Гринвичу)  
 **format("dd.MM.yyyy")** - задаем формат получаемого времени. Если формат не указываем то  по умолчанию дата / время будут в формате Tue Apr 26 14:51:17 UTC 2016  
