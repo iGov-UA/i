@@ -8,10 +8,10 @@
     </documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-      
+      <!-- 
         <activiti:formProperty id="infoZapit" name="Зверніть увагу" type="label" default="Для отримання послуги Вам необхідно:&lt;ol&gt;&lt;li&gt;Завантажити та роздрукувати &lt;a href=&quot;https://drive.google.com/uc?export=download&amp;id=0B91XFkuwrCQbLUFXazBpQnhndVE&quot; target=&quot;_blank&quot;&gt;бланк запиту&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Заповнити відповідні поля&lt;/li&gt;&lt;li&gt;Відсканувати та підписати документ за допомогою ЕЦП.&lt;/li&gt;&lt;li&gt;Прикріпити підписаний запит&lt;/li&gt;&lt;/ol&gt;&lt;br /&gt;Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;.&lt;br /&gt;Один з варіантів накладення ЕЦП на файл &lt;a href=&quot;https://papka24.com.ua/&quot; target=&quot;_blank&quot;&gt;papka24.com.ua&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;Додаткова інформація &lt;a href=&quot;https://docs.google.com/document/d/17kd6pC_2PwfDgk1zJpZ6D1BkTRMJqDQLIAYq_9Pvri0/edit&quot; target=&quot;_blank&quot;&gt;примітка&lt;/a&gt;"></activiti:formProperty>
 		<activiti:formProperty id="nFileZapit" name="Прикріпіть заповнений запит" type="file" required="true"></activiti:formProperty>
-      
+       -->
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>        
 
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -170,6 +170,7 @@
         
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/gni_69_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         
+        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
