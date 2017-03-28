@@ -17,9 +17,15 @@
         <activiti:formProperty id="markersLine_2" name="лінія представник фізична особа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRepresentativeLastName&quot;],&quot;sValue&quot;:&quot;Дані представника скаржника (фізичної особи)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRepresentativeLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRepresentativeFirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRepresentativeMiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentativeMiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRepresentativeAddressFactual" name="Адреса проживання чи перебування" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRepresentativeDoc" name="Назва та реквізити документа, що підтверджує повноваження представника скаржника;(батьки (свідоцтво про народження), опікун, піклувальник, помічник (рішення органів опіки та піклування), представник за довіреністю (довіреність), адвокат (ордер))" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sText1" name=" " type="label" default="(наприклад, свідоцтво про народження дитини - якщо представниками виступають батьки; рішення органу опіки та піклування - якщо інтереси скаржника представляє опікун, піклувальник або помічник; довіреність - якщо інтереси скаржника представляє представник за довіреністю; ордер чи договір про надання правової допомоги - якщо інтереси представляє адвокат. Вказані документи повинні бути засвідчені у встановленому законодавством порядку)"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersStyle_1" name="Маркер стилю" type="markers" default="${markerService.loadFromFile('minust/justice_0333_complaint_style_1.json')}"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="markersLine_3" name="лінія юридична особа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані юридичної особи - скаржника&quot;}}}"></activiti:formProperty>
         
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
@@ -35,7 +41,7 @@
         <activiti:formProperty id="markersLine_5" name="лінія представника юo" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sRepresentCompLastName&quot;],&quot;sValue&quot;:&quot;Дані представника юридичної особи&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRepresentCompLastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRepresentCompFirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRepresentCompMiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRepresentCompMiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRepresentCompDoc" name="Назва та реквізити документа, що підтверджує повноваження представника скаржника;(представник за довіреністю (довіреність), адвокат (ордер), юридична особа (договір про надання правової допомоги))" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -56,7 +62,7 @@
         <activiti:formProperty id="sNameNotary" name="Прізвище, ім’я, по батькові нотаріуса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersLine_6" name="лінія Обрання сфери оскарження" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;asDirectionOfAppeal&quot;],&quot;sValue&quot;:&quot;Обрання сфери оскарження&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asDirectionOfAppeal" name="Напрямок оскарження" type="enum" required="true">
-          <activiti:value id="sRealty" name="Реєстрації речових прав на нерухоме майно та їх обтяжень"></activiti:value>
+          <activiti:value id="sRealty" name="Реєстрація речових прав на нерухоме майно та їх обтяжень"></activiti:value>
           <activiti:value id="sRegistration" name="Реєстрація юридичних осіб та фізичних осіб – підприємців"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asRealtyTop" name="Тема оскарження" type="enum" required="true">
@@ -66,7 +72,7 @@
           <activiti:value id="sEnumReal_4" name="Дії державного реєстратора, суб’єкта державної реєстрації"></activiti:value>
           <activiti:value id="sEnumReal_5" name="Бездіяльність державного реєстратора, суб’єкта державної реєстрації"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRegistrationTop" name="Тема оскардження" type="enum" required="true">
+        <activiti:formProperty id="asRegistrationTop" name="Тема оскарження" type="enum" required="true">
           <activiti:value id="sEnumReg_1" name="Проведені державним реєстратором реєстраційні дії"></activiti:value>
           <activiti:value id="sEnumReg_2" name="Повідомлення про відмову у проведенні державної реєстрації"></activiti:value>
           <activiti:value id="sEnumReg_3" name="Повідомлення про зупинення розгляду документів"></activiti:value>
@@ -78,7 +84,7 @@
         <activiti:formProperty id="sNumberDecision" name="Номер рішення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDecision" name="Дата рішення" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEssence" name="Зміст оскаржуваного рішення, дії чи бездіяльності;приклади дій або бездіяльності, які можна оскаржити, а також роз’яснення щодо змісту рішення" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sConditions" name="обставини, якими Ви обґрунтовуєте свої вимогиобставини, якими Ви обґрунтовуєте свої вимоги" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sConditions" name="Обставини, якими Ви обґрунтовуєте свої вимоги" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLaw" name="Норми законодавства, які порушено, на Вашу думку" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asLitigation" name="Наявність судового спору з порушеного у скарзі питання;(зазначте про наявність або відсутність судового провадження у зв'язку зі спором між тими самими сторонами, з тих самих предмета і підстав)" type="enum" required="true">
           <activiti:value id="sEnumYes" name="Так"></activiti:value>
@@ -134,6 +140,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markersLine_9" name="проста лінія" type="markers" default="{&quot;attributes&quot;:{&quot;Line_9&quot;:{&quot;aElement_ID&quot;:[&quot;asTakePart&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asTakePart" name="Чи бажаєте прийняти участь у розгляду скарги" type="enum" required="true">
           <activiti:value id="sEnumYes" name="Так"></activiti:value>
           <activiti:value id="sEnumNo" name="Ні"></activiti:value>
