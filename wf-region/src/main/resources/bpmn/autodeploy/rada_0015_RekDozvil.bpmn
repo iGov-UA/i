@@ -3,7 +3,7 @@
   <process id="rada_0015_RekDozvil" name="Дозвіл на розміщення зовнішньої реклами" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про керівника замовника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -29,15 +29,15 @@
         
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="chekMisPhone" name="Чи є у вас міський телефон?; ;sID_CheckboxTrue=yes" type="enum" default="no">
+        <activiti:formProperty id="chekMisPhone" name="Чи є у вас міський телефон?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон;(введіть без коду міста)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lMisPhone" name="Міський телефон;введіть без коду міста" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerRek1" name="markers" type="markers" default="${markerService.loadFromFile('skv/rada_0015_RekDozvil.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про керівника замовника&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір (максимум 5 років);(вкажіть прописом)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір (максимум 5 років);вкажіть прописом" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" required="true">
@@ -45,8 +45,8 @@
           <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="fRekVlasn" name="Право власності на майно де буде розміщена реклама; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fRekFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fRekEskiz" name="Езкіз рекламної конструкції; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fRekFoto" name="Фото місця де буде розміщено рекламу; можно схематично позначити розташування реклами;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fRekEskiz" name="Еcкіз рекламної конструкції;завантажте креслення конструкції;bNew=true" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -146,7 +146,7 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="fRekVlasn" name="Право власності на майно де буде розміщена реклама; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fRekFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fRekEskiz" name="Езкіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fRekEskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно! Запросити на укладення договору"></activiti:value>
@@ -243,34 +243,42 @@ ${sPhoneOrgan}&lt;br /&gt;
     </sequenceFlow>
     <userTask id="usertask2" name="Узгодження" activiti:candidateGroups="test_reklama">
       <extensionElements>
-        <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про керівника замовника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sRnumber" name="Внутрішній реэстраційний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
-          <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
-          <activiti:value id="sEnamUr" name="Представник Юридичної особи"></activiti:value>
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
+          <activiti:value id="sEnamFOP" name="Фізична особа підприємець"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа (керівник)"></activiti:value>
+          <activiti:value id="sEnamUrP" name="Юридична особа (представник)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/UrFizOsoba_Nofiles.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/UrFiz_OpenData_DovFile.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
+                
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekNazv&quot;],&quot;sValue&quot;:&quot;Інформація про керівника замовника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="fDovirenist" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="long" writable="false"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про рекламу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekNazv&quot;],&quot;sValue&quot;:&quot;Інформація про рекламу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
           <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRekTip" name="Тип реклами" type="enum" writable="false">
-          <activiti:value id="sEnamFasad" name="Фасадна"></activiti:value>
-          <activiti:value id="sEnamOkrRozm" name="Окремо розміщена (сіті-лайт, бігборд)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="fRekVlasn" name="Право власності на майно де буде розміщена реклама; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fRekFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fRekEskiz" name="Езкіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fRekEskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decideUzg" name="Результат узгодження" type="enum" required="true">
           <activiti:value id="accept" name="Дозвіл узгоджено з іншими органами"></activiti:value>
@@ -343,34 +351,42 @@ ${sPhoneOrgan}&lt;br /&gt;
     </sequenceFlow>
     <userTask id="usertask3" name="Рішення ради" activiti:candidateGroups="test_reklama">
       <extensionElements>
-        <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про керівника замовника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sRnumber" name="Внутрішній реэстраційний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
-          <activiti:value id="sEnamFiz" name="Фізична особа підприємець"></activiti:value>
-          <activiti:value id="sEnamUr" name="Представник Юридичної особи"></activiti:value>
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
+          <activiti:value id="sEnamFOP" name="Фізична особа підприємець"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа (керівник)"></activiti:value>
+          <activiti:value id="sEnamUrP" name="Юридична особа (представник)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/UrFizOsoba_Nofiles.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/UrFiz_OpenData_DovFile.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
+                
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekNazv&quot;],&quot;sValue&quot;:&quot;Інформація про керівника замовника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="fDovirenist" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="email" name="Ваш e-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="long" writable="false"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про рекламу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekNazv&quot;],&quot;sValue&quot;:&quot;Інформація про рекламу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
           <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRekTip" name="Тип реклами" type="enum" writable="false">
-          <activiti:value id="sEnamFasad" name="Фасадна"></activiti:value>
-          <activiti:value id="sEnamOkrRozm" name="Окремо розміщена (сіті-лайт, бігборд)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="fRekVlasn" name="Право власності на майно де буде розміщена реклама; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fRekFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fRekEskiz" name="Езкіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fRekEskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decideVuk" name="Рішення Ради" type="enum" required="true">
           <activiti:value id="accept" name="Виконком ради затвердив дозвіл"></activiti:value>
