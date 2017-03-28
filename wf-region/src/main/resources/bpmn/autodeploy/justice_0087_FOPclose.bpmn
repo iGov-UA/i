@@ -18,26 +18,26 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="markers_Hide_01_01" name="показать строки если ФИО правильно   " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_01&quot;:{&quot;aField_ID&quot;:[&quot;phone&quot;,&quot;email&quot;,&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Hide_01_02" name="показать строки если ФИО не правильно" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_02&quot;:{&quot;aField_ID&quot;:[&quot;InfoStart001&quot;,&quot;stopfield&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_01_01" name="показать строки если ФИО правильно   ; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_01&quot;:{&quot;aField_ID&quot;:[&quot;phone&quot;,&quot;email&quot;,&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_01_02" name="показать строки если ФИО не правильно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_02&quot;:{&quot;aField_ID&quot;:[&quot;InfoStart001&quot;,&quot;stopfield&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="InfoStart001" name="УВАГА" type="label" default="&lt;b&gt;Оскільки на підставі Ваших, зазначених вище, ПІБ формується заява для отримання послуги, вони повинні бути українською мовою та відповідати дійсності. Для їх зміни на коректні - зверніться до установи (або його відділення) яка отримувала Ваші дані. Якщо замовите послугу - Вам буде відмовлено на цих підставах.&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="stopfield" name="" type="textArea" default="ПІБ повинно бути українською мовою та відповідати дійсності" required="true"></activiti:formProperty>
-		<activiti:formProperty id="marker4stopfield" name="валідатор до stopfield" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_stopfield&quot;:{&quot;aField_ID&quot;:[&quot;stopfield&quot;],&quot;sFormat&quot;:&quot;123456789&quot;,&quot;sMessage&quot;:&quot;ПІБ повинно бути українською мовою та відповідати дійсності&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="test_all_case_start_style_checkbox" name="markers test_all_case_start_style" type="markers" default="${markerService.loadFromFile('templates/all_checkbox_green.json')}"></activiti:formProperty>
+		<activiti:formProperty id="marker4stopfield" name="валідатор до stopfield; ;bVisible=false" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_stopfield&quot;:{&quot;aField_ID&quot;:[&quot;stopfield&quot;],&quot;sFormat&quot;:&quot;123456789&quot;,&quot;sMessage&quot;:&quot;ПІБ повинно бути українською мовою та відповідати дійсності&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="test_all_case_start_style_checkbox" name="markers test_all_case_start_style; ;bVisible=false" type="markers" default="${markerService.loadFromFile('templates/all_checkbox_green.json')}"></activiti:formProperty>
 
 
 <!--  Вставка автоподписания ЭЦП начало -->
 <!--        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true, bNew=true" type="file" required="true"></activiti:formProperty> -->
-<!--        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/justice/justice_0087_FOPclose_print.html"></activiti:formProperty> -->
+<!--        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/justice/justice_0087_FOPclose_print.html"></activiti:formProperty> -->
 <!--  Вставка автоподписания ЭЦП конец  -->
 
 <!-- работа невидимая на старте начало -->
 
-        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="invisible" default="Державна реєстрація припинення підприємницької діяльності фізичної особи – підприємця за її рішенням"></activiti:formProperty>
+        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги; ;bVisible=false" type="string" default="Державна реєстрація припинення підприємницької діяльності фізичної особи – підприємця за її рішенням"></activiti:formProperty>
 
 <!-- работа невидимая на старте финиш -->
 
@@ -46,7 +46,6 @@
     
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
 
-<!--    <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="jur_all_0087,jur_${sID_UA}_0087"> -->
     <userTask id="usertask1" name="Очікування в черзі" activiti:candidateGroups="jur_${sID_UA}_0087">
 	<extensionElements>
 
@@ -54,17 +53,13 @@
         <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
 
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
 
-<!--  Вставка форми -->
-<!-- переменные начало -->
-<!--  Вставка  форми -->
-		
         <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення: " type="enum" required="true">
           <activiti:value id="acceptMain" name="Так - Заява розглянута, прийнято позитивне рішення"></activiti:value>
           <activiti:value id="rejectMain" name="Ні - Заява розглянута, прийнято негативне рішення"></activiti:value>
@@ -76,10 +71,10 @@
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника; ;bNew=true" type="file"></activiti:formProperty>
-<!--        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true, bNew=true" type="file" writable="false"></activiti:formProperty> -->
+<!--        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty> -->
 
 <!--         <activiti:formProperty id="sBody_1" name="[pattern/print/justice/justice_0087_FOPclose_print.html]" type="invisible" default="Заява про реєстрацію - оригінал" writable="false"></activiti:formProperty> -->
-        <activiti:formProperty id="sBody_2" name="[pattern/print/justice/justice_0087_FOPclose_print.html]" type="invisible" default="Заява про припинення підприємницької діяльності" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false" type="string" default="Заява про припинення підприємницької діяльності" writable="false"></activiti:formProperty>
 		
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
 <!--        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
