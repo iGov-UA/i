@@ -497,6 +497,19 @@
           return JSON.parse(item.value).sKey;
         };
 
+        $scope.takeTheFileNameFromJSON = function (item) {
+          var originalFileName = JSON.parse(item.value).sFileNameAndExt;
+          var ext;
+          if (originalFileName && originalFileName.indexOf('.') > 0){
+            var parts = originalFileName.split(".");
+            ext = parts[parts.length - 1];
+          }
+          if(ext){
+            return item.name + '.' + ext;
+          }
+          return item.name;
+        };
+
         $scope.clarify = false;
 
         $scope.clarifyToggle = function () {

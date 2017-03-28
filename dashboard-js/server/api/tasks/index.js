@@ -17,7 +17,7 @@ router.get('/:taskId/attachments', controller.getAttachments);
 router.post('/action/task/saveForm', controller.saveChangesTask);
 router.get('/:nID_Process/getOrderMessages', controller.getOrderMessages);
 router.get('/:taskId/attachments/:attachmentId/content/:nFile', controller.getAttachmentContent);
-router.get('/download/:keyOrProcessID/attachment/:typeOrAttachID', controller.getAttachmentFile);
+router.get('/download/:keyOrProcessID/attachment/:typeOrAttachID/:sFileName', controller.getAttachmentFile);
 router.get('/:taskId/attachments/:attachmentId/table', controller.getAttachmentContentTable);
 router.post('/:taskId/attachments/:field/upload',controller.uploadFile);
 router.post('/:taskId/form', controller.submitForm);
