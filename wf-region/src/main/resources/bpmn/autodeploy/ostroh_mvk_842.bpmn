@@ -47,20 +47,23 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[middayka@yandex.ru]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення до міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+                               [pattern/mail/new_design/_common_content_start.html]
 &lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення громадянина до міської ради.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
 Номер звернення: [sID_Order]&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -77,17 +80,17 @@
           <activiti:string><![CDATA[Звернення до міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення до міської ради було зареєстровано у системі.&lt;br/&gt;
-Відповідь Ви отримаєте протягом 45-ти календарних днів.&lt;br/&gt;
-Повідомлення про розгляд звернення буде спрямоване на Ваш e-mail.&lt;/p&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan},&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+                                    [pattern/mail/new_design/_common_content_start.html]
+                                    &lt;p&gt; Ваше звернення до міської ради було зареєстровано у системі.&lt;br/&gt;
+                                    Відповідь Ви отримаєте протягом 45-ти календарних днів.&lt;br/&gt;
+                                    Повідомлення про розгляд звернення буде спрямоване на Ваш e-mail.&lt;/p&gt;
+                                    ${sPhoneOrgan}&lt;br /&gt;
+									[pattern/mail/new_design/_common_content_end.html]
+                                    [pattern/mail/new_design/_common_signature_start.html]
+                                    ${sNameOrgan},&lt;br /&gt;
+									[pattern/mail/new_design/_common_signature_end.html]
+                                    [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -170,18 +173,18 @@ ${sNameOrgan},&lt;br /&gt;
           <activiti:string><![CDATA[Звернення до міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення до міської ради було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${comment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan},&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+                                    [pattern/mail/new_design/_common_content_start.html]
+									На жаль, Ваше звернення до міської ради було відхилено.&lt;/p&gt;
+									&lt;p&gt;Причина в наступному:&lt;/p&gt;
+									&lt;p&gt;${comment}&lt;/p&gt;
+                                    &lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+                                    &lt;br /&gt;
+									[pattern/mail/new_design/_common_content_end.html]
+                                    [pattern/mail/new_design/_common_signature_start.html]
+                                    ${sNameOrgan},&lt;br /&gt;
+									[pattern/mail/new_design/_common_signature_end.html]
+                                    [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -213,20 +216,19 @@ ${sNameOrgan},&lt;br /&gt;
           <activiti:string><![CDATA[Звернення до міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення до міської ради оброблено.&lt;br /&gt;
-Відповідь знаходиться у додатку до цього листа.
-&lt;/p&gt;
-&lt;p&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan},&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+                                    [pattern/mail/new_design/_common_content_start.html]
+                                    Ваше звернення до міської ради оброблено.&lt;br /&gt;
+                                    Відповідь знаходиться у додатку до цього листа.
+                                    &lt;/p&gt;
+                                    &lt;p&gt;&lt;/p&gt;
+                                    &lt;br /&gt;
+                                    [pattern/mail/new_design/_common_content_end.html]
+                                    [pattern/mail/new_design/_common_feedback.html]        
+                                    [pattern/mail/new_design/_common_signature_start.html]
+                                    ${sNameOrgan},&lt;br /&gt;
+									[pattern/mail/new_design/_common_signature_end.html]
+                                    [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFileAnswer}</activiti:expression>
