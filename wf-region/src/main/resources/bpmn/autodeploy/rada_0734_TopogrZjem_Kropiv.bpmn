@@ -89,7 +89,7 @@
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHomeAddress" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlace" name="Адреса об`кта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace1" name="Координати ділянки на Google картах" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlace1" name="Координати ділянки на Google картах" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('kuznetsovsk_mvk-118.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -97,15 +97,15 @@
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sGoal" name="Мета отримання довідки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGoal" name="Мета отримання довідки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asApplication" name="Необхідна довідка про" type="enum" writable="false">
           <activiti:value id="sEnumMist" name="Викопіювання з топографічнї зйомки міста"></activiti:value>
           <activiti:value id="sEnumGenPl" name="Викопіювання з топографічнї зйомки генерального плану"></activiti:value>
           <activiti:value id="sEnumZon" name="Викопіювання з топографічнї зйомки плану зонування"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDecision" name="Рішення про виготовлення викопіювання" type="enum" default="sAccept" required="true">
+        <activiti:formProperty id="asDecision" name="Рішення про виготовлення викопіювання" type="enum" required="true">
           <activiti:value id="sAccept" name="Викопіювання виготовлене"></activiti:value>
-          <activiti:value id="sDecline" name="Звернення відхилено"></activiti:value>
+          <activiti:value id="sDecline" name="Неможливо виготовити викопіювання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/rada_0734_TopogrZjem_Kropiv.html]; ;bVisible=false" type="string" default="Заява на виготовлення викопіювання" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар у разі відмови у наданні послуги" type="textArea"></activiti:formProperty>
