@@ -11,7 +11,6 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskInfo;
 import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
@@ -29,7 +28,6 @@ import java.util.stream.Collectors;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
 import org.apache.commons.io.IOUtils;
@@ -88,11 +86,6 @@ public class DocumentStepService {
 	@Autowired
 	private SubjectGroupTreeService oSubjectGroupTreeService;
 	
-	@Autowired
-	private TaskService taskService;
-
-	@Autowired
-    private HistoryService oHistoryService;
 	
 	public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
 		JSONObject oJSON = new JSONObject(soJSON);
@@ -1423,17 +1416,16 @@ public class DocumentStepService {
 					if (sDate != null) {
 						oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
 						LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
-						// Достаем nID_Process_Activiti у найденного
-						// oDocumentStepSubjectRight через DocumentStep
+						// Достаем nID_Process_Activiti у найденного oDocumentStepSubjectRight через DocumentStep
 						String snID_Process_Activiti = oFindedDocumentStepSubjectRight.getDocumentStep()
-								.getSnID_Process_Activiti();
+								.getSnID_Process_Activiti().trim();
 						LOG.info("snID_Process of oFindedDocumentStepSubjectRight: ", snID_Process_Activiti);
 
 						String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
 
 						// через апи активити по nID_Process_Activity
 						HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
-								.processInstanceId(snID_Process_Activiti).singleResult();
+								.processInstanceId(snID_Process_Activiti.trim()).singleResult();
 
 						LOG.info("oProcessInstance = {} ", oProcessInstance);
 						if (oProcessInstance != null) {
@@ -1445,16 +1437,16 @@ public class DocumentStepService {
 							LOG.info("sNameBP", sNameBP);
 							// вытаскиваем список тасок по процесу
 							
-							List<HistoricTaskInstance> aTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(snID_Process_Activiti).list();
+							//List<HistoricTaskInstance> aTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(snID_Process_Activiti).list();
 							
-							/*List<Task> aTask = oTaskService.createTaskQuery()
-									.processInstanceId(snID_Process_Activiti).active().list();
+							List<Task> aTask = oTaskService.createTaskQuery()
+									.processInstanceId(snID_Process_Activiti.trim()).list();
 							if (aTask.size() < 1 || aTask.get(0) == null) {
 								throw new IllegalArgumentException(
-										"Process with ID: " + snID_Process_Activiti + " has no active task.");
-							}*/
+										"Process with ID: " + snID_Process_Activiti + " has no task.");
+							}
 							// берем первую
-							Task oTaskCurr = (Task) aTask.get(0);
+							Task oTaskCurr = aTask.get(0);
 						//	LOG.info("oTaskCurr ={} ", oTaskCurr);
 
 							// вытаскиваем дату создания таски
