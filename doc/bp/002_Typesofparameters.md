@@ -54,7 +54,9 @@ true / false
 ```
 * ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
 * Так же для указания цвета поля на котором разместится текст, можно использовать третий раздел тип name
-<activiti:formProperty id="color" name="Зверніть увагу на колір; ;labelType=success" type="label" default="Ви можете" ></activiti:formProperty>    где
+<activiti:formProperty id="color" name="Зверніть увагу на колір; ;labelType=success" type="label" default="Ви можете" 
+></activiti:formProperty>
+* где
  success - зеленый, info - голубой, warning - желтый, danger - красный.
 ***
 ### file
