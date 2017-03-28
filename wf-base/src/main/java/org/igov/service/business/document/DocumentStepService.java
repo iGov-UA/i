@@ -1439,23 +1439,20 @@ public class DocumentStepService {
 							String sNameBP = oProcessInstance.getName();
 							LOG.info("sNameBP", sNameBP);
 							// вытаскиваем список тасок по процесу
-							Task task = taskService.createTaskQuery().processInstanceId(snID_Process_Activiti.trim()).active().singleResult();
-					        LOG.info("task.getId: " + (task != null ? task.getId() : "no active task for sID_Process = " + snID_Process_Activiti));
-							
-							/*List<Task> aTask = oTaskService.createTaskQuery()
-									.processInstanceId(snID_Process_Activiti).list();
+							List<Task> aTask = oTaskService.createTaskQuery()
+									.processInstanceId(snID_Process_Activiti).active().list();
 							if (aTask.size() < 1 || aTask.get(0) == null) {
 								throw new IllegalArgumentException(
 										"Process with ID: " + snID_Process_Activiti + " has no active task.");
 							}
 							// берем первую
 							Task oTaskCurr = aTask.get(0);
-							LOG.info("oTaskCurr ={} ", oTaskCurr);*/
+							LOG.info("oTaskCurr ={} ", oTaskCurr);
 
 							// вытаскиваем дату создания таски
-							Date sDateCreateUserTask = task.getCreateTime();
+							Date sDateCreateUserTask = oTaskCurr.getCreateTime();
 							// и ее название
-							String sUserTaskName = task.getName();
+							String sUserTaskName = oTaskCurr.getName();
 
 							// Создаем обьект=обертку, в который сетим нужные полученные поля
 							DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
