@@ -203,23 +203,23 @@
         <activiti:formProperty id="nFileActAnaliz" name="Копія акту обстеження житлових умов." type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileFamily" name="Копія довідки по формі-3 (довідка про склад сім'ї)" type="file" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible" default="normal"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="AreaName" name="назва органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление; ;bVisible=false" type="string" default="normal"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="AreaName" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nCountIsAdult" name="кількість дорослих" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nCountIsAdult" name="кількість дорослих; ;bVisible=false" type="string" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="sClFio1" name="1 член сім’ї" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sClFio2" name="2 член сім’ї" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sClFio3" name="3 член сім’ї" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sClFio4" name="4 член сім’ї" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sClFio5" name="5 член сім’ї" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sClFio6" name="6 член сім’ї" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio1" name="1 член сім’ї; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio2" name="2 член сім’ї; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio3" name="3 член сім’ї; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio4" name="4 член сім’ї; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio5" name="5 член сім’ї; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sClFio6" name="6 член сім’ї; ;bVisible=false" type="string" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="markers_fields_start" name="hide fields Privilege" type="markers" default="${markerService.loadFromFile('mvk/show_fill_privilege.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_1" name="Отображать 1 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_1.json')}"></activiti:formProperty>
@@ -228,7 +228,7 @@
         <activiti:formProperty id="markers_visual_fill_relative_4" name="Отображать 4 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_5" name="Отображать 5 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_visual_fill_relative_6" name="Отображать 6 родственника" type="markers" default="${markerService.loadFromFile('mvk/visual_fill_relative_6.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers_fields_invisible" name="hide fields invisible" type="markers" default="${markerService.loadFromFile('mvk/show_fill_invisible.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_fields_string" name="hide fields string" type="markers" default="${markerService.loadFromFile('mvk/show_fill_string.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -426,50 +426,50 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:formProperty id="sComment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
 		
 
-        <activiti:formProperty id="nCountIsAdult" name="кількість дорослих" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nCountIsAdult" name="кількість дорослих; ;bVisible=false" type="string" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO1" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation1" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday1" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives1" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace1" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO1" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation1" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday1" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives1" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace1" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO2" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation2" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday2" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives2" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace2" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO2" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation2" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday2" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives2" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace2" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO3" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation3" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday3" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives3" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace3" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO3" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation3" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday3" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives3" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace3" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO4" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation4" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday4" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives4" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace4" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO4" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation4" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday4" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives4" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace4" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO5" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation5" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday5" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives5" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace5" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO5" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation5" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday5" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives5" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace5" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO6" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation6" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday6" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives6" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace6" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO6" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation6" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday6" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives6" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace6" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
 
-		<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="AreaName" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+	<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="AreaName" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява;Заява громадянина;pattern/print/mvk/nikolaev_mvk_408_print.html" type="file" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="markers2" name="hide fields Status" type="markers" default="${markerService.loadFromFile('mvk/show_fill_status.json')}"></activiti:formProperty>
@@ -659,50 +659,50 @@ execution.setVariable('nCountIsAdult', 'a' + countIsAdult)
         <activiti:formProperty id="sComment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
 
         
-        <activiti:formProperty id="nCountIsAdult" name="кількість дорослих" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nCountIsAdult" name="кількість дорослих; ;bVisible=false" type="string" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO1" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation1" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday1" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives1" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace1" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO1" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation1" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday1" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives1" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace1" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO2" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation2" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday2" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives2" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace2" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO2" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation2" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday2" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives2" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace2" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO3" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation3" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday3" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives3" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace3" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO3" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation3" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday3" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives3" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace3" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO4" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation4" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday4" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives4" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace4" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO4" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation4" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday4" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives4" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace4" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO5" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation5" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday5" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives5" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace5" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO5" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation5" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday5" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives5" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace5" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sFIO6" name="ПІБ" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sFamilyRelation6" name="Родинні відносини" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nBirthday6" name="Рік народження" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nWhereLives6" name="З якого часу проживає в даному населеному пункті" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkPlace6" name="Місце роботи і посада" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sFIO6" name="ПІБ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFamilyRelation6" name="Родинні відносини; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nBirthday6" name="Рік народження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nWhereLives6" name="З якого часу проживає в даному населеному пункті; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace6" name="Місце роботи і посада; ;bVisible=false" type="string"></activiti:formProperty>
 
 
-		<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="AreaName" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+	<activiti:formProperty id="sFalgNikolaevOda2" name="Флаг на заявление; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="AreaName" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/nikolaev_mvk_408_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Заява;Заява громадянина;pattern/print/mvk/nikolaev_mvk_408_print.html" type="file" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="markers2" name="hide fields Status" type="markers" default="${markerService.loadFromFile('mvk/show_fill_status.json')}"></activiti:formProperty>

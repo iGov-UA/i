@@ -12,14 +12,14 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса квартири де встановлюється опалення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" ></activiti:formProperty>
-        <activiti:formProperty id="sMailClerkMVK" name="Пошта органу" type="invisible" ></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Надання дозволу на влаштування автономного опалення"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sMailClerkMVK" name="Пошта органу; ;bVisible=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Надання дозволу на влаштування автономного опалення"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -93,9 +93,9 @@ ${sNameOrgan}.&lt;br /&gt;
 		  <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/Uzhgorod/Uzhgorod618_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/Uzhgorod/Uzhgorod618_print.html]; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Uzhgorod/Uzhgorod618_print.html"   type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -167,9 +167,9 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса квартири де встановлюється опалення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/Uzhgorod/Uzhgorod618_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/Uzhgorod/Uzhgorod618_print.html]; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Uzhgorod/Uzhgorod618_print.html"   type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="file_result" name="Завантажте скановану копію відповіді" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -246,9 +246,9 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса квартири де встановлюється опалення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/Uzhgorod/Uzhgorod618_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/Uzhgorod/Uzhgorod618_print.html]; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Uzhgorod/Uzhgorod618_print.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asVudacha" name="Видача відповіді" type="enum" required="true">
           <activiti:value id="sEnamVud_ok" name="Відповідь надано заявнику"></activiti:value>
           <activiti:value id="sEnamVud_bad" name="Заяник не з'явився, надіслати лист нагадування"></activiti:value>

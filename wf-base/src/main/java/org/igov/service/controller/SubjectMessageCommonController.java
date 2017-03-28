@@ -69,7 +69,7 @@ public class SubjectMessageCommonController {
         //}
     
         try{
-            String resp = smsManager.sendSms(phone, message, sID_Order, !generalConfig.isSelfTest());
+            String resp = smsManager.sendSms(phone, message, sID_Order, generalConfig.isSelfTest());
             return resp;
         }
         catch (Exception ex)

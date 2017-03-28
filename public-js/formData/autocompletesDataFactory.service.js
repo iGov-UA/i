@@ -88,6 +88,7 @@ angular.module('autocompleteService', [])
             valueProperty: 'sID',
             titleProperty: 'sFind',
             orderBy: 'nID',
+            additionalValueProperty: 'sNote',
             apiUrl: './api/subject-action-kved'
         },
         ID_ObjectPlace_UA: {

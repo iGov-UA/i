@@ -421,8 +421,10 @@ angular.module('dashboardJsApp')
         var scope = $rootScope.$new(true, $rootScope);
         var url;
 
-        if(newUpload) {
+        if(newUpload && taskId) {
           url = '/api/uploadfile?nID_Process=' + taskId + '&sID_Field=' + sID_Field + '&sFileNameAndExt=' + files[0].name;
+        } else if(newUpload && !taskId) {
+          url = '/api/uploadfile?sID_Field=' + sID_Field + '&sFileNameAndExt=' + files[0].name;
         } else {
           url = '/api/tasks/' + taskId + '/attachments/' + sID_Field + '/upload';
         }
@@ -867,6 +869,85 @@ angular.module('dashboardJsApp')
             sID_BP: bpID
           }
         })
+      },
+      /*вытягиваем шаблон бизнес-процесса для последующего заполнения*/
+      createNewTask: function (bpID) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: 'api/create-task/createTask',
+          params: {
+            sID_BP: bpID
+          }
+        })
+      },
+      /*сохраняем ранее заполненный шаблон как таску, сохранив перед этим таблицы в редис*/
+      submitNewCreatedTask: function (task, bpID) {
+        var self = this, def = [], tables = [], tablePromises = [], items = 0, deferred = $q.defer();
+
+        var createProperties = function (formProperties) {
+          var properties = [];
+          for (var i = 0; i < formProperties.length; i++) {
+            var formProperty = formProperties[i];
+            if (formProperty && formProperty.writable) {
+              if(formProperty.hasOwnProperty('aRow')) {
+
+              }
+              properties.push({
+                id: formProperty.id,
+                value: formProperty.value
+              });
+            }
+          }
+          return properties;
+        };
+
+        var tableFields = $filter('filter')(task.formProperties, function(prop){
+          return prop.type == 'table';
+        });
+
+        var syncTableUpload = function (i, table, defs) {
+          if (i < table.length) {
+            self.uploadTable(table[i].table, table[i].taskID, table[i].tableId, table[i].desc, table[i].isNew)
+              .then(function(resp) {
+                defs[i].resolve();
+                ++i;
+                syncTableUpload(i, table, defs);
+            })
+          }
+        };
+
+        var isNotEqualsAttachments = function (table, num) {
+          def[num] = $q.defer();
+          tables[num] = {table:table, taskID:null, tableId:table.id, desc:null, isNew:true};
+          tablePromises[num] = def[num].promise;
+        };
+
+        if(tableFields.length > 0) {
+          for (var i=0; i<tableFields.length; i++) {
+            isNotEqualsAttachments(tableFields[i], i);
+          }
+        }
+
+        syncTableUpload(items, tables, def);
+
+        $q.all(tablePromises).then(function () {
+          var qs = {
+            properties : createProperties(task.formProperties)
+          };
+
+          simpleHttpPromise({
+            method: 'POST',
+            params: {sID_BP: bpID},
+            url: '/api/create-task/saveCreatedTask',
+            data: qs
+          }).then(function (result) {
+              deferred.resolve(result);
+            },
+            function(result) {
+              deferred.resolve(result);
+            });
+        });
+        return deferred.promise;
       },
       getFilterFieldsList: function (login) {
         return simpleHttpPromise({

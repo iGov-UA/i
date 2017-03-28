@@ -258,7 +258,7 @@ angular.module('app').controller('ServiceDiscussionController', function ($state
 });
 
 angular.module('app').controller('ServiceStatisticsController', function ($scope, ServiceService) {
-  $scope.loaded = false;
+  $scope.spinner = true;
   $scope.arrow = '\u2191';
   $scope.reverse = false;
 
@@ -307,7 +307,7 @@ angular.module('app').controller('ServiceStatisticsController', function ($scope
     console.log(response.status + ' ' + response.statusText + '\n' + response.data);
   })
     .finally(function () {
-      $scope.loaded = true;
+      $scope.spinner = false;
     });
 });
 

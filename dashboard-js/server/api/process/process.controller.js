@@ -31,13 +31,15 @@ exports.index = function (req, res) {
 };
 
 exports.getLoginBPs = function (req, res) {
-  var user = JSON.parse(req.cookies.user);
+  var user = JSON.parse(req.cookies.user), path;
+
+  path = req.query.isOld && req.query.isOld === 'true' ? 'action/task/getLoginBPs' : 'subject/group/getSubjectRightBPs';
 
   var query = {
     'sLogin' : user.id
   };
   var options = {
-    path: 'action/task/getLoginBPs',
+    path: path,
     query: query
   };
   var cacheKey = JSON.stringify(options);

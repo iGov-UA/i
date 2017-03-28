@@ -28,12 +28,12 @@
         <activiti:formProperty id="file2" name="Схема розташування аварійних дерев" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Експлікація земельної ділянки яка виділяється для користування чи оренди" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Копія рішення міської ради щодо надання дозволу на розробку проектної документації для відведення земельної ділянки(при наявності)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name=" " type="invisible" default="Видача Акту обстеження земельної ділянки на наявність зелених насаджень"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name=" ; ;bVisible=false" type="string" default="Видача Акту обстеження земельної ділянки на наявність зелених насаджень"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker31" name="Документи на видалення" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;file1&quot;,&quot;file2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;[sClient]=='delete'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker32" name="Документи для розробки ПВЗД" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;file3&quot;,&quot;file4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;act&quot;},&quot;sCondition&quot;:&quot;[sClient]=='rozrobka'&quot;}}}"></activiti:formProperty>
       </extensionElements>
@@ -116,11 +116,11 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="attr2_bad" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_cnap" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/Synelnykove_509_print1.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/Synelnykove_509_print2.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/Synelnykove_509_print1.html]" type="invisible" default="Форма заяви громадянина НА ВИДАЛЕННЯ АВАРІЙНИХ, СУХОСТІЙНИХ І ФАУТНИХ ЗЕЛЕНИХ НАСАДЖЕНЬ " writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/Synelnykove_509_print2.html]" type="invisible" default="Форма заяви громадянина ПРИ РОЗРОБЦІ ПРОЕКТУ ВИДІЛЕННЯ ЗЕМЕЛЬНОЇ ДІЛЯНКИ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/Synelnykove_509_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина НА ВИДАЛЕННЯ АВАРІЙНИХ, СУХОСТІЙНИХ І ФАУТНИХ ЗЕЛЕНИХ НАСАДЖЕНЬ " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/Synelnykove_509_print2.html]; ;bVisible=false" type="string" default="Форма заяви громадянина ПРИ РОЗРОБЦІ ПРОЕКТУ ВИДІЛЕННЯ ЗЕМЕЛЬНОЇ ДІЛЯНКИ" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -220,11 +220,11 @@ ${sWorkTime}.&lt;br /&gt;
           <activiti:value id="attr4_rish_bad" name="Звернення не оброблене."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_cnap" name="Якщо Звернення не може бути оброблене, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/Synelnykove_509_print1.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/Synelnykove_509_print2.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/Synelnykove_509_print1.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/Synelnykove_509_print2.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/Synelnykove_509_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/Synelnykove_509_print2.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="answer" name="Відповідь" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
