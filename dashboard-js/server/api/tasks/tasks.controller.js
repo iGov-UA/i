@@ -306,6 +306,9 @@ exports.getAttachmentFile = function (req, res) {
     qs = {
       'sKey': req.params.keyOrProcessID,
       'sID_StorageType': req.params.typeOrAttachID
+    };
+    if(req.params.sFileName){
+      qs['sFileName'] = req.params.sFileName;
     }
   } else {
     qs = {
