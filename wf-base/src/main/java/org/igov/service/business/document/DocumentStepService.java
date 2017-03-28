@@ -1433,7 +1433,7 @@ public class DocumentStepService {
 							String sNameBP = oProcessInstance.getName();
 							LOG.info("sNameBP", sNameBP);
 							// вытаскиваем список активных тасок по процесу
-							/*List<Task> aTask = oTaskService.createTaskQuery()
+							List<Task> aTask = oTaskService.createTaskQuery()
 									.processInstanceId(oProcessInstance.getId()).active().list();
 							if (aTask.size() < 1 || aTask.get(0) == null) {
 								throw new IllegalArgumentException(
@@ -1444,11 +1444,11 @@ public class DocumentStepService {
 							LOG.info("oTaskCurr ={} ", oTaskCurr);
 
 							// вытаскиваем дату создания таски
-							//Date sDateCreateUserTask = oTaskCurr.getCreateTime();
+							Date sDateCreateUserTask = oTaskCurr.getCreateTime();
 							// и ее название
-						//	String sUserTaskName = oTaskCurr.getName();
-							*/
-							 List<HistoricTaskInstance> aHistoricTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(snID_Process_Activiti).list();
+							String sUserTaskName = oTaskCurr.getName();
+							
+							 /*List<HistoricTaskInstance> aHistoricTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(snID_Process_Activiti).list();
 							 if (aHistoricTask == null || aHistoricTask.isEmpty()) {
 					                LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process_Activiti));
 					                throw new RecordNotFoundException();
@@ -1457,7 +1457,7 @@ public class DocumentStepService {
 					            Date sDateCreateUserTask = historicTask.getCreateTime();
 					                String sUserTaskName = historicTask.getName();
 					                LOG.info(String.format("Historic Task [id = '%s'] is found", historicTask.getId()));
-					            
+					            */
 
 							// Создаем обьект=обертку, в который сетим нужные полученные поля
 							DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
