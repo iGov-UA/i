@@ -3,7 +3,7 @@
   <process id="DFS_F1301801" name="Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sWarning0" name=" " type="label" default="Вам необхідно скористатися Вашим персональним електронно-цифровим підписом або підписом підприємця. Ви не можете скористатися ЕЦП представника юридичної особи."></activiti:formProperty>
+        <activiti:formProperty id="sWarning0" name=" " type="label" default="Вам необхідно скористатися Вашим &lt;b&gt; персональним електронно-цифровим підписом або підписом підприємця &lt;/b&gt;. Ви не можете скористатися ЕЦП представника юридичної особи."></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище; ;writable=true,sID_Field_SWinEd=HLNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;writable=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;writable=true,sID_Field_SWinEd=HFNAME" type="string"></activiti:formProperty>
@@ -43,10 +43,8 @@
           <activiti:value id="2015" name="2015"></activiti:value>
           <activiti:value id="2016" name="2016"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="sWarning0" name=" " type="label" default="Для отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків необхідно скористатися особистим електронно-цифровим підписом фізичної особи або фізичної особи-підприємця"></activiti:formProperty>
         <activiti:formProperty id="markersStyle_1" name="Маркер стилю" type="markers" default="${markerService.loadFromFile('dms/dms_format_label.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string" default="04"></activiti:formProperty>
         <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string" default="63"></activiti:formProperty>
         <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string"></activiti:formProperty>
@@ -298,9 +296,6 @@ execution.setVariable('sCounter', src)</script>
           </activiti:field>
           <activiti:field name="snCountYear">
             <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sFile_XML_SWinEd_Filter">
-            <activiti:expression><![CDATA[ ]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
