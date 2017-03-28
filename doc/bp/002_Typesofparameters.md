@@ -56,9 +56,8 @@ true / false
 * Так же для указания цвета поля на котором разместится текст, можно использовать третий раздел тип name
 ```xml
 <activiti:formProperty id="color" name="Зверніть увагу на колір; ;labelType=success" type="label" default="Ви можете" ></activiti:formProperty>
-'''
-* где
- success - зеленый, info - голубой, warning - желтый, danger - красный.
+```
+* где labelType=success - зеленый, labelType=info - голубой, labelType=warning - желтый, labelType=danger - красный.
 ***
 ### file
 файл - кнопка для ручной загрузки файлов гражданином на форме подачи обращения и для возможности просмотра  прикрепленного файла на форме обработки обращения.
