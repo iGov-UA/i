@@ -15,7 +15,7 @@
 1. [Отправка СМС-оповещений](https://github.com/e-government-ua/i/blob/test/doc/bp/015_SendingSMSnotifications.md)
 1. [Скрипты](https://github.com/e-government-ua/i/blob/test/doc/bp/016_Scripts.md)
 1. [Конфигурационные файлы](https://github.com/e-government-ua/i/blob/test/doc/bp/017_Configurationfiles.md)
-1. [Работа с гитом и репозиторием](https://github.com/e-government-ua/i/blob/test/doc/bp/018_Workingwiththegithandrepository.md)[Установка Eclipce](https://github.com/e-government-ua/i/blob/test/doc/bp/Installationeclipse.md)
+1. [Работа с гитом и репозиторием](https://github.com/e-government-ua/i/blob/test/doc/bp/018_Workingwiththegithandrepository.md)  [Установка Eclipce](https://github.com/e-government-ua/i/blob/test/doc/bp/Installationeclipse.md)
 1. [Автотесты](https://github.com/e-government-ua/i/blob/test/doc/bp/019_Autotests.md)
 1. [Эскалации и фидбеки](https://github.com/e-government-ua/i/blob/test/doc/bp/020_Escalationsandfeedback.md)
 1. [Статистика и выгрузки](https://github.com/e-government-ua/i/blob/test/doc/bp/021_Statisticsanduploads.md)
