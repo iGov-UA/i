@@ -19,6 +19,87 @@
         </activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Електронна копія паспорту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('zhitomir_mvk_2.json')}"></activiti:formProperty>
+<<<<<<< HEAD
+        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>  
+        <activiti:formProperty id="sShapkaZt" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaseZt" name="Назва міськвиконкому; ;bVisible=false" type="string"></activiti:formProperty>    
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Повідомлення ЦНАП нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>klimkovichy@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Нове звернення на тему: Надання довідок незайнятому населенню про відсутність земельних ділянок для ведення ОСГ</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Повідомлення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему: Надання довідок незайнятому населенню про відсутність земельних ділянок для ведення ОСГ</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/_common_header.html]
+		    			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+						&lt;p&gt;
+            			Ваше звернення щодо надання довідок незайнятому населенню про відсутність земельних ділянок для ведення ОСГ успішно зареєстроване.&lt;br&gt;
+						Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+						${sPhoneOrgan}&lt;br&gt;
+						[pattern/mail/_common_signature_start.html]
+						${sNameOrgan}&lt;br&gt;
+						[pattern/mail/_common_signature_end.html]
+						[pattern/mail/_common_footer.html]
+		 </activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Прийняття рішення: доцільність запиту" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>        
+        <activiti:formProperty id="privatePhone" name="контактний  телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlase_of_reg" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sGoal" name="Мета отримання довідки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asResultWay" name="Форма відповіді" type="enum" writable="false">
+          <activiti:value id="physcial" name="Фізична копія"></activiti:value>
+          <activiti:value id="digital" name="Електронна версія"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
+          <activiti:value id="accept" name="Повідимити громадянина, що довідка підготовлена до отримання"></activiti:value>
+          <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file10" name="Завантажте скановану копію довідки" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapkaZt" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaseZt" name="Назва міськвиконкому; ;bVisible=false" type="string"></activiti:formProperty> 
+        <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhitomir_1.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/zhitomir/zhitomir_1.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+=======
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
@@ -98,6 +179,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhitomir_1.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/zhitomir/zhitomir_1.html" type="file" writable="false"></activiti:formProperty>
          <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+>>>>>>> branch 'test-delta' of https://github.com/e-government-ua/i.git
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${bankId_scan_passport}</activiti:expression>
