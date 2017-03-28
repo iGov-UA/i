@@ -716,18 +716,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             try {
                 mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
             } catch (ActivitiObjectNotFoundException oException){
-                /*
-                List<HistoricVariableInstance> variables = historyService.createHistoricVariableInstanceQuery().taskId(nID_Task.toString()).list();
-                if(variables != null && variables.size() > 0){
-                    LOG.info("Getting variables from HistoricVariableInstance");
-                    mProcessVariable = new HashMap<String, Object>();
-                    for (HistoricVariableInstance variable : variables) {
-                        mProcessVariable.put(variable.getVariableName(), variable.getValue());
-                    }
-                } else {
-                    LOG.error("Can't get: {}", oException.getMessage());
-                }
-                */
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processDefinitionId(Long.toString(nID_Process)).singleResult();
                 if(historicProcessInstance == null){
                     LOG.error("Can't get: {}", oException.getMessage());
