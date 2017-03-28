@@ -1,225 +1,1025 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="uk" lang="uk">
-<head>
-    <title>Надання витягу з реєстру платників єдиного податку</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!DOCTYPE html>
+<html>
+<head lang="ua">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Соц захист</title>
 
     <style type="text/css">
-        div.PrintFormClaim {
-            font-size: 14pt;
+        body div.PrintFormClaim {
+            font-size: 12pt;
             font-family: "Times New Roman";
+            padding: 0cm 0cm 0cm 1cm;
+            width: 23cm;
+            min-height: 100%;
+            height: 100%;
         }
 
-        table { border-collapse: collapse;}
-        td.bb { border: 1px solid #000;}
-        
-        td.notb, td, th { border: 1px solid #fff;}
-            th.t, td.t { border-top: 1px solid #000;}
-            th.r, td.r { border-right: 1px solid #000;}
-            th.b, td.b { border-bottom: 1px solid #000;}
-            th.l, td.l { border-left: 1px solid #000;}
-            
-        /* выравнивание текста */
-        .ta-l { text-align: left;}
-        .ta-j { text-align: justify;}
-        .ta-r { text-align: right;}
-        .ta-c { text-align: center;}
-        .i { font-style: italic;}
 
-        .checkblock {
+        div.PrintFormClaim div {
+            margin-top: 6pt;
+        }
+
+
+        div.PrintFormClaim .smallText,
+        div.PrintFormClaim td.smallText {
+            font-size: 9pt;
+        }
+
+        div.PrintFormClaim .signature,
+        div.PrintFormClaim .signature td {
+            border: 0 solid white;
+        }
+
+        div.PrintFormClaim table {
+            align-self: center;
+            border-collapse: collapse; /* Отображать двойные линии как одинарные */
+        }
+
+        div.PrintFormClaim table.notb > tbody > tr > td.bb {
+            border: 0px solid white;
+            border-bottom: 1px solid black;
+        }
+
+        div.PrintFormClaim table.notb > tbody > tr > td,
+        div.PrintFormClaim table > tbody > tr.notb > td,
+        div.PrintFormClaim table > tbody > tr > td.notb {
+            border: 0px solid white;
+        }
+
+        div.PrintFormClaim td {
+            border: 1px solid black;
+        }
+
+        div.PrintFormClaim th {
+            border: 1px solid black;
+        }
+
+
+
+
+
+        /*чек-боксы*/
+        .check_box,
+        .check_box_text {
+        }
+
+        /*чек-боксы*/
+        .check_box {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #000;
+            margin: 0 10px 0 5px;
+            display: inline-block;
             text-align: center;
-            vertical-align: middle;
         }
 
-      /* ширина в процентах */            
-      .w1p {width: 1%;}      
-      .w4p {width: 4%;}      
-      .w5p {width: 5%;}   
-      .w10p { width: 10%;}
-      .w20p { width: 20%;}
-      .w30p { width: 30%;}
-      .w33p { width: 33%;} 
-      .w35p { width: 35%;} 
-      .w40p { width: 40%;}
-      .w50p { width: 50%;}   
-      .w60p { width: 60%;}   
-      .w70p { width: 70%;}   
-      .w80p { width: 80%;}   
-      .w90p { width: 90%;}    
-      .w95p { width: 95%;}     
-      .w100p { width: 100%;}
-
-      /* ширина */
-      .w10 {	width: 10px;}
-      .w30 {	width: 30px;}
-      .w50 {	width: 50px;}
-      .w100 {	width: 100px;}
-      .w150 {	width: 150px;}
-      .w200 {	width: 200px;}
-      .w250 {	width: 250px;}
-      .w300 {	width: 300px;}
-      .w350 {	width: 350px;}
-      .w450 {	width: 450px;}
-      .w400 {	width: 400px;}
-      .w500 {	width: 500px;}
+        .text_box {
+            height: 20px;
+            border: 1px solid #000;
+            margin-left: 5px;
+            display: inline-block;
+            line-height: 23px;
+        }
 
 
-      /* отступ  */
-      .pl-paragraph { text-indent: 1cm;}
 
-      .pl-25 { padding-left: 25px;}
-      .pl-50 { padding-left: 50px;}
-      .pl-75 { padding-left: 75px;}
-      .pl-100 { padding-left: 100px;}
-      .pl-150 { padding-left: 150px;}
-      .pl-200 { padding-left: 200px;}
-      .pl-250 { padding-left: 250px;}
-      .pl-300 { padding-left: 300px;}
+        .m-b-5 {
+            margin-bottom: 5px;
+        }
 
-      .pr-5 { padding-right: 5px;}
-      .pr-10 { padding-right: 10px;}
-      .pr-25 { padding-right: 25px;}
-      .pr-50 { padding-right: 50px;}
-      .pr-100 { padding-right: 100px;}
+        .m-b-3 {
+            margin-bottom: 3px;
+        }
 
-      .ml-1{ padding-left: 1cm;}
-      .ml-2{ padding-left: 2cm;}
-      .ml-3{ padding-left: 3cm;}
-      .ml-4{ padding-left: 4cm;}
-      .ml-5{ padding-left: 5cm;}
-      .ml-6{ padding-left: 6cm;}
-      .ml-7{ padding-left: 7cm;}
-      .ml-8{ padding-left: 8cm;}
-      .ml-9{ padding-left: 9cm;}
-      .ml-10{ padding-left: 10cm;}
-      .ml-11{ padding-left: 11cm;}
-      .ml-12{ padding-left: 12cm;}
-      .ml-13{ padding-left: 13cm;}
-      .ml-14{ padding-left: 14cm;}
+        .m-b-25 {
+            margin-bottom: 25px;
+        }
 
-      /*отступы по горизонтали*/
-      .pg-10 { padding: 0 10px;}
-      .pg-25 { padding: 0 25px;}
-      .pg-50 { padding: 0 50px;}
-      .pg-75 { padding: 0 75px;}
-      .pg-100 { padding: 0 100px;}
+        .m-b-30 {
+            margin-bottom: 30px;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+
+
+        /* организация колонок */
+        .divColumns {
+            overflow: hidden;
+        }
+
+            .divColumns div {
+                float: left;
+            }
+
+                .divColumns div.ba-r {
+                    float: right;
+                }
+
+        /* выравнивание текста */
+        div.PrintFormClaim .ta-l {
+            text-align: left;
+        }
+
+        div.PrintFormClaim .ta-j {
+            text-align: justify;
+        }
+
+        div.PrintFormClaim .ta-J {
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            word-wrap: break-word;
+        }
+
+        div.PrintFormClaim .ta-r {
+            text-align: right;
+        }
+
+        div.PrintFormClaim .ta-c {
+            text-align: center;
+        }
+
+        div.PrintFormClaim table.tba-c {
+            margin: auto;
+        }
+
+
+        /* ширина в процентах */
+        .w1p {
+            width: 1%;
+        }
+
+        .w2p {
+            width: 2%;
+        }
+
+        .w4p {
+            width: 4%;
+        }
+
+        .w10p {
+            width: 10%;
+        }
+
+        .w20p {
+            width: 20%;
+        }
+
+        .w30p {
+            width: 30%;
+        }
+
+        .w33p {
+            width: 33%;
+        }
+
+        .w38p {
+            width: 38%;
+        }
+
+        .w40p {
+            width: 40%;
+        }
+
+        .w50p {
+            width: 50%;
+        }
+
+        .w60p {
+            width: 60%;
+        }
+
+        .w70p {
+            width: 70%;
+        }
+
+        .w80p {
+            width: 80%;
+        }
+
+        .w90p {
+            width: 90%;
+        }
+
+        .w100p {
+            width: 100%;
+        }
+
+        /* ширина */
+        .w30 {
+            width: 30px;
+        }
+        
+        .w40 {
+            width: 40px;
+        }
+
+        .w50 {
+            width: 50px;
+        }
+
+        .w100 {
+            width: 100px;
+        }
+
+        .w150 {
+            width: 150px;
+        }
+
+        .w175 {
+            width: 175px;
+        }
+
+        .w200 {
+            width: 200px;
+        }
+
+        .w250 {
+            width: 250px;
+        }
+
+        .w300 {
+            width: 300px;
+        }
+
+        .w350 {
+            width: 350px;
+        }
+
+        .w450 {
+            width: 450px;
+        }
+
+        .w400 {
+            width: 400px;
+        }
+
+        .w500 {
+            width: 500px;
+        }
+
+        /* отступ  */
+
+        .pl-paragraph {
+            padding-left: 1cm;
+        }
+
+        .pl-25 {
+            padding-left: 25px;
+        }
+
+        .pl-50 {
+            padding-left: 50px;
+        }
+
+        .pl-75 {
+            padding-left: 75px;
+        }
+
+        .pl-100 {
+            padding-left: 100px;
+        }
+
+        .pl-150 {
+            padding-left: 150px;
+        }
+
+        .pl-200 {
+            padding-left: 200px;
+        }
+
+        .pl-250 {
+            padding-left: 250px;
+        }
+
+        .pl-300 {
+            padding-left: 300px;
+        }
+
+        .ml-5 {
+            margin-left: 5cm;
+        }
+
+        .ml-6 {
+            margin-left: 6cm;
+        }
+
+        .ml-7 {
+            margin-left: 7cm;
+        }
+
+        .ml-8 {
+            margin-left: 8cm;
+        }
+
+        .ml-9 {
+            margin-left: 9cm;
+        }
+
+        .ml-10 {
+            margin-left: 10cm;
+        }
+
+        .ml-11 {
+            margin-left: 11cm;
+        }
+
+        .ml-12 {
+            margin-left: 12cm;
+        }
+
+        .ml-13 {
+            margin-left: 13cm;
+        }
+
+        .ml-14 {
+            margin-left: 14cm;
+        }
+
+
+
+        /* междустрочные интервалы */
+        .line0 {
+            line-height: 0;
+        }
+
+        .line05 {
+            line-height: 0.5;
+        }
+
+        .line1 {
+            line-height: 1;
+        }
+
+        .line12 {
+            line-height: 1.2;
+        }
+
+        .line15 {
+            line-height: 1.5;
+        }
+
+        .line2 {
+            line-height: 2;
+        }
+
+        .line25 {
+            line-height: 2.5;
+        }
+
+        .line3 {
+            line-height: 3;
+        }
+
+        /*отступы по горизонтали*/
+        .pg-25 {
+            padding: 0 25px;
+        }
+
+        .pg-50 {
+            padding: 0 50px;
+        }
+
+        .pg-75 {
+            padding: 0 75px;
+        }
+
+        .pg-100 {
+            padding: 0 100px;
+        }
+
+
+
+        /* Форматирование текста*/
+        .i {
+            font-style: italic;
+        }
+
+        .b {
+            font-weight: 600;
+        }
+
+        .u {
+            text-decoration: underline;
+        }
+
+        .ub {
+            border-bottom: 1px solid #000;
+        }
+
+
+        .test {
+            border: 1px solid red;
+        }
     </style>
+
+    <script type="text/javascript">
+
+    //  ****************    переменные   ****************
+    /*
+    var asNumberApplication = "[asNumberApplication]";
+    var asTransferType = "[asTransferType]";
+    var asAdress = "[asAdress]";
+    var bankIdPassport = "[bankIdPassport]";
+    var nPage = "[nPage]";
+    var nDocument = "[nDocument]";
+
+    // */
+    /*
+    var asNumberApplication = "первинне";
+    var asTransferType = "через національного оператора поштового зв'язку";
+    var asAdress = "Так";
+    var bankIdPassport = "АО295227 БАБУШКИНСКИМ РО В Г ДНЕПРОПЕТРОВСКЕ ГУ ГМС УКРАИНЫ В ДНЕПРОПЕТРОВСКОЙ ОБЛ 17.08.2015";
+    //  */
+
+    /*
+      function ParsePassport() {
+        //   ****************    парсим паспортные данные   ****************
+
+        var str0 = bankIdPassport;
+
+
+        // константные переменные для регулярных выражений
+        var regSeriaStr = "([Сс]ерия|СЕРИЯ|[Сс]ерія|СЕРІЯ)?";
+        var regPassoprt = "([Пп]аспорт|ПАСПОРТ)?";
+        var regNumberStr = "([Нн]омер|НОМЕР)?";
+
+        var regSeriaVal = "[ЄІЇҐА-ЯA-Z]{2}";
+        var regNumberVal = "[0-9]{6}";
+        var regFrom = "((від|от).\\D{0,4})?";
+        var regYearVal = "[0-9]{2}\\W[0-9]{2}\\W(19|20|21)?[0-9]{2}";
+
+        var patSerNum = new RegExp(regPassoprt + "\\D{0,4}" + regSeriaStr + "\\D{0,4}" + regSeriaVal + "\\D{0,4}" + regNumberStr + "\\D{0,4}" + regPassoprt + "\\D{0,4}" + regNumberVal + "\\s*");
+
+        var patDate = new RegExp(regFrom + "\\s*" + regYearVal +"\\s*");
+
+
+        var strSerial = "";
+        var strNumber = "";
+        var strDate = "";
+        var strIssuedBy = "";
+
+        //находим серию и номер
+        var matSerNum = str0.match(patSerNum)[0];
+
+        //вырезаем серию и номер
+        str0 = str0.replace(matSerNum,"");
+
+        //удаляем лишние слова
+        matSerNum = matSerNum.replace(matSerNum.match(new RegExp("паспорт", "ig")),"");
+        matSerNum = matSerNum.replace(matSerNum.match(new RegExp("номер", "ig")),"");
+        matSerNum = matSerNum.replace(matSerNum.match(new RegExp("сер[иі]я", "ig")),"");
+
+        //выбираем Серию и Номер
+        strSerial = matSerNum.match(new RegExp(regSeriaVal));
+        strNumber = matSerNum.match(new RegExp(regNumberVal));
+
+        var matDate = str0.match(new RegExp(regFrom + regYearVal, "ig")).toString();
+
+        //выбираем дату
+        strDate = matDate.match(new RegExp(regYearVal))[0];
+        //вырезаем дату
+        str0 = str0.replace(matDate,"");
+
+        //Остаток, кто выдал
+        strIssuedBy = str0.toString().trim();
+
+        //вставить в текст
+        document.getElementById('spanPassportSeria').innerHTML = strSerial;
+        document.getElementById('spanPassportNumber').innerHTML = strNumber;
+        document.getElementById('spanPassportIssuedBy').innerHTML = strIssuedBy;
+        document.getElementById('spanPassportDate').innerHTML = strDate;
+
+
+        // в случае не правильного парсинга
+        if(strSerial.length>0 && strNumber.length>0 && strIssuedBy.length>0 && strDate.length>0){
+          document.getElementById('spanDetailPassport').style.display = 'inline';
+          document.getElementById('spanTotalPassport').style.display = 'none';
+        }
+      } // */
+
+/*
+      function ChangeParagrath() {
+        //подчеркиваем
+        if("[cc_1_1]" == "true"){ setStyleCell('spanCategory1_1'); }
+        if("[cc_1_2]" == "true"){ setStyleCell('spanCategory1_2'); }
+        if("[cc_1_3]" == "true"){ setStyleCell('spanCategory1_3'); }
+        if("[cc_1_4]" == "true"){ setStyleCell('spanCategory1_4'); }
+        if("[cc_1_5]" == "true"){ setStyleCell('spanCategory1_5'); }
+        if("[cc_1_6]" == "true"){ setStyleCell('spanCategory1_6'); }
+        if("[cc_2]" == "true"){ setStyleCell('spanCategory2'); }
+        if("[cc_3_1]" == "true"){ setStyleCell('spanCategory3_1'); }
+        if("[cc_3_2]" == "true"){ setStyleCell('spanCategory3_2'); }
+        if("[cc_3_3]" == "true"){ setStyleCell('spanCategory3_3'); }
+        if("[cc_3_4]" == "true"){ setStyleCell('spanCategory3_4'); }
+        if("[cc_3_5]" == "true"){ setStyleCell('spanCategory3_5'); }
+        if("[cc_3_6]" == "true"){ setStyleCell('spanCategory3_6'); }
+        if("[cc_3_7]" == "true"){ setStyleCell('spanCategory3_7'); }
+        if("[cc_3_8]" == "true"){ setStyleCell('spanCategory3_8'); }
+        if("[cc_3_9]" == "true"){ setStyleCell('spanCategory3_9'); }
+        if("[cc_4_1]" == "true"){ setStyleCell('spanCategory4_1'); }
+        if("[cc_4_2]" == "true"){ setStyleCell('spanCategory4_2'); }
+        if("[cc_4_3]" == "true"){ setStyleCell('spanCategory4_3'); }
+        if("[cc_4_4]" == "true"){ setStyleCell('spanCategory4_4'); }
+        if("[cc_4_5]" == "true"){ setStyleCell('spanCategory4_5'); }
+        if("[cc_4_6]" == "true"){ setStyleCell('spanCategory4_6'); }
+        if("[cc_4_7]" == "true"){ setStyleCell('spanCategory4_7'); }
+        if("[cc_4_8]" == "true"){ setStyleCell('spanCategory4_8'); }
+        if("[cc_4_9]" == "true"){ setStyleCell('spanCategory4_9'); }
+        if("[cc_5_1]" == "true"){ setStyleCell('spanCategory5_1'); }
+        if("[cc_5_2]" == "true"){ setStyleCell('spanCategory5_2'); }
+        if("[cc_5_3]" == "true"){ setStyleCell('spanCategory5_3'); }
+        if("[cc_5_4]" == "true"){ setStyleCell('spanCategory5_4'); }
+        if("[cc_5_5]" == "true"){ setStyleCell('spanCategory5_5'); }
+        if("[cc_5_6]" == "true"){ setStyleCell('spanCategory5_6'); }
+        if("[cc_5_7]" == "true"){ setStyleCell('spanCategory5_7'); }
+        if("[cc_5_8]" == "true"){ setStyleCell('spanCategory5_8'); }
+        if("[cc_6]" == "true"){ setStyleCell('spanCategory6'); }
+        if("[cc_7]" == "true"){ setStyleCell('spanCategory7'); }
+        if("[cc_8]" == "true"){ setStyleCell('spanCategory8'); }
+        if("[cc_9]" == "true"){ setStyleCell('spanCategory9'); }
+        if("[cc_10]" == "true"){ setStyleCell('spanCategory10'); }
+        if("[cc_11]" == "true"){ setStyleCell('spanCategory11'); }
+        if("[cc_12]" == "true"){ setStyleCell('spanCategory12'); }
+        if("[cc_13]" == "true"){ setStyleCell('spanCategory13'); }
+        if("[cc_14]" == "true"){ setStyleCell('spanCategory14'); }
+        if("[cc_15]" == "true"){ setStyleCell('spanCategory15'); }
+        if("[cc_16]" == "true"){ setStyleCell('spanCategory16'); }
+        if("[cc_17]" == "true"){ setStyleCell('spanCategory17'); }
+      }      // */
+
+      function setStyleCell(id) {
+          var sp = document.getElementById(id);
+          sp.innerHTML = "&#10004;";
+          sp.className = "check_box_text ta-c";
+          sp.previousElementSibling.className += ' u';
+      }
+
+      function isNumeric(n) {
+    	  return !isNaN(parseFloat(n)) && isFinite(n);
+      }
+
+      function NumberDocument(){
+    	  document.getElementById('spanDocument').innerHTML = isNumeric(nDocument)?nDocument:"&nbsp;&nbsp;&nbsp;";
+    	  document.getElementById('spanPage').innerHTML = isNumeric(nPage)?nPage:"&nbsp;&nbsp;&nbsp;";
+      }
+
+      function ShowElements(sCondition) {
+        for(var i=1; i < arguments.length; i++) {
+          if(sCondition){
+            document.getElementById(arguments[i]).style.visibility = 'visible';
+          } else{
+            document.getElementById(arguments[i]).style.visibility = 'hidden';
+          }
+        }
+      }
+
+      function ShowElementsOnTrue(sCondition) {
+        for(var i=1; i < arguments.length; i++) {
+          if(sCondition){
+            document.getElementById(arguments[i]).style.display = 'inline';
+          } else {
+            document.getElementById(arguments[i]).style.display = 'none';
+          }
+        }
+      }
+
+    </script>
 </head>
 <body>
-    <div class="PrintFormClaim">
-      
-      
-    <table class="w100p">
-      <tr>
-        <td class="ml-1">
-          <div class="ml-8">
-            <table class="w100p">
-              <tr>
-                <td><u>[sNameOrgan]</u></td>
-              </tr>
-              <tr>
-                <td class="ta-c">
-                </td>
-              </tr>
-              <tr>
-                <td>&#160;<br/> <br/></td>
-              </tr>
-              
-              <tr>
-                <td class="b">
-                    [sAvtor]
-                </td>
-              </tr>
-              <tr>
-                <td class="ta-c">
-                  <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                    (найменування платника податків/<br/>
-                    прізвище, ім’я, по батькові фізичної особи)
-                  </font>
-                </td>
-              </tr>
-              <tr>
-                <td class="b">
-                    [sInn]
-                </td>
-              </tr>
-              <tr>
-                <td class="ta-c">
-                  <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                    (код за ЄДРПОУ або реєстраційний <br/>
-                    номер облікової картки платника податків)
-                  </font>
-                </td>
-              </tr>
-              <tr>
-                <td>&#160;<br/></td>
-              </tr>
 
 
-              <tr>
-                <td>&#160;<br/></td>
-              </tr>
-              <tr>
-                <td class="b">Поштова адреса: [sAdresECP]</td>
-              </tr>
-
-              <tr>
-                <td>&#160;<br/></td>
-              </tr>
-              <tr>
-                <td class="b">Контактний телефон: [phone]</td>
-              </tr>
-
-              <tr>
-                <td>&#160;<br/></td>
-              </tr>
-              <tr>
-                <td class="b">Електронна адреса: [email]</td>
-              </tr>
-
-            </table>
-          </div>
-
-          <div><br/><br/></div>
-          <div class="ta-c"><b>ЗАЯВА</b></div>
-          <div><br/></div>
-          <table class="w100p">
-            <tr>
-              <td class="ta-j pl-paragraph">
-                Прошу видати мені  витяг з реєстру платників єдиного податку відповідно до пункту 299.9 статті 299 Податкового кодексу України .
-              </td>
-            </tr>
-          </table>
-          
-          <div><br/><br/></div>
-          <table class="w100p">
-            <tr>
-              <td width="15%">
-                [sAvtor]
-              </td>
-              <td width="5%">&#160;</td>
-              <td width="15%" class="ta-c b">
-                Підписано ЕЦП
-              </td>
-            </tr>
-            <tr>
-              <td>
-                &#160;
-              </td>
-              <td></td>
-              <td class="ta-c">
-                <font style="font-size:10pt; font-family:Times New Roman" color="#606060">
-                  (підпис)
-                </font>
-              </td>
-            </tr>
-          </table>
-
-        </td>
-      </tr>
-    </table>      
-
+    <style>
+        div.PrintFormClaim table.bs3 {
+            border-collapse: separate;
+            border-spacing: 3px;
+            margin:0 -2px;
+        }
+        div.PrintFormClaim table.bs10 {
+            border-collapse: separate;
+            border-spacing: 10px;
+            margin:0 -5px;
+        }
         
+        div.PrintFormClaim table.tblCentr {
+    margin-top: -3px;
+        }
+        
+        div.PrintFormClaim div.notMargin {
+    margin: 0;
+        }
+
+        div.PrintFormClaim table.square td {
+            border: 1px solid black;
+            width: 20px;
+        }
+
+            div.PrintFormClaim table.square td.wa {
+                width: auto;
+            }
+    </style>
+
+    <div class="PrintFormClaim">
+
+
+
+        <div class="divColumns w100p">
+            <div class="w40p">
+                <br /><br />
+                <table class="notb">
+                    <colgroup>
+                        <col width="45%" />
+                        <col width="55%" />
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td class="smallText">Номер реєстрації запиту в контролюючому органі</td>
+                            <td>
+                                <table class="bs3 square">
+                                    <tr>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="smallText">Дата реєстрації запиту в контролюючому органі</td>
+                            <td>
+                                <table class="square">
+                                    <tr>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                        <td class="notb wa">/</td>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                        <td class="notb wa">/</td>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="w40p ta-c b">
+                <br /><br />
+                ЗАПИТ<br />
+                про отримання витягу з реєстру<br />
+                платників єдиного податку
+            </div>
+            <div class="ba-r">
+                ЗАТВЕРДЖЕНО<br />
+                Наказ Міндоходів
+            </div>
+        </div>
+
+        <div class="divColumns w100p">
+            <div class="w40p">
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> Юридична особа
+            </div>
+            <div class="w40p">
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> Фізична особа
+            </div>
+        </div>
+
+        <div class="smallText">
+            Необхідне позначити знаком “&#10004;” або “+”
+        </div>
+        <br />
+
+        <div class="b">
+            <span class="check_box">1</span> Найменування контролюючого органу, до якого подається запит
+        </div>
+        <table class="w100p">
+            <tr>
+                <td>&#160;</td>
+            </tr>
+        </table>
+        <br />
+
+        <div class="b">
+            <span class="check_box">2</span> Критерії пошуку відомостей у реєстрі платників єдиного податку
+        </div>
+        <div>
+            Код ЄДРПОУ/реєстраційний номер облікової картки платника податків або серія та номер паспорта *
+        </div>
+        <div class="smallText">
+            (необхідне підкреслити)
+        </div>
+
+        <div class="ta-c w100p">
+            <table class="bs3 square tba-c">
+                <tr>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                    <td>&#160;</td>
+                </tr>
+            </table>
+        </div>
+        <br />
+
+        <div class="b">
+            <span class="check_box">3</span> Найменування або прізвище, ім'я та по батькові платника податку
+        </div>
+        <table class="w100p">
+            <tr>
+                <td>&#160;</td>
+            </tr>
+        </table>
+        <br />
+
+        <div class="b">
+            <span class="check_box">4</span> Місцезнаходження (місце проживання) платника податку
+        </div>
+
+        <table class="w100p bs3">
+            <colgroup>
+                <col width="25%" />
+                <col width="75%" />
+            </colgroup>
+            <tbody>
+                <tr class="notb">
+                    <td>Поштовий індекс</td>
+                    <td>
+                        <div class="divColumns w100p notMargin">
+                            <div class="">
+                                <table class="bs3 square tblCentr">
+                                    <tr>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                        <td>&#160;</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="">
+                                &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;
+                                Країна&#160;                                
+                            </div>
+                            <div>
+                                <span class="text_box w350">&#160;</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tr>
+                <td class="notb">Область</td>
+                <td>&#160;</td>
+            </tr>
+            <tr>
+                <td class="notb">Район</td>
+                <td>&#160;</td>
+            </tr>
+            <tr>
+                <td class="notb">Місто</td>
+                <td>&#160;</td>
+            </tr>
+            <tr>
+                <td class="notb">Вулиця</td>
+                <td>&#160;</td>
+            </tr>
+        </table>
+
+        <div class="divColumns">
+            <div class="w33p">
+                Будинок&#160;&#160;<span class="text_box w30">&#160;</span> / <span class="text_box w30">&#160;</span>
+            </div>
+            <div class="w33p">
+                Корпус&#160;&#160;
+                <span class="text_box w30">&#160;</span>
+            </div>
+            <div class="w33p">
+                Офіс/квартира&#160;&#160;
+                <span class="text_box w30">&#160;</span>
+            </div>
+        </div>
+
+        <div class="divColumns">
+            <div>
+                Контактний телефон&#160;
+            </div>
+            <div>
+                <table class="bs3 square tblCentr">
+                    <tr>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                &#160;&#160;Факс&#160;
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span>
+            </div>
+        </div>
+        <br />
+
+        <div class="b">
+            <span class="check_box">5</span> Спосіб отримання витягу
+        </div>
+
+        <div class="divColumns w100p">
+            <div class="w40p">
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> Поштою
+            </div>
+            <div class="w40p">
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> Безпосередньо у контролюючому органі
+            </div>
+        </div>
+
+        <div class="smallText">
+            Необхідне позначити знаком “&#10004;” або “+”
+        </div>
+        <br />
+
+        <div class="b">
+            <span class="check_box">6</span> Відомості про особу, яка подала запит
+        </div>
+
+        <div class="divColumns w100p">
+            <div class="w40p">
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> Фізична особа – підприємець<br />
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> Юридична особа
+            </div>
+            <div class="w60p">
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> особисто<br />
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> уповноважена особа (за довіреністю)<br />
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> керівник<br />
+                <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> особа, яка має право вчиняти юридичні дії від імені юридичної особи без довіреності<br />
+            </div>
+        </div>
+
+        <div class="smallText">
+            Необхідне позначити знаком “&#10004;” або “+”
+        </div>
+
+        <div class="divColumns w100p">            
+            <div class="w60p">
+                Прізвище, ім'я, по батькові та реєстраційний номер облікової картки
+                платника податків / номер та серія паспорта*
+            </div>
+            <div class="w40p">
+                <table class="bs3 square">
+                    <tr>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                        <td>&#160;</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <table class="w100p bs3">
+            <tr>
+                <td>&#160;</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="divColumns w100p">
+                        <div>
+                            Телефони службові:
+                        </div>
+                        <div>
+                            <table class="bs3 square">
+                                <tr>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            Факс&#160;&#160;
+                            <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span> додаткові
+                        </div>
+                        <div>
+                            <table class="bs3 square">
+                                <tr>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                    <td>&#160;</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            Факс&#160;&#160;
+                            <span class="check_box"><span id="spanFirst" style="visibility:hidden">&#10004;</span></span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <br />
+        <table class="w100p bs10 notb ta-c">
+            <colgroup>
+                <col width="30%" />
+                <col width="30%" />
+                <col width="40%" />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td class="bb"></td>
+                    <td class="bb"></td>
+                    <td>“___”_______________ 20___ року</td>
+                </tr>
+                <tr class="smallText">
+                    <td>(П.І.Б.)</td>
+                    <td>(підпис)</td>
+                    <td>(дата)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pl-300 b">
+            М.П.
+        </div>
+
+        <div class="smallText">
+            *Для фізичних осіб, які через свої релігійні переконання відмовились від прийняття реєстраційного
+            номера облікової картки платника податків та повідомили про це контролюючий орган і мають відмітку у паспорті.
+        </div>
     </div>
+    <script>
+        /*
+        ChangeParagrath();
+        NumberDocument();
+
+        ShowElements(asNumberApplication == "первинне" || asNumberApplication == "Первинне", "spanFirst");
+        ShowElements(asNumberApplication == "повторне звернення" || asNumberApplication == "Повторне", "spanSecond");
+
+        switch (asTransferType) {
+            case "через національного оператора поштового зв'язку":
+                ShowElementsOnTrue(true, "spanTransferPost", "spanTransferPostVal", "spanTransferHouseNotVal", "spanTransferBankNotVal");
+                ShowElementsOnTrue(false, "spanTransferBank", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal");
+                break;
+            case "на рахунок у банку":
+                ShowElementsOnTrue(true, "spanTransferBank", "spanTransferBankVal", "spanTransferHouseNotVal");
+                ShowElementsOnTrue(false, "spanTransferHouse", "spanTransferPost", "spanTransferPostVal", "spanTransferHouseVal", "spanTransferBankNotVal");
+                break;
+            case "на рахунок установи (закладу), де інвалід з дитинства(дитина-інвалід) перебуває на повному державному утриманні":
+                ShowElementsOnTrue(true, "spanTransferHouse", "spanTransferHouseVal", "spanTransferBankNotVal");
+                ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouseNotVal");
+                break;
+            default:
+                ShowElementsOnTrue(true, "spanTransferBankNotVal", "spanTransferHouseNotVal");
+                ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal");
+                break;
+        }
+        
+        ParsePassport();
+        //*/
+    </script>
 </body>
 </html>
