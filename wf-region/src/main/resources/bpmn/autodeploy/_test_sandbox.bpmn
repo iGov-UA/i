@@ -9,8 +9,8 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="1-й этап обработки" activiti:candidateGroups="Court_Of_Cassation">
@@ -21,8 +21,8 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="fileHTML" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]" type="invisible" default="тестовая принтформа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/_test_sandbox_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -57,15 +57,15 @@
     <sequenceFlow id="flow34" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask2" name="2-й этап обработки" activiti:candidateGroups="Court_Of_Cassation">
-     <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOneFields" name="Поле - string" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTwoFields" name="Поле - long" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="fileHTML" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]" type="invisible" default="тестовая принтформа" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
