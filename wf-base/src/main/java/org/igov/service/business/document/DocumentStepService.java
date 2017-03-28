@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
 import org.apache.commons.io.IOUtils;
@@ -1406,10 +1407,6 @@ public class DocumentStepService {
 
 				DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
 				DateTime sDate = oDocumentStepSubjectRight.getsDate();
-				// LOG.info("sDateECP in method getDocumentSubmitedUnsigned is",
-				// sDateECP);
-				// LOG.info("sDate in method getDocumentSubmitedUnsigned is",
-				// sDateECP);
 				// проверяем, если даты ецп нет, но есть дата подписания - нашли
 				// нужный объект, который кладем в VO-обьект-обертку
 				if (sDateECP == null) {
@@ -1418,14 +1415,14 @@ public class DocumentStepService {
 						LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
 						// Достаем nID_Process_Activiti у найденного oDocumentStepSubjectRight через DocumentStep
 						String snID_Process_Activiti = oFindedDocumentStepSubjectRight.getDocumentStep()
-								.getSnID_Process_Activiti().trim();
+								.getSnID_Process_Activiti();
 						LOG.info("snID_Process of oFindedDocumentStepSubjectRight: ", snID_Process_Activiti);
 
 						String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
 
 						// через апи активити по nID_Process_Activity
 						HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
-								.processInstanceId(snID_Process_Activiti.trim()).singleResult();
+								.processInstanceId(snID_Process_Activiti).singleResult();
 
 						LOG.info("oProcessInstance = {} ", oProcessInstance);
 						if (oProcessInstance != null) {
@@ -1435,24 +1432,32 @@ public class DocumentStepService {
 							// вытаскиваем название бп
 							String sNameBP = oProcessInstance.getName();
 							LOG.info("sNameBP", sNameBP);
-							// вытаскиваем список тасок по процесу
-							
-							//List<HistoricTaskInstance> aTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(snID_Process_Activiti).list();
-							
+							// вытаскиваем список активных тасок по процесу
 							List<Task> aTask = oTaskService.createTaskQuery()
-									.processInstanceId(snID_Process_Activiti.trim()).list();
+									.processInstanceId(oProcessInstance.getId()).active().list();
 							if (aTask.size() < 1 || aTask.get(0) == null) {
 								throw new IllegalArgumentException(
-										"Process with ID: " + snID_Process_Activiti + " has no task.");
+										"Process with ID: " + snID_Process_Activiti + " has no active task.");
 							}
 							// берем первую
 							Task oTaskCurr = aTask.get(0);
-						//	LOG.info("oTaskCurr ={} ", oTaskCurr);
+							LOG.info("oTaskCurr ={} ", oTaskCurr);
 
 							// вытаскиваем дату создания таски
 							Date sDateCreateUserTask = oTaskCurr.getCreateTime();
 							// и ее название
 							String sUserTaskName = oTaskCurr.getName();
+							
+							 /*List<HistoricTaskInstance> aHistoricTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(snID_Process_Activiti).list();
+							 if (aHistoricTask == null || aHistoricTask.isEmpty()) {
+					                LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process_Activiti));
+					                throw new RecordNotFoundException();
+					            }
+					            HistoricTaskInstance historicTask = aHistoricTask.get(0);
+					            Date sDateCreateUserTask = historicTask.getCreateTime();
+					                String sUserTaskName = historicTask.getName();
+					                LOG.info(String.format("Historic Task [id = '%s'] is found", historicTask.getId()));
+					            */
 
 							// Создаем обьект=обертку, в который сетим нужные полученные поля
 							DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
