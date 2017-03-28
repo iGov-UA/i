@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_529_mode_worktime" name="Погодження режиму роботи об’єктів торгівлі та сфери послуг" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 09.02.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 27.03.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -10,10 +10,15 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long"></activiti:formProperty>
+        <activiti:formProperty id="asTypeZayava" name="Оберіть потрібний тип дії" type="enum">
+          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання погодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження погодженого режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у режим роботи"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject_RV" name="У родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства або сфери послуг" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressObject" name="Місцезнаходження об'єкта торгівлі, ресторанного господарства або сфери послуг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject_RV" name="У родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства або сфери послуг" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressObject" name="Місцезнаходження об'єкта торгівлі, ресторанного господарства або сфери послуг" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sKVED" name="вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumSpesialObject" name="Оберіть спеціалізацію об'єкта" type="enum" required="true">
           <activiti:value id="sElementNeprodovolchiTovari" name="торгівля непродовольчими товарами"></activiti:value>
@@ -30,26 +35,28 @@
         </activiti:formProperty>
         <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ІПН" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nSquareObject" name="Загальна площа об’єкта, кв.м" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nTorgSquareObject" name="Торговельна площа об’єкта, кв.м" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nKolvoWork" name="кількість робочих місць" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nKolvoMest" name="Кількість посадкових місць" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateOpen" name="Дата відкриття;у форматі ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sTime_Full" name="Початок та закінчення роботи (з .. до ..)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime_Break" name="Перерва (з .. до ..)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWeekend" name="Вихідні дні" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileOwnership" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileDozvilSanEpedimSluzbi" name="Дозвіл Санепідслужби; Для закладів громадського харчування" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileOwnershipZemlya" name="Копія правовстановлюючого документа, що підтверджує право користування або право власності на земельну ділянку на якій розміщений відповідний об’єкт" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileAptekaPassport" name="Копія паспорта аптеки, аптечного пункту або аптечного кiоску" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileLicence" name="Для суб’єктів пiдприємницької дiяльностi, якi здiйснюють лiцензiйний вид пiдприємницької дiяльнiсть - копiя лiцензiї на вiдповiдний вид дiяльностi" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileLicenceTurizm" name="Копiя ліцензії на право здійснення туроператорської та турагентської діяльності" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileSertifikat" name="Копiї сертифiкатiв вiдповiдностi на готельнi послуги та послуги харчування, висновки відповідних контролюючих органів;Для  оздоровчих, санаторно–курортних та лiкувальних закладiв" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileTempBuild" name="Копія паспорту прив'язки тимчасових споруд для здійснення підприємницької діяльності" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileHouseWaste" name="Копія договору про надання послуг з вивезення побутових відходів з підприємством, яке надає даний вид послуг" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sTime_Full" name="Початок та закінчення роботи (з .. до ..)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Break" name="Перерва (з .. до ..)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWeekend" name="Вихідні дні" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileOwnership" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди); ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileDozvilSanEpedimSluzbi" name="Дозвіл Санепідслужби; Для закладів громадського харчування;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileOwnershipZemlya" name="Копія правовстановлюючого документа, що підтверджує право користування або право власності на земельну ділянку на якій розміщений відповідний об’єкт; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileAptekaPassport" name="Копія паспорта аптеки, аптечного пункту або аптечного кiоску; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileLicence" name="Для суб’єктів пiдприємницької дiяльностi, якi здiйснюють лiцензiйний вид пiдприємницької дiяльнiсть - копiя лiцензiї на вiдповiдний вид дiяльностi; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileLicenceTurizm" name="Копiя ліцензії на право здійснення туроператорської та турагентської діяльності; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileSertifikat" name="Копiї сертифiкатiв вiдповiдностi на готельнi послуги та послуги харчування, висновки відповідних контролюючих органів;Для  оздоровчих, санаторно–курортних та лiкувальних закладiв;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileTempBuild" name="Копія паспорту прив'язки тимчасових споруд для здійснення підприємницької діяльності; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileHouseWaste" name="Копія договору про надання послуг з вивезення побутових відходів з підприємством, яке надає даний вид послуг; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileSvrdnFunc" name="Копія документу, що підтверджує зміну функціонального призначення приміщення , або частини приміщення;подається у разі невідповідності типу об'єкту визначеному у документі, що підтверджує право власності;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileSvrdnSanSt" name="Копія висновку державної санітарно-епідеміологічної експертизи;подається для 1) підприємств торгівлі з продажу великогабаритних товарів, будівельних матеріалів, синтетичних миючих засобів, товарів побутової хімії, минеральних добрів та засобів захисту рослин або 2) для підприємств сфери послуг, за винятком пунктів прийому замовлень;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
@@ -66,14 +73,19 @@
     <userTask id="usertask1" name="[Етап I] Прийняття рішення щодо розгляду повідомлення (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeZayava" name="Тип дії" type="enum" writable="false">
+          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання погодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження погодженого режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у режим роботи"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject_RV" name="У родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства або сфери послуг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressObject" name="Місцезнаходження об'єкта торгівлі, ресторанного господарства або сфери послуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject_RV" name="У родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства або сфери послуг" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressObject" name="Місцезнаходження об'єкта торгівлі, ресторанного господарства або сфери послуг" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKVED" name="вид діяльності згідно з КВЕД" type="string"  writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumSpesialObject" name="Оберіть спеціалізацію об'єкта" type="enum" writable="false">
           <activiti:value id="sElementNeprodovolchiTovari" name="торгівля непродовольчими товарами"></activiti:value>
@@ -89,16 +101,16 @@
         </activiti:formProperty>
         <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер ФОП; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSquareObject" name="Загальна площа об’єкта, кв.м" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nTorgSquareObject" name="Торговельна площа об’єкта, кв.м" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nKolvoWork" name="кількість робочих місць" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nKolvoMest" name="Кількість посадкових місць" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateOpen" name="Дата відкриття;у форматі ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime_Full" name="Початок та закінчення роботи (з .. до ..)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime_Break" name="Перерва (з .. до ..)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWeekend" name="Вихідні дні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Full" name="Початок та закінчення роботи (з .. до ..)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Break" name="Перерва (з .. до ..)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWeekend" name="Вихідні дні" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string"></activiti:formProperty>
@@ -111,23 +123,38 @@
         <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
-        </activiti:taskListener>
+        <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileOwnership" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDozvilSanEpedimSluzbi" name="Дозвіл Санепідслужби; Для закладів громадського харчування;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileOwnershipZemlya" name="Копія правовстановлюючого документа, що підтверджує право користування або право власності на земельну ділянку на якій розміщений відповідний об’єкт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileAptekaPassport" name="Копія паспорта аптеки, аптечного пункту або аптечного кiоску; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileLicence" name="Для суб’єктів пiдприємницької дiяльностi, якi здiйснюють лiцензiйний вид пiдприємницької дiяльнiсть - копiя лiцензiї на вiдповiдний вид дiяльностi; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileLicenceTurizm" name="Копiя ліцензії на право здійснення туроператорської та турагентської діяльності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileSertifikat" name="Копiї сертифiкатiв вiдповiдностi на готельнi послуги та послуги харчування, висновки відповідних контролюючих органів;Для  оздоровчих, санаторно–курортних та лiкувальних закладiв;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileTempBuild" name="Копія паспорту прив'язки тимчасових споруд для здійснення підприємницької діяльності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileHouseWaste" name="Копія договору про надання послуг з вивезення побутових відходів з підприємством, яке надає даний вид послуг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileSvrdnFunc" name="Копія документу, що підтверджує зміну функціонального призначення приміщення , або частини приміщення;подається у разі невідповідності типу об'єкту визначеному у документі, що підтверджує право власності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileSvrdnSanSt" name="Копія висновку державної санітарно-епідеміологічної експертизи;подається для 1) підприємств торгівлі з продажу великогабаритних товарів, будівельних матеріалів, синтетичних миючих засобів, товарів побутової хімії, минеральних добрів та засобів захисту рослин або 2) для підприємств сфери послуг, за винятком пунктів прийому замовлень;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeZayava" name="Тип дії" type="enum" writable="false">
+          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання погодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження погодженого режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у режим роботи"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject_RV" name="У родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства або сфери послуг" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressObject" name="Місцезнаходження об'єкта торгівлі, ресторанного господарства або сфери послуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject_RV" name="У родовому відмінку повне найменування об'єкта торгівлі, ресторанного господарства або сфери послуг" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressObject" name="Місцезнаходження об'єкта торгівлі, ресторанного господарства або сфери послуг" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKVED" name="вид діяльності згідно з КВЕД" type="string"  writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumSpesialObject" name="Оберіть спеціалізацію об'єкта" type="enum" writable="false">
           <activiti:value id="sElementNeprodovolchiTovari" name="торгівля непродовольчими товарами"></activiti:value>
@@ -143,16 +170,16 @@
         </activiti:formProperty>
         <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер ФОП; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nSquareObject" name="Загальна площа об’єкта, кв.м" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nTorgSquareObject" name="Торговельна площа об’єкта, кв.м" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nKolvoWork" name="кількість робочих місць" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nKolvoMest" name="Кількість посадкових місць" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateOpen" name="Дата відкриття;у форматі ДД.ММ.РРРР" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime_Full" name="Початок та закінчення роботи (з .. до ..)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime_Break" name="Перерва (з .. до ..)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWeekend" name="Вихідні дні" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Full" name="Початок та закінчення роботи (з .. до ..)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTime_Break" name="Перерва (з .. до ..)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWeekend" name="Вихідні дні" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtension_Number" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_Registrastion" name="Дата реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="П.І.Б. посадової особи, яка прийняла заяву" type="string" writable="false"></activiti:formProperty>
@@ -163,14 +190,21 @@
         </activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Report" name="Сканкопія погодженого режиму роботи або відмови" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Report" name="Сканкопія погодженого режиму роботи або відмови; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileDerzReestration}, ${nFileOwnership}, ${nFileOwnershipZemlya}, ${nFileAptekaPassport}, ${nFileLicence}, ${nFileSertifikat}, ${nFileLicenceTurizm}, ${nFileDozvilSanEpedimSluzbi},${nFileTempBuild},${nFileHouseWaste}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileOwnership" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDozvilSanEpedimSluzbi" name="Дозвіл Санепідслужби; Для закладів громадського харчування;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileOwnershipZemlya" name="Копія правовстановлюючого документа, що підтверджує право користування або право власності на земельну ділянку на якій розміщений відповідний об’єкт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileAptekaPassport" name="Копія паспорта аптеки, аптечного пункту або аптечного кiоску; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileLicence" name="Для суб’єктів пiдприємницької дiяльностi, якi здiйснюють лiцензiйний вид пiдприємницької дiяльнiсть - копiя лiцензiї на вiдповiдний вид дiяльностi; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileLicenceTurizm" name="Копiя ліцензії на право здійснення туроператорської та турагентської діяльності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileSertifikat" name="Копiї сертифiкатiв вiдповiдностi на готельнi послуги та послуги харчування, висновки відповідних контролюючих органів;Для  оздоровчих, санаторно–курортних та лiкувальних закладiв;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileTempBuild" name="Копія паспорту прив'язки тимчасових споруд для здійснення підприємницької діяльності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileHouseWaste" name="Копія договору про надання послуг з вивезення побутових відходів з підприємством, яке надає даний вид послуг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileSvrdnFunc" name="Копія документу, що підтверджує зміну функціонального призначення приміщення , або частини приміщення;подається у разі невідповідності типу об'єкту визначеному у документі, що підтверджує право власності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileSvrdnSanSt" name="Копія висновку державної санітарно-епідеміологічної експертизи;подається для 1) підприємств торгівлі з продажу великогабаритних товарів, будівельних матеріалів, синтетичних миючих засобів, товарів побутової хімії, минеральних добрів та засобів захисту рослин або 2) для підприємств сфери послуг, за винятком пунктів прийому замовлень;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відпрвка e-mail з відмовою + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -185,20 +219,26 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг відхилено.&lt;/p&gt;
-&lt;p&gt;Відповідь наведено в додатку до листа&lt;/p&gt;
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг відхилено.&lt;br /&gt;
+					Відповідь наведено в додатку до листа &lt;br /&gt;
+					&lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${nFile_Report}"</activiti:expression>
@@ -225,20 +265,24 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Звернення опрацьовано: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг опрацьовано.&lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
-
-${sNameOrgan}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг опрацьовано.&lt;br /&gt;
+					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${nFile_Report}"</activiti:expression>
@@ -274,7 +318,7 @@ ${sPhoneOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Нове звернення на тему: Погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -290,19 +334,24 @@ ${sPhoneOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[Зареєстровано звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-&lt;br /&gt;
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+           [pattern/mail/new_design/_common_header.html]
+          [pattern/mail/new_design/_common_content_start.html]
+			&lt;p&gt;
+				Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+				&lt;br /&gt;
+				Ви отримаєте додаткове повідомлення за результатами розгляду звернення на Ваш e-mail.&lt;br /&gt;
+				&lt;br /&gt;
+				${sNameOrgan},&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			&lt;/p&gt;	
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br /&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
 	    <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -327,21 +376,26 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[Відхилено звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг відхилено.&lt;br /&gt;
+					Причина в наступному:&lt;br /&gt;
+					${sDecisionComment_1}&lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
 	    <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -363,22 +417,27 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Зареєстровано звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
+          <activiti:string><![CDATA[Перевірено звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-&lt;p&gt;Номер Вашого замовлення: ${sExtension_Number} від ${sDate_Registrastion} &lt;/p&gt; &lt;br /&gt;.
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+  			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
+					Номер Вашого замовлення: ${sExtension_Number} від ${sDate_Registrastion} &lt;br /&gt;
+					Ви отримаєте додаткове повідомлення у визначений Законом термін за результатами розгляду звернення на цю email-адресу.&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
 	    <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>

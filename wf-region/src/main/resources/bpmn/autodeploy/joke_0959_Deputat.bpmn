@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="joke_0959_Deputat" name="Залучення голосу народного депутата" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asFraction" name="Оберіть фракцію" type="enum" required="true">
+          <activiti:value id="sBPP" name="Фракція Політичної партії  “БЛОК ПЕТРА ПОРОШЕНКА”"></activiti:value>
+          <activiti:value id="sNF" name="Фракція Політичної партії “НАРОДНИЙ ФРОНТ”"></activiti:value>
+          <activiti:value id="sOB" name="Фракція Політичної партії  “Опозиційний блок”"></activiti:value>
+          <activiti:value id="sSam" name="Фракція Політичної партії “Об’єднання “САМОПОМІЧ”"></activiti:value>
+          <activiti:value id="sRP" name="Фракція Радикальної партії Олега Ляшка"></activiti:value>
+          <activiti:value id="sBat" name="Фракція Політичної партії “Всеукраїнське об’єднання “Батьківщина”"></activiti:value>
+          <activiti:value id="sVid" name="Група “Партія “Відродження”"></activiti:value>
+          <activiti:value id="sVN" name="Група “Воля народу”"></activiti:value>
+          <activiti:value id="sOther" name="Позафракційні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nVoteCount" name="Скільки голосів Ви бажаєте придбати?;від 1 до 20" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSale" name=" " type="label" default="&lt;b&gt;Акція! За покупку двох голосів третій голос — у подарунок!&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sZakon" name="Назва або номер законопроекту, для якого потрібен голос(и)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asVoteType" name="Які саме голоси Ви купляєте?" type="enum" required="true">
+          <activiti:value id="sYes" name="Голосування “За”"></activiti:value>
+          <activiti:value id="sNo" name="Голосування “Проти”"></activiti:value>
+          <activiti:value id="sNull" name="Не голосувати"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш email;На нього буде вислано рахунок" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="маркер валідації" type="markers" default="{&quot;validate&quot;:{&quot;NumberBetween&quot;:{&quot;aField_ID&quot;:[&quot;nVoteCount&quot;],&quot;nMin&quot;:&quot;1&quot;,&quot;nMax&quot;:&quot;20&quot;,&quot;sMessage&quot;:&quot;Максимальна кількість голосів - 20&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="маркер стилю" type="markers" default="{&quot;attributes&quot;:{&quot;Style_1&quot;:{&quot;aSelectors&quot;:[&quot;#field-sSale&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;100%!important&quot;}},&quot;Style_2&quot;:{&quot;aElement_ID&quot;:[&quot;sSale&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;100%!important&quot;,&quot;padding&quot;:&quot;16px20px&quot;,&quot;border-radius&quot;:&quot;5px&quot;,&quot;background-color&quot;:&quot;lightyellow&quot;,&quot;text-align&quot;:&quot;left&quot;}}}}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Лист з реквізитами" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Ви замовили сервіс покупки голосу народного депутату]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			Ви скористалися сервісом покупки голосів народних депутатів.<br>
+				<br>
+				<span style="margin-left:30px"><b>Фракція</b>: enum{[asFraction]}</span><br>
+				<span style="margin-left:30px"><b>Кількість голосів</b>: ${nVoteCount}</span><br>
+				<span style="margin-left:30px"><b>Тип голосу</b>: enum{[asVoteType]}</span>
+			<p>
+				Просимо Вас принести валізу з грошима (наповненими купюрами 500 євро) із розрахунку один депутат — одна валіза за адресою вул. Василя Сурикова, 3.Телефон для довідок: 0-800-503-200.
+			</p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			Аппарат Верховної Ради України,<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_joke_0959_Deputat">
+    <bpmndi:BPMNPlane bpmnElement="joke_0959_Deputat" id="BPMNPlane_joke_0959_Deputat">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="360.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="165.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="305.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
