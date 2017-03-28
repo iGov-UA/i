@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
 import org.apache.commons.io.IOUtils;
@@ -89,6 +90,9 @@ public class DocumentStepService {
 	@Autowired
 	private TaskService taskService;
 
+	@Autowired
+    private HistoryService oHistoryService;
+	
 	public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
 		JSONObject oJSON = new JSONObject(soJSON);
 		List<DocumentStep> aDocumentStep_Result = new ArrayList<>();
@@ -1428,7 +1432,7 @@ public class DocumentStepService {
 
 						// через апи активити по nID_Process_Activity
 						HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
-								.processInstanceId(snID_Process_Activiti.trim()).singleResult();
+								.processInstanceId(snID_Process_Activiti).singleResult();
 
 						LOG.info("oProcessInstance = {} ", oProcessInstance);
 						if (oProcessInstance != null) {
@@ -1439,20 +1443,23 @@ public class DocumentStepService {
 							String sNameBP = oProcessInstance.getName();
 							LOG.info("sNameBP", sNameBP);
 							// вытаскиваем список тасок по процесу
-							List<Task> aTask = oTaskService.createTaskQuery()
+							
+							HistoricTaskInstance oTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(snID_Process_Activiti).singleResult();
+							
+							/*List<Task> aTask = oTaskService.createTaskQuery()
 									.processInstanceId(snID_Process_Activiti).active().list();
 							if (aTask.size() < 1 || aTask.get(0) == null) {
 								throw new IllegalArgumentException(
 										"Process with ID: " + snID_Process_Activiti + " has no active task.");
-							}
+							}*/
 							// берем первую
-							Task oTaskCurr = aTask.get(0);
-							LOG.info("oTaskCurr ={} ", oTaskCurr);
+						//	Task oTaskCurr = aTask.get(0);
+						//	LOG.info("oTaskCurr ={} ", oTaskCurr);
 
 							// вытаскиваем дату создания таски
-							Date sDateCreateUserTask = oTaskCurr.getCreateTime();
+							Date sDateCreateUserTask = oTask.getCreateTime();
 							// и ее название
-							String sUserTaskName = oTaskCurr.getName();
+							String sUserTaskName = oTask.getName();
 
 							// Создаем обьект=обертку, в который сетим нужные полученные поля
 							DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
