@@ -18,14 +18,9 @@
         <activiti:formProperty id="markers_Hide_01_02" name="показать строки если ФИО не правильно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_02&quot;:{&quot;aField_ID&quot;:[&quot;InfoStart001&quot;,&quot;stopfield&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true, bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/justice/justice_0087_FOPclose_print.html"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги; ;bVisible=false" type="string" default="Державна реєстрація припинення підприємницької діяльності фізичної особи – підприємця за її рішенням"></activiti:formProperty>
-<!--        <activiti:formProperty id="markers_ext_00" name="внешние маркеры 00" type="markers" default="${markerService.loadFromFile('jur/justice_0087_FOPclose_00.json')}"></activiti:formProperty> -->
-<!--        <activiti:formProperty id="InfoStart001" name="УВАГА" type="label" default="&lt;b&gt;Оскільки на підставі Ваших, зазначених вище, ПІБ формується заява для отримання послуги, вони повинні бути українською мовою та відповідати дійсності. Для їх зміни на коректні - зверніться до установи (або його відділення) яка отримувала Ваші дані. Якщо замовите послугу - Вам буде відмовлено на цих підставах.&lt;/b&gt;"></activiti:formProperty> -->
-<!--        <activiti:formProperty id="markers_Hide_01_03" name="показать ЭЦП если ФИО правильно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_03&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;,&quot;PrintFormAutoSign_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty> -->
-<!--        <activiti:formProperty id="markers_ReqECP" name="ЭЦП обязательно если ФИО правильно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{RequiredFieldsOnCondition_ReqECP&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;,&quot;PrintFormAutoSign_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty> -->
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -40,35 +35,29 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення: " type="enum" required="true">
           <activiti:value id="acceptMain" name="Так - Заява розглянута, прийнято позитивне рішення"></activiti:value>
           <activiti:value id="rejectMain" name="Ні - Заява розглянута, прийнято негативне рішення"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="markers_Hide_ut01_01" name="показати строки якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_ut01_02" name="показати строки якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Req_ut01_01" name="обов'язково якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Req_ut01_02" name="обов'язково якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-
         <activiti:formProperty id="asHaveDecisionFile" name="Наявність скана копії рішення: " type="enum">
           <activiti:value id="yesDecisionFile" name="Так - є скан копії рішення про реєстрацію"></activiti:value>
           <activiti:value id="noDecisionFile" name="Ні - скан копії рішення про реєстрацію відсутній"></activiti:value>
         </activiti:formProperty>
-
-        <activiti:formProperty id="markers_Hide_ut01_03" name="показати строки якщо є файл-скан; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_03&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asHaveDecisionFile&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yesDecisionFile'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Req_ut01_03" name="показати строки якщо є файл-скан; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_03&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asHaveDecisionFile&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yesDecisionFile'&quot;}}}"></activiti:formProperty>
+		
+        <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_ut01_03" name="показати строки якщо є файл-скан; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_03&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient_1&quot;:&quot;asHaveDecisionFile&quot;,&quot;sClient_2&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient_1] == 'yesDecisionFile' && [sClient_2] == 'acceptMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut01_03" name="обов'язково строки якщо є файл-скан; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_03&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asHaveDecisionFile&quot;,&quot;sClient2&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yesDecisionFile' && [sClient2] == 'acceptMain'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника; ;bNew=true" type="file"></activiti:formProperty>
-
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false" type="string" default="Заява про припинення підприємницької діяльності" writable="false"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-
-		</extensionElements>
+      </extensionElements>
     </userTask>
-	
     <serviceTask id="servicetask11" name="Е-mail повідомлення (автоматичне) заявнику про відмову в обробці заявки" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -84,7 +73,8 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", 
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;".
+&lt;br /&gt;
 Оскільки на підставі Ваших ПІБ формується заява для отримання послуги, вони повинні бути виключно українською мовою та відповідати дійсності. 
 &lt;br /&gt;
 Для їх зміни на коректні - зверніться до установи (або його відділення) яка отримувала Ваші дані. 
@@ -100,8 +90,7 @@
 [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
-	</serviceTask>
-
+    </serviceTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
@@ -412,10 +401,14 @@
     <sequenceFlow id="flow38" sourceRef="exclusivegateway4" targetRef="servicetask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asSelectFIOCheck == 'no'}]]></conditionExpression>
     </sequenceFlow>
-
-    <sequenceFlow id="flow39" sourceRef="servicetask11" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="boundarytimer1" targetRef="exclusivegateway5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow40" sourceRef="exclusivegateway5" targetRef="endevent1"></sequenceFlow>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="servicetask11" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT5M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_justice_0087_FOPclose">
     <bpmndi:BPMNPlane bpmnElement="justice_0087_FOPclose" id="BPMNPlane_justice_0087_FOPclose">
@@ -426,16 +419,22 @@
         <omgdc:Bounds height="55.0" width="105.0" x="70.0" y="47.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="80.0" y="94.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="70.0" y="94.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="409.0" y="47.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
+        <omgdc:Bounds height="66.0" width="181.0" x="140.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="125.0" y="154.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="539.0" y="54.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="77.0" y="210.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="67.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="81.0"></omgdc:Bounds>
@@ -473,15 +472,12 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="210.0" y="54.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="66.0" width="181.0" x="140.0" y="135.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="74.0" y="147.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="64.0" y="148.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="95.0" y="124.0"></omgdi:waypoint>
-        <omgdi:waypoint x="94.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="85.0" y="124.0"></omgdi:waypoint>
+        <omgdi:waypoint x="84.0" y="148.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="175.0" y="74.0"></omgdi:waypoint>
@@ -592,12 +588,12 @@
         <omgdi:waypoint x="230.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="140.0" y="168.0"></omgdi:waypoint>
-        <omgdi:waypoint x="114.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="125.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="104.0" y="168.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="94.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="94.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="84.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="84.0" y="220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
