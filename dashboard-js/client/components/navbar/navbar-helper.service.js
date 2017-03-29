@@ -104,7 +104,14 @@
 
     function loadTaskCounters() {
       var objForLoadCounter = [];
+      if(service.currentUser && service.currentUser.id){
+        var user = service.auth.getCurrentUser();
+        if(user.id !== service.currentUser.id){
+          service.isCountersLoaded = false;
+        }
+      }
       if(!service.isCountersLoaded){
+        service.currentUser = service.auth.getCurrentUser();
         objForLoadCounter = service.menus;
       } else {
         _.each(service.menus, function (menu) {
