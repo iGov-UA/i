@@ -20,7 +20,7 @@
         <activiti:formProperty id="sSubjectContract" name="Предмет договора" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocPreview" name="№ карточки согласованного ранее договора" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNamePartner" name="Наименование контрагента" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTextContrtact" name="Текст договора" type="fileHTML" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTextContrtact" name="Текст договора" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sApprover" name="Утверждающий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
@@ -239,13 +239,7 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent1" name="End"></endEvent>
     <scriptTask id="scripttask1" name="счетчик и ИД процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//1. лічільник
-var number=execution.getVariable('sID_Custom_GovPublic')
-number = number&lt;&lt;0
-var fullNumber="вх-"+number+"/"
-execution.setVariable('sID_Custom_GovPublic', fullNumber)
-
-//3. получение ИД текущего процесса
+      <script>//3. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 </script>
@@ -274,8 +268,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="exclusivegateway1" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnumDecisionYes'}]]></conditionExpression>
     </sequenceFlow>
@@ -362,7 +355,7 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
         <omgdc:Bounds height="83.0" width="132.0" x="576.0" y="198.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="84.0" width="116.0" x="110.0" y="90.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="116.0" x="106.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="626.0" y="110.0"></omgdc:Bounds>
@@ -388,10 +381,6 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="89.0" y="131.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="132.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="226.0" y="132.0"></omgdi:waypoint>
         <omgdi:waypoint x="256.0" y="131.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
@@ -441,7 +430,7 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
         <omgdi:waypoint x="666.0" y="130.0"></omgdi:waypoint>
         <omgdi:waypoint x="746.0" y="131.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="666.0" y="130.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="52.0" x="666.0" y="130.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
