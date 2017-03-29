@@ -260,4 +260,56 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
         }*/
     });
   };
+
+  /**
+   * Ф-ция загрузки fileHTML как аттачей
+   * @param formProperties
+   * @param form
+   * @returns {deferred.promise|{then, always}}
+   */
+  this.uploadFileHTML = function (formProperties, form) {
+    var htmls = [],
+      htmlPromises = [],
+      htmlDefer = [],
+      counter = 0,
+      deferred = $q.defer();
+
+    var filesFields = form.filter(function (prop) {
+      return prop.type === 'fileHTML';
+    });
+
+    angular.forEach(filesFields, function (file, key) {
+      var data = {
+        sFileNameAndExt: file.id + '.html',
+        sID_Field: file.id,
+        sContent: formProperties[file.id].value,
+        sID_StorageType: 'Redis'
+      };
+
+      htmlDefer[key] = $q.defer();
+      htmls[key] = {html:data.sContent, data:data};
+      htmlPromises[key] = htmlDefer[key].promise;
+    });
+
+    var htmlUpload = function (i, html, defs) {
+      if (i < html.length) {
+        return $http.post('api/uploadfile/uploadFileHTML', html[i].data)
+          .then(function (uploadResult) {
+            if(formProperties[htmls[i].data.sID_Field] && formProperties[htmls[i].data.sID_Field].value){
+              formProperties[htmls[i].data.sID_Field].value = uploadResult.data;
+            }
+            defs[i].resolve();
+            return htmlUpload(i+1, html, defs);
+          });
+      }
+    };
+
+    htmlUpload(counter, htmls, htmlDefer);
+
+    $q.all(htmlPromises).then(function () {
+      deferred.resolve();
+    });
+
+    return deferred.promise;
+  }
 });
