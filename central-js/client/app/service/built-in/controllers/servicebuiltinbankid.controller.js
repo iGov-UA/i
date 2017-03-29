@@ -387,27 +387,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           });
         }
 
-        function formSubmit() {
-          if ($scope.sign.checked) {
-            $scope.fixForm(form, aFormProperties);
-            $scope.signForm();
-          } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
-            $scope.submitForm(form, aFormProperties);
-          }
-        }
 
-        var fileHTMLFields = aFormProperties.filter(function (field) {
-          return field.type === 'fileHTML';
-        });
-
-        if(fileHTMLFields.length > 0) {
-          ActivitiService.uploadFileHTML($scope.data.formData.params, $scope.activitiForm.formProperties).then(function () {
-            formSubmit();
-          });
-        }
-
-        if (fileHTMLFields.length === 0) {
-          formSubmit();
+        if ($scope.sign.checked) {
+          $scope.fixForm(form, aFormProperties);
+          $scope.signForm();
+        } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
+          $scope.submitForm(form, aFormProperties);
         }
       };
 
