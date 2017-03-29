@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="Chernigov_RecoveryConsumerRights_798" name="Відновлення порушеного права споживача у сфері торговельного обслуговування" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 19.07.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 28.03.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -64,12 +64,12 @@
           <activiti:value id="sEnumElement_eMail" name="електронною поштою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdresPost" name="Адреса для відправки документів поштою" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_CashVaucher" name="Копія документа, що засвідчує факт придбання товару (касовий чек, товарний чек, товаро-транспортна накладна тощо)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_OtherDoc" name="Необов'язково - копії інших документів, якщо є (наприклад, звернення до суб'єкта господарювання та його відповідь)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_CashVaucher" name="Копія документа, що засвідчує факт придбання товару (касовий чек, товарний чек, товаро-транспортна накладна тощо); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_OtherDoc" name="Необов'язково - копії інших документів, якщо є (наприклад, звернення до суб'єкта господарювання та його відповідь); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMeasureTerm_Warranty" name="Одиниці виміру гарантійного терміну (для прінт-форми)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_Apps" name="Перелік додаткових документів (для прінт-форми)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
@@ -158,12 +158,9 @@
         <activiti:formProperty id="sShapkaGolova" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('skv/Chernigov_RecoveryConsumerRights_798_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/Chernigov_RecoveryConsumerRights_798_print.html]" type="invisible" default="Заява про відновлення порушенного права споживача" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_CashVaucher" name="Копія документа, що засвідчує факт придбання товару (касовий чек, товарний чек, товаро-транспортна накладна тощо); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_OtherDoc" name="Необов'язково - копії інших документів, якщо є (наприклад, звернення до суб'єкта господарювання та його відповідь); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_CashVaucher},${nFile_OtherDoc}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -235,7 +232,7 @@
           <activiti:value id="reject" name="ВІДМОВЛЕНО У відновленні порушеного права споживача"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_2" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid" name="Копiя відповіді за результатами розгляду звернення" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid" name="Копiя відповіді за результатами розгляду звернення; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sMeasureTerm_Warranty" name="Одиниці виміру гарантійного терміну (для прінт-форми)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAdd_Apps" name="Перелік додаткових документів (для прінт-форми)" type="invisible"></activiti:formProperty>
@@ -245,12 +242,8 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/Chernigov_RecoveryConsumerRights_798_print.html]" type="invisible" default="Заява про відновлення порушенного права споживача" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_CashVaucher},${nFile_OtherDoc}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nFile_CashVaucher" name="Копія документа, що засвідчує факт придбання товару (касовий чек, товарний чек, товаро-транспортна накладна тощо); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_OtherDoc" name="Необов'язково - копії інших документів, якщо є (наприклад, звернення до суб'єкта господарювання та його відповідь); ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відпрвка e-mail з відмовою + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">

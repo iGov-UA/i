@@ -273,7 +273,13 @@
               <p>{{item.sFieldLabel | tableButtonFilter}}</p>
               <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id}}"
                  target="_blank"
-                 ng-if="!isTableAttachment(item)"
+                 ng-if="!isTableAttachment(item) && item.type === 'file'"
+                 class="btn btn-info">Завантажити
+              </a>
+
+              <a href="/api/tasks/download/{{takeTheKeyFromJSON(item)}}/attachment/Mongo"
+                 target="_blank"
+                 ng-if="!isTableAttachment(item) && item.type === 'string'"
                  class="btn btn-info">Завантажити
               </a>
               <button
@@ -320,7 +326,7 @@
               </span>
               </div>
               <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? (users.sDate | splitDateByT) : 'Немає підпису'}}</span>
+                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
               </div>
             </div>
 
@@ -336,7 +342,7 @@
               </span>
               </div>
               <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? (users.sDate | splitDateByT) : 'Немає ознайомлення'}}</span>
+                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає ознайомлення'}}</span>
               </div>
             </div>
 
@@ -419,7 +425,7 @@
                 <span ng-if="!documentRights.bWrite && !isDocument()">Ознайомлений</span>
                 <span ng-if="isDocument() && isDocumentNotSigned()">Створити</span>
               </button>
-              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished' || isDocument()"
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти

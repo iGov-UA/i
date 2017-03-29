@@ -26,7 +26,6 @@ module.exports.convertToCanonical = function (customer) {
   delete customer.secondName;
   customer.inn = customer.personNumber;
   delete customer.personNumber;
-  customer.isAuthTypeFromBankID = false;
   return customer;
 };
 
