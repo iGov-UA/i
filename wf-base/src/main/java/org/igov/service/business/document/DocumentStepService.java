@@ -173,14 +173,22 @@ public class DocumentStepService {
                 if (oGroup == null) {
                     continue;
                 }
+                
+                DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
+                oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group);
+                
                 Boolean bWrite = (Boolean) oGroup.opt("bWrite");
                 if (bWrite == null) {
                     throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite.");
                 }
-
-                DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
-                oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group);
                 oDocumentStepSubjectRight.setbWrite(bWrite);
+                
+                Object oNeedECP = oGroup.opt("bNeedECP");
+                boolean bNeedECP = false;
+                if (oNeedECP != null) {
+                    bNeedECP = (boolean) oNeedECP;
+                }
+                oDocumentStepSubjectRight.setbNeedECP(bNeedECP);
 
                 Object sName = oGroup.opt("sName");
                 if (sName != null) {
