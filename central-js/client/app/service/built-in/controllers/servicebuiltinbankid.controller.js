@@ -1156,4 +1156,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
     /*
      *поиски организации по окпо конец
     */
+
+      $scope.labelStyle = function (field) {
+        if(field.type === 'label') {
+          var split = field.name.split(';');
+          if(split.length === 3) {
+            return split[2].indexOf('labelType') !== -1 ? 'igov-' + split[2].split('labelType=')[1] + '-label' : 'igov-info-label';
+          } else {
+            return 'igov-info-label';
+          }
+        }
+      }
 });
