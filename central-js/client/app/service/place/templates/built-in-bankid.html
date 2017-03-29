@@ -132,7 +132,7 @@
               </div>
 
               <div id="label-{{property.id}}" class="col-md-5"
-                   ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table' && property.type!='label'">
+                   ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table' && !(property.type==='label' && isSetClasses(property))">
                 <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}</span>
 
                 <label class="red-star"
@@ -155,7 +155,7 @@
 
 
               <div id="field-{{property.id}}" class="col-md-3"
-                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table' || property.type === 'label', 'col-md-7': property.type === 'fileHTML'}"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table' || (property.type === 'label' && isSetClasses(property)), 'col-md-7': property.type === 'fileHTML'}"
                    ng-if="showFormField(property)"
                    ng-switch
                    on="property.type">
