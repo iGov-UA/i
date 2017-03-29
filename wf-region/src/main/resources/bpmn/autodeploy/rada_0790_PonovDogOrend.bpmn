@@ -107,6 +107,10 @@
     <userTask id="usertask1" name="Прийняття рішення: доцільність запиту (1 етап)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан ІПН; у форматі pdf;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_svid_reestr" name="Свідоцтво про реэстрацію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_statut" name="Сканкопія установчих документів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -122,6 +126,18 @@
           <activiti:value id="sAccept" name="Передати документи спеціалістам"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в реєстрації звернення"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="dogov" name="Копія договору оренди земельної ділянки та додаткових угод (при їх наявності); Якщо є додаткові угоди об'єднайте, будь ласка, всі файли у архів або PDF-документ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_podatk_dov" name="Довідка від органу державної податкової служби про відсутність заборгованості по орендній платі або земельного податку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_kadastr" name="Витяг з державного земельного кадастру; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_tumch" name="Для тимчасових споруд - паспорт прив'язки тимчасової споруди; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_vut_tex" name="Витяг з технічної документації про нормативну грошову оцінку земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Flag_region" name="Перемикач регіонів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('kuznetsovsk_mvk-118.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар адміністратора у разі відмови у реєстрації звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sMailSpec" name="електронна адреса спеціаліста" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('kuznetsovsk_mvk-118.json')}"></activiti:formProperty><activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_118.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
@@ -247,6 +263,10 @@
     <userTask id="usertask2" name="Обробка даних профільним спеціалістом (2й - етап)" activiti:candidateGroups="cpec_118_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан ІПН; у форматі pdf;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_svid_reestr" name="Свідоцтво про реэстрацію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_statut" name="Сканкопія установчих документів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -261,19 +281,34 @@
         <activiti:formProperty id="asDecisioncpec" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="ponovleno" name="Договір оренди поновлено"></activiti:value>
           <activiti:value id="vidmovleno" name="Відмовлено у поновленні договора оренди"></activiti:value>
-          <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="dogov" name="Копія договору оренди земельної ділянки та додаткових угод (при їх наявності); Якщо є додаткові угоди об'єднайте, будь ласка, всі файли у архів або PDF-документ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_podatk_dov" name="Довідка від органу державної податкової служби про відсутність заборгованості по орендній платі або земельного податку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_kadastr" name="Витяг з державного земельного кадастру; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_tumch" name="Для тимчасових споруд - паспорт прив'язки тимчасової споруди; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_vut_tex" name="Витяг з технічної документації про нормативну грошову оцінку земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Flag_region" name="Перемикач регіонів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('kuznetsovsk_mvk-118.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте замовнику у наданні послуги чи поновленні договору, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Коментар при відмові у наданні послуги чи поновленні договору для адміністратора ЦНАП" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docToSend" name="Завантажте копію документа для відправлення заявнику; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_118.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_118.html]; ;bVisible=false" type="string" default="Заява громадянина"></activiti:formProperty>
        </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask2" targetRef="usertask4_green"></sequenceFlow>
     <userTask id="usertask4_green" name="Отримання рішення від спеціаліста (3й - етап)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан ІПН; у форматі pdf;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_svid_reestr" name="Свідоцтво про реэстрацію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_statut" name="Сканкопія установчих документів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -288,10 +323,22 @@
         <activiti:formProperty id="asDecisioncpec" name="Рішення про надання послуги" type="enum" writable="false">
           <activiti:value id="ponovleno" name="Договір оренди поновлено"></activiti:value>
           <activiti:value id="vidmovleno" name="Відмовлено у поновленні договора оренди"></activiti:value>
-          <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="dogov" name="Копія договору оренди земельної ділянки та додаткових угод (при їх наявності); Якщо є додаткові угоди об'єднайте, будь ласка, всі файли у архів або PDF-документ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_podatk_dov" name="Довідка від органу державної податкової служби про відсутність заборгованості по орендній платі або земельного податку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_kadastr" name="Витяг з державного земельного кадастру; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_tumch" name="Для тимчасових споруд - паспорт прив'язки тимчасової споруди; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_vut_tex" name="Витяг з технічної документації про нормативну грошову оцінку земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Flag_region" name="Перемикач регіонів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('kuznetsovsk_mvk-118.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Коментар до рішення для адміністратора ЦНАП" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар до рішення для громадянина" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="docToSend" name="Завантажте копію документа для відправлення заявнику; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -370,7 +417,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
 				${landAddress}<br>
 				На жаль, змушені відмовити Вам у поновленні договору.<br><br>
 				Коментар відповідального спеціаліста:<br>
-				${sComment}<br><br>
+				${sComment1}<br><br>
 				Документ знаходиться у додатку до цього листа.<br><br>
 				Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до центру надання адміністративних послуг:
 				${sPhoneOrgan}<br>
@@ -415,7 +462,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
 				${landAddress}<br>
 				На жаль, змушені відмовити Вам у поновленні договору.<br><br>
 				Коментар відповідального спеціаліста:<br>
-				${sComment}<br><br>
+				${sComment1}<br><br>
 				${sPhoneOrgan}<br>
 				${sAddress}<br>
 				${sWorkTime}<br>
@@ -474,6 +521,10 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     <userTask id="usertask3" name="Обробка після рішення місцевої ради (2й - етап)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан ІПН; у форматі pdf;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_svid_reestr" name="Свідоцтво про реэстрацію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_statut" name="Сканкопія установчих документів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="place_of_liv" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
@@ -488,9 +539,22 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="asDecisioncpec" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="ponovleno" name="Договір оренди поновлено"></activiti:value>
           <activiti:value id="vidmovleno" name="Відмовлено у поновленні договора оренди"></activiti:value>
-          <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Коментар до рішення для громадянина, у разі відмови опишіть причину відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="dogov" name="Копія договору оренди земельної ділянки та додаткових угод (при їх наявності); Якщо є додаткові угоди об'єднайте, будь ласка, всі файли у архів або PDF-документ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_podatk_dov" name="Довідка від органу державної податкової служби про відсутність заборгованості по орендній платі або земельного податку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_kadastr" name="Витяг з державного земельного кадастру; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_tumch" name="Для тимчасових споруд - паспорт прив'язки тимчасової споруди; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_vut_tex" name="Витяг з технічної документації про нормативну грошову оцінку земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Flag_region" name="Перемикач регіонів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('kuznetsovsk_mvk-118.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Коментар до рішення для громадянина, у разі відмови опишіть причину відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_118.html]; ;bVisible=false" type="string" default="Заява громадянина"></activiti:formProperty>
         <activiti:formProperty id="docToSend" name="Завантажте копію документа для відправлення заявнику" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
