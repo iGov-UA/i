@@ -16,6 +16,8 @@
       load: load,
       loadTaskCounters: loadTaskCounters,
       instrumentsMenus: [],
+      isCountersLoaded: false,
+      sPreviousTab: '',
       tasksSearch: {
         value: null,
         count: 0,
@@ -95,12 +97,23 @@
     }
 
     function load() {
-      service.loadTaskCounters();
+      service.previousTab = service.currentTab;
       service.getCurrentTab();
+      service.loadTaskCounters();
     }
 
     function loadTaskCounters() {
-      _.each(service.menus, function (menu) {
+      var objForLoadCounter = [];
+      if(!service.isCountersLoaded){
+        objForLoadCounter = service.menus;
+      } else {
+        _.each(service.menus, function (menu) {
+          if(menu.tab === service.previousTab || menu.tab === service.currentTab){
+            objForLoadCounter.push(menu);
+          }
+        })
+      }
+      _.each(objForLoadCounter, function (menu) {
         if (menu.showCount) {
           tasks.list(menu.type)
               .then(function(result) {
@@ -110,6 +123,7 @@
                   result = result;
                 }
                 menu.count = result.total;
+                service.isCountersLoaded = true;
               });
         }
       });
