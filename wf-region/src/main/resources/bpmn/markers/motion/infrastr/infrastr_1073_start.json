@@ -1,0 +1,41 @@
+{
+	"motion" : {
+		"ShowFieldsOnCondition_1" : {
+			"aField_ID" : ["sID_SubjectOrgan_OKPO_01", "sFullName_SubjectOrgan_01", "sLocation_SubjectOrgan_01", "sCEOName_SubjectOrgan_01"], 
+			"asID_Field" : {
+				"sReason" : "asOwnerType"
+			}, 
+			"sCondition" : "[sReason]=='ur'"
+		}, 
+		"ShowFieldsOnCondition_2" : {
+			"aField_ID" : ["asOwnerMan", "sCEOName_SubjectOrgan_01", "sManPassport", "sManAdress"], 
+			"asID_Field" : {
+				"sReason" : "asOwnerType"
+			}, 
+			"sCondition" : "[sReason]=='fiz'"
+		}, 
+		"ShowFieldsOnCondition_3" : {
+			"aField_ID" : ["nDocPass"], 
+			"asID_Field" : {
+				"sReason" : "asPassengerShip"
+			}, 
+			"sCondition" : "[sReason]=='yes'"
+		}, 
+		"ValuesFieldsOnCondition_1" : {
+			"aField_ID" : ["sCEOName_SubjectOrgan_01", "sManPassport","privatePhone","privateMail"], 
+			"asID_Field_sValue" : ["[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]", "[sBankIdPassport]","[phone]","[email]"], 
+			"asID_Field" : {
+				"sClient" : "asOwnerType",
+				"sClient1" : "asOwnerMan"
+			}, 
+			"sCondition" : "[sClient] == 'fiz' && [sClient1] == 'sYes'"
+		},
+		"ShowFieldsOnCondition_inv01" : {
+			"aField_ID" : ["markersStart", "markersStart2"], 
+			"asID_Field" : {
+				
+			}, 
+			"sCondition" : "false"
+		}
+	}
+}
