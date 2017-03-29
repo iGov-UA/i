@@ -387,12 +387,27 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           });
         }
 
+        function formSubmit() {
+          if ($scope.sign.checked) {
+            $scope.fixForm(form, aFormProperties);
+            $scope.signForm();
+          } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
+            $scope.submitForm(form, aFormProperties);
+          }
+        }
 
-        if ($scope.sign.checked) {
-          $scope.fixForm(form, aFormProperties);
-          $scope.signForm();
-        } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
-          $scope.submitForm(form, aFormProperties);
+        var fileHTMLFields = aFormProperties.filter(function (field) {
+          return field.type === 'fileHTML';
+        });
+
+        if(fileHTMLFields.length > 0) {
+          ActivitiService.uploadFileHTML($scope.data.formData.params, $scope.activitiForm.formProperties).then(function () {
+            formSubmit();
+          });
+        }
+
+        if (fileHTMLFields.length === 0) {
+          formSubmit();
         }
       };
 
@@ -1141,4 +1156,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
     /*
      *поиски организации по окпо конец
     */
+
+      $scope.labelStyle = function (field) {
+        if(field.type === 'label') {
+          var split = field.name.split(';');
+          if(split.length === 3) {
+            return split[2].indexOf('labelType') !== -1 ? 'igov-' + split[2].split('labelType=')[1] + '-label' : 'igov-info-label';
+          } else {
+            return 'igov-info-label';
+          }
+        }
+      }
 });
