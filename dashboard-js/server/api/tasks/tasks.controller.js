@@ -133,7 +133,7 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'documents') {
       query.sFilterStatus = 'Opened';
       query.sLogin = user.id;
-      query.size = 100;
+      query.nSize = 15;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
       query.sLogin = user.id;
