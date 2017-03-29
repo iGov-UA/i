@@ -155,7 +155,7 @@
 
 
               <div id="field-{{property.id}}" class="col-md-3"
-                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table', 'col-md-7': property.type === 'fileHTML'}"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table' || property.type === 'label', 'col-md-7': property.type === 'fileHTML'}"
                    ng-if="showFormField(property)"
                    ng-switch
                    on="property.type">
@@ -168,9 +168,8 @@
                 <label ng-switch-when="label"
                        name="{{property.id}}"
                        ng-required="isFieldRequired(property)"
-                        class="form-control_"
-                        ng-bind-html="htmldecode(data.formData.params[property.id].value)">
-                         <!--{{data.formData.params[property.id].value}}-->
+                       class="form-control_ {{labelStyle(property)}}"
+                       ng-bind-html="htmldecode(data.formData.params[property.id].value)">
                  </label>
 
                 <dropdown-country ng-switch-when="string"
