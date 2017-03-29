@@ -3,6 +3,5 @@ var express = require('express')
   , uploadfileController = require('./uploadfile.controller');
 
 router.post('/', uploadfileController.uploadProxy);
-router.post('/uploadFileHTML', uploadfileController.uploadFileHTML);
 
 module.exports = router;

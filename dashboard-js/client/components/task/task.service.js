@@ -162,7 +162,7 @@ angular.module('dashboardJsApp')
         })
       },
 
-      getTableOrFileAttachment: function (taskId, attachId, isNewService) {
+      getTableAttachment: function (taskId, attachId, isNewService) {
         // old and new services requests
         if(isNewService) {
           return simpleHttpPromise({
@@ -226,7 +226,7 @@ angular.module('dashboardJsApp')
         };
 
         var tableFields = $filter('filter')(formProperties, function(prop){
-          return prop.type === 'table' || prop.type === 'fileHTML';
+          return prop.type == 'table';
         });
 
         if(tableFields.length > 0) {
@@ -238,7 +238,7 @@ angular.module('dashboardJsApp')
           */
             var isNotEqualsAttachments = function (table, num) {
                 var checkForNewService = table.name.split(';');
-              if (checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1 || table.type === 'fileHTML') {
+                if (checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1) {
                   // tablePromises.push(self.uploadTable(table, task.processInstanceId, table.id, null, true));
                   def[num] = $q.defer();
                   tablePromises[num] = {table:table, taskID:task.processInstanceId, tableId:table.id, desc:null, isNew:true};
@@ -311,21 +311,14 @@ angular.module('dashboardJsApp')
 
       uploadTable: function(files, taskId, attachmentID, description, isNewService) {
         var deferred = $q.defer(),
-          tableId = files.id,
-          stringifyTable = files.type === 'table' ? JSON.stringify(files) : files.value,
-          data = {},
-          url,
-          ext;
-
-        if(files.type === 'table') {
-          ext = '.json'
-        } else if (files.type === 'fileHTML') {
-          ext = '.html'
-        }
+            tableId = files.id,
+            stringifyTable = JSON.stringify(files),
+            data = {},
+            url;
 
         if(isNewService) {
           data = {
-            sFileNameAndExt: tableId + ext,
+            sFileNameAndExt: tableId + '.json',
             sContent: stringifyTable,
             nID_Process: taskId,
             nID_Attach: attachmentID
@@ -334,7 +327,7 @@ angular.module('dashboardJsApp')
         } else {
           data = {
             sDescription: description + '[table][id='+ tableId +']',
-            sFileName: tableId + ext,
+            sFileName: tableId + '.json',
             sContent: stringifyTable,
             nID_Attach: attachmentID
           };
