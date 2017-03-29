@@ -437,7 +437,7 @@
 
         function fillArrayWithNewAttaches() {
           angular.forEach($scope.taskForm, function (item) {
-            if(item.type === 'file' || item.type === 'table') {
+            if(item.type === 'file' || item.type === 'table' || item.type === 'string') {
               try {
                 var parsedValue = JSON.parse(item.value);
                 if(parsedValue && parsedValue.sKey) {
@@ -502,6 +502,23 @@
         $scope.correctSignName = function (name) {
           var splitName = name.split(';');
           return splitName.length !== 1 ? splitName[0] : name;
+        };
+
+        $scope.takeTheKeyFromJSON = function (item) {
+          return JSON.parse(item.value).sKey;
+        };
+
+        $scope.takeTheFileNameFromJSON = function (item) {
+          var originalFileName = JSON.parse(item.value).sFileNameAndExt;
+          var ext;
+          if (originalFileName && originalFileName.indexOf('.') > 0){
+            var parts = originalFileName.split(".");
+            ext = parts[parts.length - 1];
+          }
+          if(ext){
+            return item.name + '.' + ext;
+          }
+          return item.name;
         };
 
         $scope.clarify = false;
