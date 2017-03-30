@@ -36,7 +36,7 @@ public class DeleteProccess implements JavaDelegate {
     GeneralConfig generalConfig;
 
     public Expression processDefinitionKey;
-    
+
     private int limitCountRowDeleted = 200000;
 
     @Override
@@ -44,9 +44,9 @@ public class DeleteProccess implements JavaDelegate {
         String processDefinitionKeyValue = getStringFromFieldExpression(this.processDefinitionKey, execution);
         closeProcess(processDefinitionKeyValue);
     }
-    
-    public void closeProcess(String processDefinitionKeyValue){
-    //if (generalConfig.isSelfTest()) {
+
+    public void closeProcess(String processDefinitionKeyValue) {
+        //if (generalConfig.isSelfTest()) {
         //List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().list();
         ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
         if (processDefinitionKeyValue == null || "".equals(processDefinitionKeyValue.trim())
@@ -68,7 +68,7 @@ public class DeleteProccess implements JavaDelegate {
             processInstances = processInstanceQuery.listPage(index, size);
             LOG.info("processInstances processInstanceQuery: processInstances.size()={}", processInstances.size());
             for (ProcessInstance processInstance : processInstances) {
-                runtimeService.deleteProcessInstance(processInstance.getProcessInstanceId(), "deprecated");
+                closeProcessInstance(processInstance.getProcessInstanceId());
                 countRowDeleted++;
             }
             LOG.info("processInstances processInstanceQuery size: " + processInstances.size() + " countRowDeleted: " + countRowDeleted + " success!");
@@ -81,5 +81,9 @@ public class DeleteProccess implements JavaDelegate {
 
     public void setLimitCountRowDeleted(int limitCountRowDeleted) {
         this.limitCountRowDeleted = limitCountRowDeleted;
+    }
+
+    public void closeProcessInstance(String snID_Process) {
+        runtimeService.deleteProcessInstance(snID_Process, "deprecated");
     }
 }
