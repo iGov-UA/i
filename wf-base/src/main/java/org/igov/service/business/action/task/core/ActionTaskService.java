@@ -2346,8 +2346,10 @@ public class ActionTaskService {
                     taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
                 } else if ("Opened".equalsIgnoreCase(sFilterStatus)) {
                     taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
-                    JSONObject oJSONTask = new JSONObject(taskQuery);
-                    LOG.info("Opened JSONValue element in filter {}",JSONValue.toJSONString(oJSONTask));
+                    LOG.info("Opened JSONValue element in filter {}",JSONValue.toJSONString(taskQuery));
+                }
+                else if("Documents".equalsIgnoreCase(sFilterStatus)){
+                    taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc%");
                 }
                 if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                     ((TaskQuery) taskQuery).orderByTaskCreateTime();
