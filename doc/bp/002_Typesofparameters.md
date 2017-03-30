@@ -53,6 +53,11 @@ true / false
  &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
 ```
 * ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
+* Так же для указания цвета поля на котором разместится текст, можно использовать третий раздел тип name
+```xml
+<activiti:formProperty id="color" name="Зверніть увагу на колір; ;labelType=success" type="label" default="Ви можете" ></activiti:formProperty>
+```
+* где labelType=success - зеленый, labelType=info - голубой, labelType=warning - желтый, labelType=danger - красный.
 ***
 ### file
 файл - кнопка для ручной загрузки файлов гражданином на форме подачи обращения и для возможности просмотра  прикрепленного файла на форме обработки обращения.

@@ -120,6 +120,11 @@
           <select-field></select-field>
         </div>
 
+        <!--поле типа fileHTML-->
+        <div ng-if="item.value && isFormPropertyDisabled(item)">
+          <file-html></file-html>
+        </div>
+
         <!--поле типа user-->
         <p ng-if="item.type == 'user'">
           <label>{{sFieldLabel(item.name)}}</label>
@@ -227,6 +232,9 @@
         <!--поле типа select-->
         <select-field></select-field>
 
+        <!--поле типа fileHTML-->
+        <file-html></file-html>
+
       </div>
 
       <!--атачи-->
@@ -273,7 +281,13 @@
               <p>{{item.sFieldLabel | tableButtonFilter}}</p>
               <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id}}"
                  target="_blank"
-                 ng-if="!isTableAttachment(item)"
+                 ng-if="!isTableAttachment(item) && item.type === 'file'"
+                 class="btn btn-info">Завантажити
+              </a>
+
+              <a href="/api/tasks/download/{{takeTheKeyFromJSON(item)}}/attachment/Mongo/{{takeTheFileNameFromJSON(item)}}"
+                 target="_blank"
+                 ng-if="!isTableAttachment(item) && item.type === 'string'"
                  class="btn btn-info">Завантажити
               </a>
               <button

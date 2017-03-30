@@ -139,12 +139,28 @@
           <activiti:value id="sKUAManYear" name="щоpiчні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sInfoVersion" name="Зверніть увагу" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="D_EDRPOU" name="Ідентифікаційний код за ЄДРПОУ суб’єкта подання даних; ;writable=true,sID_Field_SWinEd=D_EDRPOU" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="D_NAME" name="Найменування суб’єкта подання даних; ;writable=true,sID_Field_SWinEd=D_NAME" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="DateStart" name="Дата початку звітного періоду;Формат РРРР-ММ-ДД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="DateEnd" name="Дата закінчення звітного періоду;Формат РРРР-ММ-ДД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="STD" name="Дата початку звітного періоду;;writable=true,sID_Field_SWinEd=STD" type="string"></activiti:formProperty>
+        <activiti:formProperty id="FID" name="Дата закінчення звітного періоду; ;writable=true,sID_Field_SWinEd=FID" type="string"></activiti:formProperty>
+        <activiti:formProperty id="NREG" name="Ознака нерегулярних даних; ;writable=true,sID_Field_SWinEd=NREG,bVisible=false" type="string" default="false"></activiti:formProperty>
+        <activiti:formProperty id="TTYPE" name="Код типу суб’єкта подання даних; ;writable=true,sID_Field_SWinEd=TTYPE,bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asCorrection" name="Чи є звіт виправленням попереднього?" type="enum" default="sNo">
+          <activiti:value id="sYes" name="Так"></activiti:value>
+          <activiti:value id="sNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="DateCorr" name="Дата заповнення;Формат РРРР-ММ-ДД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ISPDAT" name="Дата заповнення; ;writable=true,sID_Field_SWinEd=ISPDAT" type="string"></activiti:formProperty>
+        <activiti:formProperty id="VIPRAV" name="Перелік виправлень та обґрунтування виправлених Даних;writable=true,sID_Field_SWinEd=VIPRAV" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="TAG" name="Примітки; ;writable=true,sID_Field_SWinEd=TAG" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nReport" name="Файл зі звітом" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="form_signed_all" name="поле для наложения ЭЦП (должно быть скрыто); ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/infr/min_equip.html"></activiti:formProperty><activiti:formProperty id="phone" name="Ваш контактний  телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="Report"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('NKCPFR/NKCPFR_1000.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="data fields" type="markers" default="${markerService.loadFromFile('NKCPFR/NKCPFR_1000_Data.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="style fields" type="markers" default="${markerService.loadFromFile('NKCPFR/NKCPFR_1000_Style.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask3" name="Повідомлення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">

@@ -11,11 +11,7 @@ module.exports.getSubjectGroups = function (req, res) {
   var updatedQuery = req.query;
 
   if(updatedQuery.sID_SubjectRole === 'ExecutorDepart') {
-    updatedQuery.sID_Group_Activiti = updatedQuery.sID_Group_Activiti_Depart;
-    updatedQuery.nDeepLevel = updatedQuery.nDeepLevelDepart;
     updatedQuery.sSubjectType = 'Organ';
-      delete updatedQuery.sID_Group_Activiti_Depart;
-      delete updatedQuery.nDeepLevelDepart;
       delete updatedQuery.sID_SubjectRole;
   } else if(updatedQuery.sID_SubjectRole === 'Executor') {
     updatedQuery.sSubjectType = 'Human';
