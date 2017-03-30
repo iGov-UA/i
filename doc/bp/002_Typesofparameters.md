@@ -19,12 +19,12 @@
 число (целое) - для ввода ЦЕЛЫХ чисел
 ***
 ### double
-число (дробное) - для ввода ДРОБНЫХ чисел (разделитель - точка)  
+<число (дробное) - для ввода ДРОБНЫХ чисел (разделитель - точка)>  
 ```xml
 <activiti:formProperty id="Place" name="Назва поля" type="double"></activiti:formProperty>
 ```
 ***
-<### enum>
+### enum
  
 ```xml
 <activiti:formProperty id="saQuestion1" name="показати поле з данними?" type="enum" default="no">
