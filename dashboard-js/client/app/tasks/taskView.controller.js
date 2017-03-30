@@ -1518,6 +1518,15 @@
           return $sce.trustAsHtml(html);
         };
 
+
+        $scope.getBpAndFieldID = function (field) {
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id;
+          } else {
+            return field.id;
+          }
+        };
+
         $rootScope.$broadcast("update-search-counter");
       }
     ])
