@@ -44,7 +44,7 @@
 </activiti:formProperty>
 ```
 ---
-[Детальней...](#_enum (checkbox))
+[детальней...](#_enum (checkbox))
 
 ***
 ### date
@@ -61,6 +61,7 @@
 <activiti:formProperty id="Place" name="Назва поля" type="boolean"></activiti:formProperty>
 ```
 ---
+[детальней...](#_boolean)
 принимаемые значения: true / false
 ***
 ### label
@@ -75,13 +76,8 @@
 * labelType=danger
 
 ---
-```xml
-<activiti:formProperty id="info" name="Зверніть увагу" type="label" default="Ви можете здійснити оплату зручним для Вас способом"></activiti:formProperty>
-```
- используется для отображения текстовых подсказок на форме подачи / обработки обращения 
- (обязательно добавлять default=” ”, если не указано другое значение). 
- Поддерживается форматирование html.
-* ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
+[детальней...](#_label)
+
 
 ***
 ### file
@@ -345,5 +341,17 @@ Cделает текущее поле нередактируемым для по
 * ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
 ### _date
 [вернуться...](#date)
-*дата - календарь для выбора даты
+* дата - календарь для выбора даты
 * ![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
+### _boolean
+[вернуться...](#boolean)
+* принимаемые значения: true / false
+### _label
+[вернуться...](#label)
+```xml
+<activiti:formProperty id="info" name="Зверніть увагу" type="label" default="Ви можете здійснити оплату зручним для Вас способом"></activiti:formProperty>
+```
+ используется для отображения текстовых подсказок на форме подачи / обработки обращения 
+ (обязательно добавлять default=” ”, если не указано другое значение). 
+ Поддерживается форматирование html.
+* ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
