@@ -7,7 +7,7 @@
 ---
 
 
-[детальней...](#1)
+[детальней...](#string_1)
 
 ***
 ### long
@@ -32,7 +32,7 @@
 ```
 
 ---
-[детальней...](#2)
+[детальней...](#enum2)
 
 ***
 ### enum (checkbox)
@@ -327,13 +327,13 @@ Cделает текущее поле нередактируемым для по
 ```xml
  <activiti:formProperty id="sString4" name="sString4; ниже добавится HTML с несколькими элементами;;html=&lt;span&gt;Відкити пошукову сторінку &lt;a href=&quot;https://www.google.com.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Google&quot;&gt;Google&lt;/a&gt; або &lt;a href=&quot;https://yandex.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Яндексу&quot;&gt;Яндекс&lt;/a&gt;.&lt;br&gt; Тут HTML-текст закінчується.&lt;/span&gt;" type="string"></activiti:formProperty>
 ```
-
-### 1
-* String детальнее
+### Детальней
+### string_1
+[вернуться...](string)
 * строка - для текстовых полей ввода (ограничение 256 символов) 
 ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
-### 2
-* Enum детальней
+### enum2
+[вернуться...](enum)
 * выпадающий список - для выбора значения из списка 
 
 * ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
