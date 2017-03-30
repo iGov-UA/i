@@ -17,8 +17,29 @@
           <activiti:value id="sVN" name="Група “Воля народу”"></activiti:value>
           <activiti:value id="sOther" name="Позафракційні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nVoteCount" name="Скільки голосів Ви бажаєте придбати?;від 1 до 20" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSale" name=" " type="label" default="&lt;b&gt;Акція! За покупку двох голосів третій голос — у подарунок!&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="asVoteCount" name="Скільки голосів Ви бажаєте придбати?" type="enum" required="true">
+          <activiti:value id="sOne" name="1"></activiti:value>
+          <activiti:value id="sTwo" name="2"></activiti:value>
+          <activiti:value id="sThree" name="3"></activiti:value>
+          <activiti:value id="sFour" name="4"></activiti:value>
+          <activiti:value id="sFive" name="5"></activiti:value>
+          <activiti:value id="sSix" name="6"></activiti:value>
+          <activiti:value id="sSeven" name="7"></activiti:value>
+          <activiti:value id="sEight" name="8"></activiti:value>
+          <activiti:value id="sNine" name="9"></activiti:value>
+          <activiti:value id="sTen" name="10"></activiti:value>
+          <activiti:value id="sEleven" name="11"></activiti:value>
+          <activiti:value id="sTwelve" name="12"></activiti:value>
+          <activiti:value id="sThirteen" name="13"></activiti:value>
+          <activiti:value id="sFourteen" name="14"></activiti:value>
+          <activiti:value id="sFifteen" name="15"></activiti:value>
+          <activiti:value id="sSixteen" name="16"></activiti:value>
+          <activiti:value id="sSeventeen" name="17"></activiti:value>
+          <activiti:value id="sEightteen" name="18"></activiti:value>
+          <activiti:value id="sNineteen" name="19"></activiti:value>
+          <activiti:value id="sTwenty" name="20"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSale" name="; ;labelType='warning'" type="label" default="&lt;b&gt;Акція! За покупку двох голосів третій голос — у подарунок!&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sZakon" name="Назва або номер законопроекту, для якого потрібен голос(и)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asVoteType" name="Які саме голоси Ви купляєте?" type="enum" required="true">
           <activiti:value id="sYes" name="Голосування “За”"></activiti:value>
@@ -26,7 +47,6 @@
           <activiti:value id="sNull" name="Не голосувати"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш email;На нього буде вислано рахунок" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="маркер валідації" type="markers" default="{&quot;validate&quot;:{&quot;NumberBetween&quot;:{&quot;aField_ID&quot;:[&quot;nVoteCount&quot;],&quot;nMin&quot;:&quot;1&quot;,&quot;nMax&quot;:&quot;20&quot;,&quot;sMessage&quot;:&quot;Максимальна кількість голосів - 20&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="маркер стилю" type="markers" default="{&quot;attributes&quot;:{&quot;Style_1&quot;:{&quot;aSelectors&quot;:[&quot;#field-sSale&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;100%!important&quot;}},&quot;Style_2&quot;:{&quot;aElement_ID&quot;:[&quot;sSale&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;100%!important&quot;,&quot;padding&quot;:&quot;16px20px&quot;,&quot;border-radius&quot;:&quot;5px&quot;,&quot;background-color&quot;:&quot;lightyellow&quot;,&quot;text-align&quot;:&quot;left&quot;}}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -40,7 +60,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Ви замовили сервіс покупки голосу народного депутату]]></activiti:string>
+          <activiti:string><![CDATA[Ви замовили сервіс покупки голосу народного депутата]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -48,7 +68,7 @@
 			Ви скористалися сервісом покупки голосів народних депутатів.<br>
 				<br>
 				<span style="margin-left:30px"><b>Фракція</b>: enum{[asFraction]}</span><br>
-				<span style="margin-left:30px"><b>Кількість голосів</b>: ${nVoteCount}</span><br>
+				<span style="margin-left:30px"><b>Кількість голосів</b>: enum{[asVoteCount]}</span><br>
 				<span style="margin-left:30px"><b>Тип голосу</b>: enum{[asVoteType]}</span>
 			<p>
 				Просимо Вас принести валізу з грошима (наповненими купюрами 500 євро) із розрахунку один депутат — одна валіза за адресою вул. Василя Сурикова, 3.Телефон для довідок: 0-800-503-200.

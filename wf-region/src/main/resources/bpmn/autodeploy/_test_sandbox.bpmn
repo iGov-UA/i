@@ -3,45 +3,32 @@
   <process id="_test_sandbox" name="_test_sandbox" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTextWarning" name="Увага!; ;lableType='warning'" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
-        <activiti:formProperty id="sTextSuccess" name="Успiх!; ;lableType='success'" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
-        <activiti:formProperty id="sTextInformation" name="Iнформацiя!; ;lableType='info'" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
-        <activiti:formProperty id="sTextDanger" name="Небезпека!; ;lableType='danger'" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
-		</extensionElements>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOneFields" name="Поле - string" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTwoFields" name="Поле - long" type="long"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="fileHTML" required="true"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="fileHTML"></activiti:formProperty>
+      </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
+    <userTask id="usertask1" name="1-й этап обработки" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
-
-        <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 01&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="ОКПО" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Наименование полное" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Наименование краткое" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Местонахождение" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО директора" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKVEDName_SubjectOrgan_01" name="" type="textArea" writable="false"></activiti:formProperty>
-<!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_01" name="КВЕД" type="textArea"></activiti:formProperty>-->
-        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата информации" type="string" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="markers_02" name="лінія ЄДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 02&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="ОКПО" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Наименование полное" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Наименование краткое" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Местонахождение" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФИО директора" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_02" name="Основний КВЕД" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKVEDName_SubjectOrgan_02" name="" type="textArea" writable="false"></activiti:formProperty>
-<!--        <activiti:formProperty id="sActivitiesKVED_SubjectOrgan_02" name="КВЕД" type="textArea"></activiti:formProperty>-->
-        <activiti:formProperty id="sDateActual_SubjectOrgan_02" name="Дата информации" type="string" writable="false"></activiti:formProperty>
-		
-        <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]; ;bVisible=false" type="string" default="Супровідний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/CourtOfCassation_print.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOneFields" name="Поле - string" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTwoFields" name="Поле - long" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]" type="invisible" default="тестовая принтформа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/_test_sandbox_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-  
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask2" name="повідомлення громадянина про реєстрацію документів" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="повідомлення между тасками" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -66,9 +53,23 @@
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow33" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
+    <userTask id="usertask2" name="2-й этап обработки" activiti:candidateGroups="Court_Of_Cassation">
+     <extensionElements>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOneFields" name="Поле - string" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTwoFields" name="Поле - long" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]" type="invisible" default="тестовая принтформа" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow36" sourceRef="usertask2" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_sandbox">
     <bpmndi:BPMNPlane bpmnElement="_test_sandbox" id="BPMNPlane__test_sandbox">
@@ -82,11 +83,14 @@
         <omgdc:Bounds height="55.0" width="150.0" x="320.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="500.0" y="40.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="760.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="171.0" x="510.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="470.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="500.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="96.0" y="57.0"></omgdi:waypoint>
@@ -95,6 +99,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="301.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="681.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

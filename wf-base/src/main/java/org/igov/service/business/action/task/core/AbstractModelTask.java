@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import org.apache.commons.io.IOUtils;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.service.business.action.task.form.FileHTMLFormType;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -188,11 +189,13 @@ public abstract class AbstractModelTask {
      * @return
      */
     public static List<String> getListFieldCastomTypeFile(FormData oFormData) {
-        List<String> asFieldID = new ArrayList<String>();
+        List<String> asFieldID = new ArrayList<>();
         List<FormProperty> aFormProperty = oFormData.getFormProperties();
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
-                if (oFormProperty.getType() instanceof FormFileType || oFormProperty.getType() instanceof TableFormType) {
+                if (oFormProperty.getType() instanceof FormFileType 
+                        || oFormProperty.getType() instanceof TableFormType
+                        || oFormProperty.getType() instanceof FileHTMLFormType) {
                     asFieldID.add(oFormProperty.getId());
                 }
             }
@@ -224,11 +227,13 @@ public abstract class AbstractModelTask {
      * @return
      */
     public static List<String> getListCastomFieldName(FormData oFormData) {
-        List<String> filedName = new ArrayList<String>();
+        List<String> filedName = new ArrayList<>();
         List<FormProperty> aFormProperty = oFormData.getFormProperties();
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
-                if (oFormProperty.getType() instanceof FormFileType || oFormProperty.getType() instanceof TableFormType) {
+                if (oFormProperty.getType() instanceof FormFileType 
+                        || oFormProperty.getType() instanceof TableFormType
+                        || oFormProperty.getType() instanceof FileHTMLFormType) {
                     filedName.add(oFormProperty.getName());
                 }
             }
@@ -562,7 +567,8 @@ public abstract class AbstractModelTask {
                                                                 JSONObject oJsonMap = (JSONObject) aJsonField.get(j);
                                                                 
                                                                 Object oValue = oJsonMap.get("type");
-                                                                if ("file".equals((String)oValue)){
+                                                                //if (TYPE_NAME.equals((String)oValue)){
+                                                                if ((String)oValue != null && ((String)oValue).contains(FormFileType.TYPE_NAME)){    
                                                                     
                                                                     String oFileValue = (String)oJsonMap.get("value");
                                                                     LOG.info("Current file value in the table is: " + oFileValue);

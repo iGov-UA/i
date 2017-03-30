@@ -845,6 +845,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "ИД поля", required = false) @RequestParam(required = false, value = "sID_Field") String sID_Field,
             @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
             @ApiParam(value = "Тип БД", required = false) @RequestParam(required = false, value = "sID_StorageType") String sID_StorageType,
+            @ApiParam(value = "Имя файла по умолчанию", required = false) @RequestParam(required = false, value = "sFileName") String sFileName,
             HttpServletResponse httpResponse) throws Exception {
 
         LOG.info("nID_Process: " + nID_Process);
@@ -852,9 +853,13 @@ public class ObjectFileCommonController {
 
         MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
 
+        if(sFileName == null || sFileName.equals("")){
+            sFileName = multipartFile.getOriginalFilename();
+        }
+
         //byte[] aRes = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
         httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + multipartFile.getOriginalFilename());
+                + sFileName);
         httpResponse.setHeader("Content-Type", "application/octet-stream");
 
         httpResponse.setContentLength(multipartFile.getBytes().length);

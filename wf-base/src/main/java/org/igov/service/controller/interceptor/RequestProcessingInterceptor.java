@@ -963,8 +963,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 	
 	
     private boolean isUpdateTask(HttpServletRequest oRequest) {
-        return oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
-                && PUT.equalsIgnoreCase(oRequest.getMethod().trim());
+        return (oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
+                && PUT.equalsIgnoreCase(oRequest.getMethod().trim())) ||
+                oRequest.getRequestURL().toString().indexOf("action/task/updateProcess") > 0
+                && POST.equalsIgnoreCase(oRequest.getMethod().trim());
     }
 
     private boolean isCloseTask(HttpServletRequest oRequest, String sResponseBody) {
