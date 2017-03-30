@@ -2297,6 +2297,10 @@ public class ActionTaskService {
             } else {
                 ((TaskInfoQuery) taskQuery).orderByTaskId();
             }
+                    
+            if(taskQuery != null && bIncludeVariablesProcess){
+                ((TaskQuery) taskQuery).includeProcessVariables();
+            }
 
             if (!StringUtils.isEmpty(soaFilterField)) {
                 JSONArray oJSONArray = new JSONArray(soaFilterField);
@@ -2351,7 +2355,10 @@ public class ActionTaskService {
                 else if("Documents".equalsIgnoreCase(sFilterStatus)){
                     taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
                 }
-                
+                       
+                if(bIncludeVariablesProcess){
+                    ((TaskQuery) taskQuery).includeProcessVariables();
+                }
                 
                 if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                     ((TaskQuery) taskQuery).orderByTaskCreateTime();
@@ -2376,11 +2383,7 @@ public class ActionTaskService {
                 ((TaskQuery) taskQuery).asc();
             }
         }
-        
-        if(taskQuery != null && bIncludeVariablesProcess){
-            ((TaskQuery) taskQuery).includeProcessVariables();
-        }
-        
+
         return taskQuery;
     }
 
