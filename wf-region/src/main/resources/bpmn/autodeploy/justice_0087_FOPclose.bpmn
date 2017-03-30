@@ -96,7 +96,7 @@
       <extensionElements>
         <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
       </extensionElements>
-	</endEvent>
+    </endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="exclusivegateway5"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -169,7 +169,7 @@
       <extensionElements>
         <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
       </extensionElements>
-	</endEvent>
+    </endEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -408,7 +408,8 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow40" sourceRef="exclusivegateway5" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відмови" activiti:candidateGroups="jur_${sID_UA}_0087">
+<!--    <userTask id="usertask2" name="Підготовка відмови" activiti:candidateGroups="jur_${sID_UA}_0087"> -->
+    <userTask id="usertask2" name="Підготовка відмови" activiti:assignee="jur_0087">
       <extensionElements>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
@@ -422,6 +423,7 @@
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false" type="string" default="Заява про припинення підприємницької діяльності" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${DoWorkOnCloseTaskEvent}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
