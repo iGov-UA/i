@@ -5,7 +5,7 @@
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 ```
 ---
-
+### Детальнее
 строка - для текстовых полей ввода (ограничение 256 символов) 
 * ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
 ***
