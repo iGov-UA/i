@@ -5,7 +5,7 @@
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 
 
-* ![name1](#name1)
+* ![name1](https://github.com/e-government-ua/i/edit/test/doc/bp/002_Typesofparameters.md#name1)
 ```
 ---
 ### Детальнее
