@@ -1422,7 +1422,7 @@ public class DocumentStepService {
                         // Достаем nID_Process_Activiti у найденного oDocumentStepSubjectRight через DocumentStep
                         String snID_Process_Activiti = oFindedDocumentStepSubjectRight.getDocumentStep()
                                 .getSnID_Process_Activiti();
-                        LOG.info("snID_Process of oFindedDocumentStepSubjectRight: ", snID_Process_Activiti);
+                        LOG.info("snID_Process of oFindedDocumentStepSubjectRight: {}", snID_Process_Activiti);
 
                         String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
 
@@ -1434,16 +1434,17 @@ public class DocumentStepService {
                         if (oProcessInstance != null) {
                             // вытаскиваем дату создания процесса
                             Date sDateCreateProcess = oProcessInstance.getStartTime();
-                            LOG.info("sDateCreateProcess", sDateCreateProcess);
+                            LOG.info("sDateCreateProcess {}", sDateCreateProcess);
                             // вытаскиваем название бп
                             String sNameBP = oProcessInstance.getName();
-                            LOG.info("sNameBP", sNameBP);
+                            LOG.info("sNameBP {}", sNameBP);
                             // вытаскиваем список активных тасок по процесу
                             List<Task> aTask = oTaskService.createTaskQuery()
                                     .processInstanceId(oProcessInstance.getId()).active().list();
                             if (aTask.size() < 1 || aTask.get(0) == null) {
-                                throw new IllegalArgumentException(
-                                        "Process with ID: " + snID_Process_Activiti + " has no active task.");
+                                /*throw new IllegalArgumentException(
+                                        "Process with ID: " + snID_Process_Activiti + " has no active task.");*/
+                                continue;
                             }
                             // берем первую
                             Task oTaskCurr = aTask.get(0);
