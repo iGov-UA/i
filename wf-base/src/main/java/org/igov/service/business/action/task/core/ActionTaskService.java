@@ -2270,7 +2270,7 @@ public class ActionTaskService {
                     @Override
                     public SerializableResponseEntity<ArrayList<TaskInfo>> execute() {
                         LOG.info("Loading tasks from cache for user {} with filterStatus {} and bIncludeAlienAssignedTasks {}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
-                        Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus, groupsIds, soaFilterField);
+                        Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus, groupsIds, soaFilterField, false);
 
                         ArrayList<TaskInfo> res = (ArrayList<TaskInfo>) ((taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
                                 : (List) ((NativeTaskQuery) taskQuery).list());
@@ -2285,7 +2285,7 @@ public class ActionTaskService {
 
     public Object createQuery(String sLogin,
             boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
-            List<String> groupsIds, String soaFilterField) {
+            List<String> groupsIds, String soaFilterField, boolean bIncludeVariablesProcess) {
 
         if (!StringUtils.isEmpty(soaFilterField)) {
         }
@@ -2351,6 +2351,8 @@ public class ActionTaskService {
                 else if("Documents".equalsIgnoreCase(sFilterStatus)){
                     taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
                 }
+                
+                
                 if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                     ((TaskQuery) taskQuery).orderByTaskCreateTime();
                 } else {
@@ -2374,6 +2376,11 @@ public class ActionTaskService {
                 ((TaskQuery) taskQuery).asc();
             }
         }
+        
+        if(taskQuery != null && bIncludeVariablesProcess){
+            ((TaskQuery) taskQuery).includeProcessVariables();
+        }
+        
         return taskQuery;
     }
 
