@@ -32,9 +32,8 @@
 ```
 
 ---
-выпадающий список - для выбора значения из списка 
+[детальней...](#2)
 
-* ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
 ***
 ### enum (checkbox)
 
@@ -45,12 +44,8 @@
 </activiti:formProperty>
 ```
 ---
+[Детальней...](#3)
 
-чекбокс - доступно только 2 выбора да/нет.
-Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
-Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
-
-* ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
 ***
 ### date
 
@@ -337,3 +332,15 @@ Cделает текущее поле нередактируемым для по
 * String детальнее
 * строка - для текстовых полей ввода (ограничение 256 символов) 
 ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
+### 2
+* Enum детальней
+* выпадающий список - для выбора значения из списка 
+
+* ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
+### 3
+* Enum (checkbox) детальней
+чекбокс - доступно только 2 выбора да/нет.
+Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
+Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
+
+* ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
