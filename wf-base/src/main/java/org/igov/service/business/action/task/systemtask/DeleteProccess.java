@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+import org.igov.service.business.document.DocumentStepService;
 
 @Component("deleteProccess")
 public class DeleteProccess implements JavaDelegate {
@@ -34,6 +35,9 @@ public class DeleteProccess implements JavaDelegate {
 
     @Autowired
     GeneralConfig generalConfig;
+
+    @Autowired
+    DocumentStepService documentStepService;
 
     public Expression processDefinitionKey;
 
@@ -83,7 +87,8 @@ public class DeleteProccess implements JavaDelegate {
         this.limitCountRowDeleted = limitCountRowDeleted;
     }
 
-    public void closeProcessInstance(String snID_Process) {
-        runtimeService.deleteProcessInstance(snID_Process, "deprecated");
+    public void closeProcessInstance(String snID_Process_Activiti) {
+        runtimeService.deleteProcessInstance(snID_Process_Activiti, "deprecated");
+        documentStepService.removeDocumentSteps(snID_Process_Activiti);
     }
 }
