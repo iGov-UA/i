@@ -3,7 +3,8 @@
 
 ```xml
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
-``` [детальней...](#_string)
+``` 
+[детальней...](#_string)
 
 ### long
 ```xml
