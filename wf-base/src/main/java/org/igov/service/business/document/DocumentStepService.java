@@ -1406,16 +1406,18 @@ public class DocumentStepService {
                 sLogin);
         LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
         DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
-
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
+        
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
             if (oDocumentStepSubjectRight != null) {
 
                 DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
                 DateTime sDate = oDocumentStepSubjectRight.getsDate();
+                Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
                 // проверяем, если даты ецп нет, но есть дата подписания - нашли
                 // нужный объект, который кладем в VO-обьект-обертку
-                if (sDateECP == null) {
+                if (bNeedECP != null && bNeedECP != false && sDateECP == null) {
                     if (sDate != null) {
                         oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
                         LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
