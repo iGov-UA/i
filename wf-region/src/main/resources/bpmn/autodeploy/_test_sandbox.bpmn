@@ -4,20 +4,20 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-          </extensionElements>
+      </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="1-й этап обработки" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Найменування скорочене" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" name="" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
-	
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        
+       
+        <activiti:formProperty id="sName_sAddressee_First" name="Утверждающий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel,sName_SubjectRole=sLogin_sAddressee_First" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_sAddressee_First" name="Логін" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_sAddressee_Second" name="Адресат; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel,sName_SubjectRole=sLogin_sAddressee_Second" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_sAddressee_Second" name="Логін" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Оберіть виконавця, якому буде делеговано завдання; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sName_isExecute&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;},{&quot;id&quot;:&quot;sFirstName_isExecute&quot;,&quot;name&quot;:&quot;First Name&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sLastName_isExecute&quot;,&quot;name&quot;:&quot;Last Name&quot;,&quot;type&quot;:&quot;string&quot;},{&quot;id&quot;:&quot;sLogin_isExecute&quot;,&quot;name&quot;:&quot;Login&quot;,&quot;type&quot;:&quot;string&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]" type="invisible" default="тестовая принтформа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/_test_sandbox_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -52,7 +52,7 @@
     <sequenceFlow id="flow34" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask2" name="2-й этап обработки" activiti:candidateGroups="Court_Of_Cassation">
-     <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOneFields" name="Поле - string" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTwoFields" name="Поле - long" type="long" writable="false"></activiti:formProperty>
