@@ -1807,7 +1807,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				long totalNumber = 0;
                                 
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
-						sFilterStatus, groupsIds, soaFilterField, bIncludeVariablesProcess);
+						sFilterStatus, groupsIds, soaFilterField);
                                 LOG.info("taskQuery: ", taskQuery );
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
@@ -1870,14 +1870,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                     for(Map<String, Object> dataElem : data)
                                     {
                                         if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc_")){
+                                            
+                                            if(bIncludeVariablesProcess){
+                                                dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
+                                            }
                                             checkDocumentIncludesData.add(dataElem);
-                                        }
-                                        else{
                                             totalNumber = totalNumber - 1;
                                         }
                                     }
                                 }else{
-                                    checkDocumentIncludesData.addAll(data);
+                                    if(bIncludeVariablesProcess){
+                                        for(Map<String, Object> dataElem : data)
+                                        {
+                                            dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
+                                            checkDocumentIncludesData.add(dataElem);
+                                        }    
+                                    }
                                 }
                                 
                                 

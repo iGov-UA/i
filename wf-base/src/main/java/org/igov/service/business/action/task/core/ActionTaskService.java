@@ -2270,7 +2270,7 @@ public class ActionTaskService {
                     @Override
                     public SerializableResponseEntity<ArrayList<TaskInfo>> execute() {
                         LOG.info("Loading tasks from cache for user {} with filterStatus {} and bIncludeAlienAssignedTasks {}", sLogin, sFilterStatus, bIncludeAlienAssignedTasks);
-                        Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus, groupsIds, soaFilterField, false);
+                        Object taskQuery = createQuery(sLogin, bIncludeAlienAssignedTasks, null, sFilterStatus, groupsIds, soaFilterField);
 
                         ArrayList<TaskInfo> res = (ArrayList<TaskInfo>) ((taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
                                 : (List) ((NativeTaskQuery) taskQuery).list());
@@ -2285,7 +2285,7 @@ public class ActionTaskService {
 
     public Object createQuery(String sLogin,
             boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
-            List<String> groupsIds, String soaFilterField, boolean bIncludeVariablesProcess) {
+            List<String> groupsIds, String soaFilterField) {
 
         if (!StringUtils.isEmpty(soaFilterField)) {
         }
@@ -2298,9 +2298,9 @@ public class ActionTaskService {
                 ((TaskInfoQuery) taskQuery).orderByTaskId();
             }
                     
-            if(taskQuery != null && bIncludeVariablesProcess){
+            /*if(taskQuery != null && bIncludeVariablesProcess){
                 taskQuery = ((TaskQuery) taskQuery).includeProcessVariables();
-            }
+            }*/
 
             if (!StringUtils.isEmpty(soaFilterField)) {
                 JSONArray oJSONArray = new JSONArray(soaFilterField);
@@ -2356,9 +2356,9 @@ public class ActionTaskService {
                     taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
                 }
                        
-                if(bIncludeVariablesProcess){
+                /*if(bIncludeVariablesProcess){
                     taskQuery = ((TaskQuery) taskQuery).includeProcessVariables();
-                }
+                }*/
                 
                 if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                     ((TaskQuery) taskQuery).orderByTaskCreateTime();
