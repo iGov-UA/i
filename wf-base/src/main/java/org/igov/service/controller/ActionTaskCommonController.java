@@ -1867,7 +1867,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<Map<String, Object>>();
                                 
                                 if(!"Documents".equals(sFilterStatus)){
-                                     
+                                    
                                     for(Map<String, Object> dataElem : data)
                                     {
                                         if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc_")){
@@ -1876,6 +1876,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                                 dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
                                             }
                                             checkDocumentIncludesData.add(dataElem);
+                                            
                                         }
                                     }
                                 }else{
