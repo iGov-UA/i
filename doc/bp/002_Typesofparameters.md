@@ -3,6 +3,9 @@
 
 ```xml
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
+
+
+* ![name1](#name1)
 ```
 ---
 ### Детальнее
@@ -15,6 +18,7 @@
 ```
 число (целое) - для ввода ЦЕЛЫХ чисел
 ***
+#name1
 ### double
 число (дробное) - для ввода ДРОБНЫХ чисел (разделитель - точка)  
 ```xml
