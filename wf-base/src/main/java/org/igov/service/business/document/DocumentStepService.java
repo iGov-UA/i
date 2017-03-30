@@ -57,7 +57,7 @@ public class DocumentStepService {
     private GenericEntityDao<Long, DocumentStep> oDocumentStepDao;
 
     @Autowired
-    private GenericEntityDao<Long, DocumentStepType> documentStepType;
+    private GenericEntityDao<Long, DocumentStepType> oDocumentStepTypeDao;
 
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
@@ -132,7 +132,7 @@ public class DocumentStepService {
             String[] asKey_Step_Split = sKey_Step.split(";");
             sKey_Step = asKey_Step_Split[0];
             if (asKey_Step_Split.length == 2) {
-                oDocumentStepType = documentStepType.findByExpected("name", asKey_Step_Split[1]);
+                oDocumentStepType = oDocumentStepTypeDao.findByExpected("name", asKey_Step_Split[1]);
             }
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
