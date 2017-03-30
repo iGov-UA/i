@@ -964,6 +964,14 @@ angular.module('dashboardJsApp')
             sLogin: login
           }
         })
+      },
+      getOrganizationData : function (code) {
+        if(code)
+          return $http.get('./api/organization-info', {
+            params : {
+              code : code
+            }
+          })
+        }
       }
-    };
   });
