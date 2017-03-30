@@ -1,63 +1,97 @@
 ## Типы переменных
 ### string
-строка - для текстовых полей ввода (ограничение 256 символов) 
+
 ```xml
-<activiti:formProperty id="Place" name="Обраний населений пункт" type="string"></activiti:formProperty>
+<activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 ```
+---
+### Детальнее
+строка - для текстовых полей ввода (ограничение 256 символов) 
 * ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
+* ![2_33](###enum)
+* ![###enum]
+* ![enum]
+* ![#enum]
 ***
 ### long
+```xml
+<activiti:formProperty id="Place" name="Назва поля" type="long"></activiti:formProperty>
+```
 число (целое) - для ввода ЦЕЛЫХ чисел
 ***
 ### double
 число (дробное) - для ввода ДРОБНЫХ чисел (разделитель - точка)  
+```xml
+<activiti:formProperty id="Place" name="Назва поля" type="double"></activiti:formProperty>
+```
 ***
 ### enum
-выпадающий список - для выбора значения из списка  
+ 
 ```xml
 <activiti:formProperty id="saQuestion1" name="показати поле з данними?" type="enum" default="no">
   <activiti:value id="yes" name="так"></activiti:value>
   <activiti:value id="no" name="ні"></activiti:value>
 </activiti:formProperty>
 ```
+
+---
+выпадающий список - для выбора значения из списка 
+
 * ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
 ***
 ### enum (checkbox)
-чекбокс - доступно только 2 выбора да/нет.
-Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
-Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
+
 ```xml
 <activiti:formProperty id="saQuestion1" name="показати поле з данними?; ;sID_CheckboxTrue=yes" type="enum" default="no">
   <activiti:value id="yes" name="так"></activiti:value>
   <activiti:value id="no" name="ні"></activiti:value>
 </activiti:formProperty>
 ```
+---
+
+чекбокс - доступно только 2 выбора да/нет.
+Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
+Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
+
 * ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
 ***
 ### date
-дата - календарь для выбора даты
+
 ```xml
 <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" required="true"></activiti:formProperty>
 ```
+---
+
+дата - календарь для выбора даты
 * ![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
 ***
 ### boolean
-true / false
+```xml
+<activiti:formProperty id="Place" name="Назва поля" type="boolean"></activiti:formProperty>
+```
+---
+принимаемые значения: true / false
 ***
 ### label
-нередактируемый для заявителя текст - используется для отображения текстовых подсказок на форме подачи / обработки обращения (обязательно добавлять default=” ”, если не указано другое значение). Поддерживается форматирование html.
+
+Стили лейбла можно назначить в аттрибуте name
 ```xml
-<activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною,
- при заповненні полів треба буде завантажити документ, що засвідчує внесення плати."
- type="label" default="Ви можете здійснити оплату зручним для Вас способом за 
- &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
+<activiti:formProperty id="color" name=" ; ;labelType=success" type="label" default="Ви можете" ></activiti:formProperty>
 ```
+* labelType=success
+* labelType=info
+* labelType=warning
+* labelType=danger
+
+---
+```xml
+<activiti:formProperty id="info" name="Зверніть увагу" type="label" default="Ви можете здійснити оплату зручним для Вас способом"></activiti:formProperty>
+```
+ используется для отображения текстовых подсказок на форме подачи / обработки обращения 
+ (обязательно добавлять default=” ”, если не указано другое значение). 
+ Поддерживается форматирование html.
 * ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
-* Так же для указания цвета поля на котором разместится текст, можно использовать третий раздел тип name
-```xml
-<activiti:formProperty id="color" name="Зверніть увагу на колір; ;labelType=success" type="label" default="Ви можете" ></activiti:formProperty>
-```
-* где labelType=success - зеленый, labelType=info - голубой, labelType=warning - желтый, labelType=danger - красный.
+
 ***
 ### file
 файл - кнопка для ручной загрузки файлов гражданином на форме подачи обращения и для возможности просмотра  прикрепленного файла на форме обработки обращения.

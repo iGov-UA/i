@@ -521,6 +521,10 @@
           return item.name;
         };
 
+        $scope.takeTheKeyFromJSON = function (item) {
+          return JSON.parse(item.value).sKey;
+        };
+
         $scope.clarify = false;
 
         $scope.clarifyToggle = function () {
