@@ -58,10 +58,10 @@
 ```xml
 <activiti:formProperty id="color" name=" ; ;labelType=success" type="label" default="Ви можете" ></activiti:formProperty>
 ```
-* labelType=success
-* labelType=info
-* labelType=warning
-* labelType=danger
+* labelType=success - зеленый
+* labelType=info - голубой
+* labelType=warning - желтый
+* labelType=danger - красный
 
 [детальней...](#_label)
 
