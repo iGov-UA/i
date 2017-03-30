@@ -92,7 +92,11 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
+    <endEvent id="endevent1" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+	</endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="exclusivegateway5"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -161,7 +165,11 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <endEvent id="endevent2" name="End"></endEvent>
+    <endEvent id="endevent2" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+	</endEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -400,7 +408,7 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow40" sourceRef="exclusivegateway5" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="AutoCloseTask" activiti:assignee="agerman">
+    <userTask id="usertask2" name="Підготовка відмови" activiti:candidateGroups="jur_${sID_UA}_0087">
       <extensionElements>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
