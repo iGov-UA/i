@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.task.IdentityLink;
 import org.apache.commons.io.IOUtils;
@@ -55,10 +54,10 @@ public class DocumentStepService {
 
     @Autowired
     @Qualifier("documentStepDao")
-    private GenericEntityDao<Long, DocumentStep> documentStepDao;
+    private GenericEntityDao<Long, DocumentStep> oDocumentStepDao;
 
     @Autowired
-    private GenericEntityDao<Long, DocumentStepType> documentStepType;
+    private GenericEntityDao<Long, DocumentStepType> oDocumentStepType;
 
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
@@ -114,7 +113,7 @@ public class DocumentStepService {
                     }
                 }
             }
-            documentStepDao.saveOrUpdate(oDocumentStep_Common);
+            oDocumentStepDao.saveOrUpdate(oDocumentStep_Common);
             aDocumentStep_Result.add(oDocumentStep_Common);
         }
         // process all other steps
@@ -133,7 +132,7 @@ public class DocumentStepService {
             String[] asKey_Step_Split = sKey_Step.split(";");
             sKey_Step = asKey_Step_Split[0];
             if (asKey_Step_Split.length == 2) {
-                oDocumentStepType = documentStepType.findByExpected("name", asKey_Step_Split[1]);
+                oDocumentStepType = oDocumentStepType.findByExpected("name", asKey_Step_Split[1]);
             }
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
@@ -160,7 +159,7 @@ public class DocumentStepService {
 
             LOG.info("oDocumentStep is before saving {}", oDocumentStep);
             LOG.info("oDocumentStep right is before saving {}", oDocumentStep.getRights());
-            oDocumentStep = documentStepDao.saveOrUpdate(oDocumentStep);
+            oDocumentStep = oDocumentStepDao.saveOrUpdate(oDocumentStep);
             aDocumentStep_Result.add(oDocumentStep);
         }
 
@@ -171,7 +170,7 @@ public class DocumentStepService {
     private boolean isNew_DocumentStepSubjectRight(String snID_Process_Activiti, String sKey_Step_Document,
             String sKey_GroupPostfix_New) {
 
-        List<DocumentStep> aCheckDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti",
+        List<DocumentStep> aCheckDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                 snID_Process_Activiti);
         boolean isNew = true;
         for (DocumentStep oCheckDocumentStep : aCheckDocumentStep) {
@@ -302,7 +301,7 @@ public class DocumentStepService {
     }
 
     public DocumentStep getDocumentStep(String snID_Process_Activiti, String sKey_Step) {
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
 
         final String SKEY_STEP_DOCUMENT = sKey_Step;
@@ -466,11 +465,11 @@ public class DocumentStepService {
 
             LOG.info("asID_Group_Activiti_New is {}", asID_Group_Activiti_New);
 
-            List<DocumentStep> aDocumentStep_From = documentStepDao.findAllBy("snID_Process_Activiti",
+            List<DocumentStep> aDocumentStep_From = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                     snID_Process_Activiti);
             LOG.info("aDocumentStep={}", aDocumentStep_From);
 
-            List<DocumentStep> aDocumentStep_To = documentStepDao.findAllBy("snID_Process_Activiti",
+            List<DocumentStep> aDocumentStep_To = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                     snID_Process_Activiti);
             LOG.info("aDocumentStep={}", aDocumentStep_To);
 
@@ -553,7 +552,7 @@ public class DocumentStepService {
                 oDocumentStep_To.setRights(aDocumentStepSubjectRight_To);
                 resultList.add(oDocumentStepSubjectRight_New);
                 LOG.info("aDocumentStepSubjectRight_To before saving is {} ", aDocumentStepSubjectRight_To);
-                documentStepDao.saveOrUpdate(oDocumentStep_To);
+                oDocumentStepDao.saveOrUpdate(oDocumentStep_To);
             }
 
         } catch (Exception oException) {
@@ -850,7 +849,7 @@ public class DocumentStepService {
         }
         LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
 
         DocumentStep oDocumentStep_Common = aDocumentStep.stream().filter(o -> o.getsKey_Step().equals("_")).findAny()
@@ -962,7 +961,7 @@ public class DocumentStepService {
         }
         LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
 
         DocumentStep oDocumentStep_Common = aDocumentStep.stream().filter(o -> o.getsKey_Step().equals("_")).findAny()
@@ -1251,7 +1250,7 @@ public class DocumentStepService {
                 LOG.info("soJSON={}", soJSON);
 
                 setDocumentSteps(snID_Process_Activiti, soJSON);
-                List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti",
+                List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                         snID_Process_Activiti);
                 LOG.info("aDocumentStep={}", aDocumentStep);
 
@@ -1282,7 +1281,7 @@ public class DocumentStepService {
 
         }
 
-        List<DocumentStep> aResultDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti",
+        List<DocumentStep> aResultDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                 snID_Process_Activiti);
 
         LOG.info("aResultDocumentStep in initDocChecker is {}", aResultDocumentStep);
@@ -1321,7 +1320,7 @@ public class DocumentStepService {
 
             LOG.debug("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
 
-            List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti",
+            List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                     snID_Process_Activiti);
             LOG.debug("aDocumentStep={}", aDocumentStep);
 
@@ -1360,7 +1359,7 @@ public class DocumentStepService {
             throws Exception {
         LOG.info("isDocumentStepSubmitedAll: snID_Process {}, sKey_Step {} ...", snID_Process, sKey_Step);
         Map<String, Boolean> mReturn = new HashMap();
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process);//
+        List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process);//
         LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
         DocumentStep oFindedDocumentStep = null;
 
@@ -1491,6 +1490,13 @@ public class DocumentStepService {
         }
 
         return aResDocumentSubmitedUnsigned;
+    }
+
+    public void removeDocumentSteps(String snID_Process_Activiti) {
+        List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        if (aDocumentStep != null) {
+            oDocumentStepDao.delete(aDocumentStep);
+        }
     }
 
 }
