@@ -7,6 +7,7 @@
 ---
 
 строка - для текстовых полей ввода (ограничение 256 символов) 
+### Детальнее
 * ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
 ***
 ### long
