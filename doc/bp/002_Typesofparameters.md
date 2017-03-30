@@ -30,9 +30,8 @@
 </activiti:formProperty>
 ```
 
-выпадающий список - для выбора значения из списка 
-
 ---
+выпадающий список - для выбора значения из списка 
 
 * ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
 ***
