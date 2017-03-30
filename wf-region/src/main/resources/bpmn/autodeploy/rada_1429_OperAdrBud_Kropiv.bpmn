@@ -185,8 +185,8 @@
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
-          <activiti:value id="accept" name="прийнято рішення про присвоєння (зміни) поштової адреси"></activiti:value>
-          <activiti:value id="reject" name="надіслати відмову у присвоєнні (зміні) поштової адреси"></activiti:value>
+          <activiti:value id="accept" name="прийнято рішення задовольнити заявку"></activiti:value>
+          <activiti:value id="reject" name="надіслати відмову у виконанні заявки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення; ;bNew=true" type="file" required="true"></activiti:formProperty>
@@ -228,7 +228,7 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Ваше звернення щодо ${sWordsLetter} поштової адреси ${sNameObject} отримано і буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства впродовж 10 календарних днів.<br>
+Ваше звернення отримано і буде опрацьовано управлінням архітектури, капітального будівництва та житлово-комунального господарства впродовж 10 календарних днів.<br>
 Ви отримаєте додаткове повідомлення за результатами розгляду запиту.<br>
 ${sPhoneOrgan}<br>
 [pattern/mail/new_design/_common_content_end.html]
@@ -262,7 +262,7 @@ ${sNameOrgan}<br>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-На жаль, Ваше звернення щодо ${sWordsLetter} поштової адреси ${sNameObject} відхилено через недостатню або неправильну інформацію.<br>
+На жаль, Ваше звернення щодо ${sWordsLetter} поштової адреси нерухомого об'єкта відхилено через недостатню або неправильну інформацію.<br>
 Комментар спеціаліста:<br>
 ${comment_1}<br>
 ${sPhoneOrgan}<br>
@@ -396,23 +396,23 @@ per16 = "&lt;li&gt;Лист про наявність подвійної нум�
 }
 if((execution.getVariable('sAction') == 'give') || (execution.getVariable('sAction1') == 'get'))
 {
-per11 = 'присвоїти'
+per11 = 'присвоєння'
 }
 if(execution.getVariable('sAction') == 'confirm')
 {
-per11 = 'підтвердити'
+per11 = 'підтвердження'
 }
 if(execution.getVariable('sAction') == 'change')
 {
-per11 = 'змінити'
+per11 = 'зміни'
 }
 if(execution.getVariable('sAction1') == 'get')
 {
-per11 = 'присвоїти'
+per11 = 'присвоєння'
 }
 if(execution.getVariable('sAction') == 'renew')
 {
-per11 = 'уточнити'
+per11 = 'уточнення'
 }
 res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+'&lt;/ol&gt;'
 res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+'&lt;/ol&gt;'
