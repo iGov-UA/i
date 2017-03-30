@@ -2299,7 +2299,7 @@ public class ActionTaskService {
             }
                     
             if(taskQuery != null && bIncludeVariablesProcess){
-                ((TaskQuery) taskQuery).includeProcessVariables();
+                taskQuery = ((TaskQuery) taskQuery).includeProcessVariables();
             }
 
             if (!StringUtils.isEmpty(soaFilterField)) {
@@ -2357,7 +2357,7 @@ public class ActionTaskService {
                 }
                        
                 if(bIncludeVariablesProcess){
-                    ((TaskQuery) taskQuery).includeProcessVariables();
+                    taskQuery = ((TaskQuery) taskQuery).includeProcessVariables();
                 }
                 
                 if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {

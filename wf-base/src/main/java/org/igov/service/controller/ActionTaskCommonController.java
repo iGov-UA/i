@@ -1872,6 +1872,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                         if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc_")){
                                             checkDocumentIncludesData.add(dataElem);
                                         }
+                                        else{
+                                            totalNumber = totalNumber - 1;
+                                        }
                                     }
                                 }else{
                                     checkDocumentIncludesData.addAll(data);
