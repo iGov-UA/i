@@ -49,6 +49,7 @@
         <activiti:formProperty id="sDocDivideHouse" name="Копія договору про поділ нерухомого майна в натурі (будинку, приміщення); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sOwnershipZemlya" name="Копія документа, що засвідчує право власності або користування земельною ділянкою;засвідчена нотаріально (або органом який видав документ) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShemaZemlya" name="Схема розміщення земельної ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShemaObject" name="Cхема місця розташування об’єкта; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocDivideZemlya" name="Схема розподілу земельної ділянки виконана ліцензованою організацією з підписом виконавця та печаткою організації; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPravoObect" name="Копія правовстановлюючого документа на об'єкт нерухомого майна (наприклад: договір купівлі-продажу, дарування об'єкту); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDovidka" name="Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста;у випадках, передбачених законодавством ;bNew=true" type="file"></activiti:formProperty>
@@ -125,6 +126,7 @@
         <activiti:formProperty id="sDocDivideHouse" name="Копія договору про поділ нерухомого майна в натурі (будинку, приміщення); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOwnershipZemlya" name="Копія документа, що засвідчує право власності або користування земельною ділянкою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShemaZemlya" name="Схема розміщення земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShemaObject" name="Cхема місця розташування об’єкта; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocDivideZemlya" name="Схема розподілу земельної ділянки виконана ліцензованою організацією з підписом виконавця та печаткою організації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPravoObect" name="Копія правовстановлюючого документа на об'єкт нерухомого майна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDovidka" name="Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -335,6 +337,7 @@ var per11 = " "
 var per12 = " "
 var per13 = " "
 var per14 = " "
+var per15 = " "
 if(execution.getVariable('sDocConfidant') != null)
 {
 per3 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
@@ -378,6 +381,10 @@ if(execution.getVariable('sReferenceBTI') != null)
 {
 per14 = "&lt;li&gt;Довідку з БТІ про номер який рекомендовано присвоїти даній споруді.&lt;/li&gt;"
 }
+if(execution.getVariable('sShemaObject') != null)
+{
+per15 = "&lt;li&gt;Схему місця розташування об'єкта".&lt;/li&gt;"
+}
 if((execution.getVariable('sAction') == 'give') || (execution.getVariable('sAction1') == 'get'))
 {
 per11 = 'присвоїти'
@@ -398,8 +405,8 @@ if(execution.getVariable('sAction') == 'renew')
 {
 per11 = 'уточнити'
 }
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+'&lt;/ol&gt;'
-res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+'&lt;/ol&gt;'
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res)
 execution.setVariable('sListDocumentsPrint', res2)
 execution.setVariable('sWordsLetter', per11)</script>
