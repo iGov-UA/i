@@ -2349,7 +2349,7 @@ public class ActionTaskService {
                     LOG.info("Opened JSONValue element in filter {}",JSONValue.toJSONString(taskQuery));
                 }
                 else if("Documents".equalsIgnoreCase(sFilterStatus)){
-                    taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc%");
+                    taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
                 }
                 if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                     ((TaskQuery) taskQuery).orderByTaskCreateTime();

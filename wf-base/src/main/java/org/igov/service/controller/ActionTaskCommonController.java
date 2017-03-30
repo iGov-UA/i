@@ -1862,7 +1862,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				 * if (!StringUtils.isEmpty(soaFilterField)) data =
 				 * filterTasks(data, soaFilterField);
 				 */
-				res.put("data", data);
+                                
+                                List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<Map<String, Object>>();
+                                
+                                if(!"Documents".equals(sFilterStatus)){
+                                    for(Map<String, Object> dataElem : data)
+                                    {
+                                        if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc_")){
+                                            checkDocumentIncludesData.add(dataElem);
+                                        }
+                                    }
+                                }else{
+                                    checkDocumentIncludesData.addAll(data);
+                                }
+                                
+                                
+				res.put("data", checkDocumentIncludesData);
 				res.put("size", nSize);
 				res.put("start", nStart);
 				res.put("order", "asc");
