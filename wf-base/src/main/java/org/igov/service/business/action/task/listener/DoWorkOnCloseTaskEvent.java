@@ -5,15 +5,11 @@
  */
 package org.igov.service.business.action.task.listener;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.igov.service.business.action.event.CloseTaskEvent;
-import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.json.simple.parser.ParseException;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +21,6 @@ import org.slf4j.LoggerFactory;
 public class DoWorkOnCloseTaskEvent implements TaskListener {
 
     private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(DoWorkOnCloseTaskEvent.class);
-
         
     @Autowired
     private CloseTaskEvent closeTaskEvent;
