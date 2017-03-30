@@ -1518,6 +1518,65 @@
           return $sce.trustAsHtml(html);
         };
 
+        $scope.getOrgData = function (code, id) {
+          var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
+          var keys = {activities:'sID_SubjectActionKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
+          function findAndFillOKPOFields(res) {
+            angular.forEach(res.data, function (data, key) {
+              if (key in keys) {
+                for (var i=0; i<$scope.taskForm.length; i++) {
+                  var prop = $scope.taskForm[i].id;
+                  if (prop.indexOf(keys[key]) === 0) {
+                    var checkPostfix = prop.split(/_/),
+                      elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
+                    if (elementPostfix !== null && elementPostfix === fieldPostfix)
+                      $scope.taskForm[i].value = data;
+                  }
+                }
+              }
+            })
+          }
+          function clearFieldsWhenError() {
+            for (var i=0; i<$scope.taskForm.length; i++) {
+              var prop = $scope.taskForm[i].id;
+              if (prop.indexOf('_SubjectOrgan_') > -1) {
+                var checkPostfix = prop.split(/_/),
+                  elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
+                if (elementPostfix !== null && elementPostfix === fieldPostfix && prop.indexOf('sID_SubjectOrgan_OKPO') === -1)
+                  $scope.taskForm[i].value = '';
+              }
+            }
+          }
+          if(code) {
+            $scope.orgIsLoading = {status:true,field:id};
+            tasks.getOrganizationData(code).then(function (res) {
+              $scope.orgIsLoading = {status:false,field:id};
+              if (res.data === '' || res.data.error) {
+                clearFieldsWhenError();
+              } else {
+                findAndFillOKPOFields(res);
+              }
+            });
+          }
+        };
+
+        $scope.isOKPOField = function (i) {
+          if(i){
+            var splitID = i.split(/_/);
+            if (splitID.length === 4 && splitID[1] === 'SubjectOrgan' && splitID[2] === 'OKPO') {
+              return true
+            }
+          }
+        };
+
+        $scope.getBpAndFieldID = function (field) {
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id;
+          } else {
+            return field.id;
+          }
+        };
+
         $rootScope.$broadcast("update-search-counter");
       }
     ])

@@ -5,8 +5,6 @@
  */
 package org.igov.service.business.action.task.listener;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.igov.io.GeneralConfig;
