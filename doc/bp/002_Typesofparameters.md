@@ -32,7 +32,7 @@
 ```
 
 ---
-[детальней...](#enum2)
+[детальней...](#_enum)
 
 ***
 ### enum (checkbox)
@@ -44,7 +44,7 @@
 </activiti:formProperty>
 ```
 ---
-[Детальней...](#enum3)
+[Детальней...](#_enum_)
 
 ***
 ### date
@@ -53,9 +53,8 @@
 <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" required="true"></activiti:formProperty>
 ```
 ---
+[детальней...](#_date)
 
-дата - календарь для выбора даты
-* ![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
 ***
 ### boolean
 ```xml
@@ -332,15 +331,19 @@ Cделает текущее поле нередактируемым для по
 [вернуться...](#string)
 * строка - для текстовых полей ввода (ограничение 256 символов) 
 ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
-### enum2
+### _enum
 [вернуться...](#enum)
 * выпадающий список - для выбора значения из списка 
 
 * ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
-### enum3
+### _enum_
 [вернуться...](#enum (checkbox))
 * чекбокс - доступно только 2 выбора да/нет.
 Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
 Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
 
 * ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
+### _date
+[вернуться...](#date)
+*дата - календарь для выбора даты
+* ![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
