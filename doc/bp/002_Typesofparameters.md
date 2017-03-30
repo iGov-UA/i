@@ -25,7 +25,7 @@
 <activiti:formProperty id="Place" name="Назва поля" type="double"></activiti:formProperty>
 ```
 ***
-### enum
+<### enum>
  
 ```xml
 <activiti:formProperty id="saQuestion1" name="показати поле з данними?" type="enum" default="no">
