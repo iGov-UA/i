@@ -17,7 +17,7 @@ import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightField;
 import org.igov.service.exception.RecordNotFoundException;
-import org.slf4j.Logger;
+import org.slf4j.Logger; 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,7 +57,7 @@ public class DocumentStepService {
     private GenericEntityDao<Long, DocumentStep> oDocumentStepDao;
 
     @Autowired
-    private GenericEntityDao<Long, DocumentStepType> oDocumentStepType;
+    private GenericEntityDao<Long, DocumentStepType> documentStepType;
 
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
@@ -132,7 +132,7 @@ public class DocumentStepService {
             String[] asKey_Step_Split = sKey_Step.split(";");
             sKey_Step = asKey_Step_Split[0];
             if (asKey_Step_Split.length == 2) {
-                oDocumentStepType = oDocumentStepType.findByExpected("name", asKey_Step_Split[1]);
+                oDocumentStepType = documentStepType.findByExpected("name", asKey_Step_Split[1]);
             }
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
