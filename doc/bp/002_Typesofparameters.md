@@ -5,9 +5,9 @@
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 ```
 ---
-### 1 
-* строка - для текстовых полей ввода (ограничение 256 символов) 
-[детальней...](#1)
+
+
+[детальней...](#string_1)
 
 ***
 ### long
@@ -32,9 +32,8 @@
 ```
 
 ---
-выпадающий список - для выбора значения из списка 
+[детальней...](#enum2)
 
-* ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
 ***
 ### enum (checkbox)
 
@@ -45,12 +44,8 @@
 </activiti:formProperty>
 ```
 ---
+[Детальней...](#enum3)
 
-чекбокс - доступно только 2 выбора да/нет.
-Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
-Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
-
-* ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
 ***
 ### date
 
@@ -332,3 +327,20 @@ Cделает текущее поле нередактируемым для по
 ```xml
  <activiti:formProperty id="sString4" name="sString4; ниже добавится HTML с несколькими элементами;;html=&lt;span&gt;Відкити пошукову сторінку &lt;a href=&quot;https://www.google.com.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Google&quot;&gt;Google&lt;/a&gt; або &lt;a href=&quot;https://yandex.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Яндексу&quot;&gt;Яндекс&lt;/a&gt;.&lt;br&gt; Тут HTML-текст закінчується.&lt;/span&gt;" type="string"></activiti:formProperty>
 ```
+### Детальней
+### string_1
+[вернуться...](#string)
+* строка - для текстовых полей ввода (ограничение 256 символов) 
+![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
+### enum2
+[вернуться...](#enum)
+* выпадающий список - для выбора значения из списка 
+
+* ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
+### enum3
+[вернуться...](#enum (checkbox))
+* чекбокс - доступно только 2 выбора да/нет.
+Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
+Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
+
+* ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
