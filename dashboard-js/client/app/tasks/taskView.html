@@ -64,7 +64,7 @@
   <!--форма заявки-->
   <div ng-if="tabHistoryAppeal === 'appeal' && !clarify">
     <form name="form" novalidate style="padding-bottom: 70px">
-      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)">
+      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)" ng-class="getBpAndFieldID(item)">
         <!-- сепаратор -->
         <div class="addition-hr" ng-if="insertSeparator(item.id).bShow">
           <table style="width: 100%; height: auto">
@@ -181,7 +181,7 @@
 
       <!--редактируемые поля для чиновника-->
       <hr class="hr-divider" ng-if="!inUnassigned() && isUnDisabledFields()">
-      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item) && !isFormPropertyDisabled(item)">
+      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item) && !isFormPropertyDisabled(item)" ng-class="getBpAndFieldID(item)">
 
         <!-- сепаратор -->
         <div class="addition-hr" ng-if="insertSeparator(item.id).bShow">
