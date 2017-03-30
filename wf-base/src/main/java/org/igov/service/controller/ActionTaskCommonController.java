@@ -1867,9 +1867,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<Map<String, Object>>();
                                 
                                 if(!"Documents".equals(sFilterStatus)){
-                                    totalNumber = totalNumber - ((TaskInfoQuery) oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
-						sFilterStatus, groupsIds, "Documents")).count();
-                                    
+                                     
                                     for(Map<String, Object> dataElem : data)
                                     {
                                         if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc_")){
