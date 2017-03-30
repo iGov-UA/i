@@ -5,13 +5,10 @@
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 ```
 ---
-### Детальнее
-строка - для текстовых полей ввода (ограничение 256 символов) 
-* ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
-* ![2_33](###enum)
-* ![###enum]
-* ![enum]
-* ![#enum]
+
+
+[детальней...](#1)
+
 ***
 ### long
 ```xml
@@ -20,7 +17,7 @@
 число (целое) - для ввода ЦЕЛЫХ чисел
 ***
 ### double
-число (дробное) - для ввода ДРОБНЫХ чисел (разделитель - точка)  
+<число (дробное) - для ввода ДРОБНЫХ чисел (разделитель - точка)>  
 ```xml
 <activiti:formProperty id="Place" name="Назва поля" type="double"></activiti:formProperty>
 ```
@@ -335,3 +332,8 @@ Cделает текущее поле нередактируемым для по
 ```xml
  <activiti:formProperty id="sString4" name="sString4; ниже добавится HTML с несколькими элементами;;html=&lt;span&gt;Відкити пошукову сторінку &lt;a href=&quot;https://www.google.com.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Google&quot;&gt;Google&lt;/a&gt; або &lt;a href=&quot;https://yandex.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Яндексу&quot;&gt;Яндекс&lt;/a&gt;.&lt;br&gt; Тут HTML-текст закінчується.&lt;/span&gt;" type="string"></activiti:formProperty>
 ```
+
+### 1
+* String детальнее
+* строка - для текстовых полей ввода (ограничение 256 символов) 
+![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
