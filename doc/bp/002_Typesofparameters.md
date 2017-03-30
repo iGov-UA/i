@@ -7,7 +7,7 @@
 ---
 ### Детальнее
 строка - для текстовых полей ввода (ограничение 256 символов) 
-* ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg ###enum)
+* ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
 * ![2_33](###enum)
 * ![###enum]
 * ![enum]
