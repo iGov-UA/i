@@ -10,6 +10,7 @@
 ---
 ### Детальнее
 строка - для текстовых полей ввода (ограничение 256 символов) 
+* ![2_3](https://github.com/e-government-ua/i/edit/test/doc/bp/002_Typesofparameters.md#name1)
 * ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
 ***
 ### long
