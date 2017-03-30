@@ -1788,7 +1788,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			@ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
 			@ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
 			@ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField,
-			@ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "true") Boolean bIncludeVariablesProcess)
+			@ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "false") Boolean bIncludeVariablesProcess)
 			throws CommonServiceException {
 
 		Map<String, Object> res = new HashMap<String, Object>();
@@ -1809,8 +1809,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
 						sFilterStatus, groupsIds, soaFilterField);
                                 LOG.info("taskQuery: ", taskQuery );
-				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
+                                
+                                
+                                Object taskQueryDocument = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
+						sFilterStatus, groupsIds, "Documents");
+                                
+				totalNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                                
+                                long totalDocumentNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
+						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                                
 				LOG.info("Total number of tasks:{}", totalNumber);
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
@@ -1867,7 +1876,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<Map<String, Object>>();
                                 
                                 if(!"Documents".equals(sFilterStatus)){
-                                    
+                                   
+                                    totalNumber = totalNumber - totalDocumentNumber;
                                     for(Map<String, Object> dataElem : data)
                                     {
                                         if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc_")){
