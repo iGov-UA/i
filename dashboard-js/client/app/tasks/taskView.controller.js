@@ -1518,6 +1518,23 @@
           return $sce.trustAsHtml(html);
         };
 
+
+        $scope.getBpAndFieldID = function (field) {
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id;
+          } else {
+            return field.id;
+          }
+        };
+
+        $scope.getFullCellId = function(field, column, row){
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          } else {
+            return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          }
+        };
+
         $rootScope.$broadcast("update-search-counter");
       }
     ])
