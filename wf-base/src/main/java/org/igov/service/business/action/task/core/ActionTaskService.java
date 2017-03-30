@@ -68,6 +68,7 @@ import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
 import org.igov.service.business.subject.SubjectRightBPVO;
 import static org.igov.util.Tool.sO;
+import org.json.simple.JSONValue;
 
 //import org.igov.service.business.access.BankIDConfig;
 /**
@@ -2345,6 +2346,8 @@ public class ActionTaskService {
                     taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
                 } else if ("Opened".equalsIgnoreCase(sFilterStatus)) {
                     taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
+                    JSONObject oJSONTask = new JSONObject(taskQuery);
+                    LOG.info("Opened JSONValue element in filter {}",JSONValue.toJSONString(oJSONTask));
                 }
                 if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                     ((TaskQuery) taskQuery).orderByTaskCreateTime();
