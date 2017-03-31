@@ -5,12 +5,12 @@
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 ``` 
 
-```html
+
 gfdsgfdg
 [SPOILER]
 dfdsgdfsg
 [/SPOILER]
-``` 
+
 
 
 
