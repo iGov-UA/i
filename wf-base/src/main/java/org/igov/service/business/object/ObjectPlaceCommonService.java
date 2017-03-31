@@ -96,7 +96,7 @@ public class ObjectPlaceCommonService {
 			return "{}";
 		}
 
-		LOG.info("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+		LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
 
 		if (sID_SubPlace_PB == null) {
 			LOG.error("Error sID_SubPlace_PB is null");
@@ -122,7 +122,7 @@ public class ObjectPlaceCommonService {
 		}
 		sb.append("]}");
 
-		LOG.info("Response:\n{}\n", sb.toString());
+		LOG.debug("Response:\n{}\n", sb.toString());
 
 		return sb.toString();
 	}
@@ -139,7 +139,7 @@ public class ObjectPlaceCommonService {
 	}
 
 	private List<ObjectAddress> getListAddresses(String sID_SubPlace_PB, String sFind) {
-	    	LOG.info("Start request, sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+	    	LOG.debug("Start request, sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
 
 		List<ObjectAddress> lObjectAddress = null;
 	    
