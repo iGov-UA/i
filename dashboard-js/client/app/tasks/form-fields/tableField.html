@@ -28,7 +28,7 @@
 
       <tr ng-repeat="row in item.aRow track by $index" ng-init="rowIndex=$index">
 
-        <td ng-repeat="field in row.aField track by $index" style="border: 1px solid lightgrey" ng-hide="!isVisible(field)" ng-init=" $last ? onLoad(item) : angular.noop() ">
+        <td ng-repeat="field in row.aField track by $index" style="border: 1px solid lightgrey" ng-hide="!isVisible(field)" ng-init=" $last ? onLoad(item) : angular.noop() " ng-class="getFullCellId(item, $index, rowIndex)">
 
           <div ng-if="['string'].indexOf(field.type) > -1">
             <input class="inputs-in-table"

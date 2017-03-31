@@ -164,7 +164,7 @@ public class DocumentCommonController {
     @ApiOperation(value = "Получение списка подписанных документов без ЕЦП")
     @RequestMapping(value = "/getDocumentSubmitedUnsigned", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     // @Transactional
-    public @ResponseBody String getDocumentSubmitedUnsigned(
+    public @ResponseBody List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(
                     @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
                     throws Exception {
 
@@ -174,12 +174,12 @@ public class DocumentCommonController {
 
             LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
 
-            if (aDocumentSubmitedUnsignedVO != null) {
+            /*if (aDocumentSubmitedUnsignedVO != null) {
                     return JSONValue.toJSONString(aDocumentSubmitedUnsignedVO);
             }
 
-            return "aDocumentSubmitedUnsignedVO is null";
-
+            return "aDocumentSubmitedUnsignedVO is null";*/
+             return aDocumentSubmitedUnsignedVO;
     }
 
 }

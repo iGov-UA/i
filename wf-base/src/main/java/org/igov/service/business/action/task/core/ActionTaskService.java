@@ -68,6 +68,7 @@ import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
 import org.igov.service.business.subject.SubjectRightBPVO;
 import static org.igov.util.Tool.sO;
+import org.json.simple.JSONValue;
 
 //import org.igov.service.business.access.BankIDConfig;
 /**
@@ -2296,6 +2297,10 @@ public class ActionTaskService {
             } else {
                 ((TaskInfoQuery) taskQuery).orderByTaskId();
             }
+                    
+            /*if(taskQuery != null && bIncludeVariablesProcess){
+                taskQuery = ((TaskQuery) taskQuery).includeProcessVariables();
+            }*/
 
             if (!StringUtils.isEmpty(soaFilterField)) {
                 JSONArray oJSONArray = new JSONArray(soaFilterField);
@@ -2345,7 +2350,16 @@ public class ActionTaskService {
                     taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
                 } else if ("Opened".equalsIgnoreCase(sFilterStatus)) {
                     taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
+                    LOG.info("Opened JSONValue element in filter {}",JSONValue.toJSONString(taskQuery));
                 }
+                else if("Documents".equalsIgnoreCase(sFilterStatus)){
+                    taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
+                }
+                       
+                /*if(bIncludeVariablesProcess){
+                    taskQuery = ((TaskQuery) taskQuery).includeProcessVariables();
+                }*/
+                
                 if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                     ((TaskQuery) taskQuery).orderByTaskCreateTime();
                 } else {
@@ -2369,6 +2383,7 @@ public class ActionTaskService {
                 ((TaskQuery) taskQuery).asc();
             }
         }
+
         return taskQuery;
     }
 
