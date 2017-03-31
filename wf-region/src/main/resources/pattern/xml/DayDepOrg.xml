@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='windows-1251'?>
+<schema
+	xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:z="http://nssmc.gov.ua/Schem/DayDepOrg"
+        targetNamespace="http://nssmc.gov.ua/Schem/DayDepOrg"
+        elementFormDefault="qualified">
+    <simpleType name="EDRPOU">
+        <restriction base="string">
+            <maxLength value="12"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="ISIN">
+        <restriction base="string">
+            <maxLength value="12"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="Type254">
+        <restriction base="string">
+            <maxLength value="254"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="Type10">
+        <restriction base="string">
+            <maxLength value="10"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="Type100">
+        <restriction base="string">
+            <maxLength value="100"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="Type3">
+        <restriction base="string">
+            <maxLength value="3"/>
+        </restriction>
+    </simpleType>
+    <element name="root">
+        <complexType>
+            <all>
+                <element name="DTSSuprovod">
+                    <complexType>
+                        <sequence minOccurs="0" maxOccurs="unbounded">
+                            <element name="row">
+                                <complexType>
+                                    <attribute name="ISPDAT" type="dateTime"/>
+                                    <attribute name="VIPRAV" type="string"/>
+                                    <attribute name="TAG" type="string"/>
+                                </complexType>
+                            </element>
+                        </sequence>
+                    </complexType>
+                </element>
+                <element name="DTSZ_OOP">
+                    <complexType>
+                        <sequence minOccurs="1" maxOccurs="unbounded">
+                            <element name="row">
+                                <complexType>
+                                    <attribute name="NN" type="double"/>
+                                    <attribute name="Z_EDRE" type="z:EDRPOU"/>
+                                    <attribute name="E_CNCONR" type="z:Type100"/>
+                                    <attribute name="EDRISI" type="z:Type10"/>
+                                    <attribute name="Z_ENAME" type="z:Type254"/>
+                                    <attribute name="E_UCNTR" type="z:Type3"/>
+                                    <attribute name="Z_ISIN" type="z:ISIN"/>
+                                    <attribute name="Z_CP_CFI" type="z:Type100"/>
+                                    <attribute name="Z_SV" type="z:Type10"/>
+                                    <attribute name="Z_NOM_V" type="double"/>
+                                    <attribute name="CP_VALUT" type="z:Type3"/>
+                                    <attribute name="Z_ZAGV" type="double"/>
+                                    <attribute name="Z_VIDEP" type="z:Type3"/>
+                                    <attribute name="Z_KRAINA" type="z:Type3"/>
+                                    <attribute name="Z_KCP" type="double"/>
+                                    <attribute name="Z_KCP_BL" type="double"/>
+                                    <attribute name="Z_TOBSL" type="z:Type10"/>
+                                    <attribute name="Z_TOPR" type="z:Type10"/>
+                                    <attribute name="Z_TVDOG" type="z:Type3"/>
+                                    <attribute name="DP_DUDOG" type="dateTime"/>
+                                    <attribute name="DP_NDOG" type="z:Type254"/>
+                                    <attribute name="TR_EDRPOU" type="z:EDRPOU"/>
+                                    <attribute name="DP_KERNAME" type="z:Type254"/>
+                                    <attribute name="ZO_PDST" type="z:Type10"/>
+                                    <attribute name="BR_EDRPOU" type="z:EDRPOU"/>
+                                    <attribute name="D_DUCNT" type="dateTime"/>
+                                    <attribute name="D_RCNTR" type="z:Type100"/>
+                                    <attribute name="Z_PRYM" type="string"/>
+                                </complexType>
+                            </element>
+                        </sequence>
+                    </complexType>
+                </element>
+            </all>
+            <attribute name="D_EDRPOU" type="z:EDRPOU"/>
+            <attribute name="D_NAME" type="string"/>
+            <attribute name="STD" type="dateTime"/>
+            <attribute name="FID" type="dateTime"/>
+            <attribute name="NREG" type="string"/>
+            <attribute name="TTYPE" type="string"/>
+        </complexType>
+    </element>
+</schema>

@@ -43,7 +43,7 @@
       title: 'Документи',
       type: tasks.filterTypes.documents,
       count: 0,
-      showCount: false,
+      showCount: true,
       tab: 'documents'
     }, {
       title: 'Мій розклад',
