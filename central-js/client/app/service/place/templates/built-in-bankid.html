@@ -132,11 +132,10 @@
               </div>
 
               <div id="label-{{property.id}}" class="col-md-5"
-                   ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table' && property.type!='label'">
-                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}</span>
-
-                <label class="red-star"
-                       ng-if="isFieldRequired(property)==true">* </label>
+                   ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table' && !(property.type==='label' && isSetClasses(property))">
+                <span ng-if="property.sFieldLabel">
+                  {{property.sFieldLabel}}<span class="red-star" ng-if="isFieldRequired(property)==true">* </span>
+                </span>
 
                 <div class="s-field-notes"
                      ng-if="property.sFieldNotes!=null">
@@ -155,7 +154,7 @@
 
 
               <div id="field-{{property.id}}" class="col-md-3"
-                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table' || property.type === 'label', 'col-md-7': property.type === 'fileHTML'}"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table' || (property.type === 'label' && isSetClasses(property)), 'col-md-7': property.type === 'fileHTML'}"
                    ng-if="showFormField(property)"
                    ng-switch
                    on="property.type">
@@ -706,7 +705,7 @@
                   <div class="fileHTML">
                     <text-angular ta-toolbar="[ ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'fontColor'],
                                                 ['bold', 'italics', 'underline', 'ul', 'ol', 'insertLink'],
-                                                ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent']]"
+                                                ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent', 'clear']]"
                                   ng-model="data.formData.params[property.id].value"
                                   name="{{property.id}}"
                                   ng-required="isFieldRequired(property)"

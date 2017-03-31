@@ -11,7 +11,7 @@
   }
 </style>
 <form name="form" novalidate style="margin-top: 30px" ng-class="{'padding-bottom-280': inUnassigned()}">
-  <div ng-repeat="item in taskForm" class="task-form-property" ng-if="isFieldVisible(item)">
+  <div ng-repeat="item in taskForm" class="task-form-property" ng-if="isFieldVisible(item)" ng-class="getBpAndFieldID(item)">
 
           <span ng-if="['string', 'long'].indexOf(item.type) > -1 && item.value" style="margin-bottom: 10px">
             <span>

@@ -216,6 +216,9 @@ var all = {
       secure: (config.getProperty('BackProxySession_Region.bSecure_BackProxySession_Region')  === "TRUE") || process.env.SESSION_SECURE,
       maxAge: config.getProperty('BackProxySession_Region.nLiveMS_BackProxySession_Region') || process.env.SESSION_MAX_AGE
     }
+  },
+  databot: {
+    key: config.getProperty('sDataBotApiKey') || process.env.sDataBotApiKey
   }
 };
 

@@ -633,7 +633,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages,
-            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "true") Boolean bIncludeProcessVariables)
+            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -1788,7 +1788,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			@ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
 			@ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
 			@ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField,
-			@ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "true") Boolean bIncludeVariablesProcess)
+			@ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "false") Boolean bIncludeVariablesProcess)
 			throws CommonServiceException {
 
 		Map<String, Object> res = new HashMap<String, Object>();
@@ -1805,12 +1805,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
 				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
 				long totalNumber = 0;
+                                
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
 						sFilterStatus, groupsIds, soaFilterField);
-                LOG.info("taskQuery: ", taskQuery );
+                                LOG.info("taskQuery: ", taskQuery );
+                                
+                                
+                                /*Object taskQueryDocument = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
+						"Documents", groupsIds, soaFilterField);*/
+                                
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                                
+                                /*long totalDocumentNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
+						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                                
 				LOG.info("Total number of tasks:{}", totalNumber);
+                                LOG.info("Total number of Documents:{}", totalNumber);*/
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
 
@@ -1862,12 +1873,40 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				 * if (!StringUtils.isEmpty(soaFilterField)) data =
 				 * filterTasks(data, soaFilterField);
 				 */
-				res.put("data", data);
+                                
+                                List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<Map<String, Object>>();
+                                
+                                if(!"Documents".equals(sFilterStatus)){
+                                   
+                                    for(Map<String, Object> dataElem : data)
+                                    {
+                                        if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc_")){
+                                            
+                                            if(bIncludeVariablesProcess){
+                                                dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
+                                            }
+                                            checkDocumentIncludesData.add(dataElem);
+                                            totalNumber = totalNumber - 1;
+                                        }
+                                    }
+                                }else{
+                                    
+                                    for(Map<String, Object> dataElem : data)
+                                    {
+                                        if(bIncludeVariablesProcess){
+                                            dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
+                                        }
+                                        checkDocumentIncludesData.add(dataElem);
+                                    }
+                                }
+                                
+                                
+				res.put("data", checkDocumentIncludesData);
 				res.put("size", nSize);
 				res.put("start", nStart);
 				res.put("order", "asc");
 				res.put("sort", "id");
-				res.put("total", totalNumber);
+				res.put("total", checkDocumentIncludesData.size());
 			}
 		} catch (Exception e) {
 			LOG.error("Error occured while getting list of tasks", e);

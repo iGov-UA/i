@@ -31,7 +31,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="&lt;a href=&quot; https://drive.google.com/open?id=1eT5aMmb8GxhzcPL4kUzWJQ7BNJ9WtggAnqftMVvi-SM&quot; target=&quot;_blank&quot;&gt;Вимоги до характеристики розташування проммайданчика&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="nDocComp" name="Характеристика розташування проммайданчика підприємства на карті-схемі міста підписаний ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;asDocTime&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCompType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBuild'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Маркеры" type="markers" default="${markerService.loadFromFile('eco/eco_0033_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса департаменту екології; ;bVisible=false" type="string" default="м. Дніпро, вул. Лабораторна, 69"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон департаменту екології; ;bVisible=false" type="string" default="(0562) 46-32-81 або (0562) 46-41-61"></activiti:formProperty>
@@ -90,6 +90,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sReestrNum" name="Номер реєстрації звернення у канцелярії" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для отримання довідки у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nDocComp" name="Характеристика розташування проммайданчика підприємства на карті-схемі міста підписаний ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/eco/eco_fonConts1.html]; ;bVisible=false" type="string" default="Дані по заявці" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
