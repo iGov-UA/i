@@ -1006,6 +1006,7 @@ public class ObjectFileCommonController {
 
             if(file != null){
                 sData = new String(file.getBytes());
+                LOG.info("added file is not null");
             } else if (sData == null || sData.equals("")){
                 throw new IllegalArgumentException("Bad request! Context not found");
             }
