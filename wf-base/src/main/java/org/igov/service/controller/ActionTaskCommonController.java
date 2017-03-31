@@ -1811,16 +1811,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 LOG.info("taskQuery: ", taskQuery );
                                 
                                 
-                                Object taskQueryDocument = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
-						"Documents", groupsIds, soaFilterField);
+                                /*Object taskQueryDocument = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
+						"Documents", groupsIds, soaFilterField);*/
                                 
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
                                 
-                                long totalDocumentNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
+                                /*long totalDocumentNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
                                 
 				LOG.info("Total number of tasks:{}", totalNumber);
+                                LOG.info("Total number of Documents:{}", totalNumber);*/
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
 
@@ -1877,7 +1878,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 
                                 if(!"Documents".equals(sFilterStatus)){
                                    
-                                    totalNumber = totalNumber - totalDocumentNumber;
                                     for(Map<String, Object> dataElem : data)
                                     {
                                         if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc_")){
@@ -1886,7 +1886,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                                 dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
                                             }
                                             checkDocumentIncludesData.add(dataElem);
-                                            
+                                            totalNumber = totalNumber - 1;
                                         }
                                     }
                                 }else{
@@ -1906,7 +1906,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				res.put("start", nStart);
 				res.put("order", "asc");
 				res.put("sort", "id");
-				res.put("total", totalNumber);
+				res.put("total", checkDocumentIncludesData.size());
 			}
 		} catch (Exception e) {
 			LOG.error("Error occured while getting list of tasks", e);

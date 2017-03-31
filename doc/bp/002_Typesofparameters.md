@@ -4,6 +4,16 @@
 ```xml
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 ``` 
+
+
+gfdsgfdg
+[SPOILER]
+dfdsgdfsg
+[/SPOILER]
+
+
+
+
 [детальней...](#_string)
 
 ### long
