@@ -6,7 +6,6 @@
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Создание документа">
@@ -22,32 +21,14 @@
         <activiti:formProperty id="sNumberDocPreview" name="№ карточки согласованного ранее договора" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNamePartner" name="Наименование контрагента" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTextContrtact" name="Текст договора" type="fileHTML" required="true"></activiti:formProperty>
-    
-        <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;ПІДРЯДНИК&quot;}}}"></activiti:formProperty>
-       
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Найменування скорочене" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRequisites_01" name="Реквизиты для оплаты" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContact_01" name="Контактные данные" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers_02" name="лінія ЄДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;ЗАМОВНИК&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Найменування скорочене" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRequisites_02" name="Реквизиты для оплаты" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sContact_02" name="Контактные данные" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
+         <activiti:formProperty id="markersLine_1" name="лінія фізична особа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
+        
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sApprover" name="Утверждающий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole_sApprover" name="Логін" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddressee" name="Адресат; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole_sAddressee" name="Логін" type="string"></activiti:formProperty>
-      
+        <activiti:formProperty id="sName_Approver_First" name="Утверждающий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel,sName_SubjectRole=sLogin_Approver_First" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_Approver_First" name="Логін" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Name_Addressee_Second" name="Адресат; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel,sName_SubjectRole=sLogin_Addressee_Second" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_Addressee_Second" name="Логін" type="string"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum" default="sEnumEditing">
           <activiti:value id="sEnumEditing" name="не отправлять за визами"></activiti:value>
           <activiti:value id="sEnumSighting" name="отправить за визами"></activiti:value>
@@ -461,7 +442,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <omgdi:waypoint x="666.0" y="130.0"></omgdi:waypoint>
         <omgdi:waypoint x="759.0" y="131.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="666.0" y="130.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="52.0" x="666.0" y="130.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
@@ -502,7 +483,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <omgdi:waypoint x="470.0" y="312.0"></omgdi:waypoint>
         <omgdi:waypoint x="471.0" y="173.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="570.0" y="299.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="55.0" x="570.0" y="299.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
@@ -513,7 +494,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <omgdi:waypoint x="470.0" y="340.0"></omgdi:waypoint>
         <omgdi:waypoint x="471.0" y="173.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="470.0" y="328.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="28.0" x="470.0" y="328.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
@@ -525,7 +506,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <omgdi:waypoint x="811.0" y="482.0"></omgdi:waypoint>
         <omgdi:waypoint x="699.0" y="482.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="730.0" y="467.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="76.0" x="730.0" y="467.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
