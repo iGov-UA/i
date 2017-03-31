@@ -1906,7 +1906,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				res.put("start", nStart);
 				res.put("order", "asc");
 				res.put("sort", "id");
-				res.put("total", totalNumber);
+				res.put("total", checkDocumentIncludesData.size());
 			}
 		} catch (Exception e) {
 			LOG.error("Error occured while getting list of tasks", e);
