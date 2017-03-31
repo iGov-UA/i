@@ -23,8 +23,8 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Кому дать права на следующую ЮТ; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_AutorResolution_First" name="Кому дать права на следующую ЮТ; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel,sName_SubjectRole=sLogin_AutorResolution_First" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_AutorResolution_First" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -36,7 +36,7 @@
     <scriptTask id="scripttask2" name="клонирование прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//Клонування прав для керівника
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_GroupPostfix_New = execution.getVariable('sName_SubjectRole')
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution_First')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')</script>
     </scriptTask>
     <userTask id="usertask2" name="2 - подпись руководителя">
@@ -46,7 +46,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логин руководителя" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_AutorResolution_First" name="Логин руководителя" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
@@ -67,7 +67,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <scriptTask id="scripttask3" name="проверка подписей всех" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 		var nID_Process = execution.getProcessInstanceId();
-		var sLogin = execution.getVariable('sName_SubjectRole')
+		var sLogin = execution.getVariable('sLogin_AutorResolution_First')
 		var sKey_Step = execution.getVariable('sKey_Step_Document')
 		var obj3= documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)
 execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
