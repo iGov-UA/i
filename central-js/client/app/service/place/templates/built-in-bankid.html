@@ -133,10 +133,9 @@
 
               <div id="label-{{property.id}}" class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
-                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}</span>
-
-                <label class="red-star"
-                       ng-if="isFieldRequired(property)==true">* </label>
+                <span ng-if="property.sFieldLabel">
+                    {{property.sFieldLabel}}<label class="red-star" ng-if="isFieldRequired(property)==true">* </label>
+                </span>                
 
                 <div class="s-field-notes"
                      ng-if="property.sFieldNotes!=null">
