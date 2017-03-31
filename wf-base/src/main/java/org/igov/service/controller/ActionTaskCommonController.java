@@ -1812,12 +1812,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 
                                 
                                 Object taskQueryDocument = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
-						sFilterStatus, groupsIds, "Documents");
+						"Documents", groupsIds, soaFilterField);
                                 
-				totalNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
+				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
                                 
-                                long totalDocumentNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
+                                long totalDocumentNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
                                 
 				LOG.info("Total number of tasks:{}", totalNumber);
