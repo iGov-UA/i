@@ -383,7 +383,7 @@
 
         function downloadFileHTMLContent() {
           angular.forEach($scope.taskForm, function (i, k, o) {
-            if(i.type === 'fileHTML') {
+            if(i.type === 'fileHTML' && i.value && i.value.indexOf('sKey') > -1) {
               tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, i.id, true).then(function (res) {
                 o[k].value = res;
               })
@@ -519,10 +519,6 @@
             return item.name + '.' + ext;
           }
           return item.name;
-        };
-
-        $scope.takeTheKeyFromJSON = function (item) {
-          return JSON.parse(item.value).sKey;
         };
 
         $scope.clarify = false;
@@ -1517,7 +1513,6 @@
         $scope.viewTrustedHTMLContent = function (html) {
           return $sce.trustAsHtml(html);
         };
-
         $scope.getOrgData = function (code, id) {
           var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
           var keys = {activities:'sID_SubjectActionKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
@@ -1530,7 +1525,19 @@
                     var checkPostfix = prop.split(/_/),
                       elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
                     if (elementPostfix !== null && elementPostfix === fieldPostfix)
-                      $scope.taskForm[i].value = data;
+                      if(prop.indexOf('sID_SubjectActionKVED') > -1) {
+                        var onlyKVEDNum = data.match(/\d{1,2}[\.]\d{1,2}/),
+                          onlyKVEDText = data.split(onlyKVEDNum)[1].trim(),
+                          pieces = prop.split('_');
+                        onlyKVEDNum.length !== 0 ? $scope.taskForm[i].value = onlyKVEDNum[0] : $scope.taskForm[i].value = data;
+
+                        pieces.splice(0, 1, 'sNote_ID');
+                        var autocompleteKVED = pieces.join('_');
+                        if(prop === autocompleteKVED)
+                          $scope.taskForm[i].value = onlyKVEDText;
+                      } else {
+                        $scope.taskForm[i].value = data;
+                      }
                   }
                 }
               }
@@ -1539,7 +1546,7 @@
           function clearFieldsWhenError() {
             for (var i=0; i<$scope.taskForm.length; i++) {
               var prop = $scope.taskForm[i].id;
-              if (prop.indexOf('_SubjectOrgan_') > -1) {
+              if ($scope.data.formData.params.hasOwnProperty(prop) && prop.indexOf('_SubjectOrgan_') > -1) {
                 var checkPostfix = prop.split(/_/),
                   elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
                 if (elementPostfix !== null && elementPostfix === fieldPostfix && prop.indexOf('sID_SubjectOrgan_OKPO') === -1)
