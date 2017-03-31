@@ -84,11 +84,7 @@ public class ObjectPlaceCommonService {
 	 * ]}
 	 * 
 	 * Адреса ищуться по коду места sID_SubPlace_PB, опционально можно отфильтровать результат указав подстроку в наименовании адреса.
-	 * 
-	 * Программа кеширует объекты запросов. Объекты заносяться в кеш - sID_SubPlace_PB, там они привязаны к ключу sID_SubPlace_PB.
-	 * 
-	 * Данные в кеш добавляются только если не задан, ограничивающий запрос, параметр sFind.
-	 * 
+	 * Программа кеширует объекты запросов.
 	 */
 	public String getSubPlaces_(String sID_SubPlace_PB, String sFind) {
 		if (!isReadyWork) {
@@ -96,7 +92,7 @@ public class ObjectPlaceCommonService {
 			return "{}";
 		}
 
-		LOG.info("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+		LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
 
 		if (sID_SubPlace_PB == null) {
 			LOG.error("Error sID_SubPlace_PB is null");
@@ -109,7 +105,7 @@ public class ObjectPlaceCommonService {
 		    return NULL_RESPONSE;
 		}
 
-		StringBuffer sb = new StringBuffer(lObjectAddress.size() * 50);
+		StringBuffer sb = new StringBuffer(lObjectAddress.size() * 65);
 		sb.append("{\"listAddress\":[");
 		int i = 0;
 		for (ObjectAddress objectAddress : lObjectAddress) {
@@ -122,7 +118,7 @@ public class ObjectPlaceCommonService {
 		}
 		sb.append("]}");
 
-		LOG.info("Response:\n{}\n", sb.toString());
+		LOG.debug("Response:\n{}\n", sb.toString());
 
 		return sb.toString();
 	}
@@ -139,7 +135,7 @@ public class ObjectPlaceCommonService {
 	}
 
 	private List<ObjectAddress> getListAddresses(String sID_SubPlace_PB, String sFind) {
-	    	LOG.info("Start request, sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+	    	LOG.debug("Start request, sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
 
 		List<ObjectAddress> lObjectAddress = null;
 	    
