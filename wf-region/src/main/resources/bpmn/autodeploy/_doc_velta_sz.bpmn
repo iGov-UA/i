@@ -71,7 +71,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
-        
         <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення стосовно пропозиції" type="enum" required="true">
           <activiti:value id="sReject" name="відмовити у розгляді"></activiti:value>
@@ -80,12 +79,21 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_velta_sz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersUser1" name="Маркер видимости" type="markers" default="${markerService.loadFromFile('velta/_doc_velta_sz_ut3.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
-          <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[_task_velta]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable1}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[asUrgently::${asUrgently};;sName_SubjectRole::${sName_SubjectRole};;sContent::${sContent};;sComment::${sComment};;sTypeDoc::${sTypeDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -121,7 +129,7 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
     </serviceTask>
     <sequenceFlow id="flow61" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow52" sourceRef="exclusivegateway3" targetRef="scripttask5">
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway3" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sAccept'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask5" name="переключение степа на 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -132,7 +140,6 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 // клонирование прав
 var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_Velta_Answ', 'sTable1', 'step_3')</script>
     </scriptTask>
-    <sequenceFlow id="flow53" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
     <userTask id="usertask5" name="Відповідальний підрозділ. Підготовка відповіді на пропозицію">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -142,7 +149,6 @@ var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="sName_SubjectRole" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sExecutor" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
@@ -161,21 +167,12 @@ var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow39" sourceRef="usertask5" targetRef="scripttask8"></sequenceFlow>
     <scriptTask id="scripttask8" name="Проверка подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
 var sKey_Step = execution.getVariable('sKey_Step_Document')
 var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
 execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
     </scriptTask>
-    <sequenceFlow id="flow60" sourceRef="scripttask8" targetRef="exclusivegateway1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow40" sourceRef="exclusivegateway1" targetRef="usertask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow62" sourceRef="exclusivegateway1" targetRef="scripttask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'true'}]]></conditionExpression>
-    </sequenceFlow>
     <scriptTask id="scripttask7" name="переключение степа на 4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
@@ -304,16 +301,13 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
         <omgdc:Bounds height="35.0" width="35.0" x="620.0" y="218.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
-        <omgdc:Bounds height="61.0" width="141.0" x="320.0" y="280.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="141.0" x="88.0" y="301.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="91.0" width="141.0" x="320.0" y="361.0"></omgdc:Bounds>
+        <omgdc:Bounds height="91.0" width="141.0" x="88.0" y="380.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
-        <omgdc:Bounds height="55.0" width="141.0" x="320.0" y="470.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="564.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="88.0" y="499.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
         <omgdc:Bounds height="61.0" width="141.0" x="320.0" y="630.0"></omgdc:Bounds>
@@ -363,28 +357,6 @@ e-mail: office@velta-ua.com<br>]]></activiti:expression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="390.0" y="255.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="280.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="390.0" y="341.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="361.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="390.0" y="452.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="470.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="390.0" y="525.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="564.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="370.0" y="584.0"></omgdi:waypoint>
-        <omgdi:waypoint x="249.0" y="584.0"></omgdi:waypoint>
-        <omgdi:waypoint x="249.0" y="407.0"></omgdi:waypoint>
-        <omgdi:waypoint x="320.0" y="406.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="390.0" y="604.0"></omgdi:waypoint>
         <omgdi:waypoint x="390.0" y="630.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
