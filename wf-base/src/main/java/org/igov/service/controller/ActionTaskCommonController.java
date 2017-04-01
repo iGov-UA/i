@@ -1887,7 +1887,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                                 dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
                                             }
                                             checkDocumentIncludesData.add(dataElem);
-                                            documentListSize++;
                                                 //totalNumber = totalNumber - 1;
                                         }
                                     }
@@ -1909,7 +1908,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				res.put("start", nStart);
 				res.put("order", "asc");
 				res.put("sort", "id");
-				res.put("total", tasks.size() - documentListSize);
+                                
+                                if("Documents".equalsIgnoreCase(sFilterStatus)){
+                                    res.put("total", totalNumber);
+                                }else{
+                                    res.put("total", checkDocumentIncludesData.size());
+                                }
 			}
 		} catch (Exception e) {
 			LOG.error("Error occured while getting list of tasks", e);
