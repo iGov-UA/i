@@ -1932,11 +1932,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 if("Documents".equalsIgnoreCase(sFilterStatus)){
                                     res.put("total", totalNumber);
                                 }else{
-                                    LOG.info("documentListSize {}", documentListSize);
-                                    LOG.info("total count {}", totalNumber);
-                                    LOG.info("tasks.size is {}", tasks.size());
-                                    
-                                    res.put("total", checkDocumentIncludesData.size());
+                                    res.put("total", totalCountServices);
                                 }
 			}
 		} catch (Exception e) {
