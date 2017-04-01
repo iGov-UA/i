@@ -13,7 +13,71 @@
 execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <userTask id="usertask1" name="Підготовка проекту договору"></userTask>
+    <userTask id="usertask1" name="Підготовка проекту договору">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        
+        
+        
+        
+        
+        <activiti:formProperty id="sPreamble" name="Преамбула" type="fileHTML" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sHeader_1st" name="1-й блок договору (заголовок)" type="string" default="1.Предмет договору"></activiti:formProperty>
+        <activiti:formProperty id="sContent_1st" name="Вміст першого блоку" type="fileHTML"></activiti:formProperty>
+        
+        <activiti:formProperty id="sHeader_2nd" name="2-й блок договору (заголовок)" type="string" default="2.Вартість і порядок взаєморозрахунків"></activiti:formProperty>
+        <activiti:formProperty id="sContent_2nd" name="Вміст другого блоку" type="fileHTML"></activiti:formProperty>
+        
+        <activiti:formProperty id="sHeader_3rd" name="3-й блок договору (заголовок)" type="string" default="3.Порядок виконання робіт"></activiti:formProperty>
+        <activiti:formProperty id="sContent_3rd" name="Вміст третього блоку" type="fileHTML"></activiti:formProperty>
+        
+        <activiti:formProperty id="sHeader_4th" name="4-й блок договору (заголовок)" type="string" default="4.Порядок здачі та приймання робіт"></activiti:formProperty>
+        <activiti:formProperty id="sContent_4th" name="Вміст четвертого блоку" type="fileHTML"></activiti:formProperty>
+        
+        <activiti:formProperty id="sHeader_5th" name="5-й блок договору (заголовок)" type="string" default="5.Відповідальність сторін"></activiti:formProperty>
+        <activiti:formProperty id="sContent_5th" name="Вміст п'ятого блоку" type="fileHTML"></activiti:formProperty>
+        
+        <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string" default="6.Форс-мажорні обставини"></activiti:formProperty>
+        <activiti:formProperty id="sContent_6th" name="Вміст шостого блоку" type="fileHTML"></activiti:formProperty>
+        
+        
+        
+        
+        
+        <activiti:formProperty id="sNumberRecomendation" name="№ рекомендации ТК" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateRecomendation" name="Дата рекомендации ТК" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectContract" name="Предмет договора" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocPreview" name="№ карточки согласованного ранее договора" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNamePartner" name="Наименование контрагента" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTextContrtact" name="Текст договора" type="fileHTML" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
+         <activiti:formProperty id="markersLine_1" name="лінія фізична особа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sName_Approver_First" name="Утверждающий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel,sName_SubjectRole=sLogin_Approver_First" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_Approver_First" name="Логін" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Name_Addressee_Second" name="Адресат; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel,sName_SubjectRole=sLogin_Addressee_Second" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_Addressee_Second" name="Логін" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum" default="sEnumEditing">
+          <activiti:value id="sEnumEditing" name="не отправлять за визами"></activiti:value>
+          <activiti:value id="sEnumSighting" name="отправить за визами"></activiti:value>
+          <activiti:value id="sEnumEnd" name="удалить"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_dogovor_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_btsol]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>

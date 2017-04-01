@@ -78,6 +78,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.activiti.engine.task.NativeTaskQuery;
 
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
@@ -1808,23 +1809,41 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
 						sFilterStatus, groupsIds, soaFilterField);
-                                LOG.info("taskQuery: ", taskQuery );
+                               // LOG.info("taskQuery: ", taskQuery );
                                 
+                                totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
+						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                                LOG.info("total count before processing is: {}", totalNumber);
                                 
+                                long totalCountServices = 0;
+                                
+                                if(!"Documents".equalsIgnoreCase(sFilterStatus)){
+                                    List<TaskInfo> aTaskInfo = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
+                                                        : (List) ((NativeTaskQuery) taskQuery).list();
+                                    if(aTaskInfo != null){
+                                        LOG.info("all tasks size is {}", aTaskInfo.size());
+                                        for(TaskInfo oTaskInfo : aTaskInfo){
+                                            if(!oTaskInfo.getProcessDefinitionId().startsWith("_doc")){
+                                                totalCountServices++;
+                                            }
+                                        }
+                                    }else{
+                                        LOG.info("all tasks is null");
+                                    }
+                                }
+                                
+                                LOG.info("totalCountServices is {}", totalCountServices);
                                 /*Object taskQueryDocument = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
 						"Documents", groupsIds, soaFilterField);*/
                                 
-				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
-						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
-                                
-                                /*long totalDocumentNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
+				/*long totalDocumentNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
                                 
 				LOG.info("Total number of tasks:{}", totalNumber);
                                 LOG.info("Total number of Documents:{}", totalNumber);*/
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
-                                LOG.info("tasks size in filter is {}", tasks.size());
+                                //LOG.info("tasks size in filter is {}", tasks.size());
 				// this while is intended to work until we either pass through
 				// all the tasks or select needed number of tickets
 				long sizeOfTasksToSelect = nSize;
@@ -1888,6 +1907,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                             }
                                             checkDocumentIncludesData.add(dataElem);
                                                 //totalNumber = totalNumber - 1;
+                                            documentListSize++;
                                         }
                                     }
                                 }else{
@@ -1912,7 +1932,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 if("Documents".equalsIgnoreCase(sFilterStatus)){
                                     res.put("total", totalNumber);
                                 }else{
-                                    res.put("total", checkDocumentIncludesData.size());
+                                    res.put("total", totalCountServices);
                                 }
 			}
 		} catch (Exception e) {
