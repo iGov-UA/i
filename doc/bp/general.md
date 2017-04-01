@@ -223,7 +223,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 **type** - тип переменной. Преобразования типов нет. Обязательный атрибут.
 
-[детальней...](#_Variable Attributes (Атрибуты переменных))
+[детальней...](#_Variable Attributes)
 
 
 003_ReservedandSystemVariables.md
