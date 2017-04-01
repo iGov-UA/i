@@ -56,6 +56,7 @@
 
 002_Typesofparameters.md
 # Типы переменных
+
 ### string
 
 ```xml
@@ -145,6 +146,7 @@ dfdsgdfsg
 ### file (New)
 В связи с проблемой с пропавшими файлами, был проведен большой рефакторинг, в результате которого реализована новая схема работы с аттачами, при этом остается функциональной и продолжает работать старая схема.  
 Рекомендуется Топ-процессы переводить на новую схему аттачей – с ней файлы не будут теряться.
+
 [детальней...](#_file (New))
 
 
@@ -154,6 +156,7 @@ dfdsgdfsg
 <activiti:formProperty id="application_name" name="В цьому полі надайте перелік усіх додатків та специфікацій до договору" 
 type="textArea"></activiti:formProperty>
 ``` 
+
 [детальней...](#_textArea)
 
 ***
@@ -163,6 +166,7 @@ type="textArea"></activiti:formProperty>
 <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації народження?"
 type="queueData" required="true"></activiti:formProperty>
 ```
+
 [детальней...](#_queueData)
 
 
@@ -175,7 +179,8 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
 ```
-[детальней...](#_ invisible)
+
+[детальней...](#_invisible)
 
 ***
 ### select
@@ -184,12 +189,14 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення" type="select" default="0"></activiti:formProperty>
 ```
+
 [детальней...](#_select)
 
 
 ***
 ### table
 отображается в виде таблицы, в которую может быть добавлено произвольное количество строк. В коде задается шапка таблицы, которая потом клонируется. Для каждого столбца задаются отдельные параметры. Внутри таблицы поддерживаются типы данных: string, date, long, select, enum.
+
 [детальней...](#_table)
 
 ### line
@@ -206,6 +213,7 @@ type="queueData" required="true"></activiti:formProperty>
   }
 }
 ```
+
 [детальней...](#_line)
 
 ***
@@ -214,6 +222,7 @@ type="queueData" required="true"></activiti:formProperty>
 **id** - уникальный идентификатор переменной. Обязательный атрибут.
 
 **type** - тип переменной. Преобразования типов нет. Обязательный атрибут.
+
 [детальней...](#_Атрибуты переменных)
 
 
