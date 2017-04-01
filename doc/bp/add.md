@@ -242,8 +242,34 @@ Cделает текущее поле нередактируемым для по
 ```xml
  <activiti:formProperty id="sString4" name="sString4; ниже добавится HTML с несколькими элементами;;html=&lt;span&gt;Відкити пошукову сторінку &lt;a href=&quot;https://www.google.com.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Google&quot;&gt;Google&lt;/a&gt; або &lt;a href=&quot;https://yandex.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Яндексу&quot;&gt;Яндекс&lt;/a&gt;.&lt;br&gt; Тут HTML-текст закінчується.&lt;/span&gt;" type="string"></activiti:formProperty>
 ```
+003_ReservedandSystemVariables.md
+### _Attributes BankID
+
+[вернуться...](#Attributes BankID)
+* **bankId_scan_passport** - file - скан паспорта гражданина
+* **bankIdAddressFactual** - string - адрес регистрации гражданина
+* **bankIdAddressFactual_country** - string/invisible - страна 
+* **bankIdAddressFactual_state** - string/invisible - область
+* **bankIdAddressFactual_area** - string/invisible - район
+* **bankIdAddressFactual_city** - string/invisible - город
+* **bankIdAddressFactual_street** - string/invisible - улица
+* **bankIdAddressFactual_houseNo** - string/invisible - дом
+* **bankIdAddressFactual_flatNo** - string/invisible - квартира регистрации
+* **bankIdinn** - string - инн заявителя
+* **bankIdbirthDay** - string - дата рождения гражданина (у форматі ДД.ММ.РРРР)
+* **bankIdemail** - string - емейл гражданина
+* **bankIdphone** - string -телефон гражданина
+* **bankIdsID_Country** - string - гражданство
+* **bankId_scan_inn** - file - Скан копия ИНН гражданина
+* ![3_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_0.JPG)
+
+### _Reserved variables for electronic queues
+
+[вернуться...](#Reserved variables for electronic queues)
+* ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
 Installationeclipse.md
 ### _Устанавливаем JAVA JDK
+
 [вернуться...](#Устанавливаем JAVA JDK)
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sQlE3TUh3ZmpiUGM)  
 3. Устанавливаем скачанный файл, без изменений, со всем соглашаемся, можно выбрать свою директорию.  
