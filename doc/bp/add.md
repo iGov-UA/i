@@ -138,3 +138,13 @@ http://download.eclipse.org/technology/m2e/releases
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_say1QMElyNTlBdGM)  
 * Руками прописываем кодировку cp1251 на вкладке Общие (Common)
 * ![ecl1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/ecl1.JPG)
+
+### _Ставим дополнительные утилиты для удобства редактирования JSON и HTML
+[вернуться...](#Ставим дополнительные утилиты для удобства редактирования JSON и HTML)
+![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_saWRQWTdOVGdTRW8)  
+![2](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sRWx6dEs0aDNJY0E)  
+3. приложения JSON дает возможность открыть окно для редактирования или валидации JSON  
+![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sekgtZzdHWWo4b00)  
+а также можно настроить как будет форматироваться JSON  если нажать комбинацию ctrl + shift + F  
+![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sZzdCMmg0Rm13djQ)  
+
