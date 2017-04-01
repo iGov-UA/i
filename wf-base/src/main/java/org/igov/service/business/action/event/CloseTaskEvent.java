@@ -119,14 +119,14 @@ public class CloseTaskEvent {
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 LOG.info("11111sUserTaskName before : " + snID_Process);// new log не меняется статус
                 
-                List<String> aUserType = repositoryService.getBpmnModel((sProcessName.split(":"))[0]).getUserTaskFormTypes();
-                Map<String, ItemDefinition> mItemDefinition = repositoryService.getBpmnModel((sProcessName.split(":"))[0]).getItemDefinitions();
-                Map<String, MessageFlow> mMessageFlow = repositoryService.getBpmnModel((sProcessName.split(":"))[0]).getMessageFlows();
+                /*List<String> aUserType = repositoryService.getBpmnModel(sProcessName).getUserTaskFormTypes();
+                Map<String, ItemDefinition> mItemDefinition = repositoryService.getBpmnModel(sProcessName).getItemDefinitions();
+                Map<String, MessageFlow> mMessageFlow = repositoryService.getBpmnModel(sProcessName).getMessageFlows();
                 LOG.info("aUserType is: {}", aUserType);
                 LOG.info("mItemDefinition is: {}", mItemDefinition);
-                LOG.info("mMessageFlow is: {}", mMessageFlow);
+                LOG.info("mMessageFlow is: {}", mMessageFlow);*/
                 
-                Map<String, DiagramElement> mBpSchema = repositoryService.getProcessDiagramLayout((sProcessName.split(":"))[0]).getElements();
+                Map<String, DiagramElement> mBpSchema = repositoryService.getProcessDiagramLayout(sProcessName).getElements();
                 
                 for(String key : mBpSchema.keySet()){
                     DiagramElement oDiagramElement = mBpSchema.get(key);
