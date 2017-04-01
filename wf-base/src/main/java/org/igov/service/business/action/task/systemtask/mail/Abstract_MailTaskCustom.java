@@ -801,7 +801,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String sBodySource = getStringFromFieldExpression(text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
 
-//        saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
+        //saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
 
         Mail oMail = context.getBean(Mail.class);
 
@@ -823,7 +823,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
         //return oMail;
     }
-    
+
     private String getFormattedDate(Date date) {
         if (date == null) {
             return StringUtils.EMPTY;

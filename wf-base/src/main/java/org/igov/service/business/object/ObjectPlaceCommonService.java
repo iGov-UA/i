@@ -1,249 +1,237 @@
 package org.igov.service.business.object;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.igov.io.GeneralConfig;
-import org.igov.service.business.promin.ProminSession_Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.igov.io.web.RestRequest;
+import org.igov.util.cache.CachedInvocationBean;
+import org.springframework.http.HttpHeaders;
 
 @Component("ObjectPlaceCommonService")
 @Service
 public class ObjectPlaceCommonService {
-    private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonService.class);
+	private static final String GET_SERVICE_SUB_PLACES_CACHE_KEY = "ObjectPlaceCommonService.getSubPlaces_";
 
-//    private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
-//    private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
-    private static final String SUB_URL_ADDRESS_BY_TYPE = "/listAddressByType.do";
-    private static final String SUB_URL_ADDRESS_BY_NAME = "/searchByName.do";
-    private static final String NULL_RESPONSE = "{}";
+	private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
+	private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
+	private static final String NULL_RESPONSE = "{}";
 
-    @Autowired
-    GeneralConfig generalConfig;
+	@Autowired
+	GeneralConfig generalConfig;
 
-    @Autowired
-    private ProminSession_Singleton prominSession_Singleton;
+	@Autowired
+	private CachedInvocationBean cachedInvocationBean;
+	    
+	private String sURLSendAddressByType = null;
+	private String sURLSendAddressByName = null;
 
-    private String sURLSendAddressByType = null;
-    private String sURLSendAddressByName = null;
-    private String sAuth_sLogin = null;
-    private String sAuth_sPassword = null;
-    private String sAuth_sURL_GenerateSID = null;
+	// Признак готовности сервиса к работе
+	private boolean isReadyWork = false;
 
-    // Признак готовности сервиса к работе
-    private boolean isReadyWork = false;
-
-    /*
-     * Проверяем заданы ли все параметры. Если нет то сервис не готов отсылать
-     * сообщения.
-     */
-    @PostConstruct
-    private void init() {
-	String sURL_Send = null;
-	if (generalConfig != null) {
-	    sAuth_sLogin = generalConfig.getObjectSubPlace_Auth_sLogin();
-	    sAuth_sPassword = generalConfig.getObjectSubPlace_Auth_sPassword();
-	    sAuth_sURL_GenerateSID = generalConfig.getObjectSubPlace_Auth_sURL_GenerateSID();
-	    sURL_Send = generalConfig.getObjectSubPlace_sURL_Send();
-	}
-	if (sURL_Send == null || sAuth_sLogin == null || sAuth_sPassword == null || sAuth_sURL_GenerateSID == null) {
-	    LOG.warn(
-		    "Сервис не готов к отсылке сообщений. Не заданы необходимые параметры. sURL_Send={}, sAuth_sLogin={}, sAuth_sPassword={}, sAuth_sURL_GenerateSID={}",
-		    sURL_Send, sAuth_sLogin, sAuth_sPassword, sAuth_sURL_GenerateSID);
-	    return;
-	}
-
-	LOG.debug("sURL_Send={}, sAuth_sLogin={}, sAuth_sPassword={}, sAuth_sURL_GenerateSID={}", sURL_Send,
-		sAuth_sLogin, sAuth_sPassword, sAuth_sURL_GenerateSID);
-
-	if (sURL_Send.startsWith("${") || sAuth_sLogin.startsWith("${") || sAuth_sPassword.startsWith("${")
-		|| sAuth_sURL_GenerateSID.startsWith("${")) {
-	    LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
-	    return;
-	}
-	sURLSendAddressByType = sURL_Send + SUB_URL_ADDRESS_BY_TYPE;
-	sURLSendAddressByName = sURL_Send + SUB_URL_ADDRESS_BY_NAME;
-	
-	isReadyWork = true;
-    }
-
-    public String getSubPlaces_(String sID_SubPlace_PB, String sFind) {
-	if (!isReadyWork) {
-	    LOG.warn("Сервис не готов к работе.");
-	    return "{}";
-	}
-
-	LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
-
-	if (sID_SubPlace_PB == null) {
-	    LOG.error("Error sID_SubPlace_PB is null");
-	    return NULL_RESPONSE;
-	}
-
-	if (sFind != null) {
-	    return searchByName(sURLSendAddressByName, sID_SubPlace_PB, ObjectPlaceType.STREET, sFind,
-		    ObjectPlaceLang.UAN);
-	} else {
-	    return listAddressByType(sURLSendAddressByType, sID_SubPlace_PB, ObjectPlaceType.STREET,
-		    ObjectPlaceLang.UAN, null, null);
-	}
-    }
-
-    private String listAddressByType(String sUrl, String idParent, ObjectPlaceType type, ObjectPlaceLang language,
-	    String sTypeCode, String sFromId) {
-	LOG.debug("sUrl={}, idParent={}, type={}, language={}, sTypeCode={}, sFromId={}", sUrl, idParent, type,
-		language, sTypeCode, sFromId);
-
-	String sessionId;
-	try {
-	    sessionId = prominSession_Singleton.getSid_Auth_PB_ObjectSubPlace();
-	} catch (Exception e) {
-	    LOG.error("Error get Promin session id", e);
-	    return NULL_RESPONSE;
-	}
-	LOG.debug("Promin session id={}", sessionId);
-	
-	if (sessionId == null) {
-	    LOG.error("Promin session id is null");
-	    return NULL_RESPONSE;
-	}
-
-	String ret = "";
-	HttpURLConnection oHttpURLConnection = null;
-	try {
-	    URL oURL = new URL(sUrl);
-	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
-	    oHttpURLConnection.setRequestMethod("GET");
-	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-	    oHttpURLConnection.setRequestProperty("sid", sessionId);
-	    oHttpURLConnection.setRequestProperty("type", type.getIdString());
-	    oHttpURLConnection.setRequestProperty("language", language.name());
-	    if (sTypeCode != null) {
-		oHttpURLConnection.setRequestProperty("typeCode", sTypeCode);
-	    }
-	    if (sFromId != null) {
-		oHttpURLConnection.setRequestProperty("fromId", sFromId);
-	    }
-
-	    try (BufferedReader oBufferedReader = new BufferedReader(
-		    new InputStreamReader(oHttpURLConnection.getInputStream()))) {
-		StringBuilder os = new StringBuilder();
-		String s;
-		while ((s = oBufferedReader.readLine()) != null) {
-		    os.append(s);
+	/*
+	 * Проверяем заданы ли все параметры. Если нет то сервис не готов отсылать
+	 * сообщения.
+	 */
+	@PostConstruct
+	private void init() {
+		String sURL_Send = null;
+		if (generalConfig != null) {
+			sURL_Send = generalConfig.getObjectSubPlace_sURL_Send();
 		}
-		ret = os.toString();
-
-	    } catch (java.io.FileNotFoundException e) {
-		ret = NULL_RESPONSE;
-		LOG.error("http code:{}\n", oHttpURLConnection.getResponseCode(), e);
-	    }
-
-	} catch (MalformedURLException e) {
-	    LOG.error("Error:", e.getMessage());
-	    ret = NULL_RESPONSE;
-	} catch (IOException e) {
-	    LOG.error("Error:", e.getMessage());
-	    ret = NULL_RESPONSE;
-	} finally {
-	    if (oHttpURLConnection != null) {
-		oHttpURLConnection.disconnect();
-	    }
-	}
-
-	LOG.info("ResponseBody:\n{}", ret);
-
-	return ret;
-
-    }
-
-    private String searchByName(String sUrl, String idParent, ObjectPlaceType type, String sName,
-	    ObjectPlaceLang language) {
-	LOG.debug("sUrl={}, idParent={}, type={}, sName={}, language={}", sUrl, idParent, type, sName, language);
-
-	sName = sName.trim();
-
-	String sessionId;
-	try {
-	    sessionId = prominSession_Singleton.getSid_Auth_PB_ObjectSubPlace();
-	} catch (Exception e) {
-	    LOG.error("Error get Session ID", e);
-	    return NULL_RESPONSE;
-	}
-	LOG.debug("Session ID={}", sessionId);
-
-	String ret = "";
-	HttpURLConnection oHttpURLConnection = null;
-	try {
-	    URL oURL = new URL(sUrl);
-	    oHttpURLConnection = (HttpURLConnection) oURL.openConnection();
-	    oHttpURLConnection.setRequestMethod("GET");
-	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-	    oHttpURLConnection.setRequestProperty("sid", sessionId);
-	    oHttpURLConnection.setRequestProperty("type", type.getIdString());
-	    if (language != null) {
-		oHttpURLConnection.setRequestProperty("language", language.name());
-	    }
-	    if (sName != null) {
-		oHttpURLConnection.setRequestProperty("name", sName);
-	    }
-
-	    try (BufferedReader oBufferedReader = new BufferedReader(
-		    new InputStreamReader(oHttpURLConnection.getInputStream()))) {
-		StringBuilder os = new StringBuilder();
-		String s;
-		while ((s = oBufferedReader.readLine()) != null) {
-		    os.append(s);
+		if (sURL_Send == null) {
+			LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры. sURL_Send={}", sURL_Send);
+			return;
 		}
-		ret = os.toString();
 
-	    } catch (java.io.FileNotFoundException e) {
-		ret = NULL_RESPONSE;
-		LOG.error("http code:{}\n", oHttpURLConnection.getResponseCode(), e);
-	    }
+		LOG.debug("sURL_Send={}", sURL_Send);
 
-	} catch (MalformedURLException e) {
-	    LOG.error("Error:", e.getMessage());
-	    ret = NULL_RESPONSE;
-	} catch (IOException e) {
-	    LOG.error("Error:", e.getMessage());
-	    ret = NULL_RESPONSE;
-	} finally {
-	    if (oHttpURLConnection != null) {
-		oHttpURLConnection.disconnect();
-	    }
+		if (sURL_Send.startsWith("${")) {
+			LOG.warn("Сервис не готов к отсылке сообщений. Не заданы необходимые параметры");
+			return;
+		}
+		sURLSendAddressByType = sURL_Send + SUB_URL_ADDRESS_BY_TYPE;
+		sURLSendAddressByName = sURL_Send + SUB_URL_ADDRESS_BY_NAME;
+
+		isReadyWork = true;
 	}
 
-	LOG.info("ResponseBody:\n{}", ret);
+	/*
+	 * Возвращает список адресов в виде
+	 * 
+	 * {"listAddress":[
+	 * 	{"code":"23TFD62IDSDX00","desc":"1-я Южная","type":"улица"},
+	 * 	{"code":"23TFDOBMJPIO00","desc":"2-я Южная","type":"улица"}
+	 * ]}
+	 * 
+	 * Адреса ищуться по коду места sID_SubPlace_PB, опционально можно отфильтровать результат указав подстроку в наименовании адреса.
+	 * Программа кеширует объекты запросов.
+	 */
+	public String getSubPlaces_(String sID_SubPlace_PB, String sFind) {
+		if (!isReadyWork) {
+			LOG.warn("Сервис не готов к работе.");
+			return "{}";
+		}
 
-	return ret;
-    }
+		LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
 
+		if (sID_SubPlace_PB == null) {
+			LOG.error("Error sID_SubPlace_PB is null");
+			return NULL_RESPONSE;
+		}
+
+		List<ObjectAddress> lObjectAddress = getListAddressesCached(sID_SubPlace_PB, sFind);
+
+		if (lObjectAddress == null) {
+		    return NULL_RESPONSE;
+		}
+
+		StringBuffer sb = new StringBuffer(lObjectAddress.size() * 65);
+		sb.append("{\"listAddress\":[");
+		int i = 0;
+		for (ObjectAddress objectAddress : lObjectAddress) {
+			sb.append(objectAddress.toString());
+
+			i++;
+			if (i < lObjectAddress.size()) {
+				sb.append(",");
+			}
+		}
+		sb.append("]}");
+
+		LOG.debug("Response:\n{}\n", sb.toString());
+
+		return sb.toString();
+	}
+	
+	
+	private List<ObjectAddress> getListAddressesCached(String sID_SubPlace_PB, String sFind) {
+	        return cachedInvocationBean.invokeUsingCache(new CachedInvocationBean.Callback<List<ObjectAddress>>(
+	        	GET_SERVICE_SUB_PLACES_CACHE_KEY, sID_SubPlace_PB, sFind) {
+	            @Override
+	            public List<ObjectAddress> execute() {
+	                return getListAddresses(sID_SubPlace_PB, sFind);
+	            }
+	        });
+	}
+
+	private List<ObjectAddress> getListAddresses(String sID_SubPlace_PB, String sFind) {
+	    	LOG.debug("Start request, sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+
+		List<ObjectAddress> lObjectAddress = null;
+	    
+		try {
+			String xmlString = getSubPlacesFromService(sID_SubPlace_PB, sFind);
+			lObjectAddress = parseDataFromXMLString(xmlString);
+		} catch (Exception e) {
+			LOG.error("ошибка получения данных сервиса", e);
+		}
+		
+		return lObjectAddress;
+	}
+	
+	
+	
+	/*
+	 * Получение данных из сервиса. Документация:
+	 * 
+	 * https://docs.google.com/document/d/1SppaZgDRNU9LFbE4ngOIrg9Ebu83WkyJD4wHPP6g7fc/edit#heading=h.4ovb807m5oaa 
+	 */
+	private String getSubPlacesFromService(String sID_SubPlace_PB, String sFind) {
+		LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", "application/xml; charset=utf-8");
+
+		if (sFind != null) {
+			StringBuffer sb = new StringBuffer("?idParent=");
+			sb.append(sID_SubPlace_PB);
+			sb.append("&type=");
+			sb.append(ObjectPlaceType.STREET.getIdString());
+			sb.append("&language=");
+			sb.append(ObjectPlaceLang.RUS.name());
+			sb.append("&name=");
+			sb.append(sFind);
+
+			String resp = new RestRequest().get(sURLSendAddressByName + sb.toString(), null, StandardCharsets.UTF_8,
+					String.class, headers);
+
+			return resp;
+		} else {
+			StringBuffer sb = new StringBuffer("?id=");
+			sb.append(sID_SubPlace_PB);
+			sb.append("&type=");
+			sb.append(ObjectPlaceType.STREET.getIdString());
+			sb.append("&language=");
+			sb.append(ObjectPlaceLang.RUS.name());
+
+			String resp = new RestRequest().get(sURLSendAddressByType + sb.toString(), null, StandardCharsets.UTF_8,
+					String.class, headers);
+
+			return resp;
+
+		}
+	}
+
+	
+	private List<ObjectAddress> parseDataFromXMLString(String sListAddressXML) {
+		List<ObjectAddress> lObjectAddress = null;
+
+		try {
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+
+			StringBuilder xmlStringBuilder = new StringBuilder();
+			xmlStringBuilder.append(sListAddressXML);
+			ByteArrayInputStream input = new ByteArrayInputStream(xmlStringBuilder.toString().getBytes("UTF-8"));
+
+			try {
+				Document doc = builder.parse(input);
+
+				lObjectAddress = new ArrayList<>();
+
+				NodeList nodes = ((org.w3c.dom.Document) doc).getElementsByTagName("address");
+				for (int i = 0; i < nodes.getLength(); i++) {
+					Element element = (Element) nodes.item(i);
+
+					String code = element.getAttribute("code");
+					String desc = element.getAttribute("desc");
+					String type = element.getAttribute("nodeTypeName");
+
+					ObjectAddress objectAddress = new ObjectAddress(code, desc, type);
+					lObjectAddress.add(objectAddress);
+				}
+
+			} catch (SAXException | IOException e) {
+				LOG.error("Ошибка обработки XML", e);
+			}
+
+		} catch (ParserConfigurationException e) {
+			LOG.error("Ошибка обработки XML", e);
+		} catch (UnsupportedEncodingException e1) {
+			LOG.error("Ошибка обработки XML", e1);
+		}
+
+		return lObjectAddress;
+	}
+	
 }
-
-// HTTP GET на
-// {url}/AddressReference/address/listAddressByType.do?id={idParent}&type={type}&language={language}&typeCode={typeCode}&fromId={fromId}
-// где {idParent} - внешний идентификатор адреса-предка,
-// {type} - тип требуемого узла,
-// {language} - язык отображения,
-// {typeCode} - (необязательный параметр) код узла (для 'type=4':"T" - города,
-// "V" - сёла),
-// {fromId} - (необязательный параметр) начальный идентификатор с которого будет
-// производиться поиск.
-
-// HTTP GET на
-// {url}/AddressReference/address/searchByName.do?idParent={idParent}&type={type}&name={name}&language={language}
-// где {idParent} - внешний идентификатор адреса-предка,
-// {type} - тип требуемого узла,
-// {name} - наименование или часть наименования узла-потомка,
-// {language} - (необязательный параметр, по умолчанию - RUS) язык отображения.

@@ -42,7 +42,9 @@
         </activiti:field>
       
 ```
-Если  емейл не предусматривает отправку файла, то  указываем “ “ в качестве  значения  параметра файла для отправки:  
+* ![14_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_1.JPG)
+
+* Если  емейл не предусматривает отправку файла, то  указываем “ “ в качестве  значения  параметра файла для отправки:  
 ```xml
        <activiti:field name="saAttachmentsForSend">
           <activiti:expression><" "></activiti:expression>

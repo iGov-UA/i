@@ -60,7 +60,7 @@
         <activiti:formProperty id="nFileMail" name="Файл для мейла (старый листнер)" type="file"></activiti:formProperty>
         <activiti:formProperty id="warning_visitDay" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; Електронна черга тестується для sID_Public_SubjectOrganJoin = Тест _test_all_case (код черги щодо додавання слотів 408"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги; ;bVisible=false" type="string" default="250"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги; ;bVisible=false" type="string"></activiti:formProperty>
 		<activiti:formProperty id="nDiffDays_visitDay" name="Кількість днів щодо пропуску слотів черги на вибір" type="string" default="4"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
 
@@ -104,8 +104,8 @@
         <activiti:formProperty id="sComment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileUT1" name="Рахунок для сплати" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/testPrint2.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML ЮТ1;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF ЮТ1;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_user1" name="markers test_all_case_user1" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_user1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
 <!-- 
@@ -144,12 +144,10 @@
         <activiti:formProperty id="sComment2" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileUT2" name="Рішення" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/testPrint2.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Принтформа HTML;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="Принтформа HTML ЮТ2;File HTML;sPrintFormFileAsIs=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="Принтформа PDF ЮТ2;File PDF;sPrintFormFileAsPDF=pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="test_all_case_user2" name="markers test_all_case_user2" type="markers" default="${markerService.loadFromFile('test_folder/test_all_case_user2.json')}"></activiti:formProperty>
-<!-- 
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
- -->
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile0},${nFile1},${nFile2},${nFile3},${form_signed},${nFileMail},${nFileUT1}]]></activiti:expression>
@@ -402,8 +400,10 @@
 			
 			<p>Файли:</p>
 			<ol>
-				<li>PrintForm_1 - Принтформа HTML</li>
-				<li>PrintForm_2 - Принтформа PDF</li>
+				<li>PrintForm_1 - Принтформа HTML (ЮТ1)</li>
+				<li>PrintForm_2 - Принтформа PDF (ЮТ1)</li>
+				<li>PrintForm_3 - Принтформа HTML (ЮТ2)</li>
+				<li>PrintForm_4 - Принтформа PDF (ЮТ2)</li>
 				<li>nFileUT1 - Рахунок для сплати (UT1)</li>
 				<li>nFileUT2 - Рішення (UT2)</li>
 				<li>nFileMail - Файл для мейла (старый листнер) (портал)</li>
@@ -423,7 +423,7 @@
           <activiti:expression><![CDATA[Test UT-2 old]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${PrintForm_1},${PrintForm_2},${nFileUT1},${nFileUT2},${nFileMail},${form_signed}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${PrintForm_1},${PrintForm_2},${PrintForm_3},${PrintForm_4},${nFileUT1},${nFileUT2},${nFileMailNew},${form_signed}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -447,8 +447,10 @@
 			
 			<p>Файли:</p>
 			<ol>
-				<li>PrintForm_1 - Принтформа HTML</li>
-				<li>PrintForm_2 - Принтформа PDF</li>
+				<li>PrintForm_1 - Принтформа HTML (ЮТ1)</li>
+				<li>PrintForm_2 - Принтформа PDF (ЮТ1)</li>
+				<li>PrintForm_3 - Принтформа HTML (ЮТ2)</li>
+				<li>PrintForm_4 - Принтформа PDF (ЮТ2)</li>
 				<li>nFileUT1 - Рахунок для сплати (UT1)</li>
 				<li>nFileUT2 - Рішення (UT2)</li>
 				<li>nFileMail - Файл для мейла (старый листнер) (портал)</li>
@@ -463,7 +465,7 @@
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${PrintForm_1},${PrintForm_2},${nFileUT1},${nFileUT2},${nFileMail},${form_signed}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${PrintForm_1},${PrintForm_2},${PrintForm_3},${PrintForm_4},${nFileUT1},${nFileUT2},${nFileMailNew},${form_signed}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

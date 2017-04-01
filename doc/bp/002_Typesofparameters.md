@@ -1,56 +1,82 @@
-## Типы переменных
+# Типы переменных
 ### string
-строка - для текстовых полей ввода (ограничение 256 символов) 
+
 ```xml
-<activiti:formProperty id="Place" name="Обраний населений пункт" type="string"></activiti:formProperty>
-```
-* ![2_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_1.jpg)
-***
+<activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
+``` 
+
+
+gfdsgfdg
+[SPOILER]
+dfdsgdfsg
+[/SPOILER]
+
+
+
+
+[детальней...](#_string)
+
 ### long
+```xml
+<activiti:formProperty id="Place" name="Назва поля" type="long"></activiti:formProperty>
+```
 число (целое) - для ввода ЦЕЛЫХ чисел
-* ![2_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_2.JPG)
-***
+
 ### double
-число (дробное) - для ввода ДРОБНЫХ чисел (разделитель - точка)  
-***
+```xml
+<activiti:formProperty id="Place" name="Назва поля" type="double"></activiti:formProperty>
+```
+число (дробное) - для ввода ДРОБНЫХ чисел (разделитель - точка)
+
 ### enum
-выпадающий список - для выбора значения из списка  
 ```xml
 <activiti:formProperty id="saQuestion1" name="показати поле з данними?" type="enum" default="no">
   <activiti:value id="yes" name="так"></activiti:value>
   <activiti:value id="no" name="ні"></activiti:value>
 </activiti:formProperty>
 ```
-***
+[детальней...](#_enum)
+
+
 ### enum (checkbox)
-чекбокс - доступно только 2 выбора да/нет.
-Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
-Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
 ```xml
 <activiti:formProperty id="saQuestion1" name="показати поле з данними?; ;sID_CheckboxTrue=yes" type="enum" default="no">
   <activiti:value id="yes" name="так"></activiti:value>
   <activiti:value id="no" name="ні"></activiti:value>
 </activiti:formProperty>
 ```
-***
+[детальней...](#_enum (checkbox))
+
+
 ### date
-дата - календарь для выбора даты
 ```xml
 <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" required="true"></activiti:formProperty>
 ```
-***
+[детальней...](#_date)
+
+
 ### boolean
-true / false
-***
-### label
-нередактируемый для заявителя текст - используется для отображения текстовых подсказок на форме подачи / обработки обращения (обязательно добавлять default=” ”, если не указано другое значение). Поддерживается форматирование html.
 ```xml
-<activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною,
- при заповненні полів треба буде завантажити документ, що засвідчує внесення плати."
- type="label" default="Ви можете здійснити оплату зручним для Вас способом за 
- &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
+<activiti:formProperty id="Place" name="Назва поля" type="boolean"></activiti:formProperty>
 ```
-***
+[детальней...](#_boolean)
+
+
+### label
+
+Стили лейбла можно назначить в аттрибуте name
+```xml
+<activiti:formProperty id="color" name=" ; ;labelType=success" type="label" default="Ви можете" ></activiti:formProperty>
+```
+* labelType=success - зеленый
+* labelType=info - голубой
+* labelType=warning - желтый
+* labelType=danger - красный
+
+[детальней...](#_label)
+
+
+
 ### file
 файл - кнопка для ручной загрузки файлов гражданином на форме подачи обращения и для возможности просмотра  прикрепленного файла на форме обработки обращения.
 ```xml
@@ -73,6 +99,7 @@ true / false
 ```
 где file_id - id файла, который нужно отобразить
 можно в виде ${file1},${file2},${file1} если файлов несколько
+* ![2_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_8.JPG)
 
 ***
 ### file (New)
@@ -84,6 +111,7 @@ true / false
 ```xml
     <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
 ```
+* ![2_13](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_13.JPG)
 Чтобы этот файл появился на следующем шаге процесса, Вам снова его нужно объявить как обычное поле. Не забудьте указать параметр  writable="false"
 ```xml
 <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -109,6 +137,7 @@ true / false
 <activiti:formProperty id="application_name" name="В цьому полі надайте перелік усіх додатків та специфікацій до договору" 
 type="textArea"></activiti:formProperty>
 ``` 
+* ![2_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_9.JPG)
 ***
 ### queueData
 дата/время - Электронная очередь.
@@ -116,6 +145,7 @@ type="textArea"></activiti:formProperty>
 <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації народження?"
 type="queueData" required="true"></activiti:formProperty>
 ```
+* ![2_31](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_31.JPG)
 
 ***
 ### [markers](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B)
@@ -126,6 +156,7 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
 ```
+* ![2_30](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_30.JPG)
 ***
 ### select
 Тип данных, который формирует динамические выпадающие списки (в зависимости от параметров).
@@ -180,6 +211,7 @@ default=” “ - в дефолте в виде json - объекта пропи
 ```xml
 <activiti:formProperty id="markers16" name="тейбл3 вынесенный в отдельный файл" type="table" default="${markerService.loadFromFile('table/VED/_test_ved_table3.json')}"></activiti:formProperty>
 ```
+* ![2_32](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_32.JPG)
 Если объявляете тейбл на втором шаге, и хотите чтоб тейбл был недоступен для редактирвоания - ставите флаг writable="false", при этом убираете весь параметр **default**.  
 
 **на дашборде**
@@ -235,6 +267,7 @@ default=” “ - в дефолте в виде json - объекта пропи
   }
 }
 ```
+* ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 ***
 ## Атрибуты переменных
 
@@ -286,3 +319,46 @@ Cделает текущее поле нередактируемым для по
 ```xml
  <activiti:formProperty id="sString4" name="sString4; ниже добавится HTML с несколькими элементами;;html=&lt;span&gt;Відкити пошукову сторінку &lt;a href=&quot;https://www.google.com.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Google&quot;&gt;Google&lt;/a&gt; або &lt;a href=&quot;https://yandex.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Яндексу&quot;&gt;Яндекс&lt;/a&gt;.&lt;br&gt; Тут HTML-текст закінчується.&lt;/span&gt;" type="string"></activiti:formProperty>
 ```
+# Детальная информация
+
+### _string
+[вернуться...](#string)
+
+строка - для текстовых полей ввода (ограничение 256 символов) 
+![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
+### _enum
+[вернуться...](#enum)
+
+выпадающий список - для выбора значения из списка 
+
+![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
+### _enum (checkbox)
+[вернуться...](#enum (checkbox))
+
+чекбокс - доступно только 2 выбора да/нет.
+
+Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
+
+Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
+
+![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
+### _date
+[вернуться...](#date)
+
+дата - календарь для выбора даты
+![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
+### _boolean
+[вернуться...](#boolean)
+
+принимаемые значения: true / false
+### _label
+[вернуться...](#label)
+
+```xml
+<activiti:formProperty id="info" name="Зверніть увагу" type="label" default="Ви можете здійснити оплату зручним для Вас способом"></activiti:formProperty>
+```
+ используется для отображения текстовых подсказок на форме подачи / обработки обращения 
+ (обязательно добавлять default=” ”, если не указано другое значение). 
+ 
+ Поддерживается форматирование html.
+ ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)

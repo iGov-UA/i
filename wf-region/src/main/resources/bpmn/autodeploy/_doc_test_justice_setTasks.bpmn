@@ -23,8 +23,8 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Кому дать права на следующую ЮТ; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_AutorResolution_First" name="Кому дать права на следующую ЮТ; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel,sName_SubjectRole=sLogin_AutorResolution_First" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_AutorResolution_First" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="sID_Order_GovPublic" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -34,14 +34,10 @@
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask2" name="клонирование прав" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-      	var snID_Process_Activiti = execution.getProcessInstanceId();
-		var sKey_GroupPostfix = 'justice_common'
-		var sKey_GroupPostfix_New = execution.getVariable('sName_SubjectRole')
-		var sKey_Step_Document = 'decisioners'
-		var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document)
-		execution.setVariable('obj1', obj1)
-	  </script>
+      <script>//Клонування прав для керівника
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution_First')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')</script>
     </scriptTask>
     <userTask id="usertask2" name="2 - подпись руководителя">
       <extensionElements>
@@ -50,8 +46,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="string" default="MJU_Dnipro_" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="string" default="5" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логин руководителя" type="string"></activiti:formProperty>
-        <activiti:formProperty id="obj1" name="obj1" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_AutorResolution_First" name="Логин руководителя" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
@@ -72,7 +67,7 @@
     <scriptTask id="scripttask3" name="проверка подписей всех" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 		var nID_Process = execution.getProcessInstanceId();
-		var sLogin = execution.getVariable('sName_SubjectRole')
+		var sLogin = execution.getVariable('sLogin_AutorResolution_First')
 		var sKey_Step = execution.getVariable('sKey_Step_Document')
 		var obj3= documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)
 execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
@@ -122,7 +117,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow33" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow36" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow37" sourceRef="scripttask3" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow38" name="false" sourceRef="exclusivegateway1" targetRef="usertask2">
@@ -131,6 +126,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
     <sequenceFlow id="flow39" name="true" sourceRef="exclusivegateway1" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == true}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_justice_setTasks">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_justice_setTasks" id="BPMNPlane__doc_test_justice_setTasks">
@@ -185,9 +181,8 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <omgdi:waypoint x="760.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="254.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="254.0" y="270.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="307.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="177.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="542.0" y="298.0"></omgdi:waypoint>
@@ -198,15 +193,19 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <omgdi:waypoint x="402.0" y="359.0"></omgdi:waypoint>
         <omgdi:waypoint x="402.0" y="298.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="408.0" y="341.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="408.0" y="341.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="562.0" y="360.0"></omgdi:waypoint>
         <omgdi:waypoint x="620.0" y="360.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="561.0" y="340.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="19.0" x="561.0" y="340.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="402.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="402.0" y="243.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -323,12 +323,19 @@
             <column name="sNameFull" type="STRING"/>
         </loadUpdateData>
 
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectHumanPositionCustom.csv" tableName="SubjectHumanPositionCustom" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sName" type="STRING"/>
+            <column name="sNote" type="STRING"/>
+        </loadUpdateData>
+
         <loadData encoding="UTF-8" file="data/SubjectGroup.csv" tableName="SubjectGroup" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sName" type="STRING"/>
             <column name="sID_Group_Activiti" type="STRING"/>
             <column name="sChain" type="STRING"/>
             <column name="nID_Subject" type="NUMERIC"/>
+            <column name="nID_SubjectHumanPositionCustom" type="NUMERIC"/>
         </loadData>
 
         <loadData encoding="UTF-8" file="data/SubjectGroupTree.csv" tableName="SubjectGroupTree" separator=";">
@@ -475,6 +482,16 @@
             <column name="nID_Place_Parent" type="NUMERIC"/>
         </loadUpdateData>
 
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Server.csv" tableName="Server" separator=";">
+            <column name="nID"          type="NUMERIC"/>
+            <column name="sID"          type="STRING"/>
+            <column name="sType"        type="STRING"/>
+            <column name="sURL_Alpha"   type="STRING"/>
+            <column name="sURL_Beta"    type="STRING"/>
+            <column name="sURL_Omega"   type="STRING"/>
+            <column name="sURL"         type="STRING"/>
+        </loadUpdateData>
+
         <loadData encoding="UTF-8" file="data/ServiceData.csv" tableName="ServiceData" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="nID_Service" type="NUMERIC"/>
@@ -538,16 +555,6 @@
             <column name="nID_ServiceTag_Parent" type="NUMERIC"/>
             <column name="nID_ServiceTag_Child" type="NUMERIC"/>
         </loadData>
-
-        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Server.csv" tableName="Server" separator=";">
-            <column name="nID"          type="NUMERIC"/>
-            <column name="sID"          type="STRING"/>
-            <column name="sType"        type="STRING"/>
-            <column name="sURL_Alpha"   type="STRING"/>
-            <column name="sURL_Beta"    type="STRING"/>
-            <column name="sURL_Omega"   type="STRING"/>
-            <column name="sURL"         type="STRING"/>
-        </loadUpdateData>
 
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/DocumentContentType.csv" tableName="DocumentContentType" separator=";">
             <column name="nID" type="NUMERIC"/>

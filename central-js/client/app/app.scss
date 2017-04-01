@@ -566,9 +566,6 @@ ul.dropdown-menu {
 .highlight {
   padding: 9px 14px;
   margin-bottom: 14px;
-  background-color: #eee;
-  border: 1px solid #ddd;
-  border-radius: 4px;
 }
 
 .similar-situation-container {
@@ -632,7 +629,6 @@ ul.dropdown-menu {
   padding-left: 0;
   padding-right: 0;
   table {
-    width: 100%;
     table-layout: fixed;
     thead {
       tr {
@@ -1503,6 +1499,12 @@ label .snippet {
 .s-field-notes {
   color: #aaaaaa;
   text-align: left;
+  font-size: 12px;
+}
+
+.red-star {
+  color: red;
+  font-size: 14px
 }
 
 .slot-picker .slot-day,
@@ -2346,10 +2348,61 @@ input.ng-touched.ng-invalid-email, input.ng-touched.ng-invalid-tel {
 /* Dev  only: uncomment to see the element scopes' visually: .ng-scope { border: 1px solid #000; padding: 5px; } */
 
 /**/
-.update-bankid-message {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #E89341;
+
+/*
+  for creating label, @extend .igov-label and add your custom colors.
+*/
+.igov-label {
+  margin: 10px 0 10px 0;
+  width: 100%;
+  font-size: 14px;
+  padding: 15px;
+  a {
+    color: dodgerblue;
+    text-decoration: underline;
+  }
+}
+
+.update-bankid-message, .igov-warning-label{
+  @extend .igov-label;
+  color: #FF6601;
+  background-color: #FCF8E3;
+  border-left: 4px solid #FF6601;
+}
+
+.igov-info-label {
+  @extend .igov-label;
+  color: #269abc;
+  background-color: #EEF9FC;
+  border-left: 4px solid #269abc;
+}
+
+.igov-danger-label {
+  @extend .igov-label;
+  color: #A94442;
+  background-color: #F2DEDE;
+  border-left: 4px solid #A94442;
+}
+
+.igov-success-label {
+  @extend .igov-label;
+  color: #3C763D;
+  background-color: #DFF0D8;
+  border-left: 4px solid #3C763D;
+}
+
+.igov-upload-button {
+  border: 1px solid #337ab7;
+  outline: 0;
+  border-radius: 3px;
+  text-decoration: none;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  color: #337ab7;
+  background: transparent;
+  &:hover {
+    color: #23527c;
+  }
 }
 
 /* Fixes for mobile devices */
@@ -2818,3 +2871,33 @@ table.QuestionFields td {
 }
 
 /*separators end*/
+
+/*fileHTML field start*/
+.fileHTML {
+  .ta-toolbar {
+    padding-bottom: 5px;
+    .btn-group {
+      &:last-child {
+        padding-top: 5px;
+      }
+    }
+    .custom-button-edit {
+      padding: 5px 12px;
+      .sp-replacer {
+        padding: 0;
+        border: none;
+        background: white;
+      }
+      &:hover {
+        .sp-replacer {
+          background: #e6e6e6;
+        }
+      }
+    }
+  }
+  .ta-scroll-window {
+    overflow: auto;
+    max-height: 350px;
+  }
+}
+/*fileHTML field end*/
