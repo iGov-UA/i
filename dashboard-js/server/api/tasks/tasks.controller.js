@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
+var activitiUpload = require('../../components/activiti/upload');
 var errors = require('../../components/errors');
 var userService = require('../user/user.service');
 var authService = require('../../auth/activiti/basic');
@@ -427,6 +428,12 @@ exports.getPatternFile = function (req, res) {
 
   options.query.sPathFile = options.query.sPathFile.replace(/^sPrintFormFileAsPDF=pattern\/|^sPrintFormFileAsIs=pattern\//, '');
   activiti.filedownload(req, res, options);
+};
+
+exports.signAndUpload = function (req, res) {
+  var encodedContent = req.body.content;
+  var contentSign = req.body.sign;
+  //TODO decode content and activitiUpload
 };
 
 /**

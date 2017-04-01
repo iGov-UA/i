@@ -1,5 +1,5 @@
 angular.module('dashboardJsApp')
-  .factory('signDialog', function ($rootScope, $modal, $q) {
+  .factory('signDialog', function ($rootScope, $modal, $q, $base64) {
     function openModal(modalScope, modalClass) {
       modalScope = modalScope ? modalScope : $rootScope.$new();
       modalClass = modalClass || 'modal-info';
@@ -26,6 +26,18 @@ angular.module('dashboardJsApp')
       }).catch(errorCallback);
     }
 
+    function signManuallySelectedFile(resultCallback, dismissCallback, errorCallback) {
+      var modalScope = $rootScope.$new();
+      modalScope._isManuallySelectedFile = true;
+      var signModal = openModal(modalScope);
+
+      signModal.result.then(function (signedContent) {
+        resultCallback(signedContent);
+      }, function () {
+        dismissCallback();
+      }).catch(errorCallback);
+    }
+
     return {
       /**
        * pass contentData = { id : "id of data", content : "real data content"}
@@ -38,11 +50,12 @@ angular.module('dashboardJsApp')
        *    signedContentHash : signedContentHash
        *  }
        */
-      signContent: signContent
+      signContent: signContent,
+      signManuallySelectedFile: signManuallySelectedFile
     }
   });
 
-var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5, $q) {
+var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5, $q, $base64) {
   function removeLastError() {
     $scope.lastError = undefined;
   }
@@ -70,6 +83,23 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
       needPassword: true
     },
     lastError: undefined
+  };
+
+  $scope.isManuallySelectedFile = function(){
+    return $scope._isManuallySelectedFile;
+  };
+
+  $scope.fileChanged = function(element) {
+    $scope.$apply(function(scope) {
+      var selectedFile = element.files[0];
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var loadedContent = e.target.result.split("base64,")[1];
+        var id = selectedFile.name;
+        scope.contentData = {id: id, content: loadedContent, base64encoded: true};
+      };
+      reader.readAsDataURL(selectedFile);
+    });
   };
 
   $scope.chooseEDSFile = function () {
@@ -110,12 +140,21 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
       $q.when(edsContext.selectedKey.needPassword && edsContext.selectedKey.password ?
         signService.selectKey(edsContext.selectedKey.key, edsContext.selectedKey.password)
         : true).then(function () {
-        var contentHash = md5.createHash($scope.contentData.content);
-        return signService.sign(contentHash).then(function (signedContentHash) {
-          console.log(signedContentHash);
+        var decodedContent = $scope.contentData.content;
+        if($scope.contentData.base64encoded){
+          decodedContent = $base64.decode(decodedContent);
+        }
+        var contentHash = md5.createHash(decodedContent);
+        return signService.sign(contentHash).then(function (signResult) {
+          console.log(JSON.stringify(signResult));
+
+          var signedContentHash = signResult.sign;
+          var certBase64 = signResult.certificate;
+
           $modalInstance.close({
             id: $scope.contentData.id,
             content: $scope.contentData.content,
+            certificate: certBase64,
             signedContentHash: signedContentHash
           });
         });

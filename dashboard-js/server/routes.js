@@ -32,6 +32,7 @@ module.exports = function(app) {
   app.use('/api/fields-list', require('./api/fields-list'));
   app.use('/api/uploadfile', require('./api/uploadfile'));
   app.use('/api/create-task', require('./api/create-task'));
+  app.use('/api/generate', require('./api/generate'));
 
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets|public-js)/*')
