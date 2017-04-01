@@ -2022,14 +2022,16 @@ Installationeclipse.md
 ### Устанавливаем JAVA JDK
 1. Переходим по [ссылке](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)  
 2. Соглашаемся и качаем    
-* [детальнее...](#_Устанавливаем JAVA JDK)
+
+[детальнее...](#_Устанавливаем JAVA JDK)
 
 ### Устанавливаем Eclipse
 [1. Качаем последнюю версию](
 http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/neon/2/eclipse-committers-neon-2-win32-x86_64.zip) 
 2. копируем скачанный архив в нужную папку где он будет храниться  
 3. распаковываем архив 
-* [детальнее...](#_Устанавливаем Eclipse)
+
+[детальнее...](#_Устанавливаем Eclipse)
 
 
 ### Ставим дополнительные утилиты для удобства редактирования JSON и HTML
