@@ -267,6 +267,105 @@ Cделает текущее поле нередактируемым для по
 
 [вернуться...](#Reserved variables for electronic queues)
 * ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
+
+### _Reservedattributevariables
+Зарезервированные переменные атрибутов
+
+[вернуться...](#Reservedattributevariables)
+* **sAddress** - string/invisible/label - адрес органа
+* **sMailClerk** - string/invisible/label - почта чиновника
+* **sArea** - string/invisible/label - yазвание нас.пункта/района куда подается заявка
+* **nArea** - string/invisible/label - yомер в справочнике нас.пункта/района куда подается заявка
+* **sShapka** - string/invisible/label - шапка принтформы
+* ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
+
+### _Variablesforprintforms
+Переменные принтформ
+
+[вернуться...](#Variablesforprintforms)
+* ![3_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_6.JPG)
+* **[sDateTimeCreateProcess]** - Возвращает значение системной даты-времени на момент сохранения\подачи заявки гражданином.
+* **[sDateCreateProcess]**- Возвращает значение системной даты на момент сохранения\подачи заявки гражданином.
+* **[sTimeCreateProcess]** - Возвращает значение системного времени на момент сохранения\подачи заявки гражданином.
+* **[sCurrentDateTime]** - Возвращает значение системной даты и времени на текущий момент.
+* **sBody** - invisible - задать печатную форму.  
+Прописывается в юзертаске. Для корректной работы обязательно надо прописать листнер “fileTaskInheritance”
+Путь на печатную форму в папке patterns задается в поле name (типа [pattern/print/subsidy_zayava.html]) 
+* **PrintForm** - Позволяет автоматически создавать файл из соответствующей принтформы, который потом можно подгружать к вложениям в письмо на сервис-таске (используем ${PrintForm_1} при отправке письма с вложениями). Номер PrintForm должен совпадать с номером sBody.
+
+### _Validated variables
+Валидируемые переменные
+
+[вернуться...](#Validated variables)
+* ![3_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_4.JPG)
+* **privatePhone, workPhone, phone** - string - номер телефона.
+Первый символ “+”, остальные 12 цифр
+* **lastName_UA1,  firstName_UA1, middleName_UA1, lastName_UA2,  firstName_UA2, middleName_UA2**  - string - Название или ФИО с украинскими буквами. Разрешена только кириллица, дефис, апостроф.
+* **lastName_RU1,  firstName_RU1, middleName_RU1, lastName_RU2,  firstName_RU2, middleName_RU2** - string - Название или ФИО с русскими буквами. Разрешена только кириллица, дефис.
+* **date_of_birth** - date - дата рождения. Не разрешено выбирать дату больше текущей.
+* **kved** - string - вид экономической деятельности по КВЕД. Две цифры точка две цифры (первые две цифры не могут быть 04, 34, 40, 44, 48, 54, 57, 67, 76, 83, 89).
+* ![3_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_2.JPG)
+* **edrpou** - string - восемь цифр.
+* ![3_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_3.JPG)
+* **mfo** - string - шесть цифр.
+* **kids_Birth** - date - не разрешено выбирать дату больше текущей, разница между текущей датой и выбранной не должна превышать 14 лет.
+* **privateMail, email** - string - емейлы
+* **landNumb**- string - кадастровый номер в формате хххххххххх:хх:ххх:хххх
+
+### _Other
+Другие
+
+[вернуться...](#Other)
+* **bReferent** - invisible - признак заполнения заявки референтом (true/false).
+* **form_signed** - если объявлена эта переменная на стартовой форме, то при нажатии на кнопку "замовити послугу" заявитель будет перенаправлен на доп.страницу для наложения ЕЦП на заявку.
+* ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
+* **form_signed_all** - при наложении ЕЦП на заявку, она так же будет наложена и на все прикрепленные файлы. При этом все файлы, которые прикрепил гражданин, должны иметь расширение *.pdf.
+
+### _AutoComplete
+Автокомплиты
+
+[вернуться...](#AutoComplete)
+* ![3_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_7.JPG)
+* **sID_UA_Country** - Код страны (заполнится автоматически после выбора в селекте sCountry)
+* **sCurrency** - select - Валюта 
+* **sID_UA_Currenc**y - Код валюти (заполнится автоматически после выбора в селекте sCurrency)
+* **sSubjectOrganJoinTax** - select - Таможня
+* **sID_UA_SubjectOrganJoinTax** - Код таможни (заполнится автоматически после выбора в селекте sSubjectOrganJoinTax)
+* **sID_Place_UA** - string - В переменную передается КОАТУУ выбранного населенного пункта (поле Place)
+
+### _Requestvariables
+Переменные-запросы
+
+[вернуться...](#Requestvariables)
+
+* **sShortName_SubjectOrgan_** - string - Краткое наименование
+* **sLocation_SubjectOrgan_** - textArea - Адрес регистрации
+* **sCEOName_SubjectOrgan_** - string - ФИО руководителя
+* **sID_SubjectActionKVED_SubjectOrgan_** - string - Основной КВЕД - доступен для редактирования как автокомплит
+* **sNote_ID_SubjectActionKVED_SubjectOrgan_** - label - Полное наименование выбранного КВЕДа - автоматически обновится при изменении **sID_SubjectActionKVED_SubjectOrgan_**
+* **sDateActual_SubjectOrgan_** - label - Дата получения данных из ЄДРПОУ
+``` xml
+        <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 01&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Найменування скорочене" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" name="" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
+```
+Приведенные переменные не обязательны для вывода, использование и порядок вывода - произвольные. Однако желательно придерживаться общего дизайна. Для единообразного использования данного виртуального "блока данных" установлен дизайн, который обязательно начинается с разделительной линии содержащей общее наименование идущих за ним данных.
+Полный блок выглядит на форме следующим образом.
+
+**Незаполненный**
+![Незаполенный](https://goo.gl/dCRcRQ)
+
+**Заполненный**
+![Заполненный](https://goo.gl/UtPH43)
+
+***
+
 Installationeclipse.md
 ### _Устанавливаем JAVA JDK
 
