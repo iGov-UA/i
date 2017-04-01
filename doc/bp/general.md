@@ -1737,8 +1737,8 @@ execution.setVariable('sMainExecutor', obj.aProcessSubjectTree[0].aUser[i].sLogi
 execution.setVariable('sFirstName', obj.aProcessSubjectTree[0].aUser[i].sFirstName)
 execution.setVariable('sLastName', obj.aProcessSubjectTree[0].aUser[i].sLastName)
 var sExecutor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProcessSubjectTree[0].aUser[i].sLastName
-execution.setVariable('sExecutor', sExecutor)
-```
+execution.setVariable('sExecutor', sExecutor) 
+
 * ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
 ***
 
@@ -1899,7 +1899,7 @@ execution.setVariable('sExecutor', sExecutor)
 **[18.4 Разрешение конфликтов при мерже (в Eclipse)](https://github.com/e-government-ua/iBP/wiki/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%B3%D0%B8%D1%82%D0%BE%D0%BC-%D0%B8-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B5%D0%BC#%D0%A0%D0%B0%D0%B7%D1%80%D0%B5%D1%88%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BA%D0%BE%D0%BD%D1%84%D0%BB%D0%B8%D0%BA%D1%82%D0%BE%D0%B2-%D0%BF%D1%80%D0%B8-%D0%BC%D0%B5%D1%80%D0%B6%D0%B5-%D0%B2-eclipse)**  
 **[18.5 Выкладка версии](https://github.com/e-government-ua/iBP/wiki/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%B3%D0%B8%D1%82%D0%BE%D0%BC-%D0%B8-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B5%D0%BC#%D0%92%D1%8B%D0%BA%D0%BB%D0%B0%D0%B4%D0%BA%D0%B0-%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D0%B8)**  
 **[18.6 Как накатить ветку одну ветку на другую (в NetBeans)](https://github.com/e-government-ua/iBP/wiki/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%B3%D0%B8%D1%82%D0%BE%D0%BC-%D0%B8-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B5%D0%BC#%D0%9A%D0%B0%D0%BA-%D0%BD%D0%B0%D0%BA%D0%B0%D1%82%D0%B8%D1%82%D1%8C-%D0%B2%D0%B5%D1%82%D0%BA%D1%83-%D0%BE%D0%B4%D0%BD%D1%83-%D0%B2%D0%B5%D1%82%D0%BA%D1%83-%D0%BD%D0%B0-%D0%B4%D1%80%D1%83%D0%B3%D1%83%D1%8E-%D0%B2-netbeans)**  
-**[18.7 Откат изменений (в Eclipse)](https://github.com/e-government-ua/iBP/wiki/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%B3%D0%B8%D1%82%D0%BE%D0%BC-%D0%B8-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B5%D0%BC#%D0%9E%D1%82%D0%BA%D0%B0%D1%82-%D0%B8%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D0%B9-%D0%B2-eclipse)**  
+**[18.7 (в Eclipse)](https://github.com/e-government-ua/iBP/wiki/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%B3%D0%B8%D1%82%D0%BE%D0%BC-%D0%B8-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B5%D0%BC#%D0%9E%D1%82%D0%BA%D0%B0%D1%82-%D0%B8%D0%B7%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D0%B9-%D0%B2-eclipse)**  
 
 # Ветки
 Очень упрощенная схема веток, с которыми работают бизнес-аналитики приведена на рисунке:  
@@ -1988,7 +1988,7 @@ wf-region\src\main\resources\bpmn\markers
 wf-region\src\main\resources\bpmn\autodeploy
 wf-region\src\main\resources\pattern\print
 ```
-По умолчанию деплоим оба бека и рестартовать фронт централа (новые города, изменения бпмн по услугам и т.п.)  
+* По умолчанию деплоим оба бека и рестартовать фронт централа (новые города, изменения бпмн по услугам и т.п.)  
 После всех проверок на боевом делаем обратный мерж.  
 Путь обратного мержа на данный момент master - delta - alpha.  
 При конфликтах в наших файлах дельте принимаем дельту (если не договорено иное), в альфе - альфу.  
@@ -2014,17 +2014,19 @@ IDE NetBeans позволяет автоматизировать этот про
 8. Фиксим изменения  
 9. Выталкиваем  
 
-# Откат изменений (в eclipse)
+### Откат изменений (в eclipse)
 
 Installationeclipse.md
+
+***
 ### Устанавливаем JAVA JDK
 1. Переходим по [ссылке](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)  
-2. Соглашаемся и качаем 
+2. Соглашаемся и качаем    
 [детальнее...](#_Устанавливаем JAVA JDK)
 
 ### Устанавливаем Eclipse
 [1. Качаем последнюю версию](
-http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/neon/2/eclipse-committers-neon-2-win32-x86_64.zip)  
+http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/neon/2/eclipse-committers-neon-2-win32-x86_64.zip) *** 
 2. копируем скачанный архив в нужную папку где он будет храниться  
 3. распаковываем архив 
 [детальнее...](#_Устанавливаем Eclipse)
