@@ -113,14 +113,15 @@ public class CloseTaskEvent {
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+                String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 LOG.info("11111sUserTaskName before : " + snID_Process);// new log не меняется статус
-                List<String> aUserType = repositoryService.getBpmnModel(snID_Process).getUserTaskFormTypes();
+                List<String> aUserType = repositoryService.getBpmnModel(sProcessName).getUserTaskFormTypes();
                 LOG.info("aUserType is: {}", aUserType);
                 boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 LOG.info("11111sUserTaskName: " + sUserTaskName);
-                String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
+                
                 LOG.info("sProcessName: " + sProcessName);
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
