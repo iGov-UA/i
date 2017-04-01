@@ -1493,7 +1493,7 @@ execution.setVariable('var2', value) - запись  значения value в �
     execution.setVariable('MyDateToday', new Date().format("dd.MM.yyyy").toString())
   </script>
 </scriptTask>
-```
+``` ```
 * ![16_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_7.JPG)
 [описание операторов и переменных для написания скриптов Javascript](http://javascript.ru/)  
 
@@ -1738,7 +1738,7 @@ execution.setVariable('sFirstName', obj.aProcessSubjectTree[0].aUser[i].sFirstNa
 execution.setVariable('sLastName', obj.aProcessSubjectTree[0].aUser[i].sLastName)
 var sExecutor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProcessSubjectTree[0].aUser[i].sLastName
 execution.setVariable('sExecutor', sExecutor) 
-
+```
 * ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
 ***
 
