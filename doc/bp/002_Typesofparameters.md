@@ -1,5 +1,5 @@
 # Типы переменных
-### string dub
+### string
 
 ```xml
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
@@ -321,7 +321,7 @@ Cделает текущее поле нередактируемым для по
 ```
 # Детальная информация
 
-### _string dub
+### _string
 [вернуться...](#string)
 
 строка - для текстовых полей ввода (ограничение 256 символов) 
