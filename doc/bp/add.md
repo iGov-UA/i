@@ -193,7 +193,7 @@ default=” “ - в дефолте в виде json - объекта пропи
 * ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 
 ### _Variable Attributes
-
+(Атрибуты переменных)
 [вернуться...](#Variable Attributes)
 *
 **writable** - редактируемость поля  (true/false).  Необязательный элемент.
