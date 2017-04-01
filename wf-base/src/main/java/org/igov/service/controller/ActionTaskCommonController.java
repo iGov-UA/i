@@ -1824,7 +1824,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 LOG.info("Total number of Documents:{}", totalNumber);*/
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
-
+                                LOG.info("tasks size in filter is {}", tasks.size());
 				// this while is intended to work until we either pass through
 				// all the tasks or select needed number of tickets
 				long sizeOfTasksToSelect = nSize;
@@ -1876,17 +1876,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 
                                 List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<Map<String, Object>>();
                                 
+                                long documentListSize = 0;
                                 if(!"Documents".equals(sFilterStatus)){
                                    
                                     for(Map<String, Object> dataElem : data)
                                     {
-                                        if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc_")){
+                                        if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc")){
                                             
                                             if(bIncludeVariablesProcess){
                                                 dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
                                             }
                                             checkDocumentIncludesData.add(dataElem);
-                                            totalNumber = totalNumber - 1;
+                                            documentListSize++;
+                                                //totalNumber = totalNumber - 1;
                                         }
                                     }
                                 }else{
@@ -1900,13 +1902,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                     }
                                 }
                                 
+                                LOG.info("checkDocumentIncludesData size: {}", checkDocumentIncludesData.size());
                                 
 				res.put("data", checkDocumentIncludesData);
 				res.put("size", nSize);
 				res.put("start", nStart);
 				res.put("order", "asc");
 				res.put("sort", "id");
-				res.put("total", checkDocumentIncludesData.size());
+				res.put("total", tasks.size() - documentListSize);
 			}
 		} catch (Exception e) {
 			LOG.error("Error occured while getting list of tasks", e);
