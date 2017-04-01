@@ -2023,7 +2023,7 @@ Installationeclipse.md
 1. Переходим по [ссылке](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)  
 2. Соглашаемся и качаем    
 
-[детальнее...](#_Устанавливаем JAVA JDK)
+[детальнее...](#_4)
 
 ### Устанавливаем Eclipse
 [1. Качаем последнюю версию](
