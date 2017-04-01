@@ -1816,7 +1816,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
-                                
+                                LOG.info("total count before processing is: {}", totalNumber);
                                 /*long totalDocumentNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
                                 
