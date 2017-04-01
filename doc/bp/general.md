@@ -234,7 +234,7 @@ type="queueData" required="true"></activiti:formProperty>
 * **bankIdmiddleName** - string - отчество гражданина
 * **bankIdPassport** - string  -паспортные данные гражданина
 
-[детальней...](#_Attributes BankID)
+[детальней...](#_attributesBankID)
 
 
 ## Reserved variables for electronic queues
@@ -243,7 +243,7 @@ type="queueData" required="true"></activiti:formProperty>
 * **nID_Department_visitDay** - string/invisible/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
 * **nSlots_visitDay** - string/invisible/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
 
-[детальней...](#_Reserved variables for electronic queues)
+[детальней...](#_Reservedvariablesforelectronicqueues)
 
 
 ## Зарезервированные переменные атрибутов
