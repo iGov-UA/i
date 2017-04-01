@@ -18,6 +18,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.repository.DiagramElement;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
@@ -117,12 +118,21 @@ public class CloseTaskEvent {
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 LOG.info("11111sUserTaskName before : " + snID_Process);// new log не меняется статус
-                List<String> aUserType = repositoryService.getBpmnModel(sProcessName).getUserTaskFormTypes();
-                Map<String, ItemDefinition> mItemDefinition = repositoryService.getBpmnModel(sProcessName).getItemDefinitions();
-                Map<String, MessageFlow> mMessageFlow = repositoryService.getBpmnModel(sProcessName).getMessageFlows();
+                
+                List<String> aUserType = repositoryService.getBpmnModel((sProcessName.split(":"))[0]).getUserTaskFormTypes();
+                Map<String, ItemDefinition> mItemDefinition = repositoryService.getBpmnModel((sProcessName.split(":"))[0]).getItemDefinitions();
+                Map<String, MessageFlow> mMessageFlow = repositoryService.getBpmnModel((sProcessName.split(":"))[0]).getMessageFlows();
                 LOG.info("aUserType is: {}", aUserType);
                 LOG.info("mItemDefinition is: {}", mItemDefinition);
                 LOG.info("mMessageFlow is: {}", mMessageFlow);
+                
+                Map<String, DiagramElement> mBpSchema = repositoryService.getProcessDiagramLayout((sProcessName.split(":"))[0]).getElements();
+                
+                for(String key : mBpSchema.keySet()){
+                    DiagramElement oDiagramElement = mBpSchema.get(key);
+                    LOG.info("DiagramElement {}", oDiagramElement.getId());
+                    LOG.info("BpSchema key {}", oDiagramElement.getId());
+                }
                 
                 boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 
