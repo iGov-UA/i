@@ -227,33 +227,24 @@ type="queueData" required="true"></activiti:formProperty>
 
 
 003_ReservedandSystemVariables.md
-### Переменные BankID
+### Attributes BankID
+Переменные BankID
 * **bankIdlastName** - string - фамилия гражданина
 * **bankIdfirstName** - string - имя гражданина
 * **bankIdmiddleName** - string - отчество гражданина
 * **bankIdPassport** - string  -паспортные данные гражданина
-* **bankId_scan_passport** - file - скан паспорта гражданина
-* **bankIdAddressFactual** - string - адрес регистрации гражданина
-* **bankIdAddressFactual_country** - string/invisible - страна 
-* **bankIdAddressFactual_state** - string/invisible - область
-* **bankIdAddressFactual_area** - string/invisible - район
-* **bankIdAddressFactual_city** - string/invisible - город
-* **bankIdAddressFactual_street** - string/invisible - улица
-* **bankIdAddressFactual_houseNo** - string/invisible - дом
-* **bankIdAddressFactual_flatNo** - string/invisible - квартира регистрации
-* **bankIdinn** - string - инн заявителя
-* **bankIdbirthDay** - string - дата рождения гражданина (у форматі ДД.ММ.РРРР)
-* **bankIdemail** - string - емейл гражданина
-* **bankIdphone** - string -телефон гражданина
-* **bankIdsID_Country** - string - гражданство
-* **bankId_scan_inn** - file - Скан копия ИНН гражданина
-* ![3_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_0.JPG)
 
-## Зарезервированные переменные для электронных очередей
+[детальней...](#_Attributes BankID)
+
+
+## Reserved variables for electronic queues
+Зарезервированные переменные для электронных очередей
 * **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
 * **nID_Department_visitDay** - string/invisible/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
 * **nSlots_visitDay** - string/invisible/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
-* ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
+
+[детальней...](#_Reserved variables for electronic queues)
+
 
 ## Зарезервированные переменные атрибутов
 * **sNameOrgan** - string/invisible/label - название органа в подписи письма
