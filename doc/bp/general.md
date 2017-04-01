@@ -1737,8 +1737,8 @@ execution.setVariable('sMainExecutor', obj.aProcessSubjectTree[0].aUser[i].sLogi
 execution.setVariable('sFirstName', obj.aProcessSubjectTree[0].aUser[i].sFirstName)
 execution.setVariable('sLastName', obj.aProcessSubjectTree[0].aUser[i].sLastName)
 var sExecutor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProcessSubjectTree[0].aUser[i].sLastName
-execution.setVariable('sExecutor', sExecutor)
-```
+execution.setVariable('sExecutor', sExecutor) 
+
 * ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
 ***
 
@@ -1988,7 +1988,7 @@ wf-region\src\main\resources\bpmn\markers
 wf-region\src\main\resources\bpmn\autodeploy
 wf-region\src\main\resources\pattern\print
 ```
-По умолчанию деплоим оба бека и рестартовать фронт централа (новые города, изменения бпмн по услугам и т.п.)  
+* По умолчанию деплоим оба бека и рестартовать фронт централа (новые города, изменения бпмн по услугам и т.п.)  
 После всех проверок на боевом делаем обратный мерж.  
 Путь обратного мержа на данный момент master - delta - alpha.  
 При конфликтах в наших файлах дельте принимаем дельту (если не договорено иное), в альфе - альфу.  
@@ -2014,10 +2014,11 @@ IDE NetBeans позволяет автоматизировать этот про
 8. Фиксим изменения  
 9. Выталкиваем  
 
-# Откат изменений (в eclipse)
+### Откат изменений (в eclipse)
 
 Installationeclipse.md
-```
+
+***
 ### Устанавливаем JAVA JDK
 1. Переходим по [ссылке](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)  
 2. Соглашаемся и качаем    
@@ -2025,7 +2026,7 @@ Installationeclipse.md
 
 ### Устанавливаем Eclipse
 [1. Качаем последнюю версию](
-http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/neon/2/eclipse-committers-neon-2-win32-x86_64.zip)  
+http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/neon/2/eclipse-committers-neon-2-win32-x86_64.zip) *** 
 2. копируем скачанный архив в нужную папку где он будет храниться  
 3. распаковываем архив 
 [детальнее...](#_Устанавливаем Eclipse)
