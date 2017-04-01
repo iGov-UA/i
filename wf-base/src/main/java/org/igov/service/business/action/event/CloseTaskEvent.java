@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.activiti.bpmn.model.ItemDefinition;
+import org.activiti.bpmn.model.MessageFlow;
 
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
@@ -116,7 +118,12 @@ public class CloseTaskEvent {
                 String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 LOG.info("11111sUserTaskName before : " + snID_Process);// new log не меняется статус
                 List<String> aUserType = repositoryService.getBpmnModel(sProcessName).getUserTaskFormTypes();
+                Map<String, ItemDefinition> mItemDefinition = repositoryService.getBpmnModel(sProcessName).getItemDefinitions();
+                Map<String, MessageFlow> mMessageFlow = repositoryService.getBpmnModel(sProcessName).getMessageFlows();
                 LOG.info("aUserType is: {}", aUserType);
+                LOG.info("mItemDefinition is: {}", mItemDefinition);
+                LOG.info("mMessageFlow is: {}", mMessageFlow);
+                
                 boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
