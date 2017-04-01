@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -45,6 +46,10 @@ public class CloseTaskEvent {
 	@Autowired
 	private FeedBackService feedBackService;
 
+        
+        @Autowired
+        protected RepositoryService repositoryService;
+        
 	@Autowired
 	GeneralConfig generalConfig;
 
@@ -109,6 +114,8 @@ public class CloseTaskEvent {
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
                 LOG.info("11111sUserTaskName before : " + snID_Process);// new log не меняется статус
+                List<String> aUserType = repositoryService.getBpmnModel(snID_Process).getUserTaskFormTypes();
+                LOG.info("aUserType is: {}", aUserType);
                 boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
