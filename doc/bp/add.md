@@ -44,6 +44,7 @@
  
 ### _file
 [вернуться...](#file)
+
 После стартовой таски добавляем  сервис-таску для подтягивания всех документов в процесс, где указываем
 `activiti:delegateExpression="#{fileTaskUpload}"`
 
@@ -65,6 +66,7 @@
 
 ### _file (New)
 [вернуться...](#file (New))
+
 Чтобы обозначить что прикрепляемый файл должен использоваться по новой схеме, добавляем в нейм поля такую конструкцию:
 **; ;bNew=true**  
 ```xml
@@ -105,10 +107,13 @@
 ### _select
 
 [вернуться...](#_select)
+
 Для того чтоб в выпадающем списке селекта выпадал заданный массив данных, необходимо правильно заполнить файлы [Subject](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subject), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrganJoinAttribute](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoinattribute), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) соответственно описанию.
 
 ###_table
+
 [вернуться...](#_table)
+
 **в бизнес-процессе**
 
 синтаксис поля:  
@@ -197,7 +202,7 @@ default=” “ - в дефолте в виде json - объекта пропи
 ### _Variable Attributes
 (Атрибуты переменных)
 
-[вернуться...](#Variable Attributes)
+[вернуться...](#VariableAttributes)
 
 *
 **writable** - редактируемость поля  (true/false).  Необязательный элемент.
@@ -367,6 +372,71 @@ Cделает текущее поле нередактируемым для по
 ![Заполненный](https://goo.gl/UtPH43)
 
 ***
+
+
+004_Generalrulesfornaming.md
+### _переменные
+
+[вернуться...](#переменные)
+* a = Array (массивы) - anPrice, asName, aDepartament
+* o = Object (обьекты/когда трудно определить строка или число) - oVisitDate
+* b = boolean 
+
+Для элементов enum помимо id доступно поле name.
+например (скоро будет реализовано):
+name="name;13,40;decimal;depCode=dep9345,depNum=44"
+
+где:
+* 1-й разряд = название (выводится в интерфейс)
+* 2-й разряд = значение //опционально
+* 3-й разряд = тип //опционально (те-же типы, что и в активити)
+* 4-й разряд = набор присвоений переменных, через запятую //опционально
+
+## бизнес-процеcсы
+Наименование процесса должно строиться по принципу  
+`{орган}_{номер услуги в Service}_{суть}_{приставка}`  
+{суть} и {приставка} - опционально (т.е. не обязательно)  
+{номер услуги в Service} - будет всегда состоять из 4х цифр, чтоб была правильная сортировка  
+приставка нужна для того, что если у Вас на один и тот же номер сервиса будет несколько бп  
+Наименование и ID процесса должны совпадать.
+например
+  
+zags_0705_changeName   
+zags_0710_death  
+
+eco_0520_auditori  
+eco_0521  
+* ![4_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_0.JPG)
+### {орган} Приставки для именования БП
+**dfs** - налоговая  
+**dms** - миграционная  
+**dpss** - ДержПродСпоживСлужба (екс-СЕС)  
+**zem** - услуги по земле  
+**eco** - экология  
+**zags** - загсы  
+**upszn** - услуги соц.помощи  
+**justice** - юстиция  
+**infrastr** - услуги мин.инфраструктуры  
+**rvk** - военкомат  
+**dvs** - исполнительная служба  
+**kids** - служба по делам детей  
+**oda** - услуги ОДА  
+**rada** - услуги местных органов власти (гор.советы, сельские советы, районные рады, поселковые советы)  
+**med** - медицинские услуги  
+* ![4_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_1.JPG)
+## группы и пользователи
+## принтформы
+## выносные файлы
+
+### _User'scolor
+Подсвечивать этап (юзертаску) в дашборде  цветом
+
+[вернуться...](#User'scolor)
+
+* "_green" - подкрашивать строку - зеленым цветом (класс: "bg_green")
+* "usertask1" - подкрашивать строку - салатовым цветом (класс: "bg_first")
+* ![4_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_2.jpg)
+* ![4_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_3.JPG)
 
 Installationeclipse.md
 ### _Устанавливаем JAVA JDK
