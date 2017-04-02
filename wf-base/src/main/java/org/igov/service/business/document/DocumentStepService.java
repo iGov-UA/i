@@ -1498,9 +1498,7 @@ public class DocumentStepService {
     public void removeDocumentSteps(String snID_Process_Activiti) {
         List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         if (aDocumentStep != null) {
-            for(DocumentStep oDocumentStep : aDocumentStep){
-                oDocumentStepDao.delete(oDocumentStep);
-            }
+            oDocumentStepDao.delete(aDocumentStep);
         }
     }
 
