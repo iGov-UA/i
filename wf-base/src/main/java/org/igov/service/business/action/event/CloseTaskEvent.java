@@ -79,9 +79,9 @@ public class CloseTaskEvent {
 			throws ParseException {
             LOG.info("Method doWorkOnCloseTaskEvent started");
             
-             Map<String, String> mParam = new HashMap<>();
-             mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
-	 HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
+            Map<String, String> mParam = new HashMap<>();
+            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
+            HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
 
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
@@ -138,7 +138,11 @@ public class CloseTaskEvent {
                     LOG.info("BpSchema key {}", oDiagramElement.getId());
                 }
                 
-                boolean bProcessClosed = (aTask == null || aTask.isEmpty());
+                List<HistoricProcessInstance> aHistoricProcessInstance = 
+                        historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).finished().list();
+                                
+                //boolean bProcessClosed = (aTask == null || aTask.isEmpty());
+                boolean bProcessClosed = (aHistoricProcessInstance == null || aHistoricProcessInstance.isEmpty());
                 
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 LOG.info("11111sUserTaskName: " + sUserTaskName);
