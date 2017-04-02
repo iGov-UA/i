@@ -383,58 +383,30 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_Addingausertoagroup)
 
-
-## Выполнение простейших математических действий с переменными
+007_Mathematicalactionswithvariablesandconditionoperators.md
+### Выполнение простейших математических действий с переменными
 
 digit1 - переменная со значением 1.  (тип long или double)
-
 digit2 - переменная со значением 2. (тип long или double)
-
-digit3 - переменная, куда присвоится результат  (тип long или double) . в дефолтном значении указываю запись типа ${digit2 + digit1}
-
+digit3 - переменная, куда присвоится результат  (тип long или double), в дефолтном значении указываю запись типа ${digit2 + digit1}
 и в итоге суммируется и в результате   имеем “3”  :)
 Аналогично используются операнды сложения, вычитания, умножения, деления.
 
-## Операторы условий в процессах.
+### Conditionstatementsinprocesses
+Операторы условий в процессах
 * ${form_attr == "N"} - проверка на равенство между переменной form_attr и константой  "N"
 * ${form_attr != "N"}  - проверка на НЕравенство
-* ${form_attr1 == form_attr2} - сравнение значений 2х переменных в процессе
-* ${form_attr1 == "N" || form_attr2 == "N"} - логическое “или” для 2х условий
-* ${form_attr1 == "Y" && form_attr2 == "Y" } - логические “и” для 2х условий 
 
-Если сложное условие прописывается в скрипттаске прямо в редакторе БП, то необходимо вместо && указать &amp;&amp; Последовательность “||” может быть указана явно. 
-## Использование таймеров
+[детальней...](#_Conditionstatementsinprocesses)
+
+### Usingtimers
+Использование таймеров
 Для использования таймера с целью приостановки процесса, используем стандартный элемент **TimerCatchingEvent** (самостоятельный элемент схемы) который приостанавливает процесс до срабатывания таймера.
 
-Для настройки эскалации или автопроброса процесса дальше на этап используем элемент **TimerBoundaryEvent** (крепится на юзертаску).  
-Обязательно изменить автоматически создаваемый ID этого элемента  “boundarytimer1 ”на  id="escalationTimer1"  
-
-[формат даты/времени](https://en.wikipedia.org/wiki/ISO_8601#Durations), задаваемый  на срабатывание таймера. 
--общие шаблоны в указанном стандарте:  
-P[n]Y[n]M[n]DT[n]H[n]M[n]S  
-P[n]W   
-`P<date>T<time>  `
-
-Период указывается в соответствующем теге :
-
-Установим таймер на **конкретное дату и время** срабатывания
-```xml
-<boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
-  		<timerEventDefinition>`
-    			<timeDate>2011-03-11T12:13:14</timeDate>
-  		</timerEventDefinition>
-	</boundaryEvent>
-```
-Установим таймер на срабатывание  через **период**
-```xml
-<boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
-  		<timerEventDefinition>
-    			<timeDuration>PT5S</timeDuration>
-  		</timerEventDefinition>
-	</boundaryEvent>
-```
+[детальней...](#_Usingtimers)
 
 
+009_MarkersandValidators.md
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
 
 [Маркеры группы motion](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-motion)  
@@ -460,7 +432,7 @@ P[n]W
   }
 }
 ```
-* ![6_2M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_2%D0%9C.JPG)
+[детальней...](#_ShowFieldsOnCondition)
 
 ***
 
@@ -499,7 +471,7 @@ P[n]W
   }
 }
 ```
-* ![9_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_2.JPG)
+[детальней...](#_RequiredFieldsOnCondition)
 
 ***
 
@@ -523,7 +495,8 @@ P[n]W
   }
 }
 ```
-* ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
+[детальней...](#_ShowElementsOnTrue)
+
 ***
 
 ### ValuesFieldsOnCondition
@@ -552,7 +525,8 @@ P[n]W
   }
 }
 ```
-* ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
+[детальней...](#_ValuesFieldsOnCondition)
+
 ***
 
 ### WritableFieldsOnCondition
@@ -573,7 +547,8 @@ P[n]W
   }
 }
 ```
-* ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG)     
+[детальней...](#_WritableFieldsOnCondition)
+    
 
 ***
 ### SplitTextHalf_1 - разделение значения по  знаку разделителя
@@ -589,11 +564,6 @@ P[n]W
   }
 }
 ```
-
-***
-
-
-
 ***
 
 Для использования  маркеров из внешнего файла, указываем путь к файлу:  
@@ -603,10 +573,9 @@ P[n]W
 default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProperty>
 ```
 Допускается использование вложенных подпапок  
-```default="${markerService.loadFromFile('folder_name/testmarkers.json')}" ```  
+default="${markerService.loadFromFile('folder_name/testmarkers.json')}"   
 Маркеры хранятся в папке /wf-region/src/main/resources/bpmn/markers/motion
 * ![6_1M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_1%D0%9C.JPG)
-****
 
 ## Маркеры группы validate
 ### CustomFormat_1 - номеров
