@@ -126,6 +126,10 @@ public class CloseTaskEvent {
                 LOG.info("mItemDefinition is: {}", mItemDefinition);
                 LOG.info("mMessageFlow is: {}", mMessageFlow);*/
                 
+                String oTaskDefinitionKey = oHistoricTaskInstance.getTaskDefinitionKey();
+                
+                LOG.info("oTaskDefinitionKey {}", oTaskDefinitionKey);
+                
                 Map<String, DiagramElement> mBpSchema = repositoryService.getProcessDiagramLayout(sProcessName).getElements();
                 
                 for(String key : mBpSchema.keySet()){
