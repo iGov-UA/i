@@ -140,7 +140,12 @@ public class CloseTaskEvent {
                 
                 List<HistoricProcessInstance> aHistoricProcessInstance = 
                         historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).finished().list();
-                                
+                
+                for(HistoricProcessInstance oHistoricProcessInstance : aHistoricProcessInstance){
+                    LOG.info("oHistoricProcessInstance.getId {}", oHistoricProcessInstance.getId());
+                    LOG.info("oHistoricProcessInstance.getProcessDefinitionId {}", oHistoricProcessInstance.getProcessDefinitionId());
+                }        
+                
                 //boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 boolean bProcessClosed = (aHistoricProcessInstance == null || aHistoricProcessInstance.isEmpty());
                 
