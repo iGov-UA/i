@@ -89,10 +89,10 @@ public class DeleteProccess implements JavaDelegate {
 
     public String closeProcessInstance(String snID_Process_Activiti) {
         LOG.info("closeProcessInstance...");
-        runtimeService.deleteProcessInstance(snID_Process_Activiti, "deprecated");
-        LOG.info("deleteProcessInstance worked...");
         documentStepService.removeDocumentSteps(snID_Process_Activiti);
         LOG.info("removeDocumentSteps worked...");
+        runtimeService.deleteProcessInstance(snID_Process_Activiti, "deprecated");
+        LOG.info("deleteProcessInstance worked...");
         return "success";
     }
 }
