@@ -325,172 +325,88 @@ type="queueData" required="true"></activiti:formProperty>
 
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
    * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
-   * ![5_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_0.jpg)
-   * ${CreateDocument_UkrDoc}
-   * ${GetDocument_UkrDoc}
-   * ${UpdateStatusTask}
-   * ${DocumentInit_iDoc}  
-   * ![5_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_3.JPG)
+   
+   [детальней...](#_Listener)
+
 
 ***
-### ${SetTasks}
+### SetTasks
 листенер ${SetTasks} - ставится на закрытие таски, т.е. event="complete"  **(1, 2)**  
 В этом листенере мы указываем какие поля из текущего БП передать в другой БП:  
-**sTaskProcessDefinition** - сюда прописываем ИД БП в который нужно пробросить данные **(3)**  
-далее перечисляем обязательные поля **(5)**  
-**sID_Attachment**  
-**sDateRegistration**  
-**sDateDoc**  
-**sName_SubjectRole**  
-**sDateExecution**  
-**processDefinitionId**  
-![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNG44eU1GSmlkUjg)  
-Так же в параметре листенера **soData** **(4)** можно передать другие поля, необходимые в процессе в формате:
 
-```
-sContent::${sContent};;sAutorResolution::${sAutorResolution};;
-```  
-разделитель между переменными - две точки с запятой.
+[детальней...](#_SetTasks)
+
 
 ***
-### ${DocumentInit_iDoc}
+### DocumentInit_iDoc
 
 листенер ${DocumentInit_iDoc} - ставится на открытие таски, т.е. event="create"  
 Никаких дополнительных параметров листенера ставить не нужно  
 ``` xml
 <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
 ```
-Листенер тянет из файла json данные, которые задают права определенных групп на просмотр или редактирование отдельных полей в данном бизнес-процессе.  
-Файл json должен иметь такое же имя как ИД БП, в котором установлен листенер.  
-Например:  
-**_doc_justice_171.bpmn**  
-**_doc_justice_171.json**  
-Путь, где должны хранится файлы json  
-**i\wf-region\src\main\resources\pattern\document**  
-Рассмотрим подробнее файл джейсона  
-```java
-{
-  "_": {
-    "MJU_Dnipro_Top1_Dep1_Exec1": {			// вот этому логину
-      "sName": "Контроллирующий всех этапов",
-      "bWrite": true,					//даны права на редактирование полей
-      "asID_Field_Read": [
-        "*"						//чтение всех полей
-      ],
-      "asID_Field_Write": [
-        "*"						//редактировоание всех полей
-      ]
-    },
-    "MJU_Dnipro_Top1_Dep1_Exec3": {			//вот этому логину
-      "sName": "Основной контролирующий",
-      "bWrite": true,					//даны права на редактирование полей
-      "asMask_FieldID_Read": [				//чтение всех полей
-        "*",						
-        "!sID_Group_Activiti",				// кроме sID_Group_Activiti, nDeepLevel
-        "!nDeepLevel"
-      ],
-      "asMask_FieldID_Write": [
-        "sDateExecution",
-        "sContent"
-      ]
-    }
-  },
-  "checker": {
-    "MJU_Dnipro_Top1_Dep1_Exec5": {
-      "sName": "Проверяющий",
-      "bWrite": false
-    }
-  }
-}
-```
-***
-### ${UpdateStatusTask}
+
+[детальней...](#_DocumentInit_iDoc)
+
+### UpdateStatusTask
 обновляет статус порожденной задачи  
 обязательный параметр **sID_ProcessSubjectStatus**  
-Все статусы задаются в файле: _i\wf-base\src\main\resources\data\ProcessSubjectStatus.csv_  
-В енаме (saStatusTask) порожденной задачи должны присутствовать только статусы из этого файла и передаваться затем в переменную sID_ProcessSubjectStatus:
-![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sb1J3RUx6Ti1HSGc)
-***
-### ${UpdateStatusTaskTreeAndCloseProcess}
+
+[детальней...](#_UpdateStatusTask)
+
+### UpdateStatusTaskTreeAndCloseProcess
 Листенер прикрепляется на процесс-родитель из которого порождаются задачи. В случае, если родительский процесс закрыт, то все незакрытые порожденные задачи автозакроются со статусом “неактуально”
 
 ***
 
-
-# delegateExpression
+### delegateExpression
 
    * ${assignGroup}
    * #{setMessageFeedback_Indirectly}
    * #{fileTaskUpload} - для электронных очередей. Достает дату из объекта в переменной типа _queueData_ и передает ее в системную переменную _date_of_visit_ . Сервистаска с этим выражением должна следовать сразу за стартивентом.
-   * #{MailTaskWithoutAttachment} - для отправки емейлов без  вложений
-   * ![5_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_1.JPG)
-   * #{MailTaskWithAttachments} - для отправки емейлов c  вложениями
-   * #{MailTaskWithAttachmentsAndSMS} - для отправки емейлов смс обязательно должно быть вложение, при отсутствии вложения в поле saAttachmentsForSend должен быть пробел " "
-   * ![5_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_2.JPG)
-   * #{ProcessCountTaskListener}
-   * #{SendObject_Corezoid_New}
-   * #{releaseTicketsOfQueue} - При создании сервистаски с таким параметром инициализируется отмена заявки и высвобождение слота  электронной очереди по инициативе сотрудника или системы 
+   
+   [детальней...](#_delegateExpression)
+   
+   006_Assigngroupsandusers.md
 
-# Добавляем пользователя
+### Addingauser
+Добавляем пользователя
 * Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
-* ![6_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_7.JPG)
+
+[детальней...](#_Addingauser)
+
 
 ***
-# Добавляем пользователя в группу
-* Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу
-* ![6_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_6.jpg)
+### Addingausertoagroup 
+Добавляем пользователя в группу
+* Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
 
-## Выполнение простейших математических действий с переменными
+[детальней...](#_Addingausertoagroup)
+
+007_Mathematicalactionswithvariablesandconditionoperators.md
+### Выполнение простейших математических действий с переменными
 
 digit1 - переменная со значением 1.  (тип long или double)
-
 digit2 - переменная со значением 2. (тип long или double)
-
-digit3 - переменная, куда присвоится результат  (тип long или double) . в дефолтном значении указываю запись типа ${digit2 + digit1}
-
+digit3 - переменная, куда присвоится результат  (тип long или double), в дефолтном значении указываю запись типа ${digit2 + digit1}
 и в итоге суммируется и в результате   имеем “3”  :)
 Аналогично используются операнды сложения, вычитания, умножения, деления.
 
-## Операторы условий в процессах.
+### Conditionstatementsinprocesses
+Операторы условий в процессах
 * ${form_attr == "N"} - проверка на равенство между переменной form_attr и константой  "N"
 * ${form_attr != "N"}  - проверка на НЕравенство
-* ${form_attr1 == form_attr2} - сравнение значений 2х переменных в процессе
-* ${form_attr1 == "N" || form_attr2 == "N"} - логическое “или” для 2х условий
-* ${form_attr1 == "Y" && form_attr2 == "Y" } - логические “и” для 2х условий 
 
-Если сложное условие прописывается в скрипттаске прямо в редакторе БП, то необходимо вместо && указать &amp;&amp; Последовательность “||” может быть указана явно. 
-## Использование таймеров
+[детальней...](#_Conditionstatementsinprocesses)
+
+### Usingtimers
+Использование таймеров
 Для использования таймера с целью приостановки процесса, используем стандартный элемент **TimerCatchingEvent** (самостоятельный элемент схемы) который приостанавливает процесс до срабатывания таймера.
 
-Для настройки эскалации или автопроброса процесса дальше на этап используем элемент **TimerBoundaryEvent** (крепится на юзертаску).  
-Обязательно изменить автоматически создаваемый ID этого элемента  “boundarytimer1 ”на  id="escalationTimer1"  
-
-[формат даты/времени](https://en.wikipedia.org/wiki/ISO_8601#Durations), задаваемый  на срабатывание таймера. 
--общие шаблоны в указанном стандарте:  
-P[n]Y[n]M[n]DT[n]H[n]M[n]S  
-P[n]W   
-`P<date>T<time>  `
-
-Период указывается в соответствующем теге :
-
-Установим таймер на **конкретное дату и время** срабатывания
-```xml
-<boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
-  		<timerEventDefinition>`
-    			<timeDate>2011-03-11T12:13:14</timeDate>
-  		</timerEventDefinition>
-	</boundaryEvent>
-```
-Установим таймер на срабатывание  через **период**
-```xml
-<boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
-  		<timerEventDefinition>
-    			<timeDuration>PT5S</timeDuration>
-  		</timerEventDefinition>
-	</boundaryEvent>
-```
+[детальней...](#_Usingtimers)
 
 
+009_MarkersandValidators.md
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
 
 [Маркеры группы motion](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-motion)  
@@ -516,7 +432,7 @@ P[n]W
   }
 }
 ```
-* ![6_2M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_2%D0%9C.JPG)
+[детальней...](#_ShowFieldsOnCondition)
 
 ***
 
@@ -555,7 +471,7 @@ P[n]W
   }
 }
 ```
-* ![9_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_2.JPG)
+[детальней...](#_RequiredFieldsOnCondition)
 
 ***
 
@@ -579,7 +495,8 @@ P[n]W
   }
 }
 ```
-* ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
+[детальней...](#_ShowElementsOnTrue)
+
 ***
 
 ### ValuesFieldsOnCondition
@@ -608,7 +525,8 @@ P[n]W
   }
 }
 ```
-* ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
+[детальней...](#_ValuesFieldsOnCondition)
+
 ***
 
 ### WritableFieldsOnCondition
@@ -629,7 +547,8 @@ P[n]W
   }
 }
 ```
-* ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG)     
+[детальней...](#_WritableFieldsOnCondition)
+    
 
 ***
 ### SplitTextHalf_1 - разделение значения по  знаку разделителя
@@ -645,11 +564,6 @@ P[n]W
   }
 }
 ```
-
-***
-
-
-
 ***
 
 Для использования  маркеров из внешнего файла, указываем путь к файлу:  
@@ -659,10 +573,9 @@ P[n]W
 default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProperty>
 ```
 Допускается использование вложенных подпапок  
-```default="${markerService.loadFromFile('folder_name/testmarkers.json')}" ```  
+default="${markerService.loadFromFile('folder_name/testmarkers.json')}"   
 Маркеры хранятся в папке /wf-region/src/main/resources/bpmn/markers/motion
 * ![6_1M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_1%D0%9C.JPG)
-****
 
 ## Маркеры группы validate
 ### CustomFormat_1 - номеров

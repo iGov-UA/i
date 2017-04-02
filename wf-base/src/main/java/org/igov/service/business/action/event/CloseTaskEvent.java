@@ -79,9 +79,9 @@ public class CloseTaskEvent {
 			throws ParseException {
             LOG.info("Method doWorkOnCloseTaskEvent started");
             
-             Map<String, String> mParam = new HashMap<>();
-             mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
-	 HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
+            Map<String, String> mParam = new HashMap<>();
+            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
+            HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
 
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
@@ -126,6 +126,10 @@ public class CloseTaskEvent {
                 LOG.info("mItemDefinition is: {}", mItemDefinition);
                 LOG.info("mMessageFlow is: {}", mMessageFlow);*/
                 
+                String oTaskDefinitionKey = oHistoricTaskInstance.getTaskDefinitionKey();
+                
+                LOG.info("oTaskDefinitionKey {}", oTaskDefinitionKey);
+                
                 Map<String, DiagramElement> mBpSchema = repositoryService.getProcessDiagramLayout(sProcessName).getElements();
                 
                 for(String key : mBpSchema.keySet()){
@@ -134,7 +138,16 @@ public class CloseTaskEvent {
                     LOG.info("BpSchema key {}", oDiagramElement.getId());
                 }
                 
-                boolean bProcessClosed = (aTask == null || aTask.isEmpty());
+                List<HistoricProcessInstance> aHistoricProcessInstance = 
+                        historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).finished().list();
+                
+                for(HistoricProcessInstance oHistoricProcessInstance : aHistoricProcessInstance){
+                    LOG.info("oHistoricProcessInstance.getId {}", oHistoricProcessInstance.getId());
+                    LOG.info("oHistoricProcessInstance.getProcessDefinitionId {}", oHistoricProcessInstance.getProcessDefinitionId());
+                }        
+                
+                //boolean bProcessClosed = (aTask == null || aTask.isEmpty());
+                boolean bProcessClosed = (aHistoricProcessInstance != null && !aHistoricProcessInstance.isEmpty());
                 
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 LOG.info("11111sUserTaskName: " + sUserTaskName);
