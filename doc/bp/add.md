@@ -545,10 +545,68 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 * ![6_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_6.jpg)
 
 
+007_Mathematicalactionswithvariablesandconditionoperators.md
+### _Conditionstatementsinprocesses
+[вернуться...](#Conditionstatementsinprocesses) 
+* ${form_attr1 == form_attr2} - сравнение значений 2х переменных в процессе
+* ${form_attr1 == "N" || form_attr2 == "N"} - логическое “или” для 2х условий
+* ${form_attr1 == "Y" && form_attr2 == "Y" } - логические “и” для 2х условий 
+Если сложное условие прописывается в скрипттаске прямо в редакторе БП, то необходимо вместо && указать &amp;&amp; Последовательность “||” может быть указана явно. 
 
+008_Workingwithdatesandtimers.md
+### _Usingtimers
+[вернуться...](#Usingtimers) 
+Для настройки эскалации или автопроброса процесса дальше на этап используем элемент **TimerBoundaryEvent** (крепится на юзертаску).  
+Обязательно изменить автоматически создаваемый ID этого элемента  “boundarytimer1 ”на  id="escalationTimer1"  
 
+[формат даты/времени](https://en.wikipedia.org/wiki/ISO_8601#Durations), задаваемый  на срабатывание таймера. 
+-общие шаблоны в указанном стандарте:  
+P[n]Y[n]M[n]DT[n]H[n]M[n]S  
+P[n]W   
+`P<date>T<time>  `
 
+Период указывается в соответствующем теге :
 
+Установим таймер на **конкретное дату и время** срабатывания
+```xml
+<boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+  		<timerEventDefinition>`
+    			<timeDate>2011-03-11T12:13:14</timeDate>
+  		</timerEventDefinition>
+	</boundaryEvent>
+```
+Установим таймер на срабатывание  через **период**
+```xml
+<boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+  		<timerEventDefinition>
+    			<timeDuration>PT5S</timeDuration>
+  		</timerEventDefinition>
+	</boundaryEvent>
+```
+
+009_MarkersandValidators.md
+### _ShowFieldsOnCondition
+[вернуться...](#ShowFieldsOnCondition)
+* ![6_2M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_2%D0%9C.JPG)
+
+### _RequiredFieldsOnCondition
+[вернуться...](#RequiredFieldsOnCondition)
+* ![9_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_2.JPG)
+
+### _ShowElementsOnTrue
+[вернуться...](#ShowElementsOnTrue)
+* ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
+
+### _ValuesFieldsOnCondition
+[вернуться...](#ValuesFieldsOnCondition)
+* ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
+
+### _WritableFieldsOnCondition
+[вернуться...](#WritableFieldsOnCondition)
+* ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG) 
+
+### _WritableFieldsOnCondition
+[вернуться...](#WritableFieldsOnCondition)
 
 Installationeclipse.md
 ### _Устанавливаем JAVA JDK
