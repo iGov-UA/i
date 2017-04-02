@@ -27,6 +27,8 @@
 1. [Чек лист тестирования ветки](https://github.com/e-government-ua/i/blob/test/doc/bp/025_CheckListTestBranch.md)
 1. [СЭД](https://github.com/e-government-ua/i/blob/test/doc/bp/026_IDoc.md)
 
+001_CreatingBusinessProcesses.md
+1. Создание бизнес-процессов
 ### сбор информации и предварительная подготовка
 * получить информационную и технологическую карточку услуги
 * пример заявления, бланки, шаблоны документов
@@ -36,7 +38,7 @@
 * Если необходимо - создать справочник административных органов по регионам - название, адрес, телефон, график работы. Путь к справочникам: i\wf-base\src\main\resources\patterns\dictionary
 * поставить задачу на гитхабе
 
-001_CreatingBusinessProcesses.md
+
 
 ### разработка бизнес-процесса
 
