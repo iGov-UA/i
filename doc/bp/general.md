@@ -564,18 +564,8 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-***
+[детальней...](#_SplitTextHalf_1)
 
-Для использования  маркеров из внешнего файла, указываем путь к файлу:  
-[Issues 840](https://github.com/e-government-ua/i/issues/840)  
-```xml
-<activiti:formProperty id="markers2" name="extended_marker" type="markers"   
-default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProperty>
-```
-Допускается использование вложенных подпапок  
-default="${markerService.loadFromFile('folder_name/testmarkers.json')}"   
-Маркеры хранятся в папке /wf-region/src/main/resources/bpmn/markers/motion
-* ![6_1M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_1%D0%9C.JPG)
 
 ## Маркеры группы validate
 ### CustomFormat_1 - номеров
@@ -593,10 +583,12 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
   }
 }
 ```
-* ![9_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_7.JPG) 
+[детальней...](#_CustomFormat_1)
+
 ***
 
-### расширений
+### Extensions
+расширений
 [Issues 1258](https://github.com/e-government-ua/i/issues/1258)
 ```java
 {
@@ -612,7 +604,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
   }
 }
 ```
-* ![9_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_8.JPG)
+
+[детальней...](#_Extensions)
+
 ***
 
 ### NumberBetween - принадлежность значения  диапазону значений  (целочисленные)
@@ -678,7 +672,8 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
   }
 }
 ```
-* ![9_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_6.JPG)
+[детальней...](#_FileSign)
+
 ### Алгоритм Луна
 Применяется для поля, в которое пользователь должен будет внести вручную номер заявки  
 [Issues 1513](https://github.com/e-government-ua/i/issues/1513)  
@@ -708,7 +703,8 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
   }
 }
 ```
-* ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
+[детальней...](#_Line)
+
 ***
 ### Style
 Для внедрения стилей css на страницу с услугой с целью изменения стандартного отображения элементов на форме
@@ -732,14 +728,10 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
    }
 }
 ```
-* ![9_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_5.JPG)
+[детальней...](#_Style)
 
-Маркер анализирует правила в свойствах aElement_ID и aSelectors и добавляет стили перечисленный из свойства oCommonStyle в блок ```<head>``` в виде отдельного стиля. Причем стилями можно влиять не только на элементы формы но на всю страницу.
-
-Свойства маркера aElement_ID и aSelectors работают параллельно и **может быть задан только один из них**. 
-[подробное описание](https://docs.google.com/document/d/1EE7q2EEBgHW6QMRJEsPXGNE0cU9GuXT2Z3KUYNceF88/edit)  
-
-### атрибут маркера sNote
+### sNote 
+атрибут маркера 
 ```java
 {
   "motion": {
@@ -758,20 +750,22 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
   }
 }
 ```
-* ![9_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_9.JPG)
-* Принтформа прописывается на Юзертаске:
+[детальней...](#_sNote)
+
+
+010_Printform.md
+### Printform
+
+*Принтформа прописывается на Юзертаске:
 
         activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_declaration_2.html" type="file"></activiti:formProperty
 
         activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty
- * ![10_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/10_0.JPG)
-
-        
-* При необходимости, сформированную принтформу можно отправить в письме как Attachment {PrintForm_1}
-
-* Динамически содержимое принтформы можно изменять маркерами: [issue #816](https://github.com/e-government-ua/i/issues/816)
-
-**отображение/скрытие  полей**
+ 
+ [детальней...](#_Printform)
+ 
+### Display_hidefields
+отображение/скрытие  полей
 
 например, "all_table" -  id какого-либо элемента печатной формы
 
@@ -795,36 +789,33 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
   `}`
  `}`
 `}`
-* ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 
+[детальней...](#_Display_hidefields)
 
-## Создание подписанного ЭЦП документа cо стартовой формы
+011_Digitalsignature.md
+
+### CreationofasignedEDSdocument
+
+Создание подписанного ЭЦП документа cо стартовой формы
 Необходимо добавить строки на стартовую таску:
 ```xml
 <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>` 
 <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/example_print_01.html"></activiti:formProperty>
 ```
-* ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
-где pattern/print/example_print_01.html -  шаблон печатной формы заявления, на которую будет накладываеться ЭЦП.  
 
-Если вместо ид **form_signed** будет поставлен ид **form_signed_all**, то ЕЦП будет наложена так же на все подгружаемые файлы.  
+[детальней...](#_CreationofasignedEDSdocument)
 
-Если убрать свойство **required="true"**, то наложение ЕЦП на указанную форму будет необязательной опцией.
 
-При использовании простого "name" как в примере ниже - используется BankID-конвертер "html в pdf", который имеет гарантированную работоспособность но налагающий массу требований по форматированию исходного html-файла.
-```xml
-<activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>` 
-```
-## Конвертирование html в PDF
+### ConverthtmltoPDF
+Конвертирование html в PDF
 Как альтернатива вышеуказанному способу существует конвертор собственный - его использование задается в дополнительном параметре описанном в "name". Данный конвертор более качественно переводит в PDF формат исходный html-файл. Также он позволяет успешно использовать встроенные в html-файл java-скрипты.
 ```xml
 <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>` 
 ```
-* ![11_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_0.JPG)
-На юзертасках добавить стандартный набор листнеров для подгрузки файлов.  
+[детальней...](#_ConverthtmltoPDF)
 
-[валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
-## Настройка электронной очереди
+012_Electronicqueues.md
+### Настройка электронной очереди
 Все файлы для настройки электронной очереди расположены в wf-base/src/main/resources/data/ ….   
 
 ***
@@ -1693,6 +1684,7 @@ http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/rel
 1. переходим в маркет  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_scWg3N3RiSU56MWM)  
 2. ищем нужные нам приложения и устанавливаем, процесс установки такой же как и в пункте 7, только не надо вставлять адрес УРЛ на приложение  и называть его. Теоретически можно было так и активити с майвеном поставить. 
+
 [детальнее...](#_Ставим дополнительные утилиты для удобства редактирования JSON и HTML)
 
 
