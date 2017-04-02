@@ -87,11 +87,12 @@ public class DeleteProccess implements JavaDelegate {
         this.limitCountRowDeleted = limitCountRowDeleted;
     }
 
-    public void closeProcessInstance(String snID_Process_Activiti) {
+    public String closeProcessInstance(String snID_Process_Activiti) {
         LOG.info("closeProcessInstance...");
-        runtimeService.deleteProcessInstance(snID_Process_Activiti, "deprecated");
-        LOG.info("deleteProcessInstance worked...");
         documentStepService.removeDocumentSteps(snID_Process_Activiti);
         LOG.info("removeDocumentSteps worked...");
+        runtimeService.deleteProcessInstance(snID_Process_Activiti, "deprecated");
+        LOG.info("deleteProcessInstance worked...");
+        return "success";
     }
 }

@@ -824,26 +824,29 @@ digit3 - переменная, куда присвоится результат 
 
 ### Flow_ServiceData.csv  
 **nID** - id потока  
-**sName** - название  
-**nID_ServiceData** - номер строки в [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) , для которой создается поток  
-**nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)   
-**sID_BP** - id самого процесса  
+**sName** - название 
+
+[детальней...](#_Flow_ServiceData.csv)
+
+
 
 ### SubjectOrganDepartment.csv
 здесь могут быть созданы  различные департаменты для возможности использования нескольких потоков в одном процессе  
 
 **nID** - id департамента  
-**sName** - название департамента  
-**sGroup_Activiti** - id группы активити, созданной для этого департамента  
-**nID_SubjectOrgan** - id номер из файла [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)  
+**sName** - название департамента 
+
+[детальней...](#_SubjectOrganDepartment.csv)
+
 
 ### FlowLink.csv
 если нужно завести на один общий поток несколько услуг.  
 Для привязки одной очереди к нескольким процессам, необходимо в этом файле перечислить **ВСЕ** процессы (nID_Service) которые нужно связать в рамках одного потока очереди  
 **nID**  
-**nID_Flow_ServiceData** - ИД потока, в который надо свести несколько очередей  
-**nID_Service** - ИД услуги из [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service)  
-**nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv) 
+**nID_Flow_ServiceData** - ИД потока, в который надо свести несколько очередей 
+
+[детальней...](#_FlowLink.csv)
+
 
 ***
 
@@ -852,256 +855,103 @@ digit3 - переменная, куда присвоится результат 
 файл с расписанием (график работы)
 
 **nID**  
-**nID_FlowPropertyClass** - класс, который формирует слоты очереди (для нас по-умолчанию - 1 )  
-**sData** - [набор правил для формирования слотов](http://www.cronmaker.com/) (например - `{"0 0/15 8-15 ? * MON-FRI *":"PT15M"} `)  
-**nID_Flow_ServiceData** - номер потока  
-**bExclude** - по умолчанию false  
-**sName** - название описываемого промежутка (например "Прийом в робочі дні")  
-**sRegionTime** - промежуток времени приёма (например 08:00-15:00)  
-**saRegionWeekDay** - дни приема через запятую, обозначаются первыми двумя английскими буквами дня недели(например mo,tu,we,th,fr)  
-**sDateTimeAt** - дата и время с (например 31.08.2015 8:00)  
-**sDateTimeTo** - дата и время по (например 30.09.2015 15:00)  
-**nLen** - промежуток времени для слота (например 15)   
-**sLenType** - единица измерения на английском (например Min)  
+**nID_FlowPropertyClass** - класс, который формирует слоты очереди (для нас по-умолчанию - 1 )
 
-***
+[детальней...](#_FlowProperty.csv)
+ 
 
-## Использование в одном процессе несколько электронных очередей (для нескольких департаментов)
+
+### Usingmultipleelectronicqueues
+Использование в одном процессе несколько электронных очередей (для нескольких департаментов)
 * внутри процесса на стартовой таске объявляем переменную с типом [queueData](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D0%BE%D0%B2#queuedata)
 ```xml 
 <activiti:formProperty id="visitDate" name="Бажана дата візиту" type="queueData" required="true"></activiti:formProperty>
 ```
-* ![12_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_0.JPG)
-в эту переменную будут передаваться данные по свободным слотам выбранной электронной очереди.
+[детальней...](#_Usingmultipleelectronicqueues)
 
-* на этой же  таске указываем переменную с id = **nID_Department_visitDate**, где **_visitDate** - это ИД необходимой переменной с нужной нам электронной очередью. 
-```xml
-<activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
-```
-значение для переменной id="nID_Department_visitDate" берем из  файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)
-
-***
 
 ## Отмена заявки. Высвобождение слота  электронной очереди по инициативе заявителя
-### Вариант №1.  Использование системного тэга [cancelTask]
+### variant
+Вариант №1.  Использование системного тэга [cancelTask]
 1. в имейле добавить тег **[cancelTask]**. Тэг преобразуется в кнопку “Отменить заявку” +  поле для комментария при закрытии заявки. 
 1. в юзертаске, которая подразумевает обработку чиновником, добавить поле с id **sCancelInfo**, тип string - в него запишется комментарий пользователи, с которым он отменял заявку.
 
-Использование тэга позволяет закрыть заявку и высвободить тэг электронной очереди.  
-Тэг можно использовать только в процессе с электронной очередью.
-* ![12_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_1.JPG) 
-### Вариант №2. Использование системного тега [cancelTaskSimple]
-в емейл добавляем системный тэг **[cancelTaskSimple]**, который преобразуется в кнопку **вже неактуально, закрити заявку**. Можно использовать в  любых процессах.  
-На первом этапе  отмена заявки по этому тэгу не  освобождает слот электронной очереди.
+[детальней...](#_variant)
 
-***
 
-## Отмена заявки. Высвобождение слота  электронной очереди по инициативе  сотрудника или системы
+### Cancellationrequest
+Отмена заявки. Высвобождение слота  электронной очереди по инициативе  сотрудника или системы
 Для реализации нужно добавить сервис таску:  
 ```xml
 <serviceTask id="servicetask" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}">
 </serviceTask>
 ```
+[детальней...](#_Cancellationrequest)
 
-[Скрипт для получения даты/времени напоминания о выбранной дате из электронной очереди](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82-%D0%B4%D0%BB%D1%8F-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B4%D0%B0%D1%82%D1%8B%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%BD%D0%B0%D0%BF%D0%BE%D0%BC%D0%B8%D0%BD%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BE-%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D0%BD%D0%BD%D0%BE%D0%B9-%D0%B4%D0%B0%D1%82%D0%B5-%D0%B8%D0%B7-%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B9-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8)
 
-## Изменить срок заказа электронной очереди
+### Changetheorderofanelectronicqueue
+Изменить срок заказа электронной очереди
 По умолчанию: заказ осуществляется на послезавтра  
 Если необходимо "сдвинуть" начало генерации слотово (например, не ранее, чем через 4 дня), прописываем в дефолте количество дней
 ```xml
 <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="4"></activiti:formProperty>
 ```
+[детальней...](#_Changetheorderofanelectronicqueue)
 
 
-Объединение нескольких слотов по потоку  
-Задание количества дней отсрочки по показу слотов очереди  
-Автогенерация слотов  
-Подключение сторонних очередей  
 
-
-* добавить в  БП такие поля (можно на стартовой таске):
-```xml
-<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-<activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" ></activiti:formProperty>
-<activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i10172968078"></activiti:formProperty>
-<activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="0.01"></activiti:formProperty>
-<activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-<activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция"></activiti:formProperty>
-```
-* ![13_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_0.JPG)
-* в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
-
-* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG)
-
-* в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
-
-```xml
-<activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false" ></activiti:formProperty`>
-```
-* ![13_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_2.JPG)
-
-На бэке (wf-base) доработана обработка тэга **[paymentButton_LiqPay]** так, чтоб он поддерживал множественные кнопки оплаты LiqPay в рамках одного письма. [Issue 789](https://github.com/e-government-ua/i/issues/789) 
-
-Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
-`#{MailTaskWithoutAttachment}`  
-`#{MailTaskWithAttachments}`  
-`#{MailTaskWithAttachmentsAndSMS}`  
-
-Параметры сервис таски:  
-**from** (expression)  
-**to** (expression)  
-**subject** (expression)  
-**text** (expression) - Тело письма. Поддержимает html формат. Переменные прописываются в виде ${id}  
-**saAttachmentsForSend** (expression) - указывается id файла ( в виде ${id} ) для отправки с емейлом.  Используется только  для MailTaskWithAttachments  
-
-Чтобы отправить автоматически сформированную принт-форму, добавленную в юзер-таске через id="sBody_N", необходимо добавлять строку в юзер-таске типа   
-```xml
-<activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
-```
-* ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
-а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
-
-## Использование переменных в шаблонах емейлов
+### UsingVariablesinEmailTemplates
+Использование переменных в шаблонах емейлов
 
 в БП есть поля с типом enum  
 у них есть id ,как и у любых других полей  
 нужно взять этот id, (какого-то БП), и на базе него прописать где-то в письме тэг **enum{[*]}**  
-например поле с id="typeOfDocument"  
-тогда в письме нужно вставить: **enum{[typeOfDocument]}**  
-тогда туда подставится значение выбранного в форме пункта энума  
-**enum{[ … ]}** - тег приоритетной подстановки значение енума (можно использовать в шаблонах емейлов)  
-**value{[ … ]}** - тег приоритетной подстановки  значения переменной (можно использовать в шаблонах емейлов)  
-если нужно отправить  системный тег - например номер заявки - то пишем просто в квадратных скобках - **[sID_Order]** 
-* ![14_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_1.JPG)
+например поле с id="typeOfDocument" 
 
-## Работа со справочниками данных в емейлах
+[детальней...](#_UsingVariablesinEmailTemplates)
+
+
+### Workingwithdatadirectoriesinemails
+Работа со справочниками данных в емейлах
 [Issue 839](https://github.com/e-government-ua/i/issues/839)  
 Расположены \wf-base\src\main\resources\patterns\dictionary  
 **1) в патернах (wf-base)**  
 должен находиться патерн-справочник, например по пути: /patterns/dictonary/MVD_Department.csv
-в котором, через точку с запятой должны быть данные по строкам.  
-Например:  
-23423421;Запорожская обл.;Адрес1  
-23423422;Днепропетровская обл.;Адрес2  
-23423423;Киевская обл.;Адрес3  
+в котором, через точку с запятой должны быть данные по строкам. 
 
-**2) в теле письма должен быть тег, типа:**  
-[pattern_dictonary:MVD_Department.csv:23423421:2]  
-где по коду "23423421" должна искаться строка в справочнике (всегда по первой колонке)
-а подставляться вместо тега значение из колонки "2" (т.е. "Днепропетровская обл.")  
-при этом файл справочник должен браться MVD_Department.csv  
-находящийся по пути: /patterns/dictonary/  
+[детальней...](#_Workingwithdatadirectoriesinemails)
 
-**3) Для динамической работы со справочниками используем тэг  приоритетной подстановки**  
-[Issue 865](https://github.com/e-government-ua/i/issues/865)  
-в виде value{[название переменной]}  
-где вместо "название переменной" должно быть название переменной, которую нужно будет взять из текущей юзертаски, при этом 
-value != enum.  
-Например:  
-для того чтобы из справочника бралось значение в зависимости от значения переменной ${region} используем выражение такого типа:
-[pattern_dictonary:zhytomir_reg_cnap.csv:value{[region]}:4]
-* ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
 
-**Важно:** замена полей происходит если у таски навешан какой-либо из следующих компонентов.  
-`activiti:delegateExpression="#{MailTaskWithAttachments}"`  
-`activiti:delegateExpression="#{MailTaskWithoutAttachment}"`  
-`activiti:delegateExpression="#{mailTaskWithAttachment}"`  
-
-Файл словарь находится в проекте wf-base по пути wf-base/src/main/resources/patterns/dictionary/MVD_Department.csv
-
-## Шаблоны емейлов
+### EmailTemplates
+Шаблоны емейлов
 расположены : \wf-region\src\main\resources\pattern\mail    
 В сервис-таске прописываем тэги с учётом того что из шаблонов не подтягиваются значения переменных активити:  
 Тело письма с обращением к клиенту и опросом качества  в таком случае будет выглядеть как:  
-[pattern/mail/_common_header.html]  
-`<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />`  
-[pattern/mail/test/_test_body.html]  
-[pattern/mail/_common_signature.html]  
-[pattern/mail/_common_feedback.html]  
-[pattern/mail/_common_footer.html]  
-* ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
-кастомизированная подпись в письме с использованием  шаблонов  
-[pattern/mail/_common_signature_start.html]  
-%любой необходимый текст%  
-[pattern/mail/_common_signature_end.html]  
-`<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>`  
-Ваше звернення успішно зареєстровано.  
-Результат обробки звернення будуть спрямовані на цей е-мейл  
+[pattern/mail/_common_header.html]
 
-[pattern/mail/new_design/_common_employee_notify.html] - общий шаблон уведомлений для гос.служащего (новый) 
-[pattern/mail/_common_client_notify.html] - общий шаблон уведомления гражданина / отмены заявки,  в случае если заявка очень долго не берется в работу  
+[детальней...](#_EmailTemplates)
 
-## обновленные шаблоны емейлов
+### newEmailTemplates
+обновленные шаблоны емейлов
 ```
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 ```
-* ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
-здесь мы пишем наш контент
-```
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
-```
-здесь мы можем добавить орган в подпись <br/>
-```
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-```
+[детальней...](#_newEmailTemplates)
+
+
+015_SendingSMSnotifications.md
+
+### SMSnotifications
 
 [тексты шаблонов](https://docs.google.com/document/d/1iU1hv8B51We6D62_WDHysqXn1O-c5huXierQrhCViuI/edit)  
-
 Заявка успешно подана гражданином  
 **Vashe zvernennya [sID_Order] zareestrovano**
 
-Заявка попала на первую юзертаску  
-**Status Vashoho zvernennya [sID_Order] zmineno na %название статуса%**  
-**Detali: igov.org.ua/journal abo u Vashomu email**
+[детальней...](#_SMSnotifications)
 
-По заявке вынесено замечание (автоматически)  
-**Za Vashym zvernennyam [sID_Order] vyneseno zauvazhennya**  
-**Detali: igov.org.ua/journal abo u Vashomu email**
 
-Сотрудник ответил на вопрос заявителя (автоматически)  
-**Za zvernennyam [sID_Order] otrymana vidpovidʹ na Vash komentar**  
-**Detali : igov.org.ua/journal abo u Vashomu email**  
-
-Заявка отработана (последняя юзертаска)  
-**Vashe zvernennya [sID_Order] obrobleno.**  
-**Detali: igov.org.ua/journal abo u Vashomu email**  
-
-Заявка отработана с отрицательным результатом  
-**Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy.**  
-**Detali: igov.org.ua/journal abo u Vashomu email**  
-
-Для отправки СМС необходимо в сервистасках по отправке емейлов MailTaskWithAttachmentsAndSMS  дополнительно указать 2 параметра:  
-**sPhone_SMS** - номер для отправки смс в формате +380….  
-**sText_SMS** - текст отправляемого сообщения. Транслитом. не более 160 символов. 
-
-**В тексте СМС не поддерживаются символы:** №, не пропускает апостроф ( ʹ ), но пропускает одинарную кавычку ( ‘ ).  
-Такой апостроф получается после транслитерации в  https://translate.google.com.ua
-
-Пример  в процессе:  
-```xml
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno.   
-                               Detali: igov.org.ua/journal abo u Vashomu emaill
-          </activiti:expression>
-        </activiti:field>
-      
-```
-* ![14_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_1.JPG)
-
-* Если  емейл не предусматривает отправку файла, то  указываем “ “ в качестве  значения  параметра файла для отправки:  
-```xml
-       <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><" "></activiti:expression>
-        </activiti:field>
-```
-
+016_Scripts.md
 
 1. [Форматирование даты в процессе](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B/_edit#%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B5)  
 1. [Получение даты/времени на нужном этапе процесса](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B/_edit#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%BD%D0%B0-%D0%BD%D1%83%D0%B6%D0%BD%D0%BE%D0%BC-%D1%8D%D1%82%D0%B0%D0%BF%D0%B5-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0)  
