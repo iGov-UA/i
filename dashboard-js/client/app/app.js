@@ -24,7 +24,9 @@ angular.module('dashboardJsApp', [
   'autocompleteService',
   'datetimepicker',
   'ea.treeview',
-  'cryptoPlugin'
+  'cryptoPlugin',
+  'textAngular',
+  'angularSpectrumColorpicker'
 ]).config(function($urlRouterProvider, $locationProvider) {
   $urlRouterProvider
     .otherwise('/');

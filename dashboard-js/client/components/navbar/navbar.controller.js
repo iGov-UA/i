@@ -174,23 +174,34 @@
         });
     };
 
-    $scope.usersDocumentsBPs = [];
     $scope.showOrHideSelect = {show:false,type:''};
     $scope.hasDocuments = function () {
       var user = Auth.getCurrentUser().id;
       if(user) {
-        tasks.isUserHasDocuments(user).then(function (res) {
-          if(Array.isArray(res) && res.length > 0) {
-            $scope.usersDocumentsBPs = res.filter(function (item) {
-              return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
-            });
-            $scope.userTasksBPs = res.filter(function (item) {
-              return item.oSubjectRightBP.sID_BP.indexOf('_doc_') !== 0;
-            })
+        if($rootScope.sUserOnTab){
+          if($rootScope.sUserOnTab === user){
+            // skip doing request
+          } else {
+            fillHasDocuments(user);
           }
-        })
+        } else {
+          fillHasDocuments(user);
+        }
       }
     };
+    function fillHasDocuments(user) {
+      $rootScope.sUserOnTab = user;
+      tasks.isUserHasDocuments(user).then(function (res) {
+        if(Array.isArray(res) && res.length > 0) {
+          $rootScope.usersDocumentsBPs = res.filter(function (item) {
+            return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
+          });
+          $rootScope.userTasksBPs = res.filter(function (item) {
+            return item.oSubjectRightBP.sID_BP.indexOf('_doc_') !== 0;
+          })
+        }
+      })
+    }
     $scope.hasDocuments();
 
     $scope.document = {};

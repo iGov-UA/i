@@ -10,8 +10,7 @@ import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.form.FormPropertyImpl;
@@ -663,7 +662,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> response = new HashMap<>();
 
         try {
-            response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+            response.put("oProcess", oActionTaskService.getProcessInfo(nID_Process, nID_Task, sID_Order));
         } catch (NullPointerException e) {
             String message = String.format("Incorrect Task ID [id = %s]. Record not found.", nID_Task);
             LOG.info(message);
@@ -690,11 +689,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
         }
 
-        LOG.info("Attach is not triggered!");
 
         if (bIncludeAttachments.equals(Boolean.TRUE)) {
             LOG.info("Attach is triggered!");
             response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
+        } else {
+            LOG.info("Attach is not triggered!");
         }
         if (bIncludeMessages.equals(Boolean.TRUE)) {
             if (nID_Process == null) {
@@ -712,7 +712,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
         }
         if (bIncludeProcessVariables.equals(Boolean.TRUE) && nID_Process != null) {
-            Map<String, Object> mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+            Map<String, Object> mProcessVariable = null;
+            try {
+                mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+            } catch (ActivitiObjectNotFoundException oException){
+                HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processDefinitionId(Long.toString(nID_Process)).singleResult();
+                if(historicProcessInstance == null){
+                    LOG.error("Can't get: {}", oException.getMessage());
+                } else {
+                    LOG.info("Getting variables from HistoricVariableInstance");
+                    mProcessVariable = historicProcessInstance.getProcessVariables();
+                }
+
+            }
             response.put("mProcessVariable", mProcessVariable);
         }
 
@@ -1795,7 +1807,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				long totalNumber = 0;
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
 						sFilterStatus, groupsIds, soaFilterField);
-                LOG.info("taskQuery = {}", taskQuery );
+                LOG.info("taskQuery: ", taskQuery );
 				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
 				LOG.info("Total number of tasks:{}", totalNumber);
@@ -3136,7 +3148,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     	List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
                         if (activeTasks != null && activeTasks.size() > 0){
                         	LOG.info("Found " + activeTasks.size() + " active tasks for the execution id " + executionId);
-                        	mReturn.put("nID_Task", tasks.get(0).getId());
+                        	mReturn.put("taskId", tasks.get(0).getId());
                         } else {
                         	LOG.warn("There are no active tasks for execution id " + executionId);
                         }

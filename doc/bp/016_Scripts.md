@@ -36,7 +36,7 @@ execution.setVariable('var2', value) - запись  значения value в �
   </script>
 </scriptTask>
 ```
-
+* ![16_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_7.JPG)
 [описание операторов и переменных для написания скриптов Javascript](http://javascript.ru/)  
 
 Для получения значения даты на момент срабатывания скрипта можно использовать:
@@ -54,6 +54,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 ```groovy
 execution.setVariable("docDateFormat", execution.getVariable("docDate").format("yyyy-MM-dd"))
 ```
+* ![16_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_8.JPG)
 где  
 **docDate** - имя параметра даты в процессе с форматом типа date.  Дата выбиралась из календарика.  
 **yyyy-MM-dd** - итоговый требуемый формат даты.  регистрозависимо!!!   
@@ -71,6 +72,7 @@ execution.setVariable("docDateFormat", execution.getVariable("docDate").format("
   </script>
 </scriptTask>
 ```
+* ![16_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_6.JPG)
 где
 **dCreate** - это поле в которое поместится результат (Время берется по Гринвичу)  
 **format("dd.MM.yyyy")** - задаем формат получаемого времени. Если формат не указываем то  по умолчанию дата / время будут в формате Tue Apr 26 14:51:17 UTC 2016  
@@ -114,6 +116,8 @@ var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds //склеив
 
 execution.setVariable('sNotification_day', timer)  //возвращаем в процесс итоговую переменную в нужном формате для таймера
 ```
+* ![16_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_9.JPG)
+
 **sNotification_day**  - это заранее созданная в процессе переменная, в которую вернем результат работы скрипта 
 
 ## Вычисление любой даты до (для напоминания) или после (для удаления заявки) даты визита:
@@ -206,6 +210,7 @@ execution.setVariable('sListDocumentsPrint', res)
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 ```
+* ![16_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_2.JPG)
 
 ## Формирование динамического названия юзертаски
 ```javaScript 
@@ -230,7 +235,7 @@ var number=execution.getVariable('sID_Order_GovPublic')
 var fullNumber="вх-"+number+"/"
 execution.setVariable('sID_Order_GovPublic', fullNumber)
 ```
-
+* ![16_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_3.JPG)
 ***
 
 ## Назначение даты исполнения - по умолчанию + 30 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
@@ -254,6 +259,7 @@ var executeProcessDefinitionId = execution.getProcessDefinitionId();
 var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 ```
+* ![16_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_4.JPG)
 
 ***
 
@@ -275,5 +281,5 @@ execution.setVariable('sLastName', obj.aProcessSubjectTree[0].aUser[i].sLastName
 var sExecutor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProcessSubjectTree[0].aUser[i].sLastName
 execution.setVariable('sExecutor', sExecutor)
 ```
-
+* ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
 ***
