@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
 import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
@@ -35,6 +36,9 @@ public class DocumentCommonController {
 
     @Autowired
     private DocumentStepService documentStepService;
+    
+    @Autowired
+    private DeleteProccess deleteProccess;
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentCommonController.class);
 
@@ -158,6 +162,15 @@ public class DocumentCommonController {
         Map<String, Boolean> m=new HashMap();
         m.put("bRemoved", bRemoved);
         return m;
+    }
+    
+    @ApiOperation(value = "Удаление степов и процесса")
+    @RequestMapping(value = "/removeDocumentSteps", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody String removeDocumentSteps(
+                    @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti)
+                    throws Exception {
+
+             return deleteProccess.closeProcessInstance(snID_Process_Activiti);
     }
     
 
