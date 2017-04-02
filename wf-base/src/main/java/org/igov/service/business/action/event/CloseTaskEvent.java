@@ -147,7 +147,7 @@ public class CloseTaskEvent {
                 }        
                 
                 //boolean bProcessClosed = (aTask == null || aTask.isEmpty());
-                boolean bProcessClosed = (aHistoricProcessInstance == null || aHistoricProcessInstance.isEmpty());
+                boolean bProcessClosed = (aHistoricProcessInstance != null || !aHistoricProcessInstance.isEmpty());
                 
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 LOG.info("11111sUserTaskName: " + sUserTaskName);
