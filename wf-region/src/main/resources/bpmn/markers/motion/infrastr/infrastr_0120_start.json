@@ -1,0 +1,72 @@
+{
+	"motion" : {
+		"ShowFieldsOnCondition_1" : {
+			"aField_ID" : ["sID_SubjectOrgan_OKPO_01", "sFullName_SubjectOrgan_01", "sLocation_SubjectOrgan_01", "sCEOName_SubjectOrgan_01"], 
+			"asID_Field" : {
+				"sReason" : "asOwnerType"
+			}, 
+			"sCondition" : "[sReason]=='sCompany'"
+		}, 
+		"ShowFieldsOnCondition_2" : {
+			"aField_ID" : ["lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport", "sManAdress", "sManInn"], 
+			"asID_Field" : {
+				"sReason" : "asOwnerType"
+			}, 
+			"sCondition" : "[sReason]=='sMan'"
+		}, 
+		"ShowFieldsOnCondition_3" : {
+			"aField_ID" : ["nShipTiket", "nDocKvalif1"], 
+			"asID_Field" : {
+				"sReason" : "asPassSmalShip"
+			}, 
+			"sCondition" : "[sReason]=='sPassSmalShipOk'"
+		}, 
+		"ShowFieldsOnCondition_4" : {
+			"aField_ID" : ["nDocKvalif", "nDocSvid", "nDocSafety", "nDocSysSafety", "nDocCharter"], 
+			"asID_Field" : {
+				"sReason" : "asPassShip", 
+				"sReason1" : "asScrapShip", 
+				"sReason2" : "asTrashShip"
+			}, 
+			"sCondition" : "[sReason]=='sPassShipOk' || [sReason1]=='sScrapShipOk' || [sReason2]=='sTrashShipOk'"
+		}, 
+		"ShowFieldsOnCondition_5" : {
+			"aField_ID" : ["nDocPass"], 
+			"asID_Field" : {
+				"sReason" : "asPassShip"
+			}, 
+			"sCondition" : "[sReason]=='sPassShipOk'"
+		}, 
+		"ShowFieldsOnCondition_6" : {
+			"aField_ID" : ["asOwnerMan"], 
+			"asID_Field" : {
+				"sReason" : "asOwnerType"
+			}, 
+			"sCondition" : "[sReason]=='sMan'"
+		}, 
+		"ValuesFieldsOnCondition_1" : {
+			"aField_ID" : ["sCompForm","lastName_UA2", "firstName_UA2", "middleName_UA2", "sManPassport","privatePhone","privateMail"], 
+			"asID_Field_sValue" : ["фізична особа-підприємець", "[bankIdlastName]", "[bankIdfirstName]", "[bankIdmiddleName]", "[sBankIdPassport]","[phone]","[email]"], 
+			"asID_Field" : {
+				"sClient" : "asOwnerType",
+				"sClient1" : "asOwnerMan"
+			}, 
+			"sCondition" : "[sClient] == 'sMan' && [sClient1] == 'sYes'"
+		}
+	}, 
+	"attributes" : {
+		"Line_1" : {
+			"aElement_ID" : ["sCompForm"], 
+			"sValue" : "Дані щодо здобувача ліцензії"
+		},
+		"Line_2" : {
+			"aElement_ID" : ["asPassSmalShip"], 
+			"sValue" : "Види діяльності"
+		},
+		"Line_3" : {
+			"aElement_ID" : ["nPassport"], 
+			"sValue" : "Розмір файлів та архівів не може перевищувати 5Мб"
+		}
+		
+	}
+}

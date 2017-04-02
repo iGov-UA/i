@@ -2,7 +2,6 @@ package org.igov.service.controller;
 
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.impl.persistence.entity.GroupEntity;
 import org.igov.service.business.action.task.core.UsersService;
 import org.igov.util.JSON.JsonRestUtils;
 import org.junit.Assert;
@@ -19,9 +18,10 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -48,6 +48,31 @@ public class ActionIdentityCommonScenario {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         identityService = webApplicationContext.getBean(IdentityService.class);
         usersService = webApplicationContext.getBean(UsersService.class);
+    }
+
+    @Test
+    public void shouldSuccessfullySetGroup()throws Exception {
+        String sURL_Template_Set = "/action/identity/setGroup";
+        String sURL_Template_Get = "/action/identity/getGroups";
+        String sID = "123456";
+        String sName = "new_test_group_shouldSuccessfullySetGroup_name";
+
+        requestBuilder = get(sURL_Template_Set).param("sID", sID).param("sName", sName);
+        mockMvc.perform(requestBuilder)
+            .andExpect(status().isOk());
+
+        requestBuilder = get(sURL_Template_Get);
+        List<Map<String, String>> aResultGroups
+            = JsonRestUtils.readObject(fetchJSONData(requestBuilder), List.class);
+
+        Predicate<Map<String, String>> expectedGroup = group ->
+            sID.equals(group.get("id"))
+            && sName.equals(group.get("name"));
+        List<Map<String, String>> aFilteredGroups = aResultGroups.stream()
+            .filter(expectedGroup)
+            .collect(Collectors.toList());
+
+        Assert.assertEquals(1, aFilteredGroups.size());
     }
 
     @Test

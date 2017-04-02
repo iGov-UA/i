@@ -64,7 +64,7 @@
   <!--форма заявки-->
   <div ng-if="tabHistoryAppeal === 'appeal' && !clarify">
     <form name="form" novalidate style="padding-bottom: 70px">
-      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)">
+      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)" ng-class="getBpAndFieldID(item)">
         <!-- сепаратор -->
         <div class="addition-hr" ng-if="insertSeparator(item.id).bShow">
           <table style="width: 100%; height: auto">
@@ -118,6 +118,11 @@
         <!--поле типа select-->
         <div ng-if="item.value && isFormPropertyDisabled(item)">
           <select-field></select-field>
+        </div>
+
+        <!--поле типа fileHTML-->
+        <div ng-if="item.value && isFormPropertyDisabled(item)">
+          <file-html></file-html>
         </div>
 
         <!--поле типа user-->
@@ -176,7 +181,7 @@
 
       <!--редактируемые поля для чиновника-->
       <hr class="hr-divider" ng-if="!inUnassigned() && isUnDisabledFields()">
-      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item) && !isFormPropertyDisabled(item)">
+      <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item) && !isFormPropertyDisabled(item)" ng-class="getBpAndFieldID(item)">
 
         <!-- сепаратор -->
         <div class="addition-hr" ng-if="insertSeparator(item.id).bShow">
@@ -226,6 +231,9 @@
 
         <!--поле типа select-->
         <select-field></select-field>
+
+        <!--поле типа fileHTML-->
+        <file-html></file-html>
 
       </div>
 
@@ -326,7 +334,7 @@
               </span>
               </div>
               <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? (users.sDate | splitDateByT) : 'Немає підпису'}}</span>
+                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
               </div>
             </div>
 
@@ -342,7 +350,7 @@
               </span>
               </div>
               <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? (users.sDate | splitDateByT) : 'Немає ознайомлення'}}</span>
+                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає ознайомлення'}}</span>
               </div>
             </div>
 
@@ -425,7 +433,7 @@
                 <span ng-if="!documentRights.bWrite && !isDocument()">Ознайомлений</span>
                 <span ng-if="isDocument() && isDocumentNotSigned()">Створити</span>
               </button>
-              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished' || isDocument()"
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти

@@ -162,7 +162,7 @@ angular.module('dashboardJsApp')
         })
       },
 
-      getTableAttachment: function (taskId, attachId, isNewService) {
+      getTableOrFileAttachment: function (taskId, attachId, isNewService) {
         // old and new services requests
         if(isNewService) {
           return simpleHttpPromise({
@@ -226,7 +226,7 @@ angular.module('dashboardJsApp')
         };
 
         var tableFields = $filter('filter')(formProperties, function(prop){
-          return prop.type == 'table';
+          return prop.type === 'table' || prop.type === 'fileHTML';
         });
 
         if(tableFields.length > 0) {
@@ -238,7 +238,7 @@ angular.module('dashboardJsApp')
           */
             var isNotEqualsAttachments = function (table, num) {
                 var checkForNewService = table.name.split(';');
-                if (checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1) {
+                if (checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1 || table.type === 'fileHTML') {
                   // tablePromises.push(self.uploadTable(table, task.processInstanceId, table.id, null, true));
                   def[num] = $q.defer();
                   tablePromises[num] = {table:table, taskID:task.processInstanceId, tableId:table.id, desc:null, isNew:true};
@@ -312,13 +312,20 @@ angular.module('dashboardJsApp')
       uploadTable: function(files, taskId, attachmentID, description, isNewService) {
         var deferred = $q.defer(),
             tableId = files.id,
-            stringifyTable = JSON.stringify(files),
+            stringifyTable = files.type === 'table' ? JSON.stringify(files) : files.value,
             data = {},
-            url;
+            url,
+            ext;
+
+        if(files.type === 'table') {
+          ext = '.json'
+        } else if (files.type === 'fileHTML') {
+          ext = '.html'
+        }
 
         if(isNewService) {
           data = {
-            sFileNameAndExt: tableId + '.json',
+            sFileNameAndExt: tableId + ext,
             sContent: stringifyTable,
             nID_Process: taskId,
             nID_Attach: attachmentID
@@ -327,7 +334,7 @@ angular.module('dashboardJsApp')
         } else {
           data = {
             sDescription: description + '[table][id='+ tableId +']',
-            sFileName: tableId + '.json',
+            sFileName: tableId + ext,
             sContent: stringifyTable,
             nID_Attach: attachmentID
           };
@@ -421,8 +428,10 @@ angular.module('dashboardJsApp')
         var scope = $rootScope.$new(true, $rootScope);
         var url;
 
-        if(newUpload) {
+        if(newUpload && taskId) {
           url = '/api/uploadfile?nID_Process=' + taskId + '&sID_Field=' + sID_Field + '&sFileNameAndExt=' + files[0].name;
+        } else if(newUpload && !taskId) {
+          url = '/api/uploadfile?sID_Field=' + sID_Field + '&sFileNameAndExt=' + files[0].name;
         } else {
           url = '/api/tasks/' + taskId + '/attachments/' + sID_Field + '/upload';
         }
@@ -867,6 +876,85 @@ angular.module('dashboardJsApp')
             sID_BP: bpID
           }
         })
+      },
+      /*вытягиваем шаблон бизнес-процесса для последующего заполнения*/
+      createNewTask: function (bpID) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: 'api/create-task/createTask',
+          params: {
+            sID_BP: bpID
+          }
+        })
+      },
+      /*сохраняем ранее заполненный шаблон как таску, сохранив перед этим таблицы в редис*/
+      submitNewCreatedTask: function (task, bpID) {
+        var self = this, def = [], tables = [], tablePromises = [], items = 0, deferred = $q.defer();
+
+        var createProperties = function (formProperties) {
+          var properties = [];
+          for (var i = 0; i < formProperties.length; i++) {
+            var formProperty = formProperties[i];
+            if (formProperty && formProperty.writable) {
+              if(formProperty.hasOwnProperty('aRow')) {
+
+              }
+              properties.push({
+                id: formProperty.id,
+                value: formProperty.value
+              });
+            }
+          }
+          return properties;
+        };
+
+        var tableFields = $filter('filter')(task.formProperties, function(prop){
+          return prop.type == 'table';
+        });
+
+        var syncTableUpload = function (i, table, defs) {
+          if (i < table.length) {
+            self.uploadTable(table[i].table, table[i].taskID, table[i].tableId, table[i].desc, table[i].isNew)
+              .then(function(resp) {
+                defs[i].resolve();
+                ++i;
+                syncTableUpload(i, table, defs);
+            })
+          }
+        };
+
+        var isNotEqualsAttachments = function (table, num) {
+          def[num] = $q.defer();
+          tables[num] = {table:table, taskID:null, tableId:table.id, desc:null, isNew:true};
+          tablePromises[num] = def[num].promise;
+        };
+
+        if(tableFields.length > 0) {
+          for (var i=0; i<tableFields.length; i++) {
+            isNotEqualsAttachments(tableFields[i], i);
+          }
+        }
+
+        syncTableUpload(items, tables, def);
+
+        $q.all(tablePromises).then(function () {
+          var qs = {
+            properties : createProperties(task.formProperties)
+          };
+
+          simpleHttpPromise({
+            method: 'POST',
+            params: {sID_BP: bpID},
+            url: '/api/create-task/saveCreatedTask',
+            data: qs
+          }).then(function (result) {
+              deferred.resolve(result);
+            },
+            function(result) {
+              deferred.resolve(result);
+            });
+        });
+        return deferred.promise;
       },
       getFilterFieldsList: function (login) {
         return simpleHttpPromise({

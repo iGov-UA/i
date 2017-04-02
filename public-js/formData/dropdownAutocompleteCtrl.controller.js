@@ -211,7 +211,7 @@ angular.module('autocompleteService')
     $scope.onSelectDataList = function (item, tableName, rowIndex, field) {
         var additionalPropertyName = getAdditionalPropertyName();
         var nameWithPostFix = getNameWithPostFix(field);
-        if (rowIndex || rowIndex >= 0) {
+        if (rowIndex !== null && (rowIndex || rowIndex >= 0)) {
             var form = $scope.activitiForm ? $scope.activitiForm.formProperties : $scope.taskForm;
             angular.forEach(form, function (property) {
                 if (property.id === tableName) {
@@ -243,6 +243,19 @@ angular.module('autocompleteService')
                         obj[key].value = item[$scope.autocompleteData.prefixAssociatedField];
                     }
                 })
+            } else if (!$scope.taskForm && $scope.formData && !$scope.formData.params[additionalPropertyName]) {
+                for (var stuff in $scope.formData.params) {
+                    if($scope.formData.params.hasOwnProperty(stuff)) {
+                        if (nameWithPostFix && nameWithPostFix[1]) {
+                            var splited = stuff.split(/_/),
+                                postfix = splited.pop(),
+                                anotherPart = splited.join('_');
+                            if (anotherPart.indexOf(additionalPropertyName) === 0 && postfix === nameWithPostFix[nameWithPostFix.length - 1]) {
+                                $scope.formData.params[stuff].value = item[splited[0]];
+                            }
+                        }
+                    }
+                }
             }
         }
     };

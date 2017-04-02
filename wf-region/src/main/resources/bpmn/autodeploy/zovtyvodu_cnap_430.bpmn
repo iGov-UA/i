@@ -27,14 +27,14 @@
         <activiti:formProperty id="nFile_ustr_terit" name="Схема благоустрою  прилеглої  території" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж." type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile_Passport" name="Копія паспорта прив’язки тимчасової споруди" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bFlagZhovtyVoduCnap340" name="Флаг процесса" type="invisible" default="easy"></activiti:formProperty>
-        <activiti:formProperty id="sMailCler1k" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerkArchitec1t" name="Пошта архітектури" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bFlagZhovtyVoduCnap340" name="Флаг процесса; ;bVisible=false" type="string" default="easy"></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта ЦНАП; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerkArchitec1t" name="Пошта архітектури; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="markerPassport" name="Continue Passprot" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -116,9 +116,9 @@
           <activiti:value id="dok_bad" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по розгляду заявки;(Вкажіть реєстраційний номер заявки та іншу корисну для міської ради інформацію, в разі відмови поясніть причину відмови)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Форму надіслано"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст; ;bVisible=false" type="string" default="Форму надіслано"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="marker for AfterSubmit" type="markers" default="${markerService.loadFromFile('architecture/archAfterSubmit.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -250,9 +250,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia2" name="Коментар по розгляду заявки;(Вкажіть корисні для ЦНАПу та заявника дані, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст1" type="invisible" default="Якщо заявка опрацьовано вона буде передана до ЦНАП.Також вам необхідно як найшвидше передати в ЦНАП паспорт прив'язки тимчасової споруди. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст1; ;bVisible=false" type="string" default="Якщо заявка опрацьовано вона буде передана до ЦНАП.Також вам необхідно як найшвидше передати в ЦНАП паспорт прив'язки тимчасової споруди. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -356,8 +356,8 @@
           <activiti:value id="dok_ok3" name="Заявник отримав паспорт на розміщення тимчасової споруди"></activiti:value>
           <activiti:value id="dok_bad3" name="Заявник не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -430,8 +430,8 @@
           <activiti:value id="No" name="Відмовити"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia4" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

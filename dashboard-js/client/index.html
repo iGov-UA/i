@@ -17,6 +17,8 @@
       <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
       <link rel="stylesheet" href="bower_components/ui-select/dist/select.css" />
       <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+      <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
+      <link rel="stylesheet" href="bower_components/spectrum/spectrum.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -54,6 +56,8 @@
       <!-- bower:js -->
       <script src="bower_components/jquery/dist/jquery.js"></script>
       <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/angular-base64/angular-base64.js"></script>
+      <script src="bower_components/angular-md5/angular-md5.js"></script>
       <script src="bower_components/angular-resource/angular-resource.js"></script>
       <script src="bower_components/angular-cookies/angular-cookies.js"></script>
       <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -74,6 +78,17 @@
       <script src="bower_components/angular-ui-validate/dist/validate.js"></script>
       <script src="bower_components/ui-select/dist/select.js"></script>
       <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+      <script src="bower_components/rangy/rangy-core.js"></script>
+      <script src="bower_components/rangy/rangy-classapplier.js"></script>
+      <script src="bower_components/rangy/rangy-highlighter.js"></script>
+      <script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
+      <script src="bower_components/rangy/rangy-serializer.js"></script>
+      <script src="bower_components/rangy/rangy-textrange.js"></script>
+      <script src="bower_components/textAngular/dist/textAngular.js"></script>
+      <script src="bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+      <script src="bower_components/textAngular/dist/textAngularSetup.js"></script>
+      <script src="bower_components/spectrum/spectrum.js"></script>
+      <script src="bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.min.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
 
@@ -82,22 +97,23 @@
         <!-- build:js({.tmp,client,..}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
-          <script src="public-js/markers/module.js"></script>
-          <script src="public-js/formData/autocompletesDataFactory.service.js"></script>
-          <script src="public-js/formData/datepicker.module.js"></script>
-          <script src="public-js/formData/datepickerFactory.service.js"></script>
-          <script src="public-js/formData/dropdown.js"></script>
-          <script src="public-js/formData/dropdownAutocomplete.directive.js"></script>
-          <script src="public-js/formData/dropdownAutocompleteCtrl.controller.js"></script>
-          <script src="public-js/formData/organlist.factory.js"></script>
-          <script src="public-js/formData/table.service.js"></script>
-          <script src="public-js/formData/typeahead.js"></script>
-          <script src="public-js/markers/defaults.js"></script>
-          <script src="public-js/markers/factory.js"></script>
-          <script src="public-js/markers/field.attributes.service.js"></script>
-          <script src="public-js/markers/field.motion.service.js"></script>
-          <script src="public-js/markers/schema.js"></script>
-          <script src="public-js/markers/validation.service.js"></script>
+          <script src="./../../public-js/markers/module.js"></script>
+          <script src="./../../public-js/cryptoPlugin/cryptoPlugin.js"></script>
+          <script src="./../../public-js/formData/autocompletesDataFactory.service.js"></script>
+          <script src="./../../public-js/formData/datepicker.module.js"></script>
+          <script src="./../../public-js/formData/datepickerFactory.service.js"></script>
+          <script src="./../../public-js/formData/dropdown.js"></script>
+          <script src="./../../public-js/formData/dropdownAutocomplete.directive.js"></script>
+          <script src="./../../public-js/formData/dropdownAutocompleteCtrl.controller.js"></script>
+          <script src="./../../public-js/formData/organlist.factory.js"></script>
+          <script src="./../../public-js/formData/table.service.js"></script>
+          <script src="./../../public-js/formData/typeahead.js"></script>
+          <script src="./../../public-js/markers/defaults.js"></script>
+          <script src="./../../public-js/markers/factory.js"></script>
+          <script src="./../../public-js/markers/field.attributes.service.js"></script>
+          <script src="./../../public-js/markers/field.motion.service.js"></script>
+          <script src="./../../public-js/markers/schema.js"></script>
+          <script src="./../../public-js/markers/validation.service.js"></script>
           <script src="app/account/account.js"></script>
           <script src="app/account/login/login.controller.js"></script>
           <script src="app/deploy/deploy.controller.js"></script>
@@ -131,6 +147,7 @@
           <script src="app/task/baTask.controller.js"></script>
           <script src="app/task/task.js"></script>
           <script src="app/tasks/clarify.directive.js"></script>
+          <script src="app/tasks/createTask.controller.js"></script>
           <script src="app/tasks/dialogs/signInfoDialog.directive.js"></script>
           <script src="app/tasks/dialogs/signInfoDialogContent.directive.js"></script>
           <script src="app/tasks/form-buttons/printDialog.directive.js"></script>
@@ -142,6 +159,7 @@
           <script src="app/tasks/form-fields/fieldTitle.directive.js"></script>
           <script src="app/tasks/form-fields/file.directive.js"></script>
           <script src="app/tasks/form-fields/fileFormField.directive.js"></script>
+          <script src="app/tasks/form-fields/fileHTML.directive.js"></script>
           <script src="app/tasks/form-fields/marker.directive.js"></script>
           <script src="app/tasks/form-fields/selectField.directive.js"></script>
           <script src="app/tasks/form-fields/simpleField.directive.js"></script>
@@ -166,8 +184,11 @@
           <script src="components/deploy/deploy.service.js"></script>
           <script src="components/directives/checkboxIndeterminate.directive.js"></script>
           <script src="components/directives/igovFocusIf.js"></script>
+          <script src="components/eds/signDialog.js"></script>
+          <script src="components/eds/signService.js"></script>
           <script src="components/env/env.config.service.js"></script>
           <script src="components/escalations/escalations.service.js"></script>
+          <script src="components/fileHTML/angularText.config.js"></script>
           <script src="components/filters/splitDate.filter.js"></script>
           <script src="components/filters/tableButton.filter.js"></script>
           <script src="components/filters/wordCut.filter.js"></script>

@@ -4,7 +4,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
-              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService) {
+              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService) {
 
       'use strict';
 
@@ -249,6 +249,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         })
       }
 
+      $scope.fieldHasVisibleType = function (field) {
+        if(field && field.type) {
+          return field.type !== 'markers' && field.type !== 'invisible';
+        }
+      };
+
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -295,7 +301,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
 
-      $scope.processForm = function (form, aFormProperties) {
+      $scope.processForm = function (form, aFormProperties, signNeeded) {
+
+        if(signNeeded !== undefined) {
+          $scope.sign.checked = signNeeded;
+        }
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
@@ -377,12 +387,27 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           });
         }
 
+        function formSubmit() {
+          if ($scope.sign.checked) {
+            $scope.fixForm(form, aFormProperties);
+            $scope.signForm();
+          } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
+            $scope.submitForm(form, aFormProperties);
+          }
+        }
 
-        if ($scope.sign.checked) {
-          $scope.fixForm(form, aFormProperties);
-          $scope.signForm();
-        } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
-          $scope.submitForm(form, aFormProperties);
+        var fileHTMLFields = aFormProperties.filter(function (field) {
+          return field.type === 'fileHTML';
+        });
+
+        if(fileHTMLFields.length > 0) {
+          ActivitiService.uploadFileHTML($scope.data.formData.params, $scope.activitiForm.formProperties).then(function () {
+            formSubmit();
+          });
+        }
+
+        if (fileHTMLFields.length === 0) {
+          formSubmit();
         }
       };
 
@@ -954,7 +979,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         if ($scope.isFormDataEmpty()) {
           return false;
         } else {
-          return BankIDAccount.customer.isAuthTypeFromBankID;
+          return BankIDAccount.customer.sUsedAuthType === 'bankid' || BankIDAccount.customer.sUsedAuthType === 'bankid-nbu';
         }
       };
 
@@ -1069,10 +1094,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         *поиски организации по окпо начало
       */
       $scope.getOrgData = function (code, id) {
+        var fields = Object.keys($scope.data.formData.params);
         var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
         var keys = {activities:'sID_SubjectActionKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
         function findAndFillOKPOFields(res) {
-          angular.forEach(res.data, function (i, key, obj) {
+          angular.forEach(res.data, function (i, key) {
             if (key in keys) {
               for (var prop in $scope.data.formData.params) {
                 if ($scope.data.formData.params.hasOwnProperty(prop) && prop.indexOf(keys[key]) === 0) {
@@ -1080,8 +1106,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
                     elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
                   if (elementPostfix !== null && elementPostfix === fieldPostfix)
                     if(prop.indexOf('sID_SubjectActionKVED') > -1) {
-                      var onlyKVEDNum = i.match(/\d{1,2}[\.]\d{1,2}/);
+                      var onlyKVEDNum = i.match(/\d{1,2}[\.]\d{1,2}/),
+                          onlyKVEDText = i.split(onlyKVEDNum)[1].trim(),
+                          pieces = prop.split('_');
                       onlyKVEDNum.length !== 0 ? $scope.data.formData.params[prop].value = onlyKVEDNum[0] : $scope.data.formData.params[prop].value = i
+
+                      pieces.splice(0, 1, 'sNote_ID');
+                      var autocompleteKVED = pieces.join('_');
+                      $scope.data.formData.params[autocompleteKVED].value = onlyKVEDText;
                     } else {
                       $scope.data.formData.params[prop].value = i;
                     }
@@ -1121,7 +1153,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           }
         }
       };
-    /*
-     *поиски организации по окпо конец
-    */
+      /*
+       *поиски организации по окпо конец
+      */
+
+      $scope.labelStyle = function (field) {
+        return LabelService.labelStyle(field);
+      };
+
+      $scope.isSetClasses = function (field) {
+        return LabelService.isLabelHasClasses(field)
+      }
 });

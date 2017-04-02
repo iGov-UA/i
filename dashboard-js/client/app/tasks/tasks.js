@@ -135,6 +135,14 @@
             }
           ]
         }
+      })
+      .state('tasks.typeof.create', {
+        url: '/create/:id',
+        templateUrl: 'app/tasks/createTask.html',
+        controller: 'createTask',
+        access: {
+          requiresLogin: true
+        }
       });
   }
 })();

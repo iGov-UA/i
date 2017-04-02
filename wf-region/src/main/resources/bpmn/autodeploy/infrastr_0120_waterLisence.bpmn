@@ -18,13 +18,11 @@
           <activiti:value id="sNo" name="ні"></activiti:value>
         </activiti:formProperty>
 		<activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Поштовий індекс та адреса місцезнаходження юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA3" name="Прізвище керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA3" name="Ім'я керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA3" name="По батькові керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-		<activiti:formProperty id="lastName_UA2" name="Прізвище здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
+		<activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Поштовий індекс та адреса місцезнаходження юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="Прізвище, iм'я, по батькові керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові здобувача ліцензії" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sManPassport" name="№, серія паспорту здобувача ліцензії, ким і коли виданий" type="string" default=" " required="true"></activiti:formProperty>
@@ -61,7 +59,7 @@
         <activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою; ;bNew=true" type="file"></activiti:formProperty>
 		<activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYVmFXN1NsYThxZ0E&quot;&gt;Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="nDocVidom" name="Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності; ;bNew=true" type="file" required="true"></activiti:formProperty>
-		<activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license.json')}"></activiti:formProperty>
+		<activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_0120_start.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask6"></sequenceFlow>
@@ -136,10 +134,10 @@
           <activiti:value id="sMan" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompPIB" name="ПІБ керівника юридичної особи" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sVlasnPIB" name="ПІБ здобувача ліцензії" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManPassport" name="№, серія паспорту здобувача ліцензії, ким і коли виданий" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManAdress" name="Адреса здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
@@ -180,7 +178,7 @@
         <activiti:formProperty id="nPassport" name="Копія паспорта керівника здобувача ліцензії (або довіреної особи);Якщо декілька сторінок об'єднайте у pdf-файл або zip архів;bNew=true" type="file" writable="false"></activiti:formProperty>
 		<activiti:formProperty id="nDocBezpek" name="Копія акта огляду судна Укртрансбезпекою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 		<activiti:formProperty id="nDocVidom" name="Відомості про наявність матеріально-технічної бази та спеціалістів, необхідних для провадження господарської діяльності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sBody_1" name="[pattern/print/infr/sea_licenseECP.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="sBody_1" name="[pattern/print/infr/sea_license.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/sea_license.html,sFileName=ZayavaNaLitsenziyu,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_license_user.json')}"></activiti:formProperty>
       </extensionElements>
@@ -263,7 +261,7 @@
 			</p> 
 			<p>
 				Дата засідання найближчої комісії: value{[sDate]}<br>
-				У разі позитивного рішення комісії Ви отримаєте ліцензію поштою на адресу: ${sManAdress}${sCompAdress}
+				У разі позитивного рішення комісії Ви отримаєте ліцензію поштою на адресу: ${sManAdress}${sLocation_SubjectOrgan_01}
 			</p> 
 			<p>
 				Коментар державного службовця:<br>
@@ -296,19 +294,18 @@
           <activiti:value id="sCompany" name="юридична особа"></activiti:value>
           <activiti:value id="sMan" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVlasn" name=" " type="label" default="Дані щодо здобувача ліцензії"></activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompPIB" name="ПІБ керівника юридичної особи" type="string" default="${lastName_UA3} ${firstName_UA3} ${middleName_UA3}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVlasnPIB" name="ПІБ здобувача ліцензії" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVlasnPIB" name="ПІБ здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManPassport" name="№, серія паспорту здобувача ліцензії, ким і коли виданий" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManAdress" name="Адреса здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManInn" name="ІПН здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="privateMail" name="E-mail здобувача ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBankRekv" name="Поточний рахунок, МФО, найменування відділення банку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompForm" name="Організаційно-правова форма" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asLicense" name="Рішення комісії про надання ліцензії" type="enum" required="true">
           <activiti:value id="sLicenseOk" name="Комісія вирішила надати ліцензію"></activiti:value>
           <activiti:value id="sLicenseNo" name="Комісія вирішила відмовити в наданні ліцензії"></activiti:value>
@@ -348,7 +345,7 @@
 			<p>Ваша заявка №[sID_Order] на видачу ліцензії на перевезення пасажирів, небезпечних вантажів та небезпечних відходів річковим, морським транспортом пройшла розляд комісії.<br>
 			   enum{[asLicense]}.<br>
 			   Копію рішення комісії Ви знайдете у файлах, що додаються<br>
-			   Оригінал рішення комісії Ви отримаєте поштою на адресу: ${sManAdress}${sCompAdress}<br>
+			   Оригінал рішення комісії Ви отримаєте поштою на адресу: ${sManAdress}${sLocation_SubjectOrgan_01}<br>
 			   ${sComment1}
 			</p> 
 			<p>

@@ -6,9 +6,9 @@
     .controller('NavbarCtrl', navbarCtrl);
 
   navbarCtrl.$inject = ['$scope', '$rootScope', '$location', 'Auth', 'envConfigService', 'iGovNavbarHelper', 'tasksSearchService',
-                        '$state', 'tasks', 'lunaService', 'Modal', '$stateParams'];
+    '$state', 'tasks', 'lunaService', 'Modal', '$stateParams', 'processes', '$localStorage', 'signDialog'];
   function navbarCtrl($scope, $rootScope, $location, Auth, envConfigService, iGovNavbarHelper, tasksSearchService,
-                      $state, tasks, lunaService, Modal, $stateParams) {
+                      $state, tasks, lunaService, Modal, $stateParams, processes, $localStorage, signDialog) {
     $scope.menu = [{
       'title': 'Задачі',
       'link': '/tasks'
@@ -135,7 +135,7 @@
             })
             .finally(function(res) {
               $scope.tasksSearch.loading=false;
-           });
+            });
         }
       }
       if($event.keyCode === 8 || $event.keyCode === 46) {
@@ -163,36 +163,51 @@
 
       tasks.assignTask(id, Auth.getCurrentUser().id)
         .then(function (result) {
-          Modal.assignDocument(function (event) {
+          /*Modal.assignDocument(function (event) {
 
-          }, 'Документ успiшно створено');
+          }, 'Документ успiшно створено');*/
         })
         .catch(function (e) {
-          Modal.assignDocument(function (event) {
+          /*Modal.assignDocument(function (event) {
 
-          }, 'Документ успiшно створено');
+          }, 'Документ успiшно створено');*/
         });
     };
 
-    $scope.usersDocumentsBPs = [];
-    $scope.showOrHideSelect = false;
+    $scope.showOrHideSelect = {show:false,type:''};
     $scope.hasDocuments = function () {
       var user = Auth.getCurrentUser().id;
       if(user) {
-        tasks.isUserHasDocuments(user).then(function (res) {
-          if(Array.isArray(res) && res.length > 0) {
-            $scope.usersDocumentsBPs = res.filter(function (item) {
-              return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
-            });
+        if($rootScope.sUserOnTab){
+          if($rootScope.sUserOnTab === user){
+            // skip doing request
+          } else {
+            fillHasDocuments(user);
           }
-        })
+        } else {
+          fillHasDocuments(user);
+        }
       }
     };
+    function fillHasDocuments(user) {
+      $rootScope.sUserOnTab = user;
+      tasks.isUserHasDocuments(user).then(function (res) {
+        if(Array.isArray(res) && res.length > 0) {
+          $rootScope.usersDocumentsBPs = res.filter(function (item) {
+            return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
+          });
+          $rootScope.userTasksBPs = res.filter(function (item) {
+            return item.oSubjectRightBP.sID_BP.indexOf('_doc_') !== 0;
+          })
+        }
+      })
+    }
     $scope.hasDocuments();
 
     $scope.document = {};
-    $scope.openCloseUsersSelect = function () {
-      $scope.showOrHideSelect = !$scope.showOrHideSelect;
+    $scope.openCloseUsersSelect = function (type) {
+      $scope.showOrHideSelect.type = type;
+      $scope.showOrHideSelect.show = !$scope.showOrHideSelect.show;
     };
 
     $scope.showCreateDocButton = function () {
@@ -203,7 +218,7 @@
       return $location.path() === '/';
     };
 
-    $scope.onSelectDocList = function (item) {
+    $scope.onSelectDocument = function (item) {
       tasks.createNewDocument(item.oSubjectRightBP.sID_BP).then(function (res) {
         if(res.snID_Process) {
           tempCountValue = 0;
@@ -212,9 +227,17 @@
             .then(function(res) {
               $scope.assignTask(res.aIDs[0], val)
             });
-          $scope.showOrHideSelect = false;
+          $scope.showOrHideSelect.show = false;
         }
       });
+    };
+
+    $scope.onSelectTask = function (task) {
+      tasks.createNewTask(task.oSubjectRightBP.sID_BP).then(function (res) {
+        localStorage.setItem('creating', JSON.stringify(res.data[0]));
+        $state.go('tasks.typeof.create', {id:res.data[0].deploymentId});
+        $scope.showOrHideSelect.show = false;
+      })
     };
 
     function setEcpStatusToLS(status) {
@@ -237,7 +260,15 @@
       if(res && newVal !== undefined && res.status !== newVal) {
         setEcpStatusToLS($rootScope.checkboxForAutoECP);
       }
-    })
+    });
+
+    $scope.showSignDialog = function () {
+      signDialog.signContent({id: "someid", content: "sign this string"}, function (signedContent) {
+        console.log('Sign Result ' + JSON.stringify(signedContent));
+      }, function () {
+        console.log('Sign Dismissed');
+      })
+    }
 
   }
 })();

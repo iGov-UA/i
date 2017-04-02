@@ -9,14 +9,14 @@ angular.module('dashboardJsApp')
     $scope.$watch("bp.chosenBp", function (newValue, oldValue) {
       if (!newValue) { return; }
 
-      schedule.getFlowSlotDepartments(newValue.sID)
+      schedule.getFlowSlotDepartments(newValue.oSubjectRightBP.sID_BP)
         .then(function (data) {
           $scope.departments = data;
         });
     });
 
     $scope.bp.onBpChangeCallback = function () {
-      schedule.getFlowSlotDepartments($scope.bp.chosenBp.sID)
+      schedule.getFlowSlotDepartments($scope.bp.chosenBp.oSubjectRightBP.sID_BP)
         .then(function (data) {
           $scope.departments = data;
         });

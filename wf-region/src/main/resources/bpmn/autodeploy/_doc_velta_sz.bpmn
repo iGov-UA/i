@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_doc_velta_sz" name="Службова записка" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Службова записка"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="получение ИД текущего процесса" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>// получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Працівник - створення записки">
+      <extensionElements>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Службова записка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Емейл, на який Ви отримаєте рішення після розгяду записки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_Author]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow24" sourceRef="usertask1" targetRef="scripttask9"></sequenceFlow>
+    <scriptTask id="scripttask9" name="переключение степа на 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав на утверждающего
+
+var sKey_GroupPostfix_New = 'Velta_Head'
+var sKey_GroupPostfix = '_default_Velta_head'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow64" sourceRef="scripttask9" targetRef="usertask3"></sequenceFlow>
+    <userTask id="usertask3" name="Керівник - попередній розгляд пропозиції">
+      <extensionElements>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
+          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
+          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDecision" name="Рішення стосовно пропозиції" type="enum" required="true">
+          <activiti:value id="sReject" name="відмовити у розгляді"></activiti:value>
+          <activiti:value id="sAccept" name="відправити на розгляд відповідальному підрозділу"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_velta_sz.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логин того, кому даны права на следующую ЮТ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersUser1" name="Маркер видимости" type="markers" default="${markerService.loadFromFile('velta/_doc_velta_sz_ut3.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[_task_velta]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable1}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[asUrgently::${asUrgently};;sName_SubjectRole::${sName_SubjectRole};;sContent::${sContent};;sComment::${sComment};;sTypeDoc::${sTypeDoc}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow50" sourceRef="usertask3" targetRef="exclusivegateway3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow51" sourceRef="exclusivegateway3" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sReject'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask4" name="Лист співробітнику відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Відповідь на службову записку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Шановний Колего<br>
+За результатами розляду Вашої пропозиції керівником прийняте рішення про неможливість її впровадження на даний момент.<br>
+Коментар до рішення:<br>
+${sComment}<br>
+<br>
+--<br>
+ТОВ ВКФ «ВЕЛТА»<br>
+Тел./факс: (056) 370-93-93, 732-04-04<br>
+e-mail: office@velta-ua.com<br>]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow61" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway3" targetRef="scripttask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision == 'sAccept'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask5" name="переключение степа на 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
+
+// клонирование прав
+var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_Velta_Answ', 'sTable1', 'step_3')</script>
+    </scriptTask>
+    <userTask id="usertask5" name="Відповідальний підрозділ. Підготовка відповіді на пропозицію">
+      <extensionElements>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="sName_SubjectRole" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
+          <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
+          <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sResultJustice" name="Результат аналізу пропозиції (Юридичний відділ)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sResultFinance" name="Результат аналізу пропозиції (Фінансовий відділ)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sResultTech" name="Результат аналізу пропозиції (Технічний відділ)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask8" name="Проверка подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKey_Step = execution.getVariable('sKey_Step_Document')
+var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
+    </scriptTask>
+    <scriptTask id="scripttask7" name="переключение степа на 4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_4'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав на утверждающего
+
+var sKey_GroupPostfix_New = 'Velta_Head'
+var sKey_GroupPostfix = '_default_Velta_head'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow58" sourceRef="scripttask7" targetRef="usertask6"></sequenceFlow>
+    <userTask id="usertask6" name="Керівник. Заключний висновок.">
+      <extensionElements>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Службова записка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sResult" name="Результат аналізу пропозиції" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDecision1" name="Фінальне рішення стосовно пропозиції" type="enum" required="true">
+          <activiti:value id="sReject" name="відмовити у впровадженні за висновками відповідального підрозділу"></activiti:value>
+          <activiti:value id="sAccept" name="створити доручення на виконання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow45" sourceRef="usertask6" targetRef="exclusivegateway2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow46" sourceRef="exclusivegateway2" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='sReject'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask3" name="Лист співробітнику відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Відповідь на службову записку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Шановний Колего<br>
+За результатами розляду Вашої пропозиції відповідальним підрозділом прийняте рішення про неможливість її впровадження на даний момент.<br>
+Результати аналізу:<br>
+${sResult}<br>
+<br>
+--<br>
+ТОВ ВКФ «ВЕЛТА»<br>
+Тел./факс: (056) 370-93-93, 732-04-04<br>
+e-mail: office@velta-ua.com<br>]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow59" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="exclusivegateway2" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='sAccept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Лист співробітнику прийняття в роботу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[ТОВ ВКФ «ВЕЛТА». Відповідь на службову записку]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Шановний Колего<br>
+За результатами розляду Вашої пропозиції відповідальним підрозділом прийняте рішення про можливість її впровадження.<br>
+Результати аналізу:<br>
+${sResult}<br>
+Дуже дякуємо за важливу пропозицію.<br>
+<br>
+--<br>
+ТОВ ВКФ «ВЕЛТА»<br>
+Тел./факс: (056) 370-93-93, 732-04-04<br>
+e-mail: office@velta-ua.com<br>]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow63" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_velta_sz">
+    <bpmndi:BPMNPlane bpmnElement="_doc_velta_sz" id="BPMNPlane__doc_velta_sz">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="48.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="71.0" width="105.0" x="52.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="71.0" width="105.0" x="182.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
+        <omgdc:Bounds height="55.0" width="141.0" x="320.0" y="38.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="75.0" width="141.0" x="320.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="215.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="469.0" y="208.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="620.0" y="218.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="61.0" width="141.0" x="88.0" y="301.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="91.0" width="141.0" x="88.0" y="380.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
+        <omgdc:Bounds height="55.0" width="141.0" x="88.0" y="499.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
+        <omgdc:Bounds height="61.0" width="141.0" x="320.0" y="630.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+        <omgdc:Bounds height="62.0" width="141.0" x="320.0" y="720.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="371.0" y="821.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="141.0" x="320.0" y="890.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="508.0" y="900.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="473.0" y="814.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="36.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="52.0" y="65.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="157.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="182.0" y="65.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="287.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="65.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
+        <omgdi:waypoint x="390.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="120.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="390.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="215.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="410.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="469.0" y="235.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="574.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="235.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="390.0" y="255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="630.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
+        <omgdi:waypoint x="390.0" y="691.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="720.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="390.0" y="782.0"></omgdi:waypoint>
+        <omgdi:waypoint x="391.0" y="821.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="391.0" y="861.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="890.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
+        <omgdi:waypoint x="461.0" y="917.0"></omgdi:waypoint>
+        <omgdi:waypoint x="508.0" y="917.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="411.0" y="841.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="841.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+        <omgdi:waypoint x="525.0" y="869.0"></omgdi:waypoint>
+        <omgdi:waypoint x="525.0" y="900.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

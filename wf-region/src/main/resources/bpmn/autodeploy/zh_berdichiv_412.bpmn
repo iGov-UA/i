@@ -15,12 +15,12 @@
         <activiti:formProperty id="file3" name="Довідка про відсутність заборгованності від Теплопостачальника:(або погодження)" type="file"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Довідка про відсутність заборгованності від сміттє-прибиральної компанії:(або погодження)" type="file"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" ></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -93,8 +93,8 @@ ${sPhoneOrgan}&lt;br&gt;
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса;(місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/berdichev/berdichiv_cnap_412_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/berdichev/berdichiv_cnap_412_print.html]; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="result" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="da" name="Видати дозвіл"></activiti:value>
           <activiti:value id="net" name="Відмовити у видачі дозволу"></activiti:value>

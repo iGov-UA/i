@@ -35,8 +35,8 @@
         <activiti:formProperty id="nFile15" name="Довідка, що мати народила і виховала до восьмирічного віку п’ятьох і більше дітей (ПІБ, дата народження)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile16" name="Ксерокопія трудової книжки матері та всіх її дітей, що працювали" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile17" name="Довідка про відсутність судимості у батьків та всіх дітей" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sListDocument" name="Перелік документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sQuantityChild" name="Кількість дітей" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityChild" name="Кількість дітей; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення працівнику відділу про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -120,10 +120,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateVisit" name="Вкажіть дату та час визиту громадянина" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sListDocument" name="Перелік документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sQuantityChild" name="Кількість дітей" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/drogobych/rada_0450_mother_heroine.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityChild" name="Кількість дітей; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('drogobych/rada_0450_mother_heroine_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -235,9 +235,9 @@
           <activiti:value id="accept1" name="Оригінали документів отримано. Підготувати нагородний лист до ОДА"></activiti:value>
           <activiti:value id="reject1" name="Громадянка не з'явилася в назначений час. Закріті заявуку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sListDocument" name="Перелік документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sQuantityChild" name="Кількість дітей" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sListDocument" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sQuantityChild" name="Кількість дітей; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8},${nFile9},${nFile10},${nFile11},${nFile12},${nFile13},${nFile14},${nFile15},${nFile16},${nFile17}]]></activiti:expression>

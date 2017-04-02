@@ -28,15 +28,15 @@
         <activiti:formProperty id="date_bigin" name="Вкажіть дату з якої ви хочете отримати ліцензію:;(ліцензія видається на рік)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_lic_plata" name="Сканкопія квитанції про оплату за ліцензію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_osoba_license" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('dfs_593.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_big" name="Початок ліцензії" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_end" name="Кінець ліцензії" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Видача ліцензії на право роздрібної торгівлі тютюновими виробами"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_big" name="Початок ліцензії; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_end" name="Кінець ліцензії; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Видача ліцензії на право роздрібної торгівлі тютюновими виробами"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -82,10 +82,10 @@
         <activiti:formProperty id="sT_dfs_reestr" name="Орган ДФС за місцем реєстрації суб'єкта господарювання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_big" name="Дата початку ліцензії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_end" name="Кінець ліцензії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamUr&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'||[sCond]=='Юридична особа'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamFiz&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'||[sCond]=='Фізична особа підприємець'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/nicolaev_dfs_593.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/nicolaev_dfs_593.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/nicolaev_dfs_593.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -150,10 +150,10 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamDok_bad" name="Заява оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_organ" name="Коментар по розгляду заявки. В разі відмови поясніть причину відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/nicolaev_dfs_593.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/nicolaev_dfs_593.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст" type="invisible" default="Якщо заявка прийнята, вона знов з'явиться в необроблених, візьміть ії в роботу і зробіть помітку чи видано на руки документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/nicolaev_dfs_593.html" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/nicolaev_dfs_593.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст; ;bVisible=false" type="string" default="Якщо заявка прийнята, вона знов з'явиться в необроблених, візьміть ії в роботу і зробіть помітку чи видано на руки документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamUr&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'||[sCond]=='Юридична особа'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamFiz&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'||[sCond]=='Фізична особа підприємець'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

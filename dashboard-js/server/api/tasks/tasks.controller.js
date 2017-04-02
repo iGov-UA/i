@@ -133,7 +133,7 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'documents') {
       query.sFilterStatus = 'Opened';
       query.sLogin = user.id;
-      query.size = 100;
+      query.nSize = 15;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
       query.sLogin = user.id;
@@ -779,10 +779,13 @@ exports.setTaskAttachment = function (req, res) {
 
 exports.setTaskAttachmentNew = function (req, res) {
   var query = {
-    nID_Process: req.params.taskId,
     sFileNameAndExt: req.body.sFileNameAndExt,
     sID_Field: req.body.nID_Attach
   };
+
+  if(req.body.nID_Process) {
+    query['nID_Process'] = req.body.nID_Process;
+  }
 
   activiti.post({
     path: 'object/file/setProcessAttachText',
