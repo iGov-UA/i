@@ -48,13 +48,14 @@ public class ManagerSMS {
         try {
             Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073");
             //Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)|38097(.*)|38098(.*)");
-
+            LOG.info("phone: " + phone + " sID_Order: " + sID_Order + " bTest: " + bTest);
             phone = phone.replace("+", "").trim();
 
             if(!bTest){
                 Boolean bOldAPI = !bTest;
                 if (bOldAPI) {
                     resp = SendSenderSms(sID_Order, phone, message);
+                    LOG.info("phone: " + phone + " sID_Order: " + sID_Order + " bTest: " + bTest + " resp: " + resp);
                 } else if (regexpLifeCell.matcher(phone).matches()) {
                     resp = SendLifeCellSms(phone, message);
                 } /*else if(regexKyivStar.matcher(phone).matches())
@@ -64,6 +65,7 @@ public class ManagerSMS {
                     resp = SendSenderSms(sID_Order, phone, message);
                 }
             }
+            LOG.info("phone: " + phone + " sID_Order: " + sID_Order + " bTest: " + bTest + " resp: " + resp + " ok!!!");
         }
         catch (Exception ex){
             LOG.error("Error sending SMS: " + ex.toString());
