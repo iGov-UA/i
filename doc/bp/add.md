@@ -586,32 +586,142 @@ P[n]W
 
 009_MarkersandValidators.md
 ### _ShowFieldsOnCondition
+
 [вернуться...](#ShowFieldsOnCondition)
 * ![6_2M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_2%D0%9C.JPG)
 
 ### _RequiredFieldsOnCondition
+
 [вернуться...](#RequiredFieldsOnCondition)
 * ![9_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_2.JPG)
 
 ### _ShowElementsOnTrue
+
 [вернуться...](#ShowElementsOnTrue)
 * ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 
 ### _ValuesFieldsOnCondition
+
 [вернуться...](#ValuesFieldsOnCondition)
 * ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
 
 ### _WritableFieldsOnCondition
+
 [вернуться...](#WritableFieldsOnCondition)
 * ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG) 
 
-### _WritableFieldsOnCondition
-[вернуться...](#WritableFieldsOnCondition)
+### _SplitTextHalf_1
+
+[вернуться...](#SplitTextHalf_1)
+
+Для использования  маркеров из внешнего файла, указываем путь к файлу:  
+[Issues 840](https://github.com/e-government-ua/i/issues/840)  
+```xml
+<activiti:formProperty id="markers2" name="extended_marker" type="markers"   
+default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProperty>
+```
+Допускается использование вложенных подпапок  
+default="${markerService.loadFromFile('folder_name/testmarkers.json')}"   
+Маркеры хранятся в папке /wf-region/src/main/resources/bpmn/markers/motion
+* ![6_1M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_1%D0%9C.JPG)
+
+## Маркеры группы validate
+### _CustomFormat_1
+
+[вернуться...](#CustomFormat_1)
+
+* ![9_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_7.JPG) 
+
+### _Extensions
+
+[вернуться...](#Extensions)
+
+* ![9_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_8.JPG)
+
+### _FileSign
+
+[вернуться...](#FileSign)
+
+* ![9_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_6.JPG)
+
+## Маркеры группы attributes
+### _Line
+
+[вернуться...](#Line)
+
+* ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
+
+### _Style
+
+[вернуться...](#Style)
+
+* ![9_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_5.JPG)
+
+Маркер анализирует правила в свойствах aElement_ID и aSelectors и добавляет стили перечисленный из свойства oCommonStyle в блок ```<head>``` в виде отдельного стиля. Причем стилями можно влиять не только на элементы формы но на всю страницу.
+
+Свойства маркера aElement_ID и aSelectors работают параллельно и **может быть задан только один из них**. 
+[подробное описание](https://docs.google.com/document/d/1EE7q2EEBgHW6QMRJEsPXGNE0cU9GuXT2Z3KUYNceF88/edit)  
+
+### _sNote
+
+[вернуться...](#sNote)
+
+* ![9_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_9.JPG)
+
+010_Printform.md
+### _Printform
+
+[вернуться...](#Printform)
+
+* ![10_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/10_0.JPG)
+      
+* При необходимости, сформированную принтформу можно отправить в письме как Attachment {PrintForm_1}
+* Динамически содержимое принтформы можно изменять маркерами: [issue #816](https://github.com/e-government-ua/i/issues/816)
+
+### _Display_hidefields
+
+[вернуться...](#Display_hidefields)
+
+* ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
+
+011_Digitalsignature.md
+### _CreationofasignedEDSdocument
+
+[вернуться...](#CreationofasignedEDSdocument)
+
+* ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
+где pattern/print/example_print_01.html -  шаблон печатной формы заявления, на которую будет накладываеться ЭЦП.  
+
+Если вместо ид **form_signed** будет поставлен ид **form_signed_all**, то ЕЦП будет наложена так же на все подгружаемые файлы.  
+
+Если убрать свойство **required="true"**, то наложение ЕЦП на указанную форму будет необязательной опцией.
+
+При использовании простого "name" как в примере ниже - используется BankID-конвертер "html в pdf", который имеет гарантированную работоспособность но налагающий массу требований по форматированию исходного html-файла.
+```xml
+<activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>` 
+```
+### _ConverthtmltoPDF
+
+[вернуться...](#ConverthtmltoPDF)
+
+* ![11_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_0.JPG)
+На юзертасках добавить стандартный набор листнеров для подгрузки файлов.  
+
+[валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
+
+012_Electronicqueues.md
+### _ConverthtmltoPDF
+
+[вернуться...](#ConverthtmltoPDF)
+
+
+
 
 Installationeclipse.md
 ### _Устанавливаем JAVA JDK
 
 [вернуться...](#Устанавливаем JAVA JDK)
+
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sQlE3TUh3ZmpiUGM)  
 3. Устанавливаем скачанный файл, без изменений, со всем соглашаемся, можно выбрать свою директорию.  
 4. Прописываем путь к JAVA (**нужно для tomcat для Eclipse это не важно**)  
@@ -631,7 +741,9 @@ C:\Program Files (x86)\Java\jdk1.8.0_111
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sVWNQa3N1NThKTm8)  
 
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sX0xVUGNRV01SdkE)  
+
 ### _Устанавливаем Eclipse
+
 [вернуться...](#Устанавливаем Eclipse)
 4. запускаем eclipse.exe  
 5. При первом запуске он спросит где хранить настройки Eclipce  
