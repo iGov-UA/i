@@ -1,17 +1,57 @@
 # Детальная информация
 
+001_CreatingBusinessProcesses.md
+
+### _разработка бизнес-процесса
+ [вернуться...](#разработка бизнес-процесса)
+ * ![1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/1bp.jpg)
+* ![screenshot of sample2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2bp.jpg)
+* ![screenshot of sample3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3bp.jpg)
+* [Создание бизнес-процесса дополнительно](https://docs.google.com/document/d/1B3OIYjj3S2YLwUR-PVD3FAcErl_2ua0CYUB5vys6O4U/edit )
+* [Правила при именовании бизнес-процессов](https://github.com/e-government-ua/iBP/wiki/%D0%9E%D0%B1%D1%89%D0%B8%D0%B5-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%BF%D1%80%D0%B8-%D0%B8%D0%BC%D0%B5%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8:#%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5c%D1%81%D1%8B).  
+* проработать инфокарты и бланки заявлений - составить перечень необходимых полей и условий
+* прорисовать всю схему процесса от начала до конца, наполнить блоки информацией.
+* создать принтформы
+
+ * [вернуться...](#разработка бизнес-процесса)
+ * написать "Як це працює" в формате html. Путь для размещения файла:\i\wf-central\src\main\resources\patterns\services\Info
+* добавить файл с принтформой в формате html. Путь для размещения файла: i\wf-region\src\main\resources\pattern\print. Желательно использовать папку по конкретному органу или направлению.
+* заполнить [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)
+* Если необходимо добавить населенный пункт которого нет в списке - добавить его в сущности [Place](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#place), [PlaceTree](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#placetree), [City](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#city).
+* При необходимости - добавить [электронные очереди](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8). 
+* Прописать [эскалации](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D1%81%D0%BA%D0%B0%D0%BB%D0%B0%D1%86%D0%B8%D0%B8-%D0%B8-%D1%84%D0%B8%D0%B4%D0%B1%D0%B5%D0%BA%D0%B8).
+
+### _тестирование и проливка на бету и боевой
+ [вернуться...](#тестирование и проливка на бету и боевой)
+ * ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
+* ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
+* пройти процесс от начала до конца по всем возможным путям
+* выслать заказчику инструкцию, ссылки, логин и пароль.
+* в случае необходимости - вносить изменения в процесс. после внесения даже небольшого изменения - обязательное тестирование
+* создать пользователей и группы на дельте - связать их между собой
+* скопировать процессы в подпапки бета и прод. i\wf-region\src\main\resources\bpmn\autodeploy\prod
+* заменить тестовые почты чиновников на настоящие
+* перенести все связанные сущности в подпапки прод (при наличии там файлов, совпадающих по названиям в обоих папках)
+* Если проливка происходит напрямую в ветках test-version или master обязательно необходимо осуществлять обратный мерж в нижние ветки
+* после проливки на боевой проверить процесс хотя бы по одному сценарию, закрыть ишью.
+
+002_Typesofparameters.md
+
 ### _string 
 [вернуться...](#string)
 
 строка - для текстовых полей ввода (ограничение 256 символов) 
 ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
+
 ### _enum
 [вернуться...](#enum)
 
 выпадающий список - для выбора значения из списка 
 
 ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
+
 ### _enum (checkbox)
+
 [вернуться...](#enum (checkbox))
 
 чекбокс - доступно только 2 выбора да/нет.
@@ -21,11 +61,14 @@
 Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
 
 ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
+
 ### _date
+
 [вернуться...](#date)
 
 дата - календарь для выбора даты
 ![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
+
 ### _boolean
 [вернуться...](#boolean)
 
@@ -969,12 +1012,161 @@ value != enum.
 
 016_Scripts.md
 
-### _SMSnotifications
+### _Scripts
 
-[вернуться...](#SMSnotifications)
+[вернуться...](#Scripts)
+
+Пример 1:  
+```javaScript 
+<scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+  <script>
+    var result = ' new value '
+    if(execution.getVariable('var1') == 'value'){
+    execution.setVariable('var2', result)}
+  </script>
+</scriptTask>
+```
+Пример 2.  
+**Cохранить текущее значение даты в переменную MyDateToday**
+```javaScript 
+<scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
+  <script>
+    execution.setVariable('MyDateToday', new Date().format("dd.MM.yyyy").toString())
+  </script>
+</scriptTask>
+``` ```
+* ![16_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_7.JPG)
+[описание операторов и переменных для написания скриптов Javascript](http://javascript.ru/)  
+
+Для получения значения даты на момент срабатывания скрипта можно использовать:
+```javaScript
+var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
+```
+и далее работать с этим числом, прибавляя-отнимая время в милисекундах
+
+
+### _Formatthedateintheprocess
+
+[вернуться...](#Formatthedateintheprocess)
+
+* ![16_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_8.JPG)
+где  
+**docDate** - имя параметра даты в процессе с форматом типа date.  Дата выбиралась из календарика.  
+**yyyy-MM-dd** - итоговый требуемый формат даты.  регистрозависимо!!!   
+**docDateFormat** - переменная, где сохранится  дата уже в необходимом указанном формате.  
+
+### _Gettingdatetime
+
+[вернуться...](#Gettingdatetime)
+
+* ![16_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_6.JPG)
+где
+**dCreate** - это поле в которое поместится результат (Время берется по Гринвичу)  
+**format("dd.MM.yyyy")** - задаем формат получаемого времени. Если формат не указываем то  по умолчанию дата / время будут в формате Tue Apr 26 14:51:17 UTC 2016  
+**toString()** - не обязательно, это перестраховка  
+
+
+### _Receivingdatetimeelectronicqueue
+
+[вернуться...](#Receivingdatetimeelectronicqueue)
+
+* ![16_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_9.JPG)
+
+**sNotification_day**  - это заранее созданная в процессе переменная, в которую вернем результат работы скрипта 
+
+
+### _GettingID
+
+[вернуться...](#GettingID)
+
+* ![16_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_2.JPG)
+
+### _counteraddingnumber
+
+[вернуться...](#counteraddingnumber)
+
+* ![16_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_3.JPG)
+
+### _ObtainingBPID
+
+[вернуться...](#ObtainingBPID)
+
+* ![16_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_4.JPG)
+
+### _Gettingloginandname
+
+[вернуться...](#Gettingloginandname)
+
+* ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
+
+017_Configurationfiles.md
+
+### _Service
+
+[вернуться...](#Service)
+
+Пример.
+* nID;sName;nOrder;nID_Subcategory;sInfo;sFAQ;sLaw;nOpenedLimit;sSubjectOperatorName
+* 1;Надання довідки про притягнення до кримінальної відповідальності, відсутність (наявність) судимості або обмежень, передбачених 
+ кримінально-процесуальним законодавством України;1;3;[*];;;0;Міністерство внутрішніх справ
+* 788;Надання дозволу на знесення аварійних будівель;100;1;;;;0;Сільська рада
+* 40;Повідомлення про проведення зборів, мітингів, маніфестацій і демонстрацій, спортивних, видовищних та інших масових заходів;100;2;;;;0;Сільська рада
+
+* 1038;40;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
+* ![17_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_1.JPG)
+
+### _ServiceData
+
+[вернуться...](#ServiceData)
+
+* Пример.
+* nID;nID_Service;nID_Place;nID_City;nID_Region;nID_ServiceType;oData;sURL;bHidden;nID_Subject_Operator;bTest;sNote;asAuth;nID_Server
+* 1;1;2;2;NULL;1;{};https://null.igov.org.ua;true;1;true;Перейдя на этот сайт Вы сможете получить услугу;BankID,EDS,KK;0
+* 1032;788;467;467;NULL;4;{"processDefinitionId":"znes_bud_393:1:1"};;false;1;true;;BankID,EDS;0
+* 038;1471;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
+* ![17_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_0.JPG)
+
+### _Subject
+
+[вернуться...](#Subject)
+
+* ![17_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_2.JPG)
+
+### _SubjectAccount
+
+[вернуться...](#SubjectAccount)
+
+* ![17_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_3.JPG)
+
+### _SubjectOrganJoin
+
+[вернуться...](#SubjectOrganJoin)
+
+* ![17_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_4.JPG)
+
+
+
 
 018_Workingwiththegithandrepository.md
+
+### _Conflictresolutioneclipse
+
+[вернуться...](#Conflictresolutioneclipse)
+
+**Обратите внимание!** Это очень неудобная фишка в eclipse - строки добавляются, а не заменяются.  
+Поэтому дубли нужно удалить вручную. И затем сохранить файл.  
+
+Если более актуальная версия файла ветки в которую производится мерж - ничего не делаем, закрываем файл.  
+В случае если Вы принимали изменения или не принимали их (оставили файл как есть) - в любом из этих случаев необходимо присвоить индекс версии.  
+Правой кнопкой мыши нажимаем на конфликтном файле и выбираем **team-Add to index**  
+Красный ромбик пропадет, появляется звездочка.  
+
+Разрешение конфликтов необходимо сделать на каждом файле отдельно.  
+После присвоения индексов каждом конфликтному файлу необходимо собрать проект локально.
+Если локальная сборка прошла успешно - закомитить и вытолкнуть все изменения. **Commit-Pull-Push**
+
 Installationeclipse.md
+
 ### _Устанавливаем JAVA JDK
 
 [вернуться...](#Устанавливаем JAVA JDK)
@@ -1084,39 +1276,40 @@ http://download.eclipse.org/technology/m2e/releases
 а также можно настроить как будет форматироваться JSON  если нажать комбинацию ctrl + shift + F  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sZzdCMmg0Rm13djQ)  
 
-001_CreatingBusinessProcesses.md
-### _разработка бизнес-процесса
- [вернуться...](#разработка бизнес-процесса)
- * ![1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/1bp.jpg)
-* ![screenshot of sample2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2bp.jpg)
-* ![screenshot of sample3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3bp.jpg)
-* [Создание бизнес-процесса дополнительно](https://docs.google.com/document/d/1B3OIYjj3S2YLwUR-PVD3FAcErl_2ua0CYUB5vys6O4U/edit )
-* [Правила при именовании бизнес-процессов](https://github.com/e-government-ua/iBP/wiki/%D0%9E%D0%B1%D1%89%D0%B8%D0%B5-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%BF%D1%80%D0%B8-%D0%B8%D0%BC%D0%B5%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8:#%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5c%D1%81%D1%8B).  
-* проработать инфокарты и бланки заявлений - составить перечень необходимых полей и условий
-* прорисовать всю схему процесса от начала до конца, наполнить блоки информацией.
-* создать принтформы
-
- * [вернуться...](#разработка бизнес-процесса)
- * написать "Як це працює" в формате html. Путь для размещения файла:\i\wf-central\src\main\resources\patterns\services\Info
-* добавить файл с принтформой в формате html. Путь для размещения файла: i\wf-region\src\main\resources\pattern\print. Желательно использовать папку по конкретному органу или направлению.
-* заполнить [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)
-* Если необходимо добавить населенный пункт которого нет в списке - добавить его в сущности [Place](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#place), [PlaceTree](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#placetree), [City](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#city).
-* При необходимости - добавить [электронные очереди](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8). 
-* Прописать [эскалации](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D1%81%D0%BA%D0%B0%D0%BB%D0%B0%D1%86%D0%B8%D0%B8-%D0%B8-%D1%84%D0%B8%D0%B4%D0%B1%D0%B5%D0%BA%D0%B8).
-
-### _тестирование и проливка на бету и боевой
- [вернуться...](#тестирование и проливка на бету и боевой)
- * ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
-* ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
-* пройти процесс от начала до конца по всем возможным путям
-* выслать заказчику инструкцию, ссылки, логин и пароль.
-* в случае необходимости - вносить изменения в процесс. после внесения даже небольшого изменения - обязательное тестирование
-* создать пользователей и группы на дельте - связать их между собой
-* скопировать процессы в подпапки бета и прод. i\wf-region\src\main\resources\bpmn\autodeploy\prod
-* заменить тестовые почты чиновников на настоящие
-* перенести все связанные сущности в подпапки прод (при наличии там файлов, совпадающих по названиям в обоих папках)
-* Если проливка происходит напрямую в ветках test-version или master обязательно необходимо осуществлять обратный мерж в нижние ветки
-* после проливки на боевой проверить процесс хотя бы по одному сценарию, закрыть ишью.
 
 
+019_Autotests.md
  
+020_Escalationsandfeedback.md
+
+### _sCondition
+[вернуться...](#sCondition)
+
+Пример самых ходовых правил (sCondition):
+```
+"(nDays >= 0)&&(bAssigned==false)”
+"(nDays >= 0)&&(bAssigned==true)”
+"(nElapsedDays >= nDaysLimit)&&(bAssigned==false)"
+"(nElapsedDays >= nDaysLimit)&&(bAssigned==true)"
+```
+Так же стоит учитывать знаки условия:  
+nDays >= 5 - правило будет срабатывать каждый день, начиная с пятого дня  
+nDays ==5 - правило сработает только в пятый день  
+nDays != 5 - правило сработает во все дни кроме пятого  
+
+023_UsefulInquiries.md
+
+### _Downloadmaximumdate
+[вернуться...](#Downloadmaximumdate)
+
+* ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
+
+### _Numberofservicesbyregion
+[вернуться...](#Numberofservicesbyregion)
+
+* ![23_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_1.jpg)
+
+
+024_ LifeHacking.md
+
+
