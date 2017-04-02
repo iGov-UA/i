@@ -9,12 +9,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.activiti.bpmn.model.ItemDefinition;
+import org.activiti.bpmn.model.MessageFlow;
 
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.repository.DiagramElement;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
@@ -45,6 +49,10 @@ public class CloseTaskEvent {
 	@Autowired
 	private FeedBackService feedBackService;
 
+        
+        @Autowired
+        protected RepositoryService repositoryService;
+        
 	@Autowired
 	GeneralConfig generalConfig;
 
@@ -108,12 +116,29 @@ public class CloseTaskEvent {
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+                String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 LOG.info("11111sUserTaskName before : " + snID_Process);// new log не меняется статус
+                
+                /*List<String> aUserType = repositoryService.getBpmnModel(sProcessName).getUserTaskFormTypes();
+                Map<String, ItemDefinition> mItemDefinition = repositoryService.getBpmnModel(sProcessName).getItemDefinitions();
+                Map<String, MessageFlow> mMessageFlow = repositoryService.getBpmnModel(sProcessName).getMessageFlows();
+                LOG.info("aUserType is: {}", aUserType);
+                LOG.info("mItemDefinition is: {}", mItemDefinition);
+                LOG.info("mMessageFlow is: {}", mMessageFlow);*/
+                
+                Map<String, DiagramElement> mBpSchema = repositoryService.getProcessDiagramLayout(sProcessName).getElements();
+                
+                for(String key : mBpSchema.keySet()){
+                    DiagramElement oDiagramElement = mBpSchema.get(key);
+                    LOG.info("DiagramElement {}", oDiagramElement.getId());
+                    LOG.info("BpSchema key {}", oDiagramElement.getId());
+                }
+                
                 boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 LOG.info("11111sUserTaskName: " + sUserTaskName);
-                String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
+                
                 LOG.info("sProcessName: " + sProcessName);
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962

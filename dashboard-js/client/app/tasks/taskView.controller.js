@@ -1213,7 +1213,7 @@
           }
         });
 
-        $scope.insertSeparator = function(sPropertyId){
+        $scope.insertOrdersSeparator = function(sPropertyId){
           var oLine = FieldAttributesService.insertSeparators(sPropertyId);
           var oItem = null;
           if (oLine.bShow){
@@ -1227,6 +1227,10 @@
             }
           }
           return oLine;
+        };
+
+        $scope.insertSeparator = function(sPropertyId){
+          return FieldAttributesService.insertSeparators(sPropertyId);
         };
 
         $scope.isTableAttachment = function (item) {

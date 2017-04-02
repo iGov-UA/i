@@ -263,7 +263,7 @@
     });
 
     $scope.showSignDialog = function () {
-      signDialog.signContent({id: "someid", content: "sign this string"}, function (signedContent) {
+      signDialog.signManuallySelectedFile(function (signedContent) {
         console.log('Sign Result ' + JSON.stringify(signedContent));
       }, function () {
         console.log('Sign Dismissed');
