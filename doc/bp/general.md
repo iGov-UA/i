@@ -83,34 +83,39 @@
 StartEvent – начало любого процесса. В его наполнение заносятся все поля, которые должны быть отображены на портале гражданина, а также переменные, необходимые для работы процесса. Если переменную гражданин видеть не должен, то присваиваем ей тип invisible.
 ### endevent
 EndEvent – закрытие процесса. Необходимо ставить в конце каждой ветви, чтобы не было «вечных» задач
+
 [детальней...](#_endevent)
-* ![2_01](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_01.JPG)
+
 ### usertask
 UserTask – панель для обработки человеком. Заносятся все поля и переменные, которые должны отображаться на портале госслужащего на данном этапе. Обязательный атрибут - activiti:candidateGroups показывает в какую группу попадает данная заявка при обработке. Можно задавать параметрически.
+
 [детальней...](#_usertask)
-* ![2_02](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_02.JPG)
+
 ### mailtask
 MailTask – позволяет отправить письмо, из-за того, что не поддерживает шаблоны е-мейлов на данный момент практически не используется.
 ### servicetask
 ServiceTask – спектр использования очень широк и определяется в основном разработанными activiti:delegateExpression. Сейчас наиболее часто используемые activiti:delegateExpression: 
+
 [детальней...](#_servicetask)
-* ![2_03](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_03.JPG)
+
 ### filetaskupload
 fileTaskUpload – отвечает за заргузку файлов, прикрепленных гражданином в заявке.
 ### mailtaskwithoutattachmen
 MailTaskWithoutAttachment – используется для отправки писем без вложений, поддерживает шаблоны и возможность отсылки на несколько адресов.
 ### mailtaskwithattachments
 MailTaskWithAttachments – используется для отправки писем с вложенными файлами, поддерживает шаблоны и возможность отсылки на несколько адресов.
+
 [детальней...](#_mailtaskwithattachments)
-* ![2_04](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_04.JPG)
+
 ### scripttask
 ScriptTask – позволяет использовать простейшие скрипты (поддерживается JavaScript и Groovy) для работы с переменными процесса. Используется для раскрытия одной услуги на многие города (сейчас минимизируется), обработки даты для настройки уведомлений, подстановки необходимых значений в принтформы.
 ### exclusivegateway
 Exclusive Gateway– используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway.
 ### parallelgateway
 Parallel Gateway – используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway. Основные особенности – должны прописываться парами, действия после второго Gateway будут выполняться не раньше чем все действия между Gateway будут выполнены.
+
 [детальней...](#_parallelgateway)
-* ![2_05](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_05.JPG)
+
 
 
 ### typesofparameters
@@ -2380,6 +2385,27 @@ _тестирование и проливка на бету и боевой
 * перенести все связанные сущности в подпапки прод (при наличии там файлов, совпадающих по названиям в обоих папках)
 * Если проливка происходит напрямую в ветках test-version или master обязательно необходимо осуществлять обратный мерж в нижние ветки
 * после проливки на боевой проверить процесс хотя бы по одному сценарию, закрыть ишью.
+
+0021TheMainElementsOfActivitiDesigner.md
+### _endevent 
+[вернуться...](#endevent)
+* ![2_01](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_01.JPG)
+
+### _usertask 
+[вернуться...](#usertask)
+* ![2_02](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_02.JPG)
+
+### _servicetask 
+[вернуться...](#servicetask)
+* ![2_03](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_03.JPG)
+
+### _mailtaskwithattachments 
+[вернуться...](#mailtaskwithattachments)
+* ![2_04](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_04.JPG)
+
+### _parallelgateway 
+[вернуться...](#parallelgateway)
+* ![2_05](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_05.JPG)
 
 002_Typesofparameters.md
 
