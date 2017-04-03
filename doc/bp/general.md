@@ -1,34 +1,32 @@
 
  
 1. [Создание бизнес-процессов](#creatingBusinessProcesses)
-
 1. [Основные элементы Activiti Designer](https://github.com/e-government-ua/i/blob/test/doc/bp/0021TheMainElementsOfActivitiDesigner.md)
-
 2. [Типы параметров](#typesofparameters)
-1. [Зарезервированные и системные переменные](reservedandSystemVariables)
-1. [Общие правила при именовании](generalrulesfornaming)
-1. [Типы Listener и delegateExpression](typesListeneranddelegateExpression)
-1. [Назначение групп и пользователей](assigngroupsandusers)
-1. [Математические действия с переменными и операторы условий](mathematicalactionswithvariablesandconditionoperators)
-1. [Работа с датами и таймерами](workingwithdatesandtimers)
-1. [Маркеры и Валидаторы](markersandValidators)
-1. [Принтформы](printform)
-1. [ЭЦП](digitalsignature)
-1. [Электронные очереди](electronicqueues)
-1. [Оплата услуги](paymentfortheservice)
-1. [Емайлы](emails)
-1. [Отправка СМС-оповещений](sendingSMSnotifications)
-1. [Скрипты](scripts)
-1. [Конфигурационные файлы](configurationfiles)
-1. [Работа с гитом и репозиторием](workingwiththegithandrepository)   [Установка Eclipce](installationeclipse.md)
-1. [Автотесты](autotests)
-1. [Эскалации и фидбеки](escalationsandfeedback)
-1. [Статистика и выгрузки](statisticsanduploads)
-1. [Часто возникающие ошибки](commonErrors)
-1. [Полезные запросы](usefulInquiries)
-1. [Лайф Хаки](https://github.com/e-government-ua/i/blob/test/doc/bp/024_%20LifeHacking.md)
-1. [Чек лист тестирования ветки](https://github.com/e-government-ua/i/blob/test/doc/bp/025_CheckListTestBranch.md)
-1. [СЭД](https://github.com/e-government-ua/i/blob/test/doc/bp/026_IDoc.md)
+1. [Зарезервированные и системные переменные](#reservedandSystemVariables)
+1. [Общие правила при именовании](#generalrulesfornaming)
+1. [Типы Listener и delegateExpression](#typesListeneranddelegateExpression)
+1. [Назначение групп и пользователей](#assigngroupsandusers)
+1. [Математические действия с переменными и операторы условий](#mathematicalactionswithvariablesandconditionoperators)
+1. [Работа с датами и таймерами](#workingwithdatesandtimers)
+1. [Маркеры и Валидаторы](#markersandValidators)
+1. [Принтформы](#printform)
+1. [ЭЦП](#digitalsignature)
+1. [Электронные очереди](#electronicqueues)
+1. [Оплата услуги](#paymentfortheservice)
+1. [Емайлы](#emails)
+1. [Отправка СМС-оповещений](#sendingSMSnotifications)
+1. [Скрипты](#scripts)
+1. [Конфигурационные файлы](#configurationfiles)
+1. [Работа с гитом и репозиторием](#workingwiththegithandrepository)   [Установка Eclipce](#installationeclipse)
+1. [Автотесты](#autotests)
+1. [Эскалации и фидбеки](#escalationsandfeedback)
+1. [Статистика и выгрузки](#statisticsanduploads)
+1. [Часто возникающие ошибки](#commonErrors)
+1. [Полезные запросы](#usefulInquiries)
+1. [Лайф Хаки](#lifeHacking)
+1. [Чек лист тестирования ветки](#checkListTestBranch)
+1. [СЭД](#iDoc)
 
 
 ### creatingBusinessProcesses
@@ -72,8 +70,9 @@
 
 [детальнее...](#_testingonbeta)
 
+***
 ### typesofparameters
-[вернуться на начало](general.md)
+[вернуться в начало](general.md)
 # Типы переменных
 
 ### string
@@ -201,7 +200,6 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_invisible)
 
-***
 ### select
 Тип данных, который формирует динамические выпадающие списки (в зависимости от параметров).
 Например, можно динамически сформировать перечень населенных пунктов, в зависимости от выбранной области.
@@ -211,8 +209,6 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_select)
 
-
-***
 ### table
 отображается в виде таблицы, в которую может быть добавлено произвольное количество строк. В коде задается шапка таблицы, которая потом клонируется. Для каждого столбца задаются отдельные параметры. Внутри таблицы поддерживаются типы данных: string, date, long, select, enum.
 
@@ -244,8 +240,13 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_variableAttributes)
 
+***
+### reservedandSystemVariables
+
+[вернуться в начало](general.md)
 
 003_ReservedandSystemVariables.md
+
 ### attributesBankID
 Переменные BankID
 * **bankIdlastName** - string - фамилия гражданина
@@ -254,7 +255,6 @@ type="queueData" required="true"></activiti:formProperty>
 * **bankIdPassport** - string  -паспортные данные гражданина
 
 [детальней...](#_attributesBankID)
-
 
 ### reservedvariablesforelectronicqueues
 Зарезервированные переменные для электронных очередей
@@ -314,8 +314,11 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_Requestvariables)
 
+***
 
 ### generalrulesfornaming
+[вернуться в начало](general.md)
+
 ### Общие правила при именовании
 ## Наличие в любых IDшниках кириллических символов, а также пробелов - недопустимо
 
@@ -337,7 +340,11 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_userscolor)
 
+***
+
 ### typesListeneranddelegateExpression
+[вернуться в начало](general.md)
+
 ### listener
 
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
@@ -382,7 +389,9 @@ type="queueData" required="true"></activiti:formProperty>
    
    [детальней...](#_delegateExpression)
    
+***  
 ### assigngroupsandusers
+[вернуться в начало](general.md)
 
 ### addingauser
 Добавляем пользователя
@@ -397,7 +406,11 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_addingausertoagroup)
 
+***
+
 ### mathematicalactionswithvariablesandconditionoperators
+[вернуться в начало](general.md)
+
 ### Выполнение простейших математических действий с переменными
 
 digit1 - переменная со значением 1.  (тип long или double)
@@ -421,6 +434,8 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### markersandValidators
+[вернуться в начало](general.md)
+
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
 
 [Маркеры группы motion](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-motion)  
@@ -508,7 +523,6 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_showElementsOnTrue)
 
-***
 
 ### valuesFieldsOnCondition
 присваивает определенному полю определенные значения (при выполнении условий)  
@@ -538,7 +552,6 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_ValuesFieldsOnCondition)
 
-***
 
 ### writableFieldsOnCondition
 нерадактируемое поле становится редактируемым (при выполнении условий)  
@@ -561,7 +574,6 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_writableFieldsOnCondition)
     
 
-***
 ### splitTextHalf_1
  разделение значения по  знаку разделителя
 ```java
@@ -763,8 +775,10 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_sNote)
 
-
+***
 ### printform
+[вернуться в начало](general.md)
+
 # Принтформа
 ### Printformmd
 
@@ -806,6 +820,8 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### digitalsignature
+# ЭЦП
+[вернуться в начало](general.md)
 
 ### creationofasignedEDSdocument
 
@@ -829,6 +845,9 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### electronicqueues
+# Электронные очереди
+[вернуться в начало](general.md)
+
 ### Настройка электронной очереди
 Все файлы для настройки электронной очереди расположены в wf-base/src/main/resources/data/ ….   
 
@@ -842,8 +861,8 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_flow_ServiceData.csv)
 
 
-
 ### subjectOrganDepartment.csv
+
 здесь могут быть созданы  различные департаменты для возможности использования нескольких потоков в одном процессе  
 
 **nID** - id департамента  
@@ -909,9 +928,62 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_changetheorderofanelectronicqueue)
 
+***
+### paymentfortheservice
+# Оплата услуги
+[вернуться в начало](general.md)
 
+* добавить в  БП такие поля (можно на стартовой таске):
+```xml
+<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
+<activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" ></activiti:formProperty>
+<activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i10172968078"></activiti:formProperty>
+<activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="0.01"></activiti:formProperty>
+<activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
+<activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция"></activiti:formProperty>
+```
+* ![13_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_0.JPG)
+* в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
+
+* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG)
+
+* в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
+
+```xml
+<activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false" ></activiti:formProperty`>
+```
+* ![13_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_2.JPG)
+
+На бэке (wf-base) доработана обработка тэга **[paymentButton_LiqPay]** так, чтоб он поддерживал множественные кнопки оплаты LiqPay в рамках одного письма. [Issue 789](https://github.com/e-government-ua/i/issues/789) 
+
+
+***
+
+### emails
+# Емайлы
+[вернуться в начало](general.md)
+
+Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
+`#{MailTaskWithoutAttachment}`  
+`#{MailTaskWithAttachments}`  
+`#{MailTaskWithAttachmentsAndSMS}`  
+
+Параметры сервис таски:  
+**from** (expression)  
+**to** (expression)  
+**subject** (expression)  
+**text** (expression) - Тело письма. Поддержимает html формат. Переменные прописываются в виде ${id}  
+**saAttachmentsForSend** (expression) - указывается id файла ( в виде ${id} ) для отправки с емейлом.  Используется только  для MailTaskWithAttachments  
+
+Чтобы отправить автоматически сформированную принт-форму, добавленную в юзер-таске через id="sBody_N", необходимо добавлять строку в юзер-таске типа   
+```xml
+<activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
+```
+* ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
+а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
 ### usingVariablesinEmailTemplates
+
 Использование переменных в шаблонах емейлов
 
 в БП есть поля с типом enum  
@@ -952,6 +1024,8 @@ digit3 - переменная, куда присвоится результат 
 
 
 ### sendingSMSnotifications
+# 16. Отправка СМС-оповещений
+[вернуться в начало](general.md)
 015_SendingSMSnotifications.md
 
 ### sMSnotifications
@@ -963,6 +1037,9 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_sMSnotifications)
 
 ### Scripts
+# 17. Скрипты
+[вернуться в начало](general.md)
+
 016_Scripts.md
 ### Scriptsmd
 1. [Форматирование даты в процессе](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B/_edit#%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B5)  
