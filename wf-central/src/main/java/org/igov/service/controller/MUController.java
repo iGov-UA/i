@@ -67,4 +67,24 @@ public class MUController {
 		return resultModel.getResult();
     }
 	
+	@ApiOperation(value = "")
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public @ResponseBody
+    String getObjectEarthTargets(
+    		@ApiParam(value = "service_code", required = true) 
+    		@RequestParam(value = "service_code", required = false) String service_code,
+            HttpServletRequest request) throws ServiceException, RemoteException {
+		ServiceLocator serviceLocator = new ServiceLocator();
+		IService service = serviceLocator.getBinding_IService();
+		LOG.info("Got web service locator. Parameter of the method. service_code: " + service_code);
+		
+		LOG.info("Before calling test method");
+		
+		String res = service.test(service_code);
+		
+		LOG.info("Received response from Test in just web service:" + res);
+		
+		return res;
+    }
+	
 }
