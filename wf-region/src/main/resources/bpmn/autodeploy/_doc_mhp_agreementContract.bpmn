@@ -85,7 +85,7 @@ var oClose = deleteProccess.closeProcessInstance(processInstanceId)</script>
     <scriptTask id="scripttask4" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
-var sKey_GroupPostfix_New = 'MHP_Depar_Justice'
+var sKey_GroupPostfix_New = 'MHP_Justice_Spec1'
 var sKey_GroupPostfix = '_default_MHP_Depar_Justice'
 
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
@@ -144,7 +144,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <scriptTask id="scripttask5" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_3'
-var sKey_GroupPostfix_New = 'MHP_Depar_Justice'
+var sKey_GroupPostfix_New = 'MHP_Justice_Spec2'
 var sKey_GroupPostfix = '_default_MHP_Depar_Justice'
 
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
@@ -197,7 +197,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <scriptTask id="scripttask6" name="Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_4'
-var sKey_GroupPostfix_New = 'MHP_Depar_Finance'
+var sKey_GroupPostfix_New = 'MHP_Finance_Spec1'
 var sKey_GroupPostfix = '_default_MHP_Depar_Finance'
 
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
@@ -205,12 +205,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <scriptTask id="scripttask7" name="Step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
+var sKey_Step= 'step_5'
+var sKey_GroupPostfix_New = 'MHP_Head_Depar'
+var sKey_GroupPostfix = '_default_MHP_Head'
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MHP_Depar_Justice', 'MHP_Depar_Justice', 'step_5')
-
-</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway4" targetRef="scripttask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nContractAmount > 500000}]]></conditionExpression>
@@ -301,12 +301,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <scriptTask id="scripttask8" name="Step6" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_6')
+var sKey_Step= 'step_6'
+var sKey_GroupPostfix_New = 'MHP_Head_Deputy'
+var sKey_GroupPostfix = '_default_MHP_Head'
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MHP_Depar_Justice', 'MHP_Depar_Justice', 'step_6')
-
-</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway5" targetRef="scripttask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nContractAmount >= 200000 && nContractAmount < 10000000}]]></conditionExpression>
@@ -349,12 +349,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow22" sourceRef="scripttask8" targetRef="usertask6"></sequenceFlow>
     <scriptTask id="scripttask9" name="Step7" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_7')
+var sKey_Step= 'step_7'
+var sKey_GroupPostfix_New = 'MHP_Head'
+var sKey_GroupPostfix = '_default_MHP_Head'
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MHP_Depar_Justice', 'MHP_Depar_Justice', 'step_7')
-
-</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="exclusivegateway5" targetRef="scripttask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nContractAmount >= 10000000}]]></conditionExpression>
