@@ -27,8 +27,9 @@
           <activiti:value id="snull" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAction1" name="Яку дію треба здійснити з адресою об'єкту нерухомості?" type="enum" required="true" default="snull1">
-          <activiti:value id="get" name="присвоїти"></activiti:value>
-          <activiti:value id="renew" name="уточнити"></activiti:value>
+          <activiti:value id="get" name="Присвоїти адресу"></activiti:value>
+          <activiti:value id="renew" name="Уточнити адресу"></activiti:value>
+          <activiti:value id="getstreet" name="Уточнити назву вулиці"></activiti:value>
           <activiti:value id="snull1" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDivideHouse" name="Чи має місце поділ нерухомого майна?" type="enum" default="no">
@@ -95,8 +96,9 @@
           <activiti:value id="snull" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAction1" name="Яку дію треба здійснити з адресою об'єкту нерухомості?" type="enum" writable="false">
-          <activiti:value id="get" name="присвоїти"></activiti:value>
-          <activiti:value id="renew" name="уточнити"></activiti:value>
+          <activiti:value id="get" name="Присвоїти адресу"></activiti:value>
+          <activiti:value id="renew" name="Уточнити адресу"></activiti:value>
+          <activiti:value id="getstreet" name="Уточнити назву вулиці"></activiti:value>
           <activiti:value id="snull1" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDivideHouse" name="Чи має місце поділ нерухомого майна?; ;writable=false" type="enum">
@@ -167,8 +169,9 @@
           <activiti:value id="snull" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAction1" name="Яку дію треба здійснити з адресою об'єкту нерухомості?; ;writable=false" type="enum" writable="false">
-          <activiti:value id="get" name="присвоїти"></activiti:value>
-          <activiti:value id="renew" name="уточнити"></activiti:value>
+          <activiti:value id="get" name="Присвоїти адресу"></activiti:value>
+          <activiti:value id="renew" name="Уточнити адресу"></activiti:value>
+          <activiti:value id="getstreet" name="Уточнити назву вулиці"></activiti:value>
           <activiti:value id="snull1" name=" "></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDivideHouse" name="Чи має місце поділ нерухомого майна?; ;writable=false" type="enum">
@@ -407,11 +410,11 @@ if(execution.getVariable('sAction') == 'change')
 {
 per11 = 'зміни'
 }
-if(execution.getVariable('sAction1') == 'get')
+if(execution.getVariable('sAction1') == 'getstreet')
 {
-per11 = 'присвоєння'
+per11 = 'уточнення'
 }
-if(execution.getVariable('sAction') == 'renew')
+if(execution.getVariable('sAction1') == 'renew')
 {
 per11 = 'уточнення'
 }
