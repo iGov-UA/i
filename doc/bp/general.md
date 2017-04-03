@@ -1,7 +1,7 @@
 
-1.[Создание бизнес-процессов](#creatingBusinessProcesses)
+ 1.[Создание бизнес-процессов](#creatingBusinessProcesses)
 1. [Основные элементы Activiti Designer](https://github.com/e-government-ua/i/blob/test/doc/bp/0021TheMainElementsOfActivitiDesigner.md)
-002. [Типы параметров](https://github.com/e-government-ua/i/blob/test/doc/bp/002_Typesofparameters.md)
+002. [Типы параметров](002_Typesofparameters.md)
 1. [Зарезервированные и системные переменные](https://github.com/e-government-ua/i/blob/test/doc/bp/003_ReservedandSystemVariables.md)
 1. [Общие правила при именовании](https://github.com/e-government-ua/i/blob/test/doc/bp/004_Generalrulesfornaming.md)
 1. [Типы Listener и delegateExpression](https://github.com/e-government-ua/i/blob/test/doc/bp/005_TypesListeneranddelegateExpression.md)
@@ -28,8 +28,8 @@
 1. [СЭД](https://github.com/e-government-ua/i/blob/test/doc/bp/026_IDoc.md)
 
 ### creatingBusinessProcesses
-
 1. Создание бизнес-процессов
+
 ### сбор информации и предварительная подготовка
 * получить информационную и технологическую карточку услуги
 * пример заявления, бланки, шаблоны документов
@@ -46,7 +46,7 @@
 
 * создать новую диаграмму. Для Eclipse:New-Other-Activiti Diagram. Путь для размещения bpmn-файлов: \i\wf-egion\src\main\resources\bpmn\autodeploy.
 
-[детальнее...](#_Businessprocessdevelopment)
+[детальнее...](#_businessprocessdevelopment)
 
 
 ### connectionallentities
