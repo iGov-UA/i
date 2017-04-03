@@ -41,7 +41,7 @@
 
 
 
-### Businessprocessdevelopment
+### businessprocessdevelopment
 разработка бизнес-процесса
 
 * создать новую диаграмму. Для Eclipse:New-Other-Activiti Diagram. Путь для размещения bpmn-файлов: \i\wf-egion\src\main\resources\bpmn\autodeploy.
@@ -49,7 +49,7 @@
 [детальнее...](#_Businessprocessdevelopment)
 
 
-### Connectionallentities
+### connectionallentities
 подключение всех необходимых сущностей
 
 * создать пользователей и группы на дельте - связать их между собой
@@ -61,11 +61,11 @@
 * Прописать [эскалации](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D1%81%D0%BA%D0%B0%D0%BB%D0%B0%D1%86%D0%B8%D0%B8-%D0%B8-%D1%84%D0%B8%D0%B4%D0%B1%D0%B5%D0%BA%D0%B8).
 
 
-### Testingonbeta
+### testingonbeta
 тестирование и проливка на бету и боевой
 * перед каждой проливкой на сервер проект необходимо собирать и запускать локально
 
-[детальнее...](#_Testingonbeta)
+[детальнее...](#_testingonbeta)
 
 ### 002_Typesofparameters.md
 # Типы переменных
@@ -2200,10 +2200,10 @@ _testSimpleSubProces - порожденный
 
 001_CreatingBusinessProcesses.md
 
-### _Businessprocessdevelopment
+### _businessprocessdevelopment
 разработка бизнес-процесса
 
- [вернуться...](#Businessprocessdevelopment)
+ [вернуться...](#businessprocessdevelopment)
  
  * ![1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/1bp.jpg)
 * ![screenshot of sample2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2bp.jpg)
@@ -2214,9 +2214,11 @@ _testSimpleSubProces - порожденный
 * прорисовать всю схему процесса от начала до конца, наполнить блоки информацией.
 * создать принтформы
 
-### _Testingonbeta
+### _testingonbeta
 _тестирование и проливка на бету и боевой
- [вернуться...](#Testingonbeta)
+
+ [вернуться...](#testingonbeta)
+ 
  * ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
 * ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
 * пройти процесс от начала до конца по всем возможным путям
