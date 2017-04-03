@@ -16,6 +16,7 @@ import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.HandlerBeanValidationException;
 import org.igov.service.exchange.SubjectCover;
 import org.igov.util.JSON.JsonRestUtils;
+import org.igov.io.GeneralConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,9 @@ public class AccessCommonController {
 
     @Autowired
     private SubjectCover oSubjectCover;
+    
+    @Autowired
+    GeneralConfig generalConfig;
 
     /**
      * Логин пользователя в систему. Возращает признак успеха/неудачи входа.
@@ -78,7 +82,13 @@ public class AccessCommonController {
             @ApiParam(value = "Строка пароль пользователя", required = true) @RequestParam(value = "sPassword") String password,
             HttpServletRequest request)
             throws AccessServiceException {
-        if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(login, password)) {
+        
+        if(generalConfig.isSelfTest() && password == null){
+            LOG.info("test empty login...");
+            request.getSession(true);
+            return new LoginResponse(Boolean.TRUE.toString());
+        }
+        else if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(login, password)) {
             request.getSession(true);
             return new LoginResponse(Boolean.TRUE.toString());
         } else {

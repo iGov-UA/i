@@ -318,15 +318,15 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecidePersonnel == 'sEnumPersAccept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="usertask2">
+    <sequenceFlow id="flow15" sourceRef="exclusivegateway2" targetRef="scripttask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecidePersonnel == 'sEnumPersDeny'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="usertask7" targetRef="scripttask9"></sequenceFlow>
-    <scriptTask id="scripttask2" name="step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="step3" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_2'
+var sKey_Step= 'step_3'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав 
@@ -334,26 +334,16 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 var sKey_GroupPostfix_New = 'OE_Direction_Top'
 var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+
+
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow28" sourceRef="usertask10" targetRef="exclusivegateway6"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask3" name="step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//переключение степа
-
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_3'
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
-
-// клонирование прав на согласующего и утверждающего
-
-var sKey_GroupPostfix_New = 'OE_Personnel_Top'
-var sKey_GroupPostfix = '_default_Chief'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
-    </scriptTask>
-    <sequenceFlow id="flow31" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
-    <scriptTask id="scripttask4" name="step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -362,18 +352,17 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 
 // клонирование прав на согласующего и утверждающего
 
-var sKey_GroupPostfix_New = 'OE_Fin_Top'
-var sKey_GroupPostfix = '_default_Fin_Top'
+var sKey_GroupPostfix_New = 'OE_Personnel_Top'
+var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Fin_Top', oResult)
+execution.setVariable('sCloningOfLaw_Chief', oResult)
 
-var sKey_GroupPostfix_New = 'OE_Head_Top'
-var sKey_GroupPostfix = '_default_Head_Top'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Head_Top', oResult)</script>
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
-    <sequenceFlow id="flow32" sourceRef="scripttask4" targetRef="usertask5"></sequenceFlow>
-    <scriptTask id="scripttask7" name="step6" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <sequenceFlow id="flow31" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
+    <scriptTask id="scripttask4" name="step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -382,19 +371,17 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 
 // клонирование прав на согласующего и утверждающего
 
-var sKey_GroupPostfix_New = 'OE_Motiv_Spec1'
+var sKey_GroupPostfix_New = 'OE_Fin_Top'
 var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Chief', oResult)
 
-// ФИО заявителя
-var sLoginAuthor = execution.getVariable('sLoginAuthor')
-var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
-execution.setVariable('sAutorResolution', oResultAuthorName.sLabel)
-</script>
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
-    <sequenceFlow id="flow34" sourceRef="scripttask7" targetRef="usertask11"></sequenceFlow>
-    <scriptTask id="scripttask8" name="step11" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <sequenceFlow id="flow32" sourceRef="scripttask4" targetRef="usertask5"></sequenceFlow>
+    <scriptTask id="scripttask7" name="step6" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -403,30 +390,73 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 
 // клонирование прав на согласующего и утверждающего
 
+var sKey_GroupPostfix_New = 'OE_Head_Top'
+var sKey_GroupPostfix = '_default_Chief'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
+    </scriptTask>
+    <sequenceFlow id="flow34" sourceRef="scripttask7" targetRef="usertask11"></sequenceFlow>
+    <scriptTask id="scripttask8" name="step11" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_11'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав на согласующего и утверждающего
+
 var sKey_GroupPostfix_New = 'OE_Canc_Spec1'
 var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow35" sourceRef="scripttask8" targetRef="usertask7"></sequenceFlow>
     <scriptTask id="scripttask9" name="step12" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_7'
+var sKey_Step= 'step_12'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав на согласующего и утверждающего
 
-var sKey_GroupPostfix_New = 'OE_Buh_Spec1'
-var sKey_GroupPostfix = '_default_Chief'
+var sKey_GroupPostfix_New = 'OE_Department_Top'
+var sKey_GroupPostfix = '_default_Supervisor'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)
 
-var sKey_GroupPostfix_New = 'OE_Motiv_Spec1'
-var sKey_GroupPostfix = '_default_Chief'
+var sKey_GroupPostfix_New = 'OE_Direction_Top'
+var sKey_GroupPostfix = '_default_Supervisor'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Head_Top', oResult)</script>
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Personnel_Top'
+var sKey_GroupPostfix = '_default_Supervisor'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Labor_Top'
+var sKey_GroupPostfix = '_default_Supervisor'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Buh_Spec1'
+var sKey_GroupPostfix = '_default_Supervisor'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Personnel_Top'
+var sKey_GroupPostfix = '_default_Supervisor'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
     <scriptTask id="scripttask10" name="Проверка всех подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
@@ -501,10 +531,14 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 
 // клонирование прав 
 
-var sKey_GroupPostfix_New = 'OE_Direction_Top'
+var sKey_GroupPostfix_New = 'OE_Department_Top'
 var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow51" sourceRef="scripttask14" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask11" name="Узгодження службової  -  Голова правління" activiti:async="true">
@@ -550,17 +584,14 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
     <scriptTask id="scripttask15" name="step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
-
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_2'
+var sKey_Step= 'step_1'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав 
-
-var sKey_GroupPostfix_New = 'OE_Direction_Top'
-var sKey_GroupPostfix = '_default_Chief'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+var sKey_GroupPostfix = '_default_Author'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, 'OE_Department_Exec1', sKey_Step)
+execution.setVariable('sCloningOfLaw_Author', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow53" sourceRef="exclusivegateway7" targetRef="scripttask15">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocCreate == 'sEnumCreateDeny'}]]></conditionExpression>
@@ -585,7 +616,7 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_5'
+var sKey_Step= 'step_7'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав на согласующего и утверждающего
@@ -595,11 +626,9 @@ var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Chief', oResult)
 
-// ФИО заявителя
-var sLoginAuthor = execution.getVariable('sLoginAuthor')
-var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
-execution.setVariable('sAutorResolution', oResultAuthorName.sLabel)
-</script>
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow61" sourceRef="scripttask16" targetRef="usertask6"></sequenceFlow>
     <userTask id="usertask12" name="Узгодження наказу- Директор напрямку">
@@ -640,15 +669,19 @@ execution.setVariable('sAutorResolution', oResultAuthorName.sLabel)
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_2'
+var sKey_Step= 'step_8'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-// клонирование прав 
+// клонирование прав на согласующего и утверждающего
 
 var sKey_GroupPostfix_New = 'OE_Direction_Top'
 var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow62" sourceRef="usertask6" targetRef="scripttask17"></sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="scripttask17" targetRef="usertask12"></sequenceFlow>
@@ -656,7 +689,7 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_3'
+var sKey_Step= 'step_9'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав на согласующего и утверждающего
@@ -664,7 +697,11 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 var sKey_GroupPostfix_New = 'OE_Personnel_Top'
 var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
     <userTask id="usertask13" name="Узгодження наказу - Директор персоналу">
       <extensionElements>
@@ -705,15 +742,19 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_3'
+var sKey_Step= 'step_10'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав на согласующего и утверждающего
 
-var sKey_GroupPostfix_New = 'OE_Personnel_Top'
+var sKey_GroupPostfix_New = 'OE_Labor_Top'
 var sKey_GroupPostfix = '_default_Chief'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
+execution.setVariable('sCloningOfLaw_Chief', oResult)
+
+var sKey_GroupPostfix_New = 'OE_Department_Exec1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Supervisor', sKey_GroupPostfix_New, sKey_Step)
+execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </scriptTask>
     <userTask id="usertask14" name="Узгодження наказу - Профспілковий комітет">
       <extensionElements>
@@ -911,8 +952,9 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="660.0" y="450.0"></omgdi:waypoint>
         <omgdi:waypoint x="712.0" y="450.0"></omgdi:waypoint>
-        <omgdi:waypoint x="712.0" y="186.0"></omgdi:waypoint>
-        <omgdi:waypoint x="701.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="712.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="504.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="504.0" y="159.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="1229.0" y="216.0"></omgdi:waypoint>
@@ -998,12 +1040,12 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="615.0" y="250.0"></omgdi:waypoint>
-        <omgdi:waypoint x="192.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="201.0" y="249.0"></omgdi:waypoint>
         <omgdi:waypoint x="195.0" y="211.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
         <omgdi:waypoint x="882.0" y="693.0"></omgdi:waypoint>
-        <omgdi:waypoint x="880.0" y="508.0"></omgdi:waypoint>
+        <omgdi:waypoint x="881.0" y="507.0"></omgdi:waypoint>
         <omgdi:waypoint x="693.0" y="507.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
@@ -1052,7 +1094,7 @@ execution.setVariable('sCloningOfLaw_Chief', oResult)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
         <omgdi:waypoint x="618.0" y="650.0"></omgdi:waypoint>
-        <omgdi:waypoint x="545.0" y="648.0"></omgdi:waypoint>
+        <omgdi:waypoint x="546.0" y="649.0"></omgdi:waypoint>
         <omgdi:waypoint x="546.0" y="305.0"></omgdi:waypoint>
         <omgdi:waypoint x="583.0" y="307.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
