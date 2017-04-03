@@ -5,15 +5,15 @@
 1. [Основные элементы Activiti Designer](https://github.com/e-government-ua/i/blob/test/doc/bp/0021TheMainElementsOfActivitiDesigner.md)
 
 2. [Типы параметров](#typesofparameters)
-1. [Зарезервированные и системные переменные](https://github.com/e-government-ua/i/blob/test/doc/bp/003_ReservedandSystemVariables.md)
-1. [Общие правила при именовании](https://github.com/e-government-ua/i/blob/test/doc/bp/004_Generalrulesfornaming.md)
-1. [Типы Listener и delegateExpression](https://github.com/e-government-ua/i/blob/test/doc/bp/005_TypesListeneranddelegateExpression.md)
-1. [Назначение групп и пользователей](https://github.com/e-government-ua/i/blob/test/doc/bp/006_Assigngroupsandusers.md)
-1. [Математические действия с переменными и операторы условий](https://github.com/e-government-ua/i/blob/test/doc/bp/007_Mathematicalactionswithvariablesandconditionoperators.md)
-1. [Работа с датами и таймерами](https://github.com/e-government-ua/i/blob/test/doc/bp/008_Workingwithdatesandtimers.md)
-1. [Маркеры и Валидаторы](https://github.com/e-government-ua/i/blob/test/doc/bp/009_MarkersandValidators.md)
-1. [Принтформы](https://github.com/e-government-ua/i/blob/test/doc/bp/010_Printform.md)
-1. [ЭЦП](https://github.com/e-government-ua/i/blob/test/doc/bp/011_Digitalsignature.md)
+1. [Зарезервированные и системные переменные](reservedandSystemVariables)
+1. [Общие правила при именовании](generalrulesfornaming)
+1. [Типы Listener и delegateExpression](typesListeneranddelegateExpression)
+1. [Назначение групп и пользователей](assigngroupsandusers)
+1. [Математические действия с переменными и операторы условий](mathematicalactionswithvariablesandconditionoperators)
+1. [Работа с датами и таймерами](workingwithdatesandtimers)
+1. [Маркеры и Валидаторы](markersandValidators)
+1. [Принтформы](printform)
+1. [ЭЦП](digitalsignature)
 1. [Электронные очереди](https://github.com/e-government-ua/i/blob/test/doc/bp/012_Electronicqueues.md)
 1. [Оплата услуги](https://github.com/e-government-ua/i/blob/test/doc/bp/013_Paymentfortheservice.md)
 1. [Емайлы](https://github.com/e-government-ua/i/blob/test/doc/bp/014_Emails.md)
@@ -73,6 +73,7 @@
 [детальнее...](#_testingonbeta)
 
 ### typesofparameters
+[вернуться на начало](general.md)
 # Типы переменных
 
 ### string
