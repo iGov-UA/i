@@ -84,7 +84,7 @@
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" variable="sName_SubjectRole"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" variable="sLogin_AutorResolution"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="3"></activiti:formProperty>
         <activiti:formProperty id="sLogin_AutorResolution" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="invisible" writable="false"></activiti:formProperty>
@@ -137,7 +137,7 @@
             <activiti:expression>${processDefinitionId}</activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression>sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sName_SubjectRole::${sName_SubjectRole};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}</activiti:expression>
+            <activiti:expression>sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sLogin_AutorResolution::${sLogin_AutorResolution};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sName_AutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -355,7 +355,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow45" name="керівника не призначено" sourceRef="exclusivegateway2" targetRef="usertask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAutorResolution == null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sName_AutorResolution == null}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow49" sourceRef="exclusivegateway1" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision =='sEnumDecisionYesBut'}]]></conditionExpression>
@@ -369,7 +369,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:in source="sApplicant" target="sApplicant"></activiti:in>
         <activiti:in source="sReportCommon" target="sReportCommon"></activiti:in>
         <activiti:in source="sExecutor" target="sExecutor"></activiti:in>
-        <activiti:in source="sAutorResolution" target="sAutorResolution"></activiti:in>
+        <activiti:in source="sName_AutorResolution" target="sName_AutorResolution"></activiti:in>
         <activiti:in source="asTypeDispatch" target="asTypeDispatch"></activiti:in>
         <activiti:in source="sDoc2" target="sDoc2"></activiti:in>
       </extensionElements>
@@ -381,7 +381,7 @@ execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
     </scriptTask>
     <sequenceFlow id="flow62" sourceRef="scripttask5" targetRef="callactivity1"></sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="exclusivegateway2" targetRef="scripttask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAutorResolution != null}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sName_AutorResolution != null}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow64" sourceRef="callactivity1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask6" name="Клонування прав для керівника" scriptFormat="javascript" activiti:autoStoreVariables="false">
