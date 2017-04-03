@@ -27,7 +27,7 @@
 1. [Чек лист тестирования ветки](https://github.com/e-government-ua/i/blob/test/doc/bp/025_CheckListTestBranch.md)
 1. [СЭД](https://github.com/e-government-ua/i/blob/test/doc/bp/026_IDoc.md)
 
-# CreatingBusinessProcesses
+### CreatingBusinessProcesses
 
 1. Создание бизнес-процессов
 ### сбор информации и предварительная подготовка
