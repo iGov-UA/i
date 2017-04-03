@@ -872,7 +872,7 @@ digit3 - переменная, куда присвоится результат 
 ```xml
 <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>` 
 ```
-[детальней...](#_Converthtmltopdf)
+[детальней...](#_converthtmltopdf)
 
 ***
 ### electronicqueues
@@ -885,30 +885,30 @@ digit3 - переменная, куда присвоится результат 
 
 ### 1. Создаем поток 
 
-### flow_servicedata.csv  
+### flow_servicedata 
 **nID** - id потока  
 **sName** - название 
 
-[детальней...](#_flow_servicedata.csv)
+[детальней...](#_flow_servicedata)
 
 
-### subjectorgandepartment.csv
+### subjectorgandepartment
 
 здесь могут быть созданы  различные департаменты для возможности использования нескольких потоков в одном процессе  
 
 **nID** - id департамента  
 **sName** - название департамента 
 
-[детальней...](#_subjectorgandepartment.csv)
+[детальней...](#_subjectorgandepartment)
 
 
-### flowlink.csv
+### flowlink
 если нужно завести на один общий поток несколько услуг.  
 Для привязки одной очереди к нескольким процессам, необходимо в этом файле перечислить **ВСЕ** процессы (nID_Service) которые нужно связать в рамках одного потока очереди  
 **nID**  
 **nID_Flow_ServiceData** - ИД потока, в который надо свести несколько очередей 
 
-[детальней...](#_flowlink.csv)
+[детальней...](#_flowlink)
 
 
 ### 2. Для созданного потока указываем  расписание
@@ -918,7 +918,7 @@ digit3 - переменная, куда присвоится результат 
 **nID**  
 **nID_FlowPropertyClass** - класс, который формирует слоты очереди (для нас по-умолчанию - 1 )
 
-[детальней...](#_flowproperty.csv)
+[детальней...](#_flowproperty)
  
 
 
@@ -3081,31 +3081,31 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 [валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
 
 012_Electronicqueues.md
-### _flow_servicedata.csv
+### _flow_servicedata
 
-[вернуться...](#flow_ServiceData.csv)
+[вернуться...](#flow_servicedata)
 
 **nID_servicedata** - номер строки в [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) , для которой создается поток  
 **nID_subjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)   
 **sID_BP** - id самого процесса  
 
-### _subjectorgandepartment.csv
+### _subjectorgandepartment
 
-[вернуться...](#subjectorgandepartment.csv)
+[вернуться...](#subjectorgandepartment)
 
 **sGroup_Activiti** - id группы активити, созданной для этого департамента  
 **nID_SubjectOrgan** - id номер из файла [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)  
 
-### _flowlink.csv
+### _flowlink
 
-[вернуться...](#flowlink.csv)
+[вернуться...](#flowlink)
 
 **nID_Service** - ИД услуги из [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service)  
 **nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv) 
 
-### _flowproperty.csv
+### _flowproperty
 
-[вернуться...](#flowproperty.csv)
+[вернуться...](#flowproperty)
 
 **sData** - [набор правил для формирования слотов](http://www.cronmaker.com/) (например - `{"0 0/15 8-15 ? * MON-FRI *":"PT15M"} `)  
 **nID_Flow_ServiceData** - номер потока  
