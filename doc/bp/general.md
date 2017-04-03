@@ -1,6 +1,6 @@
 
  
-1.[Создание бизнес-процессов](#creatingBusiness)
+1. [Создание бизнес-процессов](#creatingBusiness)
 
 1. [Основные элементы Activiti Designer](https://github.com/e-government-ua/i/blob/test/doc/bp/0021TheMainElementsOfActivitiDesigner.md)
 
