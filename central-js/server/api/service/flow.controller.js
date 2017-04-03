@@ -36,7 +36,7 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
         nID_ServiceData: req.params.nID,
         nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment,
         nSlots: req.query.nSlots,
-        nDiffDays: req.query.nDiffDays
+        nDiffDaysForStartDate: req.query.nDiffDays
       }, null, sHost);
     });
 };
