@@ -1164,9 +1164,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 Installationeclipse.md
 
-### _Устанавливаем JAVA JDK
+### _installJAVAJDK
 
-[вернуться...](#Устанавливаем JAVA JDK)
+[вернуться...](#installJAVAJDK)
 
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sQlE3TUh3ZmpiUGM)  
 3. Устанавливаем скачанный файл, без изменений, со всем соглашаемся, можно выбрать свою директорию.  
@@ -1188,9 +1188,9 @@ C:\Program Files (x86)\Java\jdk1.8.0_111
 
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sX0xVUGNRV01SdkE)  
 
-### _Устанавливаем Eclipse
+### _installEclipse
 
-[вернуться...](#Устанавливаем Eclipse)
+[вернуться...](#installEclipse)
 4. запускаем eclipse.exe  
 5. При первом запуске он спросит где хранить настройки Eclipce  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNUJYaThZZnpLaTg)  
@@ -1264,8 +1264,8 @@ http://download.eclipse.org/technology/m2e/releases
 * Руками прописываем кодировку cp1251 на вкладке Общие (Common)
 * ![ecl1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/ecl1.JPG)
 
-### _Ставим дополнительные утилиты для удобства редактирования JSON и HTML
-[вернуться...](#Ставим дополнительные утилиты для удобства редактирования JSON и HTML)
+### _addJSONandHTML
+[вернуться...](#addJSONandHTML)
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_saWRQWTdOVGdTRW8)  
 ![2](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sRWx6dEs0aDNJY0E)  
 3. приложения JSON дает возможность открыть окно для редактирования или валидации JSON  
