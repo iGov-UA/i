@@ -472,7 +472,7 @@ exports.upload_content_as_attachment = function (req, res) {
             quality: 100
           }
         };
-        if(req.body.isSendDefaultPrintForm){
+        if(req.body.isSendAsDocument){
           req.body.url = "setDocumentImage";
         } else {
           req.body.url = 'setProcessAttach';
