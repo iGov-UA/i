@@ -14,18 +14,18 @@
 1. [Маркеры и Валидаторы](markersandValidators)
 1. [Принтформы](printform)
 1. [ЭЦП](digitalsignature)
-1. [Электронные очереди](https://github.com/e-government-ua/i/blob/test/doc/bp/012_Electronicqueues.md)
-1. [Оплата услуги](https://github.com/e-government-ua/i/blob/test/doc/bp/013_Paymentfortheservice.md)
-1. [Емайлы](https://github.com/e-government-ua/i/blob/test/doc/bp/014_Emails.md)
-1. [Отправка СМС-оповещений](https://github.com/e-government-ua/i/blob/test/doc/bp/015_SendingSMSnotifications.md)
-1. [Скрипты](https://github.com/e-government-ua/i/blob/test/doc/bp/016_Scripts.md)
-1. [Конфигурационные файлы](https://github.com/e-government-ua/i/blob/test/doc/bp/017_Configurationfiles.md)
-1. [Работа с гитом и репозиторием](https://github.com/e-government-ua/i/blob/test/doc/bp/018_Workingwiththegithandrepository.md)   [Установка Eclipce](https://github.com/e-government-ua/i/blob/test/doc/bp/Installationeclipse.md)
-1. [Автотесты](https://github.com/e-government-ua/i/blob/test/doc/bp/019_Autotests.md)
-1. [Эскалации и фидбеки](https://github.com/e-government-ua/i/blob/test/doc/bp/020_Escalationsandfeedback.md)
-1. [Статистика и выгрузки](https://github.com/e-government-ua/i/blob/test/doc/bp/021_Statisticsanduploads.md)
-1. [Часто возникающие ошибки](https://github.com/e-government-ua/i/blob/test/doc/bp/022_CommonErrors.md)
-1. [Полезные запросы](https://github.com/e-government-ua/i/blob/test/doc/bp/023_UsefulInquiries.md)
+1. [Электронные очереди](electronicqueues)
+1. [Оплата услуги](paymentfortheservice)
+1. [Емайлы](emails)
+1. [Отправка СМС-оповещений](sendingSMSnotifications)
+1. [Скрипты](scripts)
+1. [Конфигурационные файлы](configurationfiles)
+1. [Работа с гитом и репозиторием](workingwiththegithandrepository)   [Установка Eclipce](installationeclipse.md)
+1. [Автотесты](autotests)
+1. [Эскалации и фидбеки](escalationsandfeedback)
+1. [Статистика и выгрузки](statisticsanduploads)
+1. [Часто возникающие ошибки](commonErrors)
+1. [Полезные запросы](usefulInquiries)
 1. [Лайф Хаки](https://github.com/e-government-ua/i/blob/test/doc/bp/024_%20LifeHacking.md)
 1. [Чек лист тестирования ветки](https://github.com/e-government-ua/i/blob/test/doc/bp/025_CheckListTestBranch.md)
 1. [СЭД](https://github.com/e-government-ua/i/blob/test/doc/bp/026_IDoc.md)
@@ -764,9 +764,9 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_sNote)
 
 
-### printformmd
+### printform
 # Принтформа
-### Printform
+### Printformmd
 
 *Принтформа прописывается на Юзертаске:
 
@@ -774,9 +774,9 @@ digit3 - переменная, куда присвоится результат 
 
         activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty
  
- [детальней...](#_Printform)
+ [детальней...](#_printformmd)
  
-### Display_hidefields
+### display_hidefields
 отображение/скрытие  полей
 
 например, "all_table" -  id какого-либо элемента печатной формы
@@ -802,11 +802,12 @@ digit3 - переменная, куда присвоится результат 
  `}`
 `}`
 
-[детальней...](#_Display_hidefields)
+[детальней...](#_display_hidefields)
 
-011_Digitalsignature.md
+***
+### digitalsignature
 
-### CreationofasignedEDSdocument
+### creationofasignedEDSdocument
 
 Создание подписанного ЭЦП документа cо стартовой формы
 Необходимо добавить строки на стартовую таску:
@@ -815,10 +816,10 @@ digit3 - переменная, куда присвоится результат 
 <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/example_print_01.html"></activiti:formProperty>
 ```
 
-[детальней...](#_CreationofasignedEDSdocument)
+[детальней...](#_creationofasignedEDSdocument)
 
 
-### ConverthtmltoPDF
+### converthtmltoPDF
 Конвертирование html в PDF
 Как альтернатива вышеуказанному способу существует конвертор собственный - его использование задается в дополнительном параметре описанном в "name". Данный конвертор более качественно переводит в PDF формат исходный html-файл. Также он позволяет успешно использовать встроенные в html-файл java-скрипты.
 ```xml
@@ -826,60 +827,58 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_ConverthtmltoPDF)
 
-012_Electronicqueues.md
+***
+### electronicqueues
 ### Настройка электронной очереди
 Все файлы для настройки электронной очереди расположены в wf-base/src/main/resources/data/ ….   
 
-***
 
 ### 1. Создаем поток 
 
-### Flow_ServiceData.csv  
+### flow_ServiceData.csv  
 **nID** - id потока  
 **sName** - название 
 
-[детальней...](#_Flow_ServiceData.csv)
+[детальней...](#_flow_ServiceData.csv)
 
 
 
-### SubjectOrganDepartment.csv
+### subjectOrganDepartment.csv
 здесь могут быть созданы  различные департаменты для возможности использования нескольких потоков в одном процессе  
 
 **nID** - id департамента  
 **sName** - название департамента 
 
-[детальней...](#_SubjectOrganDepartment.csv)
+[детальней...](#_subjectOrganDepartment.csv)
 
 
-### FlowLink.csv
+### flowLink.csv
 если нужно завести на один общий поток несколько услуг.  
 Для привязки одной очереди к нескольким процессам, необходимо в этом файле перечислить **ВСЕ** процессы (nID_Service) которые нужно связать в рамках одного потока очереди  
 **nID**  
 **nID_Flow_ServiceData** - ИД потока, в который надо свести несколько очередей 
 
-[детальней...](#_FlowLink.csv)
+[детальней...](#_flowLink.csv)
 
-
-***
 
 ### 2. Для созданного потока указываем  расписание
-### FlowProperty.csv
+### flowProperty.csv
 файл с расписанием (график работы)
 
 **nID**  
 **nID_FlowPropertyClass** - класс, который формирует слоты очереди (для нас по-умолчанию - 1 )
 
-[детальней...](#_FlowProperty.csv)
+[детальней...](#_flowProperty.csv)
  
 
 
-### Usingmultipleelectronicqueues
+### usingmultipleelectronicqueues
 Использование в одном процессе несколько электронных очередей (для нескольких департаментов)
 * внутри процесса на стартовой таске объявляем переменную с типом [queueData](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D0%BE%D0%B2#queuedata)
 ```xml 
 <activiti:formProperty id="visitDate" name="Бажана дата візиту" type="queueData" required="true"></activiti:formProperty>
 ```
-[детальней...](#_Usingmultipleelectronicqueues)
+[детальней...](#_usingmultipleelectronicqueues)
 
 
 ## Отмена заявки. Высвобождение слота  электронной очереди по инициативе заявителя
@@ -891,28 +890,28 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_variant)
 
 
-### Cancellationrequest
+### cancellationrequest
 Отмена заявки. Высвобождение слота  электронной очереди по инициативе  сотрудника или системы
 Для реализации нужно добавить сервис таску:  
 ```xml
 <serviceTask id="servicetask" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}">
 </serviceTask>
 ```
-[детальней...](#_Cancellationrequest)
+[детальней...](#_cancellationrequest)
 
 
-### Changetheorderofanelectronicqueue
+### changetheorderofanelectronicqueue
 Изменить срок заказа электронной очереди
 По умолчанию: заказ осуществляется на послезавтра  
 Если необходимо "сдвинуть" начало генерации слотово (например, не ранее, чем через 4 дня), прописываем в дефолте количество дней
 ```xml
 <activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="4"></activiti:formProperty>
 ```
-[детальней...](#_Changetheorderofanelectronicqueue)
+[детальней...](#_changetheorderofanelectronicqueue)
 
 
 
-### UsingVariablesinEmailTemplates
+### usingVariablesinEmailTemplates
 Использование переменных в шаблонах емейлов
 
 в БП есть поля с типом enum  
@@ -920,10 +919,10 @@ digit3 - переменная, куда присвоится результат 
 нужно взять этот id, (какого-то БП), и на базе него прописать где-то в письме тэг **enum{[*]}**  
 например поле с id="typeOfDocument" 
 
-[детальней...](#_UsingVariablesinEmailTemplates)
+[детальней...](#_usingVariablesinEmailTemplates)
 
 
-### Workingwithdatadirectoriesinemails
+### workingwithdatadirectoriesinemails
 Работа со справочниками данных в емейлах
 [Issue 839](https://github.com/e-government-ua/i/issues/839)  
 Расположены \wf-base\src\main\resources\patterns\dictionary  
@@ -931,17 +930,17 @@ digit3 - переменная, куда присвоится результат 
 должен находиться патерн-справочник, например по пути: /patterns/dictonary/MVD_Department.csv
 в котором, через точку с запятой должны быть данные по строкам. 
 
-[детальней...](#_Workingwithdatadirectoriesinemails)
+[детальней...](#_workingwithdatadirectoriesinemails)
 
 
-### EmailTemplates
+### emailTemplates
 Шаблоны емейлов
 расположены : \wf-region\src\main\resources\pattern\mail    
 В сервис-таске прописываем тэги с учётом того что из шаблонов не подтягиваются значения переменных активити:  
 Тело письма с обращением к клиенту и опросом качества  в таком случае будет выглядеть как:  
 [pattern/mail/_common_header.html]
 
-[детальней...](#_EmailTemplates)
+[детальней...](#_emailTemplates)
 
 ### newEmailTemplates
 обновленные шаблоны емейлов
@@ -952,19 +951,20 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_newEmailTemplates)
 
 
+### sendingSMSnotifications
 015_SendingSMSnotifications.md
 
-### SMSnotifications
+### sMSnotifications
 
 [тексты шаблонов](https://docs.google.com/document/d/1iU1hv8B51We6D62_WDHysqXn1O-c5huXierQrhCViuI/edit)  
 Заявка успешно подана гражданином  
 **Vashe zvernennya [sID_Order] zareestrovano**
 
-[детальней...](#_SMSnotifications)
+[детальней...](#_sMSnotifications)
 
-
-016_Scripts.md
 ### Scripts
+016_Scripts.md
+### Scriptsmd
 1. [Форматирование даты в процессе](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B/_edit#%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B5)  
 1. [Получение даты/времени на нужном этапе процесса](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B/_edit#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%BD%D0%B0-%D0%BD%D1%83%D0%B6%D0%BD%D0%BE%D0%BC-%D1%8D%D1%82%D0%B0%D0%BF%D0%B5-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0)  
 1. [Получение даты/времени напоминания о выбранной дате из электронной очереди](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B/_edit#%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82-%D0%B4%D0%BB%D1%8F-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B4%D0%B0%D1%82%D1%8B%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%BD%D0%B0%D0%BF%D0%BE%D0%BC%D0%B8%D0%BD%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BE-%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D0%BD%D0%BD%D0%BE%D0%B9-%D0%B4%D0%B0%D1%82%D0%B5-%D0%B8%D0%B7-%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B9-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8)
@@ -983,23 +983,23 @@ digit3 - переменная, куда присвоится результат 
 execution.getVariable('var1') - обращение к переменной var1 для получения её значения  
 execution.setVariable('var2', value) - запись  значения value в переменную var2  
 
-[детальней...](#_Scripts)
+[детальней...](#_scriptsmd)
 
 
 
 
-### Formatthedateintheprocess
+### formatthedateintheprocess
 Форматирование даты в процессе.
 Создать скрипт-таску, в main-config задать: script lang - “groovy”
 ```groovy
 execution.setVariable("docDateFormat", execution.getVariable("docDate").format("yyyy-MM-dd"))
 ```
-[детальней...](#_Formatthedateintheprocess)
+[детальней...](#_formatthedateintheprocess)
 
 
 
 
-### Gettingdatetime
+### gettingdatetime
 Получение даты/времени на нужном этапе процесса
 надо создать скрипт groovy, а во второй аргумент функции  setVariable вписать создание объекта Date с ключевым словом new.
 В общем скрипт будет выглядеть вот так:
@@ -1010,11 +1010,11 @@ execution.setVariable("docDateFormat", execution.getVariable("docDate").format("
   </script>
 </scriptTask>
 ```
-[детальней...](#_Gettingdatetime)
+[детальней...](#_gettingdatetime)
 
 
 
-### Receivingdatetimeelectronicqueue
+### receivingdatetimeelectronicqueue
 Получение даты/времени напоминания о выбранной дате из электронной очереди
 Пример использования  доступен в процессе dnepr_dms_passport  
 Необходимо создать скрипт-таску. Указать язык javaScript  
@@ -1053,7 +1053,7 @@ var timer=year+'-'+month+'-'+day+'T'+hour+':'+minutes+':'+seconds //склеив
 
 execution.setVariable('sNotification_day', timer)  //возвращаем в процесс итоговую переменную в нужном формате для таймера
 ```
-[детальней...](#_Receivingdatetimeelectronicqueue)
+[детальней...](#_receivingdatetimeelectronicqueue)
 
 
 
@@ -1141,13 +1141,13 @@ per7 = '<li>Свідоцтво про шлюб;</li>'
 res = '<ol>'+per1+per6+per7+'</ol>'
 execution.setVariable('sListDocumentsPrint', res)
 ```
-### GettingID
+### gettingID
 Получение ИД текущего процесса
 ```javaScript 
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 ```
-[детальней...](#_GettingID)
+[детальней...](#_gettingID)
 
 
 ### Формирование динамического названия юзертаски
@@ -1189,17 +1189,17 @@ var sNewDate = (d + "/" + m + "/" + updatedDate.getFullYear());
 execution.setVariable('sDateExecution', sNewDate)
 ```
 
-### ObtainingBPID
+### obtainingBPID
 Получение ИД БП
 ```javaScript 
 var executeProcessDefinitionId = execution.getProcessDefinitionId();
 var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 ```
-[детальней...](#_ObtainingBPID)
+[детальней...](#_obtainingBPID)
 
 
-### Gettingloginandname
+### gettingloginandname
 Получение логина и ФИО основного исполнителя (человека которого в таблице выбрали первым)
 ```javaScript 
 var processInstanceId = execution.getVariable('processInstanceId');
@@ -1218,9 +1218,9 @@ execution.setVariable('sLastName', obj.aProcessSubjectTree[0].aUser[i].sLastName
 var sExecutor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProcessSubjectTree[0].aUser[i].sLastName
 execution.setVariable('sExecutor', sExecutor) 
 ```
-[детальней...](#_Gettingloginandname)
+[детальней...](#_gettingloginandname)
 
-
+### configurationfiles
 017_Configurationfiles.md
 ### wf-central  
 путь к конфигурационным файлам: **\i\wf-central\src\main\resources\data\**  
@@ -1248,7 +1248,7 @@ execution.setVariable('sExecutor', sExecutor)
 ### PlaceType
 ### Region
 ### Server
-### Service
+### service
 * nID  - идентификатор услуги. Задаем новый (смотрим максимальный в конце файла и добавляем +1). В исключительных случаях не добавляем новую, а “занимаем” место старой, которая распознается подчеркиванием, стоящим перед названием услуги (без согласования такое не делать). Если есть пропуск в нумерации - можно и нужно занимать их (в идеале не должно быть пропусков в номерах). Найти такую строку, и отписаться о ее заполнении можно в файле https://docs.google.com/spreadsheets/d/13L8S76lHPjXi28Nk09CSB4JwQjL8k8pMQwnMNQcZMME/edit#gid=0 
 * sName - название услуги. 
 * nOrder - Целочисленный коэффициент, определяющий “Важность” услуги, ее очередность в показе пользователю. По умолчанию ставим 100. Чем меньше, тем выше по списку стоит услуга. У услуг с одинаковым номером сортируется по алфавиту.
@@ -1259,10 +1259,10 @@ execution.setVariable('sExecutor', sExecutor)
 * nOpenedLimit - По умолчанию 0. Максимальное количество  одновременно поданных (открытых) заявок от одного гражданина. Если 0, то ограничения нет. 
 * sSubjectOperatorName - Название органа, отвечающего за услугу (Міністерство внутрішніх справ, Міська рада и т.д.)
 
-[детальней...](#_Service)
+[детальней...](#_service)
 
 
-### ServiceData
+### serviceData
 * nID - идентификатор процесса. Всегда новый (смотрим максимальный в конце файла и добавляем +1) 
 * nID_Service - номер услуги в файле Service.csv. 
 * nID_Place - идентификатор местности (номер в Place.csv) 
@@ -1279,7 +1279,7 @@ execution.setVariable('sExecutor', sExecutor)
 * asAuth - тип авторизации. По умолчанию BankID,EDS 
 * nID_Server - Идентификатор сервера. По умолчанию 0
 
-[детальней...](#_ServiceData)
+[детальней...](#_serviceData)
 
 ### ServiceOperator_SubjectOrgan
 ### ServiceTag
@@ -1288,14 +1288,14 @@ execution.setVariable('sExecutor', sExecutor)
 ### ServiceTagType
 ### ServiceType
 ### Subcategory
-### Subject
+### subject
 **nID** - номер по порядку  
 **sID** - оставляем пустым  
 **sLabel** - имя чиновника или название органа, название органа должно начинаться с нижнего подчеркивания  
 **sLabelShort** - оставляем пустым 
-[детальней...](#_Subject)
+[детальней...](#_subject)
 
-### SubjectAccount
+### subjectAccount
 **nID** - номер по порядку  ## 
 **sLogin** - в точности скопированный логин пользователя или в точности скопированный ИД группы  
 **sNote** - имя чиновника или название органа (рекомендуется синхронизировать с sLabel из файла Subject.csv)  
@@ -1303,7 +1303,7 @@ execution.setVariable('sExecutor', sExecutor)
 **nID_Server** - ставим всегда 0
 **nID_Subject** - номер строки из файла Subject - связка с конкретным чиновником или органом 
 
-[детальней...](#_SubjectAccount)
+[детальней...](#_subjectAccount)
 
 ### SubjectAccountType
 ### SubjectActionKVED
@@ -1331,7 +1331,7 @@ execution.setVariable('sExecutor', sExecutor)
 **nID_City**  
 **sID_UA** 
 
-[детальней...](#_SubjectOrganJoin)
+[детальней...](#_subjectOrganJoin)
 
 ### SubjectOrganJoinAttribute
 ### SubjectOrganJoinTax
@@ -1357,6 +1357,8 @@ execution.setVariable('sExecutor', sExecutor)
 ### FlowSlotTicket
 ### SubjectOrganDepartment
 
+
+### workingwiththegithandrepository
 018_Workingwiththegithandrepository.md
 
 **[18.0 Установка Eclipce](https://github.com/e-government-ua/iBP/wiki/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-Eclipce)**   
@@ -1392,7 +1394,7 @@ Select
 1. При мерже могут возникнуть конфликты в файлах, которые необходимо разрешить. Конфликты обозначены красным ромбиком.  
 ![2](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_scmhKTTNmUDRQN0k)
 
-### Conflictresolutioneclipse
+### conflictresolutioneclipse
 Разрешение конфликтов при мерже (в eclipse)
 нажимаем правой кнопкой на конфликтном файле: **team-merge tool**  
 выбираем отображение панелей (нажимайте "ок")  
@@ -1401,7 +1403,7 @@ Select
 Если более актуальная версия файла ветки из которой производится мерж - необходимо добавить эти изменения нажав на квадратик между версиями  
 ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sMlRxbU40T2pIQ1k)  
 
-[детальней...](#_Conflictresolutioneclipse)
+[детальней...](#_conflictresolutioneclipse)
 
 
 ### Выкладка версии
@@ -1475,31 +1477,36 @@ IDE NetBeans позволяет автоматизировать этот про
 
 ### Откат изменений (в eclipse)
 
+### installationeclipse
 Installationeclipse.md
 
-### Устанавливаем JAVA JDK
+### installJAVAJDK
+Устанавливаем JAVA JDK
 1. Переходим по [ссылке](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)  
 2. Соглашаемся и качаем    
 
-[детальнее...](#_4)
+[детальнее...](#_installJAVAJDK)
 
-### Устанавливаем Eclipse
+### installEclipse
+Устанавливаем Eclipse
 [1. Качаем последнюю версию](
 http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/neon/2/eclipse-committers-neon-2-win32-x86_64.zip) 
 2. копируем скачанный архив в нужную папку где он будет храниться  
 3. распаковываем архив 
 
-[детальнее...](#_Устанавливаем Eclipse)
+[детальнее...](#_installEclipse)
 
 
-### Ставим дополнительные утилиты для удобства редактирования JSON и HTML
+### addJSONandHTML
+Ставим дополнительные утилиты для удобства редактирования JSON и HTML
 1. переходим в маркет  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_scWg3N3RiSU56MWM)  
 2. ищем нужные нам приложения и устанавливаем, процесс установки такой же как и в пункте 7, только не надо вставлять адрес УРЛ на приложение  и называть его. Теоретически можно было так и активити с майвеном поставить. 
 
-[детальнее...](#_Ставим дополнительные утилиты для удобства редактирования JSON и HTML)
+[детальнее...](#_addJSONandHTML)
 
-
+***
+### autotests
 019_Autotests.md
 
 ### Подготовка среды
@@ -1842,11 +1849,14 @@ _Не посылайте служебные письма о наличии за�
 > (Записываете результат разговора в комментарии).  
 > Спасибо за уделенное время, всего хорошего!  
 
-
+***
+### statisticsanduploads
 021_Statisticsanduploads.md
 
 Empty
 
+***
+### commonErrors
 022_CommonErrors.md
 
 ### Case 1. Не отображается тест выбранного Enum в принтформе, а отображается ID
@@ -1885,7 +1895,8 @@ Tests in error:
 ```
 **решение**: на одной из сервистасок не хватает параметера delegateExpression
 
-
+***
+### usefulInquiries
 023_UsefulInquiries.md
 
 ### запустить правило эскалации (метод GET)  
@@ -1898,12 +1909,12 @@ https://alpha.test.region.igov.org.ua/wf/service/action/escalation/runEscalation
 https://alpha.test.region.igov.org.ua/wf/service/action/task/delete-process?nID_Order=020978170
 ```
 
-### Downloadmaximumdate
+### downloadmaximumdate
 выгрузить максимум данных по заявке (метод GET)  
 ```
 https://alpha.test.region.igov.org.ua/wf/service/action/task/getTaskData?sID_Order=0-219200017&bIncludeStartForm=true&bIncludeGroups=true
 ```
-[детальнее...](#_Downloadmaximumdate)
+[детальнее...](#_downloadmaximumdate)
 
 ### выгрузка закрытых заявок за определенный период** (метод GET)   
 можно исключать некоторые номера услуг  
@@ -1912,12 +1923,12 @@ https://igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=2016
 ```
 чтоб выгрузить открытые за определенный период, нужно поставить параметр sID_FilterDateType=Open
 
-### Numberofservicesbyregion
+### numberofservicesbyregion
 количество услуг по областям за период (метод GET)  
 ``` 
 https://alpha.test.igov.org.ua/wf/service/action/event/getServicesStatistic?sDate_from=2016-06-01 00:00:00&sDate_to=2016-08-11 00:00:00
 ```
-[детальнее...](#_Numberofservicesbyregion)
+[детальнее...](#_numberofservicesbyregion)
 
 ### генерация слотов очереди (метод POST)   
 ``` 
@@ -1961,6 +1972,8 @@ https://region.igov.org.ua/wf/service/action/task/downloadTasksData?sID_BP=subsi
 https://alpha.test.region.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=24520049&attachmentId=24520026
 ```
 
+***
+### lifeHacking
 024_ LifeHacking.md
 
 
@@ -2020,7 +2033,7 @@ src/main/java/org/igov/service/controller/interceptor/RequestProcessingIntercept
 <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="invisible"></activiti:formProperty>
 ```
 счетчик начинает считать с 0 и обнуляется в начале года.
-***
+
 Если нужно убрать автоматическое "письмо Привет" нужно добавить id БП в интерсептор
 src/main/java/org/igov/service/controller/interceptor/RequestProcessingInterceptor.java
 ```java
@@ -2036,6 +2049,8 @@ id БП разделять вертикальным слеш "|"
 ###  Ссылки на региональные порталы
 https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
+***
+### checkListTestBranch
 025_CheckListTestBranch.md
 (в скобках номер услуги на которой можно проверить)
 - [x] **подача услуги с файлами и приход файлов в дашборд** (любая)
@@ -2079,6 +2094,8 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 - [ ] **подача заявки на всю Украину** (118)
 - [ ] **кастомная принтформа для наложение ЭЦП на стартформе** (1497)
 
+***
+### iDoc
 026_IDoc.md
 
 ### [Переменные iDoc](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%AD%D0%94#%D0%9F%D0%B5%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5-idoc-1)
