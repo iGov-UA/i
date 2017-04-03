@@ -5,7 +5,7 @@
 2. [Типы параметров](#typesofparameters)
 1. [Зарезервированные и системные переменные](#reservedandSystemVariables)
 1. [Общие правила при именовании](#generalrulesfornaming)
-1. [Типы Listener и delegateExpression](#typesListeneranddelegateExpression)
+1. [Типы Listener и delegateExpression](#typesListeneranddelegate)
 1. [Назначение групп и пользователей](#assigngroupsandusers)
 1. [Математические действия с переменными и операторы условий](#mathematicalactionswithvariablesandconditionoperators)
 1. [Работа с датами и таймерами](#workingwithdatesandtimers)
@@ -365,8 +365,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 ***
 
-### typesListeneranddelegateExpression
-# Типы Listener и delegateExpression
+### typesListeneranddelegate
+# 6. Типы Listener и delegateExpression
 [вернуться в начало](general.md)
 
 ### listener
