@@ -30,7 +30,7 @@
 
 
 ### creatingbusinessprocesses
-# Создание бизнес-процессов
+# 1. Создание бизнес-процессов
 [вернуться в начало](general.md)
 
 ### сбор информации и предварительная подготовка
@@ -74,7 +74,7 @@
 
 ### themain
 
-# Основные элементы Activiti Designer
+# 2. Основные элементы Activiti Designer
 
 [вернуться в начало](general.md)
 
@@ -98,7 +98,7 @@
 
 
 ### typesofparameters
-# Типы переменных
+# 3. Типы параметров
 [вернуться в начало](general.md)
 
 
@@ -2888,7 +2888,7 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 ***
 
 ### _updatestatustask
-[вернуться...](#updateStatusTask)
+[вернуться...](#updatestatustask)
 Все статусы задаются в файле: _i\wf-base\src\main\resources\data\ProcessSubjectStatus.csv_  
 В енаме (saStatusTask) порожденной задачи должны присутствовать только статусы из этого файла и передаваться затем в переменную sID_ProcessSubjectStatus:
 ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sb1J3RUx6Ti1HSGc)
