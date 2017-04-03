@@ -55,7 +55,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_Author]]></activiti:string>
+            <activiti:string><![CDATA[_default_Author_MHP]]></activiti:string>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -76,19 +76,18 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
       <script>var processInstanceId = execution.getProcessInstanceId();
 var oClose = deleteProccess.closeProcessInstance(processInstanceId)</script>
     </scriptTask>
-    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="scripttask3">
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEnd'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow7" sourceRef="scripttask3" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask4" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
+var sKey_Step= 'step_2'
+var sKey_GroupPostfix_New = 'MHP_Depaptment_Justice'
+var sKey_GroupPostfix = '_default_MHP_Depaptment_Justice'
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MHP_Depaptment_Justice', 'MHP_Depaptment_Justice', 'step_2')
-
-</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow8" sourceRef="exclusivegateway1" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumSighting'}]]></conditionExpression>
@@ -234,7 +233,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="55.0" width="105.0" x="400.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="487.0" y="290.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="600.0" y="292.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="522.0" y="380.0"></omgdc:Bounds>
@@ -320,10 +319,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="540.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="539.0" y="290.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="539.0" y="345.0"></omgdi:waypoint>
         <omgdi:waypoint x="539.0" y="380.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
