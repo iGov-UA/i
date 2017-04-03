@@ -71,7 +71,9 @@
 [детальнее...](#_testingonbeta)
 
 ***
+
 ### theMain
+
 # Основные элементы Activiti Designer
 
 [вернуться в начало](general.md)
