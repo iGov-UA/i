@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_278" name="Державна реєстрація права власності на нерухоме майно та його обтяжень" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 28.03.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 04.04.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" required="true"></activiti:formProperty>
@@ -152,7 +152,7 @@
           <activiti:string><![CDATA[Нове звернення. Державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -300,18 +300,26 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment1}&lt;/p&gt;&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно було відхилено.&lt;br /&gt;
+					Причина в наступному:&lt;br /&gt;
+					${sDecisionComment1}&lt;br /&gt;&lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -339,17 +347,24 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[Перевірено звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відправлене в Реєстраційну службу міського управління юстиції.&lt;br /&gt;
-&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${sNumber_cnap} від ${sDate_registrastion}&lt;/p&gt;&lt;br /&gt; 
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+  			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відправлене в Реєстраційну службу міського управління юстиції.&lt;br /&gt;
+					&lt;br /&gt; 
+					Номер Вашого замовлення: ${sNumber_cnap} від ${sDate_registrastion}&lt;br /&gt; &lt;br /&gt; 
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -510,24 +525,29 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[Опрацьовано звернення: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - опрацьовано. &lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати витяг особисто під підпис у ЦНАП.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-4. Підписану заяву.&lt;br /&gt;
-&lt;/p&gt;
-&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - опрацьовано. &lt;br /&gt;
+					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати витяг особисто під підпис у ЦНАП.&lt;br/&gt; 
+					При собі треба мати:&lt;br/&gt; 
+					1. Документ, що посвідчує особу.&lt;br/&gt; 
+					2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
+					3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
+					4. Підписану заяву.&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Otvet}</activiti:expression>
@@ -555,18 +575,27 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[Відхилено звернення на тему: державна реєстрація права власності на нерухоме майно.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відхилено реєстраційною службою міського управління юстиції.&lt;br /&gt;
-Підстава: ${sDecisionComment2}.
-Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відхилено реєстраційною службою міського управління юстиції.&lt;br /&gt;
+					Підстава: ${sDecisionComment2}.&lt;br /&gt;
+					Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
+					&lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Otvet}</activiti:expression>
@@ -594,18 +623,24 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[Витяг (електронний) готовий: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - опрацьовано. &lt;br /&gt;
-Електронний примірник витягу в прикріпленому файлі.&lt;br/&gt; 
-&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - опрацьовано. &lt;br /&gt;
+					Електронний примірник витягу в прикріпленому файлі.&lt;br/&gt; 
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Otvet}</activiti:expression>
@@ -703,18 +738,23 @@ if(execution.getVariable('asEnumDelivery_Document') == 'sElementPaper_doc'){exec
           <activiti:string><![CDATA[Нове звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
-Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          [pattern/mail/new_design/_common_header.html]
+          [pattern/mail/new_design/_common_content_start.html]
+			&lt;p&gt;
+				Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
+				Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
+				&lt;br /&gt;
+				${sNameOrgan},&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			&lt;/p&gt;	
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br /&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
