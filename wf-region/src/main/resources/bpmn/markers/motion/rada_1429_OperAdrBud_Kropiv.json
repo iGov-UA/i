@@ -78,7 +78,8 @@
 			"aField_ID":["sAction","sReferenceBTI","sDivideZemlya"],
 			"asID_Field":
 			{
-				"sFunc1":"sID_Public_SubjectOrganJoin"
+				"sFunc1":"sID_Public_SubjectOrganJoin",
+				"sFunc6":"sAction1"
 			},
 			"sCondition":"[sFunc1] != 'Kropivn_KropivnytskyiT'"
 		},
@@ -127,17 +128,34 @@
 			},
 			"sCondition":"[sFunc5] == 'Kropivn_KropivnytskyiT'"
 		},
-		"ShowFieldsOnCondition_16":
+		"RequiredFieldsOnCondition_16":
 		{
-			"aField_ID":["sOwnershipZemlya", "sShemaZemlya", "sShemaObject", "sDocDivideZemlya", "sDeclaration", "sReferenceBTI", "sLetterDouble", ""],
+			"aField_ID":["sDeclaration", "sTehPasport", "sOwnershipHouse", "sShemaObject"],
 			"asID_Field":
 			{
-				"sFunc6":"sAction1"
+				"sFunc6":"sAction1",
+				"sFunc8":"sDivideHouse"
 			},
-			"sCondition":"[sFunc6] != 'getstreet'"
+			"sCondition":"[sFunc6] == 'get'&&[sFunc8] == 'no'"
+		},
+		"RequiredFieldsOnCondition_17":
+		{
+			"aField_ID":["sVisnDivideHouse", "sOwnershipHouse", "sShemaObject"],
+			"asID_Field":
+			{
+				"sFunc9":"sAction1",
+				"sFunc10":"sDivideHouse"
+			},
+			"sCondition":"[sFunc9] == 'get'&&[sFunc10] == 'yes'"
+		},
+		"RequiredFieldsOnCondition_18":
+		{
+			"aField_ID":["sLetterDouble", "sTehPasport", "sOwnershipHouse", "sShemaObject"],
+			"asID_Field":
+			{
+				"sFunc7":"sAction1"
+			},
+			"sCondition":"[sFunc6] == 'renew'"
 		}
 	}
 }
-
-
-
