@@ -1,5 +1,5 @@
 
-001. [Создание бизнес-процессов](https://github.com/e-government-ua/i/blob/test/doc/bp/001_CreatingBusinessProcesses.md)
+001. [Создание бизнес-процессов](# 001_CreatingBusinessProcesses.md)
 1. [Основные элементы Activiti Designer](https://github.com/e-government-ua/i/blob/test/doc/bp/0021TheMainElementsOfActivitiDesigner.md)
 002. [Типы параметров](https://github.com/e-government-ua/i/blob/test/doc/bp/002_Typesofparameters.md)
 1. [Зарезервированные и системные переменные](https://github.com/e-government-ua/i/blob/test/doc/bp/003_ReservedandSystemVariables.md)
@@ -27,7 +27,7 @@
 1. [Чек лист тестирования ветки](https://github.com/e-government-ua/i/blob/test/doc/bp/025_CheckListTestBranch.md)
 1. [СЭД](https://github.com/e-government-ua/i/blob/test/doc/bp/026_IDoc.md)
 
-001_CreatingBusinessProcesses.md
+# 001_CreatingBusinessProcesses.md
 1. Создание бизнес-процессов
 ### сбор информации и предварительная подготовка
 * получить информационную и технологическую карточку услуги
