@@ -4,4 +4,6 @@ test
 [вернуться в начало1](general.md)[1](#businessprocessdevelopment)
 
 [вернуться в начало2](general.md)(#businessprocessdevelopment)
+
+[вернуться в начало3](general.md#businessprocessdevelopment)
 ### businessprocessdevelopment  ### creatingbusinessprocesses ### themain ### typesofparameters
