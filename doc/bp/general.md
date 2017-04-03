@@ -1,7 +1,10 @@
 
-1.[Создание бизнес-процессов](#creatingBusinessProcesses)
+ 
+1. [Создание бизнес-процессов](#creatingBusinessProcesses)
+
 1. [Основные элементы Activiti Designer](https://github.com/e-government-ua/i/blob/test/doc/bp/0021TheMainElementsOfActivitiDesigner.md)
-002. [Типы параметров](https://github.com/e-government-ua/i/blob/test/doc/bp/002_Typesofparameters.md)
+
+2. [Типы параметров](#typesofparameters)
 1. [Зарезервированные и системные переменные](https://github.com/e-government-ua/i/blob/test/doc/bp/003_ReservedandSystemVariables.md)
 1. [Общие правила при именовании](https://github.com/e-government-ua/i/blob/test/doc/bp/004_Generalrulesfornaming.md)
 1. [Типы Listener и delegateExpression](https://github.com/e-government-ua/i/blob/test/doc/bp/005_TypesListeneranddelegateExpression.md)
@@ -27,9 +30,11 @@
 1. [Чек лист тестирования ветки](https://github.com/e-government-ua/i/blob/test/doc/bp/025_CheckListTestBranch.md)
 1. [СЭД](https://github.com/e-government-ua/i/blob/test/doc/bp/026_IDoc.md)
 
+
 ### creatingBusinessProcesses
 
 1. Создание бизнес-процессов
+
 ### сбор информации и предварительная подготовка
 * получить информационную и технологическую карточку услуги
 * пример заявления, бланки, шаблоны документов
@@ -46,7 +51,7 @@
 
 * создать новую диаграмму. Для Eclipse:New-Other-Activiti Diagram. Путь для размещения bpmn-файлов: \i\wf-egion\src\main\resources\bpmn\autodeploy.
 
-[детальнее...](#_Businessprocessdevelopment)
+[детальнее...](#_businessprocessdevelopment)
 
 
 ### connectionallentities
@@ -67,7 +72,7 @@
 
 [детальнее...](#_testingonbeta)
 
-### 002_Typesofparameters.md
+# typesofparameters
 # Типы переменных
 
 ### string
@@ -229,18 +234,18 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_line)
 
-***
-### Variable Attributes 
+
+### variableAttributes 
 (Атрибуты переменных)
 **id** - уникальный идентификатор переменной. Обязательный атрибут.
 
 **type** - тип переменной. Преобразования типов нет. Обязательный атрибут.
 
-[детальней...](#_Variable Attributes)
+[детальней...](#_variableAttributes)
 
 
 003_ReservedandSystemVariables.md
-### Attributes BankID
+### attributesBankID
 Переменные BankID
 * **bankIdlastName** - string - фамилия гражданина
 * **bankIdfirstName** - string - имя гражданина
@@ -250,58 +255,58 @@ type="queueData" required="true"></activiti:formProperty>
 [детальней...](#_attributesBankID)
 
 
-## Reserved variables for electronic queues
+### reservedvariablesforelectronicqueues
 Зарезервированные переменные для электронных очередей
 * **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
 * **nID_Department_visitDay** - string/invisible/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
 * **nSlots_visitDay** - string/invisible/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
 
-[детальней...](#_Reservedvariablesforelectronicqueues)
+[детальней...](#_reservedvariablesforelectronicqueues)
 
 
-### Reserved attribute variables
+### reservedattributevariables
 Зарезервированные переменные атрибутов
 * **sNameOrgan** - string/invisible/label - название органа в подписи письма
 * **sWorkTime** - string invisible/label - график работы
 * **sPhoneOrgan** - string/invisible/label - телефон для справок
 
-[детальней...](#_Reservedattributevariables)
+[детальней...](#_reservedattributevariables)
 
 
-### Variablesforprintforms
+### variablesforprintforms
 Переменные принтформ
 * **[sID_Order]** - системный тег для принтформы, смс или емейла  для размещения ИД заявки. [Issue 1023](https://github.com/e-government-ua/i/issues/1023).  
 * **[sDateCreate]** - Системный тег даты. Возвращает значение системного времени на момент срабатывания таски. Можно использовать как время начала обработки обращения (взятия в работу чиновником).
 
-[детальней...](#_Variablesforprintforms)
+[детальней...](#_variablesforprintforms)
 
 
-### Validated variables
+### validatedvariables
 Валидируемые переменные
 * **vin_code, vin_code1, vin** - string - VIN-код авто.
 Набор из 17 символов. Разрешено использовать все арабские цифры и латинские буквы (А В C D F Е G Н J К L N М Р R S Т V W U X Y Z) , за исключением букв Q, O, I. Эти буквы запрещены для использования, поскольку O и Q похожи между собой, а I и O можно спутать с 0 и 1.
 
-[детальней...](#_Validatedvariables)
+[детальней...](#_validatedvariables)
 
 
-### Other
+### other
 Другие
 * **response** - invisible - задать кастомизированный текст на спасибо странице, после подачи обращения (с поддержкой html)
 * **footer** - string - задать кастомизированный текст на стандартной форме для печати в дашборде( с поддержкой html)
 * **sNotifyEvent_AfterSubmit** - invisible - Отображение кастомного текста в дашборде после нажатия на кнопку “Опрацювати”. Текст  подсказки задаем в аттрибуте default. [Issue 1027](https://github.com/e-government-ua/i/issues/1027).
 
-[детальней...](#_Other)
+[детальней...](#_other)
 
-### AutoComplete
+### autoComplete
 Автокомплиты
 * **sObjectCustoms** - select - Товар 
 * **sID_UA_ObjectCustoms** - Код товара (заполнится автоматически после выбора в селекте sObjectCustoms)
 * ![3_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_8.JPG)
 * **sCountry** - select - Страна 
 
-[детальней...](#_AutoComplete)
+[детальней...](#_autoComplete)
 
-### Requestvariables
+### requestvariables
 Переменные-запросы
 **sID_SubjectOrgan_OKPO_** - string - Делает запрос к базе ранее полученных данных из ЕДРПОУ, по соответствующему коду предприятия, и возвращает результат в несколько зарезервированных переменных (если по запросу найдены данные). Возможно неограниченное количество полей запроса на форме - **sID_SubjectOrgan_OKPO_** используется как префикс, главное обеспечить уникальность **id** каждой следующей переменной-запроса и каждого возвращаемой переменной. 
 * **sFullName_SubjectOrgan_** - textArea - Полное наименование
@@ -309,7 +314,7 @@ type="queueData" required="true"></activiti:formProperty>
 [детальней...](#_Requestvariables)
 
 
-004_Generalrulesfornaming.md
+### 004_Generalrulesfornaming.md
 ### Общие правила при именовании
 ## Наличие в любых IDшниках кириллических символов, а также пробелов - недопустимо
 
