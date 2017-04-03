@@ -1828,31 +1828,11 @@ setTableCellsInputTypeSelect(driver, sBP, "sTable1","sObjectCustoms","1", "-0-0"
 setTableCellsInputTypeFile(driver, sBP, "sTable1", "sTables2FieldB","1", "src/test/resources/files/test.jpg");
 setTableCellsTypeCalendar(driver, sBP, "sTable1", "sTables2FieldC","1", "2017/03/05");
 ```
+### forexample
 Например
-```java
-setFieldAutocomplete(driver,"sID_Public_SubjectOrganJoin","ЦНАП м. Ірпінь");
-setFieldValue(driver, sBP, "sObjName", "номер, дату та назву рішення ради");
-setFieldFile(driver, sBP, "sFile1", "src/test/resources/files/test.jpg");
-setFieldSelectByText(driver,sBP,"client","нет");
-setFieldCalendar(driver, sBP, "dDate_Beg", "2003/01/01");
-setFieldSelectSlotDate(driver, sBP, "."+sBP+"_--_"+"visitDay"); 
-setFieldSelectSlotTime(driver, sBP, "."+sBP+"_--_"+"visitDay");
-setFieldCheckBox(driver, sBP, "."+sBP+"_--_"+"#bID_CheckBox");
 
-setTableCellsInputTypeString(driver, sBP, "sTable1","sTables1FieldA","0", "Найменування товару 1");
-setTableCellsInputTypeEnum(driver, sBP, "sTable1","sTables1FieldC","0", "кілограм|кг");
-setTableCellsInputTypeSelect(driver, sBP, "sTable1","sObjectCustoms","0", "-0-0");
-setTableCellsInputTypeFile(driver, sBP, "sTable1", "sTables2FieldB","0", "src/test/resources/files/test.jpg");
-setTableCellsTypeCalendar(driver, sBP, "sTable1", "sTables2FieldC","0", "2017/03/05");
+[детальнее...](#_forexample)
 
-addTableRow(driver, sBP, "sTable1");
- 
-setTableCellsInputTypeString(driver, sBP, "sTable1","sTables1FieldA","1", "Найменування товару 1");
-setTableCellsInputTypeEnum(driver, sBP, "sTable1","sTables1FieldC","1", "кілограм|кг");
-setTableCellsInputTypeSelect(driver, sBP, "sTable1","sObjectCustoms","1", "-0-0");
-setTableCellsInputTypeFile(driver, sBP, "sTable1", "sTables2FieldB","1", "src/test/resources/files/test.jpg");
-setTableCellsTypeCalendar(driver, sBP, "sTable1", "sTables2FieldC","1", "2017/03/05");
-```
 ## 8. Если необходимо осуществить тестирование несколько разных сценариев для БП, то необходимо скопировать и соответствующим образом заполнить блок операторов  
 ```java
 addStepToTheReport("1. Вход по прямому URL на услугу");
@@ -2154,7 +2134,7 @@ nID_ServiceTag - ид жизненной ситуации из файла Servic
 5) задачи готовые к выкладке версии: лейбл version  
 * ![24_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/24_0.jpg)
 
-добавить БП в интерсептор, чтоб счетчик заявок срабатывал
+### добавить БП в интерсептор, чтоб счетчик заявок срабатывал
 src/main/java/org/igov/service/controller/interceptor/RequestProcessingInterceptor.java
 ```java
    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming";
@@ -3613,9 +3593,35 @@ http://download.eclipse.org/technology/m2e/releases
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sZzdCMmg0Rm13djQ)  
 
 
-
+Автотесты
 019_Autotests.md
+
+### _forexample
+[вернуться...](#forexample)
+ ```java
+setFieldAutocomplete(driver,"sID_Public_SubjectOrganJoin","ЦНАП м. Ірпінь");
+setFieldValue(driver, sBP, "sObjName", "номер, дату та назву рішення ради");
+setFieldFile(driver, sBP, "sFile1", "src/test/resources/files/test.jpg");
+setFieldSelectByText(driver,sBP,"client","нет");
+setFieldCalendar(driver, sBP, "dDate_Beg", "2003/01/01");
+setFieldSelectSlotDate(driver, sBP, "."+sBP+"_--_"+"visitDay"); 
+setFieldSelectSlotTime(driver, sBP, "."+sBP+"_--_"+"visitDay");
+setFieldCheckBox(driver, sBP, "."+sBP+"_--_"+"#bID_CheckBox");
+
+setTableCellsInputTypeString(driver, sBP, "sTable1","sTables1FieldA","0", "Найменування товару 1");
+setTableCellsInputTypeEnum(driver, sBP, "sTable1","sTables1FieldC","0", "кілограм|кг");
+setTableCellsInputTypeSelect(driver, sBP, "sTable1","sObjectCustoms","0", "-0-0");
+setTableCellsInputTypeFile(driver, sBP, "sTable1", "sTables2FieldB","0", "src/test/resources/files/test.jpg");
+setTableCellsTypeCalendar(driver, sBP, "sTable1", "sTables2FieldC","0", "2017/03/05");
+
+addTableRow(driver, sBP, "sTable1");
  
+setTableCellsInputTypeString(driver, sBP, "sTable1","sTables1FieldA","1", "Найменування товару 1");
+setTableCellsInputTypeEnum(driver, sBP, "sTable1","sTables1FieldC","1", "кілограм|кг");
+setTableCellsInputTypeSelect(driver, sBP, "sTable1","sObjectCustoms","1", "-0-0");
+setTableCellsInputTypeFile(driver, sBP, "sTable1", "sTables2FieldB","1", "src/test/resources/files/test.jpg");
+setTableCellsTypeCalendar(driver, sBP, "sTable1", "sTables2FieldC","1", "2017/03/05");
+```
 020_Escalationsandfeedback.md
 
 ### _scondition
