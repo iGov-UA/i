@@ -5,15 +5,15 @@
 1. [Основные элементы Activiti Designer](https://github.com/e-government-ua/i/blob/test/doc/bp/0021TheMainElementsOfActivitiDesigner.md)
 
 2. [Типы параметров](#typesofparameters)
-1. [Зарезервированные и системные переменные](https://github.com/e-government-ua/i/blob/test/doc/bp/003_ReservedandSystemVariables.md)
-1. [Общие правила при именовании](https://github.com/e-government-ua/i/blob/test/doc/bp/004_Generalrulesfornaming.md)
-1. [Типы Listener и delegateExpression](https://github.com/e-government-ua/i/blob/test/doc/bp/005_TypesListeneranddelegateExpression.md)
-1. [Назначение групп и пользователей](https://github.com/e-government-ua/i/blob/test/doc/bp/006_Assigngroupsandusers.md)
-1. [Математические действия с переменными и операторы условий](https://github.com/e-government-ua/i/blob/test/doc/bp/007_Mathematicalactionswithvariablesandconditionoperators.md)
-1. [Работа с датами и таймерами](https://github.com/e-government-ua/i/blob/test/doc/bp/008_Workingwithdatesandtimers.md)
-1. [Маркеры и Валидаторы](https://github.com/e-government-ua/i/blob/test/doc/bp/009_MarkersandValidators.md)
-1. [Принтформы](https://github.com/e-government-ua/i/blob/test/doc/bp/010_Printform.md)
-1. [ЭЦП](https://github.com/e-government-ua/i/blob/test/doc/bp/011_Digitalsignature.md)
+1. [Зарезервированные и системные переменные](reservedandSystemVariables)
+1. [Общие правила при именовании](generalrulesfornaming)
+1. [Типы Listener и delegateExpression](typesListeneranddelegateExpression)
+1. [Назначение групп и пользователей](assigngroupsandusers)
+1. [Математические действия с переменными и операторы условий](mathematicalactionswithvariablesandconditionoperators)
+1. [Работа с датами и таймерами](workingwithdatesandtimers)
+1. [Маркеры и Валидаторы](markersandValidators)
+1. [Принтформы](printform)
+1. [ЭЦП](digitalsignature)
 1. [Электронные очереди](https://github.com/e-government-ua/i/blob/test/doc/bp/012_Electronicqueues.md)
 1. [Оплата услуги](https://github.com/e-government-ua/i/blob/test/doc/bp/013_Paymentfortheservice.md)
 1. [Емайлы](https://github.com/e-government-ua/i/blob/test/doc/bp/014_Emails.md)
@@ -72,7 +72,8 @@
 
 [детальнее...](#_testingonbeta)
 
-# typesofparameters
+### typesofparameters
+[вернуться на начало](general.md)
 # Типы переменных
 
 ### string
@@ -314,29 +315,30 @@ type="queueData" required="true"></activiti:formProperty>
 [детальней...](#_Requestvariables)
 
 
-### 004_Generalrulesfornaming.md
+### generalrulesfornaming
 ### Общие правила при именовании
 ## Наличие в любых IDшниках кириллических символов, а также пробелов - недопустимо
 
-### переменные
+### variables
+переменные
 
 первый символ названия переменной должен говорить о типе данных:
 * n = Number (числовые переменные) - nSum
 * s = String (строчные переменные) - sFamily
 
-[детальней...](#_переменные)
+[детальней...](#_variables)
 
-### User's color
+### userscolor
 Подсвечивать этап (юзертаску) в дашборде  цветом
 
 если название юзертаски заканчивается на:
 * "_red" - подкрашивать строку - красным цветом (класс: "bg_red")
 * "_yellow" - подкрашивать строку - желтым цветом (класс: "bg_yellow")
 
-[детальней...](#_User's color)
+[детальней...](#_userscolor)
 
-005_TypesListeneranddelegateExpression.md
-### Listener
+### typesListeneranddelegateExpression
+### listener
 
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
    * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
@@ -344,16 +346,14 @@ type="queueData" required="true"></activiti:formProperty>
    [детальней...](#_Listener)
 
 
-***
-### SetTasks
+### setTasks
 листенер ${SetTasks} - ставится на закрытие таски, т.е. event="complete"  **(1, 2)**  
 В этом листенере мы указываем какие поля из текущего БП передать в другой БП:  
 
-[детальней...](#_SetTasks)
+[детальней...](#_setTasks)
 
 
-***
-### DocumentInit_iDoc
+### documentInit_iDoc
 
 листенер ${DocumentInit_iDoc} - ставится на открытие таски, т.е. event="create"  
 Никаких дополнительных параметров листенера ставить не нужно  
@@ -363,13 +363,13 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_DocumentInit_iDoc)
 
-### UpdateStatusTask
+### updateStatusTask
 обновляет статус порожденной задачи  
 обязательный параметр **sID_ProcessSubjectStatus**  
 
-[детальней...](#_UpdateStatusTask)
+[детальней...](#_updateStatusTask)
 
-### UpdateStatusTaskTreeAndCloseProcess
+### updateStatusTaskTreeAndCloseProcess
 Листенер прикрепляется на процесс-родитель из которого порождаются задачи. В случае, если родительский процесс закрыт, то все незакрытые порожденные задачи автозакроются со статусом “неактуально”
 
 ***
@@ -382,23 +382,22 @@ type="queueData" required="true"></activiti:formProperty>
    
    [детальней...](#_delegateExpression)
    
-   006_Assigngroupsandusers.md
+### assigngroupsandusers
 
-### Addingauser
+### addingauser
 Добавляем пользователя
 * Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
 
-[детальней...](#_Addingauser)
-
+[детальней...](#_addingauser)
 
 ***
-### Addingausertoagroup 
+### addingausertoagroup 
 Добавляем пользователя в группу
 * Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
 
-[детальней...](#_Addingausertoagroup)
+[детальней...](#_addingausertoagroup)
 
-007_Mathematicalactionswithvariablesandconditionoperators.md
+### mathematicalactionswithvariablesandconditionoperators
 ### Выполнение простейших математических действий с переменными
 
 digit1 - переменная со значением 1.  (тип long или double)
@@ -407,21 +406,21 @@ digit3 - переменная, куда присвоится результат 
 и в итоге суммируется и в результате   имеем “3”  :)
 Аналогично используются операнды сложения, вычитания, умножения, деления.
 
-### Conditionstatementsinprocesses
+### conditionstatementsinprocesses
 Операторы условий в процессах
 * ${form_attr == "N"} - проверка на равенство между переменной form_attr и константой  "N"
 * ${form_attr != "N"}  - проверка на НЕравенство
 
-[детальней...](#_Conditionstatementsinprocesses)
+[детальней...](#_conditionstatementsinprocesses)
 
-### Usingtimers
+### usingtimers
 Использование таймеров
 Для использования таймера с целью приостановки процесса, используем стандартный элемент **TimerCatchingEvent** (самостоятельный элемент схемы) который приостанавливает процесс до срабатывания таймера.
 
-[детальней...](#_Usingtimers)
+[детальней...](#_usingtimers)
 
-
-009_MarkersandValidators.md
+***
+### markersandValidators
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
 
 [Маркеры группы motion](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-motion)  
@@ -429,7 +428,7 @@ digit3 - переменная, куда присвоится результат 
 [Маркеры группы attributes](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-attributes)  
 
 ## Маркеры группы motion
-### ShowFieldsOnCondition  
+### showFieldsOnCondition  
 показывают скрытое поле (при выполнении условий)
 
 ```java
@@ -447,11 +446,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_ShowFieldsOnCondition)
+[детальней...](#_showFieldsOnCondition)
 
-***
 
-### ShowFieldsOnNotEmpty
+### showFieldsOnNotEmpty
 показать доп поля, если заполнено конкретное поле
 ```java
 {
@@ -466,9 +464,8 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 
-***
 
-### RequiredFieldsOnCondition
+### requiredFieldsOnCondition
 делают обязательным заполнение поля (при выполнении условий)
 ```java
 {
@@ -486,11 +483,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_RequiredFieldsOnCondition)
+[детальней...](#_requiredFieldsOnCondition)
 
-***
 
-### ShowElementsOnTrue  
+### showElementsOnTrue  
 [Issues 816](https://github.com/e-government-ua/i/issues/816)  
 маркер для принтформы  
 показывает блок с конкретным идшником html кода принтформы  
@@ -510,11 +506,11 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_ShowElementsOnTrue)
+[детальней...](#_showElementsOnTrue)
 
 ***
 
-### ValuesFieldsOnCondition
+### valuesFieldsOnCondition
 присваивает определенному полю определенные значения (при выполнении условий)  
 [Issues 829](https://github.com/e-government-ua/i/issues/829)   
 [Issues 1362](https://github.com/e-government-ua/i/issues/1362)  
@@ -544,7 +540,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 
-### WritableFieldsOnCondition
+### writableFieldsOnCondition
 нерадактируемое поле становится редактируемым (при выполнении условий)  
 ```java
 {
@@ -562,11 +558,12 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_WritableFieldsOnCondition)
+[детальней...](#_writableFieldsOnCondition)
     
 
 ***
-### SplitTextHalf_1 - разделение значения по  знаку разделителя
+### splitTextHalf_1
+ разделение значения по  знаку разделителя
 ```java
 {
   "motion": {
@@ -579,11 +576,12 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_SplitTextHalf_1)
+[детальней...](#_splitTextHalf_1)
 
 
 ## Маркеры группы validate
-### CustomFormat_1 - номеров
+### customFormat_1
+номеров
 [Issues 934 ](https://github.com/e-government-ua/i/issues/934)  
 ```java
 {
@@ -598,11 +596,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_CustomFormat_1)
+[детальней...](#_customFormat_1)
 
-***
 
-### Extensions
+### extensions
 расширений
 [Issues 1258](https://github.com/e-government-ua/i/issues/1258)
 ```java
@@ -620,11 +617,11 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 
-[детальней...](#_Extensions)
+[детальней...](#_extensions)
 
-***
 
-### NumberBetween - принадлежность значения  диапазону значений  (целочисленные)
+### numberBetween
+- принадлежность значения  диапазону значений  (целочисленные)
 ```java
 {
   "NumberBetween": {
@@ -638,9 +635,8 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 
-***
-
-### NumberFractionalBetween - принадлежность значения  диапазону значений (дробные)
+### numberFractionalBetween
+- принадлежность значения  диапазону значений (дробные)
 ```java
 {
   "NumberFractionalBetween": {
@@ -654,9 +650,8 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 
-***
-
-### Numbers_Accounts - номерных значений  
+### numbers_Accounts
+- номерных значений  
 (разрешены цифры и дефисы, буквы любые запрещены )
 ```java
 {
@@ -672,7 +667,8 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 
-### FileSign - Валидатор ЕЦП
+### fileSign
+- Валидатор ЕЦП
 [Issues 921](https://github.com/e-government-ua/i/issues/921)  
 ```java
 {
@@ -687,7 +683,7 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_FileSign)
+[детальней...](#_fileSign)
 
 ### Алгоритм Луна
 Применяется для поля, в которое пользователь должен будет внести вручную номер заявки  
@@ -704,7 +700,7 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 ## Маркеры группы attributes
-### Line
+### line
 для отрисовки линии (группирующей/отсекающей) одни поля от других
 ```java
 {
@@ -718,10 +714,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_Line)
+[детальней...](#_line)
 
-***
-### Style
+
+### style
 Для внедрения стилей css на страницу с услугой с целью изменения стандартного отображения элементов на форме
 ```java
 {
@@ -743,7 +739,7 @@ digit3 - переменная, куда присвоится результат 
    }
 }
 ```
-[детальней...](#_Style)
+[детальней...](#_style)
 
 ### sNote 
 атрибут маркера 
@@ -768,7 +764,8 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_sNote)
 
 
-010_Printform.md
+### printformmd
+# Принтформа
 ### Printform
 
 *Принтформа прописывается на Юзертаске:
