@@ -193,24 +193,24 @@ dfdsgdfsg
 
 [детальней...](#_file (New))
 
-### textArea
+### textarea
 многострочный текст - для ввода/отображения многострочного текста
 ```xml
 <activiti:formProperty id="application_name" name="В цьому полі надайте перелік усіх додатків та специфікацій до договору" 
 type="textArea"></activiti:formProperty>
 ``` 
 
-[детальней...](#_textArea)
+[детальней...](#_textarea)
 
 ***
-### queueData
+### queuedata
 дата/время - Электронная очередь.
 ```xml
 <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації народження?"
 type="queueData" required="true"></activiti:formProperty>
 ```
 
-[детальней...](#_queueData)
+[детальней...](#_queuedata)
 
 
 ### [markers](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B)
@@ -256,13 +256,13 @@ type="queueData" required="true"></activiti:formProperty>
 [детальней...](#_line)
 
 
-### variableAttributes 
+### variableattributes 
 (Атрибуты переменных)
 **id** - уникальный идентификатор переменной. Обязательный атрибут.
 
 **type** - тип переменной. Преобразования типов нет. Обязательный атрибут.
 
-[детальней...](#_variableAttributes)
+[детальней...](#_variableattributes)
 
 ***
 
@@ -272,14 +272,14 @@ type="queueData" required="true"></activiti:formProperty>
 
 [вернуться в начало](general.md)
 
-### attributesBankID
+### attributesbankid
 Переменные BankID
 * **bankIdlastName** - string - фамилия гражданина
 * **bankIdfirstName** - string - имя гражданина
 * **bankIdmiddleName** - string - отчество гражданина
 * **bankIdPassport** - string  -паспортные данные гражданина
 
-[детальней...](#_attributesBankID)
+[детальней...](#_attributesbankid)
 
 ### reservedvariablesforelectronicqueues
 Зарезервированные переменные для электронных очередей
@@ -323,14 +323,14 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_other)
 
-### autoComplete
+### autocomplete
 Автокомплиты
 * **sObjectCustoms** - select - Товар 
 * **sID_UA_ObjectCustoms** - Код товара (заполнится автоматически после выбора в селекте sObjectCustoms)
 * ![3_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_8.JPG)
 * **sCountry** - select - Страна 
 
-[детальней...](#_autoComplete)
+[детальней...](#_autocomplete)
 
 ### requestvariables
 Переменные-запросы
@@ -367,7 +367,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ***
 
-### typesListeneranddelegate
+### typeslisteneranddelegate
 # 6. Типы Listener и delegateExpression
 [вернуться в начало](general.md)
 
@@ -379,14 +379,14 @@ type="queueData" required="true"></activiti:formProperty>
    [детальней...](#_Listener)
 
 
-### setTasks
+### settasks
 листенер ${SetTasks} - ставится на закрытие таски, т.е. event="complete"  **(1, 2)**  
 В этом листенере мы указываем какие поля из текущего БП передать в другой БП:  
 
-[детальней...](#_setTasks)
+[детальней...](#_settasks)
 
 
-### documentInit_iDoc
+### documentinit_idoc
 
 листенер ${DocumentInit_iDoc} - ставится на открытие таски, т.е. event="create"  
 Никаких дополнительных параметров листенера ставить не нужно  
@@ -394,20 +394,19 @@ type="queueData" required="true"></activiti:formProperty>
 <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
 ```
 
-[детальней...](#_DocumentInit_iDoc)
+[детальней...](#_documentinit_idoc)
 
-### updateStatusTask
+### updatestatustask
 обновляет статус порожденной задачи  
 обязательный параметр **sID_ProcessSubjectStatus**  
 
-[детальней...](#_updateStatusTask)
+[детальней...](#_updatestatustask)
 
-### updateStatusTaskTreeAndCloseProcess
+### updatestatustasktreeandcloseprocess
 Листенер прикрепляется на процесс-родитель из которого порождаются задачи. В случае, если родительский процесс закрыт, то все незакрытые порожденные задачи автозакроются со статусом “неактуально”
 
-***
 
-### delegateExpression
+### delegateexpression
 
    * ${assignGroup}
    * #{setMessageFeedback_Indirectly}
@@ -464,7 +463,7 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_usingtimers)
 
 ***
-### markersandValidators
+### markersandvalidators
 # Маркеры и Валидаторы
 [вернуться в начало](general.md)
 
@@ -475,7 +474,7 @@ digit3 - переменная, куда присвоится результат 
 [Маркеры группы attributes](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-attributes)  
 
 ## Маркеры группы motion
-### showFieldsOnCondition  
+### showfieldsoncondition  
 показывают скрытое поле (при выполнении условий)
 
 ```java
@@ -493,10 +492,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_showFieldsOnCondition)
+[детальней...](#_showfieldsoncondition)
 
 
-### showFieldsOnNotEmpty
+### showfieldsonnotempty
 показать доп поля, если заполнено конкретное поле
 ```java
 {
@@ -512,7 +511,7 @@ digit3 - переменная, куда присвоится результат 
 ```
 
 
-### requiredFieldsOnCondition
+### requiredfieldsoncondition
 делают обязательным заполнение поля (при выполнении условий)
 ```java
 {
@@ -530,10 +529,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_requiredFieldsOnCondition)
+[детальней...](#_requiredfieldsoncondition)
 
 
-### showElementsOnTrue  
+### showelementsontrue  
 [Issues 816](https://github.com/e-government-ua/i/issues/816)  
 маркер для принтформы  
 показывает блок с конкретным идшником html кода принтформы  
@@ -553,10 +552,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_showElementsOnTrue)
+[детальней...](#_showelementsontrue)
 
 
-### valuesFieldsOnCondition
+### valuesfieldsoncondition
 присваивает определенному полю определенные значения (при выполнении условий)  
 [Issues 829](https://github.com/e-government-ua/i/issues/829)   
 [Issues 1362](https://github.com/e-government-ua/i/issues/1362)  
@@ -582,10 +581,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_ValuesFieldsOnCondition)
+[детальней...](#_valuesfieldsoncondition)
 
 
-### writableFieldsOnCondition
+### writablefieldsoncondition
 нерадактируемое поле становится редактируемым (при выполнении условий)  
 ```java
 {
@@ -603,10 +602,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_writableFieldsOnCondition)
+[детальней...](#_writablefieldsoncondition)
     
 
-### splitTextHalf_1
+### splittexthalf_1
  разделение значения по  знаку разделителя
 ```java
 {
@@ -620,11 +619,11 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_splitTextHalf_1)
+[детальней...](#_splittexthalf_1)
 
 
 ## Маркеры группы validate
-### customFormat_1
+### customformat_1
 номеров
 [Issues 934 ](https://github.com/e-government-ua/i/issues/934)  
 ```java
@@ -640,7 +639,7 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_customFormat_1)
+[детальней...](#_customformat_1)
 
 
 ### extensions
@@ -664,7 +663,7 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_extensions)
 
 
-### numberBetween
+### numberbetween
 - принадлежность значения  диапазону значений  (целочисленные)
 ```java
 {
@@ -711,7 +710,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 
-### fileSign
+### filesign
 - Валидатор ЕЦП
 [Issues 921](https://github.com/e-government-ua/i/issues/921)  
 ```java
@@ -727,7 +726,7 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_fileSign)
+[детальней...](#_filesign)
 
 ### Алгоритм Луна
 Применяется для поля, в которое пользователь должен будет внести вручную номер заявки  
@@ -785,7 +784,7 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_style)
 
-### sNote 
+### snote 
 атрибут маркера 
 ```java
 {
@@ -805,14 +804,14 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_sNote)
+[детальней...](#_snote)
 
 ***
 ### printform
 # Принтформа
 [вернуться в начало](general.md)
 
-### Printformmd
+### printformmd
 
 *Принтформа прописывается на Юзертаске:
 
@@ -855,7 +854,7 @@ digit3 - переменная, куда присвоится результат 
 # ЭЦП
 [вернуться в начало](general.md)
 
-### creationofasignedEDSdocument
+### creationofasignededsdocument
 
 Создание подписанного ЭЦП документа cо стартовой формы
 Необходимо добавить строки на стартовую таску:
@@ -864,16 +863,16 @@ digit3 - переменная, куда присвоится результат 
 <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/example_print_01.html"></activiti:formProperty>
 ```
 
-[детальней...](#_creationofasignedEDSdocument)
+[детальней...](#_creationofasignededsdocument)
 
 
-### converthtmltoPDF
+### converthtmltopdf
 Конвертирование html в PDF
 Как альтернатива вышеуказанному способу существует конвертор собственный - его использование задается в дополнительном параметре описанном в "name". Данный конвертор более качественно переводит в PDF формат исходный html-файл. Также он позволяет успешно использовать встроенные в html-файл java-скрипты.
 ```xml
 <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>` 
 ```
-[детальней...](#_ConverthtmltoPDF)
+[детальней...](#_Converthtmltopdf)
 
 ***
 ### electronicqueues
@@ -886,40 +885,40 @@ digit3 - переменная, куда присвоится результат 
 
 ### 1. Создаем поток 
 
-### flow_ServiceData.csv  
+### flow_servicedata.csv  
 **nID** - id потока  
 **sName** - название 
 
-[детальней...](#_flow_ServiceData.csv)
+[детальней...](#_flow_servicedata.csv)
 
 
-### subjectOrganDepartment.csv
+### subjectorgandepartment.csv
 
 здесь могут быть созданы  различные департаменты для возможности использования нескольких потоков в одном процессе  
 
 **nID** - id департамента  
 **sName** - название департамента 
 
-[детальней...](#_subjectOrganDepartment.csv)
+[детальней...](#_subjectorgandepartment.csv)
 
 
-### flowLink.csv
+### flowlink.csv
 если нужно завести на один общий поток несколько услуг.  
 Для привязки одной очереди к нескольким процессам, необходимо в этом файле перечислить **ВСЕ** процессы (nID_Service) которые нужно связать в рамках одного потока очереди  
 **nID**  
 **nID_Flow_ServiceData** - ИД потока, в который надо свести несколько очередей 
 
-[детальней...](#_flowLink.csv)
+[детальней...](#_flowlink.csv)
 
 
 ### 2. Для созданного потока указываем  расписание
-### flowProperty.csv
+### flowproperty.csv
 файл с расписанием (график работы)
 
 **nID**  
 **nID_FlowPropertyClass** - класс, который формирует слоты очереди (для нас по-умолчанию - 1 )
 
-[детальней...](#_flowProperty.csv)
+[детальней...](#_flowproperty.csv)
  
 
 
@@ -1014,7 +1013,7 @@ digit3 - переменная, куда присвоится результат 
 * ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
 а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
-### usingVariablesinEmailTemplates
+### usingvariablesinemailtemplates
 
 Использование переменных в шаблонах емейлов
 
@@ -1023,7 +1022,7 @@ digit3 - переменная, куда присвоится результат 
 нужно взять этот id, (какого-то БП), и на базе него прописать где-то в письме тэг **enum{[*]}**  
 например поле с id="typeOfDocument" 
 
-[детальней...](#_usingVariablesinEmailTemplates)
+[детальней...](#_usingvariablesinemailtemplates)
 
 
 ### workingwithdatadirectoriesinemails
@@ -1037,42 +1036,42 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_workingwithdatadirectoriesinemails)
 
 
-### emailTemplates
+### emailtemplates
 Шаблоны емейлов
 расположены : \wf-region\src\main\resources\pattern\mail    
 В сервис-таске прописываем тэги с учётом того что из шаблонов не подтягиваются значения переменных активити:  
 Тело письма с обращением к клиенту и опросом качества  в таком случае будет выглядеть как:  
 [pattern/mail/_common_header.html]
 
-[детальней...](#_emailTemplates)
+[детальней...](#_emailtemplates)
 
-### newEmailTemplates
+### newemailtemplates
 обновленные шаблоны емейлов
 ```
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 ```
-[детальней...](#_newEmailTemplates)
+[детальней...](#_newemailtemplates)
 
 
-### sendingSMSnotifications
+### sendingsmsnotifications
 # 16. Отправка СМС-оповещений
 [вернуться в начало](general.md)
 
 
-### sMSnotifications
+### smsnotifications
 
 [тексты шаблонов](https://docs.google.com/document/d/1iU1hv8B51We6D62_WDHysqXn1O-c5huXierQrhCViuI/edit)  
 Заявка успешно подана гражданином  
 **Vashe zvernennya [sID_Order] zareestrovano**
 
-[детальней...](#_sMSnotifications)
+[детальней...](#_smsnotifications)
 
-### Scripts
+### scripts
 # 17. Скрипты
 [вернуться в начало](general.md)
 
-### Scriptsmd
+### scriptsmd
 1. [Форматирование даты в процессе](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B/_edit#%D0%A4%D0%BE%D1%80%D0%BC%D0%B0%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B2-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B5)  
 1. [Получение даты/времени на нужном этапе процесса](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B/_edit#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%BD%D0%B0-%D0%BD%D1%83%D0%B6%D0%BD%D0%BE%D0%BC-%D1%8D%D1%82%D0%B0%D0%BF%D0%B5-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0)  
 1. [Получение даты/времени напоминания о выбранной дате из электронной очереди](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B/_edit#%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82-%D0%B4%D0%BB%D1%8F-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B4%D0%B0%D1%82%D1%8B%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%BD%D0%B0%D0%BF%D0%BE%D0%BC%D0%B8%D0%BD%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BE-%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D0%BD%D0%BD%D0%BE%D0%B9-%D0%B4%D0%B0%D1%82%D0%B5-%D0%B8%D0%B7-%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B9-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8)
@@ -1239,13 +1238,13 @@ per7 = '<li>Свідоцтво про шлюб;</li>'
 res = '<ol>'+per1+per6+per7+'</ol>'
 execution.setVariable('sListDocumentsPrint', res)
 ```
-### gettingID
+### gettingid
 Получение ИД текущего процесса
 ```javaScript 
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 ```
-[детальней...](#_gettingID)
+[детальней...](#_gettingid)
 
 
 ### Формирование динамического названия юзертаски
@@ -1287,14 +1286,14 @@ var sNewDate = (d + "/" + m + "/" + updatedDate.getFullYear());
 execution.setVariable('sDateExecution', sNewDate)
 ```
 
-### obtainingBPID
+### obtainingbpid
 Получение ИД БП
 ```javaScript 
 var executeProcessDefinitionId = execution.getProcessDefinitionId();
 var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 ```
-[детальней...](#_obtainingBPID)
+[детальней...](#_obtainingbpid)
 
 
 ### gettingloginandname
@@ -1362,7 +1361,7 @@ execution.setVariable('sExecutor', sExecutor)
 [детальней...](#_service)
 
 
-### serviceData
+### servicedata
 * nID - идентификатор процесса. Всегда новый (смотрим максимальный в конце файла и добавляем +1) 
 * nID_Service - номер услуги в файле Service.csv. 
 * nID_Place - идентификатор местности (номер в Place.csv) 
@@ -1379,7 +1378,7 @@ execution.setVariable('sExecutor', sExecutor)
 * asAuth - тип авторизации. По умолчанию BankID,EDS 
 * nID_Server - Идентификатор сервера. По умолчанию 0
 
-[детальней...](#_serviceData)
+[детальней...](#_servicedata)
 
 ### ServiceOperator_SubjectOrgan
 ### ServiceTag
@@ -1395,7 +1394,7 @@ execution.setVariable('sExecutor', sExecutor)
 **sLabelShort** - оставляем пустым 
 [детальней...](#_subject)
 
-### subjectAccount
+### subjectaccount
 **nID** - номер по порядку  ## 
 **sLogin** - в точности скопированный логин пользователя или в точности скопированный ИД группы  
 **sNote** - имя чиновника или название органа (рекомендуется синхронизировать с sLabel из файла Subject.csv)  
@@ -1403,7 +1402,7 @@ execution.setVariable('sExecutor', sExecutor)
 **nID_Server** - ставим всегда 0
 **nID_Subject** - номер строки из файла Subject - связка с конкретным чиновником или органом 
 
-[детальней...](#_subjectAccount)
+[детальней...](#_subjectaccount)
 
 ### SubjectAccountType
 ### SubjectActionKVED
@@ -1431,7 +1430,7 @@ execution.setVariable('sExecutor', sExecutor)
 **nID_City**  
 **sID_UA** 
 
-[детальней...](#_subjectOrganJoin)
+[детальней...](#_subjectorganjoin)
 
 ### SubjectOrganJoinAttribute
 ### SubjectOrganJoinTax
@@ -1583,30 +1582,30 @@ IDE NetBeans позволяет автоматизировать этот про
 # Установка Eclipce
 [вернуться в начало](general.md)
 
-### installJAVAJDK
+### installjavajdk
 Устанавливаем JAVA JDK
 1. Переходим по [ссылке](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)  
 2. Соглашаемся и качаем    
 
-[детальнее...](#_installJAVAJDK)
+[детальнее...](#_installjavajdk)
 
-### installEclipse
+### installeclipse
 Устанавливаем Eclipse
 [1. Качаем последнюю версию](
 http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/neon/2/eclipse-committers-neon-2-win32-x86_64.zip) 
 2. копируем скачанный архив в нужную папку где он будет храниться  
 3. распаковываем архив 
 
-[детальнее...](#_installEclipse)
+[детальнее...](#_installeclipse)
 
 
-### addJSONandHTML
+### addjsonandhtml 
 Ставим дополнительные утилиты для удобства редактирования JSON и HTML
 1. переходим в маркет  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_scWg3N3RiSU56MWM)  
 2. ищем нужные нам приложения и устанавливаем, процесс установки такой же как и в пункте 7, только не надо вставлять адрес УРЛ на приложение  и называть его. Теоретически можно было так и активити с майвеном поставить. 
 
-[детальнее...](#_addJSONandHTML)
+[детальнее...](#_addjsonandhtml)
 
 ***
 ### autotests
@@ -1875,7 +1874,7 @@ _Не посылайте служебные письма о наличии за�
 Рекомендуется прописывать оба этих типа эскалаций для каждой юзертаски.  
 Правила вносятся в файл [EscalationRule](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#escalationrule). Путьк файлу: i\wf-base\src\main\resources\data\prod\EscalationRule.csv
 
-### sCondition
+### scondition
 Подробное описание одного из параметров: sCondition
 Правила запуска эскалаций можно настроить более гибко комбинируя между собой 2 условия:  
 ассайнутость таски и количество дней/часов  
@@ -1893,7 +1892,7 @@ _Не посылайте служебные письма о наличии за�
 **nCreateElapsedHours** - количество часов с момента создания заявки на юзертаске  
 **nDays** - разница (в днях) между сегодняшней датой и датой подачи заявки  
 
-[детальнее...](#_sCondition)
+[детальнее...](#_scondition)
 
 
 ### отправить письмо
@@ -1964,7 +1963,7 @@ _Не посылайте служебные письма о наличии за�
 Empty
 
 ***
-### commonErrors
+### commonerrors
 # 23. Часто возникающие ошибки
 [вернуться в начало](general.md)
 
@@ -2005,7 +2004,7 @@ Tests in error:
 **решение**: на одной из сервистасок не хватает параметера delegateExpression
 
 ***
-### usefulInquiries
+### usefulinquiries
 # 24. Полезные запросы
 [вернуться в начало](general.md)
 
@@ -2083,7 +2082,7 @@ https://alpha.test.region.igov.org.ua/wf/service/object/file/download_file_from_
 ```
 
 ***
-### lifeHacking
+### lifehacking
 # 25. Лайф Хаки
 [вернуться в начало](general.md)
 
@@ -2161,7 +2160,7 @@ id БП разделять вертикальным слеш "|"
 https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
 ***
-### checkListTestBranch
+### checkListtestbranch
 # 25. Чек лист тестирования ветки
 [вернуться в начало](general.md)
 
@@ -2208,7 +2207,7 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 - [ ] **кастомная принтформа для наложение ЭЦП на стартформе** (1497)
 
 ***
-### iDoc
+### idoc
 # 26. СЭД
 [вернуться в начало](general.md)
 
@@ -2220,7 +2219,7 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 ### [Callactivity](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%AD%D0%94#callactivity)  
 ### [Скрипты, которые используются в СЕДе](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%AD%D0%94/_edit#%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%B5-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D1%8E%D1%82%D1%81%D1%8F-%D0%B2-%D0%A1%D0%95%D0%94%D0%B5)  
 
-### Переменные iDoc
+### Переменные idoc
 **processInstanceId** - ИД процеса активити ([скрипт](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0) получения)- используется в дальнейшем для вызова всяких сервисов iDoc - обязательное поле для iDoc  
 
 
@@ -2464,10 +2463,10 @@ _тестирование и проливка на бету и боевой
 Теперь так же доступна подгрузка файлов в тейбл.
 
 ***
-### _textArea
-[вернуться...](#textArea)
+### _textarea
+[вернуться...](#textarea)
 * ![2_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_9.JPG)
-### _queueData
+### _queuedata
 [вернуться...](#queueData)
 * ![2_31](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_31.JPG)
 
@@ -2571,10 +2570,10 @@ default=” “ - в дефолте в виде json - объекта пропи
 [вернуться...](#_line)
 * ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 
-### _Variable Attributes
+### _variableattributes
 (Атрибуты переменных)
 
-[вернуться...](#VariableAttributes)
+[вернуться...](#variableattributes)
 
 *
 **writable** - редактируемость поля  (true/false).  Необязательный элемент.
@@ -2622,9 +2621,9 @@ Cделает текущее поле нередактируемым для по
  <activiti:formProperty id="sString4" name="sString4; ниже добавится HTML с несколькими элементами;;html=&lt;span&gt;Відкити пошукову сторінку &lt;a href=&quot;https://www.google.com.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Google&quot;&gt;Google&lt;/a&gt; або &lt;a href=&quot;https://yandex.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Яндексу&quot;&gt;Яндекс&lt;/a&gt;.&lt;br&gt; Тут HTML-текст закінчується.&lt;/span&gt;" type="string"></activiti:formProperty>
 ```
 
-### _attributesBankID
+### _attributesbankid
 
-[вернуться...](#attributesBankID)
+[вернуться...](#attributesbankid)
 * **bankId_scan_passport** - file - скан паспорта гражданина
 * **bankIdAddressFactual** - string - адрес регистрации гражданина
 * **bankIdAddressFactual_country** - string/invisible - страна 
@@ -2700,7 +2699,7 @@ Cделает текущее поле нередактируемым для по
 * ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
 * **form_signed_all** - при наложении ЕЦП на заявку, она так же будет наложена и на все прикрепленные файлы. При этом все файлы, которые прикрепил гражданин, должны иметь расширение *.pdf.
 
-### _autoComplete
+### _autocomplete
 Автокомплиты
 
 [вернуться...](#autoComplete)
@@ -2746,7 +2745,7 @@ Cделает текущее поле нередактируемым для по
 ***
 
 
-### 004_Generalrulesfornaming.md
+004_Generalrulesfornaming.md
 ### _variables
 
 [вернуться...](#variables)
@@ -2821,9 +2820,9 @@ eco_0521
    * ${DocumentInit_iDoc}  
    * ![5_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_3.JPG)
    
-### _setTasks
+### _settasks
 
-[вернуться...](#setTasks)
+[вернуться...](#settasks)
 **sTaskProcessDefinition** - сюда прописываем ИД БП в который нужно пробросить данные **(3)**  
 далее перечисляем обязательные поля **(5)**  
 **sID_Attachment**  
@@ -2840,9 +2839,9 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 ```  
 разделитель между переменными - две точки с запятой.
 
-### _documentInit_iDoc
+### _documentinit_idoc
 
-[вернуться...](#documentInit_iDoc)
+[вернуться...](#documentinit_idoc)
 Листенер тянет из файла json данные, которые задают права определенных групп на просмотр или редактирование отдельных полей в данном бизнес-процессе.  
 Файл json должен иметь такое же имя как ИД БП, в котором установлен листенер.  
 Например:  
@@ -2888,16 +2887,16 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 ```
 ***
 
-### _updateStatusTask
+### _updatestatustask
 [вернуться...](#updateStatusTask)
 Все статусы задаются в файле: _i\wf-base\src\main\resources\data\ProcessSubjectStatus.csv_  
 В енаме (saStatusTask) порожденной задачи должны присутствовать только статусы из этого файла и передаваться затем в переменную sID_ProcessSubjectStatus:
 ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sb1J3RUx6Ti1HSGc)
 ***
 
-### _delegateExpression
+### _delegateexpression
 
-[вернуться...](#delegateExpression)
+[вернуться...](#delegateexpression)
 * #{MailTaskWithoutAttachment} - для отправки емейлов без  вложений
    * ![5_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_1.JPG)
    * #{MailTaskWithAttachments} - для отправки емейлов c  вложениями
@@ -2957,34 +2956,34 @@ P[n]W
 ```
 
 009_MarkersandValidators.md
-### _showFieldsOnCondition
+### _showfieldsoncondition
 
-[вернуться...](#showFieldsOnCondition)
+[вернуться...](#showfieldsoncondition)
 * ![6_2M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_2%D0%9C.JPG)
 
-### _requiredFieldsOnCondition
+### _requiredfieldsoncondition
 
-[вернуться...](#requiredFieldsOnCondition)
+[вернуться...](#requiredfieldsoncondition)
 * ![9_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_2.JPG)
 
-### _showElementsOnTrue
+### _showelementsontrue
 
-[вернуться...](#showElementsOnTrue)
+[вернуться...](#showelementsontrue)
 * ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 
-### _valuesFieldsOnCondition
+### _valuesfieldsoncondition
 
-[вернуться...](#valuesFieldsOnCondition)
+[вернуться...](#valuesfieldsoncondition)
 * ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
 
-### _writableFieldsOnCondition
+### _writablefieldsoncondition
 
-[вернуться...](#writableFieldsOnCondition)
+[вернуться...](#writablefieldsoncondition)
 * ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG) 
 
-### _splitTextHalf_1
+### _splittexthalf_1
 
-[вернуться...](#splitTextHalf_1)
+[вернуться...](#splittexthalf_1)
 
 Для использования  маркеров из внешнего файла, указываем путь к файлу:  
 [Issues 840](https://github.com/e-government-ua/i/issues/840)  
@@ -2998,9 +2997,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 * ![6_1M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_1%D0%9C.JPG)
 
 ## Маркеры группы validate
-### _customFormat_1
+### _customformat_1
 
-[вернуться...](#customFormat_1)
+[вернуться...](#customformat_1)
 
 * ![9_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_7.JPG) 
 
@@ -3010,9 +3009,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 * ![9_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_8.JPG)
 
-### _fileSign
+### _filesign
 
-[вернуться...](#fileSign)
+[вернуться...](#filesign)
 
 * ![9_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_6.JPG)
 
@@ -3025,7 +3024,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 ### _style
 
-[вернуться...](#Style)
+[вернуться...](#style)
 
 * ![9_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_5.JPG)
 
@@ -3034,9 +3033,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 Свойства маркера aElement_ID и aSelectors работают параллельно и **может быть задан только один из них**. 
 [подробное описание](https://docs.google.com/document/d/1EE7q2EEBgHW6QMRJEsPXGNE0cU9GuXT2Z3KUYNceF88/edit)  
 
-### _sNote
+### _snote
 
-[вернуться...](#sNote)
+[вернуться...](#snote)
 
 * ![9_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_9.JPG)
 
