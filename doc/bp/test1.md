@@ -7,8 +7,8 @@ test
 
 [перейти на нужный тэг3](general.md#businessprocessdevelopment)
 
-[перейти на нужный тэг4](general.mdbusinessprocessdevelopment)
+[перейти на нужный тэг4](general.md (#businessprocessdevelopment))
 
-[перейти на нужный тэг5](general.mdbusinessprocessdevelopment)
+[перейти на нужный тэг5](general.md (businessprocessdevelopment))
 
 ### businessprocessdevelopment  ### creatingbusinessprocesses ### themain ### typesofparameters
