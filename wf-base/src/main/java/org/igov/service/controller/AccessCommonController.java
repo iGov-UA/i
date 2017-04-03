@@ -84,6 +84,8 @@ public class AccessCommonController {
             throws AccessServiceException {
         
         if(generalConfig.isSelfTest() && password == null){
+            LOG.info("test empty login...");
+            request.getSession(true);
             return new LoginResponse(Boolean.TRUE.toString());
         }
         else if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(login, password)) {
