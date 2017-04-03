@@ -30,7 +30,7 @@
 
 
 ### creatingbusinessprocesses
-# Создание бизнес-процессов
+# 1. Создание бизнес-процессов
 [вернуться в начало](general.md)
 
 ### сбор информации и предварительная подготовка
@@ -74,31 +74,47 @@
 
 ### themain
 
-# Основные элементы Activiti Designer
+# 2. Основные элементы Activiti Designer
 
 [вернуться в начало](general.md)
 
 * При разработке БП из всего арсенала Activiti Designer используются следующие элементы:
-* StartEvent – начало любого процесса. В его наполнение заносятся все поля, которые должны быть отображены на портале гражданина, а также переменные, необходимые для работы процесса. Если переменную гражданин видеть не должен, то присваиваем ей тип invisible.
-* EndEvent – закрытие процесса. Необходимо ставить в конце каждой ветви, чтобы не было «вечных» задач
+### startevent
+StartEvent – начало любого процесса. В его наполнение заносятся все поля, которые должны быть отображены на портале гражданина, а также переменные, необходимые для работы процесса. Если переменную гражданин видеть не должен, то присваиваем ей тип invisible.
+### endevent
+EndEvent – закрытие процесса. Необходимо ставить в конце каждой ветви, чтобы не было «вечных» задач
+[детальней...](#_endevent)
 * ![2_01](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_01.JPG)
-* UserTask – панель для обработки человеком. Заносятся все поля и переменные, которые должны отображаться на портале госслужащего на данном этапе. Обязательный атрибут - activiti:candidateGroups показывает в какую группу попадает данная заявка при обработке. Можно задавать параметрически.
+### usertask
+UserTask – панель для обработки человеком. Заносятся все поля и переменные, которые должны отображаться на портале госслужащего на данном этапе. Обязательный атрибут - activiti:candidateGroups показывает в какую группу попадает данная заявка при обработке. Можно задавать параметрически.
+[детальней...](#_usertask)
 * ![2_02](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_02.JPG)
-* MailTask – позволяет отправить письмо, из-за того, что не поддерживает шаблоны е-мейлов на данный момент практически не используется.
-* ServiceTask – спектр использования очень широк и определяется в основном разработанными activiti:delegateExpression. Сейчас наиболее часто используемые activiti:delegateExpression: 
+### mailtask
+MailTask – позволяет отправить письмо, из-за того, что не поддерживает шаблоны е-мейлов на данный момент практически не используется.
+### servicetask
+ServiceTask – спектр использования очень широк и определяется в основном разработанными activiti:delegateExpression. Сейчас наиболее часто используемые activiti:delegateExpression: 
+[детальней...](#_servicetask)
 * ![2_03](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_03.JPG)
-* fileTaskUpload – отвечает за заргузку файлов, прикрепленных гражданином в заявке.
-* MailTaskWithoutAttachment – используется для отправки писем без вложений, поддерживает шаблоны и возможность отсылки на несколько адресов.
-* MailTaskWithAttachments – используется для отправки писем с вложенными файлами, поддерживает шаблоны и возможность отсылки на несколько адресов.
+### filetaskupload
+fileTaskUpload – отвечает за заргузку файлов, прикрепленных гражданином в заявке.
+### mailtaskwithoutattachmen
+MailTaskWithoutAttachment – используется для отправки писем без вложений, поддерживает шаблоны и возможность отсылки на несколько адресов.
+### mailtaskwithattachments
+MailTaskWithAttachments – используется для отправки писем с вложенными файлами, поддерживает шаблоны и возможность отсылки на несколько адресов.
+[детальней...](#_mailtaskwithattachments)
 * ![2_04](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_04.JPG)
-* ScriptTask – позволяет использовать простейшие скрипты (поддерживается JavaScript и Groovy) для работы с переменными процесса. Используется для раскрытия одной услуги на многие города (сейчас минимизируется), обработки даты для настройки уведомлений, подстановки необходимых значений в принтформы.
-* Exclusive Gateway – используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway.
-* Parallel Gateway – используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway. Основные особенности – должны прописываться парами, действия после второго Gateway будут выполняться не раньше чем все действия между Gateway будут выполнены.
+### scripttask
+ScriptTask – позволяет использовать простейшие скрипты (поддерживается JavaScript и Groovy) для работы с переменными процесса. Используется для раскрытия одной услуги на многие города (сейчас минимизируется), обработки даты для настройки уведомлений, подстановки необходимых значений в принтформы.
+### exclusivegateway
+Exclusive Gateway– используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway.
+### parallelgateway
+Parallel Gateway – используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway. Основные особенности – должны прописываться парами, действия после второго Gateway будут выполняться не раньше чем все действия между Gateway будут выполнены.
+[детальней...](#_parallelgateway)
 * ![2_05](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_05.JPG)
 
 
 ### typesofparameters
-# Типы переменных
+# 3. Типы параметров
 [вернуться в начало](general.md)
 
 
@@ -435,7 +451,7 @@ type="queueData" required="true"></activiti:formProperty>
 ***
 
 ### mathematicalactionswithvariablesandconditionoperators
-Математические действия с переменными и операторы условий
+# 8. Математические действия с переменными и операторы условий
 [вернуться в начало](general.md)
 
 ### Выполнение простейших математических действий с переменными
@@ -454,7 +470,7 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_conditionstatementsinprocesses)
 
 ### workingwithdatesandtimers
-# Работа с датами и таймерами
+# 9. Работа с датами и таймерами
 [вернуться в начало](general.md)
 ### usingtimers
 Использование таймеров
@@ -464,7 +480,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### markersandvalidators
-# Маркеры и Валидаторы
+# 10. Маркеры и Валидаторы
 [вернуться в начало](general.md)
 
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
@@ -808,7 +824,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### printform
-# Принтформа
+# 11. Принтформа
 [вернуться в начало](general.md)
 
 ### printformmd
@@ -851,7 +867,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### digitalsignature
-# ЭЦП
+# 12. ЭЦП
 [вернуться в начало](general.md)
 
 ### creationofasignededsdocument
@@ -872,11 +888,12 @@ digit3 - переменная, куда присвоится результат 
 ```xml
 <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>` 
 ```
-[детальней...](#_Converthtmltopdf)
+[детальней...](#_converthtmltopdf)
 
 ***
+
 ### electronicqueues
-# Электронные очереди
+# 13. Электронные очереди
 [вернуться в начало](general.md)
 
 ### Настройка электронной очереди
@@ -885,40 +902,40 @@ digit3 - переменная, куда присвоится результат 
 
 ### 1. Создаем поток 
 
-### flow_servicedata.csv  
+### flow_servicedata 
 **nID** - id потока  
 **sName** - название 
 
-[детальней...](#_flow_servicedata.csv)
+[детальней...](#_flow_servicedata)
 
 
-### subjectorgandepartment.csv
+### subjectorgandepartment
 
 здесь могут быть созданы  различные департаменты для возможности использования нескольких потоков в одном процессе  
 
 **nID** - id департамента  
 **sName** - название департамента 
 
-[детальней...](#_subjectorgandepartment.csv)
+[детальней...](#_subjectorgandepartment)
 
 
-### flowlink.csv
+### flowlink
 если нужно завести на один общий поток несколько услуг.  
 Для привязки одной очереди к нескольким процессам, необходимо в этом файле перечислить **ВСЕ** процессы (nID_Service) которые нужно связать в рамках одного потока очереди  
 **nID**  
 **nID_Flow_ServiceData** - ИД потока, в который надо свести несколько очередей 
 
-[детальней...](#_flowlink.csv)
+[детальней...](#_flowlink)
 
 
 ### 2. Для созданного потока указываем  расписание
-### flowproperty.csv
+### flowproperty
 файл с расписанием (график работы)
 
 **nID**  
 **nID_FlowPropertyClass** - класс, который формирует слоты очереди (для нас по-умолчанию - 1 )
 
-[детальней...](#_flowproperty.csv)
+[детальней...](#_flowproperty)
  
 
 
@@ -961,7 +978,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### paymentfortheservice
-# Оплата услуги
+# 14. Оплата услуги
 [вернуться в начало](general.md)
 
 * добавить в  БП такие поля (можно на стартовой таске):
@@ -991,7 +1008,7 @@ digit3 - переменная, куда присвоится результат 
 ***
 
 ### emails
-# Емайлы
+# 15. Емайлы
 [вернуться в начало](general.md)
 
 Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
@@ -1456,7 +1473,7 @@ execution.setVariable('sExecutor', sExecutor)
 ### FlowSlotTicket
 ### SubjectOrganDepartment
 
-
+***
 ### workingwiththegithandrepository
 # 19. Работа с гитом и репозиторием 
 [вернуться в начало](general.md)
@@ -1578,6 +1595,7 @@ IDE NetBeans позволяет автоматизировать этот про
 
 ### Откат изменений (в eclipse)
 
+***
 ### installationeclipse
 # Установка Eclipce
 [вернуться в начало](general.md)
@@ -2888,7 +2906,7 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 ***
 
 ### _updatestatustask
-[вернуться...](#updateStatusTask)
+[вернуться...](#updatestatustask)
 Все статусы задаются в файле: _i\wf-base\src\main\resources\data\ProcessSubjectStatus.csv_  
 В енаме (saStatusTask) порожденной задачи должны присутствовать только статусы из этого файла и передаваться затем в переменную sID_ProcessSubjectStatus:
 ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sb1J3RUx6Ti1HSGc)
@@ -3056,9 +3074,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 * ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 
 011_Digitalsignature.md
-### _creationofasignedEDSdocument
+### _creationofasignededsdocument
 
-[вернуться...](#creationofasignedEDSdocument)
+[вернуться...](#creationofasignededsdocument)
 
 * ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
 где pattern/print/example_print_01.html -  шаблон печатной формы заявления, на которую будет накладываеться ЭЦП.  
@@ -3071,9 +3089,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 ```xml
 <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>` 
 ```
-### _converthtmltoPDF
+### _converthtmltopdf
 
-[вернуться...](#ConverthtmltoPDF)
+[вернуться...](#converthtmltopdf)
 
 * ![11_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_0.JPG)
 На юзертасках добавить стандартный набор листнеров для подгрузки файлов.  
@@ -3081,31 +3099,31 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 [валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
 
 012_Electronicqueues.md
-### _flow_ServiceData.csv
+### _flow_servicedata
 
-[вернуться...](#flow_ServiceData.csv)
+[вернуться...](#flow_servicedata)
 
-**nID_ServiceData** - номер строки в [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) , для которой создается поток  
-**nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)   
+**nID_servicedata** - номер строки в [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) , для которой создается поток  
+**nID_subjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)   
 **sID_BP** - id самого процесса  
 
-### _SubjectOrganDepartment.csv
+### _subjectorgandepartment
 
-[вернуться...](#SubjectOrganDepartment.csv)
+[вернуться...](#subjectorgandepartment)
 
 **sGroup_Activiti** - id группы активити, созданной для этого департамента  
 **nID_SubjectOrgan** - id номер из файла [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)  
 
-### _flowLink.csv
+### _flowlink
 
-[вернуться...](#flowLink.csv)
+[вернуться...](#flowlink)
 
 **nID_Service** - ИД услуги из [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service)  
 **nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv) 
 
-### _flowProperty.csv
+### _flowproperty
 
-[вернуться...](#flowProperty.csv)
+[вернуться...](#flowproperty)
 
 **sData** - [набор правил для формирования слотов](http://www.cronmaker.com/) (например - `{"0 0/15 8-15 ? * MON-FRI *":"PT15M"} `)  
 **nID_Flow_ServiceData** - номер потока  
@@ -3167,7 +3185,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 ### _usingVariablesinEmailTemplates
 
-[вернуться...](#usingVariablesinEmailTemplates)
+[вернуться...](#usingvariablesinemailtemplates)
 
 тогда в письме нужно вставить: **enum{[typeOfDocument]}**  
 тогда туда подставится значение выбранного в форме пункта энума  
@@ -3209,9 +3227,9 @@ value != enum.
 
 Файл словарь находится в проекте wf-base по пути wf-base/src/main/resources/patterns/dictionary/MVD_Department.csv
 
-### _emailTemplates
+### _emailtemplates
 
-[вернуться...](#emailTemplates)
+[вернуться...](#emailtemplates)
 
 
 `<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />`  
@@ -3231,9 +3249,9 @@ value != enum.
 [pattern/mail/new_design/_common_employee_notify.html] - общий шаблон уведомлений для гос.служащего (новый) 
 [pattern/mail/_common_client_notify.html] - общий шаблон уведомления гражданина / отмены заявки,  в случае если заявка очень долго не берется в работу  
 
-### _newEmailTemplates
+### _newemailtemplates
 
-[вернуться...](#newEmailTemplates)
+[вернуться...](#newemailtemplates)
 
 * ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
 здесь мы пишем наш контент
@@ -3250,9 +3268,9 @@ value != enum.
 
 015_SendingSMSnotifications.md
 
-### _sMSnotifications
+### _smsnotifications
 
-[вернуться...](#sMSnotifications)
+[вернуться...](#smsnotifications)
 
 Заявка попала на первую юзертаску  
 **Status Vashoho zvernennya [sID_Order] zmineno na %название статуса%**  
@@ -3367,9 +3385,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 **sNotification_day**  - это заранее созданная в процессе переменная, в которую вернем результат работы скрипта 
 
 
-### _gettingID
+### _gettingid
 
-[вернуться...](#gettingID)
+[вернуться...](#gettingid)
 
 * ![16_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_2.JPG)
 
@@ -3379,9 +3397,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 * ![16_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_3.JPG)
 
-### _obtainingBPID
+### _obtainingbpid
 
-[вернуться...](#obtainingBPID)
+[вернуться...](#obtainingpbid)
 
 * ![16_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_4.JPG)
 
@@ -3407,9 +3425,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 * 1038;40;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
 * ![17_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_1.JPG)
 
-### _serviceData
+### _servicedata
 
-[вернуться...](#serviceData)
+[вернуться...](#servicedata)
 
 * Пример.
 * nID;nID_Service;nID_Place;nID_City;nID_Region;nID_ServiceType;oData;sURL;bHidden;nID_Subject_Operator;bTest;sNote;asAuth;nID_Server
@@ -3424,15 +3442,15 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 * ![17_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_2.JPG)
 
-### _subjectAccount
+### _subjectaccount
 
 [вернуться...](#subjectAccount)
 
 * ![17_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_3.JPG)
 
-### _subjectOrganJoin
+### _subjectorganjoin
 
-[вернуться...](#subjectOrganJoin)
+[вернуться...](#subjectorganjoin)
 
 * ![17_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_4.JPG)
 
@@ -3459,9 +3477,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 Installationeclipse.md
 
-### _installJAVAJDK
+### _installjavajdk
 
-[вернуться...](#installJAVAJDK)
+[вернуться...](#installjavajdk)
 
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sQlE3TUh3ZmpiUGM)  
 3. Устанавливаем скачанный файл, без изменений, со всем соглашаемся, можно выбрать свою директорию.  
@@ -3483,9 +3501,9 @@ C:\Program Files (x86)\Java\jdk1.8.0_111
 
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sX0xVUGNRV01SdkE)  
 
-### _installEclipse
+### _installeclipse
 
-[вернуться...](#installEclipse)
+[вернуться...](#installeclipse)
 4. запускаем eclipse.exe  
 5. При первом запуске он спросит где хранить настройки Eclipce  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNUJYaThZZnpLaTg)  
@@ -3559,8 +3577,8 @@ http://download.eclipse.org/technology/m2e/releases
 * Руками прописываем кодировку cp1251 на вкладке Общие (Common)
 * ![ecl1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/ecl1.JPG)
 
-### _addJSONandHTML
-[вернуться...](#addJSONandHTML)
+### _addjsonandhtml
+[вернуться...](#addjsonandhtml)
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_saWRQWTdOVGdTRW8)  
 ![2](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sRWx6dEs0aDNJY0E)  
 3. приложения JSON дает возможность открыть окно для редактирования или валидации JSON  
@@ -3574,8 +3592,8 @@ http://download.eclipse.org/technology/m2e/releases
  
 020_Escalationsandfeedback.md
 
-### _sCondition
-[вернуться...](#sCondition)
+### _scondition
+[вернуться...](#scondition)
 
 Пример самых ходовых правил (sCondition):
 ```
