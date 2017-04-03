@@ -1,7 +1,10 @@
 
-001. [Создание бизнес-процессов](https://github.com/e-government-ua/i/blob/test/doc/bp/001_CreatingBusinessProcesses.md)
+ 
+1. [Создание бизнес-процессов](#creatingBusinessProcesses)
+
 1. [Основные элементы Activiti Designer](https://github.com/e-government-ua/i/blob/test/doc/bp/0021TheMainElementsOfActivitiDesigner.md)
-002. [Типы параметров](https://github.com/e-government-ua/i/blob/test/doc/bp/002_Typesofparameters.md)
+
+2. [Типы параметров](#typesofparameters)
 1. [Зарезервированные и системные переменные](https://github.com/e-government-ua/i/blob/test/doc/bp/003_ReservedandSystemVariables.md)
 1. [Общие правила при именовании](https://github.com/e-government-ua/i/blob/test/doc/bp/004_Generalrulesfornaming.md)
 1. [Типы Listener и delegateExpression](https://github.com/e-government-ua/i/blob/test/doc/bp/005_TypesListeneranddelegateExpression.md)
@@ -27,8 +30,11 @@
 1. [Чек лист тестирования ветки](https://github.com/e-government-ua/i/blob/test/doc/bp/025_CheckListTestBranch.md)
 1. [СЭД](https://github.com/e-government-ua/i/blob/test/doc/bp/026_IDoc.md)
 
-001_CreatingBusinessProcesses.md
+
+### creatingBusinessProcesses
+
 1. Создание бизнес-процессов
+
 ### сбор информации и предварительная подготовка
 * получить информационную и технологическую карточку услуги
 * пример заявления, бланки, шаблоны документов
@@ -40,26 +46,33 @@
 
 
 
-### разработка бизнес-процесса
+### businessprocessdevelopment
+разработка бизнес-процесса
 
 * создать новую диаграмму. Для Eclipse:New-Other-Activiti Diagram. Путь для размещения bpmn-файлов: \i\wf-egion\src\main\resources\bpmn\autodeploy.
 
-[детальнее...](#_разработкабизнес-процесса)
+[детальнее...](#_businessprocessdevelopment)
 
 
-### подключение всех необходимых сущностей
+### connectionallentities
+подключение всех необходимых сущностей
 
 * создать пользователей и группы на дельте - связать их между собой
+ * написать "Як це працює" в формате html. Путь для размещения файла:\i\wf-central\src\main\resources\patterns\services\Info
+* добавить файл с принтформой в формате html. Путь для размещения файла: i\wf-region\src\main\resources\pattern\print. Желательно использовать папку по конкретному органу или направлению.
+* заполнить [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)
+* Если необходимо добавить населенный пункт которого нет в списке - добавить его в сущности [Place](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#place), [PlaceTree](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#placetree), [City](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#city).
+* При необходимости - добавить [электронные очереди](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8). 
+* Прописать [эскалации](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D1%81%D0%BA%D0%B0%D0%BB%D0%B0%D1%86%D0%B8%D0%B8-%D0%B8-%D1%84%D0%B8%D0%B4%D0%B1%D0%B5%D0%BA%D0%B8).
 
-[детальнее...](#_подключениевсехнеобходимыхсущностей)
 
-
-### тестирование и проливка на бету и боевой
+### testingonbeta
+тестирование и проливка на бету и боевой
 * перед каждой проливкой на сервер проект необходимо собирать и запускать локально
 
-[детальнее...](#_тестирование и проливка на бету и боевой)
+[детальнее...](#_testingonbeta)
 
-002_Typesofparameters.md
+# typesofparameters
 # Типы переменных
 
 ### string
@@ -221,18 +234,18 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_line)
 
-***
-### Variable Attributes 
+
+### variableAttributes 
 (Атрибуты переменных)
 **id** - уникальный идентификатор переменной. Обязательный атрибут.
 
 **type** - тип переменной. Преобразования типов нет. Обязательный атрибут.
 
-[детальней...](#_Variable Attributes)
+[детальней...](#_variableAttributes)
 
 
 003_ReservedandSystemVariables.md
-### Attributes BankID
+### attributesBankID
 Переменные BankID
 * **bankIdlastName** - string - фамилия гражданина
 * **bankIdfirstName** - string - имя гражданина
@@ -242,58 +255,58 @@ type="queueData" required="true"></activiti:formProperty>
 [детальней...](#_attributesBankID)
 
 
-## Reserved variables for electronic queues
+### reservedvariablesforelectronicqueues
 Зарезервированные переменные для электронных очередей
 * **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
 * **nID_Department_visitDay** - string/invisible/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
 * **nSlots_visitDay** - string/invisible/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
 
-[детальней...](#_Reservedvariablesforelectronicqueues)
+[детальней...](#_reservedvariablesforelectronicqueues)
 
 
-### Reserved attribute variables
+### reservedattributevariables
 Зарезервированные переменные атрибутов
 * **sNameOrgan** - string/invisible/label - название органа в подписи письма
 * **sWorkTime** - string invisible/label - график работы
 * **sPhoneOrgan** - string/invisible/label - телефон для справок
 
-[детальней...](#_Reservedattributevariables)
+[детальней...](#_reservedattributevariables)
 
 
-### Variablesforprintforms
+### variablesforprintforms
 Переменные принтформ
 * **[sID_Order]** - системный тег для принтформы, смс или емейла  для размещения ИД заявки. [Issue 1023](https://github.com/e-government-ua/i/issues/1023).  
 * **[sDateCreate]** - Системный тег даты. Возвращает значение системного времени на момент срабатывания таски. Можно использовать как время начала обработки обращения (взятия в работу чиновником).
 
-[детальней...](#_Variablesforprintforms)
+[детальней...](#_variablesforprintforms)
 
 
-### Validated variables
+### validatedvariables
 Валидируемые переменные
 * **vin_code, vin_code1, vin** - string - VIN-код авто.
 Набор из 17 символов. Разрешено использовать все арабские цифры и латинские буквы (А В C D F Е G Н J К L N М Р R S Т V W U X Y Z) , за исключением букв Q, O, I. Эти буквы запрещены для использования, поскольку O и Q похожи между собой, а I и O можно спутать с 0 и 1.
 
-[детальней...](#_Validatedvariables)
+[детальней...](#_validatedvariables)
 
 
-### Other
+### other
 Другие
 * **response** - invisible - задать кастомизированный текст на спасибо странице, после подачи обращения (с поддержкой html)
 * **footer** - string - задать кастомизированный текст на стандартной форме для печати в дашборде( с поддержкой html)
 * **sNotifyEvent_AfterSubmit** - invisible - Отображение кастомного текста в дашборде после нажатия на кнопку “Опрацювати”. Текст  подсказки задаем в аттрибуте default. [Issue 1027](https://github.com/e-government-ua/i/issues/1027).
 
-[детальней...](#_Other)
+[детальней...](#_other)
 
-### AutoComplete
+### autoComplete
 Автокомплиты
 * **sObjectCustoms** - select - Товар 
 * **sID_UA_ObjectCustoms** - Код товара (заполнится автоматически после выбора в селекте sObjectCustoms)
 * ![3_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_8.JPG)
 * **sCountry** - select - Страна 
 
-[детальней...](#_AutoComplete)
+[детальней...](#_autoComplete)
 
-### Requestvariables
+### requestvariables
 Переменные-запросы
 **sID_SubjectOrgan_OKPO_** - string - Делает запрос к базе ранее полученных данных из ЕДРПОУ, по соответствующему коду предприятия, и возвращает результат в несколько зарезервированных переменных (если по запросу найдены данные). Возможно неограниченное количество полей запроса на форме - **sID_SubjectOrgan_OKPO_** используется как префикс, главное обеспечить уникальность **id** каждой следующей переменной-запроса и каждого возвращаемой переменной. 
 * **sFullName_SubjectOrgan_** - textArea - Полное наименование
@@ -301,29 +314,30 @@ type="queueData" required="true"></activiti:formProperty>
 [детальней...](#_Requestvariables)
 
 
-004_Generalrulesfornaming.md
+### generalrulesfornaming
 ### Общие правила при именовании
 ## Наличие в любых IDшниках кириллических символов, а также пробелов - недопустимо
 
-### переменные
+### variables
+переменные
 
 первый символ названия переменной должен говорить о типе данных:
 * n = Number (числовые переменные) - nSum
 * s = String (строчные переменные) - sFamily
 
-[детальней...](#_переменные)
+[детальней...](#_variables)
 
-### User's color
+### userscolor
 Подсвечивать этап (юзертаску) в дашборде  цветом
 
 если название юзертаски заканчивается на:
 * "_red" - подкрашивать строку - красным цветом (класс: "bg_red")
 * "_yellow" - подкрашивать строку - желтым цветом (класс: "bg_yellow")
 
-[детальней...](#_User's color)
+[детальней...](#_userscolor)
 
-005_TypesListeneranddelegateExpression.md
-### Listener
+### typesListeneranddelegateExpression
+### listener
 
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
    * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
@@ -331,16 +345,14 @@ type="queueData" required="true"></activiti:formProperty>
    [детальней...](#_Listener)
 
 
-***
-### SetTasks
+### setTasks
 листенер ${SetTasks} - ставится на закрытие таски, т.е. event="complete"  **(1, 2)**  
 В этом листенере мы указываем какие поля из текущего БП передать в другой БП:  
 
-[детальней...](#_SetTasks)
+[детальней...](#_setTasks)
 
 
-***
-### DocumentInit_iDoc
+### documentInit_iDoc
 
 листенер ${DocumentInit_iDoc} - ставится на открытие таски, т.е. event="create"  
 Никаких дополнительных параметров листенера ставить не нужно  
@@ -350,13 +362,13 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_DocumentInit_iDoc)
 
-### UpdateStatusTask
+### updateStatusTask
 обновляет статус порожденной задачи  
 обязательный параметр **sID_ProcessSubjectStatus**  
 
-[детальней...](#_UpdateStatusTask)
+[детальней...](#_updateStatusTask)
 
-### UpdateStatusTaskTreeAndCloseProcess
+### updateStatusTaskTreeAndCloseProcess
 Листенер прикрепляется на процесс-родитель из которого порождаются задачи. В случае, если родительский процесс закрыт, то все незакрытые порожденные задачи автозакроются со статусом “неактуально”
 
 ***
@@ -369,23 +381,22 @@ type="queueData" required="true"></activiti:formProperty>
    
    [детальней...](#_delegateExpression)
    
-   006_Assigngroupsandusers.md
+### assigngroupsandusers
 
-### Addingauser
+### addingauser
 Добавляем пользователя
 * Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
 
-[детальней...](#_Addingauser)
-
+[детальней...](#_addingauser)
 
 ***
-### Addingausertoagroup 
+### addingausertoagroup 
 Добавляем пользователя в группу
 * Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
 
-[детальней...](#_Addingausertoagroup)
+[детальней...](#_addingausertoagroup)
 
-007_Mathematicalactionswithvariablesandconditionoperators.md
+### mathematicalactionswithvariablesandconditionoperators
 ### Выполнение простейших математических действий с переменными
 
 digit1 - переменная со значением 1.  (тип long или double)
@@ -394,21 +405,21 @@ digit3 - переменная, куда присвоится результат 
 и в итоге суммируется и в результате   имеем “3”  :)
 Аналогично используются операнды сложения, вычитания, умножения, деления.
 
-### Conditionstatementsinprocesses
+### conditionstatementsinprocesses
 Операторы условий в процессах
 * ${form_attr == "N"} - проверка на равенство между переменной form_attr и константой  "N"
 * ${form_attr != "N"}  - проверка на НЕравенство
 
-[детальней...](#_Conditionstatementsinprocesses)
+[детальней...](#_conditionstatementsinprocesses)
 
-### Usingtimers
+### usingtimers
 Использование таймеров
 Для использования таймера с целью приостановки процесса, используем стандартный элемент **TimerCatchingEvent** (самостоятельный элемент схемы) который приостанавливает процесс до срабатывания таймера.
 
-[детальней...](#_Usingtimers)
+[детальней...](#_usingtimers)
 
-
-009_MarkersandValidators.md
+***
+### markersandValidators
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
 
 [Маркеры группы motion](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-motion)  
@@ -416,7 +427,7 @@ digit3 - переменная, куда присвоится результат 
 [Маркеры группы attributes](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-attributes)  
 
 ## Маркеры группы motion
-### ShowFieldsOnCondition  
+### showFieldsOnCondition  
 показывают скрытое поле (при выполнении условий)
 
 ```java
@@ -434,11 +445,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_ShowFieldsOnCondition)
+[детальней...](#_showFieldsOnCondition)
 
-***
 
-### ShowFieldsOnNotEmpty
+### showFieldsOnNotEmpty
 показать доп поля, если заполнено конкретное поле
 ```java
 {
@@ -453,9 +463,8 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 
-***
 
-### RequiredFieldsOnCondition
+### requiredFieldsOnCondition
 делают обязательным заполнение поля (при выполнении условий)
 ```java
 {
@@ -473,11 +482,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_RequiredFieldsOnCondition)
+[детальней...](#_requiredFieldsOnCondition)
 
-***
 
-### ShowElementsOnTrue  
+### showElementsOnTrue  
 [Issues 816](https://github.com/e-government-ua/i/issues/816)  
 маркер для принтформы  
 показывает блок с конкретным идшником html кода принтформы  
@@ -497,11 +505,11 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_ShowElementsOnTrue)
+[детальней...](#_showElementsOnTrue)
 
 ***
 
-### ValuesFieldsOnCondition
+### valuesFieldsOnCondition
 присваивает определенному полю определенные значения (при выполнении условий)  
 [Issues 829](https://github.com/e-government-ua/i/issues/829)   
 [Issues 1362](https://github.com/e-government-ua/i/issues/1362)  
@@ -531,7 +539,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 
-### WritableFieldsOnCondition
+### writableFieldsOnCondition
 нерадактируемое поле становится редактируемым (при выполнении условий)  
 ```java
 {
@@ -549,11 +557,12 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_WritableFieldsOnCondition)
+[детальней...](#_writableFieldsOnCondition)
     
 
 ***
-### SplitTextHalf_1 - разделение значения по  знаку разделителя
+### splitTextHalf_1
+ разделение значения по  знаку разделителя
 ```java
 {
   "motion": {
@@ -566,11 +575,12 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_SplitTextHalf_1)
+[детальней...](#_splitTextHalf_1)
 
 
 ## Маркеры группы validate
-### CustomFormat_1 - номеров
+### customFormat_1
+номеров
 [Issues 934 ](https://github.com/e-government-ua/i/issues/934)  
 ```java
 {
@@ -585,11 +595,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_CustomFormat_1)
+[детальней...](#_customFormat_1)
 
-***
 
-### Extensions
+### extensions
 расширений
 [Issues 1258](https://github.com/e-government-ua/i/issues/1258)
 ```java
@@ -607,11 +616,11 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 
-[детальней...](#_Extensions)
+[детальней...](#_extensions)
 
-***
 
-### NumberBetween - принадлежность значения  диапазону значений  (целочисленные)
+### numberBetween
+- принадлежность значения  диапазону значений  (целочисленные)
 ```java
 {
   "NumberBetween": {
@@ -625,9 +634,8 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 
-***
-
-### NumberFractionalBetween - принадлежность значения  диапазону значений (дробные)
+### numberFractionalBetween
+- принадлежность значения  диапазону значений (дробные)
 ```java
 {
   "NumberFractionalBetween": {
@@ -641,9 +649,8 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 
-***
-
-### Numbers_Accounts - номерных значений  
+### numbers_Accounts
+- номерных значений  
 (разрешены цифры и дефисы, буквы любые запрещены )
 ```java
 {
@@ -659,7 +666,8 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 
-### FileSign - Валидатор ЕЦП
+### fileSign
+- Валидатор ЕЦП
 [Issues 921](https://github.com/e-government-ua/i/issues/921)  
 ```java
 {
@@ -674,7 +682,7 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_FileSign)
+[детальней...](#_fileSign)
 
 ### Алгоритм Луна
 Применяется для поля, в которое пользователь должен будет внести вручную номер заявки  
@@ -691,7 +699,7 @@ digit3 - переменная, куда присвоится результат 
 }
 ```
 ## Маркеры группы attributes
-### Line
+### line
 для отрисовки линии (группирующей/отсекающей) одни поля от других
 ```java
 {
@@ -705,10 +713,10 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
-[детальней...](#_Line)
+[детальней...](#_line)
 
-***
-### Style
+
+### style
 Для внедрения стилей css на страницу с услугой с целью изменения стандартного отображения элементов на форме
 ```java
 {
@@ -730,7 +738,7 @@ digit3 - переменная, куда присвоится результат 
    }
 }
 ```
-[детальней...](#_Style)
+[детальней...](#_style)
 
 ### sNote 
 атрибут маркера 
@@ -755,7 +763,8 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_sNote)
 
 
-010_Printform.md
+### printformmd
+# Принтформа
 ### Printform
 
 *Принтформа прописывается на Юзертаске:
@@ -2186,3 +2195,297 @@ _testSimpleSubProces - порожденный
 [Назначение даты исполнения](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9D%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F---%D0%BF%D0%BE-%D1%83%D0%BC%D0%BE%D0%BB%D1%87%D0%B0%D0%BD%D0%B8%D1%8E--30-%D0%B4%D0%BD%D0%B5%D0%B9-%D0%BA-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B9-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B2-%D0%BD%D1%83%D0%B6%D0%BD%D1%8B%D0%B9-%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82-%D0%B4%D0%B4%D0%BC%D0%BC%D0%B3%D0%B3%D0%B3%D0%B3)   
 [Получение ИД БП](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D0%91%D0%9F)   
 [Получение логина и ФИО основного исполнителя](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BB%D0%BE%D0%B3%D0%B8%D0%BD%D0%B0-%D0%B8-%D0%A4%D0%98%D0%9E-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8F-%D1%87%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA%D0%B0-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D0%BE%D0%B3%D0%BE-%D0%B2-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D0%B5-%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D0%BB%D0%B8-%D0%BF%D0%B5%D1%80%D0%B2%D1%8B%D0%BC)  
+
+
+# Детальная информация
+
+001_CreatingBusinessProcesses.md
+
+### _businessprocessdevelopment
+разработка бизнес-процесса
+
+ [вернуться...](#businessprocessdevelopment)
+ 
+ * ![1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/1bp.jpg)
+* ![screenshot of sample2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2bp.jpg)
+* ![screenshot of sample3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3bp.jpg)
+* [Создание бизнес-процесса дополнительно](https://docs.google.com/document/d/1B3OIYjj3S2YLwUR-PVD3FAcErl_2ua0CYUB5vys6O4U/edit )
+* [Правила при именовании бизнес-процессов](https://github.com/e-government-ua/iBP/wiki/%D0%9E%D0%B1%D1%89%D0%B8%D0%B5-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%BF%D1%80%D0%B8-%D0%B8%D0%BC%D0%B5%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8:#%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5c%D1%81%D1%8B).  
+* проработать инфокарты и бланки заявлений - составить перечень необходимых полей и условий
+* прорисовать всю схему процесса от начала до конца, наполнить блоки информацией.
+* создать принтформы
+
+### _testingonbeta
+_тестирование и проливка на бету и боевой
+
+ [вернуться...](#testingonbeta)
+ 
+ * ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
+* ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
+* пройти процесс от начала до конца по всем возможным путям
+* выслать заказчику инструкцию, ссылки, логин и пароль.
+* в случае необходимости - вносить изменения в процесс. после внесения даже небольшого изменения - обязательное тестирование
+* создать пользователей и группы на дельте - связать их между собой
+* скопировать процессы в подпапки бета и прод. i\wf-region\src\main\resources\bpmn\autodeploy\prod
+* заменить тестовые почты чиновников на настоящие
+* перенести все связанные сущности в подпапки прод (при наличии там файлов, совпадающих по названиям в обоих папках)
+* Если проливка происходит напрямую в ветках test-version или master обязательно необходимо осуществлять обратный мерж в нижние ветки
+* после проливки на боевой проверить процесс хотя бы по одному сценарию, закрыть ишью.
+
+002_Typesofparameters.md
+
+### _string 
+[вернуться...](#string)
+
+строка - для текстовых полей ввода (ограничение 256 символов) 
+![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
+
+### _enum
+[вернуться...](#enum)
+
+выпадающий список - для выбора значения из списка 
+
+![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
+
+### _enum (checkbox)
+
+[вернуться...](#enum (checkbox))
+
+чекбокс - доступно только 2 выбора да/нет.
+
+Чтоб получить чекбокс, необходимо сделать поле с типом enum с двумя вариантами выпадающего списка.
+
+Третьим атрибутом переменной **name** через ";" добавляем параметр **sID_CheckboxTrue** и приравниваем его к ид первого атрибута енума: sID_CheckboxTrue=first_enum_attribute
+
+![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
+
+### _date
+
+[вернуться...](#date)
+
+дата - календарь для выбора даты
+![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
+
+### _boolean
+[вернуться...](#boolean)
+
+принимаемые значения: true / false
+### _label
+[вернуться...](#label)
+
+```xml
+<activiti:formProperty id="info" name="Зверніть увагу" type="label" default="Ви можете здійснити оплату зручним для Вас способом"></activiti:formProperty>
+```
+ используется для отображения текстовых подсказок на форме подачи / обработки обращения 
+ (обязательно добавлять default=” ”, если не указано другое значение). 
+ 
+ Поддерживается форматирование html.
+ ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
+ 
+### _file
+[вернуться...](#file)
+
+После стартовой таски добавляем  сервис-таску для подтягивания всех документов в процесс, где указываем
+`activiti:delegateExpression="#{fileTaskUpload}"`
+
+На первой же юзертаске процесса необходи добавить только листнер:
+```xml
+<activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+```
+на второй и далее только этот
+```xml
+<activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+  <activiti:field name="aFieldInheritedAttachmentID">
+    <activiti:expression>${file_id}</activiti:expression>
+  </activiti:field>
+</activiti:taskListener>
+```
+где file_id - id файла, который нужно отобразить
+можно в виде ${file1},${file2},${file1} если файлов несколько
+* ![2_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_8.JPG)
+
+### _file (New)
+[вернуться...](#file (New))
+
+Чтобы обозначить что прикрепляемый файл должен использоваться по новой схеме, добавляем в нейм поля такую конструкцию:
+**; ;bNew=true**  
+```xml
+    <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
+```
+* ![2_13](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_13.JPG)
+Чтобы этот файл появился на следующем шаге процесса, Вам снова его нужно объявить как обычное поле. Не забудьте указать параметр  writable="false"
+```xml
+<activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+```
+Этот же принцип касается полей типа table, т.к. тейблы превращаются в файлы.  
+Если объявляете тейбл на втором шаге, и хотите чтоб тейбл был недоступен для редактирвоания - ставите флаг writable="false", при этом убираете весь параметр **default**.  
+
+**Важно!** В новой схеме аттачей больше не нужно, **на второй и всех последующих юзертасках**, использовать листенер ${fileTaskInheritance}, т.к. аттач существует как обычная переменнная процесса и его не нужно перетаскивать с одного шага на другой при помощи листенера, достаточно её указать как переменную на юзертаске.
+ 
+**Но !!!** на первую юзертаску необходимо цеплять листенер ${fileTaskUploadListener}  
+```xml
+<activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+```
+(соответственно все файлы которые были подгружены на старттаске будут автоматически видны на первой юзертаске и их не нужно отдельно объявлять)
+т.к. аттачи подгружаемые на централе хранятся во временной базе, и этот листенер их перетаскивает в постоянную.  
+
+Теперь так же доступна подгрузка файлов в тейбл.
+
+***
+### _textArea
+[вернуться...](#textArea)
+* ![2_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_9.JPG)
+### _queueData
+[вернуться...](#queueData)
+* ![2_31](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_31.JPG)
+
+### _invisible
+
+[вернуться...](#invisible)
+* ![2_30](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_30.JPG)
+
+### _select
+
+[вернуться...](#_select)
+
+Для того чтоб в выпадающем списке селекта выпадал заданный массив данных, необходимо правильно заполнить файлы [Subject](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subject), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrganJoinAttribute](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoinattribute), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) соответственно описанию.
+
+###_table
+
+[вернуться...](#_table)
+
+**в бизнес-процессе**
+
+синтаксис поля:  
+name="Поточні рахунки у національній валюті; ;nRowLimit1" - третья позиция в name задает ограничение по количеству добавляемых строк.  
+> name="имя поля; ;nRowsLimit=1" - кнопки "додати рядок" не будет, т.к. 1 строка только  
+> name="имя поля; ;nRowsLimit=5" - кнопка "додати рядок" пропадет после добавления 5-й строки  
+
+type="table"   
+default=” “ - в дефолте в виде json - объекта прописываются свойства каждого столбца. Заложено наследование свойств каждого типа, можно задавать: обязательность заполнения полей, дефолтные записи и т.д. Атрибуты енама прописываются в качестве массива подобъектов. Пример джейсона со всеми типами данных:
+```java
+{
+  "aField": [
+    {
+      "id": "sTableFieldString1",
+      "name": "Стринг",
+      "type": "string",
+      "required": "true",
+      "writable": "true",
+      "bVisible": "false",
+      "default": "дефолтная запись",
+      "nWidth": "100"
+    },
+ {
+      "id": "sFile01",
+      "name": "file1",
+      "type": "file",
+      "required": "true",
+      "writable": "true"
+    }
+]
+}
+```
+**"nWidth": "100"** - это размер поля таблицы в пикселях   
+**"nWidth": "40%"** - можно еще так, это означает, что этот столбец займет 40% ширины всей таблицы   
+**"bVisible": "false"** - скрывает колонку, но она существует. По умолчанию значение - true   
+
+Как и маркер, тейбл можно делать выносным:
+```xml
+<activiti:formProperty id="markers16" name="тейбл3 вынесенный в отдельный файл" type="table" default="${markerService.loadFromFile('table/VED/_test_ved_table3.json')}"></activiti:formProperty>
+```
+* ![2_32](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_32.JPG)
+Если объявляете тейбл на втором шаге, и хотите чтоб тейбл был недоступен для редактирвоания - ставите флаг writable="false", при этом убираете весь параметр **default**.  
+
+**на дашборде**
+
+На дашборд каждая объявленная таблица приходит в виде отдельного файла, который можно только просмотреть, но не загрузить.
+Т.к. таблица приходит на дашборд в виде файла - необходимо передать ИД-шник таблицы в листенере вместе с остальными файлами.
+Отдельно в переменных таблицу прописывать не нужно.
+
+**в принтформе**
+
+Для того чтобы в принтформе отображались все добавленные заявителем строки таблицы необходимо добавить такой тип комментирования:
+```html
+<!--[sTable3-->
+тут строчки которые клонируем
+<!--sTable3]-->
+```
+комментрировать можно как целую строчку таблицы, так и отдельную ячейку
+
+строка таблицы:
+```html
+<!--[sTable3-->
+	<tr>
+		<td >[sTableFieldString1]</td>
+		<td >[sTableFieldLong1]</td>
+		<td >[sTableFieldDate1]</td>
+		<td >[sTableFieldEnum1]</td>
+		<td >[sObjectCustoms]</td>
+		<td >[sID_UA_ObjectCustoms]</td>
+	</tr>
+<!--sTable3]-->
+```
+отдельная ячейка:
+12. Базисні умови поставки товару
+```html
+<!--[sTable4-->
+[sBasis] [sBasisName]<br>
+<!--sTable4]-->
+```
+
+***
+### _line
+[вернуться...](#_line)
+* ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
+
+### _Variable Attributes
+(Атрибуты переменных)
+
+[вернуться...](#VariableAttributes)
+
+*
+**writable** - редактируемость поля  (true/false).  Необязательный элемент.
+На стартовой таске все поля должны быть редактируемы (по умолчанию стоит флаг true).
+Все без исключения. Иначе  при запуске процесса будут ошибки. 
+На юзертаске все поля с флагом true  могут быть отмечены для уточнения (после нажатия на “внести зауваження”). 
+На юзертаске все поля с флагом false недоступны для уточнения. Недоступны для перезаписи значения. Не должны быть отмечены как обязательные (иначе процесс нельзя будет  перевести на новый шаг)
+
+**readable** - отображаемость поля. (true / false) по умолчанию стоит флаг true. Если поставить false, то поле не будет видно, но запись значения в такое поле блокируется. Необязательный атрибут.
+
+**required** - обязательность поля к заполнению. (true / false) по умолчанию стоит флаг false. Необязательный атрибут.
+
+**name** - в нашей расширенной версии активити тег состоит из нескольких частей. Сепаратором выступает точка с запятой.
+name= "Имя;[description];[флаги]". Имя переменной/поля - отображается на  интерфейсе. Обязательный атрибут.
+
+**description** - описание или  подсказка к этой переменной/полю. Отображается на интерфейсе на старттаске серым цветом. На юзертасках не отображается. Необязательный атрибут.
+
+## флаги аттрибута name  
+Используются для переопределения стандартных  атрибутов, имеющие более высокий приоритет на уровне отрисовки интерфейса на юзертасках. 
+
+### **writable=false**  
+Cделает текущее поле нередактируемым для пользователя интерфейса, при этом на уровне процесса поле остается редактируемым.
+```xml
+<activiti:formProperty id="sPlaceBirthChild9" name="Місце народження дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
+```
+### **bNew=true**
+Для обозначения, что прикрепляемый файл должен использоваться по новой схеме  
+```xml
+ <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
+```
+### **nRowsLimit=5**  
+Задает ограничение по количеству добавляемых строк в таблице
+```xml
+ <activiti:formProperty id="sTable1" name="Поточні рахунки у національній валюті; ;nRowsLimit=5" type="table" default=""}]}"></activiti:formProperty>
+``` 
+### **html = sTextInHtmlFormat** 
+В атрибуте name HTML-текст отделяется двойной точкой с запятой:  
+`name=" sTitleText ; sDescription ;; html = sTextInHtmlFormat ;; key2 = value2 ;; key3 = value3 "`  
+где:  
+`sTitleText` - наименование поля;  
+`sDescription` - описание поля (комментарий), которое будет выведено под наименование поля;  
+`sTextInHtmlFormat` - текст HTML-кода, который будет выведен под комментарием к полю;  
+`key2`, `key3`, `value2`, `value3` - прочие параметры, которые нужно передать в `property` в виде ключ-значение, разделенные двойными точками с запятыми.  
+```xml
+ <activiti:formProperty id="sString4" name="sString4; ниже добавится HTML с несколькими элементами;;html=&lt;span&gt;Відкити пошукову сторінку &lt;a href=&quot;https://www.google.com.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Google&quot;&gt;Google&lt;/a&gt; або &lt;a href=&quot;https://yandex.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Яндексу&quot;&gt;Яндекс&lt;/a&gt;.&lt;br&gt; Тут HTML-текст закінчується.&lt;/span&gt;" type="string"></activiti:formProperty>
+```
