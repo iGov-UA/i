@@ -718,16 +718,16 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 * При необходимости, сформированную принтформу можно отправить в письме как Attachment {PrintForm_1}
 * Динамически содержимое принтформы можно изменять маркерами: [issue #816](https://github.com/e-government-ua/i/issues/816)
 
-### _Display_hidefields
+### _display_hidefields
 
-[вернуться...](#Display_hidefields)
+[вернуться...](#display_hidefields)
 
 * ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 
 011_Digitalsignature.md
-### _CreationofasignedEDSdocument
+### _creationofasignedEDSdocument
 
-[вернуться...](#CreationofasignedEDSdocument)
+[вернуться...](#creationofasignedEDSdocument)
 
 * ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
 где pattern/print/example_print_01.html -  шаблон печатной формы заявления, на которую будет накладываеться ЭЦП.  
@@ -740,7 +740,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 ```xml
 <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>` 
 ```
-### _ConverthtmltoPDF
+### _converthtmltoPDF
 
 [вернуться...](#ConverthtmltoPDF)
 
@@ -750,9 +750,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 [валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
 
 012_Electronicqueues.md
-### _Flow_ServiceData.csv
+### _flow_ServiceData.csv
 
-[вернуться...](#Flow_ServiceData.csv)
+[вернуться...](#flow_ServiceData.csv)
 
 **nID_ServiceData** - номер строки в [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) , для которой создается поток  
 **nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)   
@@ -765,16 +765,16 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 **sGroup_Activiti** - id группы активити, созданной для этого департамента  
 **nID_SubjectOrgan** - id номер из файла [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)  
 
-### _FlowLink.csv
+### _flowLink.csv
 
-[вернуться...](#FlowLink.csv)
+[вернуться...](#flowLink.csv)
 
 **nID_Service** - ИД услуги из [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service)  
 **nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv) 
 
-### _FlowProperty.csv
+### _flowProperty.csv
 
-[вернуться...](#FlowProperty.csv)
+[вернуться...](#flowProperty.csv)
 
 **sData** - [набор правил для формирования слотов](http://www.cronmaker.com/) (например - `{"0 0/15 8-15 ? * MON-FRI *":"PT15M"} `)  
 **nID_Flow_ServiceData** - номер потока  
@@ -787,9 +787,16 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 **nLen** - промежуток времени для слота (например 15)   
 **sLenType** - единица измерения на английском (например Min) 
 
-### _Usingmultipleelectronicqueues
+013_Paymentfortheservice.md
+Оплата услуги
 
-[вернуться...](#Usingmultipleelectronicqueues)
+
+
+014_Emails.md
+Емайлы
+### _usingmultipleelectronicqueues
+
+[вернуться...](#usingmultipleelectronicqueues)
 
 * ![12_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_0.JPG)
 в эту переменную будут передаваться данные по свободным слотам выбранной электронной очереди.
@@ -811,15 +818,15 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 в емейл добавляем системный тэг **[cancelTaskSimple]**, который преобразуется в кнопку **вже неактуально, закрити заявку**. Можно использовать в  любых процессах.  
 На первом этапе  отмена заявки по этому тэгу не  освобождает слот электронной очереди.
 
-### _Cancellationrequest
+### _cancellationrequest
 
-[вернуться...](#Cancellationrequest)
+[вернуться...](#cancellationrequest)
 
 [Скрипт для получения даты/времени напоминания о выбранной дате из электронной очереди](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82-%D0%B4%D0%BB%D1%8F-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B4%D0%B0%D1%82%D1%8B%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%BD%D0%B0%D0%BF%D0%BE%D0%BC%D0%B8%D0%BD%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BE-%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D0%BD%D0%BD%D0%BE%D0%B9-%D0%B4%D0%B0%D1%82%D0%B5-%D0%B8%D0%B7-%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B9-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8)
 
-### _Changetheorderofanelectronicqueue
+### _changetheorderofanelectronicqueue
 
-[вернуться...](#Changetheorderofanelectronicqueue)
+[вернуться...](#changetheorderofanelectronicqueue)
 
 Объединение нескольких слотов по потоку  
 Задание количества дней отсрочки по показу слотов очереди  
@@ -827,52 +834,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 Подключение сторонних очередей  
 
 
-* добавить в  БП такие поля (можно на стартовой таске):
-```xml
-<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-<activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" ></activiti:formProperty>
-<activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i10172968078"></activiti:formProperty>
-<activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="0.01"></activiti:formProperty>
-<activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-<activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция"></activiti:formProperty>
-```
-* ![13_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_0.JPG)
-* в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
+### _usingVariablesinEmailTemplates
 
-* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG)
-
-* в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
-
-```xml
-<activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false" ></activiti:formProperty`>
-```
-* ![13_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_2.JPG)
-
-На бэке (wf-base) доработана обработка тэга **[paymentButton_LiqPay]** так, чтоб он поддерживал множественные кнопки оплаты LiqPay в рамках одного письма. [Issue 789](https://github.com/e-government-ua/i/issues/789) 
-
-Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
-`#{MailTaskWithoutAttachment}`  
-`#{MailTaskWithAttachments}`  
-`#{MailTaskWithAttachmentsAndSMS}`  
-
-Параметры сервис таски:  
-**from** (expression)  
-**to** (expression)  
-**subject** (expression)  
-**text** (expression) - Тело письма. Поддержимает html формат. Переменные прописываются в виде ${id}  
-**saAttachmentsForSend** (expression) - указывается id файла ( в виде ${id} ) для отправки с емейлом.  Используется только  для MailTaskWithAttachments  
-
-Чтобы отправить автоматически сформированную принт-форму, добавленную в юзер-таске через id="sBody_N", необходимо добавлять строку в юзер-таске типа   
-```xml
-<activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
-```
-* ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
-а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
-
-
-### _UsingVariablesinEmailTemplates
-
-[вернуться...](#UsingVariablesinEmailTemplates)
+[вернуться...](#usingVariablesinEmailTemplates)
 
 тогда в письме нужно вставить: **enum{[typeOfDocument]}**  
 тогда туда подставится значение выбранного в форме пункта энума  
@@ -881,9 +845,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 если нужно отправить  системный тег - например номер заявки - то пишем просто в квадратных скобках - **[sID_Order]** 
 * ![14_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_1.JPG)
 
-### _Workingwithdatadirectoriesinemails
+### _workingwithdatadirectoriesinemails
 
-[вернуться...](#Workingwithdatadirectoriesinemails)
+[вернуться...](#workingwithdatadirectoriesinemails)
 
 Например:  
 23423421;Запорожская обл.;Адрес1  
@@ -914,9 +878,9 @@ value != enum.
 
 Файл словарь находится в проекте wf-base по пути wf-base/src/main/resources/patterns/dictionary/MVD_Department.csv
 
-### _EmailTemplates
+### _emailTemplates
 
-[вернуться...](#EmailTemplates)
+[вернуться...](#emailTemplates)
 
 
 `<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />`  
@@ -955,9 +919,9 @@ value != enum.
 
 015_SendingSMSnotifications.md
 
-### _SMSnotifications
+### _sMSnotifications
 
-[вернуться...](#SMSnotifications)
+[вернуться...](#sMSnotifications)
 
 Заявка попала на первую юзертаску  
 **Status Vashoho zvernennya [sID_Order] zmineno na %название статуса%**  
@@ -1009,9 +973,9 @@ value != enum.
 
 016_Scripts.md
 
-### _Scripts
+### _scripts
 
-[вернуться...](#Scripts)
+[вернуться...](#scripts)
 
 Пример 1:  
 ```javaScript 
@@ -1042,9 +1006,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 и далее работать с этим числом, прибавляя-отнимая время в милисекундах
 
 
-### _Formatthedateintheprocess
+### _formatthedateintheprocess
 
-[вернуться...](#Formatthedateintheprocess)
+[вернуться...](#formatthedateintheprocess)
 
 * ![16_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_8.JPG)
 где  
@@ -1052,9 +1016,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 **yyyy-MM-dd** - итоговый требуемый формат даты.  регистрозависимо!!!   
 **docDateFormat** - переменная, где сохранится  дата уже в необходимом указанном формате.  
 
-### _Gettingdatetime
+### _gettingdatetime
 
-[вернуться...](#Gettingdatetime)
+[вернуться...](#gettingdatetime)
 
 * ![16_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_6.JPG)
 где
@@ -1063,18 +1027,18 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 **toString()** - не обязательно, это перестраховка  
 
 
-### _Receivingdatetimeelectronicqueue
+### _receivingdatetimeelectronicqueue
 
-[вернуться...](#Receivingdatetimeelectronicqueue)
+[вернуться...](#receivingdatetimeelectronicqueue)
 
 * ![16_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_9.JPG)
 
 **sNotification_day**  - это заранее созданная в процессе переменная, в которую вернем результат работы скрипта 
 
 
-### _GettingID
+### _gettingID
 
-[вернуться...](#GettingID)
+[вернуться...](#gettingID)
 
 * ![16_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_2.JPG)
 
@@ -1084,23 +1048,23 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 * ![16_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_3.JPG)
 
-### _ObtainingBPID
+### _obtainingBPID
 
-[вернуться...](#ObtainingBPID)
+[вернуться...](#obtainingBPID)
 
 * ![16_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_4.JPG)
 
-### _Gettingloginandname
+### _gettingloginandname
 
-[вернуться...](#Gettingloginandname)
+[вернуться...](#gettingloginandname)
 
 * ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
 
 017_Configurationfiles.md
 
-### _Service
+### _service
 
-[вернуться...](#Service)
+[вернуться...](#service)
 
 Пример.
 * nID;sName;nOrder;nID_Subcategory;sInfo;sFAQ;sLaw;nOpenedLimit;sSubjectOperatorName
@@ -1112,9 +1076,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 * 1038;40;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
 * ![17_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_1.JPG)
 
-### _ServiceData
+### _serviceData
 
-[вернуться...](#ServiceData)
+[вернуться...](#serviceData)
 
 * Пример.
 * nID;nID_Service;nID_Place;nID_City;nID_Region;nID_ServiceType;oData;sURL;bHidden;nID_Subject_Operator;bTest;sNote;asAuth;nID_Server
@@ -1123,21 +1087,21 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 * 038;1471;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
 * ![17_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_0.JPG)
 
-### _Subject
+### _subject
 
-[вернуться...](#Subject)
+[вернуться...](#subject)
 
 * ![17_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_2.JPG)
 
-### _SubjectAccount
+### _subjectAccount
 
-[вернуться...](#SubjectAccount)
+[вернуться...](#subjectAccount)
 
 * ![17_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_3.JPG)
 
-### _SubjectOrganJoin
+### _subjectOrganJoin
 
-[вернуться...](#SubjectOrganJoin)
+[вернуться...](#subjectOrganJoin)
 
 * ![17_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_4.JPG)
 
@@ -1146,9 +1110,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 018_Workingwiththegithandrepository.md
 
-### _Conflictresolutioneclipse
+### _conflictresolutioneclipse
 
-[вернуться...](#Conflictresolutioneclipse)
+[вернуться...](#conflictresolutioneclipse)
 
 **Обратите внимание!** Это очень неудобная фишка в eclipse - строки добавляются, а не заменяются.  
 Поэтому дубли нужно удалить вручную. И затем сохранить файл.  
@@ -1296,13 +1260,13 @@ nDays != 5 - правило сработает во все дни кроме п�
 
 023_UsefulInquiries.md
 
-### _Downloadmaximumdate
-[вернуться...](#Downloadmaximumdate)
+### _downloadmaximumdate
+[вернуться...](#downloadmaximumdate)
 
 * ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
 
-### _Numberofservicesbyregion
-[вернуться...](#Numberofservicesbyregion)
+### _numberofservicesbyregion
+[вернуться...](#numberofservicesbyregion)
 
 * ![23_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_1.jpg)
 
