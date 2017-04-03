@@ -435,7 +435,7 @@ type="queueData" required="true"></activiti:formProperty>
 ***
 
 ### mathematicalactionswithvariablesandconditionoperators
-Математические действия с переменными и операторы условий
+# 8. Математические действия с переменными и операторы условий
 [вернуться в начало](general.md)
 
 ### Выполнение простейших математических действий с переменными
@@ -454,7 +454,7 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_conditionstatementsinprocesses)
 
 ### workingwithdatesandtimers
-# Работа с датами и таймерами
+# 9. Работа с датами и таймерами
 [вернуться в начало](general.md)
 ### usingtimers
 Использование таймеров
@@ -464,7 +464,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### markersandvalidators
-# Маркеры и Валидаторы
+# 10. Маркеры и Валидаторы
 [вернуться в начало](general.md)
 
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
@@ -808,7 +808,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### printform
-# Принтформа
+# 11. Принтформа
 [вернуться в начало](general.md)
 
 ### printformmd
@@ -851,7 +851,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### digitalsignature
-# ЭЦП
+# 12. ЭЦП
 [вернуться в начало](general.md)
 
 ### creationofasignededsdocument
@@ -875,8 +875,9 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_converthtmltopdf)
 
 ***
+
 ### electronicqueues
-# Электронные очереди
+# 13. Электронные очереди
 [вернуться в начало](general.md)
 
 ### Настройка электронной очереди
@@ -912,7 +913,7 @@ digit3 - переменная, куда присвоится результат 
 
 
 ### 2. Для созданного потока указываем  расписание
-### flowproperty.csv
+### flowproperty
 файл с расписанием (график работы)
 
 **nID**  
@@ -961,7 +962,7 @@ digit3 - переменная, куда присвоится результат 
 
 ***
 ### paymentfortheservice
-# Оплата услуги
+# 14. Оплата услуги
 [вернуться в начало](general.md)
 
 * добавить в  БП такие поля (можно на стартовой таске):
@@ -991,7 +992,7 @@ digit3 - переменная, куда присвоится результат 
 ***
 
 ### emails
-# Емайлы
+# 15. Емайлы
 [вернуться в начало](general.md)
 
 Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
@@ -1456,7 +1457,7 @@ execution.setVariable('sExecutor', sExecutor)
 ### FlowSlotTicket
 ### SubjectOrganDepartment
 
-
+***
 ### workingwiththegithandrepository
 # 19. Работа с гитом и репозиторием 
 [вернуться в начало](general.md)
@@ -1578,6 +1579,7 @@ IDE NetBeans позволяет автоматизировать этот про
 
 ### Откат изменений (в eclipse)
 
+***
 ### installationeclipse
 # Установка Eclipce
 [вернуться в начало](general.md)
