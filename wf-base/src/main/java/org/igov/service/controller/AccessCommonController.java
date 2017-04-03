@@ -119,8 +119,7 @@ public class AccessCommonController {
             throws AccessServiceException {
         LOG.info("Method loginSubjetct started");
         LOG.info("Working values " + sLogin + " " + sPassword);
-        if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(sLogin, sPassword)
-                ||(generalConfig.isSelfTest() && sPassword.equals(" "))) {
+        if (ProcessEngines.getDefaultProcessEngine().getIdentityService().checkPassword(sLogin, sPassword)) {
             LOG.info("Login and password are correct");
             request.getSession(true);
             Set<String> asAccounts = new HashSet<>();
