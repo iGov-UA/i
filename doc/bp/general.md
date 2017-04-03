@@ -4,7 +4,7 @@
 
 1. [Основные элементы Activiti Designer](https://github.com/e-government-ua/i/blob/test/doc/bp/0021TheMainElementsOfActivitiDesigner.md)
 
-2. [Типы параметров](#Typesofparameters)
+2. [Типы параметров](#typesofparameters)
 1. [Зарезервированные и системные переменные](https://github.com/e-government-ua/i/blob/test/doc/bp/003_ReservedandSystemVariables.md)
 1. [Общие правила при именовании](https://github.com/e-government-ua/i/blob/test/doc/bp/004_Generalrulesfornaming.md)
 1. [Типы Listener и delegateExpression](https://github.com/e-government-ua/i/blob/test/doc/bp/005_TypesListeneranddelegateExpression.md)
@@ -72,7 +72,7 @@
 
 [детальнее...](#_testingonbeta)
 
-### Typesofparameters
+### typesofparameters
 # Типы переменных
 
 ### string
