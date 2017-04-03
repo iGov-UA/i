@@ -3056,9 +3056,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 * ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 
 011_Digitalsignature.md
-### _creationofasignedEDSdocument
+### _creationofasignededsdocument
 
-[вернуться...](#creationofasignedEDSdocument)
+[вернуться...](#creationofasignededsdocument)
 
 * ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
 где pattern/print/example_print_01.html -  шаблон печатной формы заявления, на которую будет накладываеться ЭЦП.  
@@ -3071,9 +3071,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 ```xml
 <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>` 
 ```
-### _converthtmltoPDF
+### _converthtmltopdf
 
-[вернуться...](#ConverthtmltoPDF)
+[вернуться...](#converthtmltopdf)
 
 * ![11_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_0.JPG)
 На юзертасках добавить стандартный набор листнеров для подгрузки файлов.  
@@ -3081,31 +3081,31 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 [валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
 
 012_Electronicqueues.md
-### _flow_ServiceData.csv
+### _flow_servicedata.csv
 
 [вернуться...](#flow_ServiceData.csv)
 
-**nID_ServiceData** - номер строки в [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) , для которой создается поток  
-**nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)   
+**nID_servicedata** - номер строки в [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) , для которой создается поток  
+**nID_subjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)   
 **sID_BP** - id самого процесса  
 
-### _SubjectOrganDepartment.csv
+### _subjectorgandepartment.csv
 
-[вернуться...](#SubjectOrganDepartment.csv)
+[вернуться...](#subjectorgandepartment.csv)
 
 **sGroup_Activiti** - id группы активити, созданной для этого департамента  
 **nID_SubjectOrgan** - id номер из файла [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)  
 
-### _flowLink.csv
+### _flowlink.csv
 
-[вернуться...](#flowLink.csv)
+[вернуться...](#flowlink.csv)
 
 **nID_Service** - ИД услуги из [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service)  
 **nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv) 
 
-### _flowProperty.csv
+### _flowproperty.csv
 
-[вернуться...](#flowProperty.csv)
+[вернуться...](#flowproperty.csv)
 
 **sData** - [набор правил для формирования слотов](http://www.cronmaker.com/) (например - `{"0 0/15 8-15 ? * MON-FRI *":"PT15M"} `)  
 **nID_Flow_ServiceData** - номер потока  
@@ -3167,7 +3167,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 ### _usingVariablesinEmailTemplates
 
-[вернуться...](#usingVariablesinEmailTemplates)
+[вернуться...](#usingvariablesinemailtemplates)
 
 тогда в письме нужно вставить: **enum{[typeOfDocument]}**  
 тогда туда подставится значение выбранного в форме пункта энума  
@@ -3209,9 +3209,9 @@ value != enum.
 
 Файл словарь находится в проекте wf-base по пути wf-base/src/main/resources/patterns/dictionary/MVD_Department.csv
 
-### _emailTemplates
+### _emailtemplates
 
-[вернуться...](#emailTemplates)
+[вернуться...](#emailtemplates)
 
 
 `<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />`  
@@ -3231,9 +3231,9 @@ value != enum.
 [pattern/mail/new_design/_common_employee_notify.html] - общий шаблон уведомлений для гос.служащего (новый) 
 [pattern/mail/_common_client_notify.html] - общий шаблон уведомления гражданина / отмены заявки,  в случае если заявка очень долго не берется в работу  
 
-### _newEmailTemplates
+### _newemailtemplates
 
-[вернуться...](#newEmailTemplates)
+[вернуться...](#newemailtemplates)
 
 * ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
 здесь мы пишем наш контент
@@ -3250,9 +3250,9 @@ value != enum.
 
 015_SendingSMSnotifications.md
 
-### _sMSnotifications
+### _smsnotifications
 
-[вернуться...](#sMSnotifications)
+[вернуться...](#smsnotifications)
 
 Заявка попала на первую юзертаску  
 **Status Vashoho zvernennya [sID_Order] zmineno na %название статуса%**  
@@ -3367,9 +3367,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 **sNotification_day**  - это заранее созданная в процессе переменная, в которую вернем результат работы скрипта 
 
 
-### _gettingID
+### _gettingid
 
-[вернуться...](#gettingID)
+[вернуться...](#gettingid)
 
 * ![16_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_2.JPG)
 
@@ -3379,9 +3379,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 * ![16_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_3.JPG)
 
-### _obtainingBPID
+### _obtainingbpid
 
-[вернуться...](#obtainingBPID)
+[вернуться...](#obtainingpbid)
 
 * ![16_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_4.JPG)
 
@@ -3407,9 +3407,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 * 1038;40;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
 * ![17_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_1.JPG)
 
-### _serviceData
+### _servicedata
 
-[вернуться...](#serviceData)
+[вернуться...](#servicedata)
 
 * Пример.
 * nID;nID_Service;nID_Place;nID_City;nID_Region;nID_ServiceType;oData;sURL;bHidden;nID_Subject_Operator;bTest;sNote;asAuth;nID_Server
@@ -3424,15 +3424,15 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 * ![17_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_2.JPG)
 
-### _subjectAccount
+### _subjectaccount
 
 [вернуться...](#subjectAccount)
 
 * ![17_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_3.JPG)
 
-### _subjectOrganJoin
+### _subjectorganjoin
 
-[вернуться...](#subjectOrganJoin)
+[вернуться...](#subjectorganjoin)
 
 * ![17_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_4.JPG)
 
@@ -3459,9 +3459,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 Installationeclipse.md
 
-### _installJAVAJDK
+### _installjavajdk
 
-[вернуться...](#installJAVAJDK)
+[вернуться...](#installjavajdk)
 
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sQlE3TUh3ZmpiUGM)  
 3. Устанавливаем скачанный файл, без изменений, со всем соглашаемся, можно выбрать свою директорию.  
@@ -3483,9 +3483,9 @@ C:\Program Files (x86)\Java\jdk1.8.0_111
 
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sX0xVUGNRV01SdkE)  
 
-### _installEclipse
+### _installeclipse
 
-[вернуться...](#installEclipse)
+[вернуться...](#installeclipse)
 4. запускаем eclipse.exe  
 5. При первом запуске он спросит где хранить настройки Eclipce  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNUJYaThZZnpLaTg)  
@@ -3559,8 +3559,8 @@ http://download.eclipse.org/technology/m2e/releases
 * Руками прописываем кодировку cp1251 на вкладке Общие (Common)
 * ![ecl1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/ecl1.JPG)
 
-### _addJSONandHTML
-[вернуться...](#addJSONandHTML)
+### _addjsonandhtml
+[вернуться...](#addjsonandhtml)
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_saWRQWTdOVGdTRW8)  
 ![2](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sRWx6dEs0aDNJY0E)  
 3. приложения JSON дает возможность открыть окно для редактирования или валидации JSON  
@@ -3574,8 +3574,8 @@ http://download.eclipse.org/technology/m2e/releases
  
 020_Escalationsandfeedback.md
 
-### _sCondition
-[вернуться...](#sCondition)
+### _scondition
+[вернуться...](#scondition)
 
 Пример самых ходовых правил (sCondition):
 ```
