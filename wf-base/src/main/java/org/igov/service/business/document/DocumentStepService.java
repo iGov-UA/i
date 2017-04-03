@@ -17,7 +17,7 @@ import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightField;
 import org.igov.service.exception.RecordNotFoundException;
-import org.slf4j.Logger; 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -1281,10 +1281,16 @@ public class DocumentStepService {
 
         }
 
-        List<DocumentStep> aResultDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
-                snID_Process_Activiti);
+        List<DocumentStep> aResultDocumentStep = new ArrayList<>();
 
-        LOG.info("aResultDocumentStep in initDocChecker is {}", aResultDocumentStep);
+        try {
+            aResultDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
+                    snID_Process_Activiti);
+        } catch (Exception ex) {
+
+        }
+
+        LOG.info("aResultDocumentStep in initDocChecker is {}", aResultDocumentStep.size());
 
         for (DocumentStep oDocumentStep : aResultDocumentStep) {
             if (oDocumentStep.getsKey_Step().equals(sKey_Step_Document)) {
@@ -1407,7 +1413,7 @@ public class DocumentStepService {
         LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
         DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
-        
+
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
             if (oDocumentStepSubjectRight != null) {
