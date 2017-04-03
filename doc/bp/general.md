@@ -1,7 +1,7 @@
 
  
 1. [Создание бизнес-процессов](#creatingBusinessProcesses)
-1. [Основные элементы Activiti Designer](theMainElementsOfActivitiDesigner)
+1. [Основные элементы Activiti Designer](#theMain)
 2. [Типы параметров](#typesofparameters)
 1. [Зарезервированные и системные переменные](#reservedandSystemVariables)
 1. [Общие правила при именовании](#generalrulesfornaming)
@@ -71,7 +71,7 @@
 [детальнее...](#_testingonbeta)
 
 ***
-### theMainElementsOfActivitiDesigner
+### theMain
 # Основные элементы Activiti Designer
 
 [вернуться в начало](general.md)
