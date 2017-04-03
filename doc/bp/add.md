@@ -2,8 +2,8 @@
 
 001_CreatingBusinessProcesses.md
 
-### _разработка бизнес-процесса
- [вернуться...](#разработка бизнес-процесса)
+### _Businessprocessdevelopment
+ [вернуться...](#Businessprocessdevelopment)
  * ![1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/1bp.jpg)
 * ![screenshot of sample2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2bp.jpg)
 * ![screenshot of sample3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3bp.jpg)
@@ -14,15 +14,11 @@
 * создать принтформы
 
  * [вернуться...](#разработка бизнес-процесса)
- * написать "Як це працює" в формате html. Путь для размещения файла:\i\wf-central\src\main\resources\patterns\services\Info
-* добавить файл с принтформой в формате html. Путь для размещения файла: i\wf-region\src\main\resources\pattern\print. Желательно использовать папку по конкретному органу или направлению.
-* заполнить [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)
-* Если необходимо добавить населенный пункт которого нет в списке - добавить его в сущности [Place](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#place), [PlaceTree](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#placetree), [City](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#city).
-* При необходимости - добавить [электронные очереди](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8). 
-* Прописать [эскалации](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D1%81%D0%BA%D0%B0%D0%BB%D0%B0%D1%86%D0%B8%D0%B8-%D0%B8-%D1%84%D0%B8%D0%B4%D0%B1%D0%B5%D0%BA%D0%B8).
 
-### _тестирование и проливка на бету и боевой
- [вернуться...](#тестирование и проливка на бету и боевой)
+
+### _Testingonbeta
+_тестирование и проливка на бету и боевой
+ [вернуться...](#Testingonbeta)
  * ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
 * ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
 * пройти процесс от начала до конца по всем возможным путям
@@ -242,12 +238,12 @@ default=” “ - в дефолте в виде json - объекта пропи
 [вернуться...](#_line)
 * ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 
-### _Variable Attributes
+### _variableAttributes
 (Атрибуты переменных)
 
-[вернуться...](#VariableAttributes)
+[вернуться...](#variableAttributes)
 
-*
+
 **writable** - редактируемость поля  (true/false).  Необязательный элемент.
 На стартовой таске все поля должны быть редактируемы (по умолчанию стоит флаг true).
 Все без исключения. Иначе  при запуске процесса будут ошибки. 
@@ -292,10 +288,11 @@ Cделает текущее поле нередактируемым для по
 ```xml
  <activiti:formProperty id="sString4" name="sString4; ниже добавится HTML с несколькими элементами;;html=&lt;span&gt;Відкити пошукову сторінку &lt;a href=&quot;https://www.google.com.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Google&quot;&gt;Google&lt;/a&gt; або &lt;a href=&quot;https://yandex.ua/&quot; target=&quot;_blank&quot; title=&quot;Має відкритись пошукова сторінка Яндексу&quot;&gt;Яндекс&lt;/a&gt;.&lt;br&gt; Тут HTML-текст закінчується.&lt;/span&gt;" type="string"></activiti:formProperty>
 ```
-003_ReservedandSystemVariables.md
-### _Attributes BankID
 
-[вернуться...](#Attributes BankID)
+003_ReservedandSystemVariables.md
+### _attributesBankID
+
+[вернуться...](#attributesBankID)
 * **bankId_scan_passport** - file - скан паспорта гражданина
 * **bankIdAddressFactual** - string - адрес регистрации гражданина
 * **bankIdAddressFactual_country** - string/invisible - страна 
@@ -313,15 +310,15 @@ Cделает текущее поле нередактируемым для по
 * **bankId_scan_inn** - file - Скан копия ИНН гражданина
 * ![3_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_0.JPG)
 
-### _Reserved variables for electronic queues
+### _reservedvariablesforelectronicqueues
 
-[вернуться...](#Reserved variables for electronic queues)
+[вернуться...](#reservedvariablesforelectronicqueues)
 * ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
 
-### _Reservedattributevariables
+### _reservedattributevariables
 Зарезервированные переменные атрибутов
 
-[вернуться...](#Reservedattributevariables)
+[вернуться...](#reservedattributevariables)
 * **sAddress** - string/invisible/label - адрес органа
 * **sMailClerk** - string/invisible/label - почта чиновника
 * **sArea** - string/invisible/label - yазвание нас.пункта/района куда подается заявка
@@ -329,10 +326,10 @@ Cделает текущее поле нередактируемым для по
 * **sShapka** - string/invisible/label - шапка принтформы
 * ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
 
-### _Variablesforprintforms
+### _variablesforprintforms
 Переменные принтформ
 
-[вернуться...](#Variablesforprintforms)
+[вернуться...](#variablesforprintforms)
 * ![3_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_6.JPG)
 * **[sDateTimeCreateProcess]** - Возвращает значение системной даты-времени на момент сохранения\подачи заявки гражданином.
 * **[sDateCreateProcess]**- Возвращает значение системной даты на момент сохранения\подачи заявки гражданином.
@@ -343,10 +340,10 @@ Cделает текущее поле нередактируемым для по
 Путь на печатную форму в папке patterns задается в поле name (типа [pattern/print/subsidy_zayava.html]) 
 * **PrintForm** - Позволяет автоматически создавать файл из соответствующей принтформы, который потом можно подгружать к вложениям в письмо на сервис-таске (используем ${PrintForm_1} при отправке письма с вложениями). Номер PrintForm должен совпадать с номером sBody.
 
-### _Validated variables
+### _validatedvariables
 Валидируемые переменные
 
-[вернуться...](#Validated variables)
+[вернуться...](#validatedvariables)
 * ![3_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_4.JPG)
 * **privatePhone, workPhone, phone** - string - номер телефона.
 Первый символ “+”, остальные 12 цифр
@@ -362,19 +359,19 @@ Cделает текущее поле нередактируемым для по
 * **privateMail, email** - string - емейлы
 * **landNumb**- string - кадастровый номер в формате хххххххххх:хх:ххх:хххх
 
-### _Other
+### _other
 Другие
 
-[вернуться...](#Other)
+[вернуться...](#other)
 * **bReferent** - invisible - признак заполнения заявки референтом (true/false).
 * **form_signed** - если объявлена эта переменная на стартовой форме, то при нажатии на кнопку "замовити послугу" заявитель будет перенаправлен на доп.страницу для наложения ЕЦП на заявку.
 * ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
 * **form_signed_all** - при наложении ЕЦП на заявку, она так же будет наложена и на все прикрепленные файлы. При этом все файлы, которые прикрепил гражданин, должны иметь расширение *.pdf.
 
-### _AutoComplete
+### _autoComplete
 Автокомплиты
 
-[вернуться...](#AutoComplete)
+[вернуться...](#autoComplete)
 * ![3_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_7.JPG)
 * **sID_UA_Country** - Код страны (заполнится автоматически после выбора в селекте sCountry)
 * **sCurrency** - select - Валюта 
@@ -383,10 +380,10 @@ Cделает текущее поле нередактируемым для по
 * **sID_UA_SubjectOrganJoinTax** - Код таможни (заполнится автоматически после выбора в селекте sSubjectOrganJoinTax)
 * **sID_Place_UA** - string - В переменную передается КОАТУУ выбранного населенного пункта (поле Place)
 
-### _Requestvariables
+### _requestvariables
 Переменные-запросы
 
-[вернуться...](#Requestvariables)
+[вернуться...](#requestvariables)
 
 * **sShortName_SubjectOrgan_** - string - Краткое наименование
 * **sLocation_SubjectOrgan_** - textArea - Адрес регистрации
@@ -417,10 +414,10 @@ Cделает текущее поле нередактируемым для по
 ***
 
 
-004_Generalrulesfornaming.md
-### _переменные
+### 004_Generalrulesfornaming.md
+### _variables
 
-[вернуться...](#переменные)
+[вернуться...](#variables)
 * a = Array (массивы) - anPrice, asName, aDepartament
 * o = Object (обьекты/когда трудно определить строка или число) - oVisitDate
 * b = boolean 
@@ -471,10 +468,10 @@ eco_0521
 ## принтформы
 ## выносные файлы
 
-### _User'scolor
+### _userscolor
 Подсвечивать этап (юзертаску) в дашборде  цветом
 
-[вернуться...](#User'scolor)
+[вернуться...](#userscolor)
 
 * "_green" - подкрашивать строку - зеленым цветом (класс: "bg_green")
 * "usertask1" - подкрашивать строку - салатовым цветом (класс: "bg_first")
@@ -482,9 +479,9 @@ eco_0521
 * ![4_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_3.JPG)
 
 005_TypesListeneranddelegateExpression.md
-### _Listener
+### _listener
 
-[вернуться...](#Listener)
+[вернуться...](#listener)
    * ![5_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_0.jpg)
    * ${CreateDocument_UkrDoc}
    * ${GetDocument_UkrDoc}
@@ -492,9 +489,9 @@ eco_0521
    * ${DocumentInit_iDoc}  
    * ![5_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_3.JPG)
    
-### _SetTasks
+### _setTasks
 
-[вернуться...](#SetTasks)
+[вернуться...](#setTasks)
 **sTaskProcessDefinition** - сюда прописываем ИД БП в который нужно пробросить данные **(3)**  
 далее перечисляем обязательные поля **(5)**  
 **sID_Attachment**  
@@ -511,9 +508,9 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 ```  
 разделитель между переменными - две точки с запятой.
 
-### _DocumentInit_iDoc
+### _documentInit_iDoc
 
-[вернуться...](#DocumentInit_iDoc)
+[вернуться...](#documentInit_iDoc)
 Листенер тянет из файла json данные, которые задают права определенных групп на просмотр или редактирование отдельных полей в данном бизнес-процессе.  
 Файл json должен иметь такое же имя как ИД БП, в котором установлен листенер.  
 Например:  
@@ -559,8 +556,8 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 ```
 ***
 
-### _UpdateStatusTask
-[вернуться...](#UpdateStatusTask)
+### _updateStatusTask
+[вернуться...](#updateStatusTask)
 Все статусы задаются в файле: _i\wf-base\src\main\resources\data\ProcessSubjectStatus.csv_  
 В енаме (saStatusTask) порожденной задачи должны присутствовать только статусы из этого файла и передаваться затем в переменную sID_ProcessSubjectStatus:
 ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sb1J3RUx6Ti1HSGc)
@@ -579,26 +576,26 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
    * #{releaseTicketsOfQueue} - При создании сервистаски с таким параметром инициализируется отмена заявки и высвобождение слота  электронной очереди по инициативе сотрудника или системы 
 
 006_Assigngroupsandusers.md
-### _Addingauser
-[вернуться...](#Addingauser)
+### _addingauser
+[вернуться...](#addingauser)
 * ![6_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_7.JPG)
 
-### _Addingausertoagroup
-[вернуться...](#Addingausertoagroup) 
+### _addingausertoagroup
+[вернуться...](#addingausertoagroup) 
 * ![6_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_6.jpg)
 
 
 007_Mathematicalactionswithvariablesandconditionoperators.md
-### _Conditionstatementsinprocesses
-[вернуться...](#Conditionstatementsinprocesses) 
+### _conditionstatementsinprocesses
+[вернуться...](#conditionstatementsinprocesses) 
 * ${form_attr1 == form_attr2} - сравнение значений 2х переменных в процессе
 * ${form_attr1 == "N" || form_attr2 == "N"} - логическое “или” для 2х условий
 * ${form_attr1 == "Y" && form_attr2 == "Y" } - логические “и” для 2х условий 
 Если сложное условие прописывается в скрипттаске прямо в редакторе БП, то необходимо вместо && указать &amp;&amp; Последовательность “||” может быть указана явно. 
 
 008_Workingwithdatesandtimers.md
-### _Usingtimers
-[вернуться...](#Usingtimers) 
+### _usingtimers
+[вернуться...](#usingtimers) 
 Для настройки эскалации или автопроброса процесса дальше на этап используем элемент **TimerBoundaryEvent** (крепится на юзертаску).  
 Обязательно изменить автоматически создаваемый ID этого элемента  “boundarytimer1 ”на  id="escalationTimer1"  
 
@@ -628,34 +625,34 @@ P[n]W
 ```
 
 009_MarkersandValidators.md
-### _ShowFieldsOnCondition
+### _showFieldsOnCondition
 
-[вернуться...](#ShowFieldsOnCondition)
+[вернуться...](#showFieldsOnCondition)
 * ![6_2M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_2%D0%9C.JPG)
 
-### _RequiredFieldsOnCondition
+### _requiredFieldsOnCondition
 
-[вернуться...](#RequiredFieldsOnCondition)
+[вернуться...](#requiredFieldsOnCondition)
 * ![9_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_2.JPG)
 
-### _ShowElementsOnTrue
+### _showElementsOnTrue
 
-[вернуться...](#ShowElementsOnTrue)
+[вернуться...](#showElementsOnTrue)
 * ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 
-### _ValuesFieldsOnCondition
+### _valuesFieldsOnCondition
 
-[вернуться...](#ValuesFieldsOnCondition)
+[вернуться...](#valuesFieldsOnCondition)
 * ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
 
-### _WritableFieldsOnCondition
+### _writableFieldsOnCondition
 
-[вернуться...](#WritableFieldsOnCondition)
+[вернуться...](#writableFieldsOnCondition)
 * ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG) 
 
-### _SplitTextHalf_1
+### _splitTextHalf_1
 
-[вернуться...](#SplitTextHalf_1)
+[вернуться...](#splitTextHalf_1)
 
 Для использования  маркеров из внешнего файла, указываем путь к файлу:  
 [Issues 840](https://github.com/e-government-ua/i/issues/840)  
@@ -669,32 +666,32 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 * ![6_1M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_1%D0%9C.JPG)
 
 ## Маркеры группы validate
-### _CustomFormat_1
+### _customFormat_1
 
-[вернуться...](#CustomFormat_1)
+[вернуться...](#customFormat_1)
 
 * ![9_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_7.JPG) 
 
-### _Extensions
+### _extensions
 
-[вернуться...](#Extensions)
+[вернуться...](#extensions)
 
 * ![9_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_8.JPG)
 
-### _FileSign
+### _fileSign
 
-[вернуться...](#FileSign)
+[вернуться...](#fileSign)
 
 * ![9_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_6.JPG)
 
 ## Маркеры группы attributes
-### _Line
+### _line
 
-[вернуться...](#Line)
+[вернуться...](#line)
 
 * ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 
-### _Style
+### _style
 
 [вернуться...](#Style)
 
@@ -712,9 +709,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 * ![9_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_9.JPG)
 
 010_Printform.md
-### _Printform
+### _printformmd
 
-[вернуться...](#Printform)
+[вернуться...](#printformmd)
 
 * ![10_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/10_0.JPG)
       
