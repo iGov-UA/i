@@ -83,7 +83,7 @@ public class AccessCommonController {
             HttpServletRequest request)
             throws AccessServiceException {
         
-        if(generalConfig.isSelfTest() && password == null){
+        if(generalConfig.isSelfTest() && password.equals(" ")){
             LOG.info("test empty login...");
             request.getSession(true);
             return new LoginResponse(Boolean.TRUE.toString());
