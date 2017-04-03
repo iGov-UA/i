@@ -1,9 +1,12 @@
 test
-[вернуться в начало](general.md)
+[перейти на нужный тэг](general.md)
 
-[вернуться в начало1](general.md)[1](#businessprocessdevelopment)
+[перейти на нужный тэг1](general.md)[1](#businessprocessdevelopment)
 
-[вернуться в начало2](general.md)(#businessprocessdevelopment)
+[перейти на нужный тэг2](general.md)(#businessprocessdevelopment)
 
-[вернуться в начало3](general.md#businessprocessdevelopment)
+[перейти на нужный тэг3](general.md#businessprocessdevelopment)
+
+[перейти на нужный тэг4](general.mdbusinessprocessdevelopment)
+
 ### businessprocessdevelopment  ### creatingbusinessprocesses ### themain ### typesofparameters
