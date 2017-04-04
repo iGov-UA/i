@@ -3643,7 +3643,7 @@ nDays != 5 - правило сработает во все дни кроме п�
 ### _downloadmaximumdate
 [вернуться...](#downloadmaximumdate)
 
-* ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
+  ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
 
 ### _numberofservicesbyregion
 [вернуться...](#numberofservicesbyregion)
