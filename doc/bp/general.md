@@ -2391,7 +2391,7 @@ _тестирование и проливка на бету и боевой
 [вернуться...](#string)
 
 строка - для текстовых полей ввода (ограничение 256 символов) 
-![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
+  ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
 
 ### _enum
 [вернуться...](#enum)
@@ -2433,7 +2433,7 @@ _тестирование и проливка на бету и боевой
  (обязательно добавлять default=” ”, если не указано другое значение). 
  
  Поддерживается форматирование html.
- ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
+  ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
  
 ### _file
 [вернуться...](#file)
@@ -2455,7 +2455,7 @@ _тестирование и проливка на бету и боевой
 ```
 где file_id - id файла, который нужно отобразить
 можно в виде ${file1},${file2},${file1} если файлов несколько
-* ![2_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_8.JPG)
+   ![2_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_8.JPG)
 
 ### _file (New)
 [вернуться...](#file (New))
@@ -2465,7 +2465,7 @@ _тестирование и проливка на бету и боевой
 ```xml
     <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
 ```
-* ![2_13](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_13.JPG)
+  ![2_13](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_13.JPG)
 Чтобы этот файл появился на следующем шаге процесса, Вам снова его нужно объявить как обычное поле. Не забудьте указать параметр  writable="false"
 ```xml
 <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -2487,15 +2487,15 @@ _тестирование и проливка на бету и боевой
 ***
 ### _textarea
 [вернуться...](#textarea)
-* ![2_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_9.JPG)
+  ![2_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_9.JPG)
 ### _queuedata
 [вернуться...](#queueData)
-* ![2_31](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_31.JPG)
+  ![2_31](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_31.JPG)
 
 ### _invisible
 
 [вернуться...](#invisible)
-* ![2_30](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_30.JPG)
+  ![2_30](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_30.JPG)
 
 ### _select
 
@@ -2503,7 +2503,7 @@ _тестирование и проливка на бету и боевой
 
 Для того чтоб в выпадающем списке селекта выпадал заданный массив данных, необходимо правильно заполнить файлы [Subject](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subject), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrganJoinAttribute](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoinattribute), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) соответственно описанию.
 
-###_table
+### _table
 
 [вернуться...](#_table)
 
@@ -2547,7 +2547,7 @@ default=” “ - в дефолте в виде json - объекта пропи
 ```xml
 <activiti:formProperty id="markers16" name="тейбл3 вынесенный в отдельный файл" type="table" default="${markerService.loadFromFile('table/VED/_test_ved_table3.json')}"></activiti:formProperty>
 ```
-* ![2_32](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_32.JPG)
+  ![2_32](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_32.JPG)
 Если объявляете тейбл на втором шаге, и хотите чтоб тейбл был недоступен для редактирвоания - ставите флаг writable="false", при этом убираете весь параметр **default**.  
 
 **на дашборде**
@@ -2587,17 +2587,16 @@ default=” “ - в дефолте в виде json - объекта пропи
 <!--sTable4]-->
 ```
 
-***
 ### _line
 [вернуться...](#_line)
-* ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
+  ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 
 ### _variableattributes
 (Атрибуты переменных)
 
 [вернуться...](#variableattributes)
 
-*
+ 
 **writable** - редактируемость поля  (true/false).  Необязательный элемент.
 На стартовой таске все поля должны быть редактируемы (по умолчанию стоит флаг true).
 Все без исключения. Иначе  при запуске процесса будут ошибки. 
@@ -2666,7 +2665,7 @@ Cделает текущее поле нередактируемым для по
 ### _reservedvariablesforelectronicqueues
 
 [вернуться...](#reservedvariablesforelectronicqueues)
-* ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
+  ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
 
 ### _reservedattributevariables
 Зарезервированные переменные атрибутов
@@ -2677,7 +2676,7 @@ Cделает текущее поле нередактируемым для по
 * **sArea** - string/invisible/label - yазвание нас.пункта/района куда подается заявка
 * **nArea** - string/invisible/label - yомер в справочнике нас.пункта/района куда подается заявка
 * **sShapka** - string/invisible/label - шапка принтформы
-* ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
+   ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
 
 ### _variablesforprintforms
 Переменные принтформ
@@ -2697,16 +2696,18 @@ Cделает текущее поле нередактируемым для по
 Валидируемые переменные
 
 [вернуться...](#validatedvariables)
-* ![3_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_4.JPG)
+
+  ![3_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_4.JPG)
 * **privatePhone, workPhone, phone** - string - номер телефона.
 Первый символ “+”, остальные 12 цифр
 * **lastName_UA1,  firstName_UA1, middleName_UA1, lastName_UA2,  firstName_UA2, middleName_UA2**  - string - Название или ФИО с украинскими буквами. Разрешена только кириллица, дефис, апостроф.
 * **lastName_RU1,  firstName_RU1, middleName_RU1, lastName_RU2,  firstName_RU2, middleName_RU2** - string - Название или ФИО с русскими буквами. Разрешена только кириллица, дефис.
 * **date_of_birth** - date - дата рождения. Не разрешено выбирать дату больше текущей.
 * **kved** - string - вид экономической деятельности по КВЕД. Две цифры точка две цифры (первые две цифры не могут быть 04, 34, 40, 44, 48, 54, 57, 67, 76, 83, 89).
-* ![3_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_2.JPG)
+   
+   ![3_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_2.JPG)
 * **edrpou** - string - восемь цифр.
-* ![3_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_3.JPG)
+   ![3_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_3.JPG)
 * **mfo** - string - шесть цифр.
 * **kids_Birth** - date - не разрешено выбирать дату больше текущей, разница между текущей датой и выбранной не должна превышать 14 лет.
 * **privateMail, email** - string - емейлы
@@ -2718,14 +2719,14 @@ Cделает текущее поле нередактируемым для по
 [вернуться...](#other)
 * **bReferent** - invisible - признак заполнения заявки референтом (true/false).
 * **form_signed** - если объявлена эта переменная на стартовой форме, то при нажатии на кнопку "замовити послугу" заявитель будет перенаправлен на доп.страницу для наложения ЕЦП на заявку.
-* ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
+  ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
 * **form_signed_all** - при наложении ЕЦП на заявку, она так же будет наложена и на все прикрепленные файлы. При этом все файлы, которые прикрепил гражданин, должны иметь расширение *.pdf.
 
 ### _autocomplete
 Автокомплиты
 
 [вернуться...](#autoComplete)
-* ![3_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_7.JPG)
+  ![3_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_7.JPG)
 * **sID_UA_Country** - Код страны (заполнится автоматически после выбора в селекте sCountry)
 * **sCurrency** - select - Валюта 
 * **sID_UA_Currenc**y - Код валюти (заполнится автоматически после выбора в селекте sCurrency)
@@ -2764,10 +2765,9 @@ Cделает текущее поле нередактируемым для по
 **Заполненный**
 ![Заполненный](https://goo.gl/UtPH43)
 
-***
 
 
-004_Generalrulesfornaming.md
+###### Общие правила при именовании
 ### _variables
 
 [вернуться...](#variables)
@@ -2799,7 +2799,7 @@ zags_0710_death
 
 eco_0520_auditori  
 eco_0521  
-* ![4_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_0.JPG)
+  ![4_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_0.JPG)
 ### {орган} Приставки для именования БП
 **dfs** - налоговая  
 **dms** - миграционная  
@@ -2816,7 +2816,7 @@ eco_0521
 **oda** - услуги ОДА  
 **rada** - услуги местных органов власти (гор.советы, сельские советы, районные рады, поселковые советы)  
 **med** - медицинские услуги  
-* ![4_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_1.JPG)
+  ![4_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_1.JPG)
 ## группы и пользователи
 ## принтформы
 ## выносные файлы
@@ -2828,10 +2828,10 @@ eco_0521
 
 * "_green" - подкрашивать строку - зеленым цветом (класс: "bg_green")
 * "usertask1" - подкрашивать строку - салатовым цветом (класс: "bg_first")
-* ![4_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_2.jpg)
-* ![4_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_3.JPG)
+    ![4_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_2.jpg)
+  ![4_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_3.JPG)
 
-005_TypesListeneranddelegateExpression.md
+###### 6. Типы Listener и delegateExpression
 ### _listener
 
 [вернуться...](#listener)
@@ -2840,7 +2840,7 @@ eco_0521
    * ${GetDocument_UkrDoc}
    * ${UpdateStatusTask}
    * ${DocumentInit_iDoc}  
-   * ![5_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_3.JPG)
+    ![5_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_3.JPG)
    
 ### _settasks
 
@@ -2853,7 +2853,7 @@ eco_0521
 **sName_SubjectRole**  
 **sDateExecution**  
 **processDefinitionId**  
-![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNG44eU1GSmlkUjg)  
+  ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNG44eU1GSmlkUjg)  
 Так же в параметре листенера **soData** **(4)** можно передать другие поля, необходимые в процессе в формате:
 
 ```
@@ -2907,14 +2907,13 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
   }
 }
 ```
-***
 
 ### _updatestatustask
 [вернуться...](#updatestatustask)
 Все статусы задаются в файле: _i\wf-base\src\main\resources\data\ProcessSubjectStatus.csv_  
 В енаме (saStatusTask) порожденной задачи должны присутствовать только статусы из этого файла и передаваться затем в переменную sID_ProcessSubjectStatus:
-![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sb1J3RUx6Ti1HSGc)
-***
+  ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sb1J3RUx6Ti1HSGc)
+
 
 ### _delegateexpression
 
@@ -2928,17 +2927,17 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
    * #{SendObject_Corezoid_New}
    * #{releaseTicketsOfQueue} - При создании сервистаски с таким параметром инициализируется отмена заявки и высвобождение слота  электронной очереди по инициативе сотрудника или системы 
 
-006_Assigngroupsandusers.md
+###### Назначение групп и пользователей
 ### _addingauser
 [вернуться...](#addingauser)
-* ![6_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_7.JPG)
+  ![6_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_7.JPG)
 
 ### _addingausertoagroup
 [вернуться...](#addingausertoagroup) 
-* ![6_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_6.jpg)
+  ![6_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_6.jpg)
 
 
-007_Mathematicalactionswithvariablesandconditionoperators.md
+###### 8. Математические действия с переменными и операторы условий
 ### _conditionstatementsinprocesses
 [вернуться...](#conditionstatementsinprocesses) 
 * ${form_attr1 == form_attr2} - сравнение значений 2х переменных в процессе
@@ -2946,7 +2945,7 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 * ${form_attr1 == "Y" && form_attr2 == "Y" } - логические “и” для 2х условий 
 Если сложное условие прописывается в скрипттаске прямо в редакторе БП, то необходимо вместо && указать &amp;&amp; Последовательность “||” может быть указана явно. 
 
-008_Workingwithdatesandtimers.md
+###### 9. Работа с датами и таймерами
 ### _usingtimers
 [вернуться...](#usingtimers) 
 Для настройки эскалации или автопроброса процесса дальше на этап используем элемент **TimerBoundaryEvent** (крепится на юзертаску).  
@@ -2977,31 +2976,31 @@ P[n]W
 	</boundaryEvent>
 ```
 
-009_MarkersandValidators.md
+###### 10. Маркеры и Валидаторы
 ### _showfieldsoncondition
 
 [вернуться...](#showfieldsoncondition)
-* ![6_2M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_2%D0%9C.JPG)
+  ![6_2M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_2%D0%9C.JPG)
 
 ### _requiredfieldsoncondition
 
 [вернуться...](#requiredfieldsoncondition)
-* ![9_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_2.JPG)
+  ![9_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_2.JPG)
 
 ### _showelementsontrue
 
 [вернуться...](#showelementsontrue)
-* ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
+  ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 
 ### _valuesfieldsoncondition
 
 [вернуться...](#valuesfieldsoncondition)
-* ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
+  ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
 
 ### _writablefieldsoncondition
 
 [вернуться...](#writablefieldsoncondition)
-* ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG) 
+  ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG) 
 
 ### _splittexthalf_1
 
@@ -3016,39 +3015,39 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
 Допускается использование вложенных подпапок  
 default="${markerService.loadFromFile('folder_name/testmarkers.json')}"   
 Маркеры хранятся в папке /wf-region/src/main/resources/bpmn/markers/motion
-* ![6_1M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_1%D0%9C.JPG)
+  ![6_1M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_1%D0%9C.JPG)
 
-## Маркеры группы validate
+### Маркеры группы validate
 ### _customformat_1
 
 [вернуться...](#customformat_1)
 
-* ![9_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_7.JPG) 
+  ![9_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_7.JPG) 
 
 ### _extensions
 
 [вернуться...](#extensions)
 
-* ![9_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_8.JPG)
+  ![9_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_8.JPG)
 
 ### _filesign
 
 [вернуться...](#filesign)
 
-* ![9_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_6.JPG)
+  ![9_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_6.JPG)
 
-## Маркеры группы attributes
+### Маркеры группы attributes
 ### _line
 
 [вернуться...](#line)
 
-* ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
+  ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 
 ### _style
 
 [вернуться...](#style)
 
-* ![9_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_5.JPG)
+  ![9_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_5.JPG)
 
 Маркер анализирует правила в свойствах aElement_ID и aSelectors и добавляет стили перечисленный из свойства oCommonStyle в блок ```<head>``` в виде отдельного стиля. Причем стилями можно влиять не только на элементы формы но на всю страницу.
 
@@ -3059,14 +3058,14 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 [вернуться...](#snote)
 
-* ![9_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_9.JPG)
+  ![9_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_9.JPG)
 
-010_Printform.md
+###### 11. Принтформы
 ### _printformmd
 
 [вернуться...](#printformmd)
 
-* ![10_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/10_0.JPG)
+  ![10_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/10_0.JPG)
       
 * При необходимости, сформированную принтформу можно отправить в письме как Attachment {PrintForm_1}
 * Динамически содержимое принтформы можно изменять маркерами: [issue #816](https://github.com/e-government-ua/i/issues/816)
@@ -3075,14 +3074,14 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 [вернуться...](#display_hidefields)
 
-* ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
+  ![9_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_0.JPG)
 
-011_Digitalsignature.md
+###### 12. ЭЦП
 ### _creationofasignededsdocument
 
 [вернуться...](#creationofasignededsdocument)
 
-* ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
+   ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
 где pattern/print/example_print_01.html -  шаблон печатной формы заявления, на которую будет накладываеться ЭЦП.  
 
 Если вместо ид **form_signed** будет поставлен ид **form_signed_all**, то ЕЦП будет наложена так же на все подгружаемые файлы.  
@@ -3097,12 +3096,12 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 [вернуться...](#converthtmltopdf)
 
-* ![11_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_0.JPG)
+  ![11_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_0.JPG)
 На юзертасках добавить стандартный набор листнеров для подгрузки файлов.  
 
 [валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
 
-012_Electronicqueues.md
+###### 13. Электронные очереди
 ### _flow_servicedata
 
 [вернуться...](#flow_servicedata)
@@ -3140,18 +3139,18 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 **nLen** - промежуток времени для слота (например 15)   
 **sLenType** - единица измерения на английском (например Min) 
 
-013_Paymentfortheservice.md
-Оплата услуги
+
+###### 14. Оплата услуги
 
 
 
-014_Emails.md
-Емайлы
+
+###### 15. Емайлы
 ### _usingmultipleelectronicqueues
 
 [вернуться...](#usingmultipleelectronicqueues)
 
-* ![12_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_0.JPG)
+  ![12_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_0.JPG)
 в эту переменную будут передаваться данные по свободным слотам выбранной электронной очереди.
 
 * на этой же  таске указываем переменную с id = **nID_Department_visitDate**, где **_visitDate** - это ИД необходимой переменной с нужной нам электронной очередью. 
@@ -3166,7 +3165,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 Использование тэга позволяет закрыть заявку и высвободить тэг электронной очереди.  
 Тэг можно использовать только в процессе с электронной очередью.
-* ![12_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_1.JPG) 
+  ![12_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_1.JPG) 
 ### Вариант №2. Использование системного тега [cancelTaskSimple]
 в емейл добавляем системный тэг **[cancelTaskSimple]**, который преобразуется в кнопку **вже неактуально, закрити заявку**. Можно использовать в  любых процессах.  
 На первом этапе  отмена заявки по этому тэгу не  освобождает слот электронной очереди.
@@ -3196,7 +3195,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 **enum{[ … ]}** - тег приоритетной подстановки значение енума (можно использовать в шаблонах емейлов)  
 **value{[ … ]}** - тег приоритетной подстановки  значения переменной (можно использовать в шаблонах емейлов)  
 если нужно отправить  системный тег - например номер заявки - то пишем просто в квадратных скобках - **[sID_Order]** 
-* ![14_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_1.JPG)
+  ![14_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_1.JPG)
 
 ### _workingwithdatadirectoriesinemails
 
@@ -3222,7 +3221,7 @@ value != enum.
 Например:  
 для того чтобы из справочника бралось значение в зависимости от значения переменной ${region} используем выражение такого типа:
 [pattern_dictonary:zhytomir_reg_cnap.csv:value{[region]}:4]
-* ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
+  ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
 
 **Важно:** замена полей происходит если у таски навешан какой-либо из следующих компонентов.  
 `activiti:delegateExpression="#{MailTaskWithAttachments}"`  
@@ -3257,7 +3256,7 @@ value != enum.
 
 [вернуться...](#newemailtemplates)
 
-* ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
+  ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
 здесь мы пишем наш контент
 ```
 [pattern/mail/new_design/_common_content_end.html]
@@ -3270,8 +3269,7 @@ value != enum.
 [pattern/mail/new_design/_common_footer.html]
 ```
 
-015_SendingSMSnotifications.md
-
+###### 16. Отправка СМС-оповещений
 ### _smsnotifications
 
 [вернуться...](#smsnotifications)
@@ -3315,7 +3313,7 @@ value != enum.
         </activiti:field>
       
 ```
-* ![14_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_1.JPG)
+  ![14_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_1.JPG)
 
 * Если  емейл не предусматривает отправку файла, то  указываем “ “ в качестве  значения  параметра файла для отправки:  
 ```xml
@@ -3324,8 +3322,8 @@ value != enum.
         </activiti:field>
 ```
 
-016_Scripts.md
 
+###### 17. Скрипты
 ### _scripts
 
 [вернуться...](#scripts)
@@ -3348,8 +3346,8 @@ value != enum.
     execution.setVariable('MyDateToday', new Date().format("dd.MM.yyyy").toString())
   </script>
 </scriptTask>
-``` ```
-* ![16_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_7.JPG)
+``` 
+   ![16_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_7.JPG)
 [описание операторов и переменных для написания скриптов Javascript](http://javascript.ru/)  
 
 Для получения значения даты на момент срабатывания скрипта можно использовать:
@@ -3363,7 +3361,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 [вернуться...](#formatthedateintheprocess)
 
-* ![16_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_8.JPG)
+  ![16_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_8.JPG)
 где  
 **docDate** - имя параметра даты в процессе с форматом типа date.  Дата выбиралась из календарика.  
 **yyyy-MM-dd** - итоговый требуемый формат даты.  регистрозависимо!!!   
@@ -3373,7 +3371,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 [вернуться...](#gettingdatetime)
 
-* ![16_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_6.JPG)
+  ![16_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_6.JPG)
 где
 **dCreate** - это поле в которое поместится результат (Время берется по Гринвичу)  
 **format("dd.MM.yyyy")** - задаем формат получаемого времени. Если формат не указываем то  по умолчанию дата / время будут в формате Tue Apr 26 14:51:17 UTC 2016  
@@ -3384,7 +3382,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 [вернуться...](#receivingdatetimeelectronicqueue)
 
-* ![16_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_9.JPG)
+  ![16_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_9.JPG)
 
 **sNotification_day**  - это заранее созданная в процессе переменная, в которую вернем результат работы скрипта 
 
@@ -3393,28 +3391,28 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 [вернуться...](#gettingid)
 
-* ![16_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_2.JPG)
+  ![16_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_2.JPG)
 
 ### _counteraddingnumber
 
 [вернуться...](#counteraddingnumber)
 
-* ![16_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_3.JPG)
+  ![16_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_3.JPG)
 
 ### _obtainingbpid
 
 [вернуться...](#obtainingpbid)
 
-* ![16_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_4.JPG)
+  ![16_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_4.JPG)
 
 ### _gettingloginandname
 
 [вернуться...](#gettingloginandname)
 
-* ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
+  ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
 
-017_Configurationfiles.md
 
+###### 18. Конфигурационные файлы
 ### _service
 
 [вернуться...](#service)
@@ -3427,7 +3425,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 * 40;Повідомлення про проведення зборів, мітингів, маніфестацій і демонстрацій, спортивних, видовищних та інших масових заходів;100;2;;;;0;Сільська рада
 
 * 1038;40;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
-* ![17_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_1.JPG)
+   ![17_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_1.JPG)
 
 ### _servicedata
 
@@ -3444,25 +3442,25 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 [вернуться...](#subject)
 
-* ![17_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_2.JPG)
+  ![17_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_2.JPG)
 
 ### _subjectaccount
 
 [вернуться...](#subjectAccount)
 
-* ![17_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_3.JPG)
+  ![17_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_3.JPG)
 
 ### _subjectorganjoin
 
 [вернуться...](#subjectorganjoin)
 
-* ![17_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_4.JPG)
+  ![17_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_4.JPG)
 
 
 
 
-018_Workingwiththegithandrepository.md
 
+###### 19. Работа с гитом и репозиторием
 ### _conflictresolutioneclipse
 
 [вернуться...](#conflictresolutioneclipse)
@@ -3479,20 +3477,20 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 После присвоения индексов каждом конфликтному файлу необходимо собрать проект локально.
 Если локальная сборка прошла успешно - закомитить и вытолкнуть все изменения. **Commit-Pull-Push**
 
-Installationeclipse.md
 
+######  Установка Eclipce
 ### _installjavajdk
 
 [вернуться...](#installjavajdk)
 
-![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sQlE3TUh3ZmpiUGM)  
+  ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sQlE3TUh3ZmpiUGM)  
 3. Устанавливаем скачанный файл, без изменений, со всем соглашаемся, можно выбрать свою директорию.  
 4. Прописываем путь к JAVA (**нужно для tomcat для Eclipse это не важно**)  
-![#f03c15](https://placehold.it/10/f03c15/000000?text=+) a) Заходим в свойства “Мой компьютер”   
-![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sXzZCNXBRQkhsOFE)  
-![#f03c15](https://placehold.it/10/f03c15/000000?text=+) б) Выбираем дополнительные параметры системы  
-![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sZFRELThmbjFNZHc)  
-![#f03c15](https://placehold.it/10/f03c15/000000?text=+) в) добавляем переменную **JAVA_HOME**  
+  ![#f03c15](https://placehold.it/10/f03c15/000000?text=+) a) Заходим в свойства “Мой компьютер”   
+  ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sXzZCNXBRQkhsOFE)  
+  ![#f03c15](https://placehold.it/10/f03c15/000000?text=+) б) Выбираем дополнительные параметры системы  
+  ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sZFRELThmbjFNZHc)  
+  ![#f03c15](https://placehold.it/10/f03c15/000000?text=+) в) добавляем переменную **JAVA_HOME**  
 и путь к установленной JAVA и **обязательно** JDK  
 ```
 C:\Program Files\Java\jdk1.8.0_111  
@@ -3501,7 +3499,7 @@ C:\Program Files\Java\jdk1.8.0_111
 ```  
 C:\Program Files (x86)\Java\jdk1.8.0_111  
 ```
-![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sVWNQa3N1NThKTm8)  
+  ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sVWNQa3N1NThKTm8)  
 
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sX0xVUGNRV01SdkE)  
 
@@ -3510,14 +3508,14 @@ C:\Program Files (x86)\Java\jdk1.8.0_111
 [вернуться...](#installeclipse)
 4. запускаем eclipse.exe  
 5. При первом запуске он спросит где хранить настройки Eclipce  
-![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNUJYaThZZnpLaTg)  
+  ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNUJYaThZZnpLaTg)  
 для лучшей переносимости Eclipce на другой компьютер лучше всего создать в папке где расположен Eclipce новую папку workspace и туда указать хранить настройки, а также поставить галочку что эта папка по умолчанию будет использоваться и для проекта gitа  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sS01ZSkVrczhxWlk)  
 6. Закрываем страничку Welcom  
 7. Ставим activity  
-![#f03c15](https://placehold.it/10/f03c15/000000?text=+) a) help -> install new software…  
-![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sUHNoZG1DU2d2Yzg)  
-![#f03c15](https://placehold.it/10/f03c15/000000?text=+) b) в появившемся окне вставляем адрес 
+  ![#f03c15](https://placehold.it/10/f03c15/000000?text=+) a) help -> install new software…  
+  ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sUHNoZG1DU2d2Yzg)  
+  ![#f03c15](https://placehold.it/10/f03c15/000000?text=+) b) в появившемся окне вставляем адрес 
 ```html
 http://activiti.org/designer/update
 ```  
@@ -3579,7 +3577,7 @@ http://download.eclipse.org/technology/m2e/releases
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNmZWMXF0ZV9YdTQ)  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_say1QMElyNTlBdGM)  
 * Руками прописываем кодировку cp1251 на вкладке Общие (Common)
-* ![ecl1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/ecl1.JPG)
+  ![ecl1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/ecl1.JPG)
 
 ### _addjsonandhtml
 [вернуться...](#addjsonandhtml)
@@ -3591,9 +3589,7 @@ http://download.eclipse.org/technology/m2e/releases
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sZzdCMmg0Rm13djQ)  
 
 
-20. Автотесты
-019_Autotests.md
-
+###### 20. Автотесты
 ### _forexample
 [вернуться...](#forexample)
  ```java
@@ -3620,8 +3616,8 @@ setTableCellsInputTypeSelect(driver, sBP, "sTable1","sObjectCustoms","1", "-0-0"
 setTableCellsInputTypeFile(driver, sBP, "sTable1", "sTables2FieldB","1", "src/test/resources/files/test.jpg");
 setTableCellsTypeCalendar(driver, sBP, "sTable1", "sTables2FieldC","1", "2017/03/05");
 ```
-020_Escalationsandfeedback.md
 
+###### 21. Эскалации и фидбеки
 ### _scondition
 [вернуться...](#scondition)
 
@@ -3637,8 +3633,11 @@ nDays >= 5 - правило будет срабатывать каждый де�
 nDays ==5 - правило сработает только в пятый день  
 nDays != 5 - правило сработает во все дни кроме пятого  
 
-023_UsefulInquiries.md
-
+###### 22. Статистика и выгрузки
+empty
+###### 23. Часто возникающие ошибки
+empty
+###### 24. Полезные запросы
 ### _downloadmaximumdate
 [вернуться...](#downloadmaximumdate)
 
@@ -3647,10 +3646,10 @@ nDays != 5 - правило сработает во все дни кроме п�
 ### _numberofservicesbyregion
 [вернуться...](#numberofservicesbyregion)
 
-* ![23_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_1.jpg)
+ ![23_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_1.jpg)
 
-25. Лайф Хаки
+###### 25. Лайф Хаки
 ### _labeltest
 [вернуться...](#labeltest)
 
-* ![24_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/24_0.jpg)
+  ![24_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/24_0.jpg)
