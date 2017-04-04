@@ -44,6 +44,10 @@
         <activiti:formProperty id="markers_Req_ut01_01" name="обов'язково якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Req_ut01_02" name="обов'язково якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Req_ut01_03" name="обов'язково строки якщо є файл-скан; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_03&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asHaveDecisionFile&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yesDecisionFile'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Set_ut01_01" name="встановити значення наявності файлу (відсутній) якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_Set_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field_sValue&quot;:[&quot;noDecisionFile&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
+
+<!--        <activiti:formProperty id="markers155_1" name="зробити sVarUstDoc = Статут; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_155_1&quot;:																			 {&quot;aField_ID&quot;:[&quot;sVarUstDoc&quot;]		,&quot;asID_Field_sValue&quot;:[&quot;Статут&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectUstDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf001'&quot;}}}"></activiti:formProperty> -->
+
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="asHaveDecisionFile" name="Наявність скана копії рішення: " type="enum">
           <activiti:value id="yesDecisionFile" name="Так - є скан копії рішення про реєстрацію"></activiti:value>
@@ -92,11 +96,7 @@
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <endEvent id="endevent1" name="End">
-<!--      <extensionElements>
-        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
-      </extensionElements> -->
-    </endEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="exclusivegateway5"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="exclusivegateway4"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -165,11 +165,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <endEvent id="endevent2" name="End">
-      <extensionElements>
-        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
-      </extensionElements>
-    </endEvent>
+    <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -408,8 +404,7 @@
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow40" sourceRef="exclusivegateway5" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відмови" activiti:candidateGroups="jur_${sID_UA}_0087">
-<!--    <userTask id="usertask2" name="Відмова" activiti:assignee="jur_0087">-->
+    <userTask id="usertask2" name="AutoCloseTask" activiti:assignee="agerman">
       <extensionElements>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
@@ -423,7 +418,6 @@
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false" type="string" default="Заява про припинення підприємницької діяльності" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-<!--        <activiti:taskListener event="complete" delegateExpression="${DoWorkOnCloseTaskEvent}"></activiti:taskListener> -->
       </extensionElements>
     </userTask>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
