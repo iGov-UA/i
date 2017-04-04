@@ -29,7 +29,7 @@
 1. [СЭД](#idoc)
 
 
-### creatingbusinessprocesses
+###### creatingbusinessprocesses
 # 1. Создание бизнес-процессов
 [вернуться в начало](general.md)
 
@@ -72,7 +72,7 @@
 
 ***
 
-### themain
+###### themain
 
 # 2. Основные элементы Activiti Designer
 
@@ -118,7 +118,7 @@ Parallel Gateway – используется для организации ве
 
 
 
-### typesofparameters
+###### typesofparameters
 # 3. Типы параметров
 [вернуться в начало](general.md)
 
@@ -285,10 +285,9 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_variableattributes)
 
-***
 
 
-### reservedandsystemvariables
+###### reservedandsystemvariables
 # 4. Зарезервированные и системные переменные
 
 [вернуться в начало](general.md)
@@ -360,9 +359,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_Requestvariables)
 
-***
 
-### generalrulesfornaming
+###### generalrulesfornaming
 # 5. Общие правила при именовании
 [вернуться в начало](general.md)
 
@@ -386,9 +384,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_userscolor)
 
-***
 
-### typeslisteneranddelegate
+###### typeslisteneranddelegate
 # 6. Типы Listener и delegateExpression
 [вернуться в начало](general.md)
 
@@ -435,8 +432,8 @@ type="queueData" required="true"></activiti:formProperty>
    
    [детальней...](#_delegateExpression)
    
-***  
-### assigngroupsandusers
+ 
+###### assigngroupsandusers
 # Назначение групп и пользователей
 [вернуться в начало](general.md)
 
@@ -453,9 +450,9 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_addingausertoagroup)
 
-***
 
-### mathematicalactionswithvariablesandconditionoperators
+
+###### mathematicalactionswithvariablesandconditionoperators
 # 8. Математические действия с переменными и операторы условий
 [вернуться в начало](general.md)
 
@@ -474,7 +471,7 @@ digit3 - переменная, куда присвоится результат 
 
 [детальней...](#_conditionstatementsinprocesses)
 
-### workingwithdatesandtimers
+###### workingwithdatesandtimers
 # 9. Работа с датами и таймерами
 [вернуться в начало](general.md)
 ### usingtimers
@@ -483,8 +480,8 @@ digit3 - переменная, куда присвоится результат 
 
 [детальней...](#_usingtimers)
 
-***
-### markersandvalidators
+
+###### markersandvalidators
 # 10. Маркеры и Валидаторы
 [вернуться в начало](general.md)
 
@@ -827,9 +824,9 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_snote)
 
-***
-### printform
-# 11. Принтформа
+
+###### printform
+# 11. Принтформы
 [вернуться в начало](general.md)
 
 ### printformmd
@@ -870,8 +867,8 @@ digit3 - переменная, куда присвоится результат 
 
 [детальней...](#_display_hidefields)
 
-***
-### digitalsignature
+
+##### digitalsignature
 # 12. ЭЦП
 [вернуться в начало](general.md)
 
@@ -895,9 +892,9 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_converthtmltopdf)
 
-***
 
-### electronicqueues
+
+###### electronicqueues
 # 13. Электронные очереди
 [вернуться в начало](general.md)
 
@@ -981,8 +978,8 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_changetheorderofanelectronicqueue)
 
-***
-### paymentfortheservice
+
+###### paymentfortheservice
 # 14. Оплата услуги
 [вернуться в начало](general.md)
 
@@ -1010,9 +1007,8 @@ digit3 - переменная, куда присвоится результат 
 На бэке (wf-base) доработана обработка тэга **[paymentButton_LiqPay]** так, чтоб он поддерживал множественные кнопки оплаты LiqPay в рамках одного письма. [Issue 789](https://github.com/e-government-ua/i/issues/789) 
 
 
-***
 
-### emails
+###### emails
 # 15. Емайлы
 [вернуться в начало](general.md)
 
@@ -1076,7 +1072,7 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_newemailtemplates)
 
 
-### sendingsmsnotifications
+###### sendingsmsnotifications
 # 16. Отправка СМС-оповещений
 [вернуться в начало](general.md)
 
@@ -1089,7 +1085,7 @@ digit3 - переменная, куда присвоится результат 
 
 [детальней...](#_smsnotifications)
 
-### scripts
+###### scripts
 # 17. Скрипты
 [вернуться в начало](general.md)
 
@@ -1339,7 +1335,7 @@ execution.setVariable('sExecutor', sExecutor)
 ```
 [детальней...](#_gettingloginandname)
 
-### configurationfiles
+###### configurationfiles
 # 18. Конфигурационные файлы
 [вернуться в начало](general.md)
 
@@ -1478,8 +1474,8 @@ execution.setVariable('sExecutor', sExecutor)
 ### FlowSlotTicket
 ### SubjectOrganDepartment
 
-***
-### workingwiththegithandrepository
+
+###### workingwiththegithandrepository
 # 19. Работа с гитом и репозиторием 
 [вернуться в начало](general.md)
 
@@ -1600,8 +1596,7 @@ IDE NetBeans позволяет автоматизировать этот про
 
 ### Откат изменений (в eclipse)
 
-***
-### installationeclipse
+###### installationeclipse
 # Установка Eclipce
 [вернуться в начало](general.md)
 
@@ -1630,8 +1625,8 @@ http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/rel
 
 [детальнее...](#_addjsonandhtml)
 
-***
-### autotests
+
+###### autotests
 # 20. Автотесты
 [вернуться в начало](general.md)
 
@@ -1833,7 +1828,7 @@ setTableCellsTypeCalendar(driver, sBP, "sTable1", "sTables2FieldC","1", "2017/03
 
 [детальнее...](#_forexample)
 
-## 8. Если необходимо осуществить тестирование несколько разных сценариев для БП, то необходимо скопировать и соответствующим образом заполнить блок операторов  
+### 8. Если необходимо осуществить тестирование несколько разных сценариев для БП, то необходимо скопировать и соответствующим образом заполнить блок операторов  
 ```java
 addStepToTheReport("1. Вход по прямому URL на услугу");
 openURLservice(driver, CV.baseUrl + "/service/720/general");
@@ -1848,16 +1843,15 @@ click(driver, tp.buttonLogOut);
     public void for_sign() throws Exception {
     public void test2() throws Exception {
 ```
-## 9. Если необходимо отключить автотест для БП
+### 9. Если необходимо отключить автотест для БП
 то необходимо указать enabled = false в строке 
 ```java
 @Test(enabled = true, groups = {"Main", "Критический функционал"}, priority = 1)
 ```
 и переместить файл в каталог SuspendTests 
 
-***
 
-# Локальное тестирование
+### Локальное тестирование
 создайте профиль и запустите его на выполнение
  
 Результаты локального тестирования (вплоть до скриншотов iTest\TestReport\html\Screens) находятся локально по пути выгруженного проекта \iTest\TestReport
@@ -1866,7 +1860,7 @@ click(driver, tp.buttonLogOut);
 _Не посылайте служебные письма о наличии заявок на реальную служебную почту! Рекомендуется либо захардкодить email разработчика на БЕТЕ либо сделать поле видимым и его изменить как стандартную переменную на email  разработчика БП_
 
 
-### escalationsandfeedback
+###### escalationsandfeedback
 ### 21. Эскалации
 [вернуться в начало](general.md)
 
@@ -1957,16 +1951,16 @@ _Не посылайте служебные письма о наличии за�
 > (Записываете результат разговора в комментарии).  
 > Спасибо за уделенное время, всего хорошего!  
 
-***
 
-### statisticsanduploads
+
+###### statisticsanduploads
 # 22. Статистика и выгрузки
 [вернуться в начало](general.md)
 
 Empty
 
-***
-### commonerrors
+
+###### commonerrors  
 # 23. Часто возникающие ошибки
 [вернуться в начало](general.md)
 
@@ -2006,8 +2000,8 @@ Tests in error:
 ```
 **решение**: на одной из сервистасок не хватает параметера delegateExpression
 
-***
-### usefulinquiries
+
+###### usefulinquiries
 # 24. Полезные запросы
 [вернуться в начало](general.md)
 
@@ -2084,8 +2078,8 @@ https://region.igov.org.ua/wf/service/action/task/downloadTasksData?sID_BP=subsi
 https://alpha.test.region.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=24520049&attachmentId=24520026
 ```
 
-***
-### lifehacking
+
+###### lifehacking
 # 25. Лайф Хаки
 [вернуться в начало](general.md)
 
@@ -2164,8 +2158,9 @@ id БП разделять вертикальным слеш "|"
 ###  Ссылки на региональные порталы
 https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
-***
-### checkListtestbranch
+
+
+###### checkListtestbranch
 # 25. Чек лист тестирования ветки
 [вернуться в начало](general.md)
 
@@ -2211,8 +2206,8 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 - [ ] **подача заявки на всю Украину** (118)
 - [ ] **кастомная принтформа для наложение ЭЦП на стартформе** (1497)
 
-***
-### idoc
+
+###### idoc
 # 26. СЭД
 [вернуться в начало](general.md)
 
@@ -2246,7 +2241,8 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 ```xml 	 
 <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
 ```
-* ![26_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/26_0.JPG)
+
+![26_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/26_0.JPG)
 В селекте отделов используюются соответственно переменные  
 **sID_Group_Activiti_Depart** - id группы отдела (корень с которого формируем селект)  
 **nDeepLevelDepart** - глубина отделов  
@@ -2342,11 +2338,11 @@ _testSimpleSubProces - порожденный
 
  [вернуться...](#businessprocessdevelopment)
  
- * ![1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/1bp.jpg)
-* ![screenshot of sample2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2bp.jpg)
-* ![screenshot of sample3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3bp.jpg)
-* [Создание бизнес-процесса дополнительно](https://docs.google.com/document/d/1B3OIYjj3S2YLwUR-PVD3FAcErl_2ua0CYUB5vys6O4U/edit )
-* [Правила при именовании бизнес-процессов](https://github.com/e-government-ua/iBP/wiki/%D0%9E%D0%B1%D1%89%D0%B8%D0%B5-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%BF%D1%80%D0%B8-%D0%B8%D0%BC%D0%B5%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8:#%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5c%D1%81%D1%8B).  
+    ![1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/1bp.jpg)
+  ![screenshot of sample2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2bp.jpg)
+  ![screenshot of sample3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3bp.jpg)
+  [Создание бизнес-процесса дополнительно](https://docs.google.com/document/d/1B3OIYjj3S2YLwUR-PVD3FAcErl_2ua0CYUB5vys6O4U/edit )
+  [Правила при именовании бизнес-процессов](https://github.com/e-government-ua/iBP/wiki/%D0%9E%D0%B1%D1%89%D0%B8%D0%B5-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%BF%D1%80%D0%B8-%D0%B8%D0%BC%D0%B5%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8:#%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5c%D1%81%D1%8B).  
 * проработать инфокарты и бланки заявлений - составить перечень необходимых полей и условий
 * прорисовать всю схему процесса от начала до конца, наполнить блоки информацией.
 * создать принтформы
@@ -2356,8 +2352,8 @@ _тестирование и проливка на бету и боевой
 
  [вернуться...](#testingonbeta)
  
- * ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
-* ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
+   ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
+   ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
 * пройти процесс от начала до конца по всем возможным путям
 * выслать заказчику инструкцию, ссылки, логин и пароль.
 * в случае необходимости - вносить изменения в процесс. после внесения даже небольшого изменения - обязательное тестирование
@@ -2368,29 +2364,29 @@ _тестирование и проливка на бету и боевой
 * Если проливка происходит напрямую в ветках test-version или master обязательно необходимо осуществлять обратный мерж в нижние ветки
 * после проливки на боевой проверить процесс хотя бы по одному сценарию, закрыть ишью.
 
-0021TheMainElementsOfActivitiDesigner.md
+###### Основные элементы Activiti Designer
 ### _endevent 
 [вернуться...](#endevent)
-* ![2_01](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_01.JPG)
+  ![2_01](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_01.JPG)
 
 ### _usertask 
 [вернуться...](#usertask)
-* ![2_02](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_02.JPG)
+  ![2_02](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_02.JPG)
 
 ### _servicetask 
 [вернуться...](#servicetask)
-* ![2_03](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_03.JPG)
+  ![2_03](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_03.JPG)
 
 ### _mailtaskwithattachments 
 [вернуться...](#mailtaskwithattachments)
-* ![2_04](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_04.JPG)
+  ![2_04](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_04.JPG)
 
 ### _parallelgateway 
 [вернуться...](#parallelgateway)
-* ![2_05](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_05.JPG)
+  ![2_05](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_05.JPG)
 
-002_Typesofparameters.md
 
+###### Типы параметров
 ### _string 
 [вернуться...](#string)
 
@@ -3646,7 +3642,7 @@ nDays != 5 - правило сработает во все дни кроме п�
 ### _downloadmaximumdate
 [вернуться...](#downloadmaximumdate)
 
-* ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
+  ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
 
 ### _numberofservicesbyregion
 [вернуться...](#numberofservicesbyregion)
