@@ -29,7 +29,7 @@
 1. [СЭД](#idoc)
 
 
-### creatingbusinessprocesses
+###### creatingbusinessprocesses
 # 1. Создание бизнес-процессов
 [вернуться в начало](general.md)
 
@@ -72,7 +72,7 @@
 
 ***
 
-### themain
+###### themain
 
 # 2. Основные элементы Activiti Designer
 
@@ -118,7 +118,7 @@ Parallel Gateway – используется для организации ве
 
 
 
-### typesofparameters
+###### typesofparameters
 # 3. Типы параметров
 [вернуться в начало](general.md)
 
@@ -285,10 +285,9 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_variableattributes)
 
-***
 
 
-### reservedandsystemvariables
+###### reservedandsystemvariables
 # 4. Зарезервированные и системные переменные
 
 [вернуться в начало](general.md)
@@ -360,9 +359,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_Requestvariables)
 
-***
 
-### generalrulesfornaming
+###### generalrulesfornaming
 # 5. Общие правила при именовании
 [вернуться в начало](general.md)
 
@@ -386,9 +384,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_userscolor)
 
-***
 
-### typeslisteneranddelegate
+###### typeslisteneranddelegate
 # 6. Типы Listener и delegateExpression
 [вернуться в начало](general.md)
 
@@ -435,8 +432,8 @@ type="queueData" required="true"></activiti:formProperty>
    
    [детальней...](#_delegateExpression)
    
-***  
-### assigngroupsandusers
+ 
+###### assigngroupsandusers
 # Назначение групп и пользователей
 [вернуться в начало](general.md)
 
@@ -453,9 +450,9 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_addingausertoagroup)
 
-***
 
-### mathematicalactionswithvariablesandconditionoperators
+
+###### mathematicalactionswithvariablesandconditionoperators
 # 8. Математические действия с переменными и операторы условий
 [вернуться в начало](general.md)
 
@@ -474,7 +471,7 @@ digit3 - переменная, куда присвоится результат 
 
 [детальней...](#_conditionstatementsinprocesses)
 
-### workingwithdatesandtimers
+###### workingwithdatesandtimers
 # 9. Работа с датами и таймерами
 [вернуться в начало](general.md)
 ### usingtimers
@@ -483,8 +480,8 @@ digit3 - переменная, куда присвоится результат 
 
 [детальней...](#_usingtimers)
 
-***
-### markersandvalidators
+
+###### markersandvalidators
 # 10. Маркеры и Валидаторы
 [вернуться в начало](general.md)
 
@@ -3646,7 +3643,7 @@ nDays != 5 - правило сработает во все дни кроме п�
 ### _downloadmaximumdate
 [вернуться...](#downloadmaximumdate)
 
-* ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
+  ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
 
 ### _numberofservicesbyregion
 [вернуться...](#numberofservicesbyregion)
