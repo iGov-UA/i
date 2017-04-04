@@ -190,8 +190,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
             }
             catch(Exception ex){
-                LOG.info("Error parsing sRequestBody: {}", ex);
-                LOG.info("sRequestBody is: {}", sResponseBody);
+                LOG.debug("Error parsing sRequestBody: {}", ex);
+                LOG.debug("sRequestBody is: {}", sResponseBody);
             }
             
             if(isCloseTask(oRequest, sResponseBody)){
