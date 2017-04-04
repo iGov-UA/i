@@ -84,19 +84,19 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asFilia" name="Філія" type="enum">
+        <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
           <activiti:value id="sEnumFilia2" name="Філія №2"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDepartment" name="Організаційна одиниця" type="enum">
+        <activiti:formProperty id="asDepartment" name="Організаційна одиниця" type="enum" writable="false">
           <activiti:value id="sEnumDepartment1" name="Організаційна одиниця №1"></activiti:value>
           <activiti:value id="sEnumDepartment2" name="Організаційна одиниця №2"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEmployee" name="Табельний номер і прізвище" type="enum">
+        <activiti:formProperty id="asEmployee" name="Табельний номер і прізвище" type="enum" writable="false">
           <activiti:value id="sEnumEmployee1" name="№00001 Іванов Іван Іванович"></activiti:value>
           <activiti:value id="sEnumEmployee2" name="№0002 Петров Петро Петрович"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText" name="Текст ініціативного листа" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sText" name="Текст ініціативного листа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Додаткові матеріали (співробітник відділу); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Додаткові матеріали (керівник підрозділу); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="asDecideDepartment" name="Резолюція керівника підрозділу" type="enum" default="sEnumCreateAccept">
@@ -533,7 +533,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecidePersonnel == 'sEnumPersDeny'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="usertask7" targetRef="scripttask9"></sequenceFlow>
-    <scriptTask id="scripttask2" name="step3" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 
 var snID_Process_Activiti = execution.getProcessInstanceId()
