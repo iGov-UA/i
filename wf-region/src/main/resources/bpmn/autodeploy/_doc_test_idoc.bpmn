@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_test_idoc" name="тест удаление" isExecutable="true">
+  <process id="_doc_test_idoc" name="тест сброс подписи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
@@ -12,7 +12,11 @@
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-           <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+        <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum" default="sEnumEditing">
+          <activiti:value id="sEnumEditing" name="вернуть на этот же шаг чтоб сбросить подпись"></activiti:value>
+          <activiti:value id="sEnumEnd" name="закрыть"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
@@ -29,15 +33,22 @@ execution.setVariable('processInstanceId', processInstanceId)
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <scriptTask id="scripttask9" name="удаление документа" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var processInstanceId = execution.getProcessInstanceId();
-var oClose = deleteProccess.closeProcessInstance('processInstanceId')
-
+    <scriptTask id="scripttask9" name="сброс подписи" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sKeyGroup)
 </script>
     </scriptTask>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow70" sourceRef="scripttask9" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow71" sourceRef="usertask1" targetRef="scripttask9"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow72" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow73" sourceRef="exclusivegateway1" targetRef="endevent3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEnd'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow74" sourceRef="exclusivegateway1" targetRef="scripttask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEditing'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow75" sourceRef="scripttask9" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_idoc">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_idoc" id="BPMNPlane__doc_test_idoc">
@@ -51,10 +62,13 @@ var oClose = deleteProccess.closeProcessInstance('processInstanceId')
         <omgdc:Bounds height="55.0" width="105.0" x="269.0" y="104.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="560.0" y="104.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="418.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="690.0" y="114.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="680.0" y="113.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="590.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="374.0" y="131.0"></omgdi:waypoint>
@@ -64,13 +78,22 @@ var oClose = deleteProccess.closeProcessInstance('processInstanceId')
         <omgdi:waypoint x="235.0" y="130.0"></omgdi:waypoint>
         <omgdi:waypoint x="269.0" y="131.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
-        <omgdi:waypoint x="665.0" y="131.0"></omgdi:waypoint>
-        <omgdi:waypoint x="690.0" y="131.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
         <omgdi:waypoint x="536.0" y="131.0"></omgdi:waypoint>
-        <omgdi:waypoint x="560.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
+        <omgdi:waypoint x="630.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
+        <omgdi:waypoint x="610.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="609.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="523.0" y="37.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
+        <omgdi:waypoint x="470.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="471.0" y="89.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
