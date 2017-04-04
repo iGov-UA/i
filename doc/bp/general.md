@@ -3436,7 +3436,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 * 1;1;2;2;NULL;1;{};https://null.igov.org.ua;true;1;true;Перейдя на этот сайт Вы сможете получить услугу;BankID,EDS,KK;0
 * 1032;788;467;467;NULL;4;{"processDefinitionId":"znes_bud_393:1:1"};;false;1;true;;BankID,EDS;0
 * 038;1471;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
-* ![17_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_0.JPG)
+  ![17_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_0.JPG)
 
 ### _subject
 
