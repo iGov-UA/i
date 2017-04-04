@@ -21,7 +21,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTextRemarkJustice" name="Зауваження (юридичне управління)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextRemarkFinance" name="Зауваження (ФЕД)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
@@ -56,7 +56,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT1" name="Дії з докукментом" type="enum" default="sEnumEditing">
-          <activiti:value id="sEnumEditing" name="не отправлять за визами"></activiti:value>
           <activiti:value id="sEnumSighting" name="отправить за визами"></activiti:value>
           <activiti:value id="sEnumEnd" name="удалить"></activiti:value>
         </activiti:formProperty>
@@ -79,10 +78,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
 var sKeyGroup = execution.getVariable('sLoginAuthor')
 var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sKeyGroup)</script>
     </scriptTask>
-    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="scripttask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEditing'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow5" sourceRef="scripttask2" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEnd'}]]></conditionExpression>
     </sequenceFlow>
@@ -107,7 +102,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
@@ -175,7 +170,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
@@ -249,7 +244,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
@@ -294,7 +289,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
@@ -360,7 +355,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
@@ -417,7 +412,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
@@ -476,7 +471,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
@@ -618,16 +613,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="421.0" y="222.0"></omgdi:waypoint>
         <omgdi:waypoint x="519.0" y="222.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="539.0" y="202.0"></omgdi:waypoint>
-        <omgdi:waypoint x="539.0" y="138.0"></omgdi:waypoint>
-        <omgdi:waypoint x="505.0" y="137.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="400.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="355.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="355.0" y="182.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="539.0" y="242.0"></omgdi:waypoint>
