@@ -18,8 +18,9 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <sRevisionVersion>1.1.1</sRevisionVersion>
                 <sRevision>a</sRevision>
-                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
                 <sRevisionSubPath></sRevisionSubPath>
                 <!--igov.storage-static.version>1.0.0a-SNAPSHOT</igov.storage-static.version>
                 <igov.storage-temp.version>1.0.0a-SNAPSHOT</igov.storage-temp.version>
@@ -39,6 +40,7 @@
                 </property>
             </activation-->
             <properties>
+                <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevision>b</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
                 <sRevisionSubPath>/beta</sRevisionSubPath>
@@ -62,6 +64,7 @@
         <profile>
             <id>omega</id>
             <properties>
+                <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevision>o</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
                 <sRevisionSubPath>/prod</sRevisionSubPath>
@@ -70,6 +73,7 @@
         <profile>
             <id>release</id>
             <properties>
+                <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevision></sRevision>
                 <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
                 <sRevisionSubPath>/prod</sRevisionSubPath>
@@ -137,13 +141,13 @@
         <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
         <buildNumber>${maven.build.timestamp}</buildNumber>
         
-        <igov.storage-static.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.storage-static.version>
-        <igov.storage-temp.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.storage-temp.version>
-        <igov.analytic.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.analytic.version>
-        <igov.wf-base.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-base.version>
-        <igov.wf-central.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-central.version>
-        <igov.wf-region.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-region.version>
-        <igov.analytic.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.analytic.version>
+        <igov.storage-static.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.storage-static.version>
+        <igov.storage-temp.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.storage-temp.version>
+        <igov.analytic.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.analytic.version>
+        <igov.wf-base.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.wf-base.version>
+        <igov.wf-central.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.wf-central.version>
+        <igov.wf-region.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.wf-region.version>
+        <igov.analytic.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.analytic.version>
         <liquibase.custom.data.path>${liquibase.data.path}${sRevisionSubPath}</liquibase.custom.data.path>
         <activiti.custom.data.path>${activiti.data.path}${sRevisionSubPath}</activiti.custom.data.path>
     </properties>
