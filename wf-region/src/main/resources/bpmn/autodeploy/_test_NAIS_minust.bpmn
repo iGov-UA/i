@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_test_NAIS" name="_test_NAIS" isExecutable="true">
+  <process id="_test_NAIS_minust" name="_test_NAIS_minust" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище; ;writable=true,sID_Field_SWinEd=HLNAME" type="string" required="true"></activiti:formProperty>
@@ -38,9 +38,10 @@
         <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR, bVisible=false" type="string" default="2015"></activiti:formProperty>
         <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG, bVisible=false" type="string" default="0463"></activiti:formProperty>
         <activiti:formProperty id="oFile_XML_SWinEd" name="File;system; bVisible=false" type="file" default="45_10_00_00"></activiti:formProperty>
+        <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="45_10_00_00" writable="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="sales">
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="test_NAIS">
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
@@ -98,7 +99,7 @@
       </extensionElements>
     </endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <userTask id="usertask2" name="Получение ответа" activiti:candidateGroups="sales">
+    <userTask id="usertask2" name="Получение ответа" activiti:candidateGroups="test_NAIS">
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anID_Attach_minust" name="Файл с ответом" writable="false"></activiti:formProperty>
@@ -210,8 +211,8 @@
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow26" sourceRef="exclusivegateway2" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__test_NAIS">
-    <bpmndi:BPMNPlane bpmnElement="_test_NAIS" id="BPMNPlane__test_NAIS">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_NAIS_minust">
+    <bpmndi:BPMNPlane bpmnElement="_test_NAIS_minust" id="BPMNPlane__test_NAIS_minust">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="36.0" width="35.0" x="20.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
