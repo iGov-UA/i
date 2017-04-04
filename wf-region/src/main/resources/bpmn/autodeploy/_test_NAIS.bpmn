@@ -82,7 +82,7 @@
 [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_NAIS}</activiti:expression>
+          <activiti:expression>${anID_Attach_minust}</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -101,7 +101,7 @@
     <userTask id="usertask2" name="Получение ответа" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="anID_Attach_NAIS" name="Файл с ответом" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="anID_Attach_minust" name="Файл с ответом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
           <activiti:field name="sINN">
             <activiti:expression>${bankIdinn}</activiti:expression>
@@ -190,7 +190,7 @@
 [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_NAIS}</activiti:expression>
+          <activiti:expression>${anID_Attach_minust}</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -201,11 +201,11 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_NAIS_Answer == 'false'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_minust_Answer == 'false'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="servicetask4" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow25" sourceRef="exclusivegateway1" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_NAIS_Answer == 'true'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_minust_Answer == 'true'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow26" sourceRef="exclusivegateway2" targetRef="endevent2"></sequenceFlow>
