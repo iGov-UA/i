@@ -32,14 +32,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="s_Tarif" name="Тариф" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
-          <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_Author]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
