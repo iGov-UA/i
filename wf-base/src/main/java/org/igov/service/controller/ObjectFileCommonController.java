@@ -974,15 +974,18 @@ public class ObjectFileCommonController {
         }
 
         if (sData != null && "Mongo".equals(sID_StorageType)) {
-            return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
+            String sResultAttach = attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
                     sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true);
+            LOG.info("setProcessAttachText is ended...");
+            return sResultAttach;
+            
         } else if (sData != null && "Redis".equals(sID_StorageType)) {
             throw new RuntimeException("There is no suitable metod for string data for redis");
         } else {
             return "data is null";
         }
         
-        LOG.info("setProcessAttachText is ended...");
+        
         //AttachmentCover oAttachmentCover = new AttachmentCover();
         //return oAttachmentCover.apply(attachment);
     }
