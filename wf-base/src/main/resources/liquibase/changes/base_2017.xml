@@ -258,28 +258,6 @@
     <changeSet id="FlowProperty-autoIncrement" author="brunneng">
         <addAutoIncrement tableName="FlowProperty" columnName="nID" startWith="1" columnDataType="bigint"/>
     </changeSet>
-    
-    <!--changeSet id="FlowProperty-autoIncrement" author="brunneng">
-        <createIndex tableName="SubjectGroup" indexName="sID_Group_Activiti">
-            <column name="sID_Group_Activiti"/>
-        </createIndex>
-        
-        <createIndex tableName="SubjectGroup" indexName="sID_Group_Activiti">
-            <column name="sID_Group_Activiti"/>
-        </createIndex>
-        <createIndex tableName="SubjectGroup" indexName="sID_Group_Activiti">
-            <column name="sID_Group_Activiti"/>
-        </createIndex>
-        <createIndex tableName="SubjectGroup" indexName="sID_Group_Activiti">
-            <column name="sID_Group_Activiti"/>
-        </createIndex>
-        <createIndex tableName="SubjectGroup" indexName="sID_Group_Activiti">
-            <column name="sID_Group_Activiti"/>
-        </createIndex>
-        <createIndex tableName="SubjectGroup" indexName="sID_Group_Activiti">
-            <column name="sID_Group_Activiti"/>
-        </createIndex>
-    </changeSet-->
 
      <changeSet id="issue-1579-Add-fields" author="BW">
         <addColumn tableName="DocumentStepSubjectRight">
@@ -342,5 +320,26 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="add indew to Document" author="brunneng">
+        <createIndex tableName="DocumentStep" indexName="snID_Process_Activiti">
+            <column name="snID_Process_Activiti"/>
+        </createIndex>
+        
+        <createIndex tableName="DocumentStep" indexName="sKey_Step">
+            <column name="sKey_Step"/>
+        </createIndex>
+        
+        <createIndex tableName="DocumentStepSubjectRight" indexName="nID_DocumentStep">
+            <column name="nID_DocumentStep"/>
+        </createIndex>
+        
+        <createIndex tableName="DocumentStepSubjectRight" indexName="sKey_GroupPostfix">
+            <column name="sKey_GroupPostfix"/>
+        </createIndex>
+        
+        <createIndex tableName="DocumentStepSubjectRight" indexName="sLogin">
+            <column name="sLogin"/>
+        </createIndex>
             
 </databaseChangeLog>
