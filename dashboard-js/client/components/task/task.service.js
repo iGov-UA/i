@@ -652,11 +652,18 @@ angular.module('dashboardJsApp')
                 if (fileNameTemp === 'sPrintFormFileAsPDF') {
                   fileName = fileName + '.pdf';
                   sOutputFileType = 'pdf';
+                  if(fileName.match(/^_doc_/) && task.processInstanceId.match(/^_doc_/)){
+                    formProperties.isSendAsDocument = true;
+                    formProperties.skipSendingDefaultPrintForm = true;
+                  } else {
+                    formProperties.isSendAsDocument = false;
+                  }
                 }
 
                 if (fileNameTemp === 'sPrintFormFileAsIs') {
                   fileName = fileName + '.html';
                   sOutputFileType = 'html';
+                  formProperties.isSendAsDocument = false;
                 }
 
                 sFileFieldID = templateResult.fileField.id;
@@ -679,7 +686,8 @@ angular.module('dashboardJsApp')
               sContent: html,
               sOutputFileType: sOutputFileType,
               sKey_Step: sKey_Step,
-              isSendDefaultPrintForm: formProperties.sendDefaultPrintForm
+              isSendAsDocument: formProperties.sendDefaultPrintForm || formProperties.isSendAsDocument,
+              skipSendingDefaultPrintForm: formProperties.skipSendingDefaultPrintForm
             };
 
             printDefer[key] = $q.defer();
@@ -691,16 +699,21 @@ angular.module('dashboardJsApp')
 
           var asyncPrintUpload = function (i, print, defs) {
             if (i < print.length) {
-              return $http.post('/api/tasks/' + task.processInstanceId + '/upload_content_as_attachment', print[i].data)
-                .then(function (uploadResult) {
-                  if(results[i].fileField && results[i].fileField.value){
-                    results[i].fileField.value = uploadResult.data;
-                  } else {
-                    results[i]['uploadDefaultPrintForm'] = uploadResult.data;
-                  }
-                  defs[i].resolve();
-                  return asyncPrintUpload(i+1, print, defs);
-                });
+              if(!print[i].data.sID_Field && print[i].data.skipSendingDefaultPrintForm){
+                defs[i].resolve();
+                return asyncPrintUpload(i+1, print, defs);
+              } else {
+                return $http.post('/api/tasks/' + task.processInstanceId + '/upload_content_as_attachment', print[i].data)
+                  .then(function (uploadResult) {
+                    if(results[i].fileField && results[i].fileField.value){
+                      results[i].fileField.value = uploadResult.data;
+                    } else {
+                      results[i]['uploadDefaultPrintForm'] = uploadResult.data;
+                    }
+                    defs[i].resolve();
+                    return asyncPrintUpload(i+1, print, defs);
+                  });
+              }
             }
           };
 

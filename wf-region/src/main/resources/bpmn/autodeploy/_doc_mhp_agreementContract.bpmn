@@ -20,7 +20,10 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MHP_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTextRemarkJustice" name="Зауваження (юридичне управління)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextRemarkFinance" name="Зауваження (ФЕД)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введите код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" required="true"></activiti:formProperty>
@@ -31,18 +34,26 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sContact_01" name="Контактные данные" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Заказчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPreamble" name="Преамбула" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sHeader_1st" name="1-й блок договору (заголовок)" type="string" default="1.Предмет договору"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_1st" name="1-й блок договору (заголовок)" type="string" default="1.ПРЕДМЕТ ДОГОВОРУ"></activiti:formProperty>
         <activiti:formProperty id="sContent_1st" name="Вміст першого блоку" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sHeader_2nd" name="2-й блок договору (заголовок)" type="string" default="2.Вартість і порядок взаєморозрахунків"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_2nd" name="2-й блок договору (заголовок)" type="string" default="2.КІЛЬКІСТЬ І ЯКІСТЬ ТОВАРУ"></activiti:formProperty>
         <activiti:formProperty id="sContent_2nd" name="Вміст другого блоку" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sHeader_3rd" name="3-й блок договору (заголовок)" type="string" default="3.Порядок виконання робіт"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_3rd" name="3-й блок договору (заголовок)" type="string" default="3.УМОВИ ПОСТАВКИ І ПРИЙОМУ ТОВАРУ"></activiti:formProperty>
         <activiti:formProperty id="sContent_3rd" name="Вміст третього блоку" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sHeader_4th" name="4-й блок договору (заголовок)" type="string" default="4.Порядок здачі та приймання робіт"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_4th" name="4-й блок договору (заголовок)" type="string" default="4.ВАРТІСТЬ ДОГОВОРУ І УМОВИ ОПЛАТИ ЗА ТОВАР"></activiti:formProperty>
         <activiti:formProperty id="sContent_4th" name="Вміст четвертого блоку" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sHeader_5th" name="5-й блок договору (заголовок)" type="string" default="5.Відповідальність сторін"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_5th" name="5-й блок договору (заголовок)" type="string" default="5.ВІДПОВІДАЛЬНІСТЬ СТОРІН"></activiti:formProperty>
         <activiti:formProperty id="sContent_5th" name="Вміст п'ятого блоку" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string" default="6.Форс-мажорні обставини"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string" default="6.ТЕРМІН ДІЇ ДОГОВОРУ. ВНЕСЕННЯ ЗМІН І РОЗІРВАННЯ ДОГОВОРУ"></activiti:formProperty>
         <activiti:formProperty id="sContent_6th" name="Вміст шостого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_7" name="7-й блок договору (заголовок)" type="string" default="7.ФОРС-МАЖОР"></activiti:formProperty>
+        <activiti:formProperty id="sContent_7" name="Вміст сьомого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_8" name="8-й блок договору (заголовок)" type="string" default="8.ПОРЯДОК ВИРІШЕННЯ СПОРІВ"></activiti:formProperty>
+        <activiti:formProperty id="sContent_8" name="Вміст восьмого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_9" name="9-й блок договору (заголовок)" type="string" default="9.ІНШІ ПОЛОЖЕННЯ"></activiti:formProperty>
+        <activiti:formProperty id="sContent_9" name="Вміст дев'ятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string" default="10.КОНФІДЕНЦІЙНА ІНФОРМАЦІЯ"></activiti:formProperty>
+        <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT1" name="Дії з докукментом" type="enum" default="sEnumEditing">
           <activiti:value id="sEnumEditing" name="не отправлять за визами"></activiti:value>
@@ -72,10 +83,6 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEditing'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="scripttask2" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask3" name="удаление документа" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var processInstanceId = execution.getProcessInstanceId();
-var oClose = deleteProccess.closeProcessInstance(processInstanceId)</script>
-    </scriptTask>
     <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEnd'}]]></conditionExpression>
     </sequenceFlow>
@@ -83,8 +90,8 @@ var oClose = deleteProccess.closeProcessInstance(processInstanceId)</script>
     <scriptTask id="scripttask4" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
-var sKey_GroupPostfix_New = 'MHP_Depaptment_Justice'
-var sKey_GroupPostfix = '_default_MHP_Depaptment_Justice'
+var sKey_GroupPostfix_New = 'MHP_Justice_Spec1'
+var sKey_GroupPostfix = '_default_MHP_Depar_Justice'
 
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
@@ -99,9 +106,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MHP_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nContractAmount" name="Сума договору" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введите код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адресс" type="textArea" writable="false"></activiti:formProperty>
@@ -122,12 +130,20 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sContent_5th" name="Вміст п'ятого блоку" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent_6th" name="Вміст шостого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_7" name="7-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_7" name="Вміст сьомого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_8" name="8-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_8" name="Вміст восьмого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_9" name="9-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_9" name="Вміст дев'ятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asActionDocUT2" name="Дії з контрактом" type="enum" default="sEnumEditing">
+        <activiti:formProperty id="asActionDocUT2" name="Дії з контрактом" type="enum" required="true">
           <activiti:value id="sEnumAccept" name="прийняти"></activiti:value>
           <activiti:value id="sEnumReturn" name="повернути з зауваженням"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTextRemark" name="Зауваження" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sTextRemarkJustice" name="Зауваження" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -141,68 +157,302 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
     <scriptTask id="scripttask5" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
+var sKey_Step= 'step_3'
+var sKey_GroupPostfix_New = 'MHP_Justice_Spec2'
+var sKey_GroupPostfix = '_default_MHP_Depar_Justice'
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MHP_Depaptment_Justice', 'MHP_Depaptment_Justice', 'step_3')
-
-</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <sequenceFlow id="flow12" sourceRef="exclusivegateway3" targetRef="scripttask5"></sequenceFlow>
-    <userTask id="usertask3" name="Узгодження договору (юрист)"></userTask>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway3" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumAccept'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask3" name="Узгодження договору (юрист)">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адресс" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквизиты для оплаты" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактные данные" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Заказчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="Преамбула" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_1st" name="1-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_1st" name="Вміст першого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_2nd" name="2-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_2nd" name="Вміст другого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_3rd" name="3-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_3rd" name="Вміст третього блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_4th" name="4-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_4th" name="Вміст четвертого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_5th" name="5-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_5th" name="Вміст п'ятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_6th" name="Вміст шостого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_7" name="7-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_7" name="Вміст сьомого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_8" name="8-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_8" name="Вміст восьмого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_9" name="9-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_9" name="Вміст дев'ятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow13" sourceRef="scripttask5" targetRef="usertask3"></sequenceFlow>
-    <sequenceFlow id="flow14" sourceRef="exclusivegateway3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="exclusivegateway3" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumReturn'}]]></conditionExpression>
+    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow15" sourceRef="usertask3" targetRef="exclusivegateway4"></sequenceFlow>
     <scriptTask id="scripttask6" name="Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
+var sKey_Step= 'step_4'
+var sKey_GroupPostfix_New = 'MHP_Finance_Spec1'
+var sKey_GroupPostfix = '_default_MHP_Depar_Finance'
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MHP_Depaptment_Justice', 'MHP_Depaptment_Justice', 'step_4')
-
-</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <scriptTask id="scripttask7" name="Step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
+var sKey_Step= 'step_5'
+var sKey_GroupPostfix_New = 'MHP_Head_Depar'
+var sKey_GroupPostfix = '_default_MHP_Head'
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MHP_Depaptment_Justice', 'MHP_Depaptment_Justice', 'step_5')
-
-</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <sequenceFlow id="flow16" sourceRef="exclusivegateway4" targetRef="scripttask6"></sequenceFlow>
-    <sequenceFlow id="flow17" sourceRef="exclusivegateway4" targetRef="exclusivegateway5"></sequenceFlow>
-    <userTask id="usertask4" name="Підписання керівник департаменту"></userTask>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway4" targetRef="scripttask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nContractAmount > 500000}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="exclusivegateway4" targetRef="exclusivegateway5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nContractAmount <= 500000}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask4" name="Підписання керівник департаменту">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адресс" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквизиты для оплаты" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактные данные" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Заказчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="Преамбула" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_1st" name="1-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_1st" name="Вміст першого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_2nd" name="2-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_2nd" name="Вміст другого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_3rd" name="3-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_3rd" name="Вміст третього блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_4th" name="4-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_4th" name="Вміст четвертого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_5th" name="5-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_5th" name="Вміст п'ятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_6th" name="Вміст шостого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_7" name="7-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_7" name="Вміст сьомого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_8" name="8-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_8" name="Вміст восьмого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_9" name="9-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_9" name="Вміст дев'ятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow18" sourceRef="scripttask7" targetRef="usertask4"></sequenceFlow>
-    <userTask id="usertask5" name="Узгодження договору (ФЕД)"></userTask>
+    <userTask id="usertask5" name="Перевірка фінансових умов (ФЕД)">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адресс" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквизиты для оплаты" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактные данные" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Заказчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="Преамбула" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_1st" name="1-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_1st" name="Вміст першого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_2nd" name="2-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_2nd" name="Вміст другого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_3rd" name="3-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_3rd" name="Вміст третього блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_4th" name="4-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_4th" name="Вміст четвертого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_5th" name="5-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_5th" name="Вміст п'ятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_6th" name="Вміст шостого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_7" name="7-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_7" name="Вміст сьомого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_8" name="8-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_8" name="Вміст восьмого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_9" name="9-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_9" name="Вміст дев'ятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT5" name="Дії з контрактом" type="enum" required="true">
+          <activiti:value id="sEnumAccept" name="прийняти"></activiti:value>
+          <activiti:value id="sEnumReturn" name="повернути з зауваженням"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTextRemarkFinance" name="Зауваження" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow19" sourceRef="scripttask6" targetRef="usertask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway5" targetRef="scripttask7"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway5" targetRef="scripttask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nContractAmount < 200000}]]></conditionExpression>
+    </sequenceFlow>
     <scriptTask id="scripttask8" name="Step6" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_6')
+var sKey_Step= 'step_6'
+var sKey_GroupPostfix_New = 'MHP_Head_Deputy'
+var sKey_GroupPostfix = '_default_MHP_Head'
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MHP_Depaptment_Justice', 'MHP_Depaptment_Justice', 'step_6')
-
-</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <sequenceFlow id="flow21" sourceRef="exclusivegateway5" targetRef="scripttask8"></sequenceFlow>
-    <userTask id="usertask6" name="Підписання Заступник голови правління"></userTask>
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway5" targetRef="scripttask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nContractAmount >= 200000 && nContractAmount < 10000000}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask6" name="Підписання Заступник голови правління">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адресс" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквизиты для оплаты" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактные данные" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Заказчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="Преамбула" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_1st" name="1-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_1st" name="Вміст першого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_2nd" name="2-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_2nd" name="Вміст другого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_3rd" name="3-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_3rd" name="Вміст третього блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_4th" name="4-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_4th" name="Вміст четвертого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_5th" name="5-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_5th" name="Вміст п'ятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_6th" name="Вміст шостого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_7" name="7-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_7" name="Вміст сьомого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_8" name="8-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_8" name="Вміст восьмого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_9" name="9-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_9" name="Вміст дев'ятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow22" sourceRef="scripttask8" targetRef="usertask6"></sequenceFlow>
     <scriptTask id="scripttask9" name="Step7" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_7')
+var sKey_Step= 'step_7'
+var sKey_GroupPostfix_New = 'MHP_Head'
+var sKey_GroupPostfix = '_default_MHP_Head'
 
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MHP_Depaptment_Justice', 'MHP_Depaptment_Justice', 'step_7')
-
-</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <sequenceFlow id="flow23" sourceRef="exclusivegateway5" targetRef="scripttask9"></sequenceFlow>
-    <userTask id="usertask7" name="Підписання Голова правління"></userTask>
+    <sequenceFlow id="flow23" sourceRef="exclusivegateway5" targetRef="scripttask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nContractAmount >= 10000000}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask7" name="Підписання Голова правління">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адресс" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквизиты для оплаты" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактные данные" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Заказчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="Преамбула" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_1st" name="1-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_1st" name="Вміст першого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_2nd" name="2-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_2nd" name="Вміст другого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_3rd" name="3-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_3rd" name="Вміст третього блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_4th" name="4-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_4th" name="Вміст четвертого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_5th" name="5-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_5th" name="Вміст п'ятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_6th" name="Вміст шостого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_7" name="7-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_7" name="Вміст сьомого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_8" name="8-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_8" name="Вміст восьмого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_9" name="9-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_9" name="Вміст дев'ятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow24" sourceRef="scripttask9" targetRef="usertask7"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow25" sourceRef="usertask7" targetRef="endevent2"></sequenceFlow>
@@ -212,8 +462,67 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow27" sourceRef="usertask4" targetRef="endevent4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow28" sourceRef="usertask5" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow29" sourceRef="exclusivegateway6" targetRef="exclusivegateway5"></sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway6" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="exclusivegateway6" targetRef="scripttask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumAccept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="exclusivegateway6" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumReturn'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask8" name="Узгодження договору (ФЕД)">
+    <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адресс" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквизиты для оплаты" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактные данные" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Заказчик&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="Преамбула" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_1st" name="1-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_1st" name="Вміст першого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_2nd" name="2-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_2nd" name="Вміст другого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_3rd" name="3-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_3rd" name="Вміст третього блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_4th" name="4-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_4th" name="Вміст четвертого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_5th" name="5-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_5th" name="Вміст п'ятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_6th" name="6-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_6th" name="Вміст шостого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_7" name="7-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_7" name="Вміст сьомого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_8" name="8-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_8" name="Вміст восьмого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_9" name="9-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_9" name="Вміст дев'ятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask10" name="Step8" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_8'
+var sKey_GroupPostfix_New = 'MHP_Finance_Spec2'
+var sKey_GroupPostfix = '_default_MHP_Depar_Finance'
+
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <sequenceFlow id="flow31" sourceRef="scripttask10" targetRef="usertask8"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="usertask8" targetRef="exclusivegateway5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_mhp_agreementContract">
     <bpmndi:BPMNPlane bpmnElement="_doc_mhp_agreementContract" id="BPMNPlane__doc_mhp_agreementContract">
@@ -232,11 +541,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="400.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="600.0" y="292.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="522.0" y="380.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="522.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="55.0" width="105.0" x="600.0" y="200.0"></omgdc:Bounds>
@@ -293,7 +599,13 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="35.0" width="35.0" x="715.0" y="881.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
-        <omgdc:Bounds height="40.0" width="40.0" x="608.0" y="550.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="464.0" y="550.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask8" id="BPMNShape_usertask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="720.0" y="543.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="576.0" y="543.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="125.0" y="227.0"></omgdi:waypoint>
@@ -319,7 +631,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="540.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="539.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="539.0" y="300.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="560.0" y="227.0"></omgdi:waypoint>
@@ -402,18 +714,27 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="732.0" y="881.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="628.0" y="518.0"></omgdi:waypoint>
-        <omgdi:waypoint x="628.0" y="550.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="490.0"></omgdi:waypoint>
+        <omgdi:waypoint x="483.0" y="490.0"></omgdi:waypoint>
+        <omgdi:waypoint x="484.0" y="550.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="648.0" y="570.0"></omgdi:waypoint>
-        <omgdi:waypoint x="920.0" y="570.0"></omgdi:waypoint>
-        <omgdi:waypoint x="920.0" y="621.0"></omgdi:waypoint>
+        <omgdi:waypoint x="504.0" y="570.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="570.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="608.0" y="570.0"></omgdi:waypoint>
+        <omgdi:waypoint x="464.0" y="570.0"></omgdi:waypoint>
         <omgdi:waypoint x="362.0" y="570.0"></omgdi:waypoint>
         <omgdi:waypoint x="362.0" y="255.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="681.0" y="570.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="570.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="825.0" y="570.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="570.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="621.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

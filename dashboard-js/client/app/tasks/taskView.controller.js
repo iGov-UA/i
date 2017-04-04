@@ -862,7 +862,8 @@
             rollbackReadonlyEnumFields();
             if($scope.model.printTemplate){
               $scope.taskForm.sendDefaultPrintForm = false;
-            } else {
+            }
+            if($scope.taskData.oProcess && $scope.taskData.oProcess.sBP && $scope.taskData.oProcess.sBP.match(/^_doc_/)){
               var sKey_Step_field = $scope.taskForm.filter(function (item) {
                 return item.id === "sKey_Step_Document";
               })[0];
