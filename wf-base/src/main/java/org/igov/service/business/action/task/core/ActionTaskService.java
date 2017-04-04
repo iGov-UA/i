@@ -305,10 +305,8 @@ public class ActionTaskService {
             } else if (sLogin != null && !sLogin.isEmpty()) {
                 taskQuery.taskAssignee(sLogin);
             }
-        } else {
-            if (sLogin != null && !sLogin.isEmpty()) {
-                taskQuery.taskCandidateOrAssigned(sLogin);
-            }
+        } else if (sLogin != null && !sLogin.isEmpty()) {
+            taskQuery.taskCandidateOrAssigned(sLogin);
         }
         return taskQuery;
     }
@@ -1825,11 +1823,9 @@ public class ActionTaskService {
                         task = taskOpponent;
                         LOG.info(String.format("Set new result Task [id = '%s']", task));
                     }
-                } else {
-                    if (createDateTask.before(createDateTaskOpponent)) {
-                        task = taskOpponent;
-                        LOG.info(String.format("Set new result Task [id = '%s']", task));
-                    }
+                } else if (createDateTask.before(createDateTaskOpponent)) {
+                    task = taskOpponent;
+                    LOG.info(String.format("Set new result Task [id = '%s']", task));
                 }
             }
         }
@@ -2289,7 +2285,7 @@ public class ActionTaskService {
 
         if (!StringUtils.isEmpty(soaFilterField)) {
         }
-        Object taskQuery = null;
+        Object taskQuery;
         if ("Closed".equalsIgnoreCase(sFilterStatus)) {
             taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
             if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
@@ -2297,14 +2293,10 @@ public class ActionTaskService {
             } else {
                 ((TaskInfoQuery) taskQuery).orderByTaskId();
             }
-                    
-            /*if(taskQuery != null && bIncludeVariablesProcess){
-                taskQuery = ((TaskQuery) taskQuery).includeProcessVariables();
-            }*/
 
             if (!StringUtils.isEmpty(soaFilterField)) {
                 JSONArray oJSONArray = new JSONArray(soaFilterField);
-                Map<String, String> mFilterField = new HashMap<String, String>();
+                Map<String, String> mFilterField = new HashMap<>();
                 for (int i = 0; i < oJSONArray.length(); i++) {
                     JSONObject oJSON = (JSONObject) oJSONArray.get(i);
                     if (oJSON.has("sID") && oJSON.has("sValue")) {
@@ -2318,70 +2310,64 @@ public class ActionTaskService {
                 LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
             }
             ((TaskInfoQuery) taskQuery).asc();
-        } else {
-            if (bIncludeAlienAssignedTasks) {
-                StringBuilder groupIdsSB = new StringBuilder();
-                for (int i = 0; i < groupsIds.size(); i++) {
-                    groupIdsSB.append("'");
-                    groupIdsSB.append(groupsIds.get(i));
-                    groupIdsSB.append("'");
-                    if (i < groupsIds.size() - 1) {
-                        groupIdsSB.append(",");
-                    }
+        } else if (bIncludeAlienAssignedTasks) {
+            StringBuilder groupIdsSB = new StringBuilder();
+            for (int i = 0; i < groupsIds.size(); i++) {
+                groupIdsSB.append("'");
+                groupIdsSB.append(groupsIds.get(i));
+                groupIdsSB.append("'");
+                if (i < groupsIds.size() - 1) {
+                    groupIdsSB.append(",");
                 }
-
-                StringBuilder sql = new StringBuilder();
-                sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
-                sql.append(groupIdsSB.toString());
-                sql.append(") ");
-
-                if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
-                    sql.append(" order by task.CREATE_TIME_ asc");
-                } else {
-                    sql.append(" order by task.ID_ asc");
-                }
-                LOG.info("Query to execute {}", sql.toString());
-                taskQuery = oTaskService.createNativeTaskQuery().sql(sql.toString());
-            } else {
-                taskQuery = oTaskService.createTaskQuery();
-                if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)) {
-                    ((TaskQuery) taskQuery).taskCandidateUser(sLogin);
-                } else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)) {
-                    taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
-                } else if ("Opened".equalsIgnoreCase(sFilterStatus)) {
-                    taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
-                    LOG.info("Opened JSONValue element in filter {}",JSONValue.toJSONString(taskQuery));
-                }
-                else if("Documents".equalsIgnoreCase(sFilterStatus)){
-                    taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
-                }
-                       
-                /*if(bIncludeVariablesProcess){
-                    taskQuery = ((TaskQuery) taskQuery).includeProcessVariables();
-                }*/
-                
-                if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
-                    ((TaskQuery) taskQuery).orderByTaskCreateTime();
-                } else {
-                    ((TaskQuery) taskQuery).orderByTaskId();
-                }
-
-                if (!StringUtils.isEmpty(soaFilterField)) {
-                    JSONArray oJSONArray = new JSONArray(soaFilterField);
-                    Map<String, String> mFilterField = new HashMap<>();
-                    for (int i = 0; i < oJSONArray.length(); i++) {
-                        JSONObject oJSON = (JSONObject) oJSONArray.get(i);
-                        if (oJSON.has("sID") && oJSON.has("sValue")) {
-                            mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
-                            ((TaskQuery) taskQuery)
-                                    .processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
-                            LOG.info("{} json element doesn't have either sID or sValue fields", i);
-                        }
-                    }
-                    LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
-                }
-                ((TaskQuery) taskQuery).asc();
             }
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+            sql.append(groupIdsSB.toString());
+            sql.append(") ");
+
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                sql.append(" order by task.CREATE_TIME_ asc");
+            } else {
+                sql.append(" order by task.ID_ asc");
+            }
+            LOG.info("Query to execute {}", sql.toString());
+            taskQuery = oTaskService.createNativeTaskQuery().sql(sql.toString());
+        } else {
+            taskQuery = oTaskService.createTaskQuery();
+            long startTime = System.currentTimeMillis();
+            if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)) {
+                ((TaskQuery) taskQuery).taskCandidateUser(sLogin);
+            } else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
+            } else if ("Opened".equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
+                LOG.info("Opened JSONValue element in filter {}", JSONValue.toJSONString(taskQuery));
+            } else if ("Documents".equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
+            }
+            LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                ((TaskQuery) taskQuery).orderByTaskCreateTime();
+            } else {
+                ((TaskQuery) taskQuery).orderByTaskId();
+            }
+
+            if (!StringUtils.isEmpty(soaFilterField)) {
+                JSONArray oJSONArray = new JSONArray(soaFilterField);
+                Map<String, String> mFilterField = new HashMap<>();
+                for (int i = 0; i < oJSONArray.length(); i++) {
+                    JSONObject oJSON = (JSONObject) oJSONArray.get(i);
+                    if (oJSON.has("sID") && oJSON.has("sValue")) {
+                        mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        ((TaskQuery) taskQuery)
+                                .processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        LOG.info("{} json element doesn't have either sID or sValue fields", i);
+                    }
+                }
+                LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
+            }
+            ((TaskQuery) taskQuery).asc();
         }
 
         return taskQuery;

@@ -146,10 +146,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private MessageService oMessageService;
-    
+
     @Autowired
     private SubjectAccountDao subjectAccountDao;
-    
+
     @Autowired
     private Mail oMail;
 
@@ -690,7 +690,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
         }
 
-
         if (bIncludeAttachments.equals(Boolean.TRUE)) {
             LOG.info("Attach is triggered!");
             response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
@@ -716,9 +715,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             Map<String, Object> mProcessVariable = null;
             try {
                 mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
-            } catch (ActivitiObjectNotFoundException oException){
+            } catch (ActivitiObjectNotFoundException oException) {
                 HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processDefinitionId(Long.toString(nID_Process)).singleResult();
-                if(historicProcessInstance == null){
+                if (historicProcessInstance == null) {
                     LOG.error("Can't get: {}", oException.getMessage());
                 } else {
                     LOG.info("Getting variables from HistoricVariableInstance");
@@ -1509,10 +1508,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * "Необходимо уточнить данные")
      * @param sSubjectInfo -- строка-информация о субъекте //опциональный
      * @param nID_Subject -- ID гражданина //опциональный
-     * @param sJsonBody -- JSON-объект с параметрами:
-     *                  saField -- строка-массива полей (например:"[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]");
-     *                  soParams - строка-обьекта параметров;
-     *                  sBody -- строка тела письма //опциональный (если не задан, то пустота)     *
+     * @param sJsonBody -- JSON-объект с параметрами: saField -- строка-массива
+     * полей
+     * (например:"[{'id':'sFamily','type':'string','value':'Белявский'},{'id':'nAge','type':'long'}]");
+     * soParams - строка-обьекта параметров; sBody -- строка тела письма
+     * //опциональный (если не задан, то пустота)
+     *
      * @throws CommonServiceException
      * @throws CRCInvalidException
      */
@@ -1549,18 +1550,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер - ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "JSON-щбъект с параметрами: saField - строка-массива полей (required = true); soParams - строка-обьекта параметров (required = true); sBody - строка тела сообщения-коммента (общего) (required = false)", required = true) @RequestBody String sJsonBody
     ) throws CommonServiceException, CRCInvalidException {
-        sHead = ((sHead == null || "".equals(sHead.trim())) ? 
-                    "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
+        sHead = ((sHead == null || "".equals(sHead.trim()))
+                ? "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
         String saField = "";
         String soParams = null;
         String sBody = null;
         Map<String, String> mJsonBody;
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request setTaskQuestions: " + e.getMessage());
         }
-        if(mJsonBody != null){
+        if (mJsonBody != null) {
             if (mJsonBody.containsKey("saField")) {
                 saField = (String) mJsonBody.get("saField");
             }
@@ -1763,187 +1764,163 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }
 
-	@ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: Получение списка всех тасок, которые могут быть доступны указанному логину #####\n\n"
-			+ "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=[sLogin]\n\n\n"
-			+ "- Возвращает список всех тасок, которые могут быть доступны указанному логину [sLogin] и которые уже заняты другими логинами, входящими во все те-же группы, в которые входит данный логин\n\n"
-			+ "Во время выполнения производит поиск групп, в которые входит указанный пользователь, и затем возвращает список задач, которые могут быть "
-			+ " заассайнены на пользователей из полученных групп:\n\n" + "Содержит следующие параметры:\n"
-			+ "- sLogin - id пользователя. обязательный параметр, указывающий пользователя\n"
-			+ "- bIncludeAlienAssignedTasks - необязательный параметр (по умолчанию false). Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.\n"
-			+ "- sOrderBy - метод сортировки задач. Необязательный параметр. По умолчанию 'id'. Допустимые значения 'id', 'taskCreateTime', 'ticketCreateDate'\n"
-			+ "- nSize - Количество задач в результате. Необязательный параметр. По умолчанию 10.\n"
-			+ "- nStart - Порядковый номер первой задачи для возвращения. Необязательный параметр. По умолчанию 0\n"
-			+ "- sFilterStatus - Необязательный параметр (по умолчанию обрабатывается как OpenedUnassigned). статус фильтрации задач, у которого возможные значения: OpenedUnassigned (только не-ассайнутые), "
-			+ " OpenedAssigned(только ассайнутые), Opened(только открытые (не в истории)), Closed(только закрытые (история))\n"
-			+ "- bFilterHasTicket - Необязательный параметр (по умолчанию false). Если true - возвращать только те задачи, у которых есть связанный тикет\n"
-			+ "Примеры:\n\n" + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit\n\n"
-			+ "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit&nSize=15&nStart=10\n\n")
-	@RequestMapping(value = "/getTasks", method = RequestMethod.GET)
-	public @ResponseBody Map<String, Object> getTasks(
-			@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
-			@ApiParam(value = "nID_Process", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-			@ApiParam(value = "bIncludeAlienAssignedTasks", required = true) @RequestParam(value = "bIncludeAlienAssignedTasks", defaultValue = "false", required = false) boolean bIncludeAlienAssignedTasks,
-			@ApiParam(value = "sOrderBy", required = false) @RequestParam(value = "sOrderBy", defaultValue = "id", required = false) String sOrderBy,
-			@ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue = "10", required = false) Integer nSize,
-			@ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue = "0", required = false) Integer nStart,
-			@ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
-			@ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
-			@ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField,
-			@ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "false") Boolean bIncludeVariablesProcess)
-			throws CommonServiceException {
+    @ApiOperation(value = "getTasks", notes = "#####  ActionCommonTaskController: Получение списка всех тасок, которые могут быть доступны указанному логину #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=[sLogin]\n\n\n"
+            + "- Возвращает список всех тасок, которые могут быть доступны указанному логину [sLogin] и которые уже заняты другими логинами, входящими во все те-же группы, в которые входит данный логин\n\n"
+            + "Во время выполнения производит поиск групп, в которые входит указанный пользователь, и затем возвращает список задач, которые могут быть "
+            + " заассайнены на пользователей из полученных групп:\n\n" + "Содержит следующие параметры:\n"
+            + "- sLogin - id пользователя. обязательный параметр, указывающий пользователя\n"
+            + "- bIncludeAlienAssignedTasks - необязательный параметр (по умолчанию false). Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.\n"
+            + "- sOrderBy - метод сортировки задач. Необязательный параметр. По умолчанию 'id'. Допустимые значения 'id', 'taskCreateTime', 'ticketCreateDate'\n"
+            + "- nSize - Количество задач в результате. Необязательный параметр. По умолчанию 10.\n"
+            + "- nStart - Порядковый номер первой задачи для возвращения. Необязательный параметр. По умолчанию 0\n"
+            + "- sFilterStatus - Необязательный параметр (по умолчанию обрабатывается как OpenedUnassigned). статус фильтрации задач, у которого возможные значения: OpenedUnassigned (только не-ассайнутые), "
+            + " OpenedAssigned(только ассайнутые), Opened(только открытые (не в истории)), Closed(только закрытые (история))\n"
+            + "- bFilterHasTicket - Необязательный параметр (по умолчанию false). Если true - возвращать только те задачи, у которых есть связанный тикет\n"
+            + "Примеры:\n\n" + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit&nSize=15&nStart=10\n\n")
+    @RequestMapping(value = "/getTasks", method = RequestMethod.GET)
+    public @ResponseBody
+    Map<String, Object> getTasks(
+            @ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
+            @ApiParam(value = "nID_Process", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @ApiParam(value = "bIncludeAlienAssignedTasks", required = true) @RequestParam(value = "bIncludeAlienAssignedTasks", defaultValue = "false", required = false) boolean bIncludeAlienAssignedTasks,
+            @ApiParam(value = "sOrderBy", required = false) @RequestParam(value = "sOrderBy", defaultValue = "id", required = false) String sOrderBy,
+            @ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue = "10", required = false) Integer nSize,
+            @ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue = "0", required = false) Integer nStart,
+            @ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
+            @ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
+            @ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField,
+            @ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "false") Boolean bIncludeVariablesProcess)
+            throws CommonServiceException {
 
-		Map<String, Object> res = new HashMap<String, Object>();
+        Map<String, Object> res = new HashMap<>();
 
-		try {
-			List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+        try {
+            List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
-			if (groups != null && !groups.isEmpty()) {
-				List<String> groupsIds = new LinkedList<String>();
-				for (Group group : groups) {
-					groupsIds.add(group.getId());
-				}
-				LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+            if (groups != null && !groups.isEmpty()) {
+                List<String> groupsIds = new LinkedList<>();
+                for (Group group : groups) {
+                    groupsIds.add(group.getId());
+                }
+                LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
 
-				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
-				long totalNumber = 0;
-                                
-				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
-						sFilterStatus, groupsIds, soaFilterField);
-                               // LOG.info("taskQuery: ", taskQuery );
-                                
-                                totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
-						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
-                                LOG.info("total count before processing is: {}", totalNumber);
-                                
-                                long totalCountServices = 0;
-                                
-                                if(!"Documents".equalsIgnoreCase(sFilterStatus)){
-                                    List<TaskInfo> aTaskInfo = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
-                                                        : (List) ((NativeTaskQuery) taskQuery).list();
-                                    if(aTaskInfo != null){
-                                        LOG.info("all tasks size is {}", aTaskInfo.size());
-                                        for(TaskInfo oTaskInfo : aTaskInfo){
-                                            if(!oTaskInfo.getProcessDefinitionId().startsWith("_doc")){
-                                                totalCountServices++;
-                                            }
-                                        }
-                                    }else{
-                                        LOG.info("all tasks is null");
-                                    }
-                                }
-                                
-                                LOG.info("totalCountServices is {}", totalCountServices);
-                                /*Object taskQueryDocument = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
-						"Documents", groupsIds, soaFilterField);*/
-                                
-				/*long totalDocumentNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
-						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
-                                
-				LOG.info("Total number of tasks:{}", totalNumber);
-                                LOG.info("Total number of Documents:{}", totalNumber);*/
-				int nStartBunch = nStart;
-				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
-                                //LOG.info("tasks size in filter is {}", tasks.size());
-				// this while is intended to work until we either pass through
-				// all the tasks or select needed number of tickets
-				long sizeOfTasksToSelect = nSize;
-				if (bFilterHasTicket) {
-					// in case bFilterHasTicket tasks can be shifted. So we have
-					// select tasks from 0 and select tasks from nStart after
-					// that
-					sizeOfTasksToSelect = totalNumber;
-					nStartBunch = 0;
-				}
-				while ((tasks.size() < sizeOfTasksToSelect) && (nStartBunch < totalNumber)) {
-					LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
-					List<TaskInfo> currTasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, nStartBunch,
-							nSize, bFilterHasTicket, mapOfTickets);
-					tasks.addAll(currTasks);
+                Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
+                long totalNumber = 0;
 
-					nStartBunch += nSize;
+                Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
+                        sFilterStatus, groupsIds, soaFilterField);
+                // LOG.info("taskQuery: ", taskQuery );
 
-					if (!bFilterHasTicket) {
-						break;
-					}
-				}
+                totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
+                        : oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                LOG.info("total count before processing is: {}", totalNumber);
 
-				int tasksSize = tasks.size();
-				if (bFilterHasTicket) {
-					totalNumber = tasksSize;
-					if (tasksSize > nStart && tasksSize > (nStart + nSize)) {
-						tasks = tasks.subList(nStart, nStart + nSize);
-					} else if (tasksSize > nStart) {
-						tasks = tasks.subList(nStart, tasksSize);
-					} else {
-						LOG.info("Number of tasks with FlowSlotTicket is less than starting point to fetch:{}",
-								tasksSize);
-						tasks.clear();
-					}
-				}
+                long totalCountServices = 0;
 
-				List<Map<String, Object>> data = new LinkedList<Map<String, Object>>();
-				if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
-					oActionTaskService.populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
-				} else {
-					oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
-				}
+                if (!"Documents".equalsIgnoreCase(sFilterStatus)) {
+                    List<TaskInfo> aTaskInfo = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
+                            : (List) ((NativeTaskQuery) taskQuery).list();
+                    if (aTaskInfo != null) {
+                        LOG.info("all tasks size is {}", aTaskInfo.size());
+                        for (TaskInfo oTaskInfo : aTaskInfo) {
+                            if (!oTaskInfo.getProcessDefinitionId().startsWith("_doc")) {
+                                totalCountServices++;
+                            }
+                        }
+                    } else {
+                        LOG.info("all tasks is null");
+                    }
+                }
 
-				/*
-				 * if (!StringUtils.isEmpty(soaFilterField)) data =
-				 * filterTasks(data, soaFilterField);
-				 */
-                                
-                                List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<Map<String, Object>>();
-                                
-                                long documentListSize = 0;
-                                if(!"Documents".equals(sFilterStatus)){
-                                   
-                                    for(Map<String, Object> dataElem : data)
-                                    {
-                                        if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc")){
-                                            
-                                            if(bIncludeVariablesProcess){
-                                                dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
-                                            }
-                                            checkDocumentIncludesData.add(dataElem);
-                                                //totalNumber = totalNumber - 1;
-                                            documentListSize++;
-                                        }
-                                    }
-                                }else{
-                                    
-                                    for(Map<String, Object> dataElem : data)
-                                    {
-                                        if(bIncludeVariablesProcess){
-                                            dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
-                                        }
-                                        checkDocumentIncludesData.add(dataElem);
-                                    }
-                                }
-                                
-                                LOG.info("checkDocumentIncludesData size: {}", checkDocumentIncludesData.size());
-                                
-				res.put("data", checkDocumentIncludesData);
-				res.put("size", nSize);
-				res.put("start", nStart);
-				res.put("order", "asc");
-				res.put("sort", "id");
-                                
-                                if("Documents".equalsIgnoreCase(sFilterStatus)){
-                                    res.put("total", totalNumber);
-                                }else{
-                                    res.put("total", totalCountServices);
-                                }
-			}
-		} catch (Exception e) {
-			LOG.error("Error occured while getting list of tasks", e);
-		}
-		/*if (bIncludeVariablesProcess.equals(Boolean.TRUE) && nID_Process != null) {
-			Map<String, Object> mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
-			res.put("mProcessVariable", mProcessVariable);
-		}*/
-		return res;
-	}
+                LOG.info("totalCountServices is {}", totalCountServices);
+                int nStartBunch = nStart;
+                List<TaskInfo> tasks = new LinkedList<>();
+                long sizeOfTasksToSelect = nSize;
+                if (bFilterHasTicket) {
+                    sizeOfTasksToSelect = totalNumber;
+                    nStartBunch = 0;
+                }
+                while ((tasks.size() < sizeOfTasksToSelect) && (nStartBunch < totalNumber)) {
+                    LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
+                    List<TaskInfo> currTasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, nStartBunch,
+                            nSize, bFilterHasTicket, mapOfTickets);
+                    tasks.addAll(currTasks);
+
+                    nStartBunch += nSize;
+
+                    if (!bFilterHasTicket) {
+                        break;
+                    }
+                }
+
+                int tasksSize = tasks.size();
+                if (bFilterHasTicket) {
+                    totalNumber = tasksSize;
+                    if (tasksSize > nStart && tasksSize > (nStart + nSize)) {
+                        tasks = tasks.subList(nStart, nStart + nSize);
+                    } else if (tasksSize > nStart) {
+                        tasks = tasks.subList(nStart, tasksSize);
+                    } else {
+                        LOG.info("Number of tasks with FlowSlotTicket is less than starting point to fetch:{}",
+                                tasksSize);
+                        tasks.clear();
+                    }
+                }
+
+                List<Map<String, Object>> data = new LinkedList<>();
+                if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
+                    oActionTaskService.populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
+                } else {
+                    oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
+                }
+
+                List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<>();
+
+                //long documentListSize = 0;
+                if (!"Documents".equals(sFilterStatus)) {
+
+                    for (Map<String, Object> dataElem : data) {
+                        if (!((String) dataElem.get("processDefinitionId")).startsWith("_doc")) {
+
+                            if (bIncludeVariablesProcess) {
+                                dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
+                            }
+                            checkDocumentIncludesData.add(dataElem);
+                            //totalNumber = totalNumber - 1;
+                            //documentListSize++;
+                        }
+                    }
+                } else {
+
+                    for (Map<String, Object> dataElem : data) {
+                        if (bIncludeVariablesProcess) {
+                            dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
+                        }
+                        checkDocumentIncludesData.add(dataElem);
+                    }
+                }
+
+                LOG.info("checkDocumentIncludesData size: {}", checkDocumentIncludesData.size());
+
+                res.put("data", checkDocumentIncludesData);
+                res.put("size", nSize);
+                res.put("start", nStart);
+                res.put("order", "asc");
+                res.put("sort", "id");
+
+                if ("Documents".equalsIgnoreCase(sFilterStatus)) {
+                    res.put("total", totalNumber);
+                } else {
+                    res.put("total", totalCountServices);
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Error occured while getting list of tasks", e);
+        }
+        return res;
+    }
 
     @Deprecated
     private List<Map<String, Object>> filterTasks(List<Map<String, Object>> tasks,
@@ -2377,9 +2354,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     /**
      *
-     * @param sLogin - Строка логин пользователя, меняющего пароль
-     * //@param sPasswordOld - Строка старый пароль
-     * //@param sPasswordNew - Строка новый пароль
+     * @param sLogin - Строка логин пользователя, меняющего пароль //@param
+     * sPasswordOld - Строка старый пароль //@param sPasswordNew - Строка новый
+     * пароль
      * @return
      * @throws CommonServiceException
      * @throws RuntimeException
@@ -2431,20 +2408,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     String changePassword(
             @ApiParam(value = "Строка логин пользователя, меняющего пароль", required = true) @RequestParam(value = "sLoginOwner", required = true) String sLogin,
-            @ApiParam(value = "JSON-cnрока с двумя параметрами: sPasswordOld - Строка старый пароль; sPasswordNew - Строка новый пароль", required = true) @RequestBody (required = true) String sPasswords
+            @ApiParam(value = "JSON-cnрока с двумя параметрами: sPasswordOld - Строка старый пароль; sPasswordNew - Строка новый пароль", required = true) @RequestBody(required = true) String sPasswords
     ) throws Exception {
 
         String sPasswordOld = null;
         String sPasswordNew = null;
 
-        if(sPasswords != null){
+        if (sPasswords != null) {
             Map<String, Object> mBody;
             try {
                 mBody = (Map<String, Object>) JSONValue.parse(sPasswords);
-            } catch (Exception e){
+            } catch (Exception e) {
                 throw new IllegalArgumentException("Error parse JSON body: " + e.getMessage());
             }
-            if(mBody != null){
+            if (mBody != null) {
                 if (mBody.containsKey("sPasswordOld")) {
                     sPasswordOld = (String) mBody.get("sPasswordOld");
                 } else {
@@ -2995,8 +2972,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         mParam.put("sLoginAuthor", sLogin);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
         Map<String, Object> mReturn = new HashMap<>();
-        
-       /*HistoryEvent_Service oHistoryEvent_Service = actionEventHistoryService.addActionStatus_Central(
+
+        /*HistoryEvent_Service oHistoryEvent_Service = actionEventHistoryService.addActionStatus_Central(
                 generalConfig.getOrderId_ByProcess(Long.parseLong(oProcessInstanceChild.getProcessInstanceId())), 
                 subjectAccountDao.findSubjectAccounts(null, sLogin, null, null).get(0).getnID_Subject(), 
                 HistoryEventType.getById(11L).getsName(), 
@@ -3017,10 +2994,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 11L);
 
         LOG.info("HistoryEvent_Service elem in setDocument: {}", oHistoryEvent_Service.toString());*/
-        
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
         LOG.info("mReturn={}", mReturn);
-        
+
         return mReturn;
     }
 
@@ -3036,77 +3012,76 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         //mParam.put("sLoginAuthor", sLogin);
         //ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
         Map<String, Object> mReturn = new HashMap<>();
-          
-        
+
         LOG.info("Trying to get start form with ID " + sID_BP);
         List<ProcessDefinition> resProcessDefinitions = repositoryService.createProcessDefinitionQuery().processDefinitionKey(sID_BP).active().latestVersion().list();
-        
+
         LOG.info("Loaded process definition ID from repository service:" + resProcessDefinitions);
-        
-        if (resProcessDefinitions != null && resProcessDefinitions.size() > 0){
-        	 LOG.info("Processing start form of process defiition:" + resProcessDefinitions.get(0).getKey() + ":" + resProcessDefinitions.get(0).getId());
-	        StartFormData formData = formService.getStartFormData(resProcessDefinitions.get(0).getId());
-	        
-	        LOG.info("Received form " + formData);
-	        Map<String, Object> formDataDTO = new HashMap<String, Object>();
-	        formDataDTO.put("formKey", formData.getFormKey());
-	        formDataDTO.put("deploymentId", formData.getDeploymentId());
-	        formDataDTO.put("formProperties", processFormProperties(formData.getFormProperties())); 
-	        formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
-	
-	        Map[] res = new Map[1];
-	        res[0] = formDataDTO;
-	        mReturn.put("data", res);
-	        mReturn.put("total", 1);
-	        mReturn.put("start", 0);
-	        mReturn.put("sort", "name");
-	        mReturn.put("order", "asc");
-	        mReturn.put("size", 1);
-	
-	        LOG.info("mReturn={}", mReturn);
+
+        if (resProcessDefinitions != null && resProcessDefinitions.size() > 0) {
+            LOG.info("Processing start form of process defiition:" + resProcessDefinitions.get(0).getKey() + ":" + resProcessDefinitions.get(0).getId());
+            StartFormData formData = formService.getStartFormData(resProcessDefinitions.get(0).getId());
+
+            LOG.info("Received form " + formData);
+            Map<String, Object> formDataDTO = new HashMap<String, Object>();
+            formDataDTO.put("formKey", formData.getFormKey());
+            formDataDTO.put("deploymentId", formData.getDeploymentId());
+            formDataDTO.put("formProperties", processFormProperties(formData.getFormProperties()));
+            formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
+
+            Map[] res = new Map[1];
+            res[0] = formDataDTO;
+            mReturn.put("data", res);
+            mReturn.put("total", 1);
+            mReturn.put("start", 0);
+            mReturn.put("sort", "name");
+            mReturn.put("order", "asc");
+            mReturn.put("size", 1);
+
+            LOG.info("mReturn={}", mReturn);
         } else {
-        	mReturn.put("data", new String[0]);
+            mReturn.put("data", new String[0]);
             mReturn.put("total", 0);
             mReturn.put("start", 0);
             mReturn.put("sort", "name");
             mReturn.put("order", "asc");
             mReturn.put("size", 0);
         }
-        
+
         return mReturn;
     }
-    
-    protected List<Map<String, Object>> processFormProperties(List<FormProperty> formProperties) {
-    	List<Map<String, Object>> res = new LinkedList<Map<String,Object>>();
-    	for (FormProperty property : formProperties) {
-    		Map<String, Object> currProperty = new HashMap<String, Object>();
-    		currProperty.put("id", property.getId());
-    		currProperty.put("name", property.getName());
-    		currProperty.put("type", property.getType().getName());
-    		currProperty.put("value", property.getValue());
-    		currProperty.put("required", property.isRequired());
-    		currProperty.put("readable", property.isReadable());
-    		currProperty.put("writable", property.isWritable());
-    		if ("enum".equals(property.getType().getName())){
-    			Object oValues = property.getType().getInformation("values");
-    			List<Map> enumValuesPossible = new LinkedList<Map>();
-    			if (oValues instanceof Map) {
-    	            Map<String, String> mValue = (Map) oValues;
-    	            for (Map.Entry<String, String> mapEntry: mValue.entrySet()){
-    	            	Map<String, Object> currEnumValue = new HashMap<String, Object>();
-    	            	currEnumValue.put("id", mapEntry.getKey());
-    	            	currEnumValue.put("name", mapEntry.getValue());
-    	            	enumValuesPossible.add(currEnumValue);
-    	            }
-    			}
-    			currProperty.put("enumValues", enumValuesPossible);
-    		}
-    		res.add(currProperty);
-    	}
-		return res;
-	}
 
-	@ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
+    protected List<Map<String, Object>> processFormProperties(List<FormProperty> formProperties) {
+        List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+        for (FormProperty property : formProperties) {
+            Map<String, Object> currProperty = new HashMap<String, Object>();
+            currProperty.put("id", property.getId());
+            currProperty.put("name", property.getName());
+            currProperty.put("type", property.getType().getName());
+            currProperty.put("value", property.getValue());
+            currProperty.put("required", property.isRequired());
+            currProperty.put("readable", property.isReadable());
+            currProperty.put("writable", property.isWritable());
+            if ("enum".equals(property.getType().getName())) {
+                Object oValues = property.getType().getInformation("values");
+                List<Map> enumValuesPossible = new LinkedList<Map>();
+                if (oValues instanceof Map) {
+                    Map<String, String> mValue = (Map) oValues;
+                    for (Map.Entry<String, String> mapEntry : mValue.entrySet()) {
+                        Map<String, Object> currEnumValue = new HashMap<String, Object>();
+                        currEnumValue.put("id", mapEntry.getKey());
+                        currEnumValue.put("name", mapEntry.getValue());
+                        enumValuesPossible.add(currEnumValue);
+                    }
+                }
+                currProperty.put("enumValues", enumValuesPossible);
+            }
+            res.add(currProperty);
+        }
+        return res;
+    }
+
+    @ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
     @RequestMapping(value = "/startProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public @ResponseBody
     Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
@@ -3118,17 +3093,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> mJsonBody;
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
-            if(mJsonBody != null){
-            	if (mJsonBody.containsKey("properties")) {
+            if (mJsonBody != null) {
+                if (mJsonBody.containsKey("properties")) {
                     LOG.info("Parsing properties: " + mJsonBody.get("properties"));
-                    
-                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")){
-                    	LOG.info("Parsing param: " + param);
-                    	mParam.put((String)param.get("id"), param.get("value"));
+
+                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")) {
+                        LOG.info("Parsing param: " + param);
+                        mParam.put((String) param.get("id"), param.get("value"));
                     }
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
         }
 
@@ -3136,38 +3111,38 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("Processing process with key " + StringUtils.substringBefore(sID_BP, ":"));
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(StringUtils.substringBefore(sID_BP, ":"), mParam);
         Map<String, Object> mReturn = new HashMap<>();
-                
+
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(oProcessInstanceChild.getId()).active().list();
-        if (tasks != null && tasks.size() > 0){
-        	LOG.info("Found " + tasks.size() + " active tasks for the process instance " + oProcessInstanceChild.getProcessInstanceId());
-        	mReturn.put("nID_Task", tasks.get(0).getId());
+        if (tasks != null && tasks.size() > 0) {
+            LOG.info("Found " + tasks.size() + " active tasks for the process instance " + oProcessInstanceChild.getProcessInstanceId());
+            mReturn.put("nID_Task", tasks.get(0).getId());
         } else {
-        	LOG.warn("There are no active tasks for process instance " + oProcessInstanceChild.getId());
+            LOG.warn("There are no active tasks for process instance " + oProcessInstanceChild.getId());
         }
         LOG.info("mReturn={}", mReturn);
-        
+
         return mReturn;
-    }   
-	
-	 @ApiOperation(value = "Обновление переменных задачи с ее опциональным завершением", notes = "#####  ActionCommonTaskController: Обновление переменных задачи с ее опциональным завершением #####\n\n"
-	            + "HTTP Context: https://alpha.test.region.igov.org.ua/wf/service/action/task/updateProcess\n\n"
-				+ "POST Метод. Принимает параметр bSaveOnly. Если bSaveOnly=true - Только обновление переменных задачи. Если false - заверешение задачи после обновления переменных:\n"
-	            + "Метод принимает json в теле запроса со списком переменных для обновления и номером задачи:\n"
-				+ "\n```json\n"
-				+ "{\n"
-				+ "  \"taskId\" : \"5\",\n"	
-				+ "  \"properties\" : [\n"
-				+ "  {\n"
-				+ "  \"id\" : \"room\",\n"
-				+ "  \"value\" : \"normal\"\n"
-				+ "  }\n"
-				+ "  ]\n"
-				+ "}\n"
-				+ "\n```\n")
+    }
+
+    @ApiOperation(value = "Обновление переменных задачи с ее опциональным завершением", notes = "#####  ActionCommonTaskController: Обновление переменных задачи с ее опциональным завершением #####\n\n"
+            + "HTTP Context: https://alpha.test.region.igov.org.ua/wf/service/action/task/updateProcess\n\n"
+            + "POST Метод. Принимает параметр bSaveOnly. Если bSaveOnly=true - Только обновление переменных задачи. Если false - заверешение задачи после обновления переменных:\n"
+            + "Метод принимает json в теле запроса со списком переменных для обновления и номером задачи:\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"taskId\" : \"5\",\n"
+            + "  \"properties\" : [\n"
+            + "  {\n"
+            + "  \"id\" : \"room\",\n"
+            + "  \"value\" : \"normal\"\n"
+            + "  }\n"
+            + "  ]\n"
+            + "}\n"
+            + "\n```\n")
     @RequestMapping(value = "/updateProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public @ResponseBody
-    Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly, 
+    Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly,
             @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
     ) throws Exception {
 
@@ -3177,170 +3152,172 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String taskId = null;
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
-            if(mJsonBody != null){
-            	if (mJsonBody.containsKey("taskId")){
-            		LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
-            		taskId = (String) mJsonBody.get("taskId");
-            		LOG.info("Updating task with ID " + taskId);
-            	} else {
-            		throw new IllegalArgumentException("Object doesn't contain 'taskId' parameter");
-            	}
-            	
-            	if (mJsonBody.containsKey("properties")) {
+            if (mJsonBody != null) {
+                if (mJsonBody.containsKey("taskId")) {
+                    LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
+                    taskId = (String) mJsonBody.get("taskId");
+                    LOG.info("Updating task with ID " + taskId);
+                } else {
+                    throw new IllegalArgumentException("Object doesn't contain 'taskId' parameter");
+                }
+
+                if (mJsonBody.containsKey("properties")) {
                     LOG.info("Parsing properties: " + mJsonBody.get("properties"));
-                    
+
                     List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
                     String executionId = null;
-                    if (tasks != null && tasks.size() > 0){
-                    	Task firstTask = tasks.get(0);
-                    	executionId = firstTask.getExecutionId();
+                    if (tasks != null && tasks.size() > 0) {
+                        Task firstTask = tasks.get(0);
+                        executionId = firstTask.getExecutionId();
 
-                    	for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")){
-                        	LOG.info("Updating variable : " + (String)param.get("id") + " with the value " + param.get("value"));
-                        	mParam.put((String)param.get("id"), param.get("value"));
-                        	runtimeService.setVariable(executionId, (String)param.get("id"), param.get("value"));
+                        for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")) {
+                            LOG.info("Updating variable : " + (String) param.get("id") + " with the value " + param.get("value"));
+                            mParam.put((String) param.get("id"), param.get("value"));
+                            runtimeService.setVariable(executionId, (String) param.get("id"), param.get("value"));
                         }
 
-                    	if (!bSaveOnly){
-                    		LOG.info("Submitting task");
-                    		taskService.complete(firstTask.getId());
-                    	}
-                    	
-                    	updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
+                        if (!bSaveOnly) {
+                            LOG.info("Submitting task");
+                            taskService.complete(firstTask.getId());
+                        }
+
+                        updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
                     } else {
-                    	LOG.info("Have not found any tasks with ID " + taskId);
+                        LOG.info("Have not found any tasks with ID " + taskId);
                     }
-                    if (executionId != null){
-                    	List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
-                        if (activeTasks != null && activeTasks.size() > 0){
-                        	LOG.info("Found " + activeTasks.size() + " active tasks for the execution id " + executionId);
-                        	mReturn.put("taskId", tasks.get(0).getId());
+                    if (executionId != null) {
+                        List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
+                        if (activeTasks != null && activeTasks.size() > 0) {
+                            LOG.info("Found " + activeTasks.size() + " active tasks for the execution id " + executionId);
+                            mReturn.put("taskId", tasks.get(0).getId());
                         } else {
-                        	LOG.warn("There are no active tasks for execution id " + executionId);
+                            LOG.warn("There are no active tasks for execution id " + executionId);
                         }
                     }
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
         }
-        
+
         LOG.info("mReturn={}", mReturn);
         return mReturn;
-    }   
-    
-	public void updateProcessHistoryEvent(String processInstanceId, Map<String, Object> mParamDocument) throws ParseException {
+    }
 
-		DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+    public void updateProcessHistoryEvent(String processInstanceId, Map<String, Object> mParamDocument) throws ParseException {
 
-		ProcessInstance oProcessInstance = runtimeService
-				.createProcessInstanceQuery()
-				.processInstanceId(processInstanceId).includeProcessVariables()
-				.active().singleResult();
+        DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
 
-		if (oProcessInstance != null) {
-			Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
-			LOG.info("mProcessVariable: " + mProcessVariable);
+        ProcessInstance oProcessInstance = runtimeService
+                .createProcessInstanceQuery()
+                .processInstanceId(processInstanceId).includeProcessVariables()
+                .active().singleResult();
 
-			for (String sProcessVariable : mProcessVariable.keySet()) {
+        if (oProcessInstance != null) {
+            Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+            LOG.info("mProcessVariable: " + mProcessVariable);
 
-				try {
-					mProcessVariable.replace(sProcessVariable, df_StartProcess.format(mProcessVariable.get(sProcessVariable)));
-				} catch (Exception ex) {}
+            for (String sProcessVariable : mProcessVariable.keySet()) {
 
-				try {
-					mProcessVariable.replace(sProcessVariable, df_StartProcess.format(parseDate((String) mProcessVariable
-									.get(sProcessVariable))));
-				} catch (Exception ex) {}
+                try {
+                    mProcessVariable.replace(sProcessVariable, df_StartProcess.format(mProcessVariable.get(sProcessVariable)));
+                } catch (Exception ex) {
+                }
 
-			}
+                try {
+                    mProcessVariable.replace(sProcessVariable, df_StartProcess.format(parseDate((String) mProcessVariable
+                            .get(sProcessVariable))));
+                } catch (Exception ex) {
+                }
 
-			for (String sParamDocument : mProcessVariable.keySet()) {
-				LOG.info("mProcessVariable param : " + " name: " + sParamDocument + " value: "
-						+ mProcessVariable.get(sParamDocument));
-			}
+            }
 
-			Map<String, Object> mParamDocumentNew = new HashMap<>();
+            for (String sParamDocument : mProcessVariable.keySet()) {
+                LOG.info("mProcessVariable param : " + " name: " + sParamDocument + " value: "
+                        + mProcessVariable.get(sParamDocument));
+            }
 
-			for (String mKey : mParamDocument.keySet()) {
+            Map<String, Object> mParamDocumentNew = new HashMap<>();
 
-				Object oParamDocument = mParamDocument.get(mKey);
-				Object oProcessVariable = mProcessVariable.get(mKey);
-				if (oParamDocument != null) {
-					if (oProcessVariable != null) {
-						if (!(((String) oParamDocument).equals((String) oProcessVariable))) {
-							mParamDocumentNew.put(mKey, oParamDocument);
-						}
-					} else {
-						mParamDocumentNew.put(mKey, null);
-					}
-				} else if (oProcessVariable != null) {
-					mParamDocumentNew.put(mKey, oProcessVariable);
-				}
-			}
+            for (String mKey : mParamDocument.keySet()) {
 
-			LOG.info("mParamDocumentNew: " + mParamDocumentNew);
+                Object oParamDocument = mParamDocument.get(mKey);
+                Object oProcessVariable = mProcessVariable.get(mKey);
+                if (oParamDocument != null) {
+                    if (oProcessVariable != null) {
+                        if (!(((String) oParamDocument).equals((String) oProcessVariable))) {
+                            mParamDocumentNew.put(mKey, oParamDocument);
+                        }
+                    } else {
+                        mParamDocumentNew.put(mKey, null);
+                    }
+                } else if (oProcessVariable != null) {
+                    mParamDocumentNew.put(mKey, oProcessVariable);
+                }
+            }
 
-			String sOldHistoryData = "<tr><td>";
-			String sNewHistoryData = "<td>";
+            LOG.info("mParamDocumentNew: " + mParamDocumentNew);
 
-			if (!mParamDocumentNew.isEmpty()) {
+            String sOldHistoryData = "<tr><td>";
+            String sNewHistoryData = "<td>";
 
-				for (String mKey : mParamDocumentNew.keySet()) {
-					LOG.info("mProcessVariable.get(mKey): " + mProcessVariable.get(mKey));
-					LOG.info("mParamDocumentNew.get(mKey): " + mParamDocumentNew.get(mKey));
+            if (!mParamDocumentNew.isEmpty()) {
 
-					if (!mProcessVariable.get(mKey).equals(
-							mParamDocumentNew.get(mKey))) {
-						sOldHistoryData = sOldHistoryData + mKey + " : " + mProcessVariable.get(mKey) + "\n";
-						sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey) + "\n";
-					}
-				}
+                for (String mKey : mParamDocumentNew.keySet()) {
+                    LOG.info("mProcessVariable.get(mKey): " + mProcessVariable.get(mKey));
+                    LOG.info("mParamDocumentNew.get(mKey): " + mParamDocumentNew.get(mKey));
 
-				addEditHistoryEvent(oProcessInstance.getActivityId(), sNewHistoryData, sOldHistoryData, null, HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID());
-			}
-		}
-	}
+                    if (!mProcessVariable.get(mKey).equals(
+                            mParamDocumentNew.get(mKey))) {
+                        sOldHistoryData = sOldHistoryData + mKey + " : " + mProcessVariable.get(mKey) + "\n";
+                        sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey) + "\n";
+                    }
+                }
 
-	private Date parseDate(String sDate) throws java.text.ParseException {
-		DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-		DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
-		Date oDateReturn;
-		try {
-			oDateReturn = df.parse(sDate);
-		} catch (java.text.ParseException ex) {
-			oDateReturn = df_StartProcess.parse(sDate);
-		}
-		return oDateReturn;
-	}
+                addEditHistoryEvent(oProcessInstance.getActivityId(), sNewHistoryData, sOldHistoryData, null, HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID());
+            }
+        }
+    }
 
-	public void addEditHistoryEvent(String snID_Process_Activiti,
-			String sNewHistoryData, String sOldHistoryData, String sLogin,
-			Long nID_Status) {
+    private Date parseDate(String sDate) throws java.text.ParseException {
+        DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
+        Date oDateReturn;
+        try {
+            oDateReturn = df.parse(sDate);
+        } catch (java.text.ParseException ex) {
+            oDateReturn = df_StartProcess.parse(sDate);
+        }
+        return oDateReturn;
+    }
 
-		String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(snID_Process_Activiti));
+    public void addEditHistoryEvent(String snID_Process_Activiti,
+            String sNewHistoryData, String sOldHistoryData, String sLogin,
+            Long nID_Status) {
 
-		LOG.info("history data during task updating - snID_Process_Activiti: " + snID_Process_Activiti);
-		LOG.info("history data during task updating - sID_Order: " + sID_Order);
-		LOG.info("history data during task updating - sNewHistoryData: " + sNewHistoryData);
-		LOG.info("history data during task updating - sOldHistoryData: " + sOldHistoryData);
-		LOG.info("history data during task updating - sLogin: " + sLogin);
+        String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(snID_Process_Activiti));
 
-		Map<String, String> historyParam = new HashMap<>();
+        LOG.info("history data during task updating - snID_Process_Activiti: " + snID_Process_Activiti);
+        LOG.info("history data during task updating - sID_Order: " + sID_Order);
+        LOG.info("history data during task updating - sNewHistoryData: " + sNewHistoryData);
+        LOG.info("history data during task updating - sOldHistoryData: " + sOldHistoryData);
+        LOG.info("history data during task updating - sLogin: " + sLogin);
 
-		historyParam.put("newData", sNewHistoryData + "</td></tr>");
-		historyParam.put("oldData", sOldHistoryData + "</td>");
-		historyParam.put("nID_StatusType", nID_Status.toString());
-		historyParam.put("sLogin", sLogin);
+        Map<String, String> historyParam = new HashMap<>();
 
-		try {
-			actionEventHistoryService
-					.addHistoryEvent(sID_Order, sLogin, historyParam,
-							HistoryEventType.ACTIVITY_STATUS_NEW.getnID());
-		} catch (Exception ex) {
-			LOG.info("Error saving history during document editing: {}", ex);
-		}
+        historyParam.put("newData", sNewHistoryData + "</td></tr>");
+        historyParam.put("oldData", sOldHistoryData + "</td>");
+        historyParam.put("nID_StatusType", nID_Status.toString());
+        historyParam.put("sLogin", sLogin);
 
-	}
+        try {
+            actionEventHistoryService
+                    .addHistoryEvent(sID_Order, sLogin, historyParam,
+                            HistoryEventType.ACTIVITY_STATUS_NEW.getnID());
+        } catch (Exception ex) {
+            LOG.info("Error saving history during document editing: {}", ex);
+        }
+
+    }
 
 }
