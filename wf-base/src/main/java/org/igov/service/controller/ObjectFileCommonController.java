@@ -957,7 +957,9 @@ public class ObjectFileCommonController {
             @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "контент файла в виде строки", required = true) @RequestBody String sData) throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException {
-
+        
+        LOG.info("setProcessAttachText is started...");
+        
         LOG.info("setAttachment nID_Process: " + nID_Process);
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
@@ -979,7 +981,8 @@ public class ObjectFileCommonController {
         } else {
             return "data is null";
         }
-
+        
+        LOG.info("setProcessAttachText is ended...");
         //AttachmentCover oAttachmentCover = new AttachmentCover();
         //return oAttachmentCover.apply(attachment);
     }
