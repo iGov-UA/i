@@ -2352,8 +2352,8 @@ _тестирование и проливка на бету и боевой
 
  [вернуться...](#testingonbeta)
  
-  ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
-  ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
+   ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
+   ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
 * пройти процесс от начала до конца по всем возможным путям
 * выслать заказчику инструкцию, ссылки, логин и пароль.
 * в случае необходимости - вносить изменения в процесс. после внесения даже небольшого изменения - обязательное тестирование
