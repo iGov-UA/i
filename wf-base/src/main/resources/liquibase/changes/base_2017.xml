@@ -345,4 +345,22 @@
             
     </changeSet>
     
+    <changeSet id="issue-1594-add-fileds" author="Kovylin Yegor">
+        
+        <renameColumn newColumnName="sID_Group_Referent" oldColumnName="sID_Group" tableName="SubjectRightBP"/>
+        
+        <addColumn tableName="SubjectRightBP">
+            <column name="asID_Group_Export" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sFormulaFilter_Export" type="varchar(1000)">
+                <constraints nullable="true"/>
+            </column>            
+            <column name="sNote" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+    </changeSet>
+    
 </databaseChangeLog>
