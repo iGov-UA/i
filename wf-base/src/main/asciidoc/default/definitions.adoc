@@ -219,6 +219,45 @@
 |url||false|string|
 |===
 
+=== DocumentStepSubjectRight
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|bNeedECP||false|boolean|
+|bWrite||false|boolean|
+|documentStepSubjectRightFields||false|<<DocumentStepSubjectRightField>> array|
+|nID||false|integer (int64)|
+|sDate||false|<<DateTime>>|
+|sDateECP||false|<<DateTime>>|
+|sID_Field||false|string|
+|sID_File_ForSign||false|string|
+|sKey_GroupPostfix||false|string|
+|sLogin||false|string|
+|sName||false|string|
+|===
+
+=== DocumentStepSubjectRightField
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|bWrite||false|boolean|
+|nID||false|integer (int64)|
+|sMask_FieldID||false|string|
+|===
+
+=== DocumentSubmitedUnsignedVO
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|oDocumentStepSubjectRight||false|<<DocumentStepSubjectRight>>|
+|sDateCreateProcess||false|string (date-time)|
+|sDateCreateUserTask||false|string (date-time)|
+|sDateSubmit||false|<<DateTime>>|
+|sID_Order||false|string|
+|sNameBP||false|string|
+|sUserTaskName||false|string|
+|===
+
 === EscalationHistory
 [options="header"]
 |===
@@ -1284,6 +1323,7 @@
 |aSubjectGroupChilds||false|<<SubjectGroup>> array|
 |aUser||false|<<SubjectUser>> array|
 |nID||false|integer (int64)|
+|nID_SubjectHumanPositionCustom||false|<<SubjectHumanPositionCustom>>|
 |oSubject||false|<<Subject>>|
 |sChain||false|string|
 |sID_Group_Activiti||false|string|
@@ -1303,6 +1343,15 @@
 |===
 |Name|Description|Required|Schema|Default
 |aSubjectGroupTree||false|<<SubjectGroup>> array|
+|===
+
+=== SubjectHumanPositionCustom
+[options="header"]
+|===
+|Name|Description|Required|Schema|Default
+|nID||false|integer (int64)|
+|sName||false|string|
+|sNote||false|string|
 |===
 
 === SubjectRightBP

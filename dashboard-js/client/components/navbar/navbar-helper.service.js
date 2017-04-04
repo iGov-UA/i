@@ -16,6 +16,8 @@
       load: load,
       loadTaskCounters: loadTaskCounters,
       instrumentsMenus: [],
+      isCountersLoaded: false,
+      sPreviousTab: '',
       tasksSearch: {
         value: null,
         count: 0,
@@ -41,7 +43,7 @@
       title: 'Документи',
       type: tasks.filterTypes.documents,
       count: 0,
-      showCount: false,
+      showCount: true,
       tab: 'documents'
     }, {
       title: 'Мій розклад',
@@ -95,12 +97,30 @@
     }
 
     function load() {
-      service.loadTaskCounters();
+      service.previousTab = service.currentTab;
       service.getCurrentTab();
+      service.loadTaskCounters();
     }
 
     function loadTaskCounters() {
-      _.each(service.menus, function (menu) {
+      var objForLoadCounter = [];
+      if(service.currentUser && service.currentUser.id){
+        var user = service.auth.getCurrentUser();
+        if(user.id !== service.currentUser.id){
+          service.isCountersLoaded = false;
+        }
+      }
+      if(!service.isCountersLoaded){
+        service.currentUser = service.auth.getCurrentUser();
+        objForLoadCounter = service.menus;
+      } else {
+        _.each(service.menus, function (menu) {
+          if(menu.tab === service.previousTab || menu.tab === service.currentTab){
+            objForLoadCounter.push(menu);
+          }
+        })
+      }
+      _.each(objForLoadCounter, function (menu) {
         if (menu.showCount) {
           tasks.list(menu.type)
               .then(function(result) {
@@ -110,6 +130,7 @@
                   result = result;
                 }
                 menu.count = result.total;
+                service.isCountersLoaded = true;
               });
         }
       });

@@ -29,6 +29,7 @@
 ```xml 	 
 <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
 ```
+* ![26_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/26_0.JPG)
 В селекте отделов используюются соответственно переменные  
 **sID_Group_Activiti_Depart** - id группы отдела (корень с которого формируем селект)  
 **nDeepLevelDepart** - глубина отделов  

@@ -381,6 +381,17 @@
           });
         }
 
+        function downloadFileHTMLContent() {
+          angular.forEach($scope.taskForm, function (i, k, o) {
+            if(i.type === 'fileHTML' && i.value && i.value.indexOf('sKey') > -1) {
+              tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, i.id, true).then(function (res) {
+                o[k].value = res;
+              })
+            }
+          })
+        }
+        downloadFileHTMLContent();
+
         extractFieldOption($scope.taskForm);
 
         function extractFieldOption(aProperties) {
@@ -426,7 +437,7 @@
 
         function fillArrayWithNewAttaches() {
           angular.forEach($scope.taskForm, function (item) {
-            if(item.type === 'file' || item.type === 'table') {
+            if(item.type === 'file' || item.type === 'table' || item.type === 'string') {
               try {
                 var parsedValue = JSON.parse(item.value);
                 if(parsedValue && parsedValue.sKey) {
@@ -491,6 +502,23 @@
         $scope.correctSignName = function (name) {
           var splitName = name.split(';');
           return splitName.length !== 1 ? splitName[0] : name;
+        };
+
+        $scope.takeTheKeyFromJSON = function (item) {
+          return JSON.parse(item.value).sKey;
+        };
+
+        $scope.takeTheFileNameFromJSON = function (item) {
+          var originalFileName = JSON.parse(item.value).sFileNameAndExt;
+          var ext;
+          if (originalFileName && originalFileName.indexOf('.') > 0){
+            var parts = originalFileName.split(".");
+            ext = parts[parts.length - 1];
+          }
+          if(ext){
+            return item.name + '.' + ext;
+          }
+          return item.name;
         };
 
         $scope.clarify = false;
@@ -772,7 +800,7 @@
         };
 
         $scope.isFormInvalid = false;
-        $scope.submitTask = function (form) {
+        $scope.submitTask = function (form, bNotShowSuccessModal) {
           $scope.validateForm(form);
           if(form.$invalid){
             $scope.isFormInvalid = true;
@@ -834,7 +862,8 @@
             rollbackReadonlyEnumFields();
             if($scope.model.printTemplate){
               $scope.taskForm.sendDefaultPrintForm = false;
-            } else {
+            }
+            if($scope.taskData.oProcess && $scope.taskData.oProcess.sBP && $scope.taskData.oProcess.sBP.match(/^_doc_/)){
               var sKey_Step_field = $scope.taskForm.filter(function (item) {
                 return item.id === "sKey_Step_Document";
               })[0];
@@ -861,9 +890,13 @@
 
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
-                  Modal.inform.success(function (result) {
+                  if(bNotShowSuccessModal){
                     $scope.lightweightRefreshAfterSubmit();
-                  })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
+                  } else {
+                    Modal.inform.success(function (result) {
+                      $scope.lightweightRefreshAfterSubmit();
+                    })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
+                  }
 
                   $scope.$emit('task-submitted', $scope.selectedTask);
                 }
@@ -1181,7 +1214,7 @@
           }
         });
 
-        $scope.insertSeparator = function(sPropertyId){
+        $scope.insertOrdersSeparator = function(sPropertyId){
           var oLine = FieldAttributesService.insertSeparators(sPropertyId);
           var oItem = null;
           if (oLine.bShow){
@@ -1195,6 +1228,10 @@
             }
           }
           return oLine;
+        };
+
+        $scope.insertSeparator = function(sPropertyId){
+          return FieldAttributesService.insertSeparators(sPropertyId);
         };
 
         $scope.isTableAttachment = function (item) {
@@ -1212,7 +1249,7 @@
         $scope.openTableAttachment = function (id, taskId, isNew) {
           $scope.attachIsLoading = true;
 
-          tasks.getTableAttachment(taskId, id, isNew).then(function (res) {
+          tasks.getTableOrFileAttachment(taskId, id, isNew).then(function (res) {
             $scope.openedAttachTable = typeof res === 'object' ? res : JSON.parse(res);
             fixFieldsForTable($scope.openedAttachTable);
             $scope.attachIsLoading = false;
@@ -1281,7 +1318,7 @@
               var reg = /(\[id=(\w+)\])/;
               var match = attachment.description.match(reg);
               if(match !== null && (item.id && match[2].toLowerCase() === item.id.toLowerCase() ||item.name && match[2].toLowerCase() === item.name.toLowerCase())) {
-                tasks.getTableAttachment(attachment.taskId, attachment.id).then(function (res) {
+                tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
                   obj[key] = JSON.parse(res);
                   obj[key].description = attachment.description;
                 })
@@ -1296,7 +1333,7 @@
               try {
                 var isDBJSON = JSON.parse(item.value);
                 if(isDBJSON && isDBJSON.sKey && isDBJSON.sID_StorageType) {
-                  tasks.getTableAttachment($scope.taskData.oProcess.nID, item.id, true).then(function (res) {
+                  tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, item.id, true).then(function (res) {
                     if(res && res.id){
                       for(var t=0; t<$scope.taskData.aField.length; t++) {
                         var table = $scope.taskData.aField[t];
@@ -1375,7 +1412,7 @@
           angular.forEach($scope.taskData.aAttachment, function (attachment) {
             var tableID = attachment.description.match(/(\[id=(\w+)\])/);
             if(tableID !== null && tableID.length === 3) {
-              tasks.getTableAttachment(attachment.taskId, attachment.id).then(function (res) {
+              tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
                 var table = JSON.parse(res);
                 fixFieldsForTable(table);
                 $scope.taskData.aTable.push(table);
@@ -1450,7 +1487,7 @@
 
           tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
             .then(function (result) {
-              $scope.submitTask(form);
+              $scope.submitTask(form, true);
             })
             .catch(defaultErrorHandler);
         };
@@ -1476,6 +1513,88 @@
         $rootScope.switchProcessUploadingState = function () {
           $rootScope.isFileProcessUploading.bState = !$rootScope.isFileProcessUploading.bState;
           console.log("Switch $rootScope.isFileProcessUploading to " + $rootScope.isFileProcessUploading.bState);
+        };
+
+        $scope.viewTrustedHTMLContent = function (html) {
+          return $sce.trustAsHtml(html);
+        };
+        $scope.getOrgData = function (code, id) {
+          var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
+          var keys = {activities:'sID_SubjectActionKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
+          function findAndFillOKPOFields(res) {
+            angular.forEach(res.data, function (data, key) {
+              if (key in keys) {
+                for (var i=0; i<$scope.taskForm.length; i++) {
+                  var prop = $scope.taskForm[i].id;
+                  if (prop.indexOf(keys[key]) === 0) {
+                    var checkPostfix = prop.split(/_/),
+                      elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
+                    if (elementPostfix !== null && elementPostfix === fieldPostfix)
+                      if(prop.indexOf('sID_SubjectActionKVED') > -1) {
+                        var onlyKVEDNum = data.match(/\d{1,2}[\.]\d{1,2}/),
+                          onlyKVEDText = data.split(onlyKVEDNum)[1].trim(),
+                          pieces = prop.split('_');
+                        onlyKVEDNum.length !== 0 ? $scope.taskForm[i].value = onlyKVEDNum[0] : $scope.taskForm[i].value = data;
+
+                        pieces.splice(0, 1, 'sNote_ID');
+                        var autocompleteKVED = pieces.join('_');
+                        if(prop === autocompleteKVED)
+                          $scope.taskForm[i].value = onlyKVEDText;
+                      } else {
+                        $scope.taskForm[i].value = data;
+                      }
+                  }
+                }
+              }
+            })
+          }
+          function clearFieldsWhenError() {
+            for (var i=0; i<$scope.taskForm.length; i++) {
+              var prop = $scope.taskForm[i].id;
+              if ($scope.data.formData.params.hasOwnProperty(prop) && prop.indexOf('_SubjectOrgan_') > -1) {
+                var checkPostfix = prop.split(/_/),
+                  elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
+                if (elementPostfix !== null && elementPostfix === fieldPostfix && prop.indexOf('sID_SubjectOrgan_OKPO') === -1)
+                  $scope.taskForm[i].value = '';
+              }
+            }
+          }
+          if(code) {
+            $scope.orgIsLoading = {status:true,field:id};
+            tasks.getOrganizationData(code).then(function (res) {
+              $scope.orgIsLoading = {status:false,field:id};
+              if (res.data === '' || res.data.error) {
+                clearFieldsWhenError();
+              } else {
+                findAndFillOKPOFields(res);
+              }
+            });
+          }
+        };
+
+        $scope.isOKPOField = function (i) {
+          if(i){
+            var splitID = i.split(/_/);
+            if (splitID.length === 4 && splitID[1] === 'SubjectOrgan' && splitID[2] === 'OKPO') {
+              return true
+            }
+          }
+        };
+
+        $scope.getBpAndFieldID = function (field) {
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id;
+          } else {
+            return field.id;
+          }
+        };
+
+        $scope.getFullCellId = function(field, column, row){
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          } else {
+            return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          }
         };
 
         $rootScope.$broadcast("update-search-counter");

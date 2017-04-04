@@ -162,7 +162,7 @@ angular.module('dashboardJsApp')
         })
       },
 
-      getTableAttachment: function (taskId, attachId, isNewService) {
+      getTableOrFileAttachment: function (taskId, attachId, isNewService) {
         // old and new services requests
         if(isNewService) {
           return simpleHttpPromise({
@@ -226,7 +226,7 @@ angular.module('dashboardJsApp')
         };
 
         var tableFields = $filter('filter')(formProperties, function(prop){
-          return prop.type == 'table';
+          return prop.type === 'table' || prop.type === 'fileHTML';
         });
 
         if(tableFields.length > 0) {
@@ -238,7 +238,7 @@ angular.module('dashboardJsApp')
           */
             var isNotEqualsAttachments = function (table, num) {
                 var checkForNewService = table.name.split(';');
-                if (checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1) {
+                if (checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1 || table.type === 'fileHTML') {
                   // tablePromises.push(self.uploadTable(table, task.processInstanceId, table.id, null, true));
                   def[num] = $q.defer();
                   tablePromises[num] = {table:table, taskID:task.processInstanceId, tableId:table.id, desc:null, isNew:true};
@@ -312,13 +312,20 @@ angular.module('dashboardJsApp')
       uploadTable: function(files, taskId, attachmentID, description, isNewService) {
         var deferred = $q.defer(),
             tableId = files.id,
-            stringifyTable = JSON.stringify(files),
+            stringifyTable = files.type === 'table' ? JSON.stringify(files) : files.value,
             data = {},
-            url;
+            url,
+            ext;
+
+        if(files.type === 'table') {
+          ext = '.json'
+        } else if (files.type === 'fileHTML') {
+          ext = '.html'
+        }
 
         if(isNewService) {
           data = {
-            sFileNameAndExt: tableId + '.json',
+            sFileNameAndExt: tableId + ext,
             sContent: stringifyTable,
             nID_Process: taskId,
             nID_Attach: attachmentID
@@ -327,7 +334,7 @@ angular.module('dashboardJsApp')
         } else {
           data = {
             sDescription: description + '[table][id='+ tableId +']',
-            sFileName: tableId + '.json',
+            sFileName: tableId + ext,
             sContent: stringifyTable,
             nID_Attach: attachmentID
           };
@@ -645,11 +652,18 @@ angular.module('dashboardJsApp')
                 if (fileNameTemp === 'sPrintFormFileAsPDF') {
                   fileName = fileName + '.pdf';
                   sOutputFileType = 'pdf';
+                  if(fileName.match(/^_doc_/) && task.processInstanceId.match(/^_doc_/)){
+                    formProperties.isSendAsDocument = true;
+                    formProperties.skipSendingDefaultPrintForm = true;
+                  } else {
+                    formProperties.isSendAsDocument = false;
+                  }
                 }
 
                 if (fileNameTemp === 'sPrintFormFileAsIs') {
                   fileName = fileName + '.html';
                   sOutputFileType = 'html';
+                  formProperties.isSendAsDocument = false;
                 }
 
                 sFileFieldID = templateResult.fileField.id;
@@ -672,7 +686,8 @@ angular.module('dashboardJsApp')
               sContent: html,
               sOutputFileType: sOutputFileType,
               sKey_Step: sKey_Step,
-              isSendDefaultPrintForm: formProperties.sendDefaultPrintForm
+              isSendAsDocument: formProperties.sendDefaultPrintForm || formProperties.isSendAsDocument,
+              skipSendingDefaultPrintForm: formProperties.skipSendingDefaultPrintForm
             };
 
             printDefer[key] = $q.defer();
@@ -684,16 +699,21 @@ angular.module('dashboardJsApp')
 
           var asyncPrintUpload = function (i, print, defs) {
             if (i < print.length) {
-              return $http.post('/api/tasks/' + task.processInstanceId + '/upload_content_as_attachment', print[i].data)
-                .then(function (uploadResult) {
-                  if(results[i].fileField && results[i].fileField.value){
-                    results[i].fileField.value = uploadResult.data;
-                  } else {
-                    results[i]['uploadDefaultPrintForm'] = uploadResult.data;
-                  }
-                  defs[i].resolve();
-                  return asyncPrintUpload(i+1, print, defs);
-                });
+              if(!print[i].data.sID_Field && print[i].data.skipSendingDefaultPrintForm){
+                defs[i].resolve();
+                return asyncPrintUpload(i+1, print, defs);
+              } else {
+                return $http.post('/api/tasks/' + task.processInstanceId + '/upload_content_as_attachment', print[i].data)
+                  .then(function (uploadResult) {
+                    if(results[i].fileField && results[i].fileField.value){
+                      results[i].fileField.value = uploadResult.data;
+                    } else {
+                      results[i]['uploadDefaultPrintForm'] = uploadResult.data;
+                    }
+                    defs[i].resolve();
+                    return asyncPrintUpload(i+1, print, defs);
+                  });
+              }
             }
           };
 
@@ -957,6 +977,14 @@ angular.module('dashboardJsApp')
             sLogin: login
           }
         })
+      },
+      getOrganizationData : function (code) {
+        if(code)
+          return $http.get('./api/organization-info', {
+            params : {
+              code : code
+            }
+          })
+        }
       }
-    };
   });

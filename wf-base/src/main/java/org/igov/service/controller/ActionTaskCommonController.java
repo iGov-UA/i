@@ -10,8 +10,7 @@ import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.history.*;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.form.FormPropertyImpl;
@@ -79,6 +78,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.activiti.engine.task.NativeTaskQuery;
 
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
@@ -634,7 +634,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages,
-            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "true") Boolean bIncludeProcessVariables)
+            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -663,7 +663,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> response = new HashMap<>();
 
         try {
-            response.put("oProcess", oActionTaskService.getProcessInfoByTaskID(nID_Task));
+            response.put("oProcess", oActionTaskService.getProcessInfo(nID_Process, nID_Task, sID_Order));
         } catch (NullPointerException e) {
             String message = String.format("Incorrect Task ID [id = %s]. Record not found.", nID_Task);
             LOG.info(message);
@@ -690,11 +690,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aFieldStartForm", oActionTaskService.getStartFormData(nID_Task));
         }
 
-        LOG.info("Attach is not triggered!");
 
         if (bIncludeAttachments.equals(Boolean.TRUE)) {
             LOG.info("Attach is triggered!");
             response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
+        } else {
+            LOG.info("Attach is not triggered!");
         }
         if (bIncludeMessages.equals(Boolean.TRUE)) {
             if (nID_Process == null) {
@@ -712,7 +713,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
         }
         if (bIncludeProcessVariables.equals(Boolean.TRUE) && nID_Process != null) {
-            Map<String, Object> mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+            Map<String, Object> mProcessVariable = null;
+            try {
+                mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
+            } catch (ActivitiObjectNotFoundException oException){
+                HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery().processDefinitionId(Long.toString(nID_Process)).singleResult();
+                if(historicProcessInstance == null){
+                    LOG.error("Can't get: {}", oException.getMessage());
+                } else {
+                    LOG.info("Getting variables from HistoricVariableInstance");
+                    mProcessVariable = historicProcessInstance.getProcessVariables();
+                }
+
+            }
             response.put("mProcessVariable", mProcessVariable);
         }
 
@@ -1776,7 +1789,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			@ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
 			@ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
 			@ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField,
-			@ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "true") Boolean bIncludeVariablesProcess)
+			@ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "false") Boolean bIncludeVariablesProcess)
 			throws CommonServiceException {
 
 		Map<String, Object> res = new HashMap<String, Object>();
@@ -1793,15 +1806,44 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
 				Map<String, FlowSlotTicket> mapOfTickets = new HashMap<String, FlowSlotTicket>();
 				long totalNumber = 0;
+                                
 				Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
 						sFilterStatus, groupsIds, soaFilterField);
-                LOG.info("taskQuery = {}", taskQuery );
-				totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
+                               // LOG.info("taskQuery: ", taskQuery );
+                                
+                                totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
 						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                                LOG.info("total count before processing is: {}", totalNumber);
+                                
+                                long totalCountServices = 0;
+                                
+                                if(!"Documents".equalsIgnoreCase(sFilterStatus)){
+                                    List<TaskInfo> aTaskInfo = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
+                                                        : (List) ((NativeTaskQuery) taskQuery).list();
+                                    if(aTaskInfo != null){
+                                        LOG.info("all tasks size is {}", aTaskInfo.size());
+                                        for(TaskInfo oTaskInfo : aTaskInfo){
+                                            if(!oTaskInfo.getProcessDefinitionId().startsWith("_doc")){
+                                                totalCountServices++;
+                                            }
+                                        }
+                                    }else{
+                                        LOG.info("all tasks is null");
+                                    }
+                                }
+                                
+                                LOG.info("totalCountServices is {}", totalCountServices);
+                                /*Object taskQueryDocument = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
+						"Documents", groupsIds, soaFilterField);*/
+                                
+				/*long totalDocumentNumber = (taskQueryDocument instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQueryDocument).count()
+						: oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                                
 				LOG.info("Total number of tasks:{}", totalNumber);
+                                LOG.info("Total number of Documents:{}", totalNumber);*/
 				int nStartBunch = nStart;
 				List<TaskInfo> tasks = new LinkedList<TaskInfo>();
-
+                                //LOG.info("tasks size in filter is {}", tasks.size());
 				// this while is intended to work until we either pass through
 				// all the tasks or select needed number of tickets
 				long sizeOfTasksToSelect = nSize;
@@ -1850,12 +1892,48 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 				 * if (!StringUtils.isEmpty(soaFilterField)) data =
 				 * filterTasks(data, soaFilterField);
 				 */
-				res.put("data", data);
+                                
+                                List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<Map<String, Object>>();
+                                
+                                long documentListSize = 0;
+                                if(!"Documents".equals(sFilterStatus)){
+                                   
+                                    for(Map<String, Object> dataElem : data)
+                                    {
+                                        if(!((String)dataElem.get("processDefinitionId")).startsWith("_doc")){
+                                            
+                                            if(bIncludeVariablesProcess){
+                                                dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
+                                            }
+                                            checkDocumentIncludesData.add(dataElem);
+                                                //totalNumber = totalNumber - 1;
+                                            documentListSize++;
+                                        }
+                                    }
+                                }else{
+                                    
+                                    for(Map<String, Object> dataElem : data)
+                                    {
+                                        if(bIncludeVariablesProcess){
+                                            dataElem.put("globalVariables",runtimeService.getVariables((String)dataElem.get("processInstanceId")));
+                                        }
+                                        checkDocumentIncludesData.add(dataElem);
+                                    }
+                                }
+                                
+                                LOG.info("checkDocumentIncludesData size: {}", checkDocumentIncludesData.size());
+                                
+				res.put("data", checkDocumentIncludesData);
 				res.put("size", nSize);
 				res.put("start", nStart);
 				res.put("order", "asc");
 				res.put("sort", "id");
-				res.put("total", totalNumber);
+                                
+                                if("Documents".equalsIgnoreCase(sFilterStatus)){
+                                    res.put("total", totalNumber);
+                                }else{
+                                    res.put("total", totalCountServices);
+                                }
 			}
 		} catch (Exception e) {
 			LOG.error("Error occured while getting list of tasks", e);
@@ -3136,7 +3214,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     	List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
                         if (activeTasks != null && activeTasks.size() > 0){
                         	LOG.info("Found " + activeTasks.size() + " active tasks for the execution id " + executionId);
-                        	mReturn.put("nID_Task", tasks.get(0).getId());
+                        	mReturn.put("taskId", tasks.get(0).getId());
                         } else {
                         	LOG.warn("There are no active tasks for execution id " + executionId);
                         }

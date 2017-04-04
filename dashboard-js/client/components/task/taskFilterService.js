@@ -15,11 +15,11 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       var strictTaskDefinitions = this.getProcessTaskDefinitions(filteredTasks);
       $rootScope.$broadcast('taskFilter:strictTaskDefinitions:update', strictTaskDefinitions);
       filteredTasks = this.filterStrictTaskDefinitions(filteredTasks, model.strictTaskDefinitions);
-      if($state.params.type === 'documents' && filteredTasks !== null) {
-        filteredTasks = this.filterDocuments(filteredTasks, true);
-      } else if ($state.params.type !== 'documents' && filteredTasks !== null){
-        filteredTasks = this.filterDocuments(filteredTasks, false);
-      }
+      // if($state.params.type === 'documents' && filteredTasks !== null) {
+      //   filteredTasks = this.filterDocuments(filteredTasks, true);
+      // } else if ($state.params.type !== 'documents' && filteredTasks !== null){
+      //   filteredTasks = this.filterDocuments(filteredTasks, false);
+      // }
       return filteredTasks;
     },
     filterTaskDefinitions: function (tasks, taskDefinition) {
@@ -129,24 +129,24 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
       return userProcesses;
     },
     getProcesses: function () {
-      var promise = processes.getUserProcesses().then(function (data) {
+      var promise = processes.getUserProcesses(true).then(function (data) {
         var retval = userProcesses.concat(data);
         return retval;
       });
       return promise;
     },
-    filterDocuments: function (tasks, isDoc) {
-      if(isDoc) {
-        var documents = tasks.filter(function (task) {
-          return task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc';
-        });
-      } else {
-        var documents = tasks.filter(function (task) {
-          return !(task.processDefinitionId && task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc');
-        });
-      }
-      return documents;
-    }
+    // filterDocuments: function (tasks, isDoc) {
+    //   if(isDoc) {
+    //     var documents = tasks.filter(function (task) {
+    //       return task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc';
+    //     });
+    //   } else {
+    //     var documents = tasks.filter(function (task) {
+    //       return !(task.processDefinitionId && task.processDefinitionId.charAt(0) === '_' && task.processDefinitionId.split('_')[1] === 'doc');
+    //     });
+    //   }
+    //   return documents;
+    // }
   };
   return service;
 }]);

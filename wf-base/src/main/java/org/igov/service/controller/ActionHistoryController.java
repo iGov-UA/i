@@ -47,6 +47,7 @@ public class ActionHistoryController {
             @ApiParam(value = "числовой код, который соответсвует типу события", required = false) @RequestParam(value = "nID_HistoryEventType", required = false) Long nID_HistoryEventType,
             @ApiParam(value = "новые данные после редактирвоание", required = false) @RequestParam(value = "newData", required = false) String newData,
             @ApiParam(value = "старые данные до редактирвоания", required = false) @RequestParam(value = "oldData", required = false) String oldData,
+            @ApiParam(value = "ид бп созданного документа (для вызова субпроцесса)", required = false) @RequestParam(value = "new_BP_ID", required = false) String new_BP_ID,
             @ApiParam(value = "логин или ФИО", required = false) @RequestParam(value = "sLogin", required = false) String sLogin)
     {
         LOG.info("addHistoryEvent was started with params: sID_Order: {} nID_Subject : {} sUserTaskName: {} "
@@ -74,6 +75,7 @@ public class ActionHistoryController {
                 newData,
                 oldData,
                 sLogin,
+                new_BP_ID,
                 true,
                 true,
                 false

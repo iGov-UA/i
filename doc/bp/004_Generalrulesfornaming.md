@@ -33,7 +33,7 @@ zags_0710_death
 
 eco_0520_auditori  
 eco_0521  
-
+* ![4_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_0.JPG)
 ### {орган} Приставки для именования БП
 **dfs** - налоговая  
 **dms** - миграционная  
@@ -50,7 +50,7 @@ eco_0521
 **oda** - услуги ОДА  
 **rada** - услуги местных органов власти (гор.советы, сельские советы, районные рады, поселковые советы)  
 **med** - медицинские услуги  
-
+* ![4_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_1.JPG)
 ## группы и пользователи
 ## принтформы
 ## выносные файлы
@@ -62,3 +62,5 @@ eco_0521
 * "_yellow" - подкрашивать строку - желтым цветом (класс: "bg_yellow")
 * "_green" - подкрашивать строку - зеленым цветом (класс: "bg_green")
 * "usertask1" - подкрашивать строку - салатовым цветом (класс: "bg_first")
+* ![4_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_2.jpg)
+* ![4_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4_3.JPG)

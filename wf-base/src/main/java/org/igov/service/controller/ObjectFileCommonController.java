@@ -845,6 +845,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "ИД поля", required = false) @RequestParam(required = false, value = "sID_Field") String sID_Field,
             @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
             @ApiParam(value = "Тип БД", required = false) @RequestParam(required = false, value = "sID_StorageType") String sID_StorageType,
+            @ApiParam(value = "Имя файла по умолчанию", required = false) @RequestParam(required = false, value = "sFileName") String sFileName,
             HttpServletResponse httpResponse) throws Exception {
 
         LOG.info("nID_Process: " + nID_Process);
@@ -852,9 +853,13 @@ public class ObjectFileCommonController {
 
         MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
 
+        if(sFileName == null || sFileName.equals("")){
+            sFileName = multipartFile.getOriginalFilename();
+        }
+
         //byte[] aRes = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
         httpResponse.setHeader("Content-disposition", "attachment; filename="
-                + multipartFile.getOriginalFilename());
+                + sFileName);
         httpResponse.setHeader("Content-Type", "application/octet-stream");
 
         httpResponse.setContentLength(multipartFile.getBytes().length);
@@ -999,11 +1004,12 @@ public class ObjectFileCommonController {
             throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException
         {
 
-            if(file != null){
+        /*    if(file != null){
                 sData = new String(file.getBytes());
+                LOG.info("added file is not null");
             } else if (sData == null || sData.equals("")){
                 throw new IllegalArgumentException("Bad request! Context not found");
-            }
+            }*/
         
         LOG.info("setAttachment nID_Process: " + nID_Process);
         LOG.info("setAttachment bSigned: " + bSigned);
@@ -1019,15 +1025,25 @@ public class ObjectFileCommonController {
         if (aAttribute == null) {
             aAttribute = new ArrayList<>();
         }
-
-        if (sData != null && "Mongo".equals(sID_StorageType)) {
-            return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
-                    sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true, sKey_Step, sLogin);
-        } else if (sData != null && "Redis".equals(sID_StorageType)) {
-            throw new RuntimeException("There is no suitable metod for string data for redis");
-        } else {
-            return "data is null";
-        }
+        
+       if(file != null){
+            if ("Mongo".equals(sID_StorageType)) {
+                return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
+                        sContentType, aAttribute, file.getBytes(), true, sKey_Step, sLogin);
+            } else {
+                return "data is null";
+            }
+       }else{
+        
+            if (sData != null && "Mongo".equals(sID_StorageType)) {
+                return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                        sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true, sKey_Step, sLogin);
+            } else if (sData != null && "Redis".equals(sID_StorageType)) {
+                throw new RuntimeException("There is no suitable metod for string data for redis");
+            } else {
+                return "data is null";
+            }
+       }
 
     }
 

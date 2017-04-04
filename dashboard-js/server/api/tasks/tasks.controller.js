@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
+var activitiUpload = require('../../components/activiti/upload');
 var errors = require('../../components/errors');
 var userService = require('../user/user.service');
 var authService = require('../../auth/activiti/basic');
@@ -131,9 +132,9 @@ exports.index = function (req, res) {
       query.taskInvolvedUser = user.id;
       query.finished = true;
     } else if (req.query.filterType === 'documents') {
-      query.sFilterStatus = 'Opened';
+      query.sFilterStatus = 'Documents';
       query.sLogin = user.id;
-      query.size = 100;
+      query.includeProcessVariables = true;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
       query.sLogin = user.id;
@@ -300,12 +301,25 @@ exports.getAttachmentContent = function (req, res) {
 };
 
 exports.getAttachmentFile = function (req, res) {
+  var qs = {};
+
+  if(req.params.typeOrAttachID === 'Mongo') {
+    qs = {
+      'sKey': req.params.keyOrProcessID,
+      'sID_StorageType': req.params.typeOrAttachID
+    };
+    if(req.params.sFileName){
+      qs['sFileName'] = req.params.sFileName;
+    }
+  } else {
+    qs = {
+      'nID_Process': req.params.keyOrProcessID,
+      'sID_Field': req.params.typeOrAttachID
+    }
+  }
   var options = {
     path: 'object/file/getProcessAttach',
-    query: {
-      'nID_Process': req.params.processID,
-      'sID_Field': req.params.attachID
-    }
+    query: qs
   };
   activiti.filedownload(req, res, options);
 };
@@ -429,6 +443,12 @@ exports.getPatternFile = function (req, res) {
   activiti.filedownload(req, res, options);
 };
 
+exports.signAndUpload = function (req, res) {
+  var encodedContent = req.body.content;
+  var contentSign = req.body.sign;
+  //TODO decode content and activitiUpload
+};
+
 /**
  * https://github.com/e-government-ua/i/issues/1382
  * added pdf conversion if file name is sPrintFormFileAsPDF
@@ -452,7 +472,7 @@ exports.upload_content_as_attachment = function (req, res) {
             quality: 100
           }
         };
-        if(req.body.isSendDefaultPrintForm){
+        if(req.body.isSendAsDocument){
           req.body.url = "setDocumentImage";
         } else {
           req.body.url = 'setProcessAttach';

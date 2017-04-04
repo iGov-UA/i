@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_NAIS_minust" name="_test_NAIS_minust" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище; ;writable=true,sID_Field_SWinEd=HLNAME" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;writable=true,sID_Field_SWinEd=HPNAME" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;writable=true,sID_Field_SWinEd=HFNAME" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Податковий номер; ;writable=true,sID_Field_SWinEd=HTIN" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса; ;writable=true" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email1" name="Електронна адреса; ;writable=true,sID_Field_SWinEd=HEMAIL, bVisible=false" type="string" default="august_@i.ua"></activiti:formProperty>
+        <activiti:formProperty id="sCode" name="sCode;system;writable=true,sID_Field_SWinEd=HKSTI, bVisible=false" type="string" default="0000"></activiti:formProperty>
+        <activiti:formProperty id="HSTI" name="HSTI;system;writable=true,sID_Field_SWinEd=HSTI, bVisible=false" type="string" default="1111"></activiti:formProperty>
+        <activiti:formProperty id="sNameCountry" name="sNameCountry; ;writable=true,sID_Field_SWinEd=HCOUNTRY, bVisible=false" type="string" default="Україна" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameCity" name="sNameCity; ;writable=true,sID_Field_SWinEd=HCITY, bVisible=false" type="string" required="true" default="test"></activiti:formProperty>
+        <activiti:formProperty id="sNameStreet" name="sNameStreet; ;writable=true,sID_Field_SWinEd=HSTREET, bVisible=false" type="string" required="true" default="test"></activiti:formProperty>
+        <activiti:formProperty id="sNumberBuild" name="sNumberBuild; ;writable=true,sID_Field_SWinEd=HBUILD, bVisible=false" type="string" required="true" default="test"></activiti:formProperty>
+        <activiti:formProperty id="sHSHOT" name="sHSHOT; ;writable=true,sID_Field_SWinEd=HSHOT, bVisible=false" type="string" default="test"></activiti:formProperty>
+        <activiti:formProperty id="sHCORP" name="sHCORP; ;writable=true,sID_Field_SWinEd=HCORP, bVisible=false" type="string" default="test"></activiti:formProperty>
+        <activiti:formProperty id="sHAPT" name="sHAPT; ;writable=true,sID_Field_SWinEd=HAPT, bVisible=false" type="string" default="test"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Інформація 1, bVisible=false" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asStartPeriod&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asStartPeriod" name="asStartPeriod; ;writable=true,sID_Field_SWinEd=R01G01, bVisible=false" type="string" default="4" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asStartYear" name="asStartYear; ;writable=true,sID_Field_SWinEd=R01G02, bVisible=false" type="string" default="2016" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEndPeriod" name="asEndPeriod; ;writable=true,sID_Field_SWinEd=R02G01, bVisible=false" type="string" default="4" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEndYear" name="asEndYear; ;writable=true,sID_Field_SWinEd=R02G02, bVisible=false" type="string" default="2016" required="true"></activiti:formProperty>
+        <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG, bVisible=false" type="string" default="04"></activiti:formProperty>
+        <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ, bVisible=false" type="string" default="63"></activiti:formProperty>
+        <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN, bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC" name="C_DOC;system;writable=true,sID_Field_SWinEd=C_DOC, bVisible=false" type="string" default="F13"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_SUB" name="C_DOC_SUB;system;writable=true,sID_Field_SWinEd=C_DOC_SUB, bVisible=false" type="string" default="018"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_VER" name="C_DOC_VER;system;writable=true,sID_Field_SWinEd=C_DOC_VER, bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_STAN" name="C_DOC_STAN;system;writable=true,sID_Field_SWinEd=C_DOC_STAN, bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_TYPE" name="C_DOC_TYPE;system;writable=true,sID_Field_SWinEd=C_DOC_TYPE, bVisible=false" type="string" default="00"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_CNT" name="C_DOC_CNT;system;writable=true,sID_Field_SWinEd=C_DOC_CNT, bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PERIOD_TYPE" name="PERIOD_TYPE;system;writable=true,sID_Field_SWinEd=PERIOD_TYPE, bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_SWinEd=PERIOD_MONTH, bVisible=false" type="string" default="12"></activiti:formProperty>
+        <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR, bVisible=false" type="string" default="2015"></activiti:formProperty>
+        <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG, bVisible=false" type="string" default="0463"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system; bVisible=false" type="file" default="45_10_00_00"></activiti:formProperty>
+        <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="45_10_00_00" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="test_NAIS">
+      <extensionElements>
+        <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
+          <activiti:field name="sID_File_XML_SWinEd">
+            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sEmail">
+            <activiti:expression>${email}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask2" name="Позитивна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>ТЕСТ-НАИС-Позитивна відповідь</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+
+ТЕСТ-НАИС-Позитивна відповідь
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${anID_Attach_minust}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vy otrymaly vidpovid' na Vash zapyt. Nomer zayavky  [sID_Order]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent2" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
+    <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <userTask id="usertask2" name="Получение ответа" activiti:candidateGroups="test_NAIS">
+      <extensionElements>
+        <activiti:formProperty id="result" name="Результат" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="anID_Attach_minust" name="Файл с ответом" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
+          <activiti:field name="sINN">
+            <activiti:expression>${bankIdinn}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="snCountYear">
+            <activiti:expression>${C_DOC_CNT}</activiti:expression>
+          </activiti:field>
+          <activiti:field name="sFile_XML_SWinEd_Filter">
+            <activiti:expression>${sFileName_XML_SWinEd_Answer}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow13" sourceRef="boundarytimer1" targetRef="usertask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow18" sourceRef="escalationTimer1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>ТЕСТ-НАИС</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+&lt;p&gt;&lt;b&gt;Ви отримали тестового листа після успішного подання звернення.&lt;/b&gt;&lt;/p&gt;
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Nomer Vashoyi zayavky [sID_Order].</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow19" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>ТЕСТ-НАИС-Негативна відповідь</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+
+ТЕСТ-НАИС-Негативна відповідь
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${anID_Attach_minust}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression>${phone}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>Vy otrymaly vidpovid' na Vash zapyt u reyestr dokhodiv na Vash Email. Nomer zayavky [sID_Order]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_minust_Answer == 'false'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="servicetask4" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_minust_Answer == 'true'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow26" sourceRef="exclusivegateway2" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_NAIS_minust">
+    <bpmndi:BPMNPlane bpmnElement="_test_NAIS_minust" id="BPMNPlane__test_NAIS_minust">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="36.0" width="35.0" x="20.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="119.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="300.0" y="133.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="56.0" width="105.0" x="551.0" y="64.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="740.0" y="129.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="56.0" width="105.0" x="350.0" y="119.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="440.0" y="132.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="490.0" y="126.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="80.0" y="119.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="56.0" width="105.0" x="551.0" y="175.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="670.0" y="126.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="656.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="689.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="126.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="330.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="470.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="55.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="80.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="185.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="510.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="203.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="656.0" y="203.0"></omgdi:waypoint>
+        <omgdi:waypoint x="689.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="166.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="510.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="92.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="710.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

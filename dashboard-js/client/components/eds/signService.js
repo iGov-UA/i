@@ -2,7 +2,7 @@
 
 angular.module('dashboardJsApp').service('signService', function ($q, $base64, cryptoPluginFactory) {
   var sessionTimeout = 36000;
-  var pluginVersion = '1.0.4';
+  var pluginVersion = '1.0.3';
   var plugin;
 
   var errorCodes = {
@@ -147,7 +147,7 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
           "",
           certBase64,
           function (data) {
-            d.resolve(data.sign);
+            d.resolve({sign: data.sign, certificate: certBase64});
           }, function () {
             d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
           });

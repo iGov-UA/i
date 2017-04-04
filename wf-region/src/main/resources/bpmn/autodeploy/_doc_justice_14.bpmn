@@ -3,7 +3,7 @@
   <process id="_doc_justice_14" name="14 - Факсограма" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Факсограма"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -13,7 +13,7 @@
     <userTask id="usertask1" name="Канцелярія - реєстрація факсограми">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Факсограма" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
@@ -93,13 +93,13 @@
         <activiti:formProperty id="sSigned" name="Підписав" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Факсограма" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата документа" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAcceptor" name="Прийняв; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sDelegator" name="Передав;ПІБ особи від кореспондента, яка здійснила передачу документа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAcceptor" name="Прийняв" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDelegator" name="Передав;ПІБ особи від кореспондента, яка здійснила передачу документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
@@ -153,13 +153,14 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+             <activiti:formProperty id="sSigned" name="Підписав" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Факсограма" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата документа" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="sAcceptor" name="Прийняв; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sDelegator" name="Передав;ПІБ особи від кореспондента, яка здійснила передачу документа" type="string"></activiti:formProperty>
+       <activiti:formProperty id="sAcceptor" name="Прийняв" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDelegator" name="Передав;ПІБ особи від кореспондента, яка здійснила передачу документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
@@ -212,14 +213,15 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+             <activiti:formProperty id="sSigned" name="Підписав" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Факсограма" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата документа" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAcceptor" name="Прийняв; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sDelegator" name="Передав;ПІБ особи від кореспондента, яка здійснила передачу документа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
+       <activiti:formProperty id="sAcceptor" name="Прийняв" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDelegator" name="Передав;ПІБ особи від кореспондента, яка здійснила передачу документа" type="string" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
@@ -390,8 +392,8 @@ execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sAutorResolution != null}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow64" sourceRef="callactivity1" targetRef="endevent1"></sequenceFlow>
-    <scriptTask id="scripttask6" name="Клонування прав для керівнка" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//Клонування прав для керівнка
+    <scriptTask id="scripttask6" name="Клонування прав для керівника" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//Клонування прав для керівника
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sName_SubjectRole')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')

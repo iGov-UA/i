@@ -7,6 +7,16 @@
 </div>
 <div class="modal-body" ng-if="isInitialized">
   <form name="form" novalidate style="margin-top: 30px">
+    <div ng-if="isManuallySelectedFile()" class="col-sm-12 form-field">
+      <div class="col-sm-4 task-form-title">
+        <label>Файл на підпис<span style="color: red">*</span></label>
+      </div>
+      <div class="col-sm-4" style="padding-right: 0">
+        <input ng-model="edsContext.edsStorage.file"
+               onchange="angular.element(this).scope().fileChanged(this)"
+               type="file" accept="application/pdf" required readonly/>
+      </div>
+    </div>
     <div class="col-sm-12 form-field">
       <div class="col-sm-4 task-form-title">
         <label>Файл сховища ЕЦП <span style="color: red">*</span></label>

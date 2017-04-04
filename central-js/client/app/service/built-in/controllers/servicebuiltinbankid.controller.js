@@ -4,7 +4,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
-              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService) {
+              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService) {
 
       'use strict';
 
@@ -249,6 +249,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         })
       }
 
+      $scope.fieldHasVisibleType = function (field) {
+        if(field && field.type) {
+          return field.type !== 'markers' && field.type !== 'invisible';
+        }
+      };
+
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -295,7 +301,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       };
 
-      $scope.processForm = function (form, aFormProperties) {
+      $scope.processForm = function (form, aFormProperties, signNeeded) {
+
+        if(signNeeded !== undefined) {
+          $scope.sign.checked = signNeeded;
+        }
 
         angular.forEach($scope.activitiForm.formProperties, function (prop) {
           if (prop.type === 'table') {
@@ -377,12 +387,27 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           });
         }
 
+        function formSubmit() {
+          if ($scope.sign.checked) {
+            $scope.fixForm(form, aFormProperties);
+            $scope.signForm();
+          } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
+            $scope.submitForm(form, aFormProperties);
+          }
+        }
 
-        if ($scope.sign.checked) {
-          $scope.fixForm(form, aFormProperties);
-          $scope.signForm();
-        } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
-          $scope.submitForm(form, aFormProperties);
+        var fileHTMLFields = aFormProperties.filter(function (field) {
+          return field.type === 'fileHTML';
+        });
+
+        if(fileHTMLFields.length > 0) {
+          ActivitiService.uploadFileHTML($scope.data.formData.params, $scope.activitiForm.formProperties).then(function () {
+            formSubmit();
+          });
+        }
+
+        if (fileHTMLFields.length === 0) {
+          formSubmit();
         }
       };
 
@@ -1128,8 +1153,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           }
         }
       };
-    /*
-     *поиски организации по окпо конец
-    */
+      /*
+       *поиски организации по окпо конец
+      */
 
+      $scope.labelStyle = function (field) {
+        return LabelService.labelStyle(field);
+      };
+
+      $scope.isSetClasses = function (field) {
+        return LabelService.isLabelHasClasses(field)
+      }
 });

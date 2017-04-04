@@ -16,7 +16,7 @@
         <activiti:formProperty id="nCountAttach" name="Кількість додатків" type="long"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_AutorResolution" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="Якщо терміновий документ - поставте галочку; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum">
           <activiti:value id="sEnumUrgentDoc" name="з ЕЦП"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
@@ -29,7 +29,7 @@
       <documentation>завдання по шаблонам
 _doc_justice_11, _doc_justice_12, _doc_justice_13, _doc_justice_14, _doc_justice_15, _doc_justice_16, _doc_justice_171, _doc_justice_172, _doc_justice_173</documentation>
       <extensionElements>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_AutorResolution" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -53,7 +53,7 @@ _doc_justice_11, _doc_justice_12, _doc_justice_13, _doc_justice_14, _doc_justice
           <activiti:value id="sEnumUrgentDoc" name="з ЕЦП"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
@@ -96,7 +96,7 @@ _doc_justice_11, _doc_justice_12, _doc_justice_13, _doc_justice_14, _doc_justice
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sName_SubjectRole::${sName_SubjectRole};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sAutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sAcceptor::${sAcceptor};;sDelegator::${sDelegator};;sEmailSender::${sEmailSender};;sEmailAddressee::${sEmailAddressee}]]></activiti:expression>
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sLogin_AutorResolution::${sLogin_AutorResolution};;sDateExecution::${sDateExecution};;sContent::${sContent};;sName_AutorResolution::${sName_AutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sAcceptor::${sAcceptor};;sDelegator::${sDelegator};;sEmailSender::${sEmailSender};;sEmailAddressee::${sEmailAddressee}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
@@ -144,7 +144,7 @@ _doc_justice_81
 _doc_justice_82
 _doc_justice_83</documentation>
       <extensionElements>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_AutorResolution" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -314,7 +314,7 @@ _doc_justice_83</documentation>
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
           <activiti:value id="sEnumNothing" name=" "></activiti:value>
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
@@ -359,7 +359,7 @@ _doc_justice_83</documentation>
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sName_SubjectRole::${sName_SubjectRole};;sTypeDoc::${sTypeDoc};;sNumberPrevious::${sNumberPrevious};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sDateRegistration::${sDateRegistration};;sNumberRegistration::${sNumberRegistration};;sDateDoc::${sDateDoc};;sNumberDoc::${sNumberDoc};;nCountSheets::${nCountSheets};;sContent::${sContent};;sApplicant::${sApplicant};;asTypeDelivery::${asTypeDelivery};;asTypeIncoming::${asTypeIncoming};;asSocialStatus::${asSocialStatus};;asSex::${asSex};;asTypeAppeal::${asTypeAppeal};;asKindAppeal::${asKindAppeal};;asCategory::${asCategory};;asSubject::${asSubject};;asFrom::${asFrom};;asPlace::${asPlace};;sAdress::${sAdress};;sDateExecution::${sDateExecution};;sNote::${sNote};;sAutorResolution::${sAutorResolution};;asUrgently::${asUrgently};;asRegular::${asRegular};;sDateBegin::${sDateBegin};;sDateEnd::${sDateEnd};;asControl::${asControl};;asJustified::${asJustified};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sTable1::${sTable1}]]></activiti:expression>
+            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sLogin_AutorResolution::${sLogin_AutorResolution};;sTypeDoc::${sTypeDoc};;sNumberPrevious::${sNumberPrevious};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sDateRegistration::${sDateRegistration};;sNumberRegistration::${sNumberRegistration};;sDateDoc::${sDateDoc};;sNumberDoc::${sNumberDoc};;nCountSheets::${nCountSheets};;sContent::${sContent};;sApplicant::${sApplicant};;asTypeDelivery::${asTypeDelivery};;asTypeIncoming::${asTypeIncoming};;asSocialStatus::${asSocialStatus};;asSex::${asSex};;asTypeAppeal::${asTypeAppeal};;asKindAppeal::${asKindAppeal};;asCategory::${asCategory};;asSubject::${asSubject};;asFrom::${asFrom};;asPlace::${asPlace};;sAdress::${sAdress};;sDateExecution::${sDateExecution};;sNote::${sNote};;sName_AutorResolution::${sName_AutorResolution};;asUrgently::${asUrgently};;asRegular::${asRegular};;sDateBegin::${sDateBegin};;sDateEnd::${sDateEnd};;asControl::${asControl};;asJustified::${asJustified};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sTable1::${sTable1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">

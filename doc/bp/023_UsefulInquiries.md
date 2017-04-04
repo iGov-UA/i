@@ -16,6 +16,7 @@ https://alpha.test.region.igov.org.ua/wf/service/action/task/delete-process?nID_
 ```
 https://alpha.test.region.igov.org.ua/wf/service/action/task/getTaskData?sID_Order=0-219200017&bIncludeStartForm=true&bIncludeGroups=true
 ```
+* ![23_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_0.jpg)
 
 ***
 
@@ -32,6 +33,7 @@ https://igov.org.ua/wf/service/action/event/getServiceHistoryReport?sDateAt=2016
 ``` 
 https://alpha.test.igov.org.ua/wf/service/action/event/getServicesStatistic?sDate_from=2016-06-01 00:00:00&sDate_to=2016-08-11 00:00:00
 ```
+* ![23_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/23_1.jpg)
 
 ***
 

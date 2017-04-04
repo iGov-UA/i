@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
 import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
@@ -35,6 +36,9 @@ public class DocumentCommonController {
 
     @Autowired
     private DocumentStepService documentStepService;
+    
+    @Autowired
+    private DeleteProccess deleteProccess;
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentCommonController.class);
 
@@ -56,7 +60,7 @@ public class DocumentCommonController {
 
     }
 
-    @ApiOperation(value = "Клонирование документа")
+    @ApiOperation(value = "Клонирование подписанта-субьекта документа")
     @RequestMapping(value = "/cloneDocumentStepSubject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     //@Transactional
     public @ResponseBody
@@ -160,11 +164,20 @@ public class DocumentCommonController {
         return m;
     }
     
+    @ApiOperation(value = "Удаление степов и процесса")
+    @RequestMapping(value = "/removeDocumentSteps", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody String removeDocumentSteps(
+                    @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti)
+                    throws Exception {
+
+             return deleteProccess.closeProcessInstance(snID_Process_Activiti);
+    }
+    
 
     @ApiOperation(value = "Получение списка подписанных документов без ЕЦП")
     @RequestMapping(value = "/getDocumentSubmitedUnsigned", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     // @Transactional
-    public @ResponseBody String getDocumentSubmitedUnsigned(
+    public @ResponseBody List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(
                     @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
                     throws Exception {
 
@@ -174,12 +187,12 @@ public class DocumentCommonController {
 
             LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
 
-            if (aDocumentSubmitedUnsignedVO != null) {
+            /*if (aDocumentSubmitedUnsignedVO != null) {
                     return JSONValue.toJSONString(aDocumentSubmitedUnsignedVO);
             }
 
-            return "aDocumentSubmitedUnsignedVO is null";
-
+            return "aDocumentSubmitedUnsignedVO is null";*/
+             return aDocumentSubmitedUnsignedVO;
     }
 
 }
