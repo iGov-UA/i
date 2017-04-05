@@ -74,12 +74,13 @@
         <activiti:formProperty id="sDocZgodaBigHouse" name="Письмова згода власників та квартиронаймачів суміжних квартир в жилому будинку, завірена обслуговуючою організацією; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Дозвіл органів опіки; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocNotLive" name="Засвідчена Власником або балансоутримувачем згода власників суміжних житлових приміщень (блокованих будинків, квартир) з нежитловим приміщенням, яке пропонується перевести у житлове; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocCommon" name="Засвідчена Власником або балансоутримувачем згода мешканців будинку; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNotLive" name="Засвідчена Власником або балансоутримувачем згода власників суміжних житлових приміщень (блокованих будинків, квартир) з нежитловим приміщенням, яке пропонується перевести у житлове; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sZgodaBalOwn" name="Згоду балансоутримувача житлового будинку, в якому розташована квартира; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця; ;bVisible=false" type="string" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="назва населеного пункту; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="номер з довідника населеного пункту; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('Rada/rada_1443_GytNeGyt.json')}"></activiti:formProperty>
@@ -171,6 +172,7 @@
         <activiti:formProperty id="sDocZgodaBigHouse" name="Письмова згода власників та квартиронаймачів суміжних квартир в жилому будинку, завірена обслуговуючою організацією; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Дозвіл органів опіки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNotLive" name="Засвідчена Власником або балансоутримувачем згода власників суміжних житлових приміщень (блокованих будинків, квартир) з нежитловим приміщенням, яке пропонується перевести у житлове; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sZgodaBalOwn" name="Згоду балансоутримувача житлового будинку, в якому розташована квартира; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocCommon" name="Засвідчена Власником або балансоутримувачем згода мешканців будинку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_273_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -263,6 +265,7 @@
         <activiti:formProperty id="sDocZgodaBigHouse" name="Письмова згода власників та квартиронаймачів суміжних квартир в жилому будинку, завірена обслуговуючою організацією; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Дозвіл органів опіки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNotLive" name="Засвідчена Власником або балансоутримувачем згода власників суміжних житлових приміщень (блокованих будинків, квартир) з нежитловим приміщенням, яке пропонується перевести у житлове; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sZgodaBalOwn" name="Згоду балансоутримувача житлового будинку, в якому розташована квартира; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocCommon" name="Засвідчена Власником або балансоутримувачем згода мешканців будинку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -461,10 +464,13 @@ if(execution.getVariable('sDocNotLive') != null){
 per17 = "&lt;li&gt;Засвідчена власником або балансоутримувачем згоду власників суміжних житлових приміщень (блокованих будинків, квартир) з нежитловим приміщенням, яке пропонується перевести у житлове.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocCommon') != null){
-per18 = "&lt;li&gt;Засвідчена власником або балансоутримувачем згоду мешканців будинку.&lt;/li&gt;"
+per18 = "&lt;li&gt;Засвідчена власником або балансоутримувачем згода мешканців будинку.&lt;/li&gt;"
 }
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15+per16+per17+per18+'&lt;/ol&gt;'
-res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15+per16+per17+per18+'&lt;/ol&gt;'
+if(execution.getVariable('sZgodaBalOwn') != null){
+per19 = "&lt;li&gt;Згоду балансоутримувача житлового будинку, в якому розташована квартира.&lt;/li&gt;"
+}
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15+per16+per17+per18+per19+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15+per16+per17+per18+per19+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res)
 execution.setVariable('sListDocumentsPrint', res2)</script>
     </scriptTask>
