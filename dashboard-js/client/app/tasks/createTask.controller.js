@@ -138,9 +138,13 @@ angular.module('dashboardJsApp').controller('createTask',
             } else {
               var sMessage = "Форму відправлено.";
               var createdTaskNumber = result.nID_Task;
-              Modal.inform.success(function (result) {
+              if(iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
                 $state.go('tasks.typeof.view', {type:'unassigned', id:createdTaskNumber});
-              })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''), $scope.lightweightRefreshAfterSubmit());
+              } else {
+                Modal.inform.success(function (result) {
+                  $state.go('tasks.typeof.view', {type:'unassigned', id:createdTaskNumber});
+                })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''), $scope.lightweightRefreshAfterSubmit());
+              }
               $scope.$emit('task-submitted');
             }
           })
