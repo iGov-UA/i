@@ -49,11 +49,11 @@
         <activiti:formProperty id="sWorkTime" name="Час роботи органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Дозвіл на розміщення зовнішньої реклами"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="дозвіл на розміщення зовнішньої реклами"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="дозволу на розміщення зовнішньої реклами"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNomerRegistration" name="Номер реєстрації заявки; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="markers" type="Опрацювання OpenData щодо юрособ" default="${markerService.loadFromFile('skv/Dnepr_Reklama/UrFiz_OpenData_DovFile.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Опрацювання OpenData щодо юрособ" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/UrFiz_OpenData_DovFile.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація по Line" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_LinesST.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersСheckbox_1" name="Стилі щодо checkbox" type="markers" default="${markerService.loadFromFile('skv/style_checkbox.json')}"></activiti:formProperty>
@@ -360,14 +360,14 @@
         <activiti:formProperty id="decide_report" name="Результат підготовки відповіді" type="enum" required="true">
           <activiti:value id="accept" name="Мотивована негативна відповідь подготовлена"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment_Report_Total" name="Коментар виконавця для громадянина (буде надіслано в email)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_Report_Total" name="Ітоговий коментар для громадянина (буде надіслано в email)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Total" name="Відповідь громадянину;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PravoVlasnist" name="Право власності на майно де буде розміщена реклама; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PlaceFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Eskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
@@ -432,14 +432,14 @@
         <activiti:formProperty id="decide_report" name="Результат підготовки відповіді" type="enum" required="true">
           <activiti:value id="accept" name="Мотивована позитивна відповідь подготовлена"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment_Report_Total" name="Коментар виконавця для громадянина (буде надіслано в email)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_Report_Total" name="Ітоговий коментар для громадянина (буде надіслано в email)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Total" name="Відповідь громадянину;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PravoVlasnist" name="Право власності на майно де буде розміщена реклама; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PlaceFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Eskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
@@ -504,7 +504,7 @@
         <activiti:formProperty id="decide_report" name="Результат підготовки відповіді" type="enum" writable="false">
           <activiti:value id="accept" name="Мотивована позитивна відповідь подготовлена"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDecisionComment_Report_Total" name="Коментар виконавця для громадянина (буде надіслано в email)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_Report_Total" name="Ітоговий коментар для громадянина (буде надіслано в email)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_rezult" name="Рішення щодо візиту громадянина" type="enum" required="true">
           <activiti:value id="accept" name="Громадянину видані документи"></activiti:value>
           <activiti:value id="reject" name="Громадянин не з'явився за документами"></activiti:value>
@@ -599,7 +599,7 @@
  			[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
-					На жаль, змушені відмовити Вам у наданні послуги щодо ${sPosluga_name} (звернення [sID_Order]).<br /> 
+					На жаль, змушені відмовити Вам у наданні послуги щодо ${sPosluga_nameZV} (звернення [sID_Order]).<br /> 
 					Коментар до рішення: ${sDecisionComment_user}<br />
 					Відповідь з причиною відмови в додатку.<br />
 					<br />
@@ -611,7 +611,7 @@
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan} <br />
+                ${sNameOrgan}, <br />
             [pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -645,7 +645,7 @@
   			[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
-					Ваше звернення [sID_Order] щодо ${sPosluga_name} успішно перевірено і буде опрацьовано впродовж визначений Законом термін. <br>
+					Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно перевірено і буде опрацьовано впродовж визначений Законом термін. <br>
 					Звернення отримало реєстраційний номер ${sNomerRegistration} від ${sDateRegistration}. <br>
 					Ви отримаєте додаткове повідомлення за результатами розгляду звернення. <br>
 					<br>
@@ -656,7 +656,7 @@
 				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}<br>
+                ${sNameOrgan}, <br />
             [pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -694,7 +694,7 @@
   			[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
-					На жаль, змушені повідомити Ваc про закриття заявки щодо ${sPosluga_name} (звернення [sID_Order]).<br /> 
+					На жаль, змушені повідомити Ваc про закриття заявки щодо ${sPosluga_nameZV} (звернення [sID_Order]).<br /> 
 					Коментар до рішення: ${sDecisionComment_Rezult}<br />
 					<br />
 					${sNameOrgan} 	<br />
@@ -705,7 +705,7 @@
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan} <br />
+                ${sNameOrgan}, <br />
             [pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -739,16 +739,17 @@
          	[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення [sID_Order] щодо ${sPosluga_name} опрацьовано. Дозвіл надано.
+				Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} опрацьовано. Дозвіл надано.
+				<br />
+				${sNameOrgan} 	<br />
+				${sAddress} 	<br />
+				${sWorkTime} 	<br />
+				${sPhoneOrgan} 	<br />
 			</p>
-			${sNameOrgan} 	<br />
-			${sAddress} 	<br />
-			${sWorkTime} 	<br />
-			${sPhoneOrgan} 	<br />
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan}<br />
+                ${sNameOrgan}, <br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -812,7 +813,7 @@
  			[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
-					На жаль, змушені відмовити Вам у наданні послуги щодо ${sPosluga_name} (звернення [sID_Order]).<br /> 
+					На жаль, змушені відмовити Вам у наданні послуги щодо ${sPosluga_nameZV} (звернення [sID_Order]).<br /> 
 					Коментар до рішення: ${sDecisionComment_urist_user}<br />
 					Відповідь з причиною відмови в додатку.<br />
 					<br />
@@ -824,7 +825,7 @@
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan} <br />
+                ${sNameOrgan}, <br />
             [pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -869,19 +870,21 @@
           <activiti:expression><![CDATA[
           	[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-			По вашому зверненню №[sID_Order] щодо ${sPosluga_name} винесено відмову.<br />
-			Коментар до рішення: ${sDecisionComment_Report_Total}<br />
-			Відповідь з причиною відмови в додатку.<br />
-			<br />
-			Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
-			<br>
-			${sNameOrgan} <br>
-			${sAddress} <br>
-			${sWorkTime} <br>
-			${sPhoneOrgan} <br>
+			<p>
+				По вашому зверненню №[sID_Order] щодо ${sPosluga_nameZV} винесено відмову.<br />
+				Коментар до рішення: ${sDecisionComment_Report_Total}<br />
+				Відповідь з причиною відмови в додатку.<br />
+				<br />
+				Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+				<br>
+				${sNameOrgan} <br>
+				${sAddress} <br>
+				${sWorkTime} <br>
+				${sPhoneOrgan} <br>
+			</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan}<br />
+                ${sNameOrgan}, <br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -917,17 +920,19 @@
           <activiti:expression><![CDATA[
           	[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-			По вашому зверненню №[sID_Order] щодо ${sPosluga_name} винесено позитивне рішення.<br />
-			Коментар до рішення: ${sDecisionComment_Report_Total}<br />
-			Додаткові файли наведено в додатку.<br />
-			<br />
-			${sNameOrgan} <br>
-			${sAddress} <br>
-			${sWorkTime} <br>
-			${sPhoneOrgan} <br>
+			<p>
+				По вашому зверненню №[sID_Order] щодо ${sPosluga_nameZV} винесено позитивне рішення.<br />
+				Коментар до рішення: ${sDecisionComment_Report_Total}<br />
+				Додаткові файли наведено в додатку.<br />
+				<br />
+				${sNameOrgan} <br>
+				${sAddress} <br>
+				${sWorkTime} <br>
+				${sPhoneOrgan} <br>
+			</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan}<br />
+                ${sNameOrgan}, <br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
