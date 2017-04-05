@@ -55,6 +55,8 @@ angular.module('dashboardJsApp')
 
         $http(req).
         success(function (data) {
+          $rootScope.usersDocumentsBPs = [];
+          $rootScope.userTasksBPs = [];
           currentUser = data;
           window.localStorage.setItem("iGovUserRoles", angular.toJson(currentUser.roles));
           deferred.resolve(data);
@@ -115,6 +117,8 @@ angular.module('dashboardJsApp')
           return cb(err);
         }.bind(this))
           .finally(function () {
+            $rootScope.usersDocumentsBPs = [];
+            $rootScope.userTasksBPs = [];
             $cookieStore.remove('user');
             $cookieStore.remove('sessionSettings');
             $cookieStore.remove('JSESSIONID');
