@@ -783,6 +783,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
                   bValid = true;
               } else {
                   bValid = false;
+                  break;
               }
           }
         }
