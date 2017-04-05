@@ -345,15 +345,18 @@ public class DocumentStepService {
                 LOG.info("sKey_Group: {} oDocumentStepSubjectRight.getsKey_GroupPostfix(): {}", sKey_Group,
                         oDocumentStepSubjectRight.getsKey_GroupPostfix());
 
-                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
+                //oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
+                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight.getId());
                 
                 bRemoved = true;
             }
             
-            if(!aDocumentStepSubjectRight_New.isEmpty()){
+            oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
+            LOG.info("aDocumentStepSubjectRight after deleting is {}", oDocumentStep.aDocumentStepSubjectRight);
+            /*if(!aDocumentStepSubjectRight_New.isEmpty()){
                 oDocumentStep.setRights(aDocumentStepSubjectRight_New);
                 oDocumentStepDao.saveOrUpdate(oDocumentStep);
-            }
+            }*/
 
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
