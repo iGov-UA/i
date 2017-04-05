@@ -787,7 +787,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
           }
         }
         if(bValid && !pointer.isPresent){
-            modelValue = modelValue + pointer.sChar;
+            bValid = false;
         }
 /*
     	var bValid = (parsedFloat - Math.floor(modelValue) != 0) && (parsedFloat > options.nMin) && (parsedFloat < options.nMax) ||
