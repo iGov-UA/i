@@ -7,7 +7,7 @@
 1. [Общие правила при именовании](#generalrulesfornaming)
 1. [Типы Listener и delegateExpression](#typeslisteneranddelegate)
 1. [Назначение групп и пользователей](#assigngroupsandusers)
-1. [Математические действия с переменными и операторы условий](#mathematicalactionswithvariablesandconditionoperators)
+1. [Математические действия с переменными и операторы условий](#mathematical)
 1. [Работа с датами и таймерами](#workingwithdatesandtimers)
 1. [Маркеры и Валидаторы](#markersandValidators)
 1. [Принтформы](#printform)
@@ -97,26 +97,33 @@
 ###### mailtask
 ### MailTask
 – позволяет отправить письмо, из-за того, что не поддерживает шаблоны е-мейлов на данный момент практически не используется.
-### servicetask
-ServiceTask – спектр использования очень широк и определяется в основном разработанными activiti:delegateExpression. Сейчас наиболее часто используемые activiti:delegateExpression: 
+###### servicetask
+### ServiceTask
+– спектр использования очень широк и определяется в основном разработанными activiti:delegateExpression. Сейчас наиболее часто используемые activiti:delegateExpression: 
 
 [детальней...](#_servicetask)
 
-### filetaskupload
-fileTaskUpload – отвечает за заргузку файлов, прикрепленных гражданином в заявке.
-### mailtaskwithoutattachmen
-MailTaskWithoutAttachment – используется для отправки писем без вложений, поддерживает шаблоны и возможность отсылки на несколько адресов.
-### mailtaskwithattachments
-MailTaskWithAttachments – используется для отправки писем с вложенными файлами, поддерживает шаблоны и возможность отсылки на несколько адресов.
+###### filetaskupload
+### fileTaskUpload
+– отвечает за заргузку файлов, прикрепленных гражданином в заявке.
+###### mailtaskwithoutattachmen
+### MailTaskWithoutAttachment
+– используется для отправки писем без вложений, поддерживает шаблоны и возможность отсылки на несколько адресов.
+###### mailtaskwithattachments
+### MailTaskWithAttachments
+– используется для отправки писем с вложенными файлами, поддерживает шаблоны и возможность отсылки на несколько адресов.
 
 [детальней...](#_mailtaskwithattachments)
 
-### scripttask
-ScriptTask – позволяет использовать простейшие скрипты (поддерживается JavaScript и Groovy) для работы с переменными процесса. Используется для раскрытия одной услуги на многие города (сейчас минимизируется), обработки даты для настройки уведомлений, подстановки необходимых значений в принтформы.
-### exclusivegateway
-Exclusive Gateway– используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway.
-### parallelgateway
-Parallel Gateway – используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway. Основные особенности – должны прописываться парами, действия после второго Gateway будут выполняться не раньше чем все действия между Gateway будут выполнены.
+###### scripttask
+### ScriptTask
+– позволяет использовать простейшие скрипты (поддерживается JavaScript и Groovy) для работы с переменными процесса. Используется для раскрытия одной услуги на многие города (сейчас минимизируется), обработки даты для настройки уведомлений, подстановки необходимых значений в принтформы.
+###### exclusivegateway
+### Exclusive Gateway
+– используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway.
+###### parallelgateway
+### Parallel Gateway
+– используется для организации ветвлений в процессе в зависимости от параметров. Параметры ветвления прописываются в стрелке, следующей после Gateway. Основные особенности – должны прописываться парами, действия после второго Gateway будут выполняться не раньше чем все действия между Gateway будут выполнены.
 
 [детальней...](#_parallelgateway)
 
@@ -204,7 +211,6 @@ dfdsgdfsg
 [детальней...](#_label)
 
 
-
 ### file
 файл - кнопка для ручной загрузки файлов гражданином на форме подачи обращения и для возможности просмотра  прикрепленного файла на форме обработки обращения.
 ```xml
@@ -218,8 +224,9 @@ dfdsgdfsg
 
 [детальней...](#_file (New))
 
-### textarea
-многострочный текст - для ввода/отображения многострочного текста
+###### textarea
+### textArea
+-многострочный текст - для ввода/отображения многострочного текста
 ```xml
 <activiti:formProperty id="application_name" name="В цьому полі надайте перелік усіх додатків та специфікацій до договору" 
 type="textArea"></activiti:formProperty>
@@ -227,9 +234,10 @@ type="textArea"></activiti:formProperty>
 
 [детальней...](#_textarea)
 
-***
-### queuedata
-дата/время - Электронная очередь.
+###### queuedata
+### queueData
+-дата/время - Электронная очередь.
+
 ```xml
 <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для реєстрації народження?"
 type="queueData" required="true"></activiti:formProperty>
@@ -281,8 +289,8 @@ type="queueData" required="true"></activiti:formProperty>
 [детальней...](#_line)
 
 
-### variableattributes 
-(Атрибуты переменных)
+###### variableattributes 
+### variableAttributes (Атрибуты переменных)
 **id** - уникальный идентификатор переменной. Обязательный атрибут.
 
 **type** - тип переменной. Преобразования типов нет. Обязательный атрибут.
@@ -296,8 +304,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 [вернуться в начало](general.md)
 
-### attributesbankid
-Переменные BankID
+###### attributesbankid
+### attributesBankID (Переменные BankID)
 * **bankIdlastName** - string - фамилия гражданина
 * **bankIdfirstName** - string - имя гражданина
 * **bankIdmiddleName** - string - отчество гражданина
@@ -305,8 +313,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_attributesbankid)
 
-### reservedvariablesforelectronicqueues
-Зарезервированные переменные для электронных очередей
+##### reservedvariablesforelectronicqueues
+### Зарезервированные переменные для электронных очередей
 * **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
 * **nID_Department_visitDay** - string/invisible/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
 * **nSlots_visitDay** - string/invisible/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
@@ -314,8 +322,8 @@ type="queueData" required="true"></activiti:formProperty>
 [детальней...](#_reservedvariablesforelectronicqueues)
 
 
-### reservedattributevariables
-Зарезервированные переменные атрибутов
+###### reservedattributevariables
+### Зарезервированные переменные атрибутов
 * **sNameOrgan** - string/invisible/label - название органа в подписи письма
 * **sWorkTime** - string invisible/label - график работы
 * **sPhoneOrgan** - string/invisible/label - телефон для справок
@@ -323,32 +331,32 @@ type="queueData" required="true"></activiti:formProperty>
 [детальней...](#_reservedattributevariables)
 
 
-### variablesforprintforms
-Переменные принтформ
+###### variablesforprintforms
+### Переменные принтформ
 * **[sID_Order]** - системный тег для принтформы, смс или емейла  для размещения ИД заявки. [Issue 1023](https://github.com/e-government-ua/i/issues/1023).  
 * **[sDateCreate]** - Системный тег даты. Возвращает значение системного времени на момент срабатывания таски. Можно использовать как время начала обработки обращения (взятия в работу чиновником).
 
 [детальней...](#_variablesforprintforms)
 
 
-### validatedvariables
-Валидируемые переменные
+###### validatedvariables
+### Валидируемые переменные
 * **vin_code, vin_code1, vin** - string - VIN-код авто.
 Набор из 17 символов. Разрешено использовать все арабские цифры и латинские буквы (А В C D F Е G Н J К L N М Р R S Т V W U X Y Z) , за исключением букв Q, O, I. Эти буквы запрещены для использования, поскольку O и Q похожи между собой, а I и O можно спутать с 0 и 1.
 
 [детальней...](#_validatedvariables)
 
 
-### other
-Другие
+###### other
+### Другие
 * **response** - invisible - задать кастомизированный текст на спасибо странице, после подачи обращения (с поддержкой html)
 * **footer** - string - задать кастомизированный текст на стандартной форме для печати в дашборде( с поддержкой html)
 * **sNotifyEvent_AfterSubmit** - invisible - Отображение кастомного текста в дашборде после нажатия на кнопку “Опрацювати”. Текст  подсказки задаем в аттрибуте default. [Issue 1027](https://github.com/e-government-ua/i/issues/1027).
 
 [детальней...](#_other)
 
-### autocomplete
-Автокомплиты
+###### autocomplete
+### Автокомплиты
 * **sObjectCustoms** - select - Товар 
 * **sID_UA_ObjectCustoms** - Код товара (заполнится автоматически после выбора в селекте sObjectCustoms)
 * ![3_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_8.JPG)
@@ -356,8 +364,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_autocomplete)
 
-### requestvariables
-Переменные-запросы
+###### requestvariables
+### Переменные-запросы
 **sID_SubjectOrgan_OKPO_** - string - Делает запрос к базе ранее полученных данных из ЕДРПОУ, по соответствующему коду предприятия, и возвращает результат в несколько зарезервированных переменных (если по запросу найдены данные). Возможно неограниченное количество полей запроса на форме - **sID_SubjectOrgan_OKPO_** используется как префикс, главное обеспечить уникальность **id** каждой следующей переменной-запроса и каждого возвращаемой переменной. 
 * **sFullName_SubjectOrgan_** - textArea - Полное наименование
 
@@ -370,8 +378,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 ## Наличие в любых IDшниках кириллических символов, а также пробелов - недопустимо
 
-### variables
-переменные
+###### variables
+### Переменные
 
 первый символ названия переменной должен говорить о типе данных:
 * n = Number (числовые переменные) - nSum
@@ -379,8 +387,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_variables)
 
-### userscolor
-Подсвечивать этап (юзертаску) в дашборде  цветом
+###### userscolor
+### Подсвечивать этап (юзертаску) в дашборде  цветом
 
 если название юзертаски заканчивается на:
 * "_red" - подкрашивать строку - красным цветом (класс: "bg_red")
@@ -401,16 +409,17 @@ type="queueData" required="true"></activiti:formProperty>
    [детальней...](#_Listener)
 
 
-### settasks
-листенер ${SetTasks} - ставится на закрытие таски, т.е. event="complete"  **(1, 2)**  
+##### settasks
+### листенер ${SetTasks}
+-ставится на закрытие таски, т.е. event="complete"  **(1, 2)**  
 В этом листенере мы указываем какие поля из текущего БП передать в другой БП:  
 
 [детальней...](#_settasks)
 
 
-### documentinit_idoc
-
-листенер ${DocumentInit_iDoc} - ставится на открытие таски, т.е. event="create"  
+###### documentinit_idoc
+### листенер ${DocumentInit_iDoc}
+-ставится на открытие таски, т.е. event="create"  
 Никаких дополнительных параметров листенера ставить не нужно  
 ``` xml
 <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -418,18 +427,20 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_documentinit_idoc)
 
-### updatestatustask
-обновляет статус порожденной задачи  
+###### updatestatustask
+### ${UpdateStatusTask}
+-обновляет статус порожденной задачи  
 обязательный параметр **sID_ProcessSubjectStatus**  
 
 [детальней...](#_updatestatustask)
 
-### updatestatustasktreeandcloseprocess
-Листенер прикрепляется на процесс-родитель из которого порождаются задачи. В случае, если родительский процесс закрыт, то все незакрытые порожденные задачи автозакроются со статусом “неактуально”
+###### updatestatustasktreeandcloseprocess
+### ${UpdateStatusTaskTreeAndCloseProcess}
+-Листенер прикрепляется на процесс-родитель из которого порождаются задачи. В случае, если родительский процесс закрыт, то все незакрытые порожденные задачи автозакроются со статусом “неактуально”
 
 
-### delegateexpression
-
+###### delegateexpression
+### delegateExpression
    * ${assignGroup}
    * #{setMessageFeedback_Indirectly}
    * #{fileTaskUpload} - для электронных очередей. Достает дату из объекта в переменной типа _queueData_ и передает ее в системную переменную _date_of_visit_ . Сервистаска с этим выражением должна следовать сразу за стартивентом.
@@ -441,22 +452,21 @@ type="queueData" required="true"></activiti:formProperty>
 # Назначение групп и пользователей
 [вернуться в начало](general.md)
 
-### addingauser
-Добавляем пользователя
+###### addingauser
+### Добавляем пользователя
 * Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
 
 [детальней...](#_addingauser)
 
-***
-### addingausertoagroup 
-Добавляем пользователя в группу
+###### addingausertoagroup 
+### Добавляем пользователя в группу
 * Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
 
 [детальней...](#_addingausertoagroup)
 
 
 
-###### mathematicalactionswithvariablesandconditionoperators
+###### mathematical
 # 8. Математические действия с переменными и операторы условий
 [вернуться в начало](general.md)
 
@@ -468,8 +478,8 @@ digit3 - переменная, куда присвоится результат 
 и в итоге суммируется и в результате   имеем “3”  :)
 Аналогично используются операнды сложения, вычитания, умножения, деления.
 
-### conditionstatementsinprocesses
-Операторы условий в процессах
+###### conditionstatementsinprocesses
+### Операторы условий в процессах
 * ${form_attr == "N"} - проверка на равенство между переменной form_attr и константой  "N"
 * ${form_attr != "N"}  - проверка на НЕравенство
 
@@ -478,8 +488,8 @@ digit3 - переменная, куда присвоится результат 
 ###### workingwithdatesandtimers
 # 9. Работа с датами и таймерами
 [вернуться в начало](general.md)
-### usingtimers
-Использование таймеров
+###### usingtimers
+### Использование таймеров
 Для использования таймера с целью приостановки процесса, используем стандартный элемент **TimerCatchingEvent** (самостоятельный элемент схемы) который приостанавливает процесс до срабатывания таймера.
 
 [детальней...](#_usingtimers)
@@ -496,8 +506,9 @@ digit3 - переменная, куда присвоится результат 
 [Маркеры группы attributes](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-attributes)  
 
 ## Маркеры группы motion
-### showfieldsoncondition  
-показывают скрытое поле (при выполнении условий)
+###### showfieldsoncondition  
+### ShowFieldsOnCondition 
+-показывают скрытое поле (при выполнении условий)
 
 ```java
 {
@@ -517,8 +528,9 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_showfieldsoncondition)
 
 
-### showfieldsonnotempty
-показать доп поля, если заполнено конкретное поле
+###### showfieldsonnotempty
+### ShowFieldsOnNotEmpty 
+-показать доп поля, если заполнено конкретное поле
 ```java
 {
   "motion": {
@@ -533,8 +545,9 @@ digit3 - переменная, куда присвоится результат 
 ```
 
 
-### requiredfieldsoncondition
-делают обязательным заполнение поля (при выполнении условий)
+###### requiredfieldsoncondition
+### RequiredFieldsOnCondition
+-делают обязательным заполнение поля (при выполнении условий)
 ```java
 {
   "motion": {
@@ -554,10 +567,10 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_requiredfieldsoncondition)
 
 
-### showelementsontrue  
+###### showelementsontrue  
 [Issues 816](https://github.com/e-government-ua/i/issues/816)  
-маркер для принтформы  
-показывает блок с конкретным идшником html кода принтформы  
+### ShowElementsOnTrue
+-маркер для принтформы, показывает блок с конкретным идшником html кода принтформы  
 ```java
 {
   "motion": {
@@ -577,8 +590,9 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_showelementsontrue)
 
 
-### valuesfieldsoncondition
-присваивает определенному полю определенные значения (при выполнении условий)  
+###### valuesfieldsoncondition
+### ValuesFieldsOnCondition
+-присваивает определенному полю определенные значения (при выполнении условий)  
 [Issues 829](https://github.com/e-government-ua/i/issues/829)   
 [Issues 1362](https://github.com/e-government-ua/i/issues/1362)  
 ```java
@@ -606,8 +620,9 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_valuesfieldsoncondition)
 
 
-### writablefieldsoncondition
-нерадактируемое поле становится редактируемым (при выполнении условий)  
+###### writablefieldsoncondition
+### WritableFieldsOnCondition
+-нерадактируемое поле становится редактируемым (при выполнении условий)  
 ```java
 {
   "motion": {
@@ -627,8 +642,9 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_writablefieldsoncondition)
     
 
-### splittexthalf_1
- разделение значения по  знаку разделителя
+###### splittexthalf_1
+### SplitTextHalf_1
+-разделение значения по  знаку разделителя
 ```java
 {
   "motion": {
@@ -645,8 +661,9 @@ digit3 - переменная, куда присвоится результат 
 
 
 ## Маркеры группы validate
-### customformat_1
-номеров
+###### customformat_1
+### CustomFormat_1 
+-номеров
 [Issues 934 ](https://github.com/e-government-ua/i/issues/934)  
 ```java
 {
@@ -664,8 +681,8 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_customformat_1)
 
 
-### extensions
-расширений
+###### extensions
+### расширений
 [Issues 1258](https://github.com/e-government-ua/i/issues/1258)
 ```java
 {
@@ -685,8 +702,9 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_extensions)
 
 
-### numberbetween
-- принадлежность значения  диапазону значений  (целочисленные)
+###### numberbetween
+### NumberBetween
+-принадлежность значения  диапазону значений  (целочисленные)
 ```java
 {
   "NumberBetween": {
