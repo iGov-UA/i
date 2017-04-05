@@ -331,37 +331,31 @@ public class DocumentStepService {
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
             DocumentStepSubjectRight oDocumentStepSubjectRight = null;
-            List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = new ArrayList<>();
+            //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = new ArrayList<>();
             
             for (DocumentStepSubjectRight o : aDocumentStepSubjectRight) {
-                if (!sKey_Group.equals(o.getsKey_GroupPostfix())) {
-                    
-                    aDocumentStepSubjectRight_New.add(o);
-                    //break;
-                }
-                else{
+                if (sKey_Group.equals(o.getsKey_GroupPostfix())) {
                     oDocumentStepSubjectRight = o;
-                }
+                    //aDocumentStepSubjectRight_New.add(o);
+                    break;
+                }/*else{
+                    oDocumentStepSubjectRight = o;
+                }*/
             }
             
             if (oDocumentStepSubjectRight != null) {
                 LOG.info("sKey_Group: {} oDocumentStepSubjectRight.getsKey_GroupPostfix(): {}", sKey_Group,
                         oDocumentStepSubjectRight.getsKey_GroupPostfix());
 
-                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
-                //oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight.getId());
+                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight.getId());
+                
                 bRemoved = true;
             }
             
-            if(!aDocumentStepSubjectRight_New.isEmpty()){
-                oDocumentStepSubjectRightDao.saveOrUpdate(aDocumentStepSubjectRight_New);
-                /*oDocumentStep.setRights(aDocumentStepSubjectRight_New);
-                oDocumentStepDao.saveOrUpdate(oDocumentStep);*/
-            }
-            
-            oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
-            LOG.info("aDocumentStepSubjectRight after deleting is {}", oDocumentStep.getRights());
-            
+            /*if(!aDocumentStepSubjectRight_New.isEmpty()){
+                oDocumentStep.setRights(aDocumentStepSubjectRight_New);
+                oDocumentStepDao.saveOrUpdate(oDocumentStep);
+            }*/
 
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
