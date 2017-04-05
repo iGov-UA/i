@@ -72,7 +72,7 @@ public class MUController {
     public @ResponseBody
     String getObjectEarthTargets(
     		@ApiParam(value = "service_code", required = true) 
-    		@RequestParam(value = "service_code", required = false) String service_code,
+    		@RequestParam(value = "service_code", required = true) String service_code,
             HttpServletRequest request) throws ServiceException, RemoteException {
 		ServiceLocator serviceLocator = new ServiceLocator();
 		IService service = serviceLocator.getBinding_IService();
@@ -83,6 +83,30 @@ public class MUController {
 		String res = service.test(service_code);
 		
 		LOG.info("Received response from Test in just web service:" + res);
+		
+		return res;
+    }
+	
+	@ApiOperation(value = "")
+    @RequestMapping(value = "/getServiceUrl", method = RequestMethod.GET)
+    public @ResponseBody
+    String getObjectEarthTargets(
+    		@ApiParam(value = "service_code", required = true) 
+    		@RequestParam(value = "service_code", required = true) String service_code,
+    		@ApiParam(value = "application_id", required = true) 
+    		@RequestParam(value = "application_id", required = true) Integer application_id,
+    		@ApiParam(value = "session_id", required = true) 
+    		@RequestParam(value = "session_id", required = true) String session_id,
+            HttpServletRequest request) throws ServiceException, RemoteException {
+		ServiceLocator serviceLocator = new ServiceLocator();
+		IService service = serviceLocator.getBinding_IService();
+		LOG.info("Got web service locator. Parameter of the method. service_code: " + service_code);
+		
+		LOG.info("Before calling getServiceURL method");
+		
+		String res = service.getServiceURL(service_code, application_id, session_id);
+		
+		LOG.info("Received response from getServiceURL in just web service:" + res);
 		
 		return res;
     }
