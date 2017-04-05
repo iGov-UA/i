@@ -17,7 +17,7 @@ public class SubjectRightBP extends AbstractEntity {
     @Column(name = "sID_Place_UA", nullable = true)
     private String sID_Place_UA;
 
-    @JsonProperty(value = "sID_Group")
+    @JsonProperty(value = "sID_Group_Referent")
     @Column(name = "sID_Group_Referent", nullable = false)
     private String sID_Group_Referent;
 
