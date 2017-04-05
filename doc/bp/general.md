@@ -204,7 +204,7 @@ dfdsgdfsg
 ### file
 файл - кнопка для ручной загрузки файлов гражданином на форме подачи обращения и для возможности просмотра  прикрепленного файла на форме обработки обращения.
 ```xml
-<activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file"></activiti:formProperty>`
+<activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file"></activiti:formProperty>
 ```
 [детальней...](#_file)
 
@@ -877,7 +877,7 @@ digit3 - переменная, куда присвоится результат 
 Создание подписанного ЭЦП документа cо стартовой формы
 Необходимо добавить строки на стартовую таску:
 ```xml
-<activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>` 
+<activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
 <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/example_print_01.html"></activiti:formProperty>
 ```
 
@@ -888,7 +888,7 @@ digit3 - переменная, куда присвоится результат 
 Конвертирование html в PDF
 Как альтернатива вышеуказанному способу существует конвертор собственный - его использование задается в дополнительном параметре описанном в "name". Данный конвертор более качественно переводит в PDF формат исходный html-файл. Также он позволяет успешно использовать встроенные в html-файл java-скрипты.
 ```xml
-<activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>` 
+<activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
 ```
 [детальней...](#_converthtmltopdf)
 
@@ -1000,7 +1000,7 @@ digit3 - переменная, куда присвоится результат 
 * в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
 
 ```xml
-<activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false" ></activiti:formProperty`>
+<activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
 ```
 * ![13_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_2.JPG)
 
