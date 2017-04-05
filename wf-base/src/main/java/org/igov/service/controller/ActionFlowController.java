@@ -87,7 +87,7 @@ public class ActionFlowController {
 	 * @param nSlots число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук
      */
     @ApiOperation(value = "Получение слотов по сервису сгруппированных по дням", notes = "##### Пример:\n"
-	        + "https://test.igov.org.ua/wf/service/action/flow/getFlowSlots?nID_ServiceData=1 \n"
+	        + "https://alpha.test.igov.org.ua/wf/service/action/flow/getFlowSlots?nID_ServiceData=1 \n"
 	        + "или\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1 \n"
 	        + "Ответ: HTTP STATUS 200\n\n"

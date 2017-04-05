@@ -236,7 +236,7 @@ public class ActionEscalationController {
     //------------------------------Escalation History services----------------------------------
     @SuppressWarnings("unchecked")
     @ApiOperation(value = "Возвращает массив объектов сущности по заданним параметрам", notes = "#####Примеры:\n "
-            + "Пример 1: https://test.igov.org.ua/wf/service/action/escalation/getEscalationHistory\n\n"
+            + "Пример 1: https://alpha.test.igov.org.ua/wf/service/action/escalation/getEscalationHistory\n\n"
             + "Пример ответа:\n\n"
             + "\n```json\n"
             + "  [{\n"
@@ -250,7 +250,7 @@ public class ActionEscalationController {
             + "  ...\n"
             + "  ]\n"
             + "\n```\n"
-            + "Пример 2:\n https://test.igov.org.ua/wf/service/action/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100")
+            + "Пример 2:\n https://alpha.test.igov.org.ua/wf/service/action/escalation/getEscalationHistory?nID_Process=6276&nID_Process_Root=57119&nID_UserTask=634&sDateStart=2014-11-24%2000:03:00&sDateEnd=2014-12-26%2000:03:00&nRowsMax=100")
     @RequestMapping(value = "/getEscalationHistory", method = RequestMethod.GET)
     @ResponseBody
     public List<EscalationHistory> getEscalationHistory(

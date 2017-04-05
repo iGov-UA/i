@@ -96,22 +96,14 @@ public class SubjectGroupController {
                 sFind, bIncludeRoot, nDeepLevelWidth, sSubjectType);
     }
 
-    @RequestMapping(value = "/getSubjectRightBPs", method = RequestMethod.GET)
+    @RequestMapping(value = "/getBPs_ForReferent", method = RequestMethod.GET)
     @ResponseBody
-    public List<SubjectRightBPVO> getSubjectRightBPs(
+    public List<SubjectRightBPVO> getBPs_ForReferent(
             @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
             throws Exception {
-
         LOG.info("sLogin: ", sLogin);
-
-        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getSubjectRightBPs(sLogin);
-
+        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
         LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
-
-        if (aResSubjectRightBPVO != null) {
-            return aResSubjectRightBPVO;
-        }
-
         return new ArrayList<>();
     }
 }
