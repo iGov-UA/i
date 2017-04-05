@@ -2086,7 +2086,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @ApiOperation(value = "Получения обьекта-записи линка", notes = "#####  ActionCommonTaskController: Сервис получения обьекта-записи линка #####\n\n"
             + "Request:\n\n"
-            + "https://test.igov.org.ua/wf/service/action/task/getLink?sKey=sKey&nID_Subject_Holder=nID_Subject_Holder\n\n\n"
+            + "https://alpha.test.igov.org.ua/wf/service/action/task/getLink?sKey=sKey&nID_Subject_Holder=nID_Subject_Holder\n\n\n"
             + "Response:\n"
             + "\n```json\n"
             + "  {\"sKey\":\"Cтрока-ключ\","
@@ -2106,7 +2106,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @ApiOperation(value = "Создание нового обьекта-записи линка", notes = "#####  ActionCommonTaskController: Сервис создания обьекта-записи линка #####\n\n"
             + "Request:\n\n"
-            + "https://test.igov.org.ua/wf/service/action/task/setLink?nID_Process=nID_Process&sKey=sKey&nID_Subject_Holder=nID_Subject_Holder\n\n\n"
+            + "https://alpha.test.igov.org.ua/wf/service/action/task/setLink?nID_Process=nID_Process&sKey=sKey&nID_Subject_Holder=nID_Subject_Holder\n\n\n"
             + "Response:\n"
             + "\n```json\n"
             + "  {\"sKey\":\"Cтрока-ключ\","
@@ -2126,7 +2126,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @ApiOperation(value = "Обработка изменения статуса документа в УкрДок", notes = "#####  ActionCommonTaskController: Обработка изменения статуса документа в УкрДок #####\n\n"
             + "Request:\n\n"
-            + "https://test.igov.org.ua/wf/service/action/task/callback/ukrdoc\n\n\n"
+            + "https://alpha.test.igov.org.ua/wf/service/action/task/callback/ukrdoc\n\n\n"
             + "Метод выполняет следующие действия:\n"
             + " - получает текущий статус документа из тега data -> docStateEvent -> state -> current \n"
             + " - получает номер документа из тега data -> docStateEvent -> tables -> CardsDocument -> CarIdDocument \n"
@@ -2363,7 +2363,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      */
     @ApiOperation(value = "Сервис смены пароля пользователя в Activity", notes = "#### Примеры \n"
             + "Request: \n"
-            + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
+            + "https://alpha.test.igov.org.ua/wf/service/action/task/changePassword\n"
             + "sLoginOwner=kermit\n"
             + "sPasswordOld=kermit\n"
             + "sPasswordNew=kermit1\n"
@@ -2379,7 +2379,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n"
             + "Wrong sPasswordOld\n"
             + "Request:\n"
-            + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
+            + "https://alpha.test.igov.org.ua/wf/service/action/task/changePassword\n"
             + "sLoginOwner=kermit\n"
             + "sPasswordOld=kermit45\n"
             + "sPasswordNew=kermit1\n"
@@ -2393,7 +2393,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n"
             + "Wrong sLogin\n"
             + "Request:\n"
-            + "https://test.igov.org.ua/wf/service/action/task/changePassword\n"
+            + "https://alpha.test.igov.org.ua/wf/service/action/task/changePassword\n"
             + "sLoginOwner=kermit45\n"
             + "sPasswordOld=kermit\n"
             + "sPasswordNew=kermit1\n"
