@@ -26,14 +26,11 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <scriptTask id="scripttask9" name="забираем права" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask9" name="клонируем права" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT3')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_1')
 
-var nID_Process = execution.getProcessInstanceId()
-var sKeyGroup = execution.getVariable('sLogin_DelegateUT3')
-var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, 'step_1', sKeyGroup)
 </script>
     </scriptTask>
     <endEvent id="endevent3" name="End"></endEvent>
@@ -59,7 +56,6 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow80" sourceRef="scripttask9" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask3" name="руководитель">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
@@ -79,7 +75,6 @@ execution.setVariable('processInstanceId', processInstanceId)
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow81" sourceRef="usertask2" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow83" sourceRef="usertask3" targetRef="scripttask9"></sequenceFlow>
     <scriptTask id="scripttask11" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
@@ -87,6 +82,15 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <sequenceFlow id="flow84" sourceRef="usertask1" targetRef="scripttask11"></sequenceFlow>
     <sequenceFlow id="flow85" sourceRef="scripttask11" targetRef="usertask3"></sequenceFlow>
+    <scriptTask id="scripttask12" name="забираем права у предыдущего" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLogin_DelegateUT2')
+var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, 'step_1', sKeyGroup)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow88" sourceRef="usertask3" targetRef="scripttask9"></sequenceFlow>
+    <sequenceFlow id="flow89" sourceRef="scripttask9" targetRef="scripttask12"></sequenceFlow>
+    <sequenceFlow id="flow90" sourceRef="scripttask12" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_justice_setTasks">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_justice_setTasks" id="BPMNPlane__doc_test_justice_setTasks">
@@ -114,6 +118,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
         <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask12" id="BPMNShape_scripttask12">
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow77" id="BPMNEdge_flow77">
         <omgdi:waypoint x="98.0" y="159.0"></omgdi:waypoint>
         <omgdi:waypoint x="140.0" y="159.0"></omgdi:waypoint>
@@ -122,17 +129,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="245.0" y="159.0"></omgdi:waypoint>
         <omgdi:waypoint x="281.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
-        <omgdi:waypoint x="685.0" y="159.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="160.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow81" id="BPMNEdge_flow81">
         <omgdi:waypoint x="850.0" y="160.0"></omgdi:waypoint>
         <omgdi:waypoint x="880.0" y="159.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
-        <omgdi:waypoint x="560.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="580.0" y="159.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow84" id="BPMNEdge_flow84">
         <omgdi:waypoint x="346.0" y="202.0"></omgdi:waypoint>
@@ -141,6 +140,18 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNEdge bpmnElement="flow85" id="BPMNEdge_flow85">
         <omgdi:waypoint x="422.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="495.0" y="202.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
+        <omgdi:waypoint x="560.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="159.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
+        <omgdi:waypoint x="632.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="712.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow90" id="BPMNEdge_flow90">
+        <omgdi:waypoint x="712.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="785.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

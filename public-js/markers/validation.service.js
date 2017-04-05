@@ -761,13 +761,39 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     		options.nMax = 10000000;  
     	}
     	
-    	var parsedFloat = parseFloat(modelValue);
-    	var parsedLong = parseInt(modelValue);
-    	
+    	//var parsedFloat = parseFloat(modelValue);
+    	//var parsedLong = parseInt(modelValue);
+
+    	//var sParcedFloat = "" + parsedFloat;
+    	var pointer = {
+            sChar: ("" + (1/3))[1],
+            iaPresent: false
+        };
+    	var minus = ("" + (1-2))[0];
+    	var bValid = true;
+    	for (var i = 0; i <= modelValue.length; i++){
+    	  if(bValid){
+              var check = modelValue[i];
+              if(check.match(/[0-9]/)){
+                bValid = true;
+              } else if (check === pointer.sChar && !pointer.isPresent){
+                  pointer.isPresent = true;
+                  bValid = true;
+              } else if (check === minus && i === 0){
+                  bValid = true;
+              } else {
+                  bValid = false;
+              }
+          }
+        }
+        if(bValid && !pointer.isPresent){
+            bValid = false;
+        }
+/*
     	var bValid = (parsedFloat - Math.floor(modelValue) != 0) && (parsedFloat > options.nMin) && (parsedFloat < options.nMax) ||
             (parsedLong == options.nMin && ('' + modelValue).length == ('' + options.nMin).length) ||
             (parsedLong == options.nMax && ('' + modelValue).length == ('' + options.nMax).length);
-
+*/
     	if(bValid === null || bValid === false) { 
     		options.lastError = options.sMessage || ('Подільне число має бути між ' + options.nMin + ' та ' + options.nMax); 
     	}
