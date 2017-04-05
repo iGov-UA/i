@@ -104,6 +104,6 @@ public class SubjectGroupController {
         LOG.info("sLogin: ", sLogin);
         List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
         LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
-        return new ArrayList<>();
+        return aResSubjectRightBPVO;
     }
 }
