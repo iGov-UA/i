@@ -890,6 +890,10 @@
 
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
+                  if(!bNotShowSuccessModal && iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
+                    bNotShowSuccessModal = true;
+                  }
+
                   if(bNotShowSuccessModal){
                     $scope.lightweightRefreshAfterSubmit();
                   } else {
