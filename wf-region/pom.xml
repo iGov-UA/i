@@ -23,40 +23,40 @@
 
     <build>
         <plugins>
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.0.0</version>
+	    <plugin>
+		<artifactId>maven-clean-plugin</artifactId>
+		<version>3.0.0</version>
+		<configuration>
+			<filesets>
+				<fileset>
+					<directory>src/main/resources/ibp-repo</directory>
+				</fileset>
+			</filesets>
+		</configuration>
+	</plugin>
+	<plugin>
+		<groupId>org.codehaus.mojo</groupId>
+		<artifactId>exec-maven-plugin</artifactId>
+		<version>1.6.0</version>
+		<executions>
+			<execution>
+				<id>github-ibp-clone</id>
+				<goals>
+					<goal>exec</goal>
+				</goals>
+				<phase>generate-resources</phase>
 				<configuration>
-					<filesets>
-						<fileset>
-							<directory>src/main/resources/ibp-repo</directory>
-						</fileset>
-					</filesets>
+					<executable>git</executable>
+					<arguments>
+						<argument>clone</argument>
+						<argument>${igov.ibp.git}</argument>
+						<argument>src/main/resources/ibp-repo</argument>
+					</arguments>
+					<successCodes>0,128</successCodes>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.6.0</version>
-				<executions>
-					<execution>
-						<id>github-ibp-clone</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>generate-resources</phase>
-						<configuration>
-							<executable>git</executable>
-							<arguments>
-								<argument>clone</argument>
-								<argument>${igov.ibp.git}</argument>
-								<argument>src/main/resources/ibp-repo</argument>
-							</arguments>
-							<successCodes>0,128</successCodes>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			</execution>
+		</executions>
+	    </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
