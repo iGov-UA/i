@@ -30,7 +30,7 @@ public class SubjectRightBPService {
 	@Autowired
 	private SubjectRightBPDao subjectRightBPDao;
 
-	public List<SubjectRightBPVO> getSubjectRightBPs(String sLogin) {
+	public List<SubjectRightBPVO> getBPs_ForReferent(String sLogin) {
 
 		List<SubjectRightBPVO> aResSubjectRightBPVO = new ArrayList<>();
 

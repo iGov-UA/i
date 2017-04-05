@@ -1251,7 +1251,7 @@ public class ActionTaskService {
             result.add(process);*/
         }
 
-        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getSubjectRightBPs(sLogin);
+        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
         LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
 
         if (aResSubjectRightBPVO != null) {
