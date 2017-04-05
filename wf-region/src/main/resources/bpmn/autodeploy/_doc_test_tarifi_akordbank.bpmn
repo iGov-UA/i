@@ -175,8 +175,9 @@ var sKey_Step= 'step_5'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для тарифного комітету
-var sKey_GroupPostfix_New = 'sLogin_AutorResolution'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_AkordBank_TK', sKey_GroupPostfix_New, 'step_5')
+var sKey_GroupPostfix = '_default_TK'
+var sKey_GroupPostfix_New = 'AkordBank_TK'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 </script>
     </scriptTask>
     <userTask id="usertask5" name="члены ТК">
@@ -185,8 +186,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="s_Tarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="string" writable="false"></activiti:formProperty>
