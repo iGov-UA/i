@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.Map;
 import org.igov.service.business.subject.SubjectGroupTreeService_new;
 
 @Controller
@@ -106,4 +107,14 @@ public class SubjectGroupController {
         LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
         return aResSubjectRightBPVO;
     }
+    
+    @RequestMapping(value = "/getBPs_ForExport", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Map<String, String>> getBPs_ForExport(
+            @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
+            throws Exception {
+        
+        return subjectRightBPService.getBPs_ForExport(sLogin);
+    }
+    
 }
