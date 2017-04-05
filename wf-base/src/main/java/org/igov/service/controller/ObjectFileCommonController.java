@@ -301,7 +301,7 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "##### Пример:\n "
-            + "https://test.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
+            + "https://alpha.test.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
     @RequestMapping(value = "/download_file_from_db", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
@@ -323,7 +323,7 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "##### Пример:\n "
-            + "https://test.igov.org.ua/wf/service/object/file/download_file_from_storage_static?sId=111111&sFileName=111.txt&sType=text\n")
+            + "https://alpha.test.igov.org.ua/wf/service/object/file/download_file_from_storage_static?sId=111111&sFileName=111.txt&sType=text\n")
     @RequestMapping(value = "/download_file_from_storage_static", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
