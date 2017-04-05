@@ -101,17 +101,9 @@ public class SubjectGroupController {
     public List<SubjectRightBPVO> getSubjectRightBPs(
             @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
             throws Exception {
-
         LOG.info("sLogin: ", sLogin);
-
         List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getSubjectRightBPs(sLogin);
-
         LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
-
-        if (aResSubjectRightBPVO != null) {
-            return aResSubjectRightBPVO;
-        }
-
         return new ArrayList<>();
     }
 }
