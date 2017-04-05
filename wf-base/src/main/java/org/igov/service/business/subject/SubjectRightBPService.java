@@ -30,7 +30,7 @@ public class SubjectRightBPService {
 	@Autowired
 	private SubjectRightBPDao subjectRightBPDao;
 
-	public List<SubjectRightBPVO> getSubjectRightBPs(String sLogin) {
+	public List<SubjectRightBPVO> getBPs_ForReferent(String sLogin) {
 
 		List<SubjectRightBPVO> aResSubjectRightBPVO = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class SubjectRightBPService {
 		}
 		LOG.info("In the method getSubjectRightBPs sLogin={}, asID_Group={}", sLogin, asID_Group);
 
-		List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group", asID_Group);
+		List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group_Referent", asID_Group);
 		LOG.info("In the method getSubjectRightBPs aSubjectRightBP {}", aSubjectRightBP);
 		
 				
@@ -59,10 +59,6 @@ public class SubjectRightBPService {
                                 if(!aProcessDefinition.isEmpty()){
                                     String sName_BP = aProcessDefinition.get(0).getName();
                                     SubjectRightBPVO oSubjectRightBP_VO = new SubjectRightBPVO();
-
-                                    /*oSubjectRightBP_VO.setsID_BP(oSubjectRightBP.getsID_BP());
-                                    oSubjectRightBP_VO.setsID_Place_UA(oSubjectRightBP.getsID_Place_UA());
-                                    oSubjectRightBP_VO.setsID_Group(oSubjectRightBP.getsID_Group());*/
                                     oSubjectRightBP_VO.setoSubjectRightBP(oSubjectRightBP);
                                     oSubjectRightBP_VO.setsName_BP(sName_BP);
 

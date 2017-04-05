@@ -301,7 +301,7 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "##### Пример:\n "
-            + "https://test.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
+            + "https://alpha.test.igov.org.ua/wf/service/object/file/download_file_from_db?taskId=82596&attachmentId=6726532&nFile=7\n")
     @RequestMapping(value = "/download_file_from_db", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
@@ -323,7 +323,7 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "Загрузки прикрепленного к заявке файла из постоянной базы", notes = "##### Пример:\n "
-            + "https://test.igov.org.ua/wf/service/object/file/download_file_from_storage_static?sId=111111&sFileName=111.txt&sType=text\n")
+            + "https://alpha.test.igov.org.ua/wf/service/object/file/download_file_from_storage_static?sId=111111&sFileName=111.txt&sType=text\n")
     @RequestMapping(value = "/download_file_from_storage_static", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
@@ -957,7 +957,9 @@ public class ObjectFileCommonController {
             @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "контент файла в виде строки", required = true) @RequestBody String sData) throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException {
-
+        
+        LOG.info("setProcessAttachText is started...");
+        
         LOG.info("setAttachment nID_Process: " + nID_Process);
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
@@ -972,14 +974,18 @@ public class ObjectFileCommonController {
         }
 
         if (sData != null && "Mongo".equals(sID_StorageType)) {
-            return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
+            String sResultAttach = attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
                     sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true);
+            LOG.info("setProcessAttachText is ended...");
+            return sResultAttach;
+            
         } else if (sData != null && "Redis".equals(sID_StorageType)) {
             throw new RuntimeException("There is no suitable metod for string data for redis");
         } else {
             return "data is null";
         }
-
+        
+        
         //AttachmentCover oAttachmentCover = new AttachmentCover();
         //return oAttachmentCover.apply(attachment);
     }
