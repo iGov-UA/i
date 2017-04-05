@@ -192,6 +192,8 @@
     function fillHasDocuments(user) {
       $rootScope.sUserOnTab = user;
       tasks.isUserHasDocuments(user).then(function (res) {
+        $rootScope.usersDocumentsBPs = [];
+        $rootScope.userTasksBPs = [];
         if(Array.isArray(res) && res.length > 0) {
           $rootScope.usersDocumentsBPs = res.filter(function (item) {
             return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
