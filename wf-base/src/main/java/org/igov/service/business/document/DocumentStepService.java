@@ -352,7 +352,7 @@ public class DocumentStepService {
             }
             
             oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
-            LOG.info("aDocumentStepSubjectRight after deleting is {}", oDocumentStep.aDocumentStepSubjectRight);
+            LOG.info("aDocumentStepSubjectRight after deleting is {}", oDocumentStep.getRights());
             /*if(!aDocumentStepSubjectRight_New.isEmpty()){
                 oDocumentStep.setRights(aDocumentStepSubjectRight_New);
                 oDocumentStepDao.saveOrUpdate(oDocumentStep);
