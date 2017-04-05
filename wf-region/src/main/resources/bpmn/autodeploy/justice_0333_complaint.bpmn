@@ -142,6 +142,8 @@
         <activiti:formProperty id="nDoc3" name="Засвідчені в установленому законодавством порядку копії інших документів, що підтверджують факт порушення прав скаржника; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('minust/justice_0333_complaint_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowElements2" type="markers" default="${markerService.loadFromFile('minust/justice_0333_complaint_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>` 
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/minust/justice_0333_complaint_print.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення про нову скаргу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -291,6 +293,7 @@
         <activiti:formProperty id="nDoc1" name="Копія документа, що підтверджує повноваження представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDoc2" name="Копія рішення або повідомлення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDoc3" name="Інші документи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Скарга підписана ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про прийняття скарги" type="enum" required="true">
           <activiti:value id="accept" name="Зауваження відсутні. Скарга взята в роботу"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в прийнятті скарги. Закрити заявку"></activiti:value>
@@ -506,6 +509,7 @@
         <activiti:formProperty id="nDoc1" name="Копія документа, що підтверджує повноваження представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDoc2" name="Копія рішення або повідомлення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDoc3" name="Інші документи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Скарга підписана ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
