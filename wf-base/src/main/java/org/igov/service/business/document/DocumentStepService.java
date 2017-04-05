@@ -335,20 +335,20 @@ public class DocumentStepService {
             
             for (DocumentStepSubjectRight o : aDocumentStepSubjectRight) {
                 if (!sKey_Group.equals(o.getsKey_GroupPostfix())) {
-                    //oDocumentStepSubjectRight = o;
+                    oDocumentStepSubjectRight = o;
                     aDocumentStepSubjectRight_New.add(o);
-                    //break;
+                    break;
                 }
             }
             
-            /*if (oDocumentStepSubjectRight != null) {
+            if (oDocumentStepSubjectRight != null) {
                 LOG.info("sKey_Group: {} oDocumentStepSubjectRight.getsKey_GroupPostfix(): {}", sKey_Group,
                         oDocumentStepSubjectRight.getsKey_GroupPostfix());
 
-                //oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
+                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
                 
                 bRemoved = true;
-            }*/
+            }
             
             if(!aDocumentStepSubjectRight_New.isEmpty()){
                 oDocumentStep.setRights(aDocumentStepSubjectRight_New);
