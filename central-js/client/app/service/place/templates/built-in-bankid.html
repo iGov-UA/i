@@ -133,10 +133,9 @@
 
               <div id="label-{{property.id}}" class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table'">
-                <span ng-if="property.sFieldLabel">{{property.sFieldLabel}}</span>
-
-                <label class="red-star"
-                       ng-if="isFieldRequired(property)==true">* </label>
+                <span ng-if="property.sFieldLabel">
+                    {{property.sFieldLabel}}<label class="red-star" ng-if="isFieldRequired(property)==true">* </label>
+                </span>
 
                 <div class="s-field-notes"
                      ng-if="property.sFieldNotes!=null">
@@ -155,7 +154,7 @@
 
 
               <div id="field-{{property.id}}" class="col-md-3"
-                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table'}"
+                   ng-class="{'has-error': form.$submitted && form[property.id].$invalid, 'col-md-12': property.type === 'table' || (property.type === 'label' && isSetClasses(property)), 'col-md-7': property.type === 'fileHTML'}"
                    ng-if="showFormField(property)"
                    ng-switch
                    on="property.type">
@@ -168,9 +167,8 @@
                 <label ng-switch-when="label"
                        name="{{property.id}}"
                        ng-required="isFieldRequired(property)"
-                        class="form-control_"
-                        ng-bind-html="htmldecode(data.formData.params[property.id].value)">
-                         <!--{{data.formData.params[property.id].value}}-->
+                       class="form-control_ {{labelStyle(property)}}"
+                       ng-bind-html="htmldecode(data.formData.params[property.id].value)">
                  </label>
 
                 <dropdown-country ng-switch-when="string"
@@ -687,7 +685,7 @@
                         ng-class="getBpAndFieldID(property)"
                         class="form-control"></select>
 
-                  <div class="input-group"
+                <div class="input-group"
                        ng-switch-when="checkbox">
                   <div ng-class="{'checkbox-indeterminate': data.formData.params[property.id].value === null}">
                     <input type="checkbox"
@@ -698,11 +696,23 @@
                            ng-true-value="'{{data.checkbox[property.id].trueValue}}'"
                            ng-false-value="'{{data.checkbox[property.id].falseValue}}'"
                            checkbox-indeterminate="data.formData.params[property.id].value === null"
-                           ng-required="isFieldRequired(property) && data.formData.params[property.id].value === null"
-                    >
+                           ng-required="isFieldRequired(property) && data.formData.params[property.id].value === null">
                     <label for="{{property.id}}"></label>
                   </div>
+                </div>
+
+                <div class="input-group" ng-switch-when="fileHTML" style="width: 100%;display: block">
+                  <div class="fileHTML">
+                    <text-angular ta-toolbar="[ ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'fontColor'],
+                                                ['bold', 'italics', 'underline', 'ul', 'ol', 'insertLink'],
+                                                ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent']]"
+                                  ng-model="data.formData.params[property.id].value"
+                                  name="{{property.id}}"
+                                  ng-required="isFieldRequired(property)"
+                                  ng-class="getBpAndFieldID(property)">
+                    </text-angular>
                   </div>
+                </div>
 
                 <p class="input-group"
                    ng-switch-when="file">

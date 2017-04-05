@@ -91,5 +91,34 @@
 * **sID_UA_SubjectOrganJoinTax** - Код таможни (заполнится автоматически после выбора в селекте sSubjectOrganJoinTax)
 * **sID_Place_UA** - string - В переменную передается КОАТУУ выбранного населенного пункта (поле Place)
 
+## Переменные-запросы
+**sID_SubjectOrgan_OKPO_** - string - Делает запрос к базе ранее полученных данных из ЕДРПОУ, по соответствующему коду предприятия, и возвращает результат в несколько зарезервированных переменных (если по запросу найдены данные). Возможно неограниченное количество полей запроса на форме - **sID_SubjectOrgan_OKPO_** используется как префикс, главное обеспечить уникальность **id** каждой следующей переменной-запроса и каждого возвращаемой переменной. 
+* **sFullName_SubjectOrgan_** - textArea - Полное наименование
+* **sShortName_SubjectOrgan_** - string - Краткое наименование
+* **sLocation_SubjectOrgan_** - textArea - Адрес регистрации
+* **sCEOName_SubjectOrgan_** - string - ФИО руководителя
+* **sID_SubjectActionKVED_SubjectOrgan_** - string - Основной КВЕД - доступен для редактирования как автокомплит
+* **sNote_ID_SubjectActionKVED_SubjectOrgan_** - label - Полное наименование выбранного КВЕДа - автоматически обновится при изменении **sID_SubjectActionKVED_SubjectOrgan_**
+* **sDateActual_SubjectOrgan_** - label - Дата получения данных из ЄДРПОУ
+``` xml
+        <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 01&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Найменування скорочене" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" name="" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
+```
+Приведенные переменные не обязательны для вывода, использование и порядок вывода - произвольные. Однако желательно придерживаться общего дизайна. Для единообразного использования данного виртуального "блока данных" установлен дизайн, который обязательно начинается с разделительной линии содержащей общее наименование идущих за ним данных.
+Полный блок выглядит на форме следующим образом.
 
+**Незаполненный**
+![Незаполенный](https://goo.gl/dCRcRQ)
+
+**Заполненный**
+![Заполненный](https://goo.gl/UtPH43)
+
+***
 

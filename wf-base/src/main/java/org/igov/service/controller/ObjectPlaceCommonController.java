@@ -19,23 +19,42 @@ import io.swagger.annotations.ApiParam;
 @Api(tags = { "ObjectPlaceController -- Обьекты мест (населенных пунктов и регионов) и стран" })
 @RequestMapping(value = "/object/place/sub")
 public class ObjectPlaceCommonController {
-    private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonController.class);
 
-    private static final String JSON_TYPE = "Accept=application/json";
-    
-    @Autowired
-    ObjectPlaceCommonService objectPlaceCommonService;
+	private static final String JSON_TYPE = "Accept=application/json";
+	public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
 
-    @ApiOperation(value = "Получение списка улиц", notes = "Полученаем список улиц. " + "Пример:\n")
-    @RequestMapping(value = "/PB/getSubPlaces_", method = RequestMethod.GET, headers = { JSON_TYPE })
-    public @ResponseBody String getSubPlaces_(
-	    @ApiParam(value = "sID_SubPlace_PB - код узла адреса)", required = true) @RequestParam(value = "sID_SubPlace_PB", required = true) String sID_SubPlace_PB,
-	    @ApiParam(value = "sFind - строка поиска (ищет по вхождению текста в название улицы)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
-	    throws CommonServiceException {
+	@Autowired
+	ObjectPlaceCommonService objectPlaceCommonService;
 
-	LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+	@ApiOperation(value = "Получение списка улиц", notes = "Получем список улиц. Пример:\n"
+		            + "https://alpha.test.igov.org.ua/wf/service/object/place/sub/PB/getSubPlaces_/?sID_SubPlace_PB=UA40773&sFind=южн\n\n"
+		            + "Ответ:\n\n"
+		            + "\n```json\n"
+		            + "{"
+		            + "  \"listAddress\":"
+		            + "   [{"
+		            + "      \"code\": \"23TFD62IDSDX00\","
+		            + "	     \"desc\": \"1-я Южная\","
+		            + "	     \"type\": \"улица\""
+		            + "    }, {"
+		            + "	     \"code\": \"23T149MQULAP00\","
+		            + "	     \"desc\": \"Южная Сторона\","
+		            + "	     \"type\": \"улица\""
+		            + "    }"
+		            + "   ]"
+		            + "}"	            
+		            + "\n```\n")
+	@RequestMapping(value = "/PB/getSubPlaces_", method = RequestMethod.GET, headers = {
+			JSON_TYPE }, produces = APPLICATION_JSON_CHARSET_UTF_8)
+	public @ResponseBody String getSubPlaces_(
+			@ApiParam(value = "sID_SubPlace_PB - код узла адреса)", required = true) @RequestParam(value = "sID_SubPlace_PB", required = true) String sID_SubPlace_PB,
+			@ApiParam(value = "sFind - строка поиска (ищет по вхождению текста в название улицы)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
+			throws CommonServiceException {
 
-	return objectPlaceCommonService.getSubPlaces_(sID_SubPlace_PB, sFind);
-    }
+		LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+
+		return objectPlaceCommonService.getSubPlaces_(sID_SubPlace_PB, sFind);
+	}
 
 }

@@ -115,7 +115,7 @@
   }
 }
 ```
-
+* ![9_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_3.JPG)
 ***
 
 ### WritableFieldsOnCondition
@@ -136,7 +136,7 @@
   }
 }
 ```
-     
+* ![9_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_4.JPG)     
 
 ***
 ### SplitTextHalf_1 - разделение значения по  знаку разделителя
@@ -187,7 +187,7 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
-
+* ![9_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_7.JPG) 
 ***
 
 ### расширений
@@ -206,7 +206,7 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
-
+* ![9_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_8.JPG)
 ***
 
 ### NumberBetween - принадлежность значения  диапазону значений  (целочисленные)
@@ -272,6 +272,7 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
+* ![9_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_6.JPG)
 ### Алгоритм Луна
 Применяется для поля, в которое пользователь должен будет внести вручную номер заявки  
 [Issues 1513](https://github.com/e-government-ua/i/issues/1513)  
@@ -325,6 +326,8 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
    }
 }
 ```
+* ![9_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_5.JPG)
+
 Маркер анализирует правила в свойствах aElement_ID и aSelectors и добавляет стили перечисленный из свойства oCommonStyle в блок ```<head>``` в виде отдельного стиля. Причем стилями можно влиять не только на элементы формы но на всю страницу.
 
 Свойства маркера aElement_ID и aSelectors работают параллельно и **может быть задан только один из них**. 
@@ -349,3 +352,4 @@ default="${markerService.loadFromFile('testmarkers.json')}" ></activiti:formProp
   }
 }
 ```
+* ![9_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/9_9.JPG)

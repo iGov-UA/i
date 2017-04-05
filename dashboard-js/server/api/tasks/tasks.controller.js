@@ -133,7 +133,7 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'documents') {
       query.sFilterStatus = 'Opened';
       query.sLogin = user.id;
-      query.size = 100;
+      query.nSize = 15;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
       query.sLogin = user.id;
@@ -300,12 +300,25 @@ exports.getAttachmentContent = function (req, res) {
 };
 
 exports.getAttachmentFile = function (req, res) {
+  var qs = {};
+
+  if(req.params.typeOrAttachID === 'Mongo') {
+    qs = {
+      'sKey': req.params.keyOrProcessID,
+      'sID_StorageType': req.params.typeOrAttachID
+    };
+    if(req.params.sFileName){
+      qs['sFileName'] = req.params.sFileName;
+    }
+  } else {
+    qs = {
+      'nID_Process': req.params.keyOrProcessID,
+      'sID_Field': req.params.typeOrAttachID
+    }
+  }
   var options = {
     path: 'object/file/getProcessAttach',
-    query: {
-      'nID_Process': req.params.processID,
-      'sID_Field': req.params.attachID
-    }
+    query: qs
   };
   activiti.filedownload(req, res, options);
 };
