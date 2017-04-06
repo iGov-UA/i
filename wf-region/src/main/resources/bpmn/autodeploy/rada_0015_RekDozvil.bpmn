@@ -57,6 +57,7 @@
         <activiti:formProperty id="markers2" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація по Line" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_LinesST.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersbox_1" name="Стилі щодо checkbox" type="markers" default="${markerService.loadFromFile('skv/style_checkbox.json')}"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="[Етап I] Перевірка вхідних даних (1-й крок)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
@@ -107,6 +108,7 @@
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/UrFiz_OpenData_DovFile.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -139,7 +141,7 @@
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
           <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markersLine_21" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNomerRegistration" name="Номер реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_1" name="Рішення виконавця" type="enum" writable="false">
@@ -164,6 +166,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask3" name="[Етап II] Прийняття рішення начальником (2-й крок)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}_Director">
@@ -196,6 +199,7 @@
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
           <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNomerRegistration" name="Номер реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_1" name="Рішення виконавця" type="enum" writable="false">
@@ -205,12 +209,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
           <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_23" name="Службова інформація (інспектор)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;decide_inspector&quot;],&quot;sValue&quot;:&quot;Службова інформація (інспектор)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_inspector" name="Рішення інспектора" type="enum" writable="false">
           <activiti:value id="return_director" name="Заяву повернути на додатковий розгляд начальнику"></activiti:value>
           <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
@@ -231,6 +237,7 @@
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask4" name="[Етап II.2] Додаткова перевірка інспектором (2.2-й крок)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}_inspector">
@@ -263,6 +270,7 @@
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
           <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNomerRegistration" name="Номер реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_1" name="Рішення виконавця" type="enum" writable="false">
@@ -272,12 +280,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
           <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_24" name="Службова інформація (керівник)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;decide_director&quot;],&quot;sValue&quot;:&quot;Службова інформація (керівник)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_director" name="Рішення керівника" type="enum" writable="false">
           <activiti:value id="accept_inspector" name="Заяву додатково перевірити інспектором"></activiti:value>
           <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
@@ -298,6 +308,7 @@
         <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask6" name="[Етап III] Підготовка мотивованої негативної відповіді (3-й крок)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
@@ -330,6 +341,7 @@
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
           <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNomerRegistration" name="Номер реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_1" name="Рішення виконавця" type="enum" writable="false">
@@ -339,18 +351,21 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
           <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_23" name="Службова інформація (інспектор)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;decide_inspector&quot;],&quot;sValue&quot;:&quot;Службова інформація (інспектор)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_inspector" name="Рішення інспектора" type="enum" writable="false">
           <activiti:value id="return_director" name="Заяву повернути на додатковий розгляд начальнику"></activiti:value>
           <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_inspector_office" name="Коментар інспектора до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_24" name="Службова інформація (керівник)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;decide_director&quot;],&quot;sValue&quot;:&quot;Службова інформація (керівник)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_director" name="Рішення керівника" type="enum" writable="false">
           <activiti:value id="accept_inspector" name="Заяву додатково перевірити інспектором"></activiti:value>
           <activiti:value id="accept_director" name="Заява приймається, підготувати відповідь"></activiti:value>
@@ -370,6 +385,7 @@
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask5" name="[Етап III] Підготовка мотивованої позитивної відповіді (3-й крок)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
@@ -402,6 +418,7 @@
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
           <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNomerRegistration" name="Номер реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_1" name="Рішення виконавця" type="enum" writable="false">
@@ -411,18 +428,21 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
           <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_23" name="Службова інформація (інспектор)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;decide_inspector&quot;],&quot;sValue&quot;:&quot;Службова інформація (інспектор)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_inspector" name="Рішення інспектора" type="enum" writable="false">
           <activiti:value id="return_director" name="Заяву повернути на додатковий розгляд начальнику"></activiti:value>
           <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_inspector_office" name="Коментар інспектора до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_24" name="Службова інформація (керівник)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;decide_director&quot;],&quot;sValue&quot;:&quot;Службова інформація (керівник)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_director" name="Рішення керівника" type="enum" writable="false">
           <activiti:value id="accept_inspector" name="Заяву додатково перевірити інспектором"></activiti:value>
           <activiti:value id="accept_director" name="Заява приймається, підготувати відповідь"></activiti:value>
@@ -442,6 +462,7 @@
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask7" name="[Етап IV] Візит громадянина (4-й крок)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
@@ -474,6 +495,7 @@
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
           <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNomerRegistration" name="Номер реєстрації заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_1" name="Рішення виконавця" type="enum" writable="false">
@@ -483,18 +505,21 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
           <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_23" name="Службова інформація (інспектор)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;decide_inspector&quot;],&quot;sValue&quot;:&quot;Службова інформація (інспектор)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_inspector" name="Рішення інспектора" type="enum" writable="false">
           <activiti:value id="return_director" name="Заяву повернути на додатковий розгляд начальнику"></activiti:value>
           <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_inspector_office" name="Коментар інспектора до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_24" name="Службова інформація (керівник)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;decide_director&quot;],&quot;sValue&quot;:&quot;Службова інформація (керівник)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_director" name="Рішення керівника" type="enum" writable="false">
           <activiti:value id="accept_inspector" name="Заяву додатково перевірити інспектором"></activiti:value>
           <activiti:value id="accept_director" name="Заява приймається, підготувати відповідь"></activiti:value>
@@ -519,6 +544,7 @@
         <activiti:formProperty id="nFile_Eskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask1" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
