@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dms_0028_ID14_DMS" name="Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки" isExecutable="true">
+  <process id="dms_0028_ID14_DMS" name="Паспорт громадянина України особам, які досягли 14-річного віку у формі ID-картки" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Дані особи, яка буде отримувати паспорт"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон;заповніть перед обранням підрозділу ДМС" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Початок-блок для кого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA1&quot;],&quot;sValue&quot;:&quot;Дані особи, яка буде отримувати паспорт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Date_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lable3" name="Зверніть увагу" type="label" default="&lt;b&gt;Дана послуга доступна лише за місцем реєстрації, якщо Ви не можете обрати свій район, то у ньому послуга на iGov відсутня&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ ДМС району (міста), до якого належить місце реєстрації отримувача паспорта" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay" name="Номер черги за довідником ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="lablepos" name="Зверніть увагу" type="label" default="&lt;b&gt;необхідним документом для отримання паспорта громадянина України у формі ID-картки є довідка про реєстрацію місця проживання/перебування особи. Її можна отримати особисто у органах реєстрації місця проживання або &lt;a href=&quot;https://igov.org.ua/service/24/general&quot; target=&quot;_blank&quot;&gt;оформити цю довідку через iGov&lt;/a&gt; (працює не для всіх регіонів). Строк надання послуги через iGov - 10 календарних днів.&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Кынець-блок для кого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;lable3&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
         
-        <activiti:formProperty id="sID_Type_visitDay" name="sID_Type_visitDay" type="invisible" default="DMS"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTicketNumber" name="Номер талону" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTicketCode" name="Код  талону" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="lable3" name=" ; ;labelType=info" type="label" default="&lt;b&gt;Дана послуга доступна лише за місцем реєстрації. Якщо Ви зробите вибір району не за місцем реєстрації, у наданні послуги Вам буде відмовлено в момент відвідування.&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть зручний день та час з доступних місць у черзі" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lablepos" name=" ; ;labelType=info" type="label" default="Необхідним документом для отримання паспорта громадянина України у формі ID-картки є довідка про реєстрацію місця проживання/перебування особи. Її можна отримати особисто у органах реєстрації місця проживання або &lt;a href=&quot;https://igov.org.ua/service/24/general&quot; target=&quot;_blank&quot;&gt;оформити цю довідку через iGov&lt;/a&gt; (працює не для всіх регіонів). Строк надання послуги через iGov - 10 календарних днів."></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay" name="Номер черги за довідником ДМС; ;bVisible=false" type="string"></activiti:formProperty>
+          
+        <activiti:formProperty id="sID_Type_visitDay" name="sID_Type_visitDay; ;bVisible=false" type="string" default="DMS"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ДМС; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="sNotification_day; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTicketNumber" name="Номер талону; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTicketCode" name="Код  талону; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -87,7 +88,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Оформлення паспорта громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
+          <activiti:string><![CDATA[Паспорт громадянина України особам, які досягли 14-річного віку у формі ID-картки]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -147,8 +148,8 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="lastName_UA1" name="Прізвище отримувача паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я отримувача паспорта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Date_of_birth" name="Дата народження отримувача паспорта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації або проживання" type="string" writable="false"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
