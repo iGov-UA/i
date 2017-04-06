@@ -550,7 +550,7 @@ module.exports.signFormMultipleCallback = function (req, res) {
                 row.aField.forEach(function (field) {
                   if(field.fileName)
                     var sLatin = cyrillicToLatin(field.fileName);
-                  if(field.type === 'file' && latin && sLatin.split('.')[0] in uploadedFiles) {
+                  if(field.type === 'file' && sLatin && sLatin.split('.')[0] in uploadedFiles) {
                     field.value = uploadedFiles[sLatin.split('.')[0]];
                   }
                 })
