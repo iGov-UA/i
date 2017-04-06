@@ -51,14 +51,9 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
             List<DocumentStep> aResDocumentStep = oDocumentStepService.checkDocumentInit(execution, sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value);
             LOG.info("aResDocumentStep in DocumentInit_iDoc is {}", aResDocumentStep);
             oDocumentStepService.syncDocumentGroups(delegateTask, aResDocumentStep);
-            
         } catch (Exception oException) {
             LOG.error("DocumentInit_iDoc: ", oException);
-            try {
-                throw oException;
-            } catch (Exception ex) {
-                java.util.logging.Logger.getLogger(DocumentInit_iDoc.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            java.util.logging.Logger.getLogger(DocumentInit_iDoc.class.getName()).log(Level.SEVERE, null, oException);
         }
     }
 
