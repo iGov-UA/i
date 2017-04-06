@@ -1,7 +1,9 @@
 package org.igov.service.business.subject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RepositoryService;
@@ -29,7 +31,35 @@ public class SubjectRightBPService {
 
 	@Autowired
 	private SubjectRightBPDao subjectRightBPDao;
+        
+        public List<Map<String, String>> getBPs_ForExport(String sLogin) {
+            
+            List<Map<String, String>> aResultMap = new ArrayList<>();
+            
+            List<Group> aGroup = identityService.createGroupQuery().groupMember(sLogin).list();
+            
+            List<String> asID_Group = new ArrayList<>();
 
+            if (aGroup != null) {
+		aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
+            }
+            
+            List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group_Referent", asID_Group);
+            
+            if(aSubjectRightBP != null){
+                for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) 
+                {
+                    Map<String, String> mSubjectRightBP = new HashMap<>();
+                    mSubjectRightBP.put("sName_BP", oSubjectRightBP.getsID_BP());
+                    mSubjectRightBP.put("sNote", oSubjectRightBP.getsNote());
+                    aResultMap.add(mSubjectRightBP);
+		}
+            }
+            
+            return aResultMap;
+        }
+        
+        
 	public List<SubjectRightBPVO> getBPs_ForReferent(String sLogin) {
 
 		List<SubjectRightBPVO> aResSubjectRightBPVO = new ArrayList<>();

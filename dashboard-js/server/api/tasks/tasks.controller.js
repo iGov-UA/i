@@ -100,7 +100,6 @@ exports.index = function (req, res) {
     query.soaFilterField = req.query.soaFilterField;
   }
   query.nSize = 50;
-  query.nStart = (req.query.page || 0) * query.nSize;
 
   if (req.query.filterType === 'all') {
     async.waterfall([
@@ -144,6 +143,8 @@ exports.index = function (req, res) {
         query.sDate = req.query.sDate;
       }
     }
+
+    query.nStart = (req.query.page || 0) * query.nSize;
 
     var options = {
       path: path,

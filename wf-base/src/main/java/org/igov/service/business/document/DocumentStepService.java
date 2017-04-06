@@ -330,20 +330,34 @@ public class DocumentStepService {
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
-            DocumentStepSubjectRight oDocumentStepSubjectRight = null;
-            for (DocumentStepSubjectRight o : aDocumentStepSubjectRight) {
-                if (sKey_Group.equals(o.getsKey_GroupPostfix())) {
-                    oDocumentStepSubjectRight = o;
+            //DocumentStepSubjectRight oDocumentStepSubjectRight = null;
+            //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = new ArrayList<>();
+            
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                    //oDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                    oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
+                    bRemoved = true;
+                    //aDocumentStepSubjectRight_New.add(o);
                     break;
-                }
+                }/*else{
+                    oDocumentStepSubjectRight = o;
+                }*/
             }
-            if (oDocumentStepSubjectRight != null) {
+            
+            /*if (oDocumentStepSubjectRight != null) {
                 LOG.info("sKey_Group: {} oDocumentStepSubjectRight.getsKey_GroupPostfix(): {}", sKey_Group,
                         oDocumentStepSubjectRight.getsKey_GroupPostfix());
 
-                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
+                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight.getId());
+                
                 bRemoved = true;
-            }
+            }*/
+            
+            /*if(!aDocumentStepSubjectRight_New.isEmpty()){
+                oDocumentStep.setRights(aDocumentStepSubjectRight_New);
+                oDocumentStepDao.saveOrUpdate(oDocumentStep);
+            }*/
 
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
