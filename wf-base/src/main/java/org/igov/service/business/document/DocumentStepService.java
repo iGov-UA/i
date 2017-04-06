@@ -330,13 +330,13 @@ public class DocumentStepService {
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
-            DocumentStepSubjectRight oDocumentStepSubjectRight = null;
+            //DocumentStepSubjectRight oDocumentStepSubjectRight = null;
             //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = new ArrayList<>();
             
-            for (DocumentStepSubjectRight oDocumentStepSubjectRight_ : aDocumentStepSubjectRight) {
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                 if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
                     //oDocumentStepSubjectRight = oDocumentStepSubjectRight;
-                    oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight_);
+                    oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
                     bRemoved = true;
                     //aDocumentStepSubjectRight_New.add(o);
                     break;
