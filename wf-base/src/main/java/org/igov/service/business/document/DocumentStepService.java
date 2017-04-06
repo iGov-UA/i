@@ -333,9 +333,11 @@ public class DocumentStepService {
             DocumentStepSubjectRight oDocumentStepSubjectRight = null;
             //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = new ArrayList<>();
             
-            for (DocumentStepSubjectRight o : aDocumentStepSubjectRight) {
-                if (sKey_Group.equals(o.getsKey_GroupPostfix())) {
-                    oDocumentStepSubjectRight = o;
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight_ : aDocumentStepSubjectRight) {
+                if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                    //oDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                    oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight_);
+                    bRemoved = true;
                     //aDocumentStepSubjectRight_New.add(o);
                     break;
                 }/*else{
@@ -343,14 +345,14 @@ public class DocumentStepService {
                 }*/
             }
             
-            if (oDocumentStepSubjectRight != null) {
+            /*if (oDocumentStepSubjectRight != null) {
                 LOG.info("sKey_Group: {} oDocumentStepSubjectRight.getsKey_GroupPostfix(): {}", sKey_Group,
                         oDocumentStepSubjectRight.getsKey_GroupPostfix());
 
                 oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight.getId());
                 
                 bRemoved = true;
-            }
+            }*/
             
             /*if(!aDocumentStepSubjectRight_New.isEmpty()){
                 oDocumentStep.setRights(aDocumentStepSubjectRight_New);
