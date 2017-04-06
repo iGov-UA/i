@@ -852,7 +852,7 @@ digit3 - переменная, куда присвоится результат 
 [вернуться в начало](general.md)
 
 ###### printformmd
-### printFormmd
+### PrintForm
 -Принтформа прописывается на Юзертаске:
 
         activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_declaration_2.html" type="file"></activiti:formProperty
@@ -944,7 +944,7 @@ digit3 - переменная, куда присвоится результат 
 
 
 ###### flowlink
-### flowlink
+### FlowLink
 если нужно завести на один общий поток несколько услуг.  
 Для привязки одной очереди к нескольким процессам, необходимо в этом файле перечислить **ВСЕ** процессы (nID_Service) которые нужно связать в рамках одного потока очереди  
 **nID**  
