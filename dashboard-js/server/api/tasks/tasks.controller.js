@@ -480,17 +480,26 @@ exports.upload_content_as_attachment = function (req, res) {
           req.body.url = 'setProcessAttach';
         }
         pdfConversion(options, function (err, pdf) {
-          callback(err, {content: pdf.stream, contentType: 'application/json'});
+          var convertedFile;
+          pdf.stream.on("data", function (file) {
+            convertedFile = file;
+          });
+          pdf.stream.on("end", function () {
+            callback(err, {content: convertedFile, contentType: 'application/json'});
+          });
+          //callback(err, {content: pdf.stream, contentType: 'application/json'});
         });
       },
       function (data, callback) {
         if (req.body.url === 'setProcessAttach') {
           activiti.uploadStream({
             path: 'object/file/' + req.body.url,
-            nID_Process: req.params.taskId,
+            params: {
+              nID_Process: req.params.taskId,
+              sFileNameAndExt: req.body.sFileNameAndExt,
+              sID_Field: req.body.sID_Field
+            },
             stream: data.content,
-            sFileNameAndExt: req.body.sFileNameAndExt,
-            sID_Field: req.body.sID_Field,
             headers: {
               'Content-Type': data.contentType + ';charset=utf-8'
             }
@@ -502,11 +511,13 @@ exports.upload_content_as_attachment = function (req, res) {
           var user = JSON.parse(req.cookies.user);
           activiti.uploadStream({
             path: 'object/file/' + req.body.url,
-            nID_Process: req.params.taskId,
+            params: {
+              nID_Process: req.params.taskId,
+              sFileNameAndExt: req.body.sFileNameAndExt,
+              sKey_Step: req.body.sKey_Step,
+              sLogin: user.id
+            },
             stream: data.content,
-            sFileNameAndExt: req.body.sFileNameAndExt,
-            sKey_Step: req.body.sKey_Step,
-            sLogin: user.id,
             headers: {
               'Content-Type': data.contentType + ';charset=utf-8'
             }
