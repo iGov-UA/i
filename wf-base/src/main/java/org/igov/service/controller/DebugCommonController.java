@@ -1,5 +1,7 @@
 package org.igov.service.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.base.Charsets;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -10,7 +12,9 @@ import org.activiti.engine.task.Attachment;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.mail.Mail;
+import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.conf.AttachmetService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -22,17 +26,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.igov.io.GeneralConfig;
 import org.igov.model.flow.FlowServiceDataDao;
@@ -43,6 +46,7 @@ import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.Day;
 import org.igov.service.business.flow.slot.FlowSlotVO;
 import org.joda.time.DateTime;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author BW
@@ -81,6 +85,9 @@ public class DebugCommonController {
     
     @Autowired
     private PaymentProcessorService paymentProcessorService;
+
+    @Autowired
+    private AttachmetService attachmetService;
 
     @ApiOperation(value = "/test/action/task/delete-processTest", notes = "#####  DebugCommonController: описания нет\n")
     @RequestMapping(value = "/test/action/task/delete-processTest", method = RequestMethod.GET)
@@ -329,6 +336,53 @@ public class DebugCommonController {
     	paymentProcessorService.loadPaymentInformation();
         return "successful";
 
+    }
+
+
+    @ApiOperation(value = "setProcessAttach", notes
+            = "##### загрузка файла-атачмента по новому концепту")
+    @RequestMapping(value = "/test/file/setProcessAttach", method = RequestMethod.POST, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    String setProcessAttach(
+            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
+            @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
+            @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
+            @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
+            @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
+            @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
+            @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
+            //@ApiParam(value = "файл для сохранения в БД", required = false) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "контент файла") @RequestBody(required = false) byte[] file
+    ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException {
+
+        LOG.info("setAttachment nID_Process: " + nID_Process);
+        LOG.info("setAttachment sContentType: " + sContentType);
+
+        if (aAttribute == null) {
+            aAttribute = new ArrayList<>();
+        }
+        /*
+        byte[] fileContent = null;
+
+        if(sData != null){
+            LOG.info("Getting file from request body");
+            fileContent = sData.getBytes(Charsets.UTF_8);
+        } else if (file != null){
+            fileContent = file.getBytes();
+        }
+
+*/
+        if (file != null && "Mongo".equals(sID_StorageType)) {
+            return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
+                    sContentType, aAttribute, file, true);
+        /*} else if (file != null && "Redis".equals(sID_StorageType)) {
+            byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
+            return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
+                    sContentType, aAttribute, aContent, true);*/
+        } else {
+            return "data is null";
+        }
     }
 
 }

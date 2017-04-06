@@ -912,7 +912,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
             @ApiParam(value = "файл для сохранения в БД", required = false) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
-            @ApiParam(value = "контент файла") @RequestBody(required = false) MultipartFile bodyFile
+            @ApiParam(value = "контент файла") @RequestBody(required = false) String sData
     ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException {
 
         LOG.info("setAttachment nID_Process: " + nID_Process);
@@ -927,15 +927,19 @@ public class ObjectFileCommonController {
         if (aAttribute == null) {
             aAttribute = new ArrayList<>();
         }
+        byte[] fileContent = null;
 
-        if(bodyFile != null){
+        if(sData != null){
             LOG.info("Getting file from request body");
-            file = bodyFile;
+            fileContent = sData.getBytes(Charsets.UTF_8);
+        } else if (file != null){
+            fileContent = file.getBytes();
         }
 
-        if (file != null && "Mongo".equals(sID_StorageType)) {
+
+        if (fileContent != null && "Mongo".equals(sID_StorageType)) {
             return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
-                    sContentType, aAttribute, file.getBytes(), true);
+                    sContentType, aAttribute, fileContent, true);
         } else if (file != null && "Redis".equals(sID_StorageType)) {
             byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
             return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
