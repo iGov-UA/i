@@ -25,9 +25,12 @@ module.exports = function(app) {
   app.set('view engine', 'html');
   app.use(compression());
   app.use(bodyParser.urlencoded({
+    limit: 900000000,
     extended: false
   }));
-  app.use(bodyParser.json());
+  app.use(bodyParser.json({
+    limit: 900000000
+  }));
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(session(config.server.session));
