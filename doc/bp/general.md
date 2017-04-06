@@ -2367,7 +2367,7 @@ _testSimpleSubProces - порожденный
 # Детальная информация
 ###### 1. Создание бизнес-процессов
 
-### _businessprocessdevelopment
+###### _businessprocessdevelopment
 разработка бизнес-процесса
 
  [вернуться...](#businessprocessdevelopment)
@@ -2381,7 +2381,7 @@ _testSimpleSubProces - порожденный
 * прорисовать всю схему процесса от начала до конца, наполнить блоки информацией.
 * создать принтформы
 
-### _testingonbeta
+###### _testingonbeta
 _тестирование и проливка на бету и боевой
 
  [вернуться...](#testingonbeta)
@@ -2399,42 +2399,42 @@ _тестирование и проливка на бету и боевой
 * после проливки на боевой проверить процесс хотя бы по одному сценарию, закрыть ишью.
 
 ###### 2. Основные элементы Activiti Designer
-### _endevent 
+###### _endevent 
 [вернуться...](#endevent)
   ![2_01](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_01.JPG)
 
-### _usertask 
+###### _usertask 
 [вернуться...](#usertask)
   ![2_02](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_02.JPG)
 
-### _servicetask 
+###### _servicetask 
 [вернуться...](#servicetask)
   ![2_03](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_03.JPG)
 
-### _mailtaskwithattachments 
+###### _mailtaskwithattachments 
 [вернуться...](#mailtaskwithattachments)
   ![2_04](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_04.JPG)
 
-### _parallelgateway 
+###### _parallelgateway 
 [вернуться...](#parallelgateway)
   ![2_05](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_05.JPG)
 
 
 ###### 3. Типы параметров
-### _string 
+###### _string 
 [вернуться...](#string)
 
 строка - для текстовых полей ввода (ограничение 256 символов) 
   ![2_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_3.jpg)
 
-### _enum
+###### _enum
 [вернуться...](#enum)
 
 выпадающий список - для выбора значения из списка 
 
 ![2_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_4.JPG)
 
-### _enum (checkbox)
+###### _enum (checkbox)
 
 [вернуться...](#enum (checkbox))
 
@@ -2446,18 +2446,18 @@ _тестирование и проливка на бету и боевой
 
 ![2_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_11.JPG)
 
-### _date
+###### _date
 
 [вернуться...](#date)
 
 дата - календарь для выбора даты
 ![2_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_5.JPG)
 
-### _boolean
+###### _boolean
 [вернуться...](#boolean)
 
 принимаемые значения: true / false
-### _label
+###### _label
 [вернуться...](#label)
 
 ```xml
@@ -2469,7 +2469,7 @@ _тестирование и проливка на бету и боевой
  Поддерживается форматирование html.
   ![2_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_6.JPG)
  
-### _file
+###### _file
 [вернуться...](#file)
 
 После стартовой таски добавляем  сервис-таску для подтягивания всех документов в процесс, где указываем
@@ -2491,7 +2491,7 @@ _тестирование и проливка на бету и боевой
 можно в виде ${file1},${file2},${file1} если файлов несколько
    ![2_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_8.JPG)
 
-### _file (New)
+###### _file (New)
 [вернуться...](#file (New))
 
 Чтобы обозначить что прикрепляемый файл должен использоваться по новой схеме, добавляем в нейм поля такую конструкцию:
@@ -2518,26 +2518,25 @@ _тестирование и проливка на бету и боевой
 
 Теперь так же доступна подгрузка файлов в тейбл.
 
-***
-### _textarea
+###### _textarea
 [вернуться...](#textarea)
   ![2_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_9.JPG)
-### _queuedata
+###### _queuedata
 [вернуться...](#queueData)
   ![2_31](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_31.JPG)
 
-### _invisible
+###### _invisible
 
 [вернуться...](#invisible)
   ![2_30](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_30.JPG)
 
-### _select
+###### _select
 
 [вернуться...](#_select)
 
 Для того чтоб в выпадающем списке селекта выпадал заданный массив данных, необходимо правильно заполнить файлы [Subject](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subject), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrganJoinAttribute](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoinattribute), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) соответственно описанию.
 
-### _table
+###### _table
 
 [вернуться...](#_table)
 
@@ -2621,11 +2620,11 @@ default=” “ - в дефолте в виде json - объекта пропи
 <!--sTable4]-->
 ```
 
-### _line
+###### _line
 [вернуться...](#_line)
   ![6_0M](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_0%D0%9C.JPG)
 
-### _variableattributes
+###### _variableattributes
 (Атрибуты переменных)
 
 [вернуться...](#variableattributes)
