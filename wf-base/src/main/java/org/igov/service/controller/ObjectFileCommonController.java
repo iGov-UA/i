@@ -911,7 +911,8 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
-            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "файл для сохранения в БД", required = false) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "контент файла") @RequestBody(required = false) MultipartFile bodyFile
     ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException {
 
         LOG.info("setAttachment nID_Process: " + nID_Process);
@@ -925,6 +926,11 @@ public class ObjectFileCommonController {
 
         if (aAttribute == null) {
             aAttribute = new ArrayList<>();
+        }
+
+        if(bodyFile != null){
+            LOG.info("Getting file from request body");
+            file = bodyFile;
         }
 
         if (file != null && "Mongo".equals(sID_StorageType)) {
