@@ -43,6 +43,12 @@
         <activiti:formProperty id="sMailClerk_Director" name="Пошта керівника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_Urist" name="Пошта юриста" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_inspector" name="Пошта інспектора" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ECP" name="Чи подаєте звернення з ЕЦП або без ЕЦП?" type="enum" required="true">
+          <activiti:value id="ecp_yes" name="з ЕЦП"></activiti:value>
+          <activiti:value id="ecp_no" name="без ЕЦП"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/skv/rada_0015_RekDozvil_Zayava.html"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -57,7 +63,6 @@
         <activiti:formProperty id="markers2" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація по Line" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_LinesST.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersbox_1" name="Стилі щодо checkbox" type="markers" default="${markerService.loadFromFile('skv/style_checkbox.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="[Етап I] Перевірка вхідних даних (1-й крок)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
@@ -103,6 +108,7 @@
         <activiti:formProperty id="nFile_PravoVlasnist" name="Право власності на майно де буде розміщена реклама; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PlaceFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Eskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
@@ -163,6 +169,7 @@
         <activiti:formProperty id="nFile_PlaceFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Eskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_2.json')}"></activiti:formProperty>
@@ -235,6 +242,7 @@
         <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
@@ -306,6 +314,7 @@
         <activiti:formProperty id="nFile_Eskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
@@ -383,6 +392,7 @@
         <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
@@ -460,6 +470,7 @@
         <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
@@ -542,6 +553,7 @@
         <activiti:formProperty id="nFile_PravoVlasnist" name="Право власності на майно де буде розміщена реклама; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PlaceFoto" name="Фото місця де буде розміщено рекламу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Eskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html]" type="invisible" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
