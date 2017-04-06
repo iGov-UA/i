@@ -169,6 +169,7 @@ exports.post = function (options, onResult, data, json) {
  * @param onResult
  */
 exports.uploadStream = function (options, onResult) {
+  /*
   var formData = {
     nID_Process: options.nID_Process,
     file: options.stream,
@@ -187,6 +188,16 @@ exports.uploadStream = function (options, onResult) {
     url: getRequestURL(options),
     formData: formData,
     headers: default_headers
+  };
+  */
+  var content = {
+    url: getRequestURL(options),
+    qs: options.params,
+    body: options.stream,
+    headers: {
+      'Authorization': authBase,
+      'Content-Type': options.headers['Content-Type']
+    }
   };
   request.post(content, function (error, response, body) {
     if (!error) {
