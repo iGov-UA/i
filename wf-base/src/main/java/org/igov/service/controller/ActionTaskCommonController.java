@@ -1222,6 +1222,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
+            @ApiParam(value = "логин для вытаскивания фильтра", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "признак для получения фильтра", required = false) @RequestParam(value = "asField_Filter", required = false) String asField_Filter,
             @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
             @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
             HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
