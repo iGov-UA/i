@@ -36,9 +36,9 @@
       <documentation>завдання по шаблонам
 _doc_velta_sz</documentation>
       <extensionElements>
-        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина!" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -47,6 +47,10 @@ _doc_velta_sz</documentation>
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Опис пропозиції або інноваційного рішення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар керівника щодо пропозиції" type="string" writable="false"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSupervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
@@ -61,6 +65,11 @@ _doc_velta_sz</documentation>
         <activiti:formProperty id="sResultTech" name="Результат аналізу пропозиції (Технічний відділ)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Оберіть виконавця, якому буде делеговано завдання; ;bNew=true" type="table" default="{ &quot;aField&quot; : [{ &quot;id&quot; : &quot;sName_isExecute&quot;, &quot;name&quot; : &quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;, &quot;type&quot; : &quot;select&quot; }, { &quot;id&quot; : &quot;sFirstName_isExecute&quot;, &quot;name&quot; : &quot;First Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLastName_isExecute&quot;, &quot;name&quot; : &quot;Last Name&quot;, &quot;bVisible&quot; : &quot;false&quot;, &quot;type&quot; : &quot;string&quot; }, { &quot;id&quot; : &quot;sLogin_isExecute&quot;, &quot;name&quot; : &quot;Login&quot;, &quot;type&quot; : &quot;string&quot; }]}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="Якщо інший виконавець" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sTable1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегування іншому виконавцю'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="результат аналізу - тех відділ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sResultTech&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sLogin_isExecute&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Velta_Tech_Head'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="результат аналізу - юр відділ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sResultJustice&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sLogin_isExecute&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Velta_Justice_Head'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="Відобразити результат аналізу - фін відділ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sResultFinance&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sLogin_isExecute&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Velta_Finance_Head'&quot;}}}"></activiti:formProperty>
+        
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
