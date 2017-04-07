@@ -519,7 +519,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                             oDocumentStepSubjectRight.setsDate(new DateTime());
                                             oDocumentStepSubjectRight.setsLogin(sAssignLogin);
                                             oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                                            runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
+                                            //runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
+                                            taskService.setVariable(sTaskId, "sLogin_LastSubmited", sAssignLogin);
                                             break;
                                         }
                                     }
