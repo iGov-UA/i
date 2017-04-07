@@ -652,7 +652,7 @@ angular.module('dashboardJsApp')
                 if (fileNameTemp === 'sPrintFormFileAsPDF') {
                   fileName = fileName + '.pdf';
                   sOutputFileType = 'pdf';
-                  if(fileName.match(/^_doc_/) && task.processInstanceId.match(/^_doc_/)){
+                  if((fileName.match(/^_doc_/) || fileName.match(/^doc_/)) && task.processInstanceId.match(/^_doc_/)){
                     formProperties.isSendAsDocument = true;
                     formProperties.skipSendingDefaultPrintForm = true;
                   } else {
