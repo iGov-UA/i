@@ -662,11 +662,15 @@ angular.module('dashboardJsApp')
                 if (fileNameTemp === 'sPrintFormFileAsPDF') {
                   fileName = fileName + '.pdf';
                   sOutputFileType = 'pdf';
-                  if((fileName.match(/^_doc_/) || fileName.match(/^doc_/)) && task.processInstanceId.match(/^_doc_/)){
-                    formProperties.isSendAsDocument = true;
-                    formProperties.skipSendingDefaultPrintForm = true;
-                  } else {
-                    formProperties.isSendAsDocument = false;
+                  if(templateResult.fileField.options.sPrintFormFileAsPDF){
+                    var printFormName = templateResult.fileField.options.sPrintFormFileAsPDF.split('/');
+                    var ind = printFormName.length - 1 < 0 ? 0 : printFormName.length - 1;
+                    if(printFormName[ind].match(/^_doc_/)&& task.processInstanceId.match(/^_doc_/)){
+                      formProperties.isSendAsDocument = true;
+                      formProperties.skipSendingPrintForm = true;
+                    } else {
+                      formProperties.isSendAsDocument = false;
+                    }
                   }
                 }
 
@@ -697,7 +701,7 @@ angular.module('dashboardJsApp')
               sOutputFileType: sOutputFileType,
               sKey_Step: sKey_Step,
               isSendAsDocument: formProperties.sendDefaultPrintForm || formProperties.isSendAsDocument,
-              skipSendingDefaultPrintForm: formProperties.skipSendingDefaultPrintForm
+              skipSendingPrintForm: formProperties.skipSendingPrintForm
             };
 
             printDefer[key] = $q.defer();
@@ -709,7 +713,7 @@ angular.module('dashboardJsApp')
 
           var asyncPrintUpload = function (i, print, defs) {
             if (i < print.length) {
-              if(!print[i].data.sID_Field && print[i].data.skipSendingDefaultPrintForm){
+              if(!print[i].data.sID_Field && print[i].data.skipSendingPrintForm){
                 defs[i].resolve();
                 return asyncPrintUpload(i+1, print, defs);
               } else {
