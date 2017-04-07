@@ -498,7 +498,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     List<Group> aUserGroup = identityService.createGroupQuery().groupMember(sAssignLogin).list();
 
                     LOG.info("aUserGroup is {}", aUserGroup);
-                    runtimeService.setVariable(executionId, "sLogin_LastSubmited", sAssignLogin);
+                    runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
                     
                     if (oCurrDocumentStep != null) {
                         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
