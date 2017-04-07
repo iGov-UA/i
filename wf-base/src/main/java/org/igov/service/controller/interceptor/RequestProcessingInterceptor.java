@@ -500,8 +500,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     List<Group> aUserGroup = identityService.createGroupQuery().groupMember(sAssignLogin).list();
 
                     LOG.info("aUserGroup is {}", aUserGroup);
-                    runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
-                    runtimeService.setVariable(executionId, "sLogin_LastSubmited", sAssignLogin);
+                   
+                    //runtimeService.setVariable(executionId, "sLogin_LastSubmited", sAssignLogin);
                     
                     if (oCurrDocumentStep != null) {
                         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
@@ -519,7 +519,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                             oDocumentStepSubjectRight.setsDate(new DateTime());
                                             oDocumentStepSubjectRight.setsLogin(sAssignLogin);
                                             oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                                            
+                                            runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
                                             break;
                                         }
                                     }
