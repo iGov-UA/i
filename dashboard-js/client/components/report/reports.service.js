@@ -1,19 +1,22 @@
-angular.module('dashboardJsApp').factory('reports', function tasks($http) {
+angular.module('dashboardJsApp').factory('reports', function tasks($http, Auth) {
 
   function getDefaultDataArray(exportParams) {
+    var user = Auth.getCurrentUser();
+
     var dataArray = {
       'sID_BP': exportParams.sBP, //'dnepr_spravka_o_doxodax',
       'sID_State_BP': null,//'usertask1'
       'sDateAt': exportParams.from,
       'sDateTo': exportParams.to,
-      'saFields': exportParams.bExportAll ? '*' : '${nID_Task};${sDateCreate};${area};${bankIdinn};;;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start1};${date_stop1};${place_living};${bankIdPassport};1;${phone};${email}',
+      'asField_Filter': exportParams.bExportAll ? '*' : '${nID_Task};${sDateCreate};${area};${bankIdinn};;;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start1};${date_stop1};${place_living};${bankIdPassport};1;${phone};${email}',
       'sID_Codepage': 'win1251',
       'nASCI_Spliter': '18',
       'sDateCreateFormat': 'dd.MM.yyyy HH:mm:ss',
       'sFileName': 'dohody.dat',
       'bHeader': false, // есть/нет хеадера
       'saFieldsCalc': '', // поля для калькуляций
-      'saFieldSummary': '' // поля для агрегатов
+      'saFieldSummary': '', // поля для агрегатов
+      'sLogin': user.id
     };
     return dataArray;
   }
