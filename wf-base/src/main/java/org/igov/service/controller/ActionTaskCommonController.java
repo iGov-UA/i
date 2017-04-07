@@ -17,7 +17,6 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
@@ -52,7 +51,6 @@ import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.db.queryloader.QueryLoader;
-import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -931,7 +929,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @RequestParam(value = "sLogin", required = false) String sLogin,
             @RequestParam(value = "sReason", required = false) String sReason)
             throws Exception {
-
+        //Вызывать сервис централа и апдейтить в истории статус на 8 (закрыт)
         oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
