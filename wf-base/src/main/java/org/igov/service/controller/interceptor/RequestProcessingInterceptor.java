@@ -456,7 +456,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
             String executionId = oHistoricTaskInstance.getExecutionId();
             LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
-
+            LOG.info("oHistoricTaskInstance.processInstanceId {}", processInstanceId);
+            LOG.info("oHistoricTaskInstance.getExecutionId {}", executionId);
+            
             if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 LOG.info("We catch document submit (ECP)");
                 JSONArray properties = (JSONArray) omRequestBody.get("properties");
@@ -499,6 +501,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                     LOG.info("aUserGroup is {}", aUserGroup);
                     runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
+                    runtimeService.setVariable(executionId, "sLogin_LastSubmited", sAssignLogin);
                     
                     if (oCurrDocumentStep != null) {
                         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
