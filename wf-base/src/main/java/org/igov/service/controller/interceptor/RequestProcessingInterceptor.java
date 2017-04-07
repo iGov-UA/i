@@ -253,6 +253,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 
                 if(omResponseBody != null){
                     sID_Process = (String)omResponseBody.get("snID_Process");
+                    runtimeService.setVariable(sID_Process, "sLogin_LastSubmited", "trulala");
                     sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sID_Process));
                 }
                 
@@ -519,7 +520,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                             oDocumentStepSubjectRight.setsDate(new DateTime());
                                             oDocumentStepSubjectRight.setsLogin(sAssignLogin);
                                             oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                                            //runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
+                                            runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
                                             taskService.setVariable(sTaskId, "sLogin_LastSubmited", sAssignLogin);
                                             break;
                                         }
