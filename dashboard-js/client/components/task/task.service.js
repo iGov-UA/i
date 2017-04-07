@@ -565,7 +565,17 @@ angular.module('dashboardJsApp')
               template: ''
             });
         });
-        if(formProperties.sendDefaultPrintForm){
+        var isDocPrintFormPresent = !formProperties.sendDefaultPrintForm;
+        angular.forEach(formProperties, function (field) {
+          if(field.id.match(/^PrintForm_/) && field.options.sPrintFormFileAsPDF){
+            var printFormName = field.options.sPrintFormFileAsPDF.split('/');
+            var ind = printFormName.length - 1 < 0 ? 0 : printFormName.length - 1;
+            if(printFormName[ind].match(/^_doc_/)){
+              isDocPrintFormPresent = true;
+            }
+          }
+        });
+        if(formProperties.sendDefaultPrintForm && !isDocPrintFormPresent){
           filesDefers.push($q.resolve({
             fileField: null,
             template: '<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="style.css" /></head><body">' + $(".ng-modal-dialog-content")[0].innerHTML + '</html>'
