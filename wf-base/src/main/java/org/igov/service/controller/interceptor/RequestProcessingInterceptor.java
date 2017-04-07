@@ -234,6 +234,19 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("-----------------------------------------------");
             }
             
+            if (isDocumentSubmit(oRequest)) {
+                 if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+                    String sTaskId = (String) omRequestBody.get("taskId");
+                    LOG.info("sTaskId is: {}", sTaskId);
+                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                    String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                    
+                    if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+                        runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", oHistoricTaskInstance.getAssignee());
+                    }
+                }
+            }
+            
             if(((mRequestParam.containsKey("sID_BP")||mRequestParam.containsKey("snID_Process_Activiti"))&&
                mRequestParam.get("sID_BP").startsWith("_doc")))
             {
@@ -253,7 +266,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 
                 if(omResponseBody != null){
                     sID_Process = (String)omResponseBody.get("snID_Process");
-                    runtimeService.setVariable(sID_Process, "sLogin_LastSubmited", "trulala");
                     sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sID_Process));
                 }
                 
