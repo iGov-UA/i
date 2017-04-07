@@ -43,9 +43,9 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="назначение платежа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="назначение платежа; поле відображено для тестування сплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта" type="invisible" default="i49105812005"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа;  поле відображено для тестування сплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Запит з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/bti/bti_request_1.html"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+38" required="true"></activiti:formProperty>
@@ -81,6 +81,8 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
+
+здесь мы напишем сопроводительный текст 
 
 [paymentButton_LiqPay]
 
@@ -142,6 +144,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Запит з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="form2_signed" name="Додайте файл відповіді з накладеним ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -161,7 +166,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 
-[paymentButton_LiqPay]
+здесь мы напишем  сопроводительный текст по ответу
+к письму прилагаем  файл подписанный  ЭЦП сотрудника
+
 
 
 
@@ -170,7 +177,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA["${form2_signed}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
