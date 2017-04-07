@@ -169,39 +169,25 @@ exports.post = function (options, onResult, data, json) {
  * @param onResult
  */
 exports.uploadStream = function (options, onResult) {
-  var content = {};
-  if(options.path.indexOf("setDocumentImage") >= 0){
-    content = {
-      url: getRequestURL(options),
-      qs: options.params,
-      body: options.stream,
-      headers: {
-        'Authorization': authBase,
-        'Content-Type': options.headers['Content-Type']
-      }
-    };
-  } else {
-    var formData = {
-      nID_Process: options.params.nID_Process,
-      file: options.stream,
-      sFileNameAndExt: options.params.sFileNameAndExt.replace(new RegExp(/[*|\\:"<>?/]/g), "")
-    };
-    if(options.params.sID_Field){
-      formData.sID_Field = options.params.sID_Field;
-    }
-    if(options.params.sLogin){
-      formData.sLogin = options.params.sLogin;
-    }
-    if(options.params.sKey_Step){
-      formData.sKey_Step = options.params.sKey_Step;
-    }
-    content = {
-      url: getRequestURL(options),
-      formData: formData,
-      headers: default_headers
-    };
+  var formData = {
+    nID_Process: options.nID_Process,
+    file: options.stream,
+    sFileNameAndExt: options.sFileNameAndExt.replace(new RegExp(/[*|\\:"<>?/]/g), "")
+  };
+  if(options.sID_Field){
+    formData.sID_Field = options.sID_Field;
   }
-
+  if(options.sLogin){
+    formData.sLogin = options.sLogin;
+  }
+  if(options.sKey_Step){
+    formData.sKey_Step = options.sKey_Step;
+  }
+  var content = {
+    url: getRequestURL(options),
+    formData: formData,
+    headers: default_headers
+  };
   request.post(content, function (error, response, body) {
     if (!error) {
       onResult(null, response.statusCode, body, response.headers);

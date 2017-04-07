@@ -897,6 +897,7 @@ public class ObjectFileCommonController {
         return multipartFile.getBytes();
     }
 
+    
     @ApiOperation(value = "setProcessAttach", notes
             = "##### загрузка файла-атачмента по новому концепту")
     @RequestMapping(value = "/setProcessAttach", method = RequestMethod.POST, produces = "application/json")
@@ -1004,10 +1005,18 @@ public class ObjectFileCommonController {
             @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
             @ApiParam(value = "Логин подписанта", required = true) @RequestParam(required = true, value = "sLogin") String sLogin,
             @ApiParam(value = "Ключ шага документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
-            @ApiParam(value = "контент файла", required = true) @RequestBody byte[] file)
+            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "контент файла в виде строки", required = false) @RequestBody String sData)
             throws IOException, JsonProcessingException, CRCInvalidException, RecordNotFoundException, ParseException
         {
 
+        /*    if(file != null){
+                sData = new String(file.getBytes());
+                LOG.info("added file is not null");
+            } else if (sData == null || sData.equals("")){
+                throw new IllegalArgumentException("Bad request! Context not found");
+            }*/
+        
         LOG.info("setAttachment nID_Process: " + nID_Process);
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
@@ -1015,22 +1024,32 @@ public class ObjectFileCommonController {
         LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
         LOG.info("setAttachment sID_Field: " + sID_Field);
         LOG.info("setAttachment sContentType: " + sContentType);
+        LOG.info("setAttachment sData: " + sData);
         LOG.info("setAttachment sLogin: " + sLogin);
         LOG.info("setAttachment sKey_Step: " + sKey_Step);
-        LOG.info("setAttachment file size: " + file.length);
 
         if (aAttribute == null) {
             aAttribute = new ArrayList<>();
         }
-
-        if (file != null && "Mongo".equals(sID_StorageType)) {
-            return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
-                    sContentType, aAttribute, file, true, sKey_Step, sLogin);
-        } else if (file != null && "Redis".equals(sID_StorageType)) {
-            throw new RuntimeException("There is no suitable metod for string data for redis");
-        } else {
-            return "data is null";
-        }
+        
+       if(file != null){
+            if ("Mongo".equals(sID_StorageType)) {
+                return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
+                        sContentType, aAttribute, file.getBytes(), true, sKey_Step, sLogin);
+            } else {
+                return "data is null";
+            }
+       }else{
+        
+            if (sData != null && "Mongo".equals(sID_StorageType)) {
+                return attachmetService.setDocumentImage(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType, 
+                        sContentType, aAttribute, sData.getBytes(Charsets.UTF_8), true, sKey_Step, sLogin);
+            } else if (sData != null && "Redis".equals(sID_StorageType)) {
+                throw new RuntimeException("There is no suitable metod for string data for redis");
+            } else {
+                return "data is null";
+            }
+       }
 
     }
 
