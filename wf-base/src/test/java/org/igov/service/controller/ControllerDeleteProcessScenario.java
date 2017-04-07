@@ -47,7 +47,7 @@ public class ControllerDeleteProcessScenario extends ActivitiScenarioBase {
         Assert.assertEquals(new CRCInvalidException().getMessage(), res.get("message"));
     }
 
-    @Test
+    @Ignore
     public void testDeleteProcess_NotFound() throws Exception {
         doThrow(new ActivitiObjectNotFoundException("Not found")).when(runtimeService).deleteProcessInstance(
                 TEST_PROCESS_INSTANCEID_STR, TEST_REASON);
