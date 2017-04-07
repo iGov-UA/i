@@ -4,6 +4,7 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть найближчий центр надання безоплатної первинної допомоги" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Місцезнаходження центру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -85,6 +86,7 @@
     <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="bvpd_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sFIO" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Місцезнаходження центру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Address" name="Адреса фактичного проживання заявника" type="string" writable="false"></activiti:formProperty>
@@ -97,6 +99,10 @@
           <activiti:value id="sNonNation" name="Особа без громадянства"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCountryB" name="Громадянство для іншої держави" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nOther" name="Інші документи, що підтверджують порушене право особи та необхідність його захисту; декілька сторінок об'єднайте у один pdf файл або zip архів;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('minust/justice_0353_PervDopom1.json')}"></activiti:formProperty>
