@@ -175,7 +175,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -226,7 +226,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow28" sourceRef="exclusivegateway2" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission<=sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow29" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="exclusivegateway2" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
@@ -257,19 +256,15 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <sequenceFlow id="flow37" sourceRef="scripttask7" targetRef="servicetask3"></sequenceFlow>
     <scriptTask id="scripttask8" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var nID_Process = execution.getProcessInstanceId()
-var sKey_Step = execution.getVariable('sKey_Step_Document')
-var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
-execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
+      <script>c</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="scripttask8"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="scripttask8" targetRef="exclusivegateway5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'true'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow41" sourceRef="exclusivegateway5" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="exclusivegateway5" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
+    <sequenceFlow id="flow41" sourceRef="exclusivegateway5" targetRef="exclusivegateway2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'true'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="exclusivegateway1" targetRef="scripttask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
@@ -280,10 +275,10 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression>pavlenkojulia2202@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[інформування щодо прийтяного рішення]]></activiti:expression>
+          <activiti:expression>інформування щодо прийтяного рішення</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -293,10 +288,10 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression>pavlenkojulia2202@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Інформування відділення щодо прийнятого рішення]]></activiti:expression>
+          <activiti:expression>Інформування відділення щодо прийнятого рішення</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -311,15 +306,18 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression>pavlenkojulia2202@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Інформування щодо прийнятого рішення]]></activiti:expression>
+          <activiti:expression>Інформування щодо прийнятого рішення</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow51" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway5" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_tarifi_akordbank">
     <bpmndi:BPMNPlane bpmnElement="_doc_tarifi_akordbank" id="BPMNPlane__doc_tarifi_akordbank">
@@ -330,7 +328,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdc:Bounds height="61.0" width="105.0" x="90.0" y="23.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="237.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="105.0" x="237.0" y="16.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="75.0" width="105.0" x="400.0" y="16.0"></omgdc:Bounds>
@@ -404,10 +402,10 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="195.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="237.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="237.0" y="48.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="342.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="48.0"></omgdi:waypoint>
         <omgdi:waypoint x="400.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
@@ -442,10 +440,6 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="702.0" y="249.0"></omgdi:waypoint>
         <omgdi:waypoint x="639.0" y="280.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="772.0" y="224.0"></omgdi:waypoint>
-        <omgdi:waypoint x="722.0" y="229.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="682.0" y="229.0"></omgdi:waypoint>
@@ -489,10 +483,6 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdi:waypoint x="731.0" y="290.0"></omgdi:waypoint>
         <omgdi:waypoint x="702.0" y="249.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="731.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="824.0" y="252.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="731.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="720.0" y="116.0"></omgdi:waypoint>
@@ -524,6 +514,11 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
         <omgdi:waypoint x="539.0" y="387.0"></omgdi:waypoint>
         <omgdi:waypoint x="620.0" y="387.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="731.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="772.0" y="224.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
