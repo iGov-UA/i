@@ -51,7 +51,8 @@
         <activiti:formProperty id="markers24" name="якщо інший процесуальний статус" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;sStatus&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;saStatus&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'||[sReason] == 'Інший'&quot;}}}"></activiti:formProperty>
      
         <activiti:formProperty id="markers22" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;markers0&quot;,&quot;markers1&quot;,&quot;markers2&quot;,&quot;markers3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc10&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed_all" name="ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Супровідний лист для накладення ЭЦП; ;bVisible=false" type="string" default="pattern/print/court/CourtOfAppeal_print.html"></activiti:formProperty>
         </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Appeal">
@@ -108,6 +109,7 @@
         <activiti:formProperty id="sDateAplication" name="Дата та час ознайомлення зі справою" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="укажіть причину" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAkt" name="Сканкопія акту Суду про те, що документи надіслані користувачем до суду не можуть бути визнані як такі, що надійшли до суду" type="file"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/court/CourtOfAppeal_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/court/CourtOfAppeal_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'||[sReason] == 'фізична особа або фізична особа-підприємець'&quot;}}}"></activiti:formProperty>
