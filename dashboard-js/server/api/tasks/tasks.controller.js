@@ -480,14 +480,17 @@ exports.upload_content_as_attachment = function (req, res) {
           req.body.url = 'setProcessAttach';
         }
         pdfConversion(options, function (err, pdf) {
-          var convertedFile;
-          pdf.stream.on("data", function (file) {
-            convertedFile = file;
-          });
-          pdf.stream.on("end", function () {
-            callback(err, {content: convertedFile, contentType: 'application/json'});
-          });
-          //callback(err, {content: pdf.stream, contentType: 'application/json'});
+          if(req.body.url === 'setDocumentImage'){
+            var convertedFile;
+            pdf.stream.on("data", function (file) {
+              convertedFile = file;
+            });
+            pdf.stream.on("end", function () {
+              callback(err, {content: convertedFile, contentType: 'application/json'});
+            });
+          } else {
+            callback(err, {content: pdf.stream, contentType: 'application/json'});
+          }
         });
       },
       function (data, callback) {
