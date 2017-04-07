@@ -18,6 +18,7 @@
           <activiti:value id="type4" name="Чотири адреси (855 грн)"></activiti:value>
           <activiti:value id="type5" name="П'ять адрес (1035 грн)"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="saQuestion4" name="Стосовно якої кількості адрес буде створено запит з додатковою інформацією?" type="enum">
           <activiti:value id="type1" name="Одна адреса (340 грн)"></activiti:value>
           <activiti:value id="type2" name="Дві адреси (525 грн)"></activiti:value>
@@ -38,22 +39,26 @@
         </activiti:formProperty>
         <activiti:formProperty id="sJurAddress" name="Зазначте Вашу юридичну адресу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhisAddress" name="Зазначте адресу Вашої реєстрації" type="string"></activiti:formProperty>
-        <activiti:formProperty id="warningMessage2" name=" ; ;labelType=warning" type="label" default="В якості приватної особі Ви не маєте право на отримання информації щодо третіх осіб."></activiti:formProperty>
-        <activiti:formProperty id="infoMessage2" name=" ; ;labelType=info" type="label" default="Для пiдтвердження Ваших повноважень нотаріуса, скорыстайтесь ЕЦП нотаріуса для пидпісання цього запиту "></activiti:formProperty>
+        <activiti:formProperty id="warningMessage2" name=" ; ;labelType=warning" type="label" default="В якості приватної особі Ви маєте право на отримання информації тільки щодо свого майна"></activiti:formProperty>
+        
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта" type="invisible" default="i"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="назначение платежа; поле відображено для тестування сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта" type="invisible" default="i49105812005"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа;  поле відображено для тестування сплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Запит з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/bti/bti_request_1.html"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+38" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail  Ви отримаєте результат обробки Вашого запиту" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="infoMessage2" name=" ; ;labelType=info" type="label" default="Для пiдтвердження Ваших повноважень нотаріуса, скористайтесь ЕЦП нотаріуса для пидпісання цього запиту "></activiti:formProperty>
+       
         <activiti:formProperty id="marker1" name="form fields show-hide" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="set sSum" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker3" name="set printform content (phis)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker4" name="set printform content (jur)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker5" name="set required fields" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_5.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -77,6 +82,8 @@
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
+
+здесь мы напишем сопроводительный текст 
 
 [paymentButton_LiqPay]
 
@@ -138,6 +145,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Запит з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="form2_signed" name="Додайте файл відповіді з накладеним ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -157,7 +167,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 
-[paymentButton_LiqPay]
+здесь мы напишем  сопроводительный текст по ответу
+к письму прилагаем  файл подписанный  ЭЦП сотрудника
+
 
 
 
@@ -166,7 +178,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA["${form2_signed}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
