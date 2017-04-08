@@ -20,7 +20,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <userTask id="usertask1" name="формування СЗ степ1">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" required="true">
@@ -28,10 +28,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
           <activiti:value id="sForma_ZS2" name="Тариф по прийому платежів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" required="true">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP-клієнт"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" required="true"></activiti:formProperty>
@@ -61,14 +57,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask2" name="Начальник відділення - погодження або повернення степ2">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP-кліент"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea"></activiti:formProperty>
@@ -86,14 +78,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask3" name="зНУ РО степ3">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP кліент"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
@@ -155,14 +143,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask4" name="ДД РБ">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP клієнт"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="обгрунтування" type="textArea" writable="false"></activiti:formProperty>
@@ -196,11 +180,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask5" name="члены ТК">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
@@ -225,9 +208,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow28" sourceRef="exclusivegateway2" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission<=sAmount_of_commission}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway2" targetRef="scripttask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="scripttask3">
@@ -255,21 +235,7 @@ var sKey_GroupPostfix_New ='AkordBank_Director_Department_RB'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow37" sourceRef="scripttask7" targetRef="servicetask3"></sequenceFlow>
-    <scriptTask id="scripttask8" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var nID_Process = execution.getProcessInstanceId()
-var sKey_Step = execution.getVariable('sKey_Step_Document')
-var oDocumentStepSubmitedAll = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
-execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubmitedAll.toString())
-</script>
-    </scriptTask>
-    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="scripttask8"></sequenceFlow>
-    <sequenceFlow id="flow40" sourceRef="scripttask8" targetRef="exclusivegateway5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll == 'true'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow41" sourceRef="exclusivegateway5" targetRef="exclusivegateway2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll == 'true'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="exclusivegateway1" targetRef="scripttask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow44" sourceRef="exclusivegateway4" targetRef="exclusivegateway6"></sequenceFlow>
@@ -319,8 +285,8 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow51" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow52" sourceRef="exclusivegateway5" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll == 'false'}]]></conditionExpression>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway2" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_tarifi_akordbank">
@@ -375,12 +341,6 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
         <omgdc:Bounds height="65.0" width="105.0" x="470.0" y="425.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="740.0" y="430.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="668.0" y="349.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
         <omgdc:Bounds height="40.0" width="40.0" x="-278.0" y="248.0"></omgdc:Bounds>
@@ -444,10 +404,6 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
         <omgdi:waypoint x="619.0" y="389.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="425.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="619.0" y="349.0"></omgdi:waypoint>
-        <omgdi:waypoint x="522.0" y="308.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="210.0" y="248.0"></omgdi:waypoint>
         <omgdi:waypoint x="210.0" y="206.0"></omgdi:waypoint>
@@ -478,15 +434,7 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="792.0" y="296.0"></omgdi:waypoint>
-        <omgdi:waypoint x="792.0" y="430.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="792.0" y="430.0"></omgdi:waypoint>
-        <omgdi:waypoint x="688.0" y="389.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="668.0" y="369.0"></omgdi:waypoint>
-        <omgdi:waypoint x="639.0" y="369.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="349.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="660.0" y="73.0"></omgdi:waypoint>
@@ -518,8 +466,8 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
         <omgdi:waypoint x="172.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="688.0" y="349.0"></omgdi:waypoint>
-        <omgdi:waypoint x="792.0" y="296.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="349.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="308.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
