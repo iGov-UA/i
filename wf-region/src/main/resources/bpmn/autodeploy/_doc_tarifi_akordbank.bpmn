@@ -20,7 +20,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <userTask id="usertask1" name="формування СЗ степ1">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" required="true">
@@ -28,10 +28,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
           <activiti:value id="sForma_ZS2" name="Тариф по прийому платежів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" required="true">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP-клієнт"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" required="true"></activiti:formProperty>
@@ -61,14 +57,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask2" name="Начальник відділення - погодження або повернення степ2">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP-кліент"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea"></activiti:formProperty>
@@ -86,14 +78,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask3" name="зНУ РО степ3">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP кліент"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
@@ -155,14 +143,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask4" name="ДД РБ">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP клієнт"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="обгрунтування" type="textArea" writable="false"></activiti:formProperty>
@@ -196,11 +180,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask5" name="члены ТК">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
