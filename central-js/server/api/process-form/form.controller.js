@@ -424,7 +424,7 @@ module.exports.signFormMultiple = function (req, res) {
 
   function signFilesAsync(result, callbackAsync) {
     var accessToken = req.session.access.accessToken;
-    userService.signFiles(accessToken, callbackURL, objectsToSign, function (error, signResult) {
+    userService.signFiles(accessToken, callbackURL, objectsToSign, false, function (error, signResult) {
       if (error) {
         callbackAsync(error, result);
       } else {

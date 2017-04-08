@@ -80,7 +80,7 @@ module.exports.decryptContent = function (req, res) {
       "customerType":"physical",
       "fiscalClaimAction": "decrypt",
       "customerInn": formInn ? formInn : req.session.subject.sID,
-      "email":mail
+      "email": mail
     });
 
     try {
@@ -91,6 +91,7 @@ module.exports.decryptContent = function (req, res) {
           '/api/sign-content/decrypt/callback?nID_Server=' + nID_Server  + '&fileName=' + fileName + '&nID=' + id + '&restoreUrl=' + restoreUrl
         ),
         objectsToSign,
+        { fiscalData: fiscalHeader },
         function (error, signResult) {
           if (error) {
             callbackAsync(error, result);
@@ -98,8 +99,7 @@ module.exports.decryptContent = function (req, res) {
             result.signResult = signResult;
             callbackAsync(null, result);
           }
-        },
-        fiscalHeader);
+        });
     } catch (e) {
       callbackAsync(e, result);
     }
