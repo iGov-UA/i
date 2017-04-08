@@ -275,7 +275,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow52" sourceRef="exclusivegateway2" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask8" name="перевірка підписів" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask8" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKey_Step = execution.getVariable('sKey_Step_Document')
+var oDocumentStepSubmitedAll = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubmitedAll.toString())</script>
+    </scriptTask>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow53" sourceRef="scripttask8" targetRef="exclusivegateway7"></sequenceFlow>
     <sequenceFlow id="flow54" sourceRef="exclusivegateway7" targetRef="usertask3">
