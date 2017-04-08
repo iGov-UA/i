@@ -247,7 +247,7 @@ angular.module('autocompleteService')
                         var splited = f.id.split(/_/),
                             postfix = splited.pop(),
                             anotherPart =  splited.join('_');
-                        if(isNaN(parseInt(postfix)) && selectPostfix === postfix) {
+                        if(isNaN(parseInt(postfix)) && selectPostfix === postfix || (anotherPart.indexOf(additionalPropertyName) === 0 && postfix === nameWithPostFix[nameWithPostFix.length - 1])) {
                             obj[key].value = item[splited[0]];
                         }
                     }
