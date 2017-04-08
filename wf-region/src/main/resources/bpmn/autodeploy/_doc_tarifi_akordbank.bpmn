@@ -209,9 +209,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow28" sourceRef="exclusivegateway2" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission<=sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway2" targetRef="scripttask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
-    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
@@ -246,7 +243,7 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
 </script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="scripttask8"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="scripttask5"></sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="scripttask8" targetRef="exclusivegateway5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll == 'true'}]]></conditionExpression>
     </sequenceFlow>
@@ -302,9 +299,6 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow51" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow52" sourceRef="exclusivegateway5" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll == 'false'}]]></conditionExpression>
-    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_tarifi_akordbank">
     <bpmndi:BPMNPlane bpmnElement="_doc_tarifi_akordbank" id="BPMNPlane__doc_tarifi_akordbank">
@@ -427,10 +421,6 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
         <omgdi:waypoint x="619.0" y="389.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="425.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="619.0" y="349.0"></omgdi:waypoint>
-        <omgdi:waypoint x="522.0" y="308.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="210.0" y="248.0"></omgdi:waypoint>
         <omgdi:waypoint x="210.0" y="206.0"></omgdi:waypoint>
@@ -460,8 +450,8 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
         <omgdi:waypoint x="361.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="792.0" y="296.0"></omgdi:waypoint>
-        <omgdi:waypoint x="792.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="792.0" y="430.0"></omgdi:waypoint>
@@ -499,10 +489,6 @@ execution.setVariable('bDocumentStepSubmitedAll', oDocumentStepSubmitedAll.bSubm
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
         <omgdi:waypoint x="256.0" y="457.0"></omgdi:waypoint>
         <omgdi:waypoint x="172.0" y="457.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="688.0" y="349.0"></omgdi:waypoint>
-        <omgdi:waypoint x="792.0" y="296.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
