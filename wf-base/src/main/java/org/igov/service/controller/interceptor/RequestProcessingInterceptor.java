@@ -234,6 +234,19 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("-----------------------------------------------");
             }
             
+            if (isDocumentSubmit(oRequest)) {
+                 if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+                    String sTaskId = (String) omRequestBody.get("taskId");
+                    LOG.info("sTaskId is: {}", sTaskId);
+                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                    String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                    
+                    if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+                        runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", oHistoricTaskInstance.getAssignee());
+                    }
+                }
+            }
+            
             if(((mRequestParam.containsKey("sID_BP")||mRequestParam.containsKey("snID_Process_Activiti"))&&
                mRequestParam.get("sID_BP").startsWith("_doc")))
             {
@@ -500,8 +513,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     List<Group> aUserGroup = identityService.createGroupQuery().groupMember(sAssignLogin).list();
 
                     LOG.info("aUserGroup is {}", aUserGroup);
-                    runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
-                    runtimeService.setVariable(executionId, "sLogin_LastSubmited", sAssignLogin);
+                   
+                    //runtimeService.setVariable(executionId, "sLogin_LastSubmited", sAssignLogin);
                     
                     if (oCurrDocumentStep != null) {
                         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
@@ -519,7 +532,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                             oDocumentStepSubjectRight.setsDate(new DateTime());
                                             oDocumentStepSubjectRight.setsLogin(sAssignLogin);
                                             oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                                            
+                                            runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", sAssignLogin);
+                                            taskService.setVariable(sTaskId, "sLogin_LastSubmited", sAssignLogin);
                                             break;
                                         }
                                     }
