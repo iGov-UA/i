@@ -551,6 +551,7 @@ public class ActionTaskService {
             LOG.info("Loaded start form data for the process {}", startFormData);
             if (startFormData != null){
             	for (FormProperty formProperty : startFormData.getFormProperties()){
+            		LOG.info("Checking property {} with the type {} ", formProperty.getId(), formProperty.getType().getName());
             		String sType = formProperty.getType().getName();
                     if ("enum".equalsIgnoreCase(sType)) {
                     	enumProperties.put(formProperty.getId(), formProperty);
