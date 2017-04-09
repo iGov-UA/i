@@ -1445,7 +1445,7 @@ public class DocumentStepService {
             mReturn.put("bSubmitedAll", bSubmitedAll);
             mReturn.put("nCountSubmited", countSubmited);
             mReturn.put("nCountNotSubmited", countNotSubmited);
-            mReturn.put("nCountSubmitePlan", (countSubmited + countNotSubmited);
+            mReturn.put("nCountSubmitePlan", (countSubmited + countNotSubmited));
             
             LOG.info("mReturn in isDocumentStepSubmitedAll {}", mReturn);
             
