@@ -55,7 +55,6 @@ public class DocumentCommonController {
         LOG.info("snID_Process_Activiti: " + nID_Process);
         LOG.info("sLogin: " + sLogin);
         LOG.info("sKey_Step: " + sKey_Step);
-
         return documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step);
 
     }
