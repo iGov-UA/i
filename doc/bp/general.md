@@ -2246,7 +2246,7 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
 ### [Переменные iDoc](#variablesidoc)
 ### [Листенеры iDoc](#listenersidoc)
-### Степы  
+### [Сервисы](#serveses) 
 ### Построение дерева подчинения организации
 ### [Порождение задач](#generationtasks)  
 ### [Callactivity](#callactivity)  
@@ -2314,6 +2314,7 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 [листенер ${UpdateStatusTask}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustask)  
 [листенер ${UpdateStatusTaskTreeAndCloseProcess}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustasktreeandcloseprocess)  
 
+###### serveses
 ### Сервисы
 ### Переключение степа  
 **setDocumentStep(snID_Process_Activiti, sKey_Step)**  
