@@ -241,7 +241,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
 
             if (((mRequestParam.containsKey("sID_BP") || mRequestParam.containsKey("snID_Process_Activiti"))
-                    && mRequestParam.get("sID_BP").startsWith("_doc"))) {
+                    && mRequestParam.get("sID_BP") != null && mRequestParam.get("sID_BP").startsWith("_doc"))) {
                 LOG.info("--------------ALL REQUEST DOCUMENT PARAMS--------------");
                 sURL = oRequest.getRequestURL().toString();
                 LOG.info("protocolize sURL is: " + sURL);
