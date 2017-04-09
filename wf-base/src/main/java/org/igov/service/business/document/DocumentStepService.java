@@ -91,7 +91,7 @@ public class DocumentStepService {
         List<DocumentStep> aDocumentStep_Result = new ArrayList<>();
         // process common step if it exists
         Object oStep_Common = oJSON.opt("_");
-        LOG.info("Common step is - {}", oStep_Common);
+        LOG.info("snID_Process_Activiti {} Common step is - {}", snID_Process_Activiti, oStep_Common);
 
         DocumentStepType oDocumentStepType = new DocumentStepType();
         oDocumentStepType.setId(1L);
@@ -109,6 +109,7 @@ public class DocumentStepService {
             if (aDocumentStepSubjectRightToSet != null) {
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRightToSet) {
                     if (!oDocumentStepSubjectRight.getsKey_GroupPostfix().startsWith("_default_")) {
+                        
                         aDocumentStepSubjectRightToSet_Common.add(oDocumentStepSubjectRight);
                     }
                 }
