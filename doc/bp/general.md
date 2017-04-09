@@ -2246,22 +2246,22 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
 ### [Переменные iDoc](#variablesidoc)
 ### [Листенеры iDoc](#listenersidoc)
-### Степы  
+### [Сервисы](#serveses) 
 ### Построение дерева подчинения организации
 ### [Порождение задач](#generationtasks)  
-### [Callactivity](#callactivity)  
+### [Callactivity](#callactivity_)  
 ### [Скрипты, которые используются в СЕДе](#scriptsusedidoc)  
 
 ###### variablesidoc
 ### Переменные idoc
-**processInstanceId** - ИД процеса активити ([скрипт](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0) получения)- используется в дальнейшем для вызова всяких сервисов iDoc - обязательное поле для iDoc  
+**processInstanceId** - ИД процеса активити (скрипт получения)- используется в дальнейшем для вызова всяких сервисов iDoc - обязательное поле для iDoc  
 
 
-**processDefinitionId** - есть [скрипт](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D0%91%D0%9F), который вытащит в эту переменную ИД бизнес-процесса, используется в дальнейшем в листенере, который порождает задачи. Если задачи не будут порождаться, это поле необязательное для iDoc 
+**processDefinitionId** - есть скрипт, который вытащит в эту переменную ИД бизнес-процесса, используется в дальнейшем в листенере, который порождает задачи. Если задачи не будут порождаться, это поле необязательное для iDoc 
 
 
  
-**sKey_Step_Document** - возвращает шаг документа из джейсона - обязательное поле для iDoc. Значение в это поле прописывается автоматически листенером [${DocumentInit_iDoc}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#documentinit_idoc)  
+**sKey_Step_Document** - возвращает шаг документа из джейсона - обязательное поле для iDoc. Значение в это поле прописывается автоматически листенером [${DocumentInit_iDoc}](#documentinit_idoc)  
 
 
 
@@ -2309,11 +2309,12 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
 ###### listenersidoc
 ### Листенеры iDoc
-[листенер ${SetTasks}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#settasks)  
-[листенер ${DocumentInit_iDoc}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#documentinit_idoc)  
-[листенер ${UpdateStatusTask}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustask)  
-[листенер ${UpdateStatusTaskTreeAndCloseProcess}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustasktreeandcloseprocess)  
+[листенер ${SetTasks}](#settasks)  
+[листенер ${DocumentInit_iDoc}](#documentinit_idoc)  
+[листенер ${UpdateStatusTask}](#updatestatustask)  
+[листенер ${UpdateStatusTaskTreeAndCloseProcess}](#updatestatustasktreeandcloseprocess)  
 
+###### serveses
 ### Сервисы
 ### Переключение степа  
 **setDocumentStep(snID_Process_Activiti, sKey_Step)**  
@@ -2368,7 +2369,7 @@ var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, '
 ###### generationtasks
 ### Порождение задач
 Системный процесс - порождает задачи, расписанные на исполнителей в родительском процессе.  
-В system_task данные пробрасываются с помощью листенера [SetTasks](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#settasks). Поддерживается мультипорождение и синхронизация данных в процесс-родитель.
+В system_task данные пробрасываются с помощью листенера [SetTasks](#settasks). Поддерживается мультипорождение и синхронизация данных в процесс-родитель.
 
 ```javascript
 var number=execution.getVariable('sID_Order_GovPublic')
@@ -2383,9 +2384,9 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)
 private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming";
 ```
 
-###### callactivity
+###### callactivity_
 ### Callactivity
-Вызов другого процесса из текущего стандартными средствами активити. Отличается от вызова при помощи листенера [SetTasks](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#settasks) тем, что не может принимать значение обратно в случае мультипорождения нескольких подпроцессов.
+Вызов другого процесса из текущего стандартными средствами активити. Отличается от вызова при помощи листенера [SetTasks](#settasks) тем, что не может принимать значение обратно в случае мультипорождения нескольких подпроцессов.
 Очень хорошо его можно применять, когда в случае входящего документа необходимо породить 1 исходящий из входящего.
 ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sdmtSVzlWamhER3c)
 Во вкладке **Main Config**  в поле **Called element** прописываем ИДБП который необходимо вызвать **(1)**, в блоке **Input parameters** прописываем поля, которые необходимо пробросить в порождаемый процесс **(2)**.
@@ -2410,11 +2411,11 @@ _testSimpleSubProces - порожденный
 
 ###### scriptsusedidoc
 ### Скрипты, которые используются в СЕДе
-[Получение ИД текущего процесса](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0)  
-[Счетчик добавления номера в поле входящего номера](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%A1%D1%87%D0%B5%D1%82%D1%87%D0%B8%D0%BA-%D0%B4%D0%BE%D0%B1%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-%D0%BD%D0%BE%D0%BC%D0%B5%D1%80%D0%B0-%D0%B2-%D0%BF%D0%BE%D0%BB%D0%B5-%D0%B2%D1%85%D0%BE%D0%B4%D1%8F%D1%89%D0%B5%D0%B3%D0%BE-%D0%BD%D0%BE%D0%BC%D0%B5%D1%80%D0%B0)  
-[Назначение даты исполнения](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9D%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F---%D0%BF%D0%BE-%D1%83%D0%BC%D0%BE%D0%BB%D1%87%D0%B0%D0%BD%D0%B8%D1%8E--30-%D0%B4%D0%BD%D0%B5%D0%B9-%D0%BA-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B9-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B2-%D0%BD%D1%83%D0%B6%D0%BD%D1%8B%D0%B9-%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82-%D0%B4%D0%B4%D0%BC%D0%BC%D0%B3%D0%B3%D0%B3%D0%B3)   
-[Получение ИД БП](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D0%91%D0%9F)   
-[Получение логина и ФИО основного исполнителя](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BB%D0%BE%D0%B3%D0%B8%D0%BD%D0%B0-%D0%B8-%D0%A4%D0%98%D0%9E-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8F-%D1%87%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA%D0%B0-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D0%BE%D0%B3%D0%BE-%D0%B2-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D0%B5-%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D0%BB%D0%B8-%D0%BF%D0%B5%D1%80%D0%B2%D1%8B%D0%BC)  
+[Получение ИД текущего процесса](#gettingid)  
+[Счетчик добавления номера в поле входящего номера](#counteraddingnumber)  
+[Назначение даты исполнения](#assignmentexecutiondate)   
+[Получение ИД БП](#obtainingbpid)   
+[Получение логина и ФИО основного исполнителя](#gettingloginandname)  
 
 
 # Детальная информация
