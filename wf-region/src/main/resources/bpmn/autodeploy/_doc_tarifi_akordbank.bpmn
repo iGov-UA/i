@@ -203,6 +203,7 @@ execution.setVariable('nCountSubmiteLimit', (oDocumentStepSubmitedAll .nCountSub
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="nCountAccept" name="Кількість голосів за" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="nCountReject" name="Кількість голосів проти" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -364,7 +365,7 @@ var sDecision = execution.getVariable('sDecision')
 if(sDecision == 'accept'){
 	execution.setVariable('nCountAccept', ++nCountAccept)
 } else{
-	execution.setVariable('processInstanceId', ++nCountReject)
+	execution.setVariable('nCountReject', ++nCountReject)
 }
 </script>
     </scriptTask>
