@@ -47,9 +47,9 @@ public class DocumentCommonController {
     @Transactional
     public @ResponseBody
     Map<String, Object> isDocumentStepSubmitedAll(
-            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
-            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
-            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "Логин подписанта", required = true) @RequestParam(required = true, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
             HttpServletResponse httpResponse) throws Exception {
 
         LOG.info("snID_Process_Activiti: " + nID_Process);
