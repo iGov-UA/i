@@ -1423,6 +1423,8 @@ public class DocumentStepService {
             mReturn.put("nCountSubmited", countSubmited);
             mReturn.put("nCountNotSubmited", countNotSubmited);
             
+            LOG.info("mReturn in isDocumentStepSubmitedAll {}", mReturn);
+            
             return mReturn;
         }
     }
