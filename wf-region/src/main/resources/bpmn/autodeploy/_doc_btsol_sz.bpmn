@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_btsol_dogovor" name="Согласование договора на приобретение ТМЦ (договора подряда)" isExecutable="true">
+  <process id="_doc_btsol_sz" name="Служебная записка" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
@@ -18,34 +18,8 @@
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumberRecomendation" name="№ рекомендации ТК" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateRecomendation" name="Дата рекомендации ТК" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSubjectContract" name="Предмет договора" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDocPreview" name="№ карточки согласованного ранее договора" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNamePartner" name="Наименование контрагента" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTextContrtact" name="Текст договора" type="fileHTML" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTextDoc" name="Тело документа" type="fileHTML" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asEDRPOU" name="Заполнить данные подрядчика и заказчика; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
-          <activiti:value id="sEnumYes" name="да"></activiti:value>
-          <activiti:value id="sEnumNo" name="нет"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="markers3" name="спрятать ЕДРПОУ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;markers_01&quot;,&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sShortName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;,&quot;sCEOName_SubjectOrgan_01&quot;,&quot;sRequisites_01&quot;,&quot;sContact_01&quot;,&quot;markers_02&quot;,&quot;sID_SubjectOrgan_OKPO_02&quot;,&quot;sFullName_SubjectOrgan_02&quot;,&quot;sShortName_SubjectOrgan_02&quot;,&quot;sLocation_SubjectOrgan_02&quot;,&quot;sCEOName_SubjectOrgan_02&quot;,&quot;sRequisites_02&quot;,&quot;sContact_02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asEDRPOU&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumYes'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введите код ЕДРПОУ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адресс" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФИО руководителя" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sRequisites_01" name="Реквизиты для оплаты" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sContact_01" name="Контактные данные" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Заказчик&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введите код ЕДРПОУ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Полное наименование" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Краткое наименование" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адресс" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФИО руководителя" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sRequisites_02" name="Реквизиты для оплаты" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sContact_02" name="Контактные данные" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="замечание согласующего" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT3" name="отказ утверждающего" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
@@ -124,7 +98,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2_yellow" name="Утверждение договора">
+    <userTask id="usertask2_yellow" name="утверждение договора">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -398,8 +372,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <sequenceFlow id="flow103" sourceRef="scripttask16" targetRef="usertask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_dogovor">
-    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_dogovor" id="BPMNPlane__doc_btsol_dogovor">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_sz">
+    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_sz" id="BPMNPlane__doc_btsol_sz">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="41.0" y="109.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
