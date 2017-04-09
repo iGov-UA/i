@@ -548,8 +548,10 @@ public class ActionTaskService {
             
             Map<String, FormProperty> enumProperties = new HashMap<String, FormProperty>();
             StartFormData startFormData = oFormService.getStartFormData(curTask.getProcessDefinitionId());
+            LOG.info("Loaded start form data for the process {}", startFormData);
             if (startFormData != null){
             	for (FormProperty formProperty : startFormData.getFormProperties()){
+            		LOG.info("Checking property {} with the type {} ", formProperty.getId(), formProperty.getType().getName());
             		String sType = formProperty.getType().getName();
                     if ("enum".equalsIgnoreCase(sType)) {
                     	enumProperties.put(formProperty.getId(), formProperty);
