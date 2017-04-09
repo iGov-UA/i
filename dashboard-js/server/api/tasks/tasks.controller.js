@@ -126,8 +126,6 @@ exports.index = function (req, res) {
       query.includeProcessVariables = false;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
-      query.size = query.nSize;
-      query.start = query.nStart;
       query.taskInvolvedUser = user.id;
       query.finished = true;
     } else if (req.query.filterType === 'documents') {
