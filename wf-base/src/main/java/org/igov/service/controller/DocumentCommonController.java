@@ -46,7 +46,7 @@ public class DocumentCommonController {
     @RequestMapping(value = "/isDocumentStepSubmitedAll", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
-    Map<String, Boolean> isDocumentStepSubmitedAll(
+    Map<String, Object> isDocumentStepSubmitedAll(
             @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
             @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
             @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
