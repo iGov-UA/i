@@ -163,7 +163,7 @@ public class DocumentCommonController {
         return m;
     }
     
-    @ApiOperation(value = "Удаление подписанта документа")
+    @ApiOperation(value = "Делегировать подписанта документа")
     @RequestMapping(value = "/delegateDocumentStepSubject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     //@Transactional
     public @ResponseBody
