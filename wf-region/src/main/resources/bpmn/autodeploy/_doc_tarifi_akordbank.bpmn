@@ -161,11 +161,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sLogin_ResponsiblePerson" name="Логін відповідальної особи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="ід групи" type="invisible" default="AkordBank_TK"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
-          <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow17" sourceRef="scripttask5" targetRef="usertask4"></sequenceFlow>
@@ -301,6 +297,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask7" name="розпорядження щодо зміни тарифу">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow58" sourceRef="usertask7" targetRef="servicetask3"></sequenceFlow>
@@ -358,7 +355,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="40.0" width="40.0" x="-171.0" y="248.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
-        <omgdc:Bounds height="73.0" width="105.0" x="470.0" y="417.0"></omgdc:Bounds>
+        <omgdc:Bounds height="86.0" width="105.0" x="470.0" y="417.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="71.0" width="105.0" x="70.0" y="422.0"></omgdc:Bounds>
@@ -450,7 +447,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="161.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="470.0" y="453.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="460.0"></omgdi:waypoint>
         <omgdi:waypoint x="361.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
