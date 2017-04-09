@@ -1376,11 +1376,13 @@ public class DocumentStepService {
 
         return "";
     }
-
-    public Map<String, Boolean> isDocumentStepSubmitedAll(String snID_Process, String sLogin, String sKey_Step)
+    
+    public Map<String, Object> isDocumentStepSubmitedAll(String snID_Process, String sLogin, String sKey_Step)
             throws Exception {
         LOG.info("isDocumentStepSubmitedAll: snID_Process {}, sKey_Step {} ...", snID_Process, sKey_Step);
-        Map<String, Boolean> mReturn = new HashMap();
+        Map<String, Object> mReturn = new HashMap();
+        long countSubmited = 0;
+        long countNotSubmited = 0;
         List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process);//
         LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
         DocumentStep oFindedDocumentStep = null;
@@ -1408,13 +1410,21 @@ public class DocumentStepService {
                         bSubmitedAll = false;
                         LOG.info("oDocumentStepSubjectRight: " + oDocumentStepSubjectRight.getsKey_GroupPostfix()
                                 + " sDate: " + oDocumentStepSubjectRight.getsDate() + "bSubmitedAll: " + bSubmitedAll);
-                        break;
+                        //break;
+                        countNotSubmited++;
+                    } else{
+                        countSubmited++;
                     }
                 } else {
                     LOG.error("oDocumentStepSubjectRight is null");
                 }
             }
             mReturn.put("bSubmitedAll", bSubmitedAll);
+            mReturn.put("nCountSubmited", countSubmited);
+            mReturn.put("nCountNotSubmited", countNotSubmited);
+            
+            LOG.info("mReturn in isDocumentStepSubmitedAll {}", mReturn);
+            
             return mReturn;
         }
     }

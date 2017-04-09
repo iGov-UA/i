@@ -116,6 +116,9 @@ exports.index = function (req, res) {
     });
   } else {
     var path = 'action/task/getTasks';
+
+    query.nStart = (req.query.page || 0) * query.nSize;
+
     if (req.query.filterType === 'selfAssigned') {
       query.sLogin = user.id;
       query.sFilterStatus = 'OpenedAssigned';
@@ -126,6 +129,8 @@ exports.index = function (req, res) {
       query.includeProcessVariables = false;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
+      query.size = query.nSize;
+ 	    query.start = query.nStart;
       query.taskInvolvedUser = user.id;
       query.finished = true;
     } else if (req.query.filterType === 'documents') {
