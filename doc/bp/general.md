@@ -2309,10 +2309,10 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
 ###### listenersidoc
 ### Листенеры iDoc
-[листенер ${SetTasks}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#settasks)  
-[листенер ${DocumentInit_iDoc}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#documentinit_idoc)  
-[листенер ${UpdateStatusTask}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustask)  
-[листенер ${UpdateStatusTaskTreeAndCloseProcess}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustasktreeandcloseprocess)  
+[листенер ${SetTasks}](#settasks)  
+[листенер ${DocumentInit_iDoc}](#documentinit_idoc)  
+[листенер ${UpdateStatusTask}](#updatestatustask)  
+[листенер ${UpdateStatusTaskTreeAndCloseProcess}](#updatestatustasktreeandcloseprocess)  
 
 ###### serveses
 ### Сервисы
@@ -2411,11 +2411,11 @@ _testSimpleSubProces - порожденный
 
 ###### scriptsusedidoc
 ### Скрипты, которые используются в СЕДе
-[Получение ИД текущего процесса](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0)  
-[Счетчик добавления номера в поле входящего номера](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%A1%D1%87%D0%B5%D1%82%D1%87%D0%B8%D0%BA-%D0%B4%D0%BE%D0%B1%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-%D0%BD%D0%BE%D0%BC%D0%B5%D1%80%D0%B0-%D0%B2-%D0%BF%D0%BE%D0%BB%D0%B5-%D0%B2%D1%85%D0%BE%D0%B4%D1%8F%D1%89%D0%B5%D0%B3%D0%BE-%D0%BD%D0%BE%D0%BC%D0%B5%D1%80%D0%B0)  
-[Назначение даты исполнения](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9D%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F---%D0%BF%D0%BE-%D1%83%D0%BC%D0%BE%D0%BB%D1%87%D0%B0%D0%BD%D0%B8%D1%8E--30-%D0%B4%D0%BD%D0%B5%D0%B9-%D0%BA-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B9-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B2-%D0%BD%D1%83%D0%B6%D0%BD%D1%8B%D0%B9-%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82-%D0%B4%D0%B4%D0%BC%D0%BC%D0%B3%D0%B3%D0%B3%D0%B3)   
-[Получение ИД БП](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D0%91%D0%9F)   
-[Получение логина и ФИО основного исполнителя](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BB%D0%BE%D0%B3%D0%B8%D0%BD%D0%B0-%D0%B8-%D0%A4%D0%98%D0%9E-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8F-%D1%87%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA%D0%B0-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D0%BE%D0%B3%D0%BE-%D0%B2-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D0%B5-%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D0%BB%D0%B8-%D0%BF%D0%B5%D1%80%D0%B2%D1%8B%D0%BC)  
+[Получение ИД текущего процесса](#gettingid)  
+[Счетчик добавления номера в поле входящего номера](#counteraddingnumber)  
+[Назначение даты исполнения](#assignmentexecutiondate)   
+[Получение ИД БП](#obtainingbpid)   
+[Получение логина и ФИО основного исполнителя](#gettingloginandname)  
 
 
 # Детальная информация
