@@ -223,7 +223,7 @@ execution.setVariable('nCountSubmiteLimit', (oDocumentStepSubmitedAll .nCountSub
     </sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="usertask4" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow34" sourceRef="usertask5" targetRef="scripttask10"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="exclusivegateway4" targetRef="scripttask10"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="exclusivegateway4" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
     </sequenceFlow>
@@ -246,9 +246,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="scripttask8"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="exclusivegateway1" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow44" sourceRef="exclusivegateway4" targetRef="endevent3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask3" name="інформування щодо рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -397,6 +394,7 @@ if(sDecision == 'accept'){
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow69" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow70" sourceRef="usertask5" targetRef="exclusivegateway4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_tarifi_akordbank">
     <bpmndi:BPMNPlane bpmnElement="_doc_tarifi_akordbank" id="BPMNPlane__doc_tarifi_akordbank">
@@ -473,7 +471,7 @@ if(sDecision == 'accept'){
         <omgdc:Bounds height="85.0" width="105.0" x="256.0" y="415.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="-365.0" y="540.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="-365.0" y="590.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
         <omgdc:Bounds height="55.0" width="105.0" x="-400.0" y="241.0"></omgdc:Bounds>
@@ -485,7 +483,7 @@ if(sDecision == 'accept'){
         <omgdc:Bounds height="40.0" width="40.0" x="-368.0" y="349.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="-300.0" y="510.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="-400.0" y="511.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="-149.0" y="53.0"></omgdi:waypoint>
@@ -540,7 +538,7 @@ if(sDecision == 'accept'){
         <omgdi:waypoint x="230.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="-104.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-171.0" y="268.0"></omgdi:waypoint>
         <omgdi:waypoint x="-295.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
@@ -567,10 +565,6 @@ if(sDecision == 'accept'){
         <omgdi:waypoint x="660.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="660.0" y="169.0"></omgdi:waypoint>
         <omgdi:waypoint x="263.0" y="170.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="-151.0" y="288.0"></omgdi:waypoint>
-        <omgdi:waypoint x="-348.0" y="540.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
         <omgdi:waypoint x="122.0" y="493.0"></omgdi:waypoint>
@@ -610,7 +604,7 @@ if(sDecision == 'accept'){
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
         <omgdi:waypoint x="-348.0" y="477.0"></omgdi:waypoint>
-        <omgdi:waypoint x="-248.0" y="510.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-348.0" y="511.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
         <omgdi:waypoint x="-328.0" y="457.0"></omgdi:waypoint>
@@ -626,8 +620,12 @@ if(sDecision == 'accept'){
         <omgdi:waypoint x="-348.0" y="437.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="-300.0" y="537.0"></omgdi:waypoint>
-        <omgdi:waypoint x="-330.0" y="557.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-348.0" y="566.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-348.0" y="590.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
+        <omgdi:waypoint x="-104.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-131.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
