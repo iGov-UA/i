@@ -163,6 +163,32 @@ public class DocumentCommonController {
         return m;
     }
     
+    @ApiOperation(value = "Удаление подписанта документа")
+    @RequestMapping(value = "/delegateDocumentStepSubject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    //@Transactional
+    public @ResponseBody
+    List<DocumentStepSubjectRight> delegateDocumentStepSubject(
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "группа", required = true) @RequestParam(required = true, value = "sKey_Group") String sKey_Group,
+            @ApiParam(value = "группа делегирования", required = true) @RequestParam(required = true, value = "sKey_Group_Delegate") String sKey_Group_Delegate,
+            @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step
+    ) throws Exception {
+
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        LOG.info("sKey_Group={}", sKey_Group);
+        LOG.info("sKey_Group_Delegate={}", sKey_Group_Delegate);
+        LOG.info("sKey_Step={}", sKey_Step);
+
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService.delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate);
+        
+        LOG.info("aDocumentStepSubjectRight_Current={}", aDocumentStepSubjectRight_Current);
+        
+        return aDocumentStepSubjectRight_Current;
+    }
+    
+//delegateDocumentStepSubject(String snID_Process_Activiti, String sKey_Step, String sKey_Group, String sKey_Group_Delegate)
+        
+        
     @ApiOperation(value = "Удаление степов и процесса")
     @RequestMapping(value = "/removeDocumentSteps", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody String removeDocumentSteps(
