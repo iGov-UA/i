@@ -205,11 +205,11 @@
           <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-		  <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_Executor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date" writable="false"></activiti:formProperty>
-		   <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
+        <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
           <activiti:value id="sEnumResultYes" name="вирішено позитивно"></activiti:value>
           <activiti:value id="sEnumResultNo" name="відмовлено у задоволенні"></activiti:value>
           <activiti:value id="sEnumResultExplain" name="дано роз’яснення"></activiti:value>
@@ -225,7 +225,14 @@
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_MJU]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="Керівник - накладення резолюції, призначення виконавців">
@@ -427,12 +434,11 @@
         <activiti:formProperty id="sTable1" name="Структурний підрозділ, що здійснює розгляд; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_justice_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
-       
-        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-		  <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_Executor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date" writable="false"></activiti:formProperty>
-		   <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
+        <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
           <activiti:value id="sEnumResultYes" name="вирішено позитивно"></activiti:value>
           <activiti:value id="sEnumResultNo" name="відмовлено у задоволенні"></activiti:value>
           <activiti:value id="sEnumResultExplain" name="дано роз’яснення"></activiti:value>
@@ -675,12 +681,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMainExecutor" name="Основний виконавець логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-        
+        <activiti:formProperty id="sName_Executor" name="Виконавець" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date" writable="false"></activiti:formProperty>
-		   <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
+        <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
           <activiti:value id="sEnumResultYes" name="вирішено позитивно"></activiti:value>
           <activiti:value id="sEnumResultNo" name="відмовлено у задоволенні"></activiti:value>
           <activiti:value id="sEnumResultExplain" name="дано роз’яснення"></activiti:value>
@@ -913,12 +918,11 @@
           <activiti:value id="sEnumDecisionYesBut" name="Завдання виконано - не формувати вихідний документ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMainExecutor" name="Основний виконавець" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець" type="invisible"></activiti:formProperty>
-       
-		  <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_Executor" name="Виконавець" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date" writable="false"></activiti:formProperty>
-		   <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
+        <activiti:formProperty id="asResult" name="Результати розгляду" type="enum" writable="false">
           <activiti:value id="sEnumResultYes" name="вирішено позитивно"></activiti:value>
           <activiti:value id="sEnumResultNo" name="відмовлено у задоволенні"></activiti:value>
           <activiti:value id="sEnumResultExplain" name="дано роз’яснення"></activiti:value>
@@ -926,7 +930,6 @@
           <activiti:value id="sEnumResultBelong" name="за належністю"></activiti:value>
           <activiti:value id="sEnumResultNoConsider" name="не підлягає розгляду"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="markers5" name="Якщо доопрацювання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;asDecisionNoText&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDecisionNo'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string"></activiti:formProperty>
         <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber" type="invisible"></activiti:formProperty>
@@ -1164,9 +1167,9 @@
           <activiti:value id="sEnumDecisionNo" name="Повернути документ на доопрацювання"></activiti:value>
           <activiti:value id="sEnumDecisionYesBut" name="Завдання виконано - не формувати вихідний документ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sExecutor" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPrepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSigned" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_AutorResolution" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_Executor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_Executor" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_AutorResolution" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date"></activiti:formProperty>
@@ -1242,8 +1245,8 @@ i++
 execution.setVariable('sMainExecutor', obj.aProcessSubjectTree[0].aUser[i].sLogin)
 execution.setVariable('sFirstName', obj.aProcessSubjectTree[0].aUser[i].sFirstName)
 execution.setVariable('sLastName', obj.aProcessSubjectTree[0].aUser[i].sLastName)
-var sExecutor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProcessSubjectTree[0].aUser[i].sLastName
-execution.setVariable('sExecutor', sExecutor)
+var sName_Executor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProcessSubjectTree[0].aUser[i].sLastName
+execution.setVariable('sName_Executor', sName_Executor)
 
 //перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -1252,7 +1255,9 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 //Клонування прав для основного виконавця
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sMainExecutor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')</script>
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')
+</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
@@ -1296,19 +1301,24 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_1')
 </script>
     </scriptTask>
     <sequenceFlow id="flow63" sourceRef="scripttask5" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask6" name="перемикання степа 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')
+</script>
     </scriptTask>
     <sequenceFlow id="flow64" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
     <scriptTask id="scripttask7" name="перемикання степа 4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_4')
+</script>
     </scriptTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow66" sourceRef="usertask4" targetRef="endevent2"></sequenceFlow>

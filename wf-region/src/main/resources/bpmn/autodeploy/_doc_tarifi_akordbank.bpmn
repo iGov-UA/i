@@ -20,7 +20,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <userTask id="usertask1" name="формування СЗ степ1">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" required="true">
@@ -28,10 +28,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
           <activiti:value id="sForma_ZS2" name="Тариф по прийому платежів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" required="true">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP-клієнт"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" required="true"></activiti:formProperty>
@@ -61,14 +57,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask2" name="Начальник відділення - погодження або повернення степ2">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP-кліент"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea"></activiti:formProperty>
@@ -86,14 +78,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask3" name="зНУ РО степ3">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP кліент"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
@@ -155,14 +143,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask4" name="ДД РБ">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false">
-          <activiti:value id="ordenary" name="звичайний клієнт"></activiti:value>
-          <activiti:value id="vip" name="VIP клієнт"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="обгрунтування" type="textArea" writable="false"></activiti:formProperty>
@@ -196,11 +180,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask5" name="члены ТК">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCustomer_status" name="Статус клієнта" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
@@ -226,9 +209,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow28" sourceRef="exclusivegateway2" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission<=sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway2" targetRef="scripttask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
-    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
@@ -242,7 +222,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow36" sourceRef="exclusivegateway3" targetRef="scripttask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask7" name="перехід степ5 клонування права ДД РБ" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask7" name="перехід степ7 клонування права ДД РБ" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_4'
@@ -255,17 +235,7 @@ var sKey_GroupPostfix_New ='AkordBank_Director_Department_RB'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow37" sourceRef="scripttask7" targetRef="servicetask3"></sequenceFlow>
-    <scriptTask id="scripttask8" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>c</script>
-    </scriptTask>
-    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="scripttask8"></sequenceFlow>
-    <sequenceFlow id="flow40" sourceRef="scripttask8" targetRef="exclusivegateway5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'true'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow41" sourceRef="exclusivegateway5" targetRef="exclusivegateway2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'true'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="exclusivegateway1" targetRef="scripttask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow44" sourceRef="exclusivegateway4" targetRef="exclusivegateway6"></sequenceFlow>
@@ -315,210 +285,189 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow51" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow52" sourceRef="exclusivegateway5" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway2" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_tarifi_akordbank">
     <bpmndi:BPMNPlane bpmnElement="_doc_tarifi_akordbank" id="BPMNPlane__doc_tarifi_akordbank">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="36.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="-184.0" y="36.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="61.0" width="105.0" x="90.0" y="23.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="-104.0" y="23.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="65.0" width="105.0" x="237.0" y="16.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="105.0" x="56.0" y="21.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="75.0" width="105.0" x="400.0" y="16.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="105.0" x="256.0" y="16.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="81.0" width="105.0" x="567.0" y="13.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="105.0" x="470.0" y="13.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="772.0" y="197.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="740.0" y="241.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="72.0" width="105.0" x="668.0" y="116.0"></omgdc:Bounds>
+        <omgdc:Bounds height="72.0" width="105.0" x="158.0" y="134.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="85.0" width="105.0" x="780.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="85.0" width="105.0" x="740.0" y="11.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
-        <omgdc:Bounds height="79.0" width="105.0" x="530.0" y="185.0"></omgdc:Bounds>
+        <omgdc:Bounds height="79.0" width="105.0" x="470.0" y="229.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="390.0" y="197.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="256.0" y="241.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
-        <omgdc:Bounds height="71.0" width="105.0" x="216.0" y="189.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="56.0" y="233.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="80.0" y="202.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="-104.0" y="241.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="711.0" y="33.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="640.0" y="33.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="682.0" y="209.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="599.0" y="349.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="333.0" y="209.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="190.0" y="248.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
-        <omgdc:Bounds height="40.0" width="40.0" x="112.0" y="132.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="-171.0" y="248.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
-        <omgdc:Bounds height="65.0" width="105.0" x="587.0" y="280.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="780.0" y="286.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="711.0" y="290.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="105.0" x="470.0" y="425.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
-        <omgdc:Bounds height="40.0" width="40.0" x="132.0" y="351.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="-278.0" y="248.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="194.0" y="344.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="-310.0" y="152.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="4.0" y="344.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="-310.0" y="322.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="135.0" y="410.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="-370.0" y="251.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="434.0" y="360.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="256.0" y="430.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="620.0" y="370.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="137.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="45.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="90.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-149.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-104.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="195.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="237.0" y="48.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="56.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="342.0" y="48.0"></omgdi:waypoint>
-        <omgdi:waypoint x="400.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="161.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="256.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="505.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="567.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="361.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="668.0" y="152.0"></omgdi:waypoint>
-        <omgdi:waypoint x="289.0" y="152.0"></omgdi:waypoint>
-        <omgdi:waypoint x="289.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="108.0" y="86.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="832.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="824.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="241.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="530.0" y="224.0"></omgdi:waypoint>
-        <omgdi:waypoint x="495.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="361.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="216.0" y="224.0"></omgdi:waypoint>
-        <omgdi:waypoint x="185.0" y="229.0"></omgdi:waypoint>
+        <omgdi:waypoint x="56.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="672.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="711.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="751.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="780.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="702.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="639.0" y="280.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="682.0" y="229.0"></omgdi:waypoint>
-        <omgdi:waypoint x="635.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="389.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="425.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="353.0" y="209.0"></omgdi:waypoint>
-        <omgdi:waypoint x="352.0" y="152.0"></omgdi:waypoint>
-        <omgdi:waypoint x="668.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="206.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="390.0" y="224.0"></omgdi:waypoint>
-        <omgdi:waypoint x="373.0" y="229.0"></omgdi:waypoint>
+        <omgdi:waypoint x="256.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="132.0" y="202.0"></omgdi:waypoint>
-        <omgdi:waypoint x="132.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-104.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-131.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="152.0" y="152.0"></omgdi:waypoint>
-        <omgdi:waypoint x="183.0" y="152.0"></omgdi:waypoint>
-        <omgdi:waypoint x="668.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-151.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-150.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-95.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-24.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="109.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="158.0" y="170.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="333.0" y="229.0"></omgdi:waypoint>
-        <omgdi:waypoint x="321.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="161.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="639.0" y="345.0"></omgdi:waypoint>
-        <omgdi:waypoint x="486.0" y="360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="457.0"></omgdi:waypoint>
+        <omgdi:waypoint x="361.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="824.0" y="252.0"></omgdi:waypoint>
-        <omgdi:waypoint x="832.0" y="286.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="780.0" y="313.0"></omgdi:waypoint>
-        <omgdi:waypoint x="751.0" y="310.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="731.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="702.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="296.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="349.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="731.0" y="73.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="116.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="263.0" y="170.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="112.0" y="152.0"></omgdi:waypoint>
-        <omgdi:waypoint x="7.0" y="152.0"></omgdi:waypoint>
-        <omgdi:waypoint x="7.0" y="232.0"></omgdi:waypoint>
-        <omgdi:waypoint x="7.0" y="310.0"></omgdi:waypoint>
-        <omgdi:waypoint x="46.0" y="310.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="351.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-171.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-238.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="172.0" y="371.0"></omgdi:waypoint>
-        <omgdi:waypoint x="194.0" y="371.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-258.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-258.0" y="207.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="132.0" y="371.0"></omgdi:waypoint>
-        <omgdi:waypoint x="109.0" y="371.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-258.0" y="288.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-258.0" y="322.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="194.0" y="371.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-258.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-353.0" y="251.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="109.0" y="371.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-258.0" y="322.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-353.0" y="286.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
-        <omgdi:waypoint x="539.0" y="387.0"></omgdi:waypoint>
-        <omgdi:waypoint x="620.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="256.0" y="457.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="731.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="730.0" y="224.0"></omgdi:waypoint>
-        <omgdi:waypoint x="772.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="349.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.0" y="308.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
