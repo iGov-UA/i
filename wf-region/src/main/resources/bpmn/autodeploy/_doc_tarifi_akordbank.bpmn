@@ -28,15 +28,15 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
           <activiti:value id="sForma_ZS2" name="Тариф по прийому платежів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLimit_sAmount_of_commission" name="Оберіть статус клієнта" type="enum" required="true">
+          <activiti:value id="10" name="Звичайний клієнт"></activiti:value>
+          <activiti:value id="20" name="VIP-клієнт"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахункової комісії" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLimit_sAmount_of_commission" name="Ліміт" type="enum" required="true">
-          <activiti:value id="10" name="Звичайний клієнт"></activiti:value>
-          <activiti:value id="20" name="VIP-клієнт"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -253,6 +253,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:field name="subject">
           <activiti:expression>Інформування щодо прийнятого рішення</activiti:expression>
         </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>Погоджена зміна тарифу на ${sTarif}</activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -291,12 +294,44 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <userTask id="usertask6" name="протокол щодо зміни тарифу ТК">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="тип документу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="тип документу" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" writable="false">
+          <activiti:value id="sForma_SZ1" name="Тариф РКО"></activiti:value>
+          <activiti:value id="sForma_ZS2" name="Тариф по прийому платежів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLimit_sAmount_of_commission" name="Оберіть статус клієнта" type="enum">
+          <activiti:value id="10" name="Звичайний клієнт"></activiti:value>
+          <activiti:value id="20" name="VIP-клієнт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахункової комісії" type="long" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask7" name="розпорядження щодо зміни тарифу">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" writable="false">
+          <activiti:value id="sForma_SZ1" name="Тариф РКО"></activiti:value>
+          <activiti:value id="sForma_ZS2" name="Тариф по прийому платежів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLimit_sAmount_of_commission" name="Оберіть статус клієнта" type="enum" writable="false">
+          <activiti:value id="10" name="Звичайний клієнт"></activiti:value>
+          <activiti:value id="20" name="VIP-клієнт"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахункової комісії" type="long" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
