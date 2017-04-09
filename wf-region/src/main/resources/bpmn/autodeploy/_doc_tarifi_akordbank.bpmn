@@ -242,7 +242,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow44" sourceRef="exclusivegateway4" targetRef="scripttask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask3" name="інформування щодо рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="інформування щодо рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -255,6 +255,15 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>Погоджена зміна тарифу на ${sTarif}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:string><![CDATA[+380961335385]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>зміна розпорядження</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${sOrder}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -294,7 +303,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <userTask id="usertask6" name="протокол щодо зміни тарифу ТК">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="тип документу" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sOrder" name="тип документу" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" writable="false">
@@ -315,7 +324,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </userTask>
     <userTask id="usertask7" name="розпорядження щодо зміни тарифу">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sOrder" name="Тип документу" type="fileHTML" default="0"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" writable="false">
