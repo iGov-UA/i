@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_btsol_tender2" name="Заявка на проведение тендера по отбору подрядчика/ТЭЭ победителя внутреннего тендера" isExecutable="true">
+  <process id="_doc_btsol_tender3" name="Заявка на проведение тендера по отбору подрядчика/ТЭЭ победителя внутреннего тендера" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
@@ -10,50 +10,26 @@
     </startEvent>
     <userTask id="usertask1" name="Создание документа">
       <extensionElements>
-          <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCodeProduction" name="Код продукции согласно классификатора" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asUnit" name="Единица измерения" type="enum" required="true">
-          <activiti:value id="thing" name="штука|шт"></activiti:value>
-          <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
-          <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
-          <activiti:value id="wantagate" name="вантажопідйомність у метричних тоннах|вантажпідйом. метрич. Т"></activiti:value>
-          <activiti:value id="gram" name="грам|г"></activiti:value>
-          <activiti:value id="gram_izotop" name="грам подільних ізотопів|г поділ. Ізотоп"></activiti:value>
-          <activiti:value id="matrichnyi" name="карат метричний (= 200 мг)|кар"></activiti:value>
-          <activiti:value id="square" name="квадратний метр|кв.м"></activiti:value>
-          <activiti:value id="nitrogen" name="кілограм азоту|кг N"></activiti:value>
-          <activiti:value id="hydroxide_potassium" name="кілограм гідроокису калію|кг KOH"></activiti:value>
-          <activiti:value id="sodium" name="кілограм гідроокису натрію|кг NaOH"></activiti:value>
-          <activiti:value id="oxide_potassium" name="кілограм оксиду калію|кг K2O"></activiti:value>
-          <activiti:value id="peroxide" name="кілограм пероксиду водню|кг H2O2"></activiti:value>
-          <activiti:value id="phosphorus" name="кілограм п'ятиокису фосфору|кг P2O5"></activiti:value>
-          <activiti:value id="chloride_choline" name="кілограм хлорид холіну|кг C5H14ClNO"></activiti:value>
-          <activiti:value id="suha" name="кілограм сухої на 90 % речовини|кг сух. 90 % реч"></activiti:value>
-          <activiti:value id="uranium" name="кілограм урану|кг U"></activiti:value>
-          <activiti:value id="cub_meter" name="кубічний метр|куб.м"></activiti:value>
-          <activiti:value id="curi" name="кюрі|Ki кюрі"></activiti:value>
-          <activiti:value id="ltr" name="літр|л"></activiti:value>
-          <activiti:value id="spirt" name="літр чистого (100 %) спирту|л 100 % спирт"></activiti:value>
-          <activiti:value id="meter" name="метр|м метр"></activiti:value>
-          <activiti:value id="par" name="пара (2 шт.)|пар"></activiti:value>
-          <activiti:value id="hundred_thing" name="сто штук|100 шт"></activiti:value>
-          <activiti:value id="thousand_cub_meter" name="тисяча кубічних метрів|тис. куб.м"></activiti:value>
-          <activiti:value id="thousand_ltr" name="тисяча літрів|тис. л"></activiti:value>
-          <activiti:value id="thousand_pieces" name="тисяча штук|тис. шт"></activiti:value>
-          <activiti:value id="thousand_kvt" name="тисяча кіловатгодин|тис. кВт·год"></activiti:value>
+        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum" required="true">
+          <activiti:value id="Enum1" name="заказчика"></activiti:value>
+          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sQuantity" name="Количество" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPurposeSupply" name="Назначение поставки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sScheduleSupply" name="Срок поставки (график)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sProducer" name="Производитель (полное наименование)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddInformation" name="Доп.информация" type="textArea" default=" - количество (для заявки на увеличение объема поставки) - цена ранее выданной рекомендации (для заявки на пересмотр цены) - номер ранее выданной рекомендации - цена поставщика на данный момент (для заявки на пересмотр цены) - альтернативный, предложенный предприятием поставщик (для заявки на пересмотр цены) и его цена"></activiti:formProperty>
-        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" required="true">
+        <activiti:formProperty id="asServicemMachines" name="Услуги машин и механизмов" type="enum" required="true">
+          <activiti:value id="Enum1" name="заказчика"></activiti:value>
+          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
+        </activiti:formProperty>
+      <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" required="true">
           <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
           <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
           <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
@@ -444,8 +420,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <sequenceFlow id="flow103" sourceRef="scripttask16" targetRef="usertask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
-    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender3">
+    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender3" id="BPMNPlane__doc_btsol_tender3">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="41.0" y="109.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
