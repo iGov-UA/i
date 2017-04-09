@@ -339,7 +339,7 @@ public class SubjectGroupTreeService {
         {
             if (sFind != null && !sFind.isEmpty()) {
                 for(SubjectGroup oSubjecetGroup : aChildResult){
-                   if(oSubjecetGroup.getName() != null && oSubjecetGroup.getName().contains(sFind)){
+                   if(oSubjecetGroup.getName() != null && oSubjecetGroup.getName().toLowerCase().contains(sFind.toLowerCase())){
                        aChildResultByUser.add(oSubjecetGroup);
                    } 
                 } 
