@@ -191,7 +191,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -244,10 +244,8 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
     <sequenceFlow id="flow60" sourceRef="usertask4" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow61" sourceRef="scripttask2" targetRef="usertask5"></sequenceFlow>
     <scriptTask id="scripttask3" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-		var nID_Process = execution.getProcessInstanceId();
-		var sKey_Step = execution.getVariable('sKey_Step_Document')
-		var obj3= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+      <script>var nID_Process = execution.getProcessInstanceId();
+var obj3= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_2')
 execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
 		
 </script>
@@ -256,10 +254,10 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow63" sourceRef="scripttask3" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow64" name="true" sourceRef="exclusivegateway1" targetRef="endevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == true}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == 'true'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow65" name="false" sourceRef="exclusivegateway1" targetRef="usertask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == false}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == 'false'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_31">
@@ -323,7 +321,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <omgdi:waypoint x="800.0" y="290.0"></omgdi:waypoint>
         <omgdi:waypoint x="880.0" y="290.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="19.0" x="814.0" y="273.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="814.0" y="273.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
@@ -331,7 +329,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <omgdi:waypoint x="620.0" y="290.0"></omgdi:waypoint>
         <omgdi:waypoint x="621.0" y="244.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="24.0" x="639.0" y="273.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="639.0" y="273.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

@@ -222,7 +222,7 @@
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
-              <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
@@ -1312,7 +1312,7 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')
 </script>
     </scriptTask>
-    <scriptTask id="scripttask7" name="перемикання степа 4" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask7" name="перемикання степа 4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
