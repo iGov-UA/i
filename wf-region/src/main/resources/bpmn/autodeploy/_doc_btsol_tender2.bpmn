@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_btsol_tender2" name="Заявка на проведение тендера по отбору подрядчика/ТЭЭ победителя внутреннего тендера" isExecutable="true">
+  <process id="_doc_btsol_tender2" name="Заявка на тендер по определению поставщика ТМЦ" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
@@ -10,7 +10,7 @@
     </startEvent>
     <userTask id="usertask1" name="Создание документа">
       <extensionElements>
-          <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
@@ -107,7 +107,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Согласование договора">
+    <userTask id="usertask2" name="Согласование заявки">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -162,7 +162,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2_yellow" name="утверждение договора">
+    <userTask id="usertask2_yellow" name="Утверждение заявки">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -296,17 +296,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumSign'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask4" targetRef="usertask2_yellow"></sequenceFlow>
-    <callActivity id="callactivity1" name="ответный документ" calledElement="_doc_justice_22">
-      <extensionElements>
-        <activiti:in source="sIncomingNumber" target="sIncomingNumber"></activiti:in>
-        <activiti:in source="sApplicant" target="sApplicant"></activiti:in>
-        <activiti:in source="sReportCommon" target="sReportCommon"></activiti:in>
-        <activiti:in source="sExecutor" target="sExecutor"></activiti:in>
-        <activiti:in source="sAutorResolution" target="sAutorResolution"></activiti:in>
-        <activiti:in source="asTypeDispatch" target="asTypeDispatch"></activiti:in>
-        <activiti:in source="sDoc2" target="sDoc2"></activiti:in>
-      </extensionElements>
-    </callActivity>
+    <callActivity id="callactivity1" name="ответный документ" calledElement="_doc_btsol_sz"></callActivity>
     <sequenceFlow id="flow63" name="за визами" sourceRef="exclusivegateway2" targetRef="scripttask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumSighting'}]]></conditionExpression>
     </sequenceFlow>

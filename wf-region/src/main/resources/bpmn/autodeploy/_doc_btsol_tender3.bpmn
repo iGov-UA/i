@@ -18,7 +18,6 @@
         <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum" required="true">
@@ -29,7 +28,7 @@
           <activiti:value id="Enum1" name="заказчика"></activiti:value>
           <activiti:value id="Enum2" name="подрядчика"></activiti:value>
         </activiti:formProperty>
-      <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" required="true">
+        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" required="true">
           <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
           <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
           <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
@@ -83,7 +82,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Согласование договора">
+    <userTask id="usertask2" name="Согласование заявки">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -138,7 +137,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2_yellow" name="утверждение договора">
+    <userTask id="usertask2_yellow" name="Утверждение заявки">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -272,17 +271,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumSign'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask4" targetRef="usertask2_yellow"></sequenceFlow>
-    <callActivity id="callactivity1" name="ответный документ" calledElement="_doc_justice_22">
-      <extensionElements>
-        <activiti:in source="sIncomingNumber" target="sIncomingNumber"></activiti:in>
-        <activiti:in source="sApplicant" target="sApplicant"></activiti:in>
-        <activiti:in source="sReportCommon" target="sReportCommon"></activiti:in>
-        <activiti:in source="sExecutor" target="sExecutor"></activiti:in>
-        <activiti:in source="sAutorResolution" target="sAutorResolution"></activiti:in>
-        <activiti:in source="asTypeDispatch" target="asTypeDispatch"></activiti:in>
-        <activiti:in source="sDoc2" target="sDoc2"></activiti:in>
-      </extensionElements>
-    </callActivity>
+    <callActivity id="callactivity1" name="ответный документ" calledElement="_doc_btsol_sz"></callActivity>
     <sequenceFlow id="flow63" name="за визами" sourceRef="exclusivegateway2" targetRef="scripttask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumSighting'}]]></conditionExpression>
     </sequenceFlow>
