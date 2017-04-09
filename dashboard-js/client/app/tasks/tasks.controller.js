@@ -251,9 +251,9 @@
       tasks.list($stateParams.type, data)
         .then(function (oResult) {
           try {
-            if (oResult.data.code) {
-              var e = new Error(oResult.data.message);
-              e.name = oResult.data.code;
+            if (oResult.code || (oResult.data && oResult.data.code)) {
+              var e = new Error(oResult.message || (oResult.data && oResult.data.message));
+              e.name = oResult.code || (oResult.data && oResult.data.code);
 
               throw e;
             }
