@@ -2369,7 +2369,7 @@ var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, '
 ###### generationtasks
 ### Порождение задач
 Системный процесс - порождает задачи, расписанные на исполнителей в родительском процессе.  
-В system_task данные пробрасываются с помощью листенера [SetTasks](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#settasks). Поддерживается мультипорождение и синхронизация данных в процесс-родитель.
+В system_task данные пробрасываются с помощью листенера [SetTasks](#settasks). Поддерживается мультипорождение и синхронизация данных в процесс-родитель.
 
 ```javascript
 var number=execution.getVariable('sID_Order_GovPublic')
@@ -2386,7 +2386,7 @@ private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_tes
 
 ###### callactivity
 ### Callactivity
-Вызов другого процесса из текущего стандартными средствами активити. Отличается от вызова при помощи листенера [SetTasks](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#settasks) тем, что не может принимать значение обратно в случае мультипорождения нескольких подпроцессов.
+Вызов другого процесса из текущего стандартными средствами активити. Отличается от вызова при помощи листенера [SetTasks](#settasks) тем, что не может принимать значение обратно в случае мультипорождения нескольких подпроцессов.
 Очень хорошо его можно применять, когда в случае входящего документа необходимо породить 1 исходящий из входящего.
 ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sdmtSVzlWamhER3c)
 Во вкладке **Main Config**  в поле **Called element** прописываем ИДБП который необходимо вызвать **(1)**, в блоке **Input parameters** прописываем поля, которые необходимо пробросить в порождаемый процесс **(2)**.
