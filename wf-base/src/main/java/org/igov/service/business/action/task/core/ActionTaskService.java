@@ -969,7 +969,7 @@ public class ActionTaskService {
         }
         LOG.info(String.format("Found %s tasks for business process %s for date period %s - %s", aTaskFound.size(), sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
         if (pattern != null) {
-            LOG.info("List of fields to retrieve: }{", pattern);
+            LOG.info("List of fields to retrieve: {}", pattern);
         } else {
             LOG.info("Will retreive all fields from tasks");
         }
