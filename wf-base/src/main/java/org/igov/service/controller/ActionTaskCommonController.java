@@ -1295,6 +1295,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String header = oActionTaskService.formHeader(saFields, foundHistoricResults, saFieldsCalc);
         String[] headers = header.split(";");
 
+        if ("*".equals(saFields)){
+        	saFields = null;
+        	LOG.info("Resetting saFields to null in order to get all the fields values");
+        }
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
         LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!" + saFields);
