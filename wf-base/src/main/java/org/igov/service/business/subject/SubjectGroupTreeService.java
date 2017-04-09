@@ -253,9 +253,11 @@ public class SubjectGroupTreeService {
                 LOG.info("hierarchyProcessSubject" + hierarchyProcessSubject);
             }
 
+            LOG.info("aChildResult {}", aChildResult);
+            
             List<SubjectGroup> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
 
-            LOG.info("aChildResultByUser" + aChildResultByUser);
+            LOG.info("aChildResultByUser {}", aChildResultByUser);
 
             List<SubjectGroup> resultTree;
             if (sFind != null && !sFind.isEmpty()) {
@@ -340,6 +342,7 @@ public class SubjectGroupTreeService {
                 for (SubjectGroup subjectGroup : aChildResult) {
                     List<SubjectUser> aSubjectUser = getUsersByGroupSubject(
                             subjectGroup.getsID_Group_Activiti());
+                    LOG.info("aSubjectUser {}", aSubjectUser);
                     final List<SubjectUser> subjectUserFiltr = Lists
                             .newArrayList(Collections2.filter(aSubjectUser, new Predicate<SubjectUser>() {
                                 @Override
@@ -350,6 +353,7 @@ public class SubjectGroupTreeService {
                                     return subjectUser.getsFirstName().toLowerCase().contains(sFind.toLowerCase());
                                 }
                             }));
+                    LOG.info("subjectUserFiltr {}", subjectUserFiltr);
                     // получаем только их логины
                     final List<String> sFindLogin = Lists.newArrayList(
                             Collections2.transform(subjectUserFiltr, new Function<SubjectUser, String>() {
@@ -362,6 +366,9 @@ public class SubjectGroupTreeService {
                     // и оставляем только processSubject чьи логины
                     // содержаться
                     // в отфильтрованном списке
+                    LOG.info("sFindLogin {}", sFindLogin);
+                    LOG.info("subjectGroup.getsID_Group_Activiti {}", subjectGroup.getsID_Group_Activiti());
+                    
                     if (sFindLogin.contains(subjectGroup.getsID_Group_Activiti())) {
                         aChildResultByUser.add(subjectGroup);
 
