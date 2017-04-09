@@ -2314,6 +2314,57 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 [листенер ${UpdateStatusTask}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustask)  
 [листенер ${UpdateStatusTaskTreeAndCloseProcess}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustasktreeandcloseprocess)  
 
+### Сервисы
+### Переключение степа  
+**setDocumentStep(snID_Process_Activiti, sKey_Step)**  
+пример вызова:
+```javascript
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
+```
+### Клонирование прав для человека
+**cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)**  
+пример вызова:  
+```javascript
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')
+```
+### Клонирование прав для людей из таблицы
+**cloneDocumentStepFromTable(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)**  
+пример вызова:
+```javascript
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU_read', 'sTableViewed', 'step_2')
+```
+### Проверка все ли подписали
+**isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)**  
+пример вызова:
+```javascript
+var nID_Process = execution.getProcessInstanceId()
+var sKey_Step = execution.getVariable('sKey_Step_Document')
+var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())
+```
+### Снятие сабмита (подписант остается)
+**cancelDocumentSubmit(nID_Process, sKey_Step, sKeyGroup)**  
+пример вызова
+```javascript
+var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sKeyGroup)
+```
+### Удаление подписанта
+**removeDocumentStepSubject(nID_Process, sKey_Step, sKeyGroup)**  
+пример вызова:
+```javascript
+var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup= execution.getVariable('sLogin_LastSubmited')
+var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, 'step_2', sKeyGroup)
+```
+### /delegateDocumentStepSubject
+### /syncDocumentSubmitersByField
+
 ###### generationtasks
 ### Порождение задач
 Системный процесс - порождает задачи, расписанные на исполнителей в родительском процессе.  
