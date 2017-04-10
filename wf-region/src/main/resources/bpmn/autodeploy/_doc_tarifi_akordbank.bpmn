@@ -7,10 +7,10 @@
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
-        <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="nCountSubmitePlan" name="Кількість підписантів" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="nCountAccept" name="Кількість голосів за" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="nCountReject" name="кількість голосів проти" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nCountReject" name="Kількість голосів проти" type="invisible" default="0"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="отримання ід процесу" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -165,10 +165,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sLogin_ResponsiblePerson" name="Логін відповідальної особи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="ід групи" type="invisible" default="AkordBank_TK"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="nCountSubmitePlan" name="Кількість підписантів" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="nCountAccept" name="кількість голосів за" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="nCountReject" name="кількість голосів проти" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nCountAccept" name="Kількість голосів за" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nCountReject" name="Kількість голосів проти" type="invisible" default="0"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -185,8 +185,9 @@ var sKey_GroupPostfix_New = 'AkordBank_TK'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 var oDocumentStepSubmitedAll = documentStepService.isDocumentStepSubmitedAll(snID_Process_Activiti, 'test', sKey_Step)
-execution.setVariable('nCountSubmitePlan', oDocumentStepSubmitedAll .nCountSubmitePlan.toString())
-execution.setVariable('nCountSubmiteLimit', (oDocumentStepSubmitedAll .nCountSubmitePlan / 2))</script>
+var nCountSubmitePlan = oDocumentStepSubmitedAll .nCountSubmitePlan.toString()
+execution.setVariable('nCountSubmitePlan', nCountSubmitePlan )
+execution.setVariable('nCountSubmiteLimit', (nCountSubmitePlan/2))</script>
     </scriptTask>
     <userTask id="usertask5" name="члены ТК">
       <extensionElements>
@@ -211,7 +212,7 @@ execution.setVariable('nCountSubmiteLimit', (oDocumentStepSubmitedAll .nCountSub
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="nCountAccept" name="Кількість голосів за" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nCountReject" name="Кількість голосів проти" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible" default="3"></activiti:formProperty>
+        <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible" default="4"></activiti:formProperty>
         <activiti:formProperty id="nCountSubmitePlan" name="Кількість підписантів" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
