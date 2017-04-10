@@ -12,7 +12,9 @@
         <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" default="fiz" required="true">
+        <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="відображення полів2" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv1.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" default="fiz" required="true">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юридична особа, фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
@@ -42,7 +44,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об'єкту нерухомості" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressObject" name="Місце розташування нерухомості" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="vipiska" name="Копія виписки з Єдиного державного реєстру; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sTehPasport" name="Копія технічного паспорту об'єкту нерухомого майна; ;bNew=true" type="file"></activiti:formProperty>
@@ -58,6 +60,7 @@
         <activiti:formProperty id="sDeclaration" name="Декларація про готовність завершеного будівництва до експлуатації; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sReferenceBTI" name="Довідка з БТІ про номер який рекомендовано присвоїти даній споруді; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sLetterDouble" name="Лист про наявність подвійної нумерації; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDovPrisvAdr" name="Довідка щодо можливості присвоєння поштової адреси з конкретно визначеною нумерацією та відсутності зареєстрованого об’єкта нерухомого майна за такою ж адресою; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
@@ -68,7 +71,6 @@
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWordsLetter" name="слово у лист; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка документів і вхідних даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -82,6 +84,7 @@
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv.json')}"></activiti:formProperty> 
+        <activiti:formProperty id="markers2" name="відображення полів2" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" default="fiz" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юридична особа, фізична особа-підприємець"></activiti:value>
@@ -141,6 +144,7 @@
         <activiti:formProperty id="sDeclaration" name="Декларація про готовність завершеного будівництва до експлуатації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReferenceBTI" name="Довідка з БТІ про номер який рекомендовано присвоїти даній споруді; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLetterDouble" name="Лист про наявність подвійної нумерації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDovPrisvAdr" name="Довідка щодо можливості присвоєння поштової адреси з конкретно визначеною нумерацією та відсутності зареєстрованого об’єкта нерухомого майна за такою ж адресою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -156,6 +160,7 @@
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="відображення полів2" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" default="fiz" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юридична особа, фізична особа-підприємець"></activiti:value>
@@ -350,6 +355,7 @@ var per14 = " "
 var per15 = " "
 var per16 = " "
 var per17 = " "
+var per18 = " "
 if(execution.getVariable('sDocConfidant') != null)
 {
 per3 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
@@ -405,6 +411,10 @@ if(execution.getVariable('sVisnDivideHouse') != null)
 {
 per17 = "&lt;li&gt;Копія висновку спеціаліста про технічну можливість виділення в окрему адресу.&lt;/li&gt;"
 }
+if(execution.getVariable('sDovPrisvAdr') != null)
+{
+per18 = "&lt;li&gt;Довідка щодо можливості присвоєння поштової адреси з конкретно визначеною нумерацією та відсутності зареєстрованого об’єкта нерухомого майна за такою ж адресою.&lt;/li&gt;"
+}
 if((execution.getVariable('sAction') == 'give') || (execution.getVariable('sAction1') == 'get'))
 {
 per11 = 'присвоєння'
@@ -425,8 +435,8 @@ if(execution.getVariable('sAction1') == 'renew')
 {
 per11 = 'уточнення'
 }
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+per17+'&lt;/ol&gt;'
-res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+per17+'&lt;/ol&gt;'
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+per17+per18+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+per17+per18+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res)
 execution.setVariable('sListDocumentsPrint', res2)
 execution.setVariable('sWordsLetter', per11)</script>
