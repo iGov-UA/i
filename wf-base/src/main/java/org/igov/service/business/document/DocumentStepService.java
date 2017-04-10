@@ -940,6 +940,7 @@ public class DocumentStepService {
                 if (oUser.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
                     Map<String, Object> mUser = new HashMap();
                     mUser.put("sLogin", oUser.getId());
+                    mUser.put("sID_Group", sID_Group);
                     mUser.put("sFIO", oUser.getLastName() + " " + oUser.getFirstName());
                     amUserProperty.add(mUser);
                 }

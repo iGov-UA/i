@@ -299,6 +299,7 @@
         $scope.taskData.aTable = [];
         $scope.usersHierarchyOpened = false;
         $scope.taskData.aNewAttachment = [];
+        $rootScope.delegateSelectMenu = false;
 
         // todo соеденить с isUnasigned
         $scope.isDocument = function () {
@@ -1599,6 +1600,10 @@
           } else {
             return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
           }
+        };
+
+        $scope.switchDelegateMenu = function () {
+          $rootScope.delegateSelectMenu = !$rootScope.delegateSelectMenu;
         };
 
         $rootScope.$broadcast("update-search-counter");
