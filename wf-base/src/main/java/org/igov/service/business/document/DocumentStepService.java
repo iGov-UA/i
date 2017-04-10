@@ -613,8 +613,17 @@ public class DocumentStepService {
     }
 
     public List<String> getLoginsFromField(String snID_Process_Activiti, String sID_Field) throws Exception {
+        return getLoginsFromField(snID_Process_Activiti, sID_Field, null);
+    }
+    
+    public List<String> getLoginsFromField(String snID_Process_Activiti, String sID_Field, String sID_FieldTable) throws Exception {
         List<String> asLogin = new LinkedList();
         try {
+            
+            if(sID_FieldTable == null){
+                sID_FieldTable = "sLogin_isExecute";
+            }
+            
             String sValue = (String) runtimeService.getVariable(snID_Process_Activiti, sID_Field);
             // String soJSON=(String)
             // runtimeService.getVariable(snID_Process_Activiti, sID_Field);
@@ -649,7 +658,7 @@ public class DocumentStepService {
                                     LOG.info("oJsonMap in cloneDocumentStepFromTable is {}", oJsonMap);
                                     if (oJsonMap != null) {
                                         Object oId = oJsonMap.get("id");
-                                        if (((String) oId).equals("sLogin_isExecute")
+                                        if (((String) oId).equals(sID_FieldTable)
                                                 || ((String) oId).equals("sID_Group_Activiti_isExecute")
                                                 || ((String) oId).equals("sLogin_Approver")
                                                 || ((String) oId).equals("sLogin_Addressee")) {
@@ -681,14 +690,14 @@ public class DocumentStepService {
     }
 
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti, String sKey_Group,
-            String sID_Field, String sKey_Step, boolean bReClone) throws Exception {
+            String sID_Field, String sKey_Step, boolean bReClone, String sID_FieldTable) throws Exception {
 
         LOG.info("started...");
         LOG.info("sKey_Group={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step={}", sKey_Group,
                 snID_Process_Activiti, sID_Field, sKey_Step);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Return = new ArrayList<>();
         try {
-            List<String> asLogin = getLoginsFromField(snID_Process_Activiti, sID_Field);
+            List<String> asLogin = getLoginsFromField(snID_Process_Activiti, sID_Field, sID_FieldTable);
             for (String sLogin : asLogin) {
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(
                         snID_Process_Activiti, sKey_Group, sLogin, sKey_Step, bReClone);
@@ -709,7 +718,7 @@ public class DocumentStepService {
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sID_Field, String sKey_Step_Document_To) throws Exception {
         return cloneDocumentStepFromTable(snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step_Document_To,
-                false);
+                false, null);
     }
 
     public List<DocumentStepSubjectRight> syncDocumentSubmitersByField(String snID_Process_Activiti,
