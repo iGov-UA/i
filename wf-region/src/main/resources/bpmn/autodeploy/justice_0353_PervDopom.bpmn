@@ -106,12 +106,12 @@
         <activiti:formProperty id="nOther" name="Інші документи, що підтверджують порушене право особи та необхідність його захисту; декілька сторінок об'єднайте у один pdf файл або zip архів;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('minust/justice_0353_PervDopom1.json')}"></activiti:formProperty>
-      	<activiti:formProperty id="decide" name="Рішення" type="enum" required="true">
-          <activiti:value id="answer" name="Надати відповідь на запитання (відповідь буде надіслана громадянину на ел. пошту)"></activiti:value>
-          <activiti:value id="accept" name=" Запросити особу до центру для складання процесуального документу/видачі наказу про надання БВПД"></activiti:value>
-          <activiti:value id="reject" name="відмова в обробці (обов'язково вкажіть причину в коментарі)"></activiti:value>
+      	<activiti:formProperty id="asDecide" name="Рішення" type="enum" required="true">
+          <activiti:value id="sAnswer" name="Надати відповідь на запитання (відповідь буде надіслана громадянину на ел. пошту)"></activiti:value>
+          <activiti:value id="sAccept" name=" Запросити особу до центру для складання процесуального документу/видачі наказу про надання БВПД"></activiti:value>
+          <activiti:value id="sReject" name="відмова в обробці (обов'язково вкажіть причину в коментарі)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Примітки" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Примітки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/justice_0353_PervDopom1.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/minust/justice_0353_PervDopom1.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -183,7 +183,7 @@
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
 				На Ваше запитання №[sID_Order] щодо надання безоплатної первинної правової допомоги було отримано відповідь:<br>
-				${comment}<br>
+				${sComment}<br>
 				<br>
 				${sPhoneOrgan}<br>
 			</p>
@@ -203,11 +203,11 @@
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" name="${decide=='answer'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='"answer"'}]]></conditionExpression>
+    <sequenceFlow id="flow6" name="${asDecide=='sAnswer'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sAnswer'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow7" name="${decide=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+    <sequenceFlow id="flow7" name="${asDecide=='sAccept'}" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sAccept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
@@ -242,7 +242,7 @@
 			<p>
 				На жаль, Ваше звернення №[sID_Order] щодо надання безоплатної первинної правової допомоги було відхилено.<br>
 				&lt;p&gt;Причина в наступному:<br>
-				${comment}<br>
+				${sComment}<br>
 				<br>
 				${sAddress}<br>
 				${sWorkTime}<br>
@@ -258,8 +258,8 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow11" name="${decide=='reject'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+    <sequenceFlow id="flow11" name="${asDecide=='sReject'}" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='sReject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
   </process>
