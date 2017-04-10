@@ -75,7 +75,7 @@
 		},
 		"ShowFieldsOnCondition_10":
 		{
-			"aField_ID":["sAction","sReferenceBTI","sDivideZemlya", "sObject"],
+			"aField_ID":["sAction","sReferenceBTI","sDivideZemlya", "sObject", "bankId_scan_passport", "sDocDivideHouse", "sOwnershipZemlya", "sPravoObect", "sDovidka", "sDocConfidant"],
 			"asID_Field":
 			{
 				"sFunc1":"sID_Public_SubjectOrganJoin"
@@ -156,14 +156,24 @@
 			},
 			"sCondition":"[sFunc7] == 'renew'"
 		},
-		"ShowFieldsOnCondition_19":
+		"RequiredFieldsOnCondition_19":
 		{
-			"aField_ID":["bankId_scan_passport", "sDocDivideHouse", "sOwnershipZemlya", "sPravoObect", "sDovidka", "sDocConfidant"],
+			"aField_ID":["sOwnershipHouse", "sDeclaration", "sDovidka"],
 			"asID_Field":
 			{
 				"sFunc11":"sID_Public_SubjectOrganJoin"
 			},
-			"sCondition":"[sFunc11] != 'Kropivn_KropivnytskyiT'"
+			"sCondition":"[sFunc11] == 'lviv_drohob'"
+		},
+		"RequiredFieldsOnCondition_20":
+		{
+			"aField_ID":["sDovPrisvAdr"],
+			"asID_Field":
+			{
+				"sFunc12":"sID_Public_SubjectOrganJoin",
+				"sFunc13":"sAction1"
+			},
+			"sCondition":"[sFunc11] == 'lviv_drohob' || [sFunc11] == 'get'"
 		}
 	}
 }
