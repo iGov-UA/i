@@ -19,7 +19,7 @@
         <activiti:formProperty id="markers_ext_11" name="внешние маркеры 11" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_11.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_ext_12" name="внешние маркеры 12" type="markers" default="${markerService.loadFromFile('jur/dnepr_cnap_759_12.json')}"></activiti:formProperty>
 -->
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
 
 <!-- ПРОСЛЕДИТЬ Крім внесення змін до інформації про здійснення зв’язку з юридичною особою. -->
 		<activiti:formProperty id="markers_0001" name="аналог dnepr_cnap_759_00" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_ValueSelectALL&quot;:{&quot;sNote&quot;:[&quot;Присвоить выбранный пункт селекта&quot;],&quot;aField_ID&quot;:[&quot;sVarOPF&quot;],&quot;asID_Field_sValue&quot;:[&quot;asSelectOPF&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;},&quot;ShowFieldsOnCondition_CourtIzm_01&quot;:{&quot;sNote&quot;:[&quot;показать если изменения связаны с судом&quot;],&quot;aField_ID&quot;:[&quot;sVarCourtName&quot;,&quot;sVarCourtCaseDate&quot;,&quot;sVarCourtCaseNum&quot;,&quot;sVarCourtCaseDateStart&quot;,&quot;fDoc_00&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asCourtIzm_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf_01'&quot;},&quot;ValuesFieldsOnCondition_SelectIzm_17_1&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_Plus_17&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_17&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf_01'&quot;},&quot;ValuesFieldsOnCondition_SelectIzm_17_2&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_Plus_17&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_17&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf_02'&quot;},&quot;ShowFieldsOnCondition_SelectIzm_17&quot;:{&quot;sNote&quot;:[&quot;показать строки если есть изменения №17&quot;],&quot;aField_ID&quot;:[&quot;Info_17_01&quot;,&quot;sPhone_17_01_02&quot;,&quot;sPhone_17_02_02&quot;,&quot;sFax_17_02&quot;,&quot;sVarWebAddr_17_02&quot;,&quot;sVarEmail_17_02&quot;,&quot;sVarOtherInfo_17_02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_17&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf_01'&quot;}}}"></activiti:formProperty>
@@ -45,8 +45,11 @@
 
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-<!--        <activiti:formProperty id="markers_Var_01" name="Маркер; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_Var_01&quot;:{&quot;aField_ID&quot;:[&quot;sVarINN_001_01&quot;,&quot;sVarUrName&quot;],&quot;asID_Field_sValue&quot;:[&quot;[sID_SubjectOrgan_OKPO_01]&quot;,&quot;[sFullName_SubjectOrgan_01]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_UA&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty> -->
 
+        <activiti:formProperty id="markers_Var_01" name="Маркер; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_Var_01&quot;:{&quot;aField_ID&quot;:[&quot;sVarINN_001_01&quot;,&quot;sVarUrName&quot;],&quot;asID_Field_sValue&quot;:[&quot;[sID_SubjectOrgan_OKPO_01]&quot;,&quot;[sFullName_SubjectOrgan_01]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_UA&quot;},&quot;sCondition&quot;:&quot;[sClient] != '.'&quot;}}}"></activiti:formProperty>
+
+        <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи; ;bVisible=false" type="string"></activiti:formProperty>
 <!--        <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи" type="string" default=" " required="true"></activiti:formProperty> -->
 <!--        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty> -->
         
@@ -96,8 +99,11 @@
 <!-- ТЕКУЩАЯ РАБОТА СТАРТТАСКА -->
 
 		<!-- ЗАГЛУШКА ЗАГЛУШКА ЗАГЛУШКА -->
-
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true, bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut01_01" name="обов'язково якщо є замовлені послуги; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_17&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf_01'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="markers_Hide_ut01_01" name="показати строки якщо є замовлені послуги; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_17&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf_01'&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true, bNew=true" type="file"></activiti:formProperty>
+<!--        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true, bNew=true" type="file" required="true"></activiti:formProperty> -->
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/justice/justice_1499_UrChange_print_20170328.html"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги; ;bVisible=false" type="string" default="Державна реєстрація змін до відомостей про юридичну особу"></activiti:formProperty>
       </extensionElements>
@@ -122,20 +128,20 @@
 
 <!-- начало переменных -->
 
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sRole_Plus_01" name="+ роль 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_02" name="+ роль 02" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_03" name="+ роль 03" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_04" name="+ роль 04" type="invisible"></activiti:formProperty>
 
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
 
-<!--        <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty> -->
+        <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sVarOPF" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
-<!--        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty> -->
+        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sVarCourtName" name="Найменування суду; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarCourtCaseDate" name="Дата рішення; ;writable=false" type="string"></activiti:formProperty>
@@ -589,7 +595,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
 
 <!-- НАЧАЛО ВСТАВКА -->
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sRole_Plus_01" name="+ роль 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_02" name="+ роль 02" type="invisible"></activiti:formProperty>
@@ -602,13 +608,13 @@
         <activiti:formProperty id="sVarGetDoc_01_Plus_04" name="отримати на вказану раніше +" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sVarPlaceGetDoc_001_01" name="Поштова адреса; ;writable=false" type="string"></activiti:formProperty> -->
 	
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
 
-<!--        <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty> -->
+        <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sVarOPF" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
-<!--        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty> -->
+        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sVarCourtName" name="Найменування суду; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarCourtCaseDate" name="Дата рішення; ;writable=false" type="string"></activiti:formProperty>
@@ -797,7 +803,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
 
 <!-- НАЧАЛО ВСТАВКА -->
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sRole_Plus_01" name="+ роль 01" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sRole_Plus_02" name="+ роль 02" type="invisible"></activiti:formProperty>
@@ -813,10 +819,10 @@
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи" type="string"></activiti:formProperty>
 
-<!--        <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty> -->
+        <activiti:formProperty id="sVarINN_001_01" name="Ідентифікаційний код юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sVarOPF" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
-<!--        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty> -->
+        <activiti:formProperty id="sVarUrName" name="Назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sVarCourtName" name="Найменування суду; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarCourtCaseDate" name="Дата рішення; ;writable=false" type="string"></activiti:formProperty>
