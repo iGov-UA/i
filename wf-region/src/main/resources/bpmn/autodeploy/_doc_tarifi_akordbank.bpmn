@@ -7,10 +7,6 @@
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="тип документу" type="string" default="СЗ про погодження тарифів"></activiti:formProperty>
-        <activiti:formProperty id="nCountSubmitePlan1" name="Кількість підписантів" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="nCountSubmiteLimit1" name="Ліміт" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="nCountAccept1" name="Кількість голосів за" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="nCountReject1" name="Kількість голосів проти" type="invisible" default="0"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="отримання ід процесу" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -199,9 +195,7 @@ var nCountSubmitePlan = oDocumentStepSubmitedAll .nCountSubmitePlan.toString()
 
 execution.setVariable('nCountSubmitePlan', nCountSubmitePlan)
 //execution.setVariable('nCountSubmiteLimit', Math.floor(nCountSubmitePlan).toString())
-execution.setVariable('nCountSubmiteLimit', (parseInt(execution.getVariable('nCountSubmitePlan'), 10)/2).toString())
-//execution.setVariable('nCountSubmiteLimit1', (parseInt(execution.getVariable('nCountSubmitePlan'), 10)/2).toString())
-//execution.setVariable('nCountSubmiteLimit2', Number(nCountSubmitePlan).toString())</script>
+execution.setVariable('nCountSubmiteLimit', (parseInt(execution.getVariable('nCountSubmitePlan'), 10)/2).toString())</script>
     </scriptTask>
     <userTask id="usertask5" name="члены ТК">
       <extensionElements>
@@ -394,10 +388,13 @@ var nCountReject = execution.getVariable('nCountReject')
 var sDecision = execution.getVariable('sDecision')
 
 if(sDecision == 'accept'){
-	execution.setVariable('nCountAccept', ++nCountAccept)
+       nCountAccept = (parseInt(nCountAccept , 10) + 1).toString()
 } else {
-	execution.setVariable('nCountReject', ++nCountReject)
-}</script>
+	nCountReject = (parseInt(nCountReject , 10) + 1).toString()
+}
+
+execution.setVariable('nCountAccept', nCountAccept)
+execution.setVariable('nCountReject', nCountReject)</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow64" sourceRef="scripttask10" targetRef="exclusivegateway9"></sequenceFlow>
