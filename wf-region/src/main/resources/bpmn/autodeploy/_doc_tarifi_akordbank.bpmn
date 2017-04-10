@@ -178,24 +178,20 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step = 'step_5'
-var oResultSetDoc =
-documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для тарифного комітету
 var sKey_GroupPostfix = '_default_TK'
 var sKey_GroupPostfix_New = 'AkordBank_TK'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 var oDocumentStepSubmitedAll =
-documentStepService.isDocumentStepSubmitedAll(snID_Process_Activiti,
-'test', sKey_Step)
+documentStepService.isDocumentStepSubmitedAll(snID_Process_Activiti, 'test', sKey_Step)
 
 var nCountSubmitePlan = oDocumentStepSubmitedAll .nCountSubmitePlan.toString()
 
 execution.setVariable('nCountSubmitePlan', nCountSubmitePlan)
-//execution.setVariable('nCountSubmiteLimit', Math.floor(nCountSubmitePlan).toString())
-execution.setVariable('nCountSubmiteLimit', (parseInt(execution.getVariable('nCountSubmitePlan'), 10)/2).toString())</script>
+execution.setVariable('nCountSubmiteLimit', (parseInt(nCountSubmitePlan , 10)/2).toString())</script>
     </scriptTask>
     <userTask id="usertask5" name="члены ТК">
       <extensionElements>
