@@ -49,7 +49,7 @@
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Supervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -160,42 +160,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="invisible"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
-          <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_MJU]]></activiti:string>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
-          <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[_task_justice]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="processDefinitionId">
-            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sTableViewed::${sTableViewed};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
-          <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[system_task_mu_read]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTableViewed}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="processDefinitionId">
-            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask2" name="перемикання степа та клонування прав" scriptFormat="javascript" activiti:autoStoreVariables="false">

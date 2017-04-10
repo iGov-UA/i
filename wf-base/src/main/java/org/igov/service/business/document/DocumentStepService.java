@@ -91,7 +91,7 @@ public class DocumentStepService {
         List<DocumentStep> aDocumentStep_Result = new ArrayList<>();
         // process common step if it exists
         Object oStep_Common = oJSON.opt("_");
-        LOG.info("Common step is - {}", oStep_Common);
+        LOG.info("snID_Process_Activiti {} Common step is - {}", snID_Process_Activiti, oStep_Common);
 
         DocumentStepType oDocumentStepType = new DocumentStepType();
         oDocumentStepType.setId(1L);
@@ -109,6 +109,7 @@ public class DocumentStepService {
             if (aDocumentStepSubjectRightToSet != null) {
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRightToSet) {
                     if (!oDocumentStepSubjectRight.getsKey_GroupPostfix().startsWith("_default_")) {
+                        
                         aDocumentStepSubjectRightToSet_Common.add(oDocumentStepSubjectRight);
                     }
                 }
@@ -368,6 +369,29 @@ public class DocumentStepService {
         return bRemoved;
     }
 
+    
+    
+    public List<DocumentStepSubjectRight> delegateDocumentStepSubject(String snID_Process_Activiti, String sKey_Step, String sKey_Group, String sKey_Group_Delegate)
+            throws Exception {
+
+        LOG.info("started... sKey_Group={}, snID_Process_Activiti={}, sKey_Step={}", sKey_Group, snID_Process_Activiti,
+                sKey_Step);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = new LinkedList();
+        try {
+
+            aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
+        
+            removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
+                    + ",sKey_Step=" + sKey_Step + "" + ",sKey_GroupPostfix=" + sKey_Group + "" + ")");
+            LOG.error("ERROR: ", oException);
+            throw oException;
+        }
+        return aDocumentStepSubjectRight_Current;
+    }    
+    
     private void reCloneRight(List<DocumentStepSubjectRight> aDocumentStepSubjectRight_To,
             DocumentStepSubjectRight oDocumentStepSubjectRight_From, String sKey_GroupPostfix_New) {
 
@@ -916,6 +940,7 @@ public class DocumentStepService {
                 if (oUser.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
                     Map<String, Object> mUser = new HashMap();
                     mUser.put("sLogin", oUser.getId());
+                    mUser.put("sID_Group", sID_Group);
                     mUser.put("sFIO", oUser.getLastName() + " " + oUser.getFirstName());
                     amUserProperty.add(mUser);
                 }
@@ -1422,6 +1447,9 @@ public class DocumentStepService {
             mReturn.put("bSubmitedAll", bSubmitedAll);
             mReturn.put("nCountSubmited", countSubmited);
             mReturn.put("nCountNotSubmited", countNotSubmited);
+            mReturn.put("nCountSubmitePlan", (countSubmited + countNotSubmited));
+            
+            LOG.info("mReturn in isDocumentStepSubmitedAll {}", mReturn);
             
             return mReturn;
         }
