@@ -36,7 +36,7 @@
       </extensionElements>
     </userTask>
 <!--     <serviceTask id="servicetask7" name="Повідомлення про вдалу попередню перевірку" activiti:delegateExpression="#{MailTaskWithAttachments}"> -->
-     <serviceTask id="servicetask7" name="Повідомлення про вдалу попередню перевірку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+     <serviceTask id="servicetask7" name="Повідомлення про вдалу попередню перевірку" activiti:delegateExpression="#{MailTaskWithAttachemts}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -59,9 +59,9 @@ ${sEssence}<br><br>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-<!--        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
-        </activiti:field> -->
+      <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${form_signed}]]></activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask9" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
