@@ -198,10 +198,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 var oDocumentStepSubmitedAll =
 documentStepService.isDocumentStepSubmitedAll(snID_Process_Activiti,
 'test', sKey_Step)
+
 var nCountSubmitePlan = oDocumentStepSubmitedAll .nCountSubmitePlan.toString()
-execution.setVariable('nCountSubmitePlan ', nCountSubmitePlan)
+
+execution.setVariable('nCountSubmitePlan', nCountSubmitePlan)
 execution.setVariable('nCountSubmiteLimit', Math.floor(nCountSubmitePlan).toString())
-execution.setVariable('nCountSubmitePlan1', parseInt(nCountSubmitePlan , 10).toString())
+
+execution.setVariable('nCountSubmiteLimit1', (parseInt(execution.getVariable('nCountSubmitePlan'), 10)/2).toString())
 execution.setVariable('nCountSubmiteLimit2', Number(nCountSubmitePlan).toString())</script>
     </scriptTask>
     <userTask id="usertask5" name="члены ТК">
@@ -229,6 +232,8 @@ execution.setVariable('nCountSubmiteLimit2', Number(nCountSubmitePlan).toString(
         <activiti:formProperty id="nCountReject" name="Кількість голосів проти" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible" default="4"></activiti:formProperty>
         <activiti:formProperty id="nCountSubmitePlan" name="Кількість підписантів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nCountSubmiteLimit1" name="nCountSubmiteLimit1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nCountSubmiteLimit2" name="nCountSubmiteLimit2" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
