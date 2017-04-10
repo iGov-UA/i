@@ -999,6 +999,14 @@ angular.module('dashboardJsApp')
               code : code
             }
           })
-        }
+        },
+      delegateDocToUser : function (params) {
+        if(params)
+          return simpleHttpPromise({
+            method: 'GET',
+            url: '/api/documents/delegateDocument',
+            params: params
+          })
       }
+    }
   });

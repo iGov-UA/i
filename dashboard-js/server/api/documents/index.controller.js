@@ -97,3 +97,13 @@ exports.getProcessSubjectTree = function (req, res) {
     res.send(result);
   })
 };
+
+exports.delegateDocument = function (req, res) {
+  activiti.get({
+    path: 'common/document/delegateDocumentStepSubject',
+    query: req.query
+  }, function (error, statusCode, result) {
+    res.statusCode = statusCode;
+    res.send(result);
+  })
+};
