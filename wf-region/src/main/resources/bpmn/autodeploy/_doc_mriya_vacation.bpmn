@@ -121,7 +121,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чорнобильська відпустка"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар робітника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionSectionChief" name="Статус рішення (узгодження)" type="enum">
           <activiti:value id="allowed" name="Дозволити"></activiti:value>
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
@@ -165,7 +165,9 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:field name="text">
           <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
 Вам не затверджена відпустка. <br>
-Коментар: ${sNote}]]></activiti:expression>
+Коментар: ${sNotePredicating}<br>
+sDateVacationBegin: ${sDateVacationBegin}<br>
+sDateVacationEnd: ${sDateVacationEnd}<br>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
