@@ -1431,7 +1431,8 @@ execution.setVariable('sExecutor', sExecutor)
 ### ServiceTagType
 ### ServiceType
 ### Subcategory
-### subject
+###### subject
+### Subject
 **nID** - номер по порядку  
 **sID** - оставляем пустым  
 **sLabel** - имя чиновника или название органа, название органа должно начинаться с нижнего подчеркивания  
@@ -1462,6 +1463,7 @@ execution.setVariable('sExecutor', sExecutor)
 ### SubjectMessage
 ### SubjectMessageType
 ### SubjectOrgan
+###### subjectorganjoin
 ### SubjectOrganJoin
 **nID** - номер строки, добавляется инкрементом  
 **nID_SubjectOrgan** - номер подтягивать из файла SubjectOrgan  
@@ -1477,6 +1479,7 @@ execution.setVariable('sExecutor', sExecutor)
 
 [детальней...](#_subjectorganjoin)
 
+###### subjectorganjoinattribute
 ### SubjectOrganJoinAttribute
 ### SubjectOrganJoinTax
 ### wf-base  
@@ -2588,7 +2591,7 @@ _тестирование и проливка на бету и боевой
 
 [вернуться...](#select)
 
-Для того чтоб в выпадающем списке селекта выпадал заданный массив данных, необходимо правильно заполнить файлы [Subject](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subject), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrganJoinAttribute](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoinattribute), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) соответственно описанию.
+Для того чтоб в выпадающем списке селекта выпадал заданный массив данных, необходимо правильно заполнить файлы [Subject](#subject), [SubjectOrgan](#subjectorgan), [SubjectOrganJoin](#subjectorganjoin), [SubjectOrganJoinAttribute](#subjectorganjoinattribute), [ServiceData](#servicedata) соответственно описанию.
 
 ###### _table
 

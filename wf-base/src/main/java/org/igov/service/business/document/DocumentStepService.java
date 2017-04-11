@@ -720,6 +720,11 @@ public class DocumentStepService {
         }
         return asLogin;
     }
+    
+    public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti, String sKey_Group,
+            String sID_Field, String sKey_Step, boolean bReClone) throws Exception {
+        return  cloneDocumentStepFromTable(snID_Process_Activiti, sKey_Group, sID_Field, sKey_Step, bReClone, null);
+    }
 
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti, String sKey_Group,
             String sID_Field, String sKey_Step, boolean bReClone, String sID_FieldTable) throws Exception {
