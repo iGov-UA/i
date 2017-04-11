@@ -40,9 +40,11 @@
         <activiti:formProperty id="markers2" name="Writable" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
+<!--        <activiti:formProperty id="oFile_XML_SWinEd" name="File; ;sID_Export=minust, bNew=true, bVisible=false" type="file" default="45_10_00_00"></activiti:formProperty> -->
         <activiti:formProperty id="oFile_Export" name="File; ;sID_Export=minust, bNew=true, bVisible=false" type="file" default="45_10_00_00"></activiti:formProperty>
 <!--        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system; bVisible=false" type="file" default="45_10_00_00"></activiti:formProperty> -->
-        <activiti:formProperty id="sFileName_Export_Answer" name="Название шаблона с ответом; ;bVisible=false" type="string" default="45_10_00_00" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом; ;bVisible=false" type="string" default="45_10_00_00" writable="false"></activiti:formProperty>
+<!--        <activiti:formProperty id="sFileName_Export_Answer" name="Название шаблона с ответом; ;bVisible=false" type="string" default="45_10_00_00" writable="false"></activiti:formProperty> -->
 <!--        <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="45_10_00_00" writable="false"></activiti:formProperty> -->
       </extensionElements>
     </startEvent>
@@ -51,7 +53,7 @@
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
         <activiti:formProperty id="oFile_Export" name="File; ;sID_Export=minust, bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
-          <activiti:field name="sID_File_Export">
+          <activiti:field name="sID_File_XML_SWinEd">
             <activiti:expression>${oFile_Export}</activiti:expression>
           </activiti:field>
           <activiti:field name="sEmail">
@@ -112,7 +114,7 @@
             <activiti:expression>${C_DOC_CNT}</activiti:expression>
           </activiti:field>
           <activiti:field name="sFile_XML_SWinEd_Filter">
-            <activiti:expression>${sFileName_Export_Answer}</activiti:expression>
+            <activiti:expression>${sFileName_XML_SWinEd_Answer}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
