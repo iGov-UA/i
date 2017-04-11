@@ -1465,7 +1465,7 @@ execution.setVariable('sExecutor', sExecutor)
 ###### subjectorgan
 ### SubjectOrgan
 **nID**
-**nID_Subject** - ид используется в [SubjectOrganJoin](#subjectorganjoin)
+**nID_Subject** - ид используется в [SubjectOrganJoin](#subjectorganjoin)   
 **sOKPO**  
 **sFormPrivacy**  
 **sName**   
