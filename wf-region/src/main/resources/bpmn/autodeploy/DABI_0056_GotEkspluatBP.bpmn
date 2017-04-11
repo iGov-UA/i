@@ -3,7 +3,7 @@
   <process id="DABI_0056_GotEkspluatBP" name="Декларація про готовність до експлуатації об’єкта I-ІІ категорії, будівництво якого здійснено на підставі будівельного паспорта" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sLabePosDek" name=" ; ;labelType=warning" type="label" default="Ця послуга тільки для об'єктів збудованих на підставі будівельного паспорта. В іншому випадку, вам треба інша послуга - &lt;a href=&quot;https://igov.org.ua/service/54/general &quot; target=&quot;_blank&quot;&gt;Декларація про готовність до експлуатації&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabePosDek" name=" ; ;labelType=danger" type="label" default="Ця послуга тільки для об'єктів збудованих на підставі будівельного паспорта. В іншому випадку, вам треба інша послуга - &lt;a href=&quot;https://igov.org.ua/service/54/general &quot; target=&quot;_blank&quot;&gt;Декларація про готовність до експлуатації&lt;/a&gt;"></activiti:formProperty>
         
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган який надасть вам відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
@@ -151,6 +151,15 @@
         <activiti:formProperty id="dZagPlosh" name="Загальна площа (кв.м)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="dZtPlosh" name="Житлова площа (кв.м)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="dNZtPlosh" name="Нежитлова площа (кв.м)" type="double" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="chekTexNag" name="Чи є окремі господарські будівлі?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nVukidTable" name="Перелік господарських будівель" type="table" default="${markerService.loadFromFile('table/DABI/ExpBudPasp.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerHar" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIHar.json')}"></activiti:formProperty>
+        
+        
         
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/DABI/DABI_0056_GotEkspluatBP.html"></activiti:formProperty>
