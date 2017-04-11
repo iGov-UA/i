@@ -12,7 +12,9 @@
         <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" default="fiz" required="true">
+        <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="відображення полів2" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv1.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" default="fiz" required="true">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юридична особа, фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
@@ -42,7 +44,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об'єкту нерухомості" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressObject" name="Місце розташування нерухомості" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="vipiska" name="Копія виписки з Єдиного державного реєстру; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sTehPasport" name="Копія технічного паспорту об'єкту нерухомого майна; ;bNew=true" type="file"></activiti:formProperty>
@@ -68,7 +70,6 @@
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWordsLetter" name="слово у лист; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка документів і вхідних даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -82,6 +83,7 @@
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv.json')}"></activiti:formProperty> 
+        <activiti:formProperty id="markers2" name="відображення полів2" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" default="fiz" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юридична особа, фізична особа-підприємець"></activiti:value>
@@ -156,6 +158,7 @@
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="відображення полів2" type="markers" default="${markerService.loadFromFile('rada_1429_OperAdrBud_Kropiv1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" default="fiz" writable="false">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
           <activiti:value id="ur" name="юридична особа, фізична особа-підприємець"></activiti:value>
