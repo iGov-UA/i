@@ -37,29 +37,28 @@
         <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_Export=PERIOD_MONTH, bVisible=false" type="string" default="12"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_Export=PERIOD_YEAR, bVisible=false" type="string" default="2015"></activiti:formProperty>
         <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_Export=C_STI_ORIG, bVisible=false" type="string" default="0463"></activiti:formProperty>
-        <activiti:formProperty id="oFile_Export" name="File;;sID_Export=minuat, bVisible=false" type="file" default="45_10_00_00"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Writable" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oFile_Export" name="File; ;sID_Export=minust, bNew=true, bVisible=false" type="file" default="45_10_00_00"></activiti:formProperty>
 <!--        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system; bVisible=false" type="file" default="45_10_00_00"></activiti:formProperty> -->
-        <activiti:formProperty id="sFileName_Export_Answer" name="Название шаблона с ответом" type="string" default="45_10_00_00" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFileName_Export_Answer" name="Название шаблона с ответом; ;bVisible=false" type="string" default="45_10_00_00" writable="false"></activiti:formProperty>
 <!--        <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="45_10_00_00" writable="false"></activiti:formProperty> -->
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="test_NAIS">
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
+        <activiti:formProperty id="oFile_Export" name="File; ;sID_Export=minust, bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
-          <activiti:field name="sID_File_XML_SWinEd">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+          <activiti:field name="sID_File_Export">
+            <activiti:expression>${oFile_Export}</activiti:expression>
           </activiti:field>
           <activiti:field name="sEmail">
             <activiti:expression>${email}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Позитивна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -113,12 +112,7 @@
             <activiti:expression>${C_DOC_CNT}</activiti:expression>
           </activiti:field>
           <activiti:field name="sFile_XML_SWinEd_Filter">
-            <activiti:expression>${sFileName_XML_SWinEd_Answer}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+            <activiti:expression>${sFileName_Export_Answer}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
