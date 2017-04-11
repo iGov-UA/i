@@ -26,7 +26,7 @@
           <activiti:value id="type4" name="Чотири адреси (895 грн)"></activiti:value>
           <activiti:value id="type5" name="П'ять адрес (1080 грн)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="warningMessage1" name=" ; ;labelType=warning" type="label" default="Адреса має бути в межах м.Дніпро. В іншому випадку Вам буде відмовлено в наданні інформації"></activiti:formProperty>
+        <activiti:formProperty id="warningMessage1" name=" ; ;labelType=warning" type="label" default="Адреса власності має бути в межах м.Дніпро. В іншому випадку Вам буде відмовлено в наданні інформації"></activiti:formProperty>
         
         <activiti:formProperty id="sAskedAddress1" name="Зазначте адресу #1" type="string" default="-"></activiti:formProperty>
         <activiti:formProperty id="sAskedAddress2" name="Зазначте адресу #2" type="string" default="-"></activiti:formProperty>
@@ -84,7 +84,7 @@
 [pattern/mail/new_design/_common_content_start.html]
 
 Ваш запит успішно зареєстровано. <br/>
-Тип запиту: ${saQuestion1}<br/>
+Тип запиту: value{[saQuestion1]}<br/>
 Адреса #1 ${sAskedAddress1} <br/>
 Адреса #2 ${sAskedAddress2} <br/>
 Адреса #3 ${sAskedAddress3} <br/>
@@ -97,6 +97,7 @@
 [paymentButton_LiqPay]
 <br/>
 <br/>
+Якщо Ваш запит вже не актуальний або містить хибні дані, натисніть на цю кнопку:
 [cancelTaskSimple]
 <br/>
 
