@@ -14,7 +14,6 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
-import org.activiti.engine.form.FormType;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
@@ -24,10 +23,8 @@ import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.*;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
-import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
@@ -91,6 +88,12 @@ public class ActionTaskService {
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
+
+    private static final String THE_STATUS_OF_TASK_IS_CLOSED = "Closed";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED = "OpenedUnassigned";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED = "OpenedAssigned";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED = "Opened";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -2296,6 +2299,27 @@ public class ActionTaskService {
         return entity.getBody();
     }
 
+    public String getStatusOfTask(String sLogin, String sID_Task){
+        long count = 0;
+        count = oTaskService.createTaskQuery().taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%").taskId(sID_Task).count();
+        if(count > 0){
+            return THE_STATUS_OF_TASK_IS_DOCUMENTS;
+        }
+        count = oTaskService.createTaskQuery().taskCandidateUser(sLogin).taskId(sID_Task).count();
+        if(count > 0){
+            return THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED;
+        }
+        count = oTaskService.createTaskQuery().taskAssignee(sLogin).taskId(sID_Task).count();
+        if(count > 0){
+            return THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED;
+        }
+        count = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).taskId(sID_Task).finished().count();
+        if(count > 0){
+            return THE_STATUS_OF_TASK_IS_CLOSED;
+        }
+        return "";
+    }
+
     public Object createQuery(String sLogin,
             boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
             List<String> groupsIds, String soaFilterField) {
@@ -2303,7 +2327,7 @@ public class ActionTaskService {
         if (!StringUtils.isEmpty(soaFilterField)) {
         }
         Object taskQuery;
-        if ("Closed".equalsIgnoreCase(sFilterStatus)) {
+        if (THE_STATUS_OF_TASK_IS_CLOSED.equalsIgnoreCase(sFilterStatus)) {
             taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
             if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                 ((TaskInfoQuery) taskQuery).orderByTaskCreateTime();
@@ -2353,14 +2377,14 @@ public class ActionTaskService {
         } else {
             taskQuery = oTaskService.createTaskQuery();
             long startTime = System.currentTimeMillis();
-            if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)) {
+            if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED.equalsIgnoreCase(sFilterStatus)) {
                 ((TaskQuery) taskQuery).taskCandidateUser(sLogin);
-            } else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)) {
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
-            } else if ("Opened".equalsIgnoreCase(sFilterStatus)) {
+            } else if (THE_STATUS_OF_TASK_IS_OPENED.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
                 LOG.info("Opened JSONValue element in filter {}", JSONValue.toJSONString(taskQuery));
-            } else if ("Documents".equalsIgnoreCase(sFilterStatus)) {
+            } else if (THE_STATUS_OF_TASK_IS_DOCUMENTS.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
             }
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
