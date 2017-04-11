@@ -6,6 +6,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="saQuestion1" name="Оберiть тип запиту" type="enum" required="true">
           <activiti:value id="type1" name="стандартний запит (хто власник, підстава)"></activiti:value>
           <activiti:value id="type2" name="запит з додатковою інформацією (наявність арештів, копії документів, тощо)"></activiti:value>
@@ -25,14 +26,14 @@
           <activiti:value id="type4" name="Чотири адреси (895 грн)"></activiti:value>
           <activiti:value id="type5" name="П'ять адрес (1080 грн)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="warningMessage1" name=" ; ;labelType=warning" type="label" default="Адреса має бути в межах м.Дніпро. В іншому випадку Вам буде відмовлено в наданні інформації"></activiti:formProperty>
         
         <activiti:formProperty id="sAskedAddress1" name="Зазначте адресу #1" type="string" default="-"></activiti:formProperty>
         <activiti:formProperty id="sAskedAddress2" name="Зазначте адресу #2" type="string" default="-"></activiti:formProperty>
         <activiti:formProperty id="sAskedAddress3" name="Зазначте адресу #3" type="string" default="-"></activiti:formProperty>
         <activiti:formProperty id="sAskedAddress4" name="Зазначте адресу #4" type="string" default="-"></activiti:formProperty>
         <activiti:formProperty id="sAskedAddress5" name="Зазначте адресу #5" type="string" default="-"></activiti:formProperty>
-        <activiti:formProperty id="warningMessage1" name=" ; ;labelType=warning" type="label" default="Адреса має бути в межах м.Дніпро. В іншому випадку Вам буде відмовлено в наданні інформації"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion2" name="Подаючи запит Ви дієте як" type="enum" required="true">
+        <activiti:formProperty id="saQuestion2" name="Подаючи запит Ви дієте як..." type="enum" required="true">
           <activiti:value id="type1" name="ПРИВАТНА ОСОБА"></activiti:value> 
           <activiti:value id="type2" name="ПРИВАТНИЙ НОТАРІУС"></activiti:value>
           <activiti:value id="type3" name="ДЕРЖАВНИЙ НОТАРІУС"></activiti:value>
@@ -51,7 +52,7 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+38" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail  Ви отримаєте результат обробки Вашого запиту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="infoMessage2" name=" ; ;labelType=info" type="label" default="Для пiдтвердження Ваших повноважень, скористайтесь Вашим ЕЦП нотаріуса для підпісання цього запиту"></activiti:formProperty>
-        <activiti:formProperty id="infoMessage4" name=" ; ;labelType=info" type="label" default="Після замовлення послуги, Ви отримаєте електроного листа з кнопкою для сплати  вартості послуги онлайн. Сума до сплати враховує також комісію карткових систем 1.8%"></activiti:formProperty>
+        <activiti:formProperty id="infoMessage4" name=" ; ;labelType=info" type="label" default="Після замовлення послуги, Ви отримаєте електроного листа для сплати  вартості послуги онлайн. Сума до сплати враховує також комісію карткових систем 1.8%"></activiti:formProperty>
        
         <activiti:formProperty id="marker1" name="form fields show-hide" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="set sSum" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_2.json')}"></activiti:formProperty>
@@ -83,10 +84,21 @@
 [pattern/mail/new_design/_common_content_start.html]
 
 Ваш запит успішно зареєстровано. <br/>
-Для початку опрацювання запиту, Вам необхідно сплатити вартість послуги <br/><br/>
+Тип запиту: ${saQuestion1}<br/>
+Адреса #1 ${sAskedAddress1} <br/>
+Адреса #2 ${sAskedAddress2} <br/>
+Адреса #3 ${sAskedAddress3} <br/>
+Адреса #4 ${sAskedAddress4} <br/>
+Адреса #5 ${sAskedAddress5} <br/>
+<br/>
+Для початку опрацювання запиту, Вам необхідно сплатити вартість послуги <br/>
+<br/>
 <br/>
 [paymentButton_LiqPay]
-<br/><br/>
+<br/>
+<br/>
+[cancelTaskSimple]
+<br/>
 
 
 
