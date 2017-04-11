@@ -29,6 +29,7 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.runtime.Execution;
 import org.activiti.engine.task.IdentityLink;
 import org.apache.commons.io.IOUtils;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
@@ -380,8 +381,13 @@ public class DocumentStepService {
         try {
 
             aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
+            //delegateTask.addCandidateGroups(asGroup);
+            //delegateTask.addCandidateGroup(sGroup);
+            //delegateTask.deleteCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
         
-            removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+//            removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+            
+            //syncDocumentGroups(DelegateTask delegateTask, List<DocumentStep> aDocumentStep);
 
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
@@ -459,6 +465,32 @@ public class DocumentStepService {
         }
     }
 
+    /*public List<DocumentStepSubjectRight> addDocumentStepSubject_CandidateGroup(String snID_Process_Activiti, String sKey_GroupPostfix_New, String sKey_Step_Document){
+        List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active()
+                .list();
+        if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
+            throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
+        }
+        Task oTaskActive = aTaskActive.get(0);
+        ProcessInstance oProcessInstance = runtimeService.createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti).active().singleResult();
+        oTaskActive.getExecutionId();
+        //Execution oExecution = runtimeService.createExecutionQuery().executionId(oTaskActive.getExecutionId()).singleResult();
+        Execution oExecution = runtimeService.createExecutionQuery().executionId(oTaskActive.getExecutionId()).singleResult();
+        oExecution.
+        oTaskActive.getDelegationState().addCandidateGroups(asGroup);
+            //delegateTask.addCandidateGroups(asGroup);
+            //delegateTask.addCandidateGroup(sGroup);
+            //delegateTask.deleteCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
+            
+        String sID_BP = oTaskActive.getProcessDefinitionId();
+        ProcessInstance oProcessInstance = runtimeService.createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti).active().singleResult();
+        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        LOG.info("mProcessVariable={}", mProcessVariable);
+        String snID_Task = oTaskActive.getId();
+    }*/
+    
     public List<DocumentStepSubjectRight> cloneDocumentStepSubject(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sKey_GroupPostfix_New, String sKey_Step_Document_To, boolean bReClone)
             throws Exception {
@@ -613,8 +645,17 @@ public class DocumentStepService {
     }
 
     public List<String> getLoginsFromField(String snID_Process_Activiti, String sID_Field) throws Exception {
+        return getLoginsFromField(snID_Process_Activiti, sID_Field, null);
+    }
+    
+    public List<String> getLoginsFromField(String snID_Process_Activiti, String sID_Field, String sID_FieldTable) throws Exception {
         List<String> asLogin = new LinkedList();
         try {
+            
+            if(sID_FieldTable == null){
+                sID_FieldTable = "sLogin_isExecute";
+            }
+            
             String sValue = (String) runtimeService.getVariable(snID_Process_Activiti, sID_Field);
             // String soJSON=(String)
             // runtimeService.getVariable(snID_Process_Activiti, sID_Field);
@@ -649,7 +690,7 @@ public class DocumentStepService {
                                     LOG.info("oJsonMap in cloneDocumentStepFromTable is {}", oJsonMap);
                                     if (oJsonMap != null) {
                                         Object oId = oJsonMap.get("id");
-                                        if (((String) oId).equals("sLogin_isExecute")
+                                        if (((String) oId).equals(sID_FieldTable)
                                                 || ((String) oId).equals("sID_Group_Activiti_isExecute")
                                                 || ((String) oId).equals("sLogin_Approver")
                                                 || ((String) oId).equals("sLogin_Addressee")) {
@@ -681,14 +722,14 @@ public class DocumentStepService {
     }
 
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti, String sKey_Group,
-            String sID_Field, String sKey_Step, boolean bReClone) throws Exception {
+            String sID_Field, String sKey_Step, boolean bReClone, String sID_FieldTable) throws Exception {
 
         LOG.info("started...");
         LOG.info("sKey_Group={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step={}", sKey_Group,
                 snID_Process_Activiti, sID_Field, sKey_Step);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Return = new ArrayList<>();
         try {
-            List<String> asLogin = getLoginsFromField(snID_Process_Activiti, sID_Field);
+            List<String> asLogin = getLoginsFromField(snID_Process_Activiti, sID_Field, sID_FieldTable);
             for (String sLogin : asLogin) {
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(
                         snID_Process_Activiti, sKey_Group, sLogin, sKey_Step, bReClone);
@@ -709,7 +750,7 @@ public class DocumentStepService {
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sID_Field, String sKey_Step_Document_To) throws Exception {
         return cloneDocumentStepFromTable(snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step_Document_To,
-                false);
+                false, null);
     }
 
     public List<DocumentStepSubjectRight> syncDocumentSubmitersByField(String snID_Process_Activiti,

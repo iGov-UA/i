@@ -1,5 +1,7 @@
 package org.igov.service.controller;
 
+
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -63,6 +65,22 @@ public class ActionTaskCommonControllerScenario {
                 .andDo(print())
                 .andReturn().getResponse().getContentAsString();
 
+        JSONObject parsedObject = new JSONObject(getJsonData);
+        String nID_Task = parsedObject.getString("snID_Process");
+
+        String getJsonDataTwo = mockMvc.perform(get("/action/task/getStartFormData").
+                param("nID_Task", nID_Task)).
+                andExpect(status().isOk()).
+                andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
+                andReturn().getResponse().getContentAsString();
+
+        JSONObject parsedObjectTwo = new JSONObject(getJsonDataTwo);
+        String sParam1 = parsedObjectTwo.getString("sParam1");
+        String sParam2 = parsedObjectTwo.getString("sParam2");
+        Assert.assertNotNull(sParam1);
+        Assert.assertNotNull(sParam2);
+        
+        
         LOG.info("Result GetStartFormData - " + getJsonData);
     }
 
