@@ -1434,9 +1434,9 @@ execution.setVariable('sExecutor', sExecutor)
 ###### subject
 ### Subject
 **nID** - номер по порядку  
-**sID** - оставляем пустым  
+**sID** - справочная информация (можно оставлять пустым)  
 **sLabel** - имя чиновника или название органа, название органа должно начинаться с нижнего подчеркивания  
-**sLabelShort** - оставляем пустым 
+**sLabelShort** - справочная информация (можно оставлять пустым)   
 [детальней...](#_subject)
 
 ###### subjectaccount
@@ -1462,11 +1462,20 @@ execution.setVariable('sExecutor', sExecutor)
 ### SubjectHuman
 ### SubjectMessage
 ### SubjectMessageType
+###### subjectorgan
 ### SubjectOrgan
+**nID**
+**nID_Subject** - ид используется в [SubjectOrganJoin](#subjectorganjoin)
+**sOKPO**  
+**sFormPrivacy**  
+**sName**   
+**sNameFull**  
+Пример заполнения: 225;16;00000016;ЦНАП;ЦНАП;Центри надання адміністративних послуг
+Сделать подробнее со скрином.
 ###### subjectorganjoin
 ### SubjectOrganJoin
 **nID** - номер строки, добавляется инкрементом  
-**nID_SubjectOrgan** - номер подтягивать из файла SubjectOrgan  
+**nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan)  
 **sNameUa** - название административного органа на украинском языке  
 **sNameRu** - название административного органа на русском языке  
 **sID_Privat** - ИД  
