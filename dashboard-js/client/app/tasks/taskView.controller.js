@@ -386,7 +386,7 @@
           angular.forEach($scope.taskForm, function (i, k, o) {
             if(i.type === 'fileHTML' && i.value && i.value.indexOf('sKey') > -1) {
               tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, i.id, true).then(function (res) {
-                o[k].value = res;
+                o[k].valueVisible = res;
               })
             }
           })
