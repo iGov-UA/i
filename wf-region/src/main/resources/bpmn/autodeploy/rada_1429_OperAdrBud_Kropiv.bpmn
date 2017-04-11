@@ -60,7 +60,6 @@
         <activiti:formProperty id="sDeclaration" name="Декларація про готовність завершеного будівництва до експлуатації; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sReferenceBTI" name="Довідка з БТІ про номер який рекомендовано присвоїти даній споруді; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sLetterDouble" name="Лист про наявність подвійної нумерації; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDovPrisvAdr" name="Довідка щодо можливості присвоєння поштової адреси з конкретно визначеною нумерацією та відсутності зареєстрованого об’єкта нерухомого майна за такою ж адресою; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
@@ -144,7 +143,6 @@
         <activiti:formProperty id="sDeclaration" name="Декларація про готовність завершеного будівництва до експлуатації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReferenceBTI" name="Довідка з БТІ про номер який рекомендовано присвоїти даній споруді; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLetterDouble" name="Лист про наявність подвійної нумерації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDovPrisvAdr" name="Довідка щодо можливості присвоєння поштової адреси з конкретно визначеною нумерацією та відсутності зареєстрованого об’єкта нерухомого майна за такою ж адресою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -355,7 +353,6 @@ var per14 = " "
 var per15 = " "
 var per16 = " "
 var per17 = " "
-var per18 = " "
 if(execution.getVariable('sDocConfidant') != null)
 {
 per3 = "&lt;li&gt;Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування.&lt;/li&gt;"
@@ -411,10 +408,6 @@ if(execution.getVariable('sVisnDivideHouse') != null)
 {
 per17 = "&lt;li&gt;Копія висновку спеціаліста про технічну можливість виділення в окрему адресу.&lt;/li&gt;"
 }
-if(execution.getVariable('sDovPrisvAdr') != null)
-{
-per18 = "&lt;li&gt;Довідка щодо можливості присвоєння поштової адреси з конкретно визначеною нумерацією та відсутності зареєстрованого об’єкта нерухомого майна за такою ж адресою.&lt;/li&gt;"
-}
 if((execution.getVariable('sAction') == 'give') || (execution.getVariable('sAction1') == 'get'))
 {
 per11 = 'присвоєння'
@@ -435,8 +428,8 @@ if(execution.getVariable('sAction1') == 'renew')
 {
 per11 = 'уточнення'
 }
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+per17+per18+'&lt;/ol&gt;'
-res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+per17+per18+'&lt;/ol&gt;'
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+per17+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per12+per13+per14+per15+per16+per17+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res)
 execution.setVariable('sListDocumentsPrint', res2)
 execution.setVariable('sWordsLetter', per11)</script>
