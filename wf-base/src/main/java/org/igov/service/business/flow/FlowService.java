@@ -420,6 +420,10 @@ public class FlowService implements ApplicationContextAware {
                         {
                             stopDate = format.parseDateTime(flowProperty.getsDateTimeTo());
                         }
+                        
+                        if(stopDate.isBefore(startDate)){
+                            continue;
+                        }
                     }
                     catch(IllegalArgumentException ex){
                         LOG.info("Illegal date format in flowProperty");
