@@ -8,7 +8,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="saQuestion1" name="Оберiть тип запиту" type="enum" required="true">
-          <activiti:value id="type1" name="стандартний запит (хто власник, підстава)"></activiti:value>
+          <activiti:value id="type1" name="стандартний запит (дані про власника, підстава)"></activiti:value>
           <activiti:value id="type2" name="запит з додатковою інформацією (наявність арештів, копії документів, тощо)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sRequestGoal" name="Зазначте яку додаткову інформацію Ви бажаєте отримати" type="textArea" default="-"></activiti:formProperty>
@@ -84,25 +84,21 @@
 [pattern/mail/new_design/_common_content_start.html]
 
 Ваш запит успішно зареєстровано. <br/> <br/>
-Тип запиту: value{[saQuestion1]}<br/>
-Адреса #1 ${sAskedAddress1} <br/>
-Адреса #2 ${sAskedAddress2} <br/>
-Адреса #3 ${sAskedAddress3} <br/>
-Адреса #4 ${sAskedAddress4} <br/>
-Адреса #5 ${sAskedAddress5} <br/>
+Тип запиту: enum{[saQuestion1]} стосовно вланості за наступними адресами:<br/>
+
+ #1 ${sAskedAddress1} <br/>
+ #2 ${sAskedAddress2} <br/>
+ #3 ${sAskedAddress3} <br/>
+ #4 ${sAskedAddress4} <br/>
+ #5 ${sAskedAddress5} <br/>
 <br/>
-Для початку опрацювання запиту, Вам необхідно сплатити вартість послуги <br/>
-<br/>
+Для початку опрацювання запиту, Вам необхідно сплатити вартість послуги 
 <br/>
 [paymentButton_LiqPay]
-<br/>
 <br/>
 Якщо Ваш запит вже не актуальний або містить хибні дані, натисніть на цю кнопку:
 [cancelTaskSimple]
 <br/>
-
-
-
 [pattern/mail/new_design/_common_content_end.html]    
 [pattern/mail/new_design/_common_signature.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
@@ -126,7 +122,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saQuestion1" name="Тип запиту" type="enum" writable="false">
-          <activiti:value id="type1" name="стандартний запит (хто власник, підстава)"></activiti:value>
+          <activiti:value id="type1" name="стандартний запит (дані про власника, підстава)"></activiti:value>
           <activiti:value id="type2" name="запит з додатковою інформацією (наявність арештів, копії документів, тощо)"></activiti:value>
         </activiti:formProperty>
         
@@ -191,8 +187,6 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
 ${comment}
 
 <br/>
-
-
 
 [pattern/mail/new_design/_common_content_end.html]    
 [pattern/mail/new_design/_common_signature.html]
