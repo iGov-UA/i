@@ -27,8 +27,11 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
 
     var nID_Server = req.query.nID_Server;
     activiti.getServerRegionHost(nID_Server, function(sHost){
+    //  sHost = sHost+'/service';
 
-      activiti.sendGetRequest(req, res, '/service/action/flow/getFlowSlots', {
+      //sHost = buildSHost(req.query.sURL);
+      //activiti.sendGetRequest(req, res, '/action/flow/getFlowSlots_ServiceData', {
+      activiti.sendGetRequest(req, res, '/service/action/flow/getFlowSlots_ServiceData', {
         nID_Service: req.query.nID_Service,
         nID_ServiceData: req.params.nID,
         nID_SubjectOrganDepartment: req.query.nID_SubjectOrganDepartment,
