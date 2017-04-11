@@ -55,14 +55,12 @@ var sKey_Step= 'step_2'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для узгоджуванів
+//Клонування прав для відповідальної особи
+var sID_Field='sActivitiGroup_Acept'
+var sKey_GroupPostfix_New =execution.getVariable(sID_Field)
 var sKey_GroupPostfix = '_default_Accept'
-var sID_Field = 'sTable'
-var sKey_Step = 'step_2'
-var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step)
-
-//var sKey_GroupPostfix_New=execution.getVariable('sActivitiGroup_Acept')
-//var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-	 
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 </script>
     </scriptTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
@@ -109,7 +107,7 @@ var sKey_Step= 'step_3'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав
-var sID_Field='sName_SubjectRole'
+var sID_Field='sLogin_Employee_First'
 var sKey_GroupPostfix_New =execution.getVariable(sID_Field)
 var sKey_GroupPostfix = '_default_Staff'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
@@ -146,15 +144,7 @@ var sKey_Step = execution.getVariable('sKey_Step_Document')
 var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
 execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
     </scriptTask>
-    <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="scripttask4"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow11" sourceRef="scripttask4" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow12" sourceRef="exclusivegateway1" targetRef="servicetask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'true'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow13" sourceRef="exclusivegateway1" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="servicetask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_iGov_employ">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_iGov_employ" id="BPMNPlane__doc_test_iGov_employ">
@@ -186,10 +176,7 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdc:Bounds height="35.0" width="35.0" x="722.0" y="268.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="1030.0" y="140.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="1182.0" y="147.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1040.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="125.0" y="160.0"></omgdi:waypoint>
@@ -220,23 +207,8 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdi:waypoint x="757.0" y="285.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="951.0" y="162.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1030.0" y="167.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="1135.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1182.0" y="167.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="1202.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="191.0"></omgdi:waypoint>
         <omgdi:waypoint x="1202.0" y="250.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="1202.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1199.0" y="74.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1033.0" y="74.0"></omgdi:waypoint>
-        <omgdi:waypoint x="870.0" y="74.0"></omgdi:waypoint>
-        <omgdi:waypoint x="870.0" y="133.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
