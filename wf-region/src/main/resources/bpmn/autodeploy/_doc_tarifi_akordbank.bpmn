@@ -228,7 +228,7 @@ execution.setVariable('nCountSubmiteLimit', (parseInt(nCountSubmitePlan , 10)/2)
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow28" sourceRef="exclusivegateway2" targetRef="scripttask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission<=sAmount_of_commission}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="scripttask3">
@@ -291,7 +291,7 @@ ${sTarif}</activiti:expression>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow51" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow52" sourceRef="exclusivegateway2" targetRef="scripttask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission<=sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask8" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
