@@ -172,6 +172,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible" default="Першого дніпропетровського місцевого центру з надання безоплатної вторинної правової допомоги"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Довіреність" type="markers" default="${markerService.loadFromFile('minust/justice_989.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -242,7 +243,7 @@
 			<p>
 				На жаль, Ваше звернення №[sID_Order] щодо надання безоплатної вторинної правової допомоги було прийнято, проте винесено рішення про відмову у наданні безоплатної правової допомоги.<br>
 				Причина в наступному:<br>
-				${sComment}<br>
+				${comment}<br>
 				${sPhoneOrgan}<br>
 			</p>
 			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
@@ -300,7 +301,7 @@
 			<p>
 				На жаль, Ваше звернення №[sID_Order] щодо надання безоплатної вторинної правової допомоги було відхилено.<br>
 				Причина в наступному:<br>				
-				${sComment}<br>
+				${comment}<br>
 				${sPhoneOrgan}<br>
 			</p>
 			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
