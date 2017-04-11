@@ -15,7 +15,7 @@
                  reach-infinity="requestMoreItems($select.items)"
                  on-select="onSelectDataList($item, null, null, item)">
         <ui-select-match>
-          {{$select.selected[autocompleteData.titleProperty] || item.value}}
+          {{$select.selected[item.autocompleteData.titleProperty] || $select.selected[item.autocompleteData.valueProperty] || item.value}}
         </ui-select-match>
         <ui-select-choices refresh="refreshList(item.autocompleteData.titleProperty, $select.search, item.name)"
                            refresh-delay="300"

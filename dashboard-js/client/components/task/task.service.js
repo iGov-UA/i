@@ -565,7 +565,17 @@ angular.module('dashboardJsApp')
               template: ''
             });
         });
-        if(formProperties.sendDefaultPrintForm){
+        var isDocPrintFormPresent = !formProperties.sendDefaultPrintForm;
+        angular.forEach(formProperties, function (field) {
+          if(field.id.match(/^PrintForm_/) && field.options.sPrintFormFileAsPDF){
+            var printFormName = field.options.sPrintFormFileAsPDF.split('/');
+            var ind = printFormName.length - 1 < 0 ? 0 : printFormName.length - 1;
+            if(printFormName[ind].match(/^_doc_/)){
+              isDocPrintFormPresent = true;
+            }
+          }
+        });
+        if(formProperties.sendDefaultPrintForm && !isDocPrintFormPresent){
           filesDefers.push($q.resolve({
             fileField: null,
             template: '<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="style.css" /></head><body">' + $(".ng-modal-dialog-content")[0].innerHTML + '</html>'
@@ -652,11 +662,15 @@ angular.module('dashboardJsApp')
                 if (fileNameTemp === 'sPrintFormFileAsPDF') {
                   fileName = fileName + '.pdf';
                   sOutputFileType = 'pdf';
-                  if(fileName.match(/^_doc_/) && task.processInstanceId.match(/^_doc_/)){
-                    formProperties.isSendAsDocument = true;
-                    formProperties.skipSendingDefaultPrintForm = true;
-                  } else {
-                    formProperties.isSendAsDocument = false;
+                  if(templateResult.fileField.options.sPrintFormFileAsPDF){
+                    var printFormName = templateResult.fileField.options.sPrintFormFileAsPDF.split('/');
+                    var ind = printFormName.length - 1 < 0 ? 0 : printFormName.length - 1;
+                    if(printFormName[ind].match(/^_doc_/)&& task.processInstanceId.match(/^_doc_/)){
+                      formProperties.isSendAsDocument = true;
+                      formProperties.skipSendingPrintForm = true;
+                    } else {
+                      formProperties.isSendAsDocument = false;
+                    }
                   }
                 }
 
@@ -687,7 +701,7 @@ angular.module('dashboardJsApp')
               sOutputFileType: sOutputFileType,
               sKey_Step: sKey_Step,
               isSendAsDocument: formProperties.sendDefaultPrintForm || formProperties.isSendAsDocument,
-              skipSendingDefaultPrintForm: formProperties.skipSendingDefaultPrintForm
+              skipSendingPrintForm: formProperties.skipSendingPrintForm
             };
 
             printDefer[key] = $q.defer();
@@ -699,7 +713,7 @@ angular.module('dashboardJsApp')
 
           var asyncPrintUpload = function (i, print, defs) {
             if (i < print.length) {
-              if(!print[i].data.sID_Field && print[i].data.skipSendingDefaultPrintForm){
+              if(!print[i].data.sID_Field && print[i].data.skipSendingPrintForm){
                 defs[i].resolve();
                 return asyncPrintUpload(i+1, print, defs);
               } else {
@@ -985,6 +999,14 @@ angular.module('dashboardJsApp')
               code : code
             }
           })
-        }
+        },
+      delegateDocToUser : function (params) {
+        if(params)
+          return simpleHttpPromise({
+            method: 'GET',
+            url: '/api/documents/delegateDocument',
+            params: params
+          })
       }
+    }
   });

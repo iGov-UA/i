@@ -14,6 +14,7 @@ import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.form.FormType;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.form.TaskFormData;
 import org.activiti.engine.history.*;
@@ -23,6 +24,7 @@ import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
@@ -57,6 +59,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.script.ScriptException;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
@@ -64,10 +67,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+
 import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
 import org.igov.service.business.subject.SubjectRightBPVO;
+
 import static org.igov.util.Tool.sO;
+
 import org.json.simple.JSONValue;
 
 //import org.igov.service.business.access.BankIDConfig;
@@ -539,11 +545,25 @@ public class ActionTaskService {
                 LOG.info("Skipping historic task {} from processing as it is already in the response", curTask.getId());
                 continue;
             }
+            
+            Map<String, FormProperty> enumProperties = new HashMap<String, FormProperty>();
+            StartFormData startFormData = oFormService.getStartFormData(curTask.getProcessDefinitionId());
+            LOG.info("Loaded start form data for the process {}", startFormData);
+            if (startFormData != null){
+            	for (FormProperty formProperty : startFormData.getFormProperties()){
+            		LOG.info("Checking property {} with the type {} ", formProperty.getId(), formProperty.getType().getName());
+            		String sType = formProperty.getType().getName();
+                    if ("enum".equalsIgnoreCase(sType)) {
+                    	enumProperties.put(formProperty.getId(), formProperty);
+                    }
+            	}
+            }
+            LOG.info("Enum properties of the process: " + enumProperties);
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
             LOG.info("!!!!!!!!!!!!!!!variablessb= " + variables);
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
-            currentRow = replaceFormProperties(currentRow, variables);
+            currentRow = replaceFormProperties(currentRow, variables, enumProperties);
             if (saFieldsCalc != null) {
                 currentRow = addCalculatedFields(saFieldsCalc, curTask, currentRow);
             }
@@ -617,20 +637,23 @@ public class ActionTaskService {
         return headersExtra;
     }
 
-    private String replaceFormProperties(String currentRow, Map<String, Object> data) {
+    private String replaceFormProperties(String currentRow, Map<String, Object> data, Map<String, FormProperty> enumProperties) {
         String res = currentRow;
         for (Map.Entry<String, Object> property : data.entrySet()) {
             LOG.info(String.format("Matching property %s:%s with fieldNames", property.getKey(), property.getValue()));
             //LOG.info("!!!!!!!!!!data: " + data);
             if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getKey() + "}"));
-                if (property.getValue() != null) {
-                    String sValue = property.getValue().toString();
-                    LOG.info("(sValue={})", sValue);
-                    if (sValue != null) {
-                        LOG.info(String.format("Replacing field with the value %s", sValue));
-                        res = res.replace("${" + property.getKey() + "}", sValue);
-                    }
+                String sValue = null;
+                if (enumProperties.containsKey(property.getKey())){
+                	sValue = parseEnumProperty(enumProperties.get(property.getKey()), (String)property.getValue());
+                } else if (property.getValue() != null) {
+                    sValue = property.getValue().toString();
+                }
+                LOG.info("(sValue={})", sValue);
+                if (sValue != null) {
+                    LOG.info(String.format("Replacing field with the value %s", sValue));
+                    res = res.replace("${" + property.getKey() + "}", sValue);
                 }
             }
         }
@@ -969,7 +992,7 @@ public class ActionTaskService {
         }
         LOG.info(String.format("Found %s tasks for business process %s for date period %s - %s", aTaskFound.size(), sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
         if (pattern != null) {
-            LOG.info("List of fields to retrieve: }{", pattern);
+            LOG.info("List of fields to retrieve: {}", pattern);
         } else {
             LOG.info("Will retreive all fields from tasks");
         }
@@ -1653,17 +1676,16 @@ public class ActionTaskService {
     }
 
     public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception {
-        boolean success = false;
-        String nID_Process = null;
-
+        boolean success;
+        String nID_Process;
+        
         nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
 
-        //String sID_Order,
         String sID_Order = oGeneralConfig.getOrderId_ByOrder(nID_Order);
 
-        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
-        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
-        String sBody = sUserTaskName;
+        HistoryEvent_Service_StatusType oStatusType = HistoryEvent_Service_StatusType.REMOVED;
+        String statusType_Name = oStatusType.getsName_UA();
+        String sBody = statusType_Name;
         //        String sID_status = "Заявка была удалена";
         if (sLogin != null) {
             sBody += " (" + sLogin + ")";
@@ -1672,21 +1694,16 @@ public class ActionTaskService {
             sBody += ": " + sReason;
         }
         Map<String, String> mParam = new HashMap<>();
-        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+        mParam.put("nID_StatusType", oStatusType.getnID() + "");
         mParam.put("sBody", sBody);
-        LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
+        LOG.info("Deleting process {}: {}", nID_Process, statusType_Name);
+        oHistoryEventService.updateHistoryEvent(
+                sID_Order, statusType_Name, false, oStatusType, mParam);
         try {
             oRuntimeService.deleteProcessInstance(nID_Process, sReason);
         } catch (ActivitiObjectNotFoundException e) {
-            LOG.info("Could not find process {} to delete: {}", nID_Process, e);
-            throw new RecordNotFoundException();
+            LOG.error("Could not find process {} to delete: {}", nID_Process, e);
         }
-
-        oHistoryEventService.updateHistoryEvent(
-                //processInstanceID,
-                sID_Order,
-                sUserTaskName, false, oHistoryEvent_Service_StatusType.REMOVED, mParam);
-
         success = true;
         return success;
     }

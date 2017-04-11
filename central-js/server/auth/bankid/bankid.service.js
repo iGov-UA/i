@@ -268,24 +268,18 @@ module.exports.syncWithSubject = function (accessToken, done) {
   });
 };
 
-module.exports.signFiles = function (accessToken, acceptKeyUrl, content, callback, fdata) {
+module.exports.signFiles = function (accessToken, acceptKeyUrl, content, additionHeaders, callback) {
   var bankIDURLs = bankidUtil.getBaseURLs();
-  var params = {};
-  if(fdata) {
-    params = {
-      headers: {
-        Authorization: bankidUtil.getAuth(accessToken),
-        acceptKeyUrl: acceptKeyUrl,
-        fiscalData: fdata
-      }
-    };
-  } else {
-    params = {
-      headers: {
-        Authorization: bankidUtil.getAuth(accessToken),
-        acceptKeyUrl: acceptKeyUrl
-      }
-    };
+
+  var params = {
+    headers: {
+      Authorization: bankidUtil.getAuth(accessToken),
+      acceptKeyUrl: acceptKeyUrl
+    }
+  };
+
+  if (additionHeaders) {
+    _.merge(params.headers, additionHeaders)
   }
 
   console.log('[signFiles] : accessToken=', accessToken, 'acceptKeyUrl=', acceptKeyUrl, ' content=', JSON.stringify(content.map(function(contentObj) {

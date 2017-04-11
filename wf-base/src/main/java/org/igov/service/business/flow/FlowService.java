@@ -409,14 +409,14 @@ public class FlowService implements ApplicationContextAware {
                     
                     try{
                     
-                        if (startDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt()))||
-                            startDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo())))
+                        if (startDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt())))
+                            //||startDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo())))
                         {
                             startDate = format.parseDateTime(flowProperty.getsDateTimeAt());
                         }
 
-                        if (stopDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo()))||
-                            stopDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt())))
+                        if (stopDate.isAfter(format.parseDateTime(flowProperty.getsDateTimeTo())))
+                            //||stopDate.isBefore(format.parseDateTime(flowProperty.getsDateTimeAt())))
                         {
                             stopDate = format.parseDateTime(flowProperty.getsDateTimeTo());
                         }

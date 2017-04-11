@@ -1,6 +1,8 @@
-angular.module('dashboardJsApp').factory('reports', function tasks($http) {
+angular.module('dashboardJsApp').factory('reports', function tasks($http, Auth) {
 
   function getDefaultDataArray(exportParams) {
+    var user = Auth.getCurrentUser();
+
     var dataArray = {
       'sID_BP': exportParams.sBP, //'dnepr_spravka_o_doxodax',
       'sID_State_BP': null,//'usertask1'
@@ -13,7 +15,9 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http) {
       'sFileName': 'dohody.dat',
       'bHeader': false, // есть/нет хеадера
       'saFieldsCalc': '', // поля для калькуляций
-      'saFieldSummary': '' // поля для агрегатов
+      'saFieldSummary': '', // поля для агрегатов
+      'sLogin': user.id,
+      'asField_Filter': ''
     };
     return dataArray;
   }

@@ -17,7 +17,6 @@ import org.activiti.engine.impl.form.FormPropertyImpl;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.activiti.engine.repository.ProcessDefinitionQuery;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskInfo;
@@ -52,7 +51,6 @@ import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
 import org.igov.util.ToolCellSum;
 import org.igov.util.db.queryloader.QueryLoader;
-import org.joda.time.DateTime;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -931,7 +929,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @RequestParam(value = "sLogin", required = false) String sLogin,
             @RequestParam(value = "sReason", required = false) String sReason)
             throws Exception {
-
+        //Вызывать сервис централа и апдейтить в истории статус на 8 (закрыт)
         oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
     }
 
@@ -1222,6 +1220,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
             @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
             @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
+            @ApiParam(value = "логин для вытаскивания фильтра", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+            @ApiParam(value = "признак для получения фильтра", required = false) @RequestParam(value = "asField_Filter", required = false) String asField_Filter,
             @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
             @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
             HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
@@ -1292,9 +1292,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
 
+        if ("*".equals(saFields)){
+        	saFields = null;
+        	LOG.info("Resetting saFields to null in order to get all the fields values");
+        }
         String header = oActionTaskService.formHeader(saFields, foundHistoricResults, saFieldsCalc);
         String[] headers = header.split(";");
 
+        
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
         LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!" + saFields);
@@ -2970,6 +2975,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
         Map<String, Object> mParam = new HashMap<>();
         mParam.put("sLoginAuthor", sLogin);
+        //mParam.put("sLogin_LastSubmited", sLogin);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
         Map<String, Object> mReturn = new HashMap<>();
 

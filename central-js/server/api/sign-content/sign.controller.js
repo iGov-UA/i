@@ -68,9 +68,9 @@ module.exports.signContent = function (req, res) {
       "customerType":"physical",
       "fiscalClaimAction":"encrypt",
       "customerInn": formInn ? formInn : req.session.subject.sID,
-      "email":mail
+      "email": mail
     };
-    var stringfyFiscalDataToJSON = JSON.stringify(fiscalData);
+    var fiscalHeader = JSON.stringify(fiscalData);
     userService.signFiles(
       req.session.access.accessToken,
       url.resolve(
@@ -78,6 +78,7 @@ module.exports.signContent = function (req, res) {
         '/api/sign-content/sign/callback?nID_Server=' + req.query.nID_Server
       ),
       objectsToSign,
+      { fiscalData: fiscalHeader },
       function (error, signResult) {
         if (error) {
           callbackAsync(error, result);
@@ -85,8 +86,7 @@ module.exports.signContent = function (req, res) {
           result.signResult = signResult;
           callbackAsync(null, result);
         }
-      },
-      stringfyFiscalDataToJSON);
+      });
 
     function originalURL(req, options) {
       options = options || {};
