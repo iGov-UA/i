@@ -1481,16 +1481,16 @@ execution.setVariable('sExecutor', sExecutor)
 
 ###### subjectorganjoinattribute
 ### SubjectOrganJoinAttribute
-**nID_SubjectOrganJoin** - ид в SubjectOrganJoin.csv
-**sName** - ид данных об организации (sAddress, sWork_Time, sMail_Employee и т.д.)
-**sValue** - описание данных **sName** ((м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), aаvm0206@yandex.ua(sMail_Employee) и т.д.)
+**nID_SubjectOrganJoin** - ид в SubjectOrganJoin.csv       
+**sName** - ид данных об организации (sAddress, sWork_Time, sMail_Employee и т.д.)   
+**sValue** - описание данных **sName** ((м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), аvаm0206@yandex.ua(sMail_Employee) и т.д.)
 
 ### SubjectOrganJoinTax
 ### wf-base  
 Путь:i\wf-base\src\main\resources\data\  
 
 ### EscalationRule
-**nID** - номер по порядку  
+**nID** - номер по порядку           
 **sID_BP** - ИД бизнес-процесса, для которого настраиваем эскалацию (например - kiev_soc_help_177)  
 **sID_UserTask** - в кавычках название юзертаски на которую настраиваем эскалацию (нужно на все юзертаски это сделать) (например - "usertask1")  
 **sCondition*** - условие  
