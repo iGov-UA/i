@@ -55,14 +55,12 @@ var sKey_Step= 'step_2'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для узгоджуванів
+//Клонування прав для відповідальної особи
+var sID_Field='sActivitiGroup_Acept'
+var sKey_GroupPostfix_New =execution.getVariable(sID_Field)
 var sKey_GroupPostfix = '_default_Accept'
-var sID_Field = 'sTable'
-var sKey_Step = 'step_2'
-var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step)
-
-//var sKey_GroupPostfix_New=execution.getVariable('sActivitiGroup_Acept')
-//var obj1 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-	 
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 </script>
     </scriptTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
