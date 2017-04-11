@@ -2299,23 +2299,39 @@ public class ActionTaskService {
         return entity.getBody();
     }
 
-    public String getStatusOfTask(String sLogin, String sID_Task){
+    public String getTypeOfTask(String sLogin, String sID_Task){
         long count = 0;
-        count = oTaskService.createTaskQuery().taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%").taskId(sID_Task).count();
-        if(count > 0){
-            return THE_STATUS_OF_TASK_IS_DOCUMENTS;
+        try {
+            count = oTaskService.createTaskQuery().taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%").taskId(sID_Task).count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_DOCUMENTS;
+            }
+        } catch (Exception e) {
+            //
         }
-        count = oTaskService.createTaskQuery().taskCandidateUser(sLogin).taskId(sID_Task).count();
-        if(count > 0){
-            return THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED;
+        try {
+            count = oTaskService.createTaskQuery().taskCandidateUser(sLogin).taskId(sID_Task).count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED;
+            }
+        } catch (Exception e) {
+            //
         }
-        count = oTaskService.createTaskQuery().taskAssignee(sLogin).taskId(sID_Task).count();
-        if(count > 0){
-            return THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED;
+        try {
+            count = oTaskService.createTaskQuery().taskAssignee(sLogin).taskId(sID_Task).count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED;
+            }
+        } catch (Exception e) {
+            //
         }
-        count = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).taskId(sID_Task).finished().count();
-        if(count > 0){
-            return THE_STATUS_OF_TASK_IS_CLOSED;
+        try {
+            count = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).taskId(sID_Task).finished().count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_CLOSED;
+            }
+        } catch (Exception e) {
+            //
         }
         return "";
     }
