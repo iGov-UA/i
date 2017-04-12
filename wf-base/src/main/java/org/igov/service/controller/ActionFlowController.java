@@ -87,7 +87,7 @@ public class ActionFlowController {
 	 * @param nSlots число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук
      */
     @ApiOperation(value = "Получение слотов по сервису сгруппированных по дням", notes = "##### Пример:\n"
-	        + "https://test.igov.org.ua/wf/service/action/flow/getFlowSlots?nID_ServiceData=1 \n"
+	        + "https://test.igov.org.ua/wf/service/action/flow/getFlowSlots_ServiceData?nID_ServiceData=1 \n"
 	        + "или\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1 \n"
 	        + "Ответ: HTTP STATUS 200\n\n"
@@ -127,7 +127,7 @@ public class ActionFlowController {
             + "- флаг \"bFree\" - является ли слот свободным? Слот считается свободным если на него нету тикетов у которых nID_Task_Activiti равен null,"
             + " а у тех у которых nID_Task_Activiti = null - время создания тикета (sDateEdit) не позднее чем текущее время минус 5 минут (предопределенная константа)\n"
             + "- флаг \"bHasFree\" равен true , если данных день содержит хотя бы один свободный слот.\n") })
-    @RequestMapping(value = "/getFlowSlots", method = RequestMethod.GET)
+    @RequestMapping(value = "/getFlowSlots_ServiceData", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity getFlowSlots(
