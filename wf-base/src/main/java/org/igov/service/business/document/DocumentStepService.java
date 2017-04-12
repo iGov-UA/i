@@ -215,6 +215,7 @@ public class DocumentStepService {
                 oDocumentStepSubjectRight_New
                         .setsKey_GroupPostfix(oDocumentStepSubjectRightToSet_Common.getsKey_GroupPostfix());
                 oDocumentStepSubjectRight_New.setbWrite(oDocumentStepSubjectRightToSet_Common.getbWrite());
+                oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRightToSet_Common.getbNeedECP());
                 Object sName = oDocumentStepSubjectRightToSet_Common.getsName();
                 if (sName != null) {
                     oDocumentStepSubjectRight_New.setsName((String) sName);
@@ -599,6 +600,7 @@ public class DocumentStepService {
                 DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                 oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sID_Group_Activiti_New_Selected);
                 oDocumentStepSubjectRight_New.setbWrite(oDocumentStepSubjectRight_From.getbWrite());
+                oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight_From.getbNeedECP());
                 Object sName = oDocumentStepSubjectRight_From.getsName();
                 if (sName != null) {
                     oDocumentStepSubjectRight_New.setsName((String) sName);
