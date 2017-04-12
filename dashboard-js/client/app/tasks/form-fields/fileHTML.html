@@ -13,7 +13,7 @@
                                  ['bold', 'italics', 'underline', 'ul', 'ol', 'insertLink'],
                                  ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent', 'clear']]"
                     ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()"
-                    ng-model="item.value"
+                    ng-model="item.valueVisible"
                     ng-readonly="isFormPropertyDisabled(item)"
                     name="{{item.id}}"
                     style="width:100%;"
@@ -23,8 +23,8 @@
       <span style="white-space: pre-line"
             ng-if="showReadableField(item) || !isDocumentNotSigned()"
             name="{{item.id}}"
-            ng-bind-html="viewTrustedHTMLContent(item.value)"
-            ng-model="item.value">{{item.value}}
+            ng-bind-html="viewTrustedHTMLContent(item.valueVisible)"
+            ng-model="item.valueVisible">{{item.valueVisible}}
     </span>
 
       <span class="validation-message" ng-messages="isFormInvalid && form[item.id].$error">

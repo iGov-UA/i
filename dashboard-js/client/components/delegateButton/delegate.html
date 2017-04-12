@@ -1,0 +1,30 @@
+<div class="delegate-button"
+     ng-if="isDocument()">
+
+  <div role="group" aria-label="...">
+    <a ng-click="switchDelegateMenu()"
+       class="btn btn-link attach-btn">Делегувати
+      <i style="font-size: 11px" class="glyphicon glyphicon-chevron-up"></i>
+    </a>
+  </div>
+
+  <div class="document-select-block" style="position: absolute; bottom: 80%; width: 300px; outline: none;" ng-if="delegateSelectMenu">
+    <ui-select ng-model="delegated.selected"
+               theme="bootstrap"
+               on-select="onSelectUser($item)">
+
+      <ui-select-match placeholder="Оберіть на кого делегувати">
+                    <span title="{{$select.selected.sName}}">
+                      {{$select.selected.sName}}
+                    </span>
+      </ui-select-match>
+
+      <ui-select-choices repeat="user in delegateUsersList | filter:$select.search">
+                    <span title="{{user.sName}}, <{{user.sLogin}}>">
+                      {{user.sName}}
+                    </span>
+      </ui-select-choices>
+    </ui-select>
+  </div>
+
+</div>

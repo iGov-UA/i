@@ -11,5 +11,6 @@ router.get('/getProcessSubject', controller.getProcessSubject);
 router.get('/getBPs_ForReferent', controller.getBPs_ForReferent);
 router.get('/setDocument', controller.setDocument);
 router.get('/getProcessSubjectTree', controller.getProcessSubjectTree);
+router.get('/delegateDocument', controller.delegateDocument);
 
 module.exports = router;

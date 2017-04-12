@@ -25,7 +25,6 @@ import org.activiti.engine.task.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
-import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
@@ -57,6 +56,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.script.ScriptException;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
@@ -64,10 +64,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+
 import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
 import org.igov.service.business.subject.SubjectRightBPVO;
+
 import static org.igov.util.Tool.sO;
+
 import org.json.simple.JSONValue;
 
 //import org.igov.service.business.access.BankIDConfig;
@@ -85,6 +88,12 @@ public class ActionTaskService {
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
+
+    private static final String THE_STATUS_OF_TASK_IS_CLOSED = "Closed";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED = "OpenedUnassigned";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED = "OpenedAssigned";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED = "Opened";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -539,11 +548,25 @@ public class ActionTaskService {
                 LOG.info("Skipping historic task {} from processing as it is already in the response", curTask.getId());
                 continue;
             }
+            
+            Map<String, FormProperty> enumProperties = new HashMap<String, FormProperty>();
+            StartFormData startFormData = oFormService.getStartFormData(curTask.getProcessDefinitionId());
+            LOG.info("Loaded start form data for the process {}", startFormData);
+            if (startFormData != null){
+            	for (FormProperty formProperty : startFormData.getFormProperties()){
+            		LOG.info("Checking property {} with the type {} ", formProperty.getId(), formProperty.getType().getName());
+            		String sType = formProperty.getType().getName();
+                    if ("enum".equalsIgnoreCase(sType)) {
+                    	enumProperties.put(formProperty.getId(), formProperty);
+                    }
+            	}
+            }
+            LOG.info("Enum properties of the process: " + enumProperties);
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
             LOG.info("!!!!!!!!!!!!!!!variablessb= " + variables);
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
-            currentRow = replaceFormProperties(currentRow, variables);
+            currentRow = replaceFormProperties(currentRow, variables, enumProperties);
             if (saFieldsCalc != null) {
                 currentRow = addCalculatedFields(saFieldsCalc, curTask, currentRow);
             }
@@ -617,20 +640,23 @@ public class ActionTaskService {
         return headersExtra;
     }
 
-    private String replaceFormProperties(String currentRow, Map<String, Object> data) {
+    private String replaceFormProperties(String currentRow, Map<String, Object> data, Map<String, FormProperty> enumProperties) {
         String res = currentRow;
         for (Map.Entry<String, Object> property : data.entrySet()) {
             LOG.info(String.format("Matching property %s:%s with fieldNames", property.getKey(), property.getValue()));
             //LOG.info("!!!!!!!!!!data: " + data);
             if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getKey() + "}"));
-                if (property.getValue() != null) {
-                    String sValue = property.getValue().toString();
-                    LOG.info("(sValue={})", sValue);
-                    if (sValue != null) {
-                        LOG.info(String.format("Replacing field with the value %s", sValue));
-                        res = res.replace("${" + property.getKey() + "}", sValue);
-                    }
+                String sValue = null;
+                if (enumProperties.containsKey(property.getKey())){
+                	sValue = parseEnumProperty(enumProperties.get(property.getKey()), (String)property.getValue());
+                } else if (property.getValue() != null) {
+                    sValue = property.getValue().toString();
+                }
+                LOG.info("(sValue={})", sValue);
+                if (sValue != null) {
+                    LOG.info(String.format("Replacing field with the value %s", sValue));
+                    res = res.replace("${" + property.getKey() + "}", sValue);
                 }
             }
         }
@@ -2273,6 +2299,43 @@ public class ActionTaskService {
         return entity.getBody();
     }
 
+    public String getTypeOfTask(String sLogin, String sID_Task){
+        long count = 0;
+        try {
+            count = oTaskService.createTaskQuery().taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%").taskId(sID_Task).count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_DOCUMENTS;
+            }
+        } catch (Exception e) {
+            //
+        }
+        try {
+            count = oTaskService.createTaskQuery().taskCandidateUser(sLogin).taskId(sID_Task).count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED;
+            }
+        } catch (Exception e) {
+            //
+        }
+        try {
+            count = oTaskService.createTaskQuery().taskAssignee(sLogin).taskId(sID_Task).count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED;
+            }
+        } catch (Exception e) {
+            //
+        }
+        try {
+            count = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).taskId(sID_Task).finished().count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_CLOSED;
+            }
+        } catch (Exception e) {
+            //
+        }
+        return "";
+    }
+
     public Object createQuery(String sLogin,
             boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
             List<String> groupsIds, String soaFilterField) {
@@ -2280,7 +2343,7 @@ public class ActionTaskService {
         if (!StringUtils.isEmpty(soaFilterField)) {
         }
         Object taskQuery;
-        if ("Closed".equalsIgnoreCase(sFilterStatus)) {
+        if (THE_STATUS_OF_TASK_IS_CLOSED.equalsIgnoreCase(sFilterStatus)) {
             taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
             if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                 ((TaskInfoQuery) taskQuery).orderByTaskCreateTime();
@@ -2330,14 +2393,14 @@ public class ActionTaskService {
         } else {
             taskQuery = oTaskService.createTaskQuery();
             long startTime = System.currentTimeMillis();
-            if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)) {
+            if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED.equalsIgnoreCase(sFilterStatus)) {
                 ((TaskQuery) taskQuery).taskCandidateUser(sLogin);
-            } else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)) {
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
-            } else if ("Opened".equalsIgnoreCase(sFilterStatus)) {
+            } else if (THE_STATUS_OF_TASK_IS_OPENED.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
                 LOG.info("Opened JSONValue element in filter {}", JSONValue.toJSONString(taskQuery));
-            } else if ("Documents".equalsIgnoreCase(sFilterStatus)) {
+            } else if (THE_STATUS_OF_TASK_IS_DOCUMENTS.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
             }
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));

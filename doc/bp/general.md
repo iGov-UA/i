@@ -1019,7 +1019,7 @@ digit3 - переменная, куда присвоится результат 
 * ![13_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_0.JPG)
 * в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
 
-* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG)
+* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG) 
 
 * в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
 
@@ -1366,6 +1366,9 @@ execution.setVariable('sExecutor', sExecutor)
 ### wf-central  
 путь к конфигурационным файлам: **\i\wf-central\src\main\resources\data\**  
 
+### Взаимодействие конфигурационных файлов
+
+![base](https://github.com/e-government-ua/i/blob/test/doc/bp/img/base.png)
 ### Category
 ### City
 ### Country
@@ -1416,7 +1419,7 @@ execution.setVariable('sExecutor', sExecutor)
 * Пример {"processDefinitionId":"znes_bud_393:1:1"}. Для внешних услуг указываем пустые скобки {}.
 * sURL - указание URL для внешней реализации услуги. Например, http://www.cnap.if.ua/posl/4345
 * bHidden - скрытая (true) или видимая (false) услуга (позволяет скрывать услуги, которые даже уже запущены)
-* nID_Subject_Operator - Используется, когда один процесс на несколько городов. По умолчанию 1. При необходимости берем номер из SubjectOrgan.csv
+* nID_Subject_Operator - Используется, когда один процесс на несколько городов. По умолчанию 1. При необходимости берем номер из [SubjectOrgan](#subjectorgan). Пример (nID 225 - для ЦНАП, nID 212 - для местных оргаов) 
 * bTest - Услуга в процессе тестирования (true, т.е. желтого цвета) или рабочая (false, т.е. “зеленая”)
 * sNote - Комментарии. Используется при редиректе. Могут быть не заполнены
 * asAuth - тип авторизации. По умолчанию BankID,EDS 
@@ -1431,11 +1434,12 @@ execution.setVariable('sExecutor', sExecutor)
 ### ServiceTagType
 ### ServiceType
 ### Subcategory
-### subject
-**nID** - номер по порядку  
-**sID** - оставляем пустым  
+###### subject
+### Subject
+**nID** - номер по порядку (используется в [SubjectOrgan](#subjectorgan)  
+**sID** - справочная информация (можно оставлять пустым)  
 **sLabel** - имя чиновника или название органа, название органа должно начинаться с нижнего подчеркивания  
-**sLabelShort** - оставляем пустым 
+**sLabelShort** - справочная информация (можно оставлять пустым)   
 [детальней...](#_subject)
 
 ###### subjectaccount
@@ -1445,7 +1449,7 @@ execution.setVariable('sExecutor', sExecutor)
 **sNote** - имя чиновника или название органа (рекомендуется синхронизировать с sLabel из файла Subject.csv)  
 **nID_SubjectAccountType** - ставим всегда 1  
 **nID_Server** - ставим всегда 0
-**nID_Subject** - номер строки из файла Subject - связка с конкретным чиновником или органом 
+**nID_Subject** - номер строки из файла [Subject](#subject) - связка с конкретным чиновником или органом 
 
 [детальней...](#_subjectaccount)
 
@@ -1461,12 +1465,22 @@ execution.setVariable('sExecutor', sExecutor)
 ### SubjectHuman
 ### SubjectMessage
 ### SubjectMessageType
+###### subjectorgan
 ### SubjectOrgan
+**nID** - порядковый номер используется в [SubjectOrganJoin](#subjectorganjoin)   
+**nID_Subject** - ид используется в [Subject](#subject)     
+**sOKPO**  
+**sFormPrivacy**  
+**sName**   
+**sNameFull**  
+Пример заполнения: 225;16;00000016;ЦНАП;ЦНАП;Центри надання адміністративних послуг   
+
+###### subjectorganjoin
 ### SubjectOrganJoin
-**nID** - номер строки, добавляется инкрементом  
-**nID_SubjectOrgan** - номер подтягивать из файла SubjectOrgan  
-**sNameUa** - название административного органа на украинском языке  
-**sNameRu** - название административного органа на русском языке  
+**nID** - номер строки, добавляется инкрементом    
+**nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan). Пример 225-ЦНАП, 212- местные органы    
+**sNameUa** - название административного органа на украинском языке    
+**sNameRu** - название административного органа на русском языке     
 **sID_Privat** - ИД  
 **sID_Public**  
 **sGeoLongitude**  
@@ -1477,13 +1491,18 @@ execution.setVariable('sExecutor', sExecutor)
 
 [детальней...](#_subjectorganjoin)
 
+###### subjectorganjoinattribute
 ### SubjectOrganJoinAttribute
+**nID_SubjectOrganJoin** - ид в SubjectOrganJoin.csv         
+**sName** - ид данных об организации (sAddress, sWork_Time, sMail_Employee и т.д.)     
+**sValue** - описание данных **sName** (м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), 100@gmail.com(sMail_Employee) и т.д.)
+
 ### SubjectOrganJoinTax
 ### wf-base  
 Путь:i\wf-base\src\main\resources\data\  
 
 ### EscalationRule
-**nID** - номер по порядку  
+**nID** - номер по порядку           
 **sID_BP** - ИД бизнес-процесса, для которого настраиваем эскалацию (например - kiev_soc_help_177)  
 **sID_UserTask** - в кавычках название юзертаски на которую настраиваем эскалацию (нужно на все юзертаски это сделать) (например - "usertask1")  
 **sCondition*** - условие  
@@ -2246,22 +2265,22 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
 ### [Переменные iDoc](#variablesidoc)
 ### [Листенеры iDoc](#listenersidoc)
-### Степы  
+### [Сервисы](#serveses) 
 ### Построение дерева подчинения организации
 ### [Порождение задач](#generationtasks)  
-### [Callactivity](#callactivity)  
+### [Callactivity](#callactivity_)  
 ### [Скрипты, которые используются в СЕДе](#scriptsusedidoc)  
 
 ###### variablesidoc
 ### Переменные idoc
-**processInstanceId** - ИД процеса активити ([скрипт](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0) получения)- используется в дальнейшем для вызова всяких сервисов iDoc - обязательное поле для iDoc  
+**processInstanceId** - ИД процеса активити (скрипт получения)- используется в дальнейшем для вызова всяких сервисов iDoc - обязательное поле для iDoc  
 
 
-**processDefinitionId** - есть [скрипт](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D0%91%D0%9F), который вытащит в эту переменную ИД бизнес-процесса, используется в дальнейшем в листенере, который порождает задачи. Если задачи не будут порождаться, это поле необязательное для iDoc 
+**processDefinitionId** - есть скрипт, который вытащит в эту переменную ИД бизнес-процесса, используется в дальнейшем в листенере, который порождает задачи. Если задачи не будут порождаться, это поле необязательное для iDoc 
 
 
  
-**sKey_Step_Document** - возвращает шаг документа из джейсона - обязательное поле для iDoc. Значение в это поле прописывается автоматически листенером [${DocumentInit_iDoc}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#documentinit_idoc)  
+**sKey_Step_Document** - возвращает шаг документа из джейсона - обязательное поле для iDoc. Значение в это поле прописывается автоматически листенером [${DocumentInit_iDoc}](#documentinit_idoc)  
 
 
 
@@ -2309,15 +2328,67 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
 ###### listenersidoc
 ### Листенеры iDoc
-[листенер ${SetTasks}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#settasks)  
-[листенер ${DocumentInit_iDoc}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#documentinit_idoc)  
-[листенер ${UpdateStatusTask}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustask)  
-[листенер ${UpdateStatusTaskTreeAndCloseProcess}](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#updatestatustasktreeandcloseprocess)  
+[листенер ${SetTasks}](#settasks)  
+[листенер ${DocumentInit_iDoc}](#documentinit_idoc)  
+[листенер ${UpdateStatusTask}](#updatestatustask)  
+[листенер ${UpdateStatusTaskTreeAndCloseProcess}](#updatestatustasktreeandcloseprocess)  
+
+###### serveses
+### Сервисы
+### Переключение степа  
+**setDocumentStep(snID_Process_Activiti, sKey_Step)**  
+пример вызова:
+```javascript
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
+```
+### Клонирование прав для человека
+**cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)**  
+пример вызова:  
+```javascript
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')
+```
+### Клонирование прав для людей из таблицы
+**cloneDocumentStepFromTable(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)**  
+пример вызова:
+```javascript
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU_read', 'sTableViewed', 'step_2')
+```
+### Проверка все ли подписали
+**isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step)**  
+пример вызова:
+```javascript
+var nID_Process = execution.getProcessInstanceId()
+var sKey_Step = execution.getVariable('sKey_Step_Document')
+var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())
+```
+### Снятие сабмита (подписант остается)
+**cancelDocumentSubmit(nID_Process, sKey_Step, sKeyGroup)**  
+пример вызова
+```javascript
+var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sKeyGroup)
+```
+### Удаление подписанта
+**removeDocumentStepSubject(nID_Process, sKey_Step, sKeyGroup)**  
+пример вызова:
+```javascript
+var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup= execution.getVariable('sLogin_LastSubmited')
+var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, 'step_2', sKeyGroup)
+```
+### /delegateDocumentStepSubject
+### /syncDocumentSubmitersByField
 
 ###### generationtasks
 ### Порождение задач
 Системный процесс - порождает задачи, расписанные на исполнителей в родительском процессе.  
-В system_task данные пробрасываются с помощью листенера [SetTasks](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#settasks). Поддерживается мультипорождение и синхронизация данных в процесс-родитель.
+В system_task данные пробрасываются с помощью листенера [SetTasks](#settasks). Поддерживается мультипорождение и синхронизация данных в процесс-родитель.
 
 ```javascript
 var number=execution.getVariable('sID_Order_GovPublic')
@@ -2332,9 +2403,9 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)
 private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming";
 ```
 
-###### callactivity
+###### callactivity_
 ### Callactivity
-Вызов другого процесса из текущего стандартными средствами активити. Отличается от вызова при помощи листенера [SetTasks](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#settasks) тем, что не может принимать значение обратно в случае мультипорождения нескольких подпроцессов.
+Вызов другого процесса из текущего стандартными средствами активити. Отличается от вызова при помощи листенера [SetTasks](#settasks) тем, что не может принимать значение обратно в случае мультипорождения нескольких подпроцессов.
 Очень хорошо его можно применять, когда в случае входящего документа необходимо породить 1 исходящий из входящего.
 ![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sdmtSVzlWamhER3c)
 Во вкладке **Main Config**  в поле **Called element** прописываем ИДБП который необходимо вызвать **(1)**, в блоке **Input parameters** прописываем поля, которые необходимо пробросить в порождаемый процесс **(2)**.
@@ -2359,11 +2430,11 @@ _testSimpleSubProces - порожденный
 
 ###### scriptsusedidoc
 ### Скрипты, которые используются в СЕДе
-[Получение ИД текущего процесса](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0)  
-[Счетчик добавления номера в поле входящего номера](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%A1%D1%87%D0%B5%D1%82%D1%87%D0%B8%D0%BA-%D0%B4%D0%BE%D0%B1%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-%D0%BD%D0%BE%D0%BC%D0%B5%D1%80%D0%B0-%D0%B2-%D0%BF%D0%BE%D0%BB%D0%B5-%D0%B2%D1%85%D0%BE%D0%B4%D1%8F%D1%89%D0%B5%D0%B3%D0%BE-%D0%BD%D0%BE%D0%BC%D0%B5%D1%80%D0%B0)  
-[Назначение даты исполнения](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9D%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F---%D0%BF%D0%BE-%D1%83%D0%BC%D0%BE%D0%BB%D1%87%D0%B0%D0%BD%D0%B8%D1%8E--30-%D0%B4%D0%BD%D0%B5%D0%B9-%D0%BA-%D1%82%D0%B5%D0%BA%D1%83%D1%89%D0%B5%D0%B9-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B8-%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4-%D0%B4%D0%B0%D1%82%D1%8B-%D0%B2-%D0%BD%D1%83%D0%B6%D0%BD%D1%8B%D0%B9-%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82-%D0%B4%D0%B4%D0%BC%D0%BC%D0%B3%D0%B3%D0%B3%D0%B3)   
-[Получение ИД БП](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%98%D0%94-%D0%91%D0%9F)   
-[Получение логина и ФИО основного исполнителя](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%9F%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BB%D0%BE%D0%B3%D0%B8%D0%BD%D0%B0-%D0%B8-%D0%A4%D0%98%D0%9E-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D0%BD%D0%B8%D1%82%D0%B5%D0%BB%D1%8F-%D1%87%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA%D0%B0-%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D0%BE%D0%B3%D0%BE-%D0%B2-%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D0%B5-%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D0%BB%D0%B8-%D0%BF%D0%B5%D1%80%D0%B2%D1%8B%D0%BC)  
+[Получение ИД текущего процесса](#gettingid)  
+[Счетчик добавления номера в поле входящего номера](#counteraddingnumber)  
+[Назначение даты исполнения](#assignmentexecutiondate)   
+[Получение ИД БП](#obtainingbpid)   
+[Получение логина и ФИО основного исполнителя](#gettingloginandname)  
 
 
 # Детальная информация
@@ -2536,7 +2607,7 @@ _тестирование и проливка на бету и боевой
 
 [вернуться...](#select)
 
-Для того чтоб в выпадающем списке селекта выпадал заданный массив данных, необходимо правильно заполнить файлы [Subject](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subject), [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan), [SubjectOrganJoin](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoin), [SubjectOrganJoinAttribute](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorganjoinattribute), [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) соответственно описанию.
+Для того чтоб в выпадающем списке селекта выпадал заданный массив данных, необходимо правильно заполнить файлы [Subject](#subject), [SubjectOrgan](#subjectorgan), [SubjectOrganJoin](#subjectorganjoin), [SubjectOrganJoinAttribute](#subjectorganjoinattribute), [ServiceData](#servicedata) соответственно описанию.
 
 ###### _table
 
@@ -3482,7 +3553,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 ###### _subjectaccount
 
-[вернуться...](#subjectAccount)
+[вернуться...](#subjectaccount)
 
   ![17_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_3.JPG)
 
