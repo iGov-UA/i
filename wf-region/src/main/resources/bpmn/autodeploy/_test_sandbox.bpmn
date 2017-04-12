@@ -18,7 +18,7 @@
 
 	  </extensionElements>
     </userTask>
-    <serviceTask id="servicetask2" name="повідомлення между тасками" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="повідомлення между тасками" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -37,10 +37,7 @@
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
+        </extensionElements>
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow33" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
