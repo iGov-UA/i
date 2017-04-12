@@ -103,7 +103,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
 
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 20 16 10/10 * ?"); //0 0 2 1/1 * ?
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 10 13 1/1 * ?"); //0 0 2 1/1 * ?
 
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
