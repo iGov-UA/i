@@ -1019,7 +1019,7 @@ digit3 - переменная, куда присвоится результат 
 * ![13_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_0.JPG)
 * в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
 
-* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG)
+* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG) 
 
 * в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
 
@@ -1366,6 +1366,9 @@ execution.setVariable('sExecutor', sExecutor)
 ### wf-central  
 путь к конфигурационным файлам: **\i\wf-central\src\main\resources\data\**  
 
+### Взаимодействие конфигурационных файлов
+
+![base](https://github.com/e-government-ua/i/blob/test/doc/bp/img/base.png)
 ### Category
 ### City
 ### Country
