@@ -1419,7 +1419,7 @@ execution.setVariable('sExecutor', sExecutor)
 * Пример {"processDefinitionId":"znes_bud_393:1:1"}. Для внешних услуг указываем пустые скобки {}.
 * sURL - указание URL для внешней реализации услуги. Например, http://www.cnap.if.ua/posl/4345
 * bHidden - скрытая (true) или видимая (false) услуга (позволяет скрывать услуги, которые даже уже запущены)
-* nID_Subject_Operator - Используется, когда один процесс на несколько городов. По умолчанию 1. При необходимости берем номер из SubjectOrgan.csv (nID 225 - для ЦНАП, nID 212 - для местных оргаов) 
+* nID_Subject_Operator - Используется, когда один процесс на несколько городов. По умолчанию 1. При необходимости берем номер из [SubjectOrgan](#subjectorgan). Пример (nID 225 - для ЦНАП, nID 212 - для местных оргаов) 
 * bTest - Услуга в процессе тестирования (true, т.е. желтого цвета) или рабочая (false, т.е. “зеленая”)
 * sNote - Комментарии. Используется при редиректе. Могут быть не заполнены
 * asAuth - тип авторизации. По умолчанию BankID,EDS 
@@ -1467,8 +1467,8 @@ execution.setVariable('sExecutor', sExecutor)
 ### SubjectMessageType
 ###### subjectorgan
 ### SubjectOrgan
-**nID** - порядковый номер используется в [SubjectOrganJoin](#subjectorganjoin)
-**nID_Subject** - ид используется в [Subject](#subject)   
+**nID** - порядковый номер используется в [SubjectOrganJoin](#subjectorganjoin)   
+**nID_Subject** - ид используется в [Subject](#subject)     
 **sOKPO**  
 **sFormPrivacy**  
 **sName**   
@@ -1477,10 +1477,10 @@ execution.setVariable('sExecutor', sExecutor)
 
 ###### subjectorganjoin
 ### SubjectOrganJoin
-**nID** - номер строки, добавляется инкрементом  
-**nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan). Пример 225-ЦНАП, 212- местные органы 
-**sNameUa** - название административного органа на украинском языке  
-**sNameRu** - название административного органа на русском языке  
+**nID** - номер строки, добавляется инкрементом    
+**nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan). Пример 225-ЦНАП, 212- местные органы    
+**sNameUa** - название административного органа на украинском языке    
+**sNameRu** - название административного органа на русском языке     
 **sID_Privat** - ИД  
 **sID_Public**  
 **sGeoLongitude**  
@@ -1493,9 +1493,9 @@ execution.setVariable('sExecutor', sExecutor)
 
 ###### subjectorganjoinattribute
 ### SubjectOrganJoinAttribute
-**nID_SubjectOrganJoin** - ид в SubjectOrganJoin.csv       
-**sName** - ид данных об организации (sAddress, sWork_Time, sMail_Employee и т.д.)   
-**sValue** - описание данных **sName** ((м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), аvаm0206@yandex.ua(sMail_Employee) и т.д.)
+**nID_SubjectOrganJoin** - ид в SubjectOrganJoin.csv         
+**sName** - ид данных об организации (sAddress, sWork_Time, sMail_Employee и т.д.)     
+**sValue** - описание данных **sName** ((м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), 100@gmail.com(sMail_Employee) и т.д.)
 
 ### SubjectOrganJoinTax
 ### wf-base  
