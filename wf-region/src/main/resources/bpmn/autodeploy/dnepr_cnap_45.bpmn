@@ -4,7 +4,7 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/54</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select"></activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі  п'яти  неоподатковуваних  мінімумів  доходів громадян), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можте завантажити єлектронну квітанцію, сформовану в інтернет-банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;https://docs.google.com/document/d/13Nj2t2sR_yaKRgwysOIAEXzTb6j4YjElRfZPYdVK7Xw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -795,6 +795,7 @@ execution.setVariable('sSum', sum);     </script>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Название органа (TEST)" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
