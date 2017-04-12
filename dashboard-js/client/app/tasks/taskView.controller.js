@@ -1057,7 +1057,7 @@
 
         $scope.sFieldLabel = function (sField) {
           var s = '';
-          if (sField !== null) {
+          if (sField) {
             var a = sField.split(';');
             s = a[0].trim();
           }
