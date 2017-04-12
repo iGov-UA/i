@@ -1019,7 +1019,7 @@ digit3 - переменная, куда присвоится результат 
 * ![13_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_0.JPG)
 * в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
 
-* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG)
+* ![13_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_1.JPG) 
 
 * в дашборде чиновника добавить параметр, ссылающийся на переменную с Id  платежа
 
@@ -1366,6 +1366,9 @@ execution.setVariable('sExecutor', sExecutor)
 ### wf-central  
 путь к конфигурационным файлам: **\i\wf-central\src\main\resources\data\**  
 
+### Взаимодействие конфигурационных файлов
+
+![base](https://github.com/e-government-ua/i/blob/test/doc/bp/img/base.png)
 ### Category
 ### City
 ### Country
@@ -1416,7 +1419,7 @@ execution.setVariable('sExecutor', sExecutor)
 * Пример {"processDefinitionId":"znes_bud_393:1:1"}. Для внешних услуг указываем пустые скобки {}.
 * sURL - указание URL для внешней реализации услуги. Например, http://www.cnap.if.ua/posl/4345
 * bHidden - скрытая (true) или видимая (false) услуга (позволяет скрывать услуги, которые даже уже запущены)
-* nID_Subject_Operator - Используется, когда один процесс на несколько городов. По умолчанию 1. При необходимости берем номер из SubjectOrgan.csv
+* nID_Subject_Operator - Используется, когда один процесс на несколько городов. По умолчанию 1. При необходимости берем номер из [SubjectOrgan](#subjectorgan). Пример (nID 225 - для ЦНАП, nID 212 - для местных оргаов) 
 * bTest - Услуга в процессе тестирования (true, т.е. желтого цвета) или рабочая (false, т.е. “зеленая”)
 * sNote - Комментарии. Используется при редиректе. Могут быть не заполнены
 * asAuth - тип авторизации. По умолчанию BankID,EDS 
@@ -1433,7 +1436,7 @@ execution.setVariable('sExecutor', sExecutor)
 ### Subcategory
 ###### subject
 ### Subject
-**nID** - номер по порядку  
+**nID** - номер по порядку (используется в [SubjectOrgan](#subjectorgan)  
 **sID** - справочная информация (можно оставлять пустым)  
 **sLabel** - имя чиновника или название органа, название органа должно начинаться с нижнего подчеркивания  
 **sLabelShort** - справочная информация (можно оставлять пустым)   
@@ -1446,7 +1449,7 @@ execution.setVariable('sExecutor', sExecutor)
 **sNote** - имя чиновника или название органа (рекомендуется синхронизировать с sLabel из файла Subject.csv)  
 **nID_SubjectAccountType** - ставим всегда 1  
 **nID_Server** - ставим всегда 0
-**nID_Subject** - номер строки из файла Subject - связка с конкретным чиновником или органом 
+**nID_Subject** - номер строки из файла [Subject](#subject) - связка с конкретным чиновником или органом 
 
 [детальней...](#_subjectaccount)
 
@@ -1464,20 +1467,20 @@ execution.setVariable('sExecutor', sExecutor)
 ### SubjectMessageType
 ###### subjectorgan
 ### SubjectOrgan
-**nID**
-**nID_Subject** - ид используется в [SubjectOrganJoin](#subjectorganjoin)   
+**nID** - порядковый номер используется в [SubjectOrganJoin](#subjectorganjoin)   
+**nID_Subject** - ид используется в [Subject](#subject)     
 **sOKPO**  
 **sFormPrivacy**  
 **sName**   
 **sNameFull**  
 Пример заполнения: 225;16;00000016;ЦНАП;ЦНАП;Центри надання адміністративних послуг   
-Сделать подробнее со скрином.
+
 ###### subjectorganjoin
 ### SubjectOrganJoin
-**nID** - номер строки, добавляется инкрементом  
-**nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan)  
-**sNameUa** - название административного органа на украинском языке  
-**sNameRu** - название административного органа на русском языке  
+**nID** - номер строки, добавляется инкрементом    
+**nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan). Пример 225-ЦНАП, 212- местные органы    
+**sNameUa** - название административного органа на украинском языке    
+**sNameRu** - название административного органа на русском языке     
 **sID_Privat** - ИД  
 **sID_Public**  
 **sGeoLongitude**  
@@ -1490,9 +1493,9 @@ execution.setVariable('sExecutor', sExecutor)
 
 ###### subjectorganjoinattribute
 ### SubjectOrganJoinAttribute
-**nID_SubjectOrganJoin** - ид в SubjectOrganJoin.csv       
-**sName** - ид данных об организации (sAddress, sWork_Time, sMail_Employee и т.д.)   
-**sValue** - описание данных **sName** ((м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), аvаm0206@yandex.ua(sMail_Employee) и т.д.)
+**nID_SubjectOrganJoin** - ид в SubjectOrganJoin.csv         
+**sName** - ид данных об организации (sAddress, sWork_Time, sMail_Employee и т.д.)     
+**sValue** - описание данных **sName** (м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), 100@gmail.com(sMail_Employee) и т.д.)
 
 ### SubjectOrganJoinTax
 ### wf-base  

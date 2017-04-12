@@ -315,9 +315,13 @@ angular.module('dashboardJsApp')
             ext;
 
         if(files.type === 'table') {
+          stringifyContent = JSON.stringify(files);
           ext = '.json'
         } else if (files.type === 'fileHTML') {
+          stringifyContent = files.value;
           ext = '.html'
+        } else {
+          // when added new type, chose your extension and content
         }
 
         if(isNewService) {
