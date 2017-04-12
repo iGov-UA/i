@@ -1419,7 +1419,7 @@ execution.setVariable('sExecutor', sExecutor)
 * Пример {"processDefinitionId":"znes_bud_393:1:1"}. Для внешних услуг указываем пустые скобки {}.
 * sURL - указание URL для внешней реализации услуги. Например, http://www.cnap.if.ua/posl/4345
 * bHidden - скрытая (true) или видимая (false) услуга (позволяет скрывать услуги, которые даже уже запущены)
-* nID_Subject_Operator - Используется, когда один процесс на несколько городов. По умолчанию 1. При необходимости берем номер из SubjectOrgan.csv
+* nID_Subject_Operator - Используется, когда один процесс на несколько городов. По умолчанию 1. При необходимости берем номер из SubjectOrgan.csv (nID 225 - для ЦНАП, nID 212 - для местных оргаов) 
 * bTest - Услуга в процессе тестирования (true, т.е. желтого цвета) или рабочая (false, т.е. “зеленая”)
 * sNote - Комментарии. Используется при редиректе. Могут быть не заполнены
 * asAuth - тип авторизации. По умолчанию BankID,EDS 
@@ -1436,7 +1436,7 @@ execution.setVariable('sExecutor', sExecutor)
 ### Subcategory
 ###### subject
 ### Subject
-**nID** - номер по порядку  
+**nID** - номер по порядку (используется в [SubjectOrgan](#subjectorgan)  
 **sID** - справочная информация (можно оставлять пустым)  
 **sLabel** - имя чиновника или название органа, название органа должно начинаться с нижнего подчеркивания  
 **sLabelShort** - справочная информация (можно оставлять пустым)   
@@ -1449,7 +1449,7 @@ execution.setVariable('sExecutor', sExecutor)
 **sNote** - имя чиновника или название органа (рекомендуется синхронизировать с sLabel из файла Subject.csv)  
 **nID_SubjectAccountType** - ставим всегда 1  
 **nID_Server** - ставим всегда 0
-**nID_Subject** - номер строки из файла Subject - связка с конкретным чиновником или органом 
+**nID_Subject** - номер строки из файла [Subject](#subject) - связка с конкретным чиновником или органом 
 
 [детальней...](#_subjectaccount)
 
@@ -1467,18 +1467,18 @@ execution.setVariable('sExecutor', sExecutor)
 ### SubjectMessageType
 ###### subjectorgan
 ### SubjectOrgan
-**nID**
-**nID_Subject** - ид используется в [SubjectOrganJoin](#subjectorganjoin)   
+**nID** - порядковый номер используется в [SubjectOrganJoin](#subjectorganjoin)
+**nID_Subject** - ид используется в [Subject](#subject)   
 **sOKPO**  
 **sFormPrivacy**  
 **sName**   
 **sNameFull**  
 Пример заполнения: 225;16;00000016;ЦНАП;ЦНАП;Центри надання адміністративних послуг   
-Сделать подробнее со скрином.
+
 ###### subjectorganjoin
 ### SubjectOrganJoin
 **nID** - номер строки, добавляется инкрементом  
-**nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan)  
+**nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan). Пример 225-ЦНАП, 212- местные органы 
 **sNameUa** - название административного органа на украинском языке  
 **sNameRu** - название административного органа на русском языке  
 **sID_Privat** - ИД  
