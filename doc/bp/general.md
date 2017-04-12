@@ -1495,7 +1495,7 @@ execution.setVariable('sExecutor', sExecutor)
 ### SubjectOrganJoinAttribute
 **nID_SubjectOrganJoin** - ид в SubjectOrganJoin.csv         
 **sName** - ид данных об организации (sAddress, sWork_Time, sMail_Employee и т.д.)     
-**sValue** - описание данных **sName** ((м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), 100@gmail.com(sMail_Employee) и т.д.)
+**sValue** - описание данных **sName** (м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), 100@gmail.com(sMail_Employee) и т.д.)
 
 ### SubjectOrganJoinTax
 ### wf-base  
