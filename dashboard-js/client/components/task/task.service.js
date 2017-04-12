@@ -318,7 +318,7 @@ angular.module('dashboardJsApp')
           stringifyContent = JSON.stringify(files);
           ext = '.json'
         } else if (files.type === 'fileHTML') {
-          stringifyContent = files.value;
+          stringifyContent = files.valueVisible;
           ext = '.html'
         } else {
           // when added new type, chose your extension and content

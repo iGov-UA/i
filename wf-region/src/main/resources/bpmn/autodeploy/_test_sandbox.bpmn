@@ -3,7 +3,7 @@
   <process id="_test_sandbox" name="_test_sandbox" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-
+	<activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="msWord" name="MS Word" type="fileHTML" required="true"></activiti:formProperty>
 
 	  </extensionElements>
@@ -14,10 +14,11 @@
 
         <activiti:formProperty id="msWord" name="MS Word" type="fileHTML" required="true"></activiti:formProperty>
         <activiti:formProperty id="msWorld" name="MS World" type="fileHTML" required="true"></activiti:formProperty>
+        <activiti:formProperty id="unnecessary" name="I'm unnecessary" type="fileHTML" required="false"></activiti:formProperty>
 
 	  </extensionElements>
     </userTask>
-    <serviceTask id="servicetask2" name="повідомлення между тасками" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="повідомлення между тасками" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -36,10 +37,7 @@
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
+        </extensionElements>
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow33" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
@@ -47,15 +45,9 @@
     <sequenceFlow id="flow35" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask2" name="2-й этап обработки" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sOneFields" name="Поле - string" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTwoFields" name="Поле - long" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="Поле с возможностью редактирования_1" type="fileHTML" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="Поле с возможностью редактирования_2" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html]" type="invisible" default="тестовая принтформа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="msWord" name="MS Word" type="fileHTML" required="true"></activiti:formProperty>
+        <activiti:formProperty id="msWorld" name="MS World" type="fileHTML" required="true"></activiti:formProperty>
+        <activiti:formProperty id="unnecessary" name="I'm unnecessary" type="fileHTML" required="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow36" sourceRef="usertask2" targetRef="endevent2"></sequenceFlow>
