@@ -735,6 +735,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
         );
         response.put("sDateTimeCreate", sDateTimeCreate);
+        response.put("sType", oActionTaskService.getTypeOfTask(sLogin, nID_Task.toString()));
 
         return JsonRestUtils.toJsonResponse(response);
     }

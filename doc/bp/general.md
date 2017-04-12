@@ -1434,9 +1434,9 @@ execution.setVariable('sExecutor', sExecutor)
 ###### subject
 ### Subject
 **nID** - номер по порядку  
-**sID** - оставляем пустым  
+**sID** - справочная информация (можно оставлять пустым)  
 **sLabel** - имя чиновника или название органа, название органа должно начинаться с нижнего подчеркивания  
-**sLabelShort** - оставляем пустым 
+**sLabelShort** - справочная информация (можно оставлять пустым)   
 [детальней...](#_subject)
 
 ###### subjectaccount
@@ -1462,11 +1462,20 @@ execution.setVariable('sExecutor', sExecutor)
 ### SubjectHuman
 ### SubjectMessage
 ### SubjectMessageType
+###### subjectorgan
 ### SubjectOrgan
+**nID**
+**nID_Subject** - ид используется в [SubjectOrganJoin](#subjectorganjoin)   
+**sOKPO**  
+**sFormPrivacy**  
+**sName**   
+**sNameFull**  
+Пример заполнения: 225;16;00000016;ЦНАП;ЦНАП;Центри надання адміністративних послуг   
+Сделать подробнее со скрином.
 ###### subjectorganjoin
 ### SubjectOrganJoin
 **nID** - номер строки, добавляется инкрементом  
-**nID_SubjectOrgan** - номер подтягивать из файла SubjectOrgan  
+**nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan)  
 **sNameUa** - название административного органа на украинском языке  
 **sNameRu** - название административного органа на русском языке  
 **sID_Privat** - ИД  
@@ -1481,12 +1490,16 @@ execution.setVariable('sExecutor', sExecutor)
 
 ###### subjectorganjoinattribute
 ### SubjectOrganJoinAttribute
+**nID_SubjectOrganJoin** - ид в SubjectOrganJoin.csv       
+**sName** - ид данных об организации (sAddress, sWork_Time, sMail_Employee и т.д.)   
+**sValue** - описание данных **sName** ((м.Чернігів(sAddress), понеділок-п'ятниця з 10:00 до 12:00(sWork_Time), аvаm0206@yandex.ua(sMail_Employee) и т.д.)
+
 ### SubjectOrganJoinTax
 ### wf-base  
 Путь:i\wf-base\src\main\resources\data\  
 
 ### EscalationRule
-**nID** - номер по порядку  
+**nID** - номер по порядку           
 **sID_BP** - ИД бизнес-процесса, для которого настраиваем эскалацию (например - kiev_soc_help_177)  
 **sID_UserTask** - в кавычках название юзертаски на которую настраиваем эскалацию (нужно на все юзертаски это сделать) (например - "usertask1")  
 **sCondition*** - условие  
