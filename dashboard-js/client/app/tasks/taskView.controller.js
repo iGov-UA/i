@@ -386,7 +386,7 @@
           angular.forEach($scope.taskForm, function (i, k, o) {
             if(i.type === 'fileHTML' && i.value && i.value.indexOf('sKey') > -1) {
               tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, i.id, true).then(function (res) {
-                o[k].value = res;
+                o[k].valueVisible = res;
               })
             }
           })
@@ -792,7 +792,7 @@
         $scope.unpopulatedFields = function () {
           if ($scope.selectedTask && $scope.taskForm) {
             var unpopulated = $scope.taskForm.filter(function (item) {
-              return (item.value === undefined || item.value === null || item.value.trim() === "") && (item.required || $scope.isCommentAfterReject(item));//&& item.type !== 'file'
+              return (item.value === null && !item.valueVisible) && (item.value === undefined || item.value === null || item.value.trim() === "") && (item.required || $scope.isCommentAfterReject(item));//&& item.type !== 'file'
             });
             return unpopulated;
           } else {
@@ -1057,7 +1057,7 @@
 
         $scope.sFieldLabel = function (sField) {
           var s = '';
-          if (sField !== null) {
+          if (sField) {
             var a = sField.split(';');
             s = a[0].trim();
           }
