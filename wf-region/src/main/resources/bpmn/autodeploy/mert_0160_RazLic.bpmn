@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_267" name="Разова (індивідуальна) ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності зовнішньоекономічних операцій" isExecutable="true">
+  <process id="mert_0160_RazLic" name="Разова (індивідуальна) ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності зовнішньоекономічних операцій" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -76,16 +76,8 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи адміністартивного органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;ur_name&quot;,&quot;ur_adres&quot;,&quot;ur_tel&quot;, &quot;ur_fax&quot;,&quot;ur_edrpou&quot;,&quot;ur_pib&quot;,&quot;ur_post&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="Якщо юридична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_1&quot;,&quot;ur_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="Якщо фіз особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name_1&quot;,&quot;fiz_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="Якщо експорт то додати документ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;pogodgennya&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;type_lic&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'export'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="валідатор поля fiz_drfo" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_11&quot;:{&quot;aField_ID&quot;:[&quot;fiz_drfo&quot;],&quot;sFormat&quot;:&quot;##########&quot;,&quot;sMessage&quot;:&quot;Невірний формат. ДРФО має складатися з 10 цифр&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="валідатор поля ur_edrpou" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_12&quot;:{&quot;aField_ID&quot;:[&quot;ur_edrpou&quot;],&quot;sFormat&quot;:&quot;########&quot;,&quot;sMessage&quot;:&quot;Невірний формат. ЕДРПОУ має складатися з 8 цифр&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="валідатор поля sNumberAccountUah" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_13&quot;:{&quot;aField_ID&quot;:[&quot;sNumberAccountUah&quot;,&quot;sNumberAccountCurrency&quot;],&quot;sFormat&quot;:&quot;####################&quot;,&quot;sMessage&quot;:&quot;Невірний формат. Рахунок має складатися з 20 цифр&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="валідатор поля sBankMfoUah та sBankMfoCurrency" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_14&quot;:{&quot;aField_ID&quot;:[&quot;sBankMfoUah&quot;,&quot;sBankMfoCurrency&quot;],&quot;sFormat&quot;:&quot;######&quot;,&quot;sMessage&quot;:&quot;Невірний формат. МФО має складатися з 6 цифр&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers25" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;markers1&quot;,&quot;markers2&quot;,&quot;markers3&quot;,&quot;markers4&quot;,&quot;markers5&quot;,&quot;markers6&quot;,&quot;markers7&quot;,&quot;markers8&quot;,&quot;markers9&quot;,&quot;markers10&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sWork4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('mert_0160_RazLic.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="відображення полів" type="markers" default="${markerService.loadFromFile('mert_0160_RazLic1.json')}"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all" name="Всі файли буде підписано ЕЦП" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -203,7 +195,7 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markers_0_1" name="якщо відхилити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0_1&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('mert_0160_RazLic.json')}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
@@ -256,7 +248,7 @@
           <activiti:value id="accept" name="надано індивідуальну ліцензію"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні індивідуальної ліцензії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers_0_3" name="якщо відхилити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;comment_3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_3&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відмовлено у наданні індивідуальної ліцензії'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('mert_0160_RazLic.json')}"></activiti:formProperty>
         <activiti:formProperty id="comment_3" name="У разі відмови внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію ліцензії або лист з обгрунтуванням причин відмови" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
@@ -316,8 +308,7 @@
         <activiti:formProperty id="sDateExpiry" name="Укажіть дату, до якої дійсна ліцензія" type="string"></activiti:formProperty>
         <activiti:formProperty id="pib_posadovec" name="Прізвище та ініціали уповноваженої особи з боку адміністративного органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="post_posadovec" name="Посада уповноваженої особи з боку адміністративного органу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers_0_4" name="якщо відхилити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0_4&quot;:{&quot;aField_ID&quot;:[&quot;comment_4&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відмовлено у наданні індивідуальної ліцензії'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_1_4" name="якщо ліцензія" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1_4&quot;:{&quot;aField_ID&quot;:[&quot;sNumberLicense&quot;,&quot;sDateExpiry&quot;,&quot;pib_posadovec&quot;,&quot;post_posadovec&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'надано індивідуальну ліцензію'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('mert_0160_RazLic.json')}"></activiti:formProperty>
         <activiti:formProperty id="comment_4" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію ліцензії або лист з обгрунтуванням причин відмови" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
@@ -377,7 +368,7 @@
           <activiti:value id="reject_all" name="заявник не з'явився - перемістити звернення в архів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_5" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markers_0_5" name="якщо відхилити" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0_2&quot;:{&quot;aField_ID&quot;:[&quot;comment_2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Оплата не надішла впродовж 30 днів - відхилити звернення'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="відображення полів" type="markers" default="${markerService.loadFromFile('mert_0160_RazLic.json')}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
@@ -827,8 +818,8 @@ execution.setVariable('sListDocumentsLetter', res2)
     </boundaryEvent>
     <sequenceFlow id="flow116" sourceRef="escalationTimer1" targetRef="endevent5"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_267">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_267" id="BPMNPlane_dnepr_cnap_267">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_mert_0160_RazLic">
+    <bpmndi:BPMNPlane bpmnElement="mert_0160_RazLic" id="BPMNPlane_mert_0160_RazLic">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="98.0" y="37.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
