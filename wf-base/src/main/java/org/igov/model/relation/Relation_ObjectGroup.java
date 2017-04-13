@@ -2,6 +2,8 @@ package org.igov.model.relation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import org.igov.model.core.AbstractEntity;
 
 /**
@@ -10,6 +12,11 @@ import org.igov.model.core.AbstractEntity;
  */
 @javax.persistence.Entity
 public class Relation_ObjectGroup extends AbstractEntity{
+    
+    @JsonProperty(value = "oObjectGroup_Child")
+    @ManyToOne(targetEntity = ObjectGroup.class)
+    @JoinColumn(name="nID_ObjectGroup_Child", nullable = false, updatable = false)
+    private ObjectGroup oObjectGroup;
     
     @JsonProperty(value = "nID_Relation")
     @Column(name = "nID_Relation", nullable = false)
@@ -23,6 +30,14 @@ public class Relation_ObjectGroup extends AbstractEntity{
     @Column(name = "nID_ObjectGroup_Child", nullable = false)
     private Long nID_ObjectGroup_Child;
 
+    public void setoObjectGroup(ObjectGroup oObjectGroup) {
+        this.oObjectGroup = oObjectGroup;
+    }
+
+    public ObjectGroup getoObjectGroup() {
+        return oObjectGroup;
+    }
+    
     public Long getnID_Relation() {
         return nID_Relation;
     }
