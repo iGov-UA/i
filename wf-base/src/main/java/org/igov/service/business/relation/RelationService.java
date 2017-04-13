@@ -39,7 +39,7 @@ public class RelationService {
         Relation oRelation = oRelationDao.findByExpected("sID", sID_Relation);
         Long nID_RelationClass = oRelation.getnID_RelationClass();
         
-        if(oRelationClassDao.findByExpected("nID", nID_RelationClass).getsClass().equals("ObjectGroup")){
+        if(oRelationClassDao.findByExpected("id", nID_RelationClass).getsClass().equals("ObjectGroup")){
             
             List<Relation_ObjectGroup> aRelation_ObjectGroup = new ArrayList<>();
             
@@ -47,7 +47,7 @@ public class RelationService {
             
             for(Relation_ObjectGroup oRelation_ObjectGroup : aRelation_ObjectGroup){
                 ObjectGroup oObjectGroup = 
-                        oObjectGroupDao.findByExpected("nID", oRelation_ObjectGroup.getnID_ObjectGroup_Child());
+                        oObjectGroupDao.findByExpected("id", oRelation_ObjectGroup.getnID_ObjectGroup_Child());
                 
                 Relation_VO oRelation_VO = new Relation_VO();
                 oRelation_VO.setnID(oObjectGroup.getId());
