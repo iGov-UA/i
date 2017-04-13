@@ -14,6 +14,8 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
+import org.igov.util.JSON.JsonDateDeserializer;
+import org.igov.util.JSON.JsonDateSerializer;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 public class DocumentStepSubjectRight extends AbstractEntity {
@@ -56,12 +60,16 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 	private String sID_File_ForSign;
 
 	@JsonProperty(value = "sDate")
+	@JsonSerialize(using = JsonDateSerializer.class)
+    @JsonDeserialize(using = JsonDateDeserializer.class)
 	@Type(type = DATETIME_TYPE)
-	private DateTime sDate;
+	private DateTime oDate;
 
 	@JsonProperty(value = "sDateECP")
+	@JsonSerialize(using = JsonDateSerializer.class)
+    @JsonDeserialize(using = JsonDateDeserializer.class)
 	@Type(type = DATETIME_TYPE)
-	private DateTime sDateECP;
+	private DateTime oDateECP;
 
 	@OneToMany(mappedBy = "documentStepSubjectRight", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -140,19 +148,19 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 	}
 
 	public DateTime getsDate() {
-		return sDate;
+		return oDate;
 	}
 
-	public void setsDate(DateTime sDate) {
-		this.sDate = sDate;
+	public void setsDate(DateTime oDate) {
+		this.oDate = oDate;
 	}
 
 	public DateTime getsDateECP() {
-		return sDateECP;
+		return oDateECP;
 	}
 
-	public void setsDateECP(DateTime sDateECP) {
-		this.sDateECP = sDateECP;
+	public void setsDateECP(DateTime oDateECP) {
+		this.oDateECP = oDateECP;
 	}
 
 	@Override

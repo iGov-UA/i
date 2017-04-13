@@ -1,11 +1,15 @@
 package org.igov.model.action.vo;
 
+
 import java.util.Date;
 
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.joda.time.DateTime;
 
 public class DocumentSubmitedUnsignedVO {
+	
+	
+	
 	DocumentStepSubjectRight oDocumentStepSubjectRight;
 
 	private String sNameBP;
