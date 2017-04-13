@@ -1517,15 +1517,21 @@ public class DocumentStepService {
                 sLogin);
         LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
         DocumentStepSubjectRight oFindedDocumentStepSubjectRight;
-        DateTimeFormatter format = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
+        
+    	
+        
                 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
             if (oDocumentStepSubjectRight != null) {
 
-            	
-                DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+            	DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+                LOG.info("sDateECP = ", sDateECP);
                 DateTime sDate = oDocumentStepSubjectRight.getsDate();
+                LOG.info("sDate = ", sDate);
+                
+                
                 Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
                 // проверяем, если даты ецп нет, но есть дата подписания - нашли
                 // нужный объект, который кладем в VO-обьект-обертку
@@ -1547,10 +1553,14 @@ public class DocumentStepService {
                         LOG.info("oProcessInstance = {} ", oProcessInstance);
                         if (oProcessInstance != null) {
                             // вытаскиваем дату создания процесса
+                        	
                         	Date sDateCreateProcess = oProcessInstance.getStartTime();
+                        	LOG.info("sDateCreateProcess ", sDateCreateProcess);
+                        	
+                        	
                           //   long sDCP = oProcessInstance.getStartTime().getTime();
                           //   String sDateCreateProcess = convertMilliSecondsToFormattedDate(sDCP);
-                            LOG.info("oProcessInstance.getStartTime ", oProcessInstance.getStartTime());
+                            
                             // вытаскиваем название бп
                            
                             String sNameBP = oProcessInstance.getName();
@@ -1566,6 +1576,7 @@ public class DocumentStepService {
                             LOG.info("oTaskCurr ={} ", oTaskCurr);
                             // вытаскиваем дату создания таски
                             Date sDateCreateUserTask = oTaskCurr.getCreateTime();
+                            LOG.info("sDateCreateUserTask = ", sDateCreateUserTask);
                             // и ее название
                             String sUserTaskName = oTaskCurr.getName();
                             // Создаем обьект=обертку, в который сетим нужные полученные поля
@@ -1575,8 +1586,10 @@ public class DocumentStepService {
                             oDocumentSubmitedUnsignedVO.setsNameBP(sNameBP);
                             oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
                             oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
+                            LOG.info("sDateCreateProcess in VO = ", sDateCreateProcess.getTime());
                             oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
-                            oDocumentSubmitedUnsignedVO.setsDateSubmit(format.parseDateTime(sDate.toString()));
+                            LOG.info("sDateCreateUserTask in VO =", sDateCreateProcess.getClass().toString());
+                            oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
                             oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
                             aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
@@ -1606,10 +1619,14 @@ public class DocumentStepService {
     }
     
     public static String convertMilliSecondsToFormattedDate(Long milliSeconds){
-    	  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    	  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     	        Calendar calendar = Calendar.getInstance();
     	        calendar.setTimeInMillis(milliSeconds);
     	        return simpleDateFormat.format(calendar.getTime());
     	    }
+   
+        
+        
+    
 
 }
