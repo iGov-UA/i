@@ -1517,15 +1517,23 @@ public class DocumentStepService {
                 sLogin);
         LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
         DocumentStepSubjectRight oFindedDocumentStepSubjectRight;
-        DateTimeFormatter format = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
+        
+    	
+        
                 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
             if (oDocumentStepSubjectRight != null) {
 
             	
-                DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
-                DateTime sDate = oDocumentStepSubjectRight.getsDate();
+              //  DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+                DateTime sDateECP = dateStringFormat.parseDateTime(oDocumentStepSubjectRight.getsDateECP().toString());
+                LOG.info("sDateECP = ", sDateECP);
+                DateTime sDate = dateStringFormat.parseDateTime(oDocumentStepSubjectRight.getsDate().toString(dateStringFormat));
+                LOG.info("sDate = ", sDate);
+                
+                
                 Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
                 // проверяем, если даты ецп нет, но есть дата подписания - нашли
                 // нужный объект, который кладем в VO-обьект-обертку
@@ -1547,7 +1555,11 @@ public class DocumentStepService {
                         LOG.info("oProcessInstance = {} ", oProcessInstance);
                         if (oProcessInstance != null) {
                             // вытаскиваем дату создания процесса
+                        	
                         	Date sDateCreateProcess = oProcessInstance.getStartTime();
+                        	
+                        	
+                        	
                           //   long sDCP = oProcessInstance.getStartTime().getTime();
                           //   String sDateCreateProcess = convertMilliSecondsToFormattedDate(sDCP);
                             LOG.info("oProcessInstance.getStartTime ", oProcessInstance.getStartTime());
@@ -1575,8 +1587,11 @@ public class DocumentStepService {
                             oDocumentSubmitedUnsignedVO.setsNameBP(sNameBP);
                             oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
                             oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
+                            LOG.info("sDateCreateProcess = ", sDateCreateProcess.getTime());
                             oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
-                            oDocumentSubmitedUnsignedVO.setsDateSubmit(format.parseDateTime(sDate.toString()));
+                            LOG.info("sDateCreateUserTask = ", sDateCreateProcess.getClass().toString());
+                            oDocumentSubmitedUnsignedVO.setsDateSubmit(JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDate.toString()));
+                            LOG.info("sDateSubmit = ", JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDate.toString()));
                             oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
                             aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
@@ -1606,10 +1621,14 @@ public class DocumentStepService {
     }
     
     public static String convertMilliSecondsToFormattedDate(Long milliSeconds){
-    	  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    	  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     	        Calendar calendar = Calendar.getInstance();
     	        calendar.setTimeInMillis(milliSeconds);
     	        return simpleDateFormat.format(calendar.getTime());
     	    }
+   
+        
+        
+    
 
 }
