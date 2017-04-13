@@ -63,13 +63,13 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 	@JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
 	@Type(type = DATETIME_TYPE)
-	private DateTime oDate;
+	private DateTime sDate;
 
 	@JsonProperty(value = "sDateECP")
 	@JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
 	@Type(type = DATETIME_TYPE)
-	private DateTime oDateECP;
+	private DateTime sDateECP;
 
 	@OneToMany(mappedBy = "documentStepSubjectRight", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -148,19 +148,19 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 	}
 
 	public DateTime getsDate() {
-		return oDate;
+		return sDate;
 	}
 
-	public void setsDate(DateTime oDate) {
-		this.oDate = oDate;
+	public void setsDate(DateTime sDate) {
+		this.sDate = sDate;
 	}
 
 	public DateTime getsDateECP() {
-		return oDateECP;
+		return sDateECP;
 	}
 
-	public void setsDateECP(DateTime oDateECP) {
-		this.oDateECP = oDateECP;
+	public void setsDateECP(DateTime sDateECP) {
+		this.sDateECP = sDateECP;
 	}
 
 	@Override
