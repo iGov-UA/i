@@ -1590,7 +1590,6 @@ public class DocumentStepService {
                             oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
                             LOG.info("sDateCreateUserTask in VO =", sDateCreateProcess.getClass().toString());
                             oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
-                            LOG.info("sDateSubmit = ", JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDate.toString()));
                             oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
                             aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
