@@ -26,9 +26,9 @@ public class Relation_ObjectGroup extends AbstractEntity{
     @Column(name = "nID_ObjectGroup_Parent", nullable = true)
     private Long nID_ObjectGroup_Parent;
     
-    @JsonProperty(value = "nID_ObjectGroup_Child")
+    /*@JsonProperty(value = "nID_ObjectGroup_Child")
     @Column(name = "nID_ObjectGroup_Child", nullable = false)
-    private Long nID_ObjectGroup_Child;
+    private Long nID_ObjectGroup_Child;*/
 
     public void setoObjectGroup(ObjectGroup oObjectGroup) {
         this.oObjectGroup = oObjectGroup;
@@ -46,9 +46,9 @@ public class Relation_ObjectGroup extends AbstractEntity{
         return nID_ObjectGroup_Parent;
     }
 
-    public Long getnID_ObjectGroup_Child() {
+    /*public Long getnID_ObjectGroup_Child() {
         return nID_ObjectGroup_Child;
-    }
+    }*/
 
     public void setnID_Relation(Long nID_Relation) {
         this.nID_Relation = nID_Relation;
@@ -58,8 +58,8 @@ public class Relation_ObjectGroup extends AbstractEntity{
         this.nID_ObjectGroup_Parent = nID_ObjectGroup_Parent;
     }
 
-    public void setnID_ObjectGroup_Child(Long nID_ObjectGroup_Child) {
+    /*public void setnID_ObjectGroup_Child(Long nID_ObjectGroup_Child) {
         this.nID_ObjectGroup_Child = nID_ObjectGroup_Child;
-    }
+    }*/
 
 }
