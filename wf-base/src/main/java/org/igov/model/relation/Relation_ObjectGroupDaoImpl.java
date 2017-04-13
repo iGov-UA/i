@@ -1,17 +1,17 @@
 package org.igov.model.relation;
-//
-//import java.util.List;
-//import org.hibernate.Criteria;
-//import org.hibernate.criterion.Restrictions;
-//import org.igov.model.core.GenericEntityDao;
-//import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
+import org.igov.model.core.GenericEntityDao;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Kovilin
  */
-//@Repository
-public class Relation_ObjectGroupDaoImpl{ /*extends GenericEntityDao<Long, Relation_ObjectGroup> implements Relation_ObjectGroupDao {
+@Repository
+public class Relation_ObjectGroupDaoImpl extends GenericEntityDao<Long, Relation_ObjectGroup> implements Relation_ObjectGroupDao {
     
     public Relation_ObjectGroupDaoImpl() {
         super(Relation_ObjectGroup.class);
@@ -28,5 +28,5 @@ public class Relation_ObjectGroupDaoImpl{ /*extends GenericEntityDao<Long, Relat
         }
         
         return criteria.list();
-    }*/
+    }
 }
