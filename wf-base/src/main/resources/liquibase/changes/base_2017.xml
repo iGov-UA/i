@@ -470,4 +470,37 @@
                 
     </changeSet-->
     
+     <changeSet id="issue-1553-create_table_SubjectMessageQuestionField" author="Elena">
+        
+         <createTable tableName="SubjectMessageQuestionField">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_SubjectMessage" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_SubjectMessageQuestionField_SubjectMessage"
+                             referencedTableName="SubjectMessage"
+                             referencedColumnNames="nID" deleteCascade="false"/>
+             </column>
+            <column name="sID" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sType" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sValue" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sValueNew" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNotify" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+    
 </databaseChangeLog>
