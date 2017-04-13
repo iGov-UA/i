@@ -1526,11 +1526,9 @@ public class DocumentStepService {
 
             if (oDocumentStepSubjectRight != null) {
 
-            	
-              //  DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
-                DateTime sDateECP = dateStringFormat.parseDateTime(oDocumentStepSubjectRight.getsDateECP().toString());
+            	DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
                 LOG.info("sDateECP = ", sDateECP);
-                DateTime sDate = dateStringFormat.parseDateTime(oDocumentStepSubjectRight.getsDate().toString(dateStringFormat));
+                DateTime sDate = oDocumentStepSubjectRight.getsDate();
                 LOG.info("sDate = ", sDate);
                 
                 
@@ -1557,12 +1555,12 @@ public class DocumentStepService {
                             // вытаскиваем дату создания процесса
                         	
                         	Date sDateCreateProcess = oProcessInstance.getStartTime();
-                        	
+                        	LOG.info("sDateCreateProcess ", sDateCreateProcess);
                         	
                         	
                           //   long sDCP = oProcessInstance.getStartTime().getTime();
                           //   String sDateCreateProcess = convertMilliSecondsToFormattedDate(sDCP);
-                            LOG.info("oProcessInstance.getStartTime ", oProcessInstance.getStartTime());
+                            
                             // вытаскиваем название бп
                            
                             String sNameBP = oProcessInstance.getName();
@@ -1578,6 +1576,7 @@ public class DocumentStepService {
                             LOG.info("oTaskCurr ={} ", oTaskCurr);
                             // вытаскиваем дату создания таски
                             Date sDateCreateUserTask = oTaskCurr.getCreateTime();
+                            LOG.info("sDateCreateUserTask = ", sDateCreateUserTask);
                             // и ее название
                             String sUserTaskName = oTaskCurr.getName();
                             // Создаем обьект=обертку, в который сетим нужные полученные поля
@@ -1587,10 +1586,10 @@ public class DocumentStepService {
                             oDocumentSubmitedUnsignedVO.setsNameBP(sNameBP);
                             oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
                             oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
-                            LOG.info("sDateCreateProcess = ", sDateCreateProcess.getTime());
+                            LOG.info("sDateCreateProcess in VO = ", sDateCreateProcess.getTime());
                             oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
-                            LOG.info("sDateCreateUserTask = ", sDateCreateProcess.getClass().toString());
-                            oDocumentSubmitedUnsignedVO.setsDateSubmit(JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDate.toString()));
+                            LOG.info("sDateCreateUserTask in VO =", sDateCreateProcess.getClass().toString());
+                            oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
                             LOG.info("sDateSubmit = ", JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDate.toString()));
                             oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
