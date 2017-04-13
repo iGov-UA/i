@@ -1,26 +1,26 @@
 package org.igov.service.business.relation;
-//
-//import java.util.List;
-//import java.util.ArrayList;
-//import org.igov.model.action.vo.Relation_VO;
-//import org.igov.model.relation.ObjectGroup;
-//import org.igov.model.relation.ObjectGroupDao;
-//import org.igov.model.relation.Relation;
-//import org.igov.model.relation.Relation_ObjectGroupDao;
-//import org.igov.model.relation.RelationClassDao;
-//import org.igov.model.relation.RelationDao;
-//import org.igov.model.relation.Relation_ObjectGroup;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.ArrayList;
+import org.igov.model.action.vo.Relation_VO;
+import org.igov.model.relation.ObjectGroup;
+import org.igov.model.relation.ObjectGroupDao;
+import org.igov.model.relation.Relation;
+import org.igov.model.relation.Relation_ObjectGroupDao;
+import org.igov.model.relation.RelationClassDao;
+import org.igov.model.relation.RelationDao;
+import org.igov.model.relation.Relation_ObjectGroup;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Kovilin
  */
-//@Service
+@Service
 public class RelationService {
     
-    /*@Autowired
+    @Autowired
     RelationDao oRelationDao;
     
     @Autowired
@@ -59,5 +59,5 @@ public class RelationService {
         }
         
         return aRelation_VO;
-    } */
+    } 
 }

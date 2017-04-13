@@ -1,15 +1,15 @@
 package org.igov.model.relation;
 
-/*import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
-import org.igov.model.core.AbstractEntity;*/
+import org.igov.model.core.AbstractEntity;
 
 /**
  *
  * @author Kovilin
  */
-//@javax.persistence.Entity
-public class ObjectGroup {/*extends AbstractEntity{
+@javax.persistence.Entity
+public class ObjectGroup extends AbstractEntity{
     
     @JsonProperty(value = "nID_Subject_Source")
     @Column(name = "nID_Subject_Source", nullable = true)
@@ -45,6 +45,6 @@ public class ObjectGroup {/*extends AbstractEntity{
 
     public String getsName() {
         return sName;
-    }*/
+    }
     
 }
