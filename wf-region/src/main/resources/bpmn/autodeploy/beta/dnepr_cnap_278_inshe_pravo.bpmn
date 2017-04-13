@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_278_inshe_pravo" name="Державна реєстрація іншого речового права та його обтяжень" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 01.06.2016</documentation>
+    <documentation>Смоктій К.В. Последние правки: 04.04.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="select" required="true"></activiti:formProperty>
@@ -9,9 +9,9 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний номер фізичної особи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія ідентифікаційного номеру фізичної особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ідентифікаційного номеру фізичної особи; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAttribRekvizit_URL" name="Зверніть увагу - ця послуга є платною" type="label" default=" "></activiti:formProperty>
@@ -19,7 +19,7 @@
           <activiti:value id="sElementSplata_No" name="Ні"></activiti:value>
           <activiti:value id="sElementSplata_Yes" name="Так"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFile_FreeSplata" name="Підтверджуючий документ, що Ви належите до однієї з груп, які звільнені від сплати адміністративного збору" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_FreeSplata" name="Підтверджуючий документ, що Ви належите до однієї з груп, які звільнені від сплати адміністративного збору; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="asEnumTerm" name="Розгляд заяви у скорочені строки" type="enum" required="true">
           <activiti:value id="sElementEnum_Short_term" name="Так"></activiti:value>
           <activiti:value id="sElementEnum_Long_term" name="Ні"></activiti:value>
@@ -38,7 +38,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sInfo_3" name="Зверніть увагу - на перелік документів, що є підставою для державної реєстрації прав або обтяжень" type="label" default="Перелік документів, що є підставою для державної реєстрації прав або обтяжень, наведено в &lt;a href=&quot;http://zakon5.rada.gov.ua/laws/show/1952-15/page2#n295&quot; target=&quot;_blank&quot;&gt;Статті 27&lt;/a&gt; Закона України -Про державну реєстрацію речових прав на нерухоме майно та їх обтяжень-"></activiti:formProperty>
         <activiti:formProperty id="sReason_Document" name="Назви та перелік Ваших документів, що є підставою для державної реєстрації права власності" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Reason_Document" name="Документ(и), що є підставою для державної реєстрації права власності;Якщо документів або сторінок декілька, то завантажте, будь ласка, одним архівом" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Reason_Document" name="Документ(и), що є підставою для державної реєстрації права власності;Якщо документів або сторінок декілька, то завантажте, будь ласка, одним архівом;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumForm_Vlasnist" name="Оберіть форму власності" type="enum" required="true">
           <activiti:value id="sElementFormV_Private" name="Приватна"></activiti:value>
           <activiti:value id="sElementFormV_Comunal" name="Комунальна"></activiti:value>
@@ -95,12 +95,12 @@
         <activiti:formProperty id="sNumber_doc" name="Серія, номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_doc" name="Дата видачі;у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgan_doc" name="Ким видан" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_DocPosvidchueOsobu" name="Інший документ, що посвідчує фізичну особу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_DocPosvidchueUrOsobu" name="Документ, що посвідчує юридичну особу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DocPosvidchueOsobu" name="Інший документ, що посвідчує фізичну особу; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DocPosvidchueUrOsobu" name="Документ, що посвідчує юридичну особу; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sLabel_3" name=" " type="label" default="&lt;b&gt;Відомості про уповноважену особу заявника&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sPib_upovnovazh" name="Прізвище, ім’я, по батькові уповноваженої особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPodatk_number_upovnovazh" name="Податковий номер" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Podatk_number_upovnovazh" name="Копія ідентифікаційного номеру уповноваженої особи" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Podatk_number_upovnovazh" name="Копія ідентифікаційного номеру уповноваженої особи; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="asEnumTypePers_document_upovnovazh" name="Документ, що посвідчує особу" type="enum">
           <activiti:value id="sElementTypePersD_passport_upovnovazh" name="Паспорт"></activiti:value>
           <activiti:value id="sElementTypePersD_another_upovnovazh" name="Інший"></activiti:value>
@@ -109,26 +109,26 @@
         <activiti:formProperty id="sNumber_doc_upovnovazh" name="Серія, номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_doc_upovnovazh" name="Дата видачі;у форматі ДД.ММ.РРРР" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOrgan_doc_upovnovazh" name="Ким видан" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Confidant_passport" name="Копія документа, яка посвідчує уповноважену особу" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Confidant_passport" name="Копія документа, яка посвідчує уповноважену особу; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDoc_upovnovazh" name="Документ, що підтверджує повноваження особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumber_Doc_upovnovazh" name="Серія, номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_Doc_upovnovazh" name="Дата видачі;у форматі ДД.ММ.РРРР" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOrgan_Doc_upovnovazh" name="Ким видан" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Confidant_Doc_Povnovazennya" name="Копія документу, що підтверджує повноваження уповноваженої особи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Confidant_Doc_Povnovazennya" name="Копія документу, що підтверджує повноваження уповноваженої особи; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel_5" name=" " type="label" default="&lt;b&gt;Спосіб отримання витягу з Державного реєстру прав&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="asEnumDelivery_Document" name="Спосіб отримання витягу з Державного реєстру прав" type="enum" required="true">
           <activiti:value id="sElementEmail_doc" name="В електронному вигляді"></activiti:value>
           <activiti:value id="sElementPaper_doc" name="У паперовому вигляді"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAttribZayava_URL" name="Затверджені форми заяв про державну реєстрацію прав та їх обтяжень" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Signed_Zayava" name="Підписана заява" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_PaymentVityag" name="Документ, що підтверджує внесення плати за надання витягу з Державного реєстру прав" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_PaymenAdminSbor" name="Документ про сплату адміністративного збору" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва оргструктури (району)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Signed_Zayava" name="Підписана заява; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PaymentVityag" name="Документ, що підтверджує внесення плати за надання витягу з Державного реєстру прав; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PaymenAdminSbor" name="Документ про сплату адміністративного збору; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва оргструктури (району); ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес оргструктури (району); ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_278_11.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_278_12.json')}"></activiti:formProperty>
       </extensionElements>
@@ -152,7 +152,7 @@
           <activiti:string><![CDATA[Нове звернення. Державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -270,12 +270,19 @@
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment1" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ідентифікаційного номеру фізичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_FreeSplata" name="Підтверджуючий документ, що Ви належите до однієї з груп, які звільнені від сплати адміністративного збору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Reason_Document" name="Документ(и), що є підставою для державної реєстрації права власності;Якщо документів або сторінок декілька, то завантажте, будь ласка, одним архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DocPosvidchueOsobu" name="Інший документ, що посвідчує фізичну особу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DocPosvidchueUrOsobu" name="Документ, що посвідчує юридичну особу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Podatk_number_upovnovazh" name="Копія ідентифікаційного номеру уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Confidant_passport" name="Копія документа, яка посвідчує уповноважену особу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Confidant_Doc_Povnovazennya" name="Копія документу, що підтверджує повноваження уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Signed_Zayava" name="Підписана заява; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PaymentVityag" name="Документ, що підтверджує внесення плати за надання витягу з Державного реєстру прав; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PaymenAdminSbor" name="Документ про сплату адміністративного збору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Confidant_passport},${nFile_Confidant_Doc_Povnovazennya},${nFile_PaymentVityag},${nFile_PaymenAdminSbor},${nFile_Reason_Document},${bankId_scan_passport},${nFile_Signed_Zayava},${bankId_scan_inn},${nFile_Podatk_number_upovnovazh},${nFile_FreeSplata},${nFile_DocPosvidchueOsobu},${nFile_DocPosvidchueUrOsobu}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask8"></sequenceFlow>
@@ -293,18 +300,26 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${sDecisionComment1}&lt;/p&gt;&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно було відхилено.&lt;br /&gt;
+					Причина в наступному:&lt;br /&gt;
+					${sDecisionComment1}&lt;br /&gt; &lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
 	    <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -332,17 +347,24 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[Перевірено звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відправлене в Реєстраційну службу міського управління юстиції.&lt;br /&gt;
-&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${sNumber_cnap} від ${sDate_registrastion}&lt;/p&gt;&lt;br /&gt; 
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+  			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відправлене в Реєстраційну службу міського управління юстиції.&lt;br /&gt;
+					&lt;br /&gt; 
+					Номер Вашого замовлення: ${sNumber_cnap} від ${sDate_registrastion}&lt;br /&gt; 
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
 	    <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>
@@ -473,13 +495,19 @@ ${sAddress}&lt;br /&gt;
           <activiti:value id="attr5_finish" name="Відмова громадянину у видачі витягу держреєстратором"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment2" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Otvet" name="Завантажте скановану копию витягу (або електронний варіант витягу)" type="file" default=" " required="true"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_Confidant_passport},${nFile_Confidant_Doc_Povnovazennya},${nFile_PaymentVityag},${nFile_PaymenAdminSbor},${nFile_Reason_Document},${bankId_scan_passport},${nFile_Signed_Zayava},${bankId_scan_inn},${nFile_Podatk_number_upovnovazh},${nFile_FreeSplata},${nFile_DocPosvidchueOsobu},${nFile_DocPosvidchueUrOsobu}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nFile_Otvet" name="Завантажте скановану копию витягу (або електронний варіант витягу); ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ідентифікаційного номеру фізичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_FreeSplata" name="Підтверджуючий документ, що Ви належите до однієї з груп, які звільнені від сплати адміністративного збору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Reason_Document" name="Документ(и), що є підставою для державної реєстрації права власності;Якщо документів або сторінок декілька, то завантажте, будь ласка, одним архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DocPosvidchueOsobu" name="Інший документ, що посвідчує фізичну особу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DocPosvidchueUrOsobu" name="Документ, що посвідчує юридичну особу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Podatk_number_upovnovazh" name="Копія ідентифікаційного номеру уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Confidant_passport" name="Копія документа, яка посвідчує уповноважену особу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Confidant_Doc_Povnovazennya" name="Копія документу, що підтверджує повноваження уповноваженої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Signed_Zayava" name="Підписана заява; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PaymentVityag" name="Документ, що підтверджує внесення плати за надання витягу з Державного реєстру прав; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PaymenAdminSbor" name="Документ про сплату адміністративного збору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
@@ -497,24 +525,29 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[Витяг (паперовий) готовий: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - опрацьовано. &lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати витяг особисто під підпис у ЦНАП.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-4. Підписану заяву.&lt;br /&gt;
-&lt;/p&gt;
-&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - опрацьовано. &lt;br /&gt;
+					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати витяг особисто під підпис у ЦНАП.&lt;br/&gt; 
+					При собі треба мати:&lt;br/&gt; 
+					1. Документ, що посвідчує особу.&lt;br/&gt; 
+					2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
+					3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
+					4. Підписану заяву.&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Otvet}</activiti:expression>
@@ -542,18 +575,27 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[Відхилено звернення на тему: державна реєстрація права власності на нерухоме майно.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відхилено реєстраційною службою міського управління юстиції.&lt;br /&gt;
-Підстава: ${sDecisionComment2}.
-Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+ 			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					На жаль, Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - відхилено реєстраційною службою міського управління юстиції.&lt;br /&gt;
+					Підстава: ${sDecisionComment2}.&lt;br /&gt;
+					Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
+					&lt;br /&gt;
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Otvet}</activiti:expression>
@@ -581,18 +623,24 @@ ${sAddress}&lt;br /&gt;
           <activiti:string><![CDATA[Витяг (електронний) готовий: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - опрацьовано. &lt;br /&gt;
-Електронний примірник витягу в прикріпленому файлі.&lt;br/&gt; 
-&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+				&lt;p&gt;
+					Ваше звернення [sID_Order] щодо державної реєстрації права власності на нерухоме майно - опрацьовано. &lt;br /&gt;
+					Електронний примірник витягу в прикріпленому файлі.&lt;br/&gt; 
+					&lt;br /&gt;
+					${sNameOrgan}&lt;br /&gt;
+					${sAddress}&lt;br /&gt;
+					${sWorkTime}&lt;br /&gt;
+					${sPhoneOrgan}&lt;br /&gt;
+				&lt;/p&gt;
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html]   	 
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}&lt;br /&gt;
+            [pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_Otvet}</activiti:expression>
@@ -690,16 +738,23 @@ if(execution.getVariable('asEnumDelivery_Document') == 'sElementPaper_doc'){exec
           <activiti:string><![CDATA[Нове звернення на тему: державна реєстрація права власності на нерухоме майно]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
-Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression>
+          [pattern/mail/new_design/_common_header.html]
+          [pattern/mail/new_design/_common_content_start.html]
+			&lt;p&gt;
+				Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
+				Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
+				&lt;br /&gt;
+				${sNameOrgan},&lt;br /&gt;
+				${sAddress}&lt;br /&gt;
+				${sWorkTime}&lt;br /&gt;
+				${sPhoneOrgan}&lt;br /&gt;
+			&lt;/p&gt;	
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+				${sNameOrgan},&lt;br /&gt;
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression>${phone}</activiti:expression>

@@ -136,7 +136,6 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'documents') {
       query.sFilterStatus = 'Documents';
       query.sLogin = user.id;
-      query.includeProcessVariables = true;
       query.nSize = 15;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
