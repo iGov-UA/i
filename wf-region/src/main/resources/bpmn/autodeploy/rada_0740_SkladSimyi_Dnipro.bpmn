@@ -58,6 +58,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lRegistrationKvart" name="Номер квартири" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DomovKnig" name="Домова книга;(сканкопія оригіналу, завантажте сторінки, які підтверджуть реєстрацію вас та інших співмешканців);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_JutVlasn" name="Право власності на житло;(сканкопія оригіналу);bNew=true" type="file" required="true"></activiti:formProperty>
         
                 
@@ -99,6 +100,8 @@
         
         <activiti:formProperty id="sAddress" name="Адреса підрозділу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkDay" name="Графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -119,21 +122,18 @@ if (typeMail === 'sEnamLustKur') {
 }
 execution.setVariable('sSum', sum);
 
+var name = '';
+var mail = '';
 var adres = '';
 var workTime = '';
 switch (asDistrict){
-case 'sSobor':
-adres = "пр. Героїв, 20";
-workTime = "понеділок, вівторок, четвер з 8:00 до 17:00&lt;br&gt; п'ятниця з 8:00 до 15:45";
+case 'sSamar':
+mail = "samara105@ukr.net";
+name = "Відділ обліку проживання фізичних осіб управління у сфері державної реєстрації департаменту адміністративних послуг та дозвільних процедур Дніпровської міської ради";
+adres = "м. Дніпро, вул. 20-річчя Перемоги, 51 каб. 105";
+workTime = "понеділок - пятниця з 9:00 до 19:00";
 break;
-case 'sChech':
-adres = "пр. Б.Хмельницького (вул. Героїв Сталінграда), 14";
-workTime = "понеділок, вівторок, четвер з 8:00 до 17:00 &lt;br&gt; п'ятниця з 8:00 до 15:45";
-break;
-case 'sShev':
-adres = "пр. Б.Хмельницького (вул. Героїв Сталінграда), 14";
-workTime = "понеділок, вівторок, четвер з 8:00 до 17:00 &lt;br&gt; п'ятниця з 8:00 до 15:45";
-break;
+
 default:
     alert('ДЛЯ ВАШОГО БУДИНКУ ПОСЛУГУ НАДАТИ НЕ МОЖЛИВО!');
     break;
