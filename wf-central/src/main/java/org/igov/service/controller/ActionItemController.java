@@ -978,15 +978,18 @@ public class ActionItemController {
             @ApiParam(value
                     = "строка-фильтр по имени сервиса. Если задано, то производится фильтрация данных - возвращаются только сервисы, "
                     + "в имени которых встречается значение этого параметра, без учета регистра.", required = false)
-            @RequestParam(value = "sFind", required = false) String sFind, @ApiParam(value
+            @RequestParam(value = "sFind", required = false) String sFind, 
+            @ApiParam(value
                     = "массив строк - фильтр по ID места (мест), где надается услуга. Поддерживаемие ID: 3200000000 (КИЇВСЬКА ОБЛАСТЬ/М.КИЇВ), 8000000000 (М.КИЇВ). "
                     + "Если указан другой ID, фильтр не применяется.", required = false)
             @RequestParam(value = "asID_Place_UA", required = false) final List<String> asID_Place_UA,
             @ApiParam(value = "фильтр по ID места тега услуги (опциональный)", required = false)
             @RequestParam(value = "nID_Place_Profile", required = false) Long nID_Place_Profile,
             @ApiParam(value = "булевый флаг. Возвращать или нет пустые категории и подкатегории (по умолчанию false)", required = true)
-            @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, @ApiParam(value = "ID категории", required = true)
-            @RequestParam(value = "nID_Category", required = true) Long nID_Category, @ApiParam(value = "Новый формат ответа", required = false)
+            @RequestParam(value = "bShowEmptyFolders", required = false, defaultValue = "false") final boolean bShowEmptyFolders, 
+            @ApiParam(value = "ID категории", required = true)
+            @RequestParam(value = "nID_Category", required = true) Long nID_Category, 
+            @ApiParam(value = "Новый формат ответа", required = false)
             @RequestParam(value = "bNew", required = false) Boolean bNew
     ) {
         boolean includeServices = StringUtils.isNotBlank(sFind);
