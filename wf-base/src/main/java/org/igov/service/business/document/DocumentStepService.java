@@ -1569,31 +1569,21 @@ public class DocumentStepService {
 						
 						HistoricProcessInstance oHistoricProcessInstance
                         = historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process_Activiti).singleResult();
-      
-                  ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
-                          .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
+						
+						if (oHistoricProcessInstance != null) {
+		                  ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
+		                          .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
                   
-                  LOG.info("oProcessDefinition {}", oProcessDefinition);
                   
 						if (oProcessDefinition !=null) {
 							 String sProcessName = oProcessDefinition.getName();
 			                  
-			                  LOG.info("sProcessName {}", sProcessName);
-
-
-							// через апи активити по nID_Process_Activity
-							HistoricProcessInstance oProcessInstance = historyService
-									.createHistoricProcessInstanceQuery().processInstanceId(snID_Process_Activiti)
-									.singleResult();
-
-							LOG.info(String.format("oProcessInstance [id = '%s']  ", oProcessInstance));
-							if (oProcessInstance != null) {
 								// вытаскиваем дату создания процесса
 
 								// Date sDateCreateProcess =
 								// oProcessInstance.getStartTime();
 
-								long sDCP = oProcessInstance.getStartTime().getTime();
+								long sDCP = oHistoricProcessInstance.getStartTime().getTime();
 								String sDateCreateProcess = convertMilliSecondsToFormattedDate(sDCP);
 								LOG.info("sDateCreateProcess ", sDateCreateProcess);
 								// вытаскиваем название бп
@@ -1602,7 +1592,7 @@ public class DocumentStepService {
 								// LOG.info("sNameBP {}", sNameBP);
 								// вытаскиваем список активных тасок по процесу
 								List<Task> aTask = oTaskService.createTaskQuery()
-										.processInstanceId(oProcessInstance.getId()).active().list();
+										.processInstanceId(oHistoricProcessInstance.getId()).active().list();
 								if (aTask.size() < 1 || aTask.get(0) == null) {
 									continue;
 								}
@@ -1635,11 +1625,12 @@ public class DocumentStepService {
 								LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
 							} else {
 								LOG.error(
-										String.format("oProcessInstance [id = '%s']  is null", snID_Process_Activiti));
+										String.format("oProcessDefinition [id = '%s']  is null", oHistoricProcessInstance.getProcessDefinitionId()));
 
 							}
 						} else {
-							LOG.info("aProcessDefinition is null sProcessName not found");
+							LOG.error(
+									String.format("oHistoricProcessInstance [id = '%s']  is null", snID_Process_Activiti));
 						}
 
 					}
