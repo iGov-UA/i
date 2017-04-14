@@ -369,8 +369,41 @@
         <modifyDataType tableName="DocumentStepSubjectRight" columnName="sName" newDataType="varchar(255)" />
         <modifyDataType tableName="DocumentStepSubjectRight" columnName="sLogin" newDataType="varchar(255)" />
     </changeSet>
+
+     <changeSet id="issue-1553-create_table_SubjectMessageQuestionField" author="Elena">
+        
+         <createTable tableName="SubjectMessageQuestionField">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_SubjectMessage" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_SubjectMessageQuestionField_SubjectMessage"
+                             referencedTableName="SubjectMessage"
+                             referencedColumnNames="nID" deleteCascade="false"/>
+             </column>
+            <column name="sID" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sType" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sValue" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sValueNew" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNotify" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+    </changeSet>
     
-    <!-- changeSet id="issue-1615-create-tables" author="Kovylin Yegor">
+    <changeSet id="issue-1615-create-tables" author="Kovylin Yegor">
         
         <createTable tableName="RelationClass">
             <column name="nID" type="bigint">
@@ -443,7 +476,7 @@
             </column>
         </createTable>
         
-        <createTable tableName="Relation_ObjectItem ">
+        <createTable tableName="Relation_ObjectItem">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -455,7 +488,7 @@
                 <constraints nullable="true"/>
             </column>
             <column name="nID_ObjectItem_Child" type="bigint">
-                <constraints nullable="false" foreignKeyName="FK_ObjectItem_ObjectGroup"
+                <constraints nullable="false" foreignKeyName="FK_Relation_ObjectItem_ObjectItem"
                              referencedTableName="ObjectItem" referencedColumnNames="nID" deleteCascade="false"/>
             </column>
         </createTable>
@@ -468,6 +501,6 @@
                              tableName="Relation_ObjectItem"
                              columnNames="nID_ObjectItem_Parent, nID_ObjectItem_Child"/>
                 
-    </changeSet-->
+    </changeSet>
     
 </databaseChangeLog>

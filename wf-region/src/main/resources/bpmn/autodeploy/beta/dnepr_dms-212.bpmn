@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-212" name="Реєстрація місця проживання дитини до чотирнадцяти років" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 07.03.2017</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 30.03.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї дитини щодо якої заповнюється звернення! &lt;/b&gt;"></activiti:formProperty>
+	    <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї дитини щодо якої заповнюється звернення! &lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="warning2" name="Зверніть увагу" type="label" default="&lt;b&gt;Місце проживання дитини віком до 14 років реєструється за місцем проживання одного з батьків (того, який подає заяву)&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -34,7 +34,7 @@
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning_Drogobich" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; При необхідності (під час перевірки документів) у Вас можуть бути запрошені скан-копії документів, що підтверджують адресу реєстрації дитини"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди" type="invisible" default="4"></activiti:formProperty>
+		<activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
@@ -53,7 +53,7 @@
         <activiti:formProperty id="nSvidChild" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_scan_passport" name="Паспорт особи, до якої реєструється дитина; скан-копія всіх заповнених сторінок, у форматі pdf або архів (формату zip, rar, 7z);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0&quot;:{&quot;sNote&quot;:[&quot;For Hide Invisible&quot;],&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;nDiffDays_visitDay&quot;,&quot;sNameOrgan&quot;,&quot;sOrganType&quot;,&quot;sPhoneOrgan&quot;,&quot;sAddress&quot;,&quot;sArea&quot;,&quot;sRegistrationOrgan&quot;,&quot;sCancelInfo&quot;,&quot;sRecvizitiAdmin&quot;,&quot;sKab89&quot;,&quot;sMinPay&quot;,&quot;sMaxPay&quot;,&quot;sFlag&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;email&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'Not correct'&quot;},&quot;ShowFieldsOnCondition_1&quot;:{&quot;sNote&quot;:[&quot;For Hide Invisible&quot;],&quot;aField_ID&quot;:[&quot;sMailClerk&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;email&quot;},&quot;sCondition&quot;:&quot;([sClient] == 'smoktii.igov@gmail.com' || [sClient] == 'autotestbeta@gmail.com')&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA1&quot;,&quot;firstName_UA1&quot;,&quot;middleName_UA1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asPrevName&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sYes'&quot;},&quot;RequiredFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA1&quot;,&quot;firstName_UA1&quot;,&quot;middleName_UA1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asPrevName&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sYes'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;asRegistrationDoc&quot;,&quot;sDocRekv&quot;,&quot;lable&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asRegistrationType&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sOwner'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sVlasnName&quot;,&quot;sVlasnDoc&quot;,&quot;nSvidOwn&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asRegistrationType&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sZgoda'&quot;},&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sMilitDoc&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asRegistrationType&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sMilit'&quot;},&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sWhenCome&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asRegistr&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sNoR'&quot;},&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;nMilit&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asMilitStatus&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sYesM'&quot;},&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;nSvidOwn&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistrationDoc&quot;,&quot;sReason2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sOwnDoc' &amp;&amp; [sReason2]!='tern_reg_krem' &quot;},&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;nOrder&quot;,&quot;nForma3&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistrationDoc&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sOrder'&quot;},&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sVlasnName&quot;,&quot;sVlasnDoc&quot;,&quot;nDocNaim&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistrationType&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sRent'&quot;},&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;nOther&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistrationDoc&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sOther'&quot;},&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;lable1&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistr&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sYesR'&quot;},&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;warning_Drogobich&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='lviv_drohobych'&quot;},&quot;ValuesFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;sFlag&quot;],&quot;asID_Field_sValue&quot;:[&quot;true&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient]=='dnepr_and' || [sClient]=='dnepr_shev_chech' || [sClient]=='dnepr_centr_sob' || [sClient]=='dnepr_and_ind' || [sClient]=='dnepr_centr' || [sClient]=='dnepr_chech' || [sClient]=='dnepr_novokod' || [sClient]=='dnepr_samars' || [sClient]=='dnepr_taroms'&quot;},&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;lable2&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistr&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sNoR'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -100,7 +100,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -109,7 +109,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Нове звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -117,7 +117,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask3" name="Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -126,28 +126,30 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Нове звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				<p>
-					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час ${date_of_visit}, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури реєстрації.<br>
-					Адреса ${sOrganType}: ${sAddress}.<br> 
-					${sPhoneOrgan}<br>
-				</p>
-				<p>[cancelTask]</p> 
+				&lt;p&gt;
+					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час ${date_of_visit}, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури реєстрації.&lt;br&gt;
+					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
+					${sPhoneOrgan}&lt;br&gt;
+				&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt; 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},<br>
+				${sNameOrgan},&lt;br&gt;
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareyestrovano. Detalno na igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareyestrovano. Detalno na igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -198,11 +200,12 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_regBkChild.html,sFileName=Zayava_pro_reyestratsiyu_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_znFrChild.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_znBk.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty> 
+        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty> 
         <activiti:formProperty id="nSvidChild" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_scan_passport" name="Паспорт особи, до якої реєструється дитина; скан-копія всіх заповнених сторінок, у форматі pdf;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -213,7 +216,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask5" name="Повідомлення громадянина про відхилення звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -222,34 +225,36 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Відхилено звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-            	<p>
-					На жаль, Вам відмовлено у надані послуги [sID_Order] або Ви скасували заявку.<br>
-					При необхідності реєстрації нового місця проживання дитини молодшe 14 років Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
-				</p>
-				<p>
-					Коментар Державного службовця:<br>
-					<b><i>${sDecisionComment}</i></b>
-				</p>
-				<p>
+            	&lt;p&gt;
+					На жаль, Вам відмовлено у надані послуги [sID_Order] або Ви скасували заявку.&lt;br&gt;
+					При необхідності реєстрації нового місця проживання дитини молодшe 14 років Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					Коментар Державного службовця:&lt;br&gt;
+					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				</p>
+				&lt;/p&gt;
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan},<br/>
+                ${sNameOrgan},&lt;br/&gt;
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]                    
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidkhyleno. Detalno na igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] vidkhyleno. Detalno na igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -263,7 +268,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask9" name="Повідомлення громадянина про призначення візиту Днепр + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -272,73 +277,75 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-            	<p>
-                	Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].<br>
-					Для того щоб закінчити процедуру реєстрації необхідно:<br>
-					<ul>
-						<li>У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.</li>
-						<ul>
-							<li>у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації</li>
-							<li>у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації</li>
-						</ul>
-						<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.</li>
-						<li>Підписати необхідні документи та отримати печатку у паспортний документ.</li>
-					</ul>
-				</p>
-				<p>
-					<b>Реквізити для сплати:</b><br>
-					<i>${sRecvizitiAdmin}<br>
-					Призначення платежу: адмін. збір за реєстрацію місця проживання</i>
-				</p>
-				<p>
-					<b>Деталі зустрічі:</b><br>
+            	&lt;p&gt;
+                	Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].&lt;br&gt;
+					Для того щоб закінчити процедуру реєстрації необхідно:&lt;br&gt;
+					&lt;ul&gt;
+						&lt;li&gt;У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.&lt;/li&gt;
+						&lt;ul&gt;
+							&lt;li&gt;у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt;
+							&lt;li&gt;у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt;
+						&lt;/ul&gt;
+						&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
+						&lt;li&gt;Підписати необхідні документи та отримати печатку у паспортний документ.&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
+					&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
+					Призначення платежу: адмін. збір за реєстрацію місця проживання&lt;/i&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
 					День та час - ${date_of_visit}
-				</p>
-				<p>
-					<b>Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:</b><br />
-					<ul>
-						<li>оригінал та копію паспорту того з батьків, до якого реєструється дитина (у разі реєстрації батьків за однією адресою також потрібно надати паспорт другого, для підтвердження реєстрації);</li>
-						<li>оригінал та копію свідоцтва про народження або свідоцтва про належність до громадянства України;</li>
-						<li>квитанцію про сплату адміністративного збору з мокрою печаткою банку;</li>
-						<li>будинкову книгу або Форму А з ЖЕКу (ОСББ) того з батьків, до якого реєструється дитина (окрім випадку одночасної реєстрації з батьками (одним із батьків));</li>
-						<li>заяву про реєстрацію місця проживання, що знаходиться у додатках до листа (розрукуйте на одному аркуші);</li>
-						<li>якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то заяву про зняття з реєстрації (знаходиться у додатках до листа, розрукуйте на одному аркуші);</li>
-						<li>якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то будинкову книгу або Форму А з ЖЕКу (ОСББ) того з батьків, до якого була зареєстрована дитина;</li>
-					</ul>
-				</p>
-				<p>	
-					<b>Зверніть увагу:</b> 
-					<ul>
-						<li>при проживанні батьків за різними адресами для реєстрації місця проживання дитини, яка не досягла 14 років, разом з одним з батьків надається письмова згода другого з батьків. 
-								Також потрібна присутність обох батьків або нотаріально завірена згода на реєстрацію місця проживання дитини за новою адресою.</li>
-						<li>якщо у свідоцтво про народження батько вписаний зі слів матері, то потрібен оригінал та копія витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України;</li>			
-					</ul>
-				</p>
-				<p>
-					Коментар Державного службовця:<br>
-					<b><i>${sDecisionComment}</i></b>
-				</p>
-				<p>
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
+					&lt;ul&gt;
+						&lt;li&gt;оригінал та копію паспорту того з батьків, до якого реєструється дитина (у разі реєстрації батьків за однією адресою також потрібно надати паспорт другого, для підтвердження реєстрації);&lt;/li&gt;
+						&lt;li&gt;оригінал та копію свідоцтва про народження або свідоцтва про належність до громадянства України;&lt;/li&gt;
+						&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
+						&lt;li&gt;будинкову книгу або Форму А з ЖЕКу (ОСББ) того з батьків, до якого реєструється дитина (окрім випадку одночасної реєстрації з батьками (одним із батьків));&lt;/li&gt;
+						&lt;li&gt;заяву про реєстрацію місця проживання, що знаходиться у додатках до листа (розрукуйте на одному аркуші);&lt;/li&gt;
+						&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то заяву про зняття з реєстрації (знаходиться у додатках до листа, розрукуйте на одному аркуші);&lt;/li&gt;
+						&lt;li&gt;якщо Ви реєструєте нове місце проживання з одночасним зняттям з попередньго, то будинкову книгу або Форму А з ЖЕКу (ОСББ) того з батьків, до якого була зареєстрована дитина;&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;	
+					&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
+					&lt;ul&gt;
+						&lt;li&gt;при проживанні батьків за різними адресами для реєстрації місця проживання дитини, яка не досягла 14 років, разом з одним з батьків надається письмова згода другого з батьків. 
+								Також потрібна присутність обох батьків або нотаріально завірена згода на реєстрацію місця проживання дитини за новою адресою.&lt;/li&gt;
+						&lt;li&gt;якщо у свідоцтво про народження батько вписаний зі слів матері, то потрібен оригінал та копія витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України;&lt;/li&gt;			
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					Коментар Державного службовця:&lt;br&gt;
+					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				</p>
-				<p>[cancelTask]</p> 
+				&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt; 
 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},<br>
+				${sNameOrgan},&lt;br&gt;
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2},${PrintForm_3},${PrintForm_4}]]></activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_2},${PrintForm_3},${PrintForm_4}</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -349,7 +356,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask6" name="Повідомлення громадянина про призначення візиту + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -358,68 +365,70 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-            	<p>
-                	Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].<br>
-					Для того щоб закінчити процедуру реєстрації необхідно:<br>
-					<ul>
-						<li>У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.</li>
-						<ul>
-							<li>у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації</li>
-							<li>у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації</li>
-						</ul>
-						<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.</li>
-						<li>Підписати необхідні документи та отримати печатку у паспортний документ.</li>
-					</ul>
-				</p>
-				<p>
-					<b>Реквізити для сплати:</b><br>
-					<i>${sRecvizitiAdmin}<br>
-					Призначення платежу: адмін. збір за реєстрацію місця проживання</i>
-				</p>
-				<p>
-					<b>Деталі зустрічі:</b><br>
+            	&lt;p&gt;
+                	Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].&lt;br&gt;
+					Для того щоб закінчити процедуру реєстрації необхідно:&lt;br&gt;
+					&lt;ul&gt;
+						&lt;li&gt;У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.&lt;/li&gt;
+						&lt;ul&gt;
+							&lt;li&gt;у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt;
+							&lt;li&gt;у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації&lt;/li&gt;
+						&lt;/ul&gt;
+						&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
+						&lt;li&gt;Підписати необхідні документи та отримати печатку у паспортний документ.&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
+					&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
+					Призначення платежу: адмін. збір за реєстрацію місця проживання&lt;/i&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
 					День та час - ${date_of_visit}
-				</p>
-				<p>
-					<b>Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:</b><br />
-					<ul>
-						<li>оригінал та копію паспорту одного з батьків (до якого реєструється дитина);</li>
-						<li>оригінал та копію свідоцтва про народження або свідоцтва про належність до громадянства України;</li>
-						<li>квитанцію про сплату адміністративного збору.</li>
-					</ul>
-				</p>
-				<p>	
-					<b>Зверніть увагу:</b> 
-					<ul>
-						<li>при проживанні батьків за різними адресами для реєстрації місця проживання дитини, яка не досягла 14 років, разом з одним з батьків надається письмова згода другого з батьків. 
-								Також потрібна присутність обох батьків або нотаріально завірена згода на реєстрацію місця проживання дитини за новою адресою.</li>
-						<li>якщо у свідоцтво про народження батько вписаний зі слів матері, то потрібен оригінал та копія витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України;</li>			
-					</ul>
-				</p>
-				<p>
-					Коментар Державного службовця:<br>
-					<b><i>${sDecisionComment}</i></b>
-				</p>
-				<p>
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:&lt;/b&gt;&lt;br /&gt;
+					&lt;ul&gt;
+						&lt;li&gt;оригінал та копію паспорту одного з батьків (до якого реєструється дитина);&lt;/li&gt;
+						&lt;li&gt;оригінал та копію свідоцтва про народження або свідоцтва про належність до громадянства України;&lt;/li&gt;
+						&lt;li&gt;квитанцію про сплату адміністративного збору.&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;	
+					&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
+					&lt;ul&gt;
+						&lt;li&gt;при проживанні батьків за різними адресами для реєстрації місця проживання дитини, яка не досягла 14 років, разом з одним з батьків надається письмова згода другого з батьків. 
+								Також потрібна присутність обох батьків або нотаріально завірена згода на реєстрацію місця проживання дитини за новою адресою.&lt;/li&gt;
+						&lt;li&gt;якщо у свідоцтво про народження батько вписаний зі слів матері, то потрібен оригінал та копія витягу з Державного реєстру актів цивільного стану громадян про народження із зазначенням відомостей про батька відповідно до частини першої статті 135 Сімейного кодексу України;&lt;/li&gt;			
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					Коментар Державного службовця:&lt;br&gt;
+					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				</p>
-				<p>[cancelTask]</p> 
+				&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt; 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},<br>
+				${sNameOrgan},&lt;br&gt;
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -490,7 +499,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask2" name="Фідбек + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -499,28 +508,30 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Опрацьовано звернення на тему: Реєстрація місця проживання дитини до чотирнадцяти років]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				<p>
-                	Ви отримали послугу "Реєстрація місця проживання дитини до чотирнадцяти років", звернення No [sID_Order].<br>
-					Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
+				&lt;p&gt;
+                	Ви отримали послугу "Реєстрація місця проживання дитини до чотирнадцяти років", звернення No [sID_Order].&lt;br&gt;
+					Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
                     Дякуємо.
-				</p>
+				&lt;/p&gt;
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},<br>
+				${sNameOrgan},&lt;br&gt;
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] opratsovano, otsinit yakist nadannya posluhy (formu nadislano v email). Detalno igov.org.ua/journal]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] opratsovano, otsinit yakist nadannya posluhy (formu nadislano v email). Detalno igov.org.ua/journal</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -630,7 +641,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="645.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="730.0" y="225.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -656,7 +667,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="625.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="625.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="520.0" y="249.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="520.0" y="249.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -672,7 +683,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="741.0" y="499.0"></omgdi:waypoint>
         <omgdi:waypoint x="742.0" y="523.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="86.0" x="654.0" y="461.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="86.0" x="654.0" y="461.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -681,7 +692,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="530.0" y="597.0"></omgdi:waypoint>
         <omgdi:waypoint x="608.0" y="597.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="83.0" x="521.0" y="470.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="83.0" x="521.0" y="470.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
@@ -698,7 +709,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="984.0" y="311.0"></omgdi:waypoint>
         <omgdi:waypoint x="984.0" y="358.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="930.0" y="263.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="930.0" y="263.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -707,7 +718,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="854.0" y="490.0"></omgdi:waypoint>
         <omgdi:waypoint x="905.0" y="490.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="807.0" y="264.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="807.0" y="264.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

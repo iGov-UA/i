@@ -41,7 +41,8 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
                     = (this.sKey_GroupPostfix != null) ? getStringFromFieldExpression(this.sKey_GroupPostfix, delegateTask.getExecution()) : "";
             LOG.info("sKey_GroupPostfix_Value in clone listener is {}", sKey_GroupPostfix_Value);
             
-            sKey_GroupPostfix_New_Value = (this.sKey_GroupPostfix_New != null) ? getStringFromFieldExpression(this.sKey_GroupPostfix_New, delegateTask.getExecution()) : "";
+            sKey_GroupPostfix_New_Value = (this.sKey_GroupPostfix_New != null) 
+                    ? getStringFromFieldExpression(this.sKey_GroupPostfix_New, delegateTask.getExecution()) : "";
             LOG.info("sKey_GroupPostfix_New_Value in clone listener is {}", sKey_GroupPostfix_New_Value);
         } catch (Exception ex) {
             LOG.error("sKey_GroupPostfix_Value error: {}", ex);

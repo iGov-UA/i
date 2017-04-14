@@ -12,10 +12,7 @@
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="cnap" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="enum" required="true">
-          <activiti:value id="prav" name="ЦНАП «Правобережний» (просп. Карла Маркса, 75)"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП «Лівобережний» (просп. Газети «Правда», 42)"></activiti:value>
-        </activiti:formProperty>
+
         <activiti:formProperty id="posluga" name="Оберіть послугу" type="enum" required="true">
           <activiti:value id="pereoform" name="переоформлення ліцензії"></activiti:value>
           <activiti:value id="kopia" name="видача копії або дубліката ліцензії"></activiti:value>
@@ -29,10 +26,10 @@
         <activiti:formProperty id="adres_1" name="Місцезнаходження закладу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="tel_zaklad" name="Контактні номери телефонів закладу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="org_forma" name="Організаційно-правова форма" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="inn_zaklad" name="Ідентифікаційний код закладу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="inn_zaklad" name="Ідентифікаційний код закладу; тількі цифрові позначення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="info_8" name="Банківські реквізити закладу" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="rahunok" name="Розрахунковий рахунок" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="mfo" name="МФО" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rahunok" name="Розрахунковий рахунок; тількі цифрові позначення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="mfo" name="МФО; тількі цифрові позначення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bank" name="Найменування відділення банку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_lic_old" name="Завантажте відсканований оригінал ліцензії; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_oplata" name="Документ, що засвідчує внесення плати; ;bNew=true" type="file" required="true"></activiti:formProperty>
@@ -51,8 +48,8 @@
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг у сфері загальної середньої, дошкільної, позашкільної освіти"></activiti:formProperty>
       
@@ -154,16 +151,14 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask2" name="прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_cnap_${cnap}">
+    <userTask id="usertask2" name="прийняття рішення про надання послуги" activiti:candidateGroups="dnepr_cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cnap" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="enum" writable="false">
-          <activiti:value id="prav" name="Правобережний"></activiti:value>
-          <activiti:value id="lev" name="Лівобережний"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="select" writable="false"></activiti:formProperty>
+       
         <activiti:formProperty id="posluga" name="Оберіть послугу" type="enum" writable="false">
           <activiti:value id="pereoform" name="переоформлення ліцензії"></activiti:value>
           <activiti:value id="kopia" name="видача копії або дубліката ліцензії"></activiti:value>
@@ -200,7 +195,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dnepr_cnap_${cnap}">
+    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dnepr_cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
@@ -218,12 +213,12 @@
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow5" name="надання дозволу П" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&cnap=='prav'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&sID_Public_SubjectOrganJoin=='prav'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow15" name="надання дозволу Л" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&cnap=='lev'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&sID_Public_SubjectOrganJoin=='lev'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="mailtask6" name="повідомлення громадянина про відхилення звернення" activiti:type="mail">
       <extensionElements>
@@ -598,7 +593,7 @@
           <activiti:expression><![CDATA["${rishen}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />
 Вам відмовлено у переоформленні, видачі копії або дубліката ліцензії на надання освітніх послуг.<br />
 Підстава: ${comment_2}<br />
@@ -623,11 +618,11 @@
 <br />
 Копія рішення знаходиться у додатку до листа.<br />
                                     </p>
-                                    [pattern/mail/_common_signature_start.html]
+                                    [pattern/mail/new_design/_common_signature_start.html]
 										Центр надання адміністративних послуг<br/> 
 										Дніпропетровської міської ради,<br/>
-									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]]]></activiti:expression>
+									[pattern/mail/new_design/_common_signature_end.html]   
+									[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -728,20 +723,20 @@
     </serviceTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow30" name="З ЦНАП" sourceRef="exclusivegateway4" targetRef="exclusivegateway3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnap != 'lev' && cnap != 'prav'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin != 'lev' && sID_Public_SubjectOrganJoin != 'prav'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="mailtask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnap=='prav'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='prav'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="exclusivegateway3" targetRef="mailtask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnap=='lev'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin=='lev'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="mailtask7" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow34" name="відхилення П" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'&&cnap=='prav'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'&&sID_Public_SubjectOrganJoin=='prav'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow35" name="відхилення Л" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'&&cnap=='lev'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'&&sID_Public_SubjectOrganJoin=='lev'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow36" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
@@ -763,7 +758,7 @@ execution.setVariable('sSum', sum);     </script>
     <sequenceFlow id="flow42" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow43" name="ПРЯМО В ОРГАН" sourceRef="exclusivegateway4" targetRef="exclusivegateway5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnap == 'lev' || cnap == 'prav'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'lev' || sID_Public_SubjectOrganJoin == 'prav'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask3" name="Технічна таска" activiti:candidateGroups="DGK_texnik_task">
       <extensionElements>
@@ -771,10 +766,8 @@ execution.setVariable('sSum', sum);     </script>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cnap" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="enum" writable="false">
-          <activiti:value id="prav" name="Правобережний"></activiti:value>
-          <activiti:value id="lev" name="Лівобережний"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="select" writable="false"></activiti:formProperty>
+      
         <activiti:formProperty id="posluga" name="Оберіть послугу" type="enum" writable="false">
           <activiti:value id="pereoform" name="переоформлення ліцензії"></activiti:value>
           <activiti:value id="kopia" name="видача копії або дубліката ліцензії"></activiti:value>
@@ -796,6 +789,7 @@ execution.setVariable('sSum', sum);     </script>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Название органа (TEST)" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -824,17 +818,17 @@ execution.setVariable('sSum', sum);     </script>
           <activiti:expression><![CDATA[Оплата листа. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header_with_payment.html]
 							    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 							    <p>
 							    Ваш запит №[sID_Order] був успішно зареєстрований у нашій системі.<br>
 								Для того щоб закінчити процедуру необхідно протягом доби сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)<br>
 								[paymentButton_LiqPay]
 								</p>
-								[pattern/mail/_common_signature_start.html]
+								[pattern/mail/new_design/_common_signature_start.html]
 								${sNameOrgan}&<br /&><br>
- 								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
+ 								[pattern/mail/new_design/_common_signature_end.html]
+								[pattern/mail/new_design/_common_footer_with_payment.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -878,16 +872,16 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:expression><![CDATA[Нема оплати. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 <p> Ваше звернення щодо ${sPosluga_nameZV} не прийнято в роботу. <br />
 Заявка закрита через відсутність оплати.</p>
 <br />
 ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -906,17 +900,17 @@ ${sNameOrgan}.<br />
           <activiti:expression><![CDATA[Звернення на тему: ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
 			Оплата проведена успішно.<br />
 			Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.<br/>
 			Ви отримаєте відповідь протягом трьох робочих днів.<br/>
 			</p>
-			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}<br />
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -981,7 +975,7 @@ ${sNameOrgan}.<br />
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -993,10 +987,9 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cnap" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="enum" writable="false">
-          <activiti:value id="prav" name="Правобережний"></activiti:value>
-          <activiti:value id="lev" name="Лівобережний"></activiti:value>
-        </activiti:formProperty>
+        
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="select" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="posluga" name="Оберіть послугу" type="enum" writable="false">
           <activiti:value id="pereoform" name="переоформлення ліцензії"></activiti:value>
           <activiti:value id="kopia" name="видача копії або дубліката ліцензії"></activiti:value>
@@ -1536,7 +1529,7 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="335.0" y="176.0"></omgdi:waypoint>
         <omgdi:waypoint x="315.0" y="176.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="39.0" x="214.0" y="136.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="39.0" x="168.0" y="153.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">

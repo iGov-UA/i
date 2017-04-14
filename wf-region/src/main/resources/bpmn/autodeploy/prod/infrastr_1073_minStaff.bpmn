@@ -17,12 +17,10 @@
           <activiti:value id="sYes" name="так"></activiti:value>
           <activiti:value id="sNo" name="ні"></activiti:value>
         </activiti:formProperty>
-		<activiti:formProperty id="sCompName" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім’я власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
+		<activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ власника / судновласника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManPassport" name="№, серія паспорту власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sManAdress" name="Адреса власника / судновласника" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон судновласника" type="string" default="+380" required="true"></activiti:formProperty>
@@ -44,7 +42,7 @@
         <activiti:formProperty id="nDocFlag" name="Копія свідоцтва про право плавання під Державним Прапором України; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocVlasn" name="Копія свідоцтва про право власності на судно; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersStart" name="Маркер на СтарТаске" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_841_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStart" name="Маркер на СтарТаске" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_1073_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersStart2" name="Маркер на СтарТаске" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_841_start2.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -112,10 +110,10 @@
           <activiti:value id="ur" name="юридична особа"></activiti:value>
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVlasnPIB" name="ПІБ власника / судновласника" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ власника / судновласника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManPassport" name="№, серія паспорту власника / судновласника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sManAdress" name="Адреса  власника / судновласника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон; ;writable=false" type="string"></activiti:formProperty>
@@ -144,7 +142,7 @@
         <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nBill" name="Рахунок для сплати; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/min_equip_ecp.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/min_equip.html,sFileName=ZayavaNaSvidoctvo,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/min_equip_ecp.html,sFileName=ZayavaNaSvidoctvo,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_841_user1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -234,10 +232,10 @@
 			Після отримання свідоцтва, будь ласка, оцініть якість надання послуги за допомогою форми нижче.
             </p>
             [pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
 			Державна служба України з безпеки на транспорті,<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
@@ -309,10 +307,10 @@
           <activiti:value id="ur" name="юридична особа"></activiti:value>
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCompName" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCompAdress" name="Адреса юридичної особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVlasnPIB" name="ПІБ власника / судновласника" type="string" default="${lastName_UA2} ${firstName_UA2} ${middleName_UA2}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса юридичної особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ власника / судновласника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManPassport" name="№, серія паспорту власника / судновласника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sManAdress" name="Адреса  власника / судновласника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Телефон; ;writable=false" type="string"></activiti:formProperty>
@@ -356,7 +354,7 @@
 				Ваша заявка №[sID_Order] на видачу свідоцтва про мінімальний склад екіпажу судна була оброблена.
 			</p> 			
 			<p>
-				Свідоцтво про мінімальний склад екіпажу судна буде надіслано enum{[asGetResult]} Вам за адресою: ${sCompAdress}${sManAdress}
+				Свідоцтво про мінімальний склад екіпажу судна буде надіслано enum{[asGetResult]} Вам за адресою: ${sLocation_SubjectOrgan_01}${sManAdress}
 			</p> 			
 			<p>
 				Після отримання свідоцтва, будь ласка, оцініть якість надання послуги за допомогою форми нижче.

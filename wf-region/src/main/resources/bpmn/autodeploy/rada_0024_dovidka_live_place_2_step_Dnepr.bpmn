@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="rada_0024_dovidka_live_place_2_step_Dnepr" name="Довідка про реєстрацію місця проживання/перебування особи (для отримання ID-картки)" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 07.03.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 13.04.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить місце реєстрації особи, яка буде отримувати довідку" type="select" default="0" required="true"></activiti:formProperty>
@@ -207,7 +207,7 @@
         <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_BegRegistration" name="З якої дати зареєстровано місце проживання/перебування особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDate_EndRegistration" name="По яку дату зареєстровано місце проживання/перебування особи" type="string" default="теперішній час"></activiti:formProperty>
-        <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
+        <activiti:formProperty id="asDecision" name="Рішення працівника" type="enum" required="true">
           <activiti:value id="sAccept" name="Дані громадянина вірні, починаємо формування довідки"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
@@ -255,7 +255,7 @@
 					При необхідності реєстрації нового запиту щодо видачі довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 				&lt;/p&gt; 
 				&lt;p&gt;
-					Коментар Державного службовця:&lt;br&gt;
+					Коментар працівника органу реєстрації:&lt;br&gt;
 					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
 				&lt;/p&gt;
 				&lt;p&gt;
@@ -322,7 +322,7 @@
 					&lt;/ul&gt;
 				&lt;/p&gt;
 				&lt;p&gt;
-					Коментар Державного службовця:&lt;br&gt;
+					Коментар працівника органу реєстрації:&lt;br&gt;
 					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
 				&lt;/p&gt;
 				&lt;p&gt;
@@ -397,7 +397,7 @@
 					&lt;/ul&gt;
 				&lt;/p&gt;
 				&lt;p&gt;
-					Коментар Державного службовця:&lt;br&gt;
+					Коментар працівника органу реєстрації:&lt;br&gt;
 					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
 				&lt;/p&gt;
 				&lt;p&gt;
@@ -477,7 +477,7 @@
         <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDate_BegRegistration" name="З якої дати зареєстровано місце проживання/перебування особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDate_EndRegistration" name="По яку дату зареєстровано місце проживання/перебування особи" type="string" default="теперішній час"></activiti:formProperty>
-        <activiti:formProperty id="asDecision2" name="Рішення держслужбовця" type="enum" required="true">
+        <activiti:formProperty id="asDecision2" name="Рішення працівника" type="enum" required="true">
           <activiti:value id="sAccept" name=" Довідка виготовлена, призначаємо зустріч у відділенні"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
@@ -533,7 +533,7 @@
           <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] opratsovano, dovodka vigotovlena, оchikuemo na Vash vizyt. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression>Po Vashomu zvernennyu [sID_Order] pochalosya formuvannya dovidky, chekayte povidomlennya pro vyhotovlennya. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>

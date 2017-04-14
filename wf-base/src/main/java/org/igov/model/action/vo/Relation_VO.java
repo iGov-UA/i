@@ -4,7 +4,7 @@ package org.igov.model.action.vo;
  *
  * @author Kovilin
  */
-public class Relation_VO {/*
+public class Relation_VO {
 
     public Relation_VO() {
     }
@@ -37,6 +37,6 @@ public class Relation_VO {/*
 
     public void setsName(String sName) {
         this.sName = sName;
-    } */
+    }
     
 }

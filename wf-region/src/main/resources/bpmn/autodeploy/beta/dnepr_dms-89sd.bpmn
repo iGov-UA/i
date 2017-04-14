@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-89sd" name="Зняття з реєстрації особи у зв'язку зі смертю" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 07.03.2017</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 04.04.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -20,14 +20,14 @@
         <activiti:formProperty id="sChildBirth" name="Дата народження померлого;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildPOB" name="Місце народження померлого;Країна, область, район і населений пункт" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildCitizenship" name="Громадянство померлого" type="string" default="Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildDoc" name="Документ померлого; Тип, серія та номер документу, дата і орган, що його видав" type="textArea" default="паспорт " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildDoc" name="Документ померлого; Тип, серія та номер документу, дата і орган, що його видав" type="textArea" default="паспорт "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації померлого;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить поточне місце реєстрації померлого" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_death" name="Дата смерті;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть, дата видачі документа" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди" type="invisible" default="4"></activiti:formProperty>
+		<activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
@@ -45,7 +45,7 @@
         <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином" type="invisible" default="False"></activiti:formProperty>
         <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0&quot;:{&quot;sNote&quot;:[&quot;For Hide Invisible&quot;],&quot;aField_ID&quot;:[&quot;nID_Department_visitDay&quot;,&quot;nDiffDays_visitDay&quot;,&quot;sNameOrgan&quot;,&quot;sOrganType&quot;,&quot;sPhoneOrgan&quot;,&quot;sAddress&quot;,&quot;sArea&quot;,&quot;sRegistrationOrgan&quot;,&quot;sCancelInfo&quot;,&quot;sRecvizitiAdmin&quot;,&quot;sKab89&quot;,&quot;sMinPay&quot;,&quot;sMaxPay&quot;,&quot;sFlag&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;email&quot;},&quot;sCondition&quot;:&quot;[sReason3] == 'Not correct'&quot;},&quot;ShowFieldsOnCondition_1&quot;:{&quot;sNote&quot;:[&quot;For Hide Invisible&quot;],&quot;aField_ID&quot;:[&quot;sMailClerk&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;email&quot;},&quot;sCondition&quot;:&quot;([sClient] == 'smoktii.igov@gmail.com' || [sClient] == 'autotestbeta@gmail.com')&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA1&quot;,&quot;firstName_UA1&quot;,&quot;middleName_UA1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asPrevName&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sYes'&quot;},&quot;RequiredFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;lastName_UA1&quot;,&quot;firstName_UA1&quot;,&quot;middleName_UA1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asPrevName&quot;},&quot;sCondition&quot;:&quot;[sReason]=='sYes'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;asRegistrationDoc&quot;,&quot;sDocRekv&quot;,&quot;lable&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asRegistrationType&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sOwner'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sVlasnName&quot;,&quot;sVlasnDoc&quot;,&quot;nSvidOwn&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asRegistrationType&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sZgoda'&quot;},&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sMilitDoc&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asRegistrationType&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sMilit'&quot;},&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sWhenCome&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asRegistr&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sNoR'&quot;},&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;nMilit&quot;],&quot;asID_Field&quot;:{&quot;sReason1&quot;:&quot;asMilitStatus&quot;},&quot;sCondition&quot;:&quot;[sReason1]=='sYesM'&quot;},&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;nSvidOwn&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistrationDoc&quot;,&quot;sReason2&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sOwnDoc' &amp;&amp; [sReason2]!='tern_reg_krem' &quot;},&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;nOrder&quot;,&quot;nForma3&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistrationDoc&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sOrder'&quot;},&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sVlasnName&quot;,&quot;sVlasnDoc&quot;,&quot;nDocNaim&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistrationType&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sRent'&quot;},&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;nOther&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistrationDoc&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sOther'&quot;},&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;lable1&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistr&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sYesR'&quot;},&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;warning_Drogobich&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='lviv_drohobych'&quot;},&quot;ValuesFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;sFlag&quot;],&quot;asID_Field_sValue&quot;:[&quot;true&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient]=='dnepr_and' || [sClient]=='dnepr_shev_chech' || [sClient]=='dnepr_centr_sob' || [sClient]=='dnepr_and_ind' || [sClient]=='dnepr_centr' || [sClient]=='dnepr_chech' || [sClient]=='dnepr_novokod' || [sClient]=='dnepr_samars' || [sClient]=='dnepr_taroms'&quot;},&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;lable2&quot;],&quot;asID_Field&quot;:{&quot;sReason3&quot;:&quot;asRegistr&quot;},&quot;sCondition&quot;:&quot;[sReason3]=='sNoR'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -92,7 +92,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -101,7 +101,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Нове звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -109,7 +109,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask3" name="Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -118,28 +118,30 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Нове звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				<p>
-					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час ${date_of_visit}, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури зняття з реєстрації.<br>
-					Адреса ${sOrganType}: ${sAddress}.<br> 
-					${sPhoneOrgan}<br>
-				</p>
-				<p>[cancelTask]</p> 
+				&lt;p&gt;
+					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час ${date_of_visit}, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури зняття з реєстрації.&lt;br&gt;
+					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
+					${sPhoneOrgan}&lt;br&gt;
+				&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt; 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},<br>
+				${sNameOrgan},&lt;br&gt;
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareyestrovano. Detalno na igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareyestrovano. Detalno na igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -185,7 +187,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -196,7 +199,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask5" name="Повідомлення громадянина про відхилення звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -205,34 +208,36 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Відхилено звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				<p>
-					На жаль, Вам відмовлено у надані послуги або Ви скасували заявку [sID_Order].<br>
-					При необхідності зняття з реєстрації особи у зв'язку зі смертю Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
-				</p>
-				<p>
-					Коментар Державного службовця:<br />
-					<b><i>${sDecisionComment}</i></b>
-				</p>
-				<p>
+				&lt;p&gt;
+					На жаль, Вам відмовлено у надані послуги або Ви скасували заявку [sID_Order].&lt;br&gt;
+					При необхідності зняття з реєстрації особи у зв'язку зі смертю Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					Коментар Державного службовця:&lt;br /&gt;
+					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				</p>
+				&lt;/p&gt;
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan},<br/>
+                ${sNameOrgan},&lt;br/&gt;
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]                    
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidkhyleno. Detalno na igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] vidkhyleno. Detalno na igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -246,7 +251,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask9" name="Повідомлення громадянина про призначення візиту Днепр + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -255,59 +260,61 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				<p>
-                	Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].<br>
-					Для того щоб закінчити процедуру зняття з реєстрації необхідно:<br>
-					<ul>
-						<li>У будь-якому банку сплатити адміністративний збір у розмірі ${sMinPay} грн і отримати квитанцію про сплату.</li>
-						<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.</li>
-						<li>Підписати необхідні документи.</li>
-					</ul>
-				</p>
-				<p>
-					<b>Реквізити для сплати:</b> <br>
-					<i>${sRecvizitiAdmin}<br>
-					Призначення платежу: адмін. збір за зняття з реєстрації місця проживання ...вказати П.І.Б...</i>
-				</p>
-				<p>
-					<b>Деталі зустрічі:</b><br>
+				&lt;p&gt;
+                	Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].&lt;br&gt;
+					Для того щоб закінчити процедуру зняття з реєстрації необхідно:&lt;br&gt;
+					&lt;ul&gt;
+						&lt;li&gt;У будь-якому банку сплатити адміністративний збір у розмірі ${sMinPay} грн і отримати квитанцію про сплату.&lt;/li&gt;
+						&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
+						&lt;li&gt;Підписати необхідні документи.&lt;/li&gt;
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Реквізити для сплати:&lt;/b&gt; &lt;br&gt;
+					&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
+					Призначення платежу: адмін. збір за зняття з реєстрації місця проживання ...вказати П.І.Б...&lt;/i&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
 					День та час - ${date_of_visit}
-				</p>
-				<p>
-					<b>Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:</b><br />
-					<ul>
-						<li>оригінал та копію паспорту того, хто подавав заяву;</li>
-						<li>квитанцію про сплату адміністративного збору з мокрою печаткою банку;</li>
-						<li>оригінал та копію свідоцтва про смерть;</li>	
-						<li>оригінал картки реєстрації (Форма А) з ЖЕК чи ОСМД або будинкову книгу;</li>	
-						<li>заяву про зняття з реєстрації місця проживання, що знаходиться у додатках до листа;</li>									
-					</ul>
-				</p>
-				<p>
-					Коментар Державного службовця:<br>
-					<b><i>${sDecisionComment}</i></b>
-				</p>
-				<p>
+				&lt;/p&gt;
+				&lt;p&gt;
+					&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:&lt;/b&gt;&lt;br /&gt;
+					&lt;ul&gt;
+						&lt;li&gt;оригінал та копію паспорту того, хто подавав заяву;&lt;/li&gt;
+						&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
+						&lt;li&gt;оригінал та копію свідоцтва про смерть;&lt;/li&gt;	
+						&lt;li&gt;оригінал картки реєстрації (Форма А) з ЖЕК чи ОСМД або будинкову книгу;&lt;/li&gt;	
+						&lt;li&gt;заяву про зняття з реєстрації місця проживання, що знаходиться у додатках до листа;&lt;/li&gt;									
+					&lt;/ul&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
+					Коментар Державного службовця:&lt;br&gt;
+					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
+				&lt;/p&gt;
+				&lt;p&gt;
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				</p>
-				<p>[cancelTask]</p>
+				&lt;/p&gt;
+				&lt;p&gt;[cancelTask]&lt;/p&gt;
 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},<br>
+				${sNameOrgan},&lt;br&gt;
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_3},${PrintForm_4}]]></activiti:expression>
+          <activiti:expression>${PrintForm_3},${PrintForm_4}</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -318,7 +325,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask6" name="Повідомлення громадянина про призначення візиту + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -327,57 +334,59 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+			[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-			<p>
-            	Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].<br>
-				Для того щоб закінчити процедуру зняття з реєстрації необхідно:<br>
-				<ul>
-					<li>У будь-якому банку сплатити адміністративний збір у розмірі ${sMinPay} грн і отримати квитанцію про сплату.</li>
-					<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.</li>
-					<li>Підписати необхідні документи.</li>
-				</ul>
-			</p>
-			<p>
-				<b>Реквізити для сплати:</b> <br>
-				<i>${sRecvizitiAdmin}<br>
-				Призначення платежу: адмін. збір за зняття з реєстрації місця проживання ...вказати П.І.Б...</i>
-			</p>
-			<p>
-				<b>Деталі зустрічі:</b><br>
+			&lt;p&gt;
+            	Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву [sID_Order].&lt;br&gt;
+				Для того щоб закінчити процедуру зняття з реєстрації необхідно:&lt;br&gt;
+				&lt;ul&gt;
+					&lt;li&gt;У будь-якому банку сплатити адміністративний збір у розмірі ${sMinPay} грн і отримати квитанцію про сплату.&lt;/li&gt;
+					&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
+					&lt;li&gt;Підписати необхідні документи.&lt;/li&gt;
+				&lt;/ul&gt;
+			&lt;/p&gt;
+			&lt;p&gt;
+				&lt;b&gt;Реквізити для сплати:&lt;/b&gt; &lt;br&gt;
+				&lt;i&gt;${sRecvizitiAdmin}&lt;br&gt;
+				Призначення платежу: адмін. збір за зняття з реєстрації місця проживання ...вказати П.І.Б...&lt;/i&gt;
+			&lt;/p&gt;
+			&lt;p&gt;
+				&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
 				День та час - ${date_of_visit}
-			</p>
-			<p>
-				<b>Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:</b><br />
-				<ul>
-					<li>оригінал та копію паспорту того, хто подавав заяву;</li>
-					<li>квитанцію про сплату адміністративного збору з мокрою печаткою банку;</li>
-					<li>оригінал та копію свідоцтва про смерть;</li>	
-					<li>оригінал картки реєстрації (Форма А) з ЖЕК чи ОСМД або будинкову книгу;</li>	
-				</ul>
-			</p>
-			<p>
-				Коментар Державного службовця:<br>
-				<b><i>${sDecisionComment}</i></b>
-			</p>
-			<p>
+			&lt;/p&gt;
+			&lt;p&gt;
+				&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:&lt;/b&gt;&lt;br /&gt;
+				&lt;ul&gt;
+					&lt;li&gt;оригінал та копію паспорту того, хто подавав заяву;&lt;/li&gt;
+					&lt;li&gt;квитанцію про сплату адміністративного збору з мокрою печаткою банку;&lt;/li&gt;
+					&lt;li&gt;оригінал та копію свідоцтва про смерть;&lt;/li&gt;	
+					&lt;li&gt;оригінал картки реєстрації (Форма А) з ЖЕК чи ОСМД або будинкову книгу;&lt;/li&gt;	
+				&lt;/ul&gt;
+			&lt;/p&gt;
+			&lt;p&gt;
+				Коментар Державного службовця:&lt;br&gt;
+				&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
+			&lt;/p&gt;
+			&lt;p&gt;
 				При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-			</p>
-			<p>[cancelTask]</p>
+			&lt;/p&gt;
+			&lt;p&gt;[cancelTask]&lt;/p&gt;
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},<br>
+				${sNameOrgan},&lt;br&gt;
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -438,7 +447,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask2" name="Фідбек + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -447,28 +456,30 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Опрацьовано звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>
+          	[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				<p>
-                	Ви отримали послугу "Зняття з реєстрації особи у зв'язку зі смертю", звернення [sID_Order].<br>
-                	Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.<br>
+				&lt;p&gt;
+                	Ви отримали послугу "Зняття з реєстрації особи у зв'язку зі смертю", звернення [sID_Order].&lt;br&gt;
+                	Будь ласка, оцініть якість надання цієї послуги за допомогою форми нижче.&lt;br&gt;
                 	Дякуємо.
-				</p>
+				&lt;/p&gt;
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},<br>
+				${sNameOrgan},&lt;br&gt;
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]
+          </activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] opratsovano, otsinit yakist nadannya posluhy (formu nadislano v email). Detalno igov.org.ua/journal]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] opratsovano, otsinit yakist nadannya posluhy (formu nadislano v email). Detalno igov.org.ua/journal</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -498,9 +509,6 @@ execution.setVariable('sMaxPay', maxpay)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="27.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="65.0" width="105.0" x="880.0" y="193.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="73.0" width="110.0" x="248.0" y="106.0"></omgdc:Bounds>
@@ -541,6 +549,9 @@ execution.setVariable('sMaxPay', maxpay)
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="509.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="65.0" width="105.0" x="880.0" y="193.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="912.0" y="290.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -578,7 +589,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="645.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="753.0" y="226.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -604,7 +615,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="625.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="625.0" y="262.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="517.0" y="236.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="517.0" y="236.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -620,7 +631,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="713.0" y="480.0"></omgdi:waypoint>
         <omgdi:waypoint x="712.0" y="509.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="86.0" x="654.0" y="450.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="86.0" x="654.0" y="450.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -629,7 +640,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="540.0" y="589.0"></omgdi:waypoint>
         <omgdi:waypoint x="608.0" y="589.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="83.0" x="526.0" y="450.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="83.0" x="526.0" y="450.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
@@ -647,7 +658,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="843.0" y="407.0"></omgdi:waypoint>
         <omgdi:waypoint x="915.0" y="407.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="823.0" y="268.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="823.0" y="268.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -655,7 +666,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="1017.0" y="309.0"></omgdi:waypoint>
         <omgdi:waypoint x="1018.0" y="330.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="941.0" y="262.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="941.0" y="262.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
