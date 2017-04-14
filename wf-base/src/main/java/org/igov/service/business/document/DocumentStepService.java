@@ -13,6 +13,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
@@ -97,6 +98,9 @@ public class DocumentStepService {
     
     @Autowired
     GeneralConfig generalConfig;
+    
+    @Autowired
+    protected RepositoryService repositoryService;
 
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject oJSON = new JSONObject(soJSON);
@@ -1556,6 +1560,13 @@ public class DocumentStepService {
 						// String sID_Order =
 						// oFindedDocumentStepSubjectRight.getDocumentStep().getId().toString();
 
+						ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionCategoryLike(snID_Process_Activiti)
+								.active().latestVersion().singleResult();
+						
+		                                if(oProcessDefinition != null){
+		                                    String sNameBP = oProcessDefinition.getName();
+		                                    LOG.info("sNameBP {}", sNameBP);
+		                                
 						// через апи активити по nID_Process_Activity
 						HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
 								.processInstanceId(snID_Process_Activiti).singleResult();
@@ -1572,8 +1583,8 @@ public class DocumentStepService {
 							LOG.info("sDateCreateProcess ", sDateCreateProcess);
 							// вытаскиваем название бп
 
-							String sNameBP = oProcessInstance.getName();
-							LOG.info("sNameBP {}", sNameBP);
+							//String sNameBP = oProcessInstance.getName();
+							//LOG.info("sNameBP {}", sNameBP);
 							// вытаскиваем список активных тасок по процесу
 							List<Task> aTask = oTaskService.createTaskQuery()
 									.processInstanceId(oProcessInstance.getId()).active().list();
@@ -1607,7 +1618,7 @@ public class DocumentStepService {
 							LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
 						} else {
 							LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process_Activiti));
-
+						}
 						}
 					}
 
@@ -1620,7 +1631,7 @@ public class DocumentStepService {
 
 		return aResDocumentSubmitedUnsigned;
 	}
-
+	
 	public void removeDocumentSteps(String snID_Process_Activiti) {
 		List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
 		LOG.info("aDocumentStep finded...");
