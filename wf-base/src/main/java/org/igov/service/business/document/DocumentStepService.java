@@ -1628,6 +1628,8 @@ public class DocumentStepService {
 										String.format("oProcessInstance [id = '%s']  is null", snID_Process_Activiti));
 
 							}
+						} else {
+							LOG.info("aProcessDefinition isEmpty sNameBP not found");
 						}
 
 					}
