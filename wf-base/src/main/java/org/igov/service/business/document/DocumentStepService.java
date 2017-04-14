@@ -1560,7 +1560,7 @@ public class DocumentStepService {
 						HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
 								.processInstanceId(snID_Process_Activiti).singleResult();
 
-						LOG.info("oProcessInstance = {} ", oProcessInstance);
+						LOG.info(String.format("oProcessInstance [id = '%s']  ", oProcessInstance));
 						if (oProcessInstance != null) {
 							// вытаскиваем дату создания процесса
 
@@ -1585,7 +1585,7 @@ public class DocumentStepService {
 							LOG.info("oTaskCurr ={} ", oTaskCurr);
 							// вытаскиваем дату создания таски
 							long sDCUT = oTaskCurr.getCreateTime().getTime();
-							String sDateCreateUserTask = convertMilliSecondsToFormattedDate(sDCP);
+							String sDateCreateUserTask = convertMilliSecondsToFormattedDate(sDCUT);
 							// Date sDateCreateUserTask =
 							// oTaskCurr.getCreateTime();
 							LOG.info("sDateCreateUserTask = ", oTaskCurr.getCreateTime());
