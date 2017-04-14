@@ -1,62 +1,70 @@
 package org.igov.service.business.document;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import static org.igov.service.business.subject.SubjectGroupTreeService.HUMAN;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
-import org.activiti.engine.*;
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
+import org.apache.commons.io.IOUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepSubjectRight;
-import org.igov.model.document.DocumentStepSubjectRightField;
-import org.igov.service.exception.RecordNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.stream.Collectors;
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.identity.User;
-import org.activiti.engine.runtime.Execution;
-import org.activiti.engine.task.IdentityLink;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.document.DocumentStepSubjectRightDao;
+import org.igov.model.document.DocumentStepSubjectRightField;
 import org.igov.model.document.DocumentStepType;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupTreeService;
-import org.igov.service.business.subject.SubjectRightBPVO;
-
-import static org.igov.service.business.subject.SubjectGroupTreeService.HUMAN;
 import org.igov.service.conf.AttachmetService;
+import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.Tool;
-import org.igov.util.JSON.JsonDateSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Component("documentStepService")
 @Service
@@ -1567,19 +1575,11 @@ public class DocumentStepService {
                   
                   LOG.info("oProcessDefinition {}", oProcessDefinition);
                   
-                  String sProcessName = oProcessDefinition.getName();
-                  
-                  LOG.info("sProcessName {}", sProcessName);
+						if (oProcessDefinition !=null) {
+							 String sProcessName = oProcessDefinition.getName();
+			                  
+			                  LOG.info("sProcessName {}", sProcessName);
 
-						// String sID_Order =
-						// oFindedDocumentStepSubjectRight.getDocumentStep().getId().toString();
-
-						List<ProcessDefinition> aProcessDefinition = repositoryService.createProcessDefinitionQuery()
-								.processDefinitionKeyLike(snID_Process_Activiti).active().latestVersion().list();
-
-						if (!aProcessDefinition.isEmpty()) {
-							String sNameBP = aProcessDefinition.get(0).getName();
-							LOG.info("sNameBP {}", sNameBP);
 
 							// через апи активити по nID_Process_Activity
 							HistoricProcessInstance oProcessInstance = historyService
@@ -1624,7 +1624,7 @@ public class DocumentStepService {
 
 								oDocumentSubmitedUnsignedVO
 										.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
-								oDocumentSubmitedUnsignedVO.setsNameBP(sNameBP);
+								oDocumentSubmitedUnsignedVO.setsNameBP(sProcessName);
 								oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
 								oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
 								oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
@@ -1639,7 +1639,7 @@ public class DocumentStepService {
 
 							}
 						} else {
-							LOG.info("aProcessDefinition isEmpty sNameBP not found");
+							LOG.info("aProcessDefinition is null sProcessName not found");
 						}
 
 					}
