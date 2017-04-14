@@ -1,32 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dms_0176_Zagran_DMS" name="Отримання/заміна паспорта громадянина України для виїзду за кордон" isExecutable="true">
+  <process id="dms_0176_Zagran_DMS" name="Паспорт громадянина України для виїзду за кордон" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
-        <activiti:formProperty id="sWarning0" name="Зверніть увагу" type="label" default="Для оформлення закордонного паспорту для дитини існує окрема &lt;a href=&quot;https://igov.org.ua/service/177/general&quot;&gt;послуга&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sWarning0" name=" ; ;labelType=info" type="label" default="Для оформлення закордонного паспорту для дитини до 16 років існує окрема &lt;a href=&quot;https://igov.org.ua/service/177/general&quot;&gt;послуга&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay" name="Номер черги за довідником ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="asHave_passport" name="У Вас на даний момент є закордонний паспорт?" type="enum" required="true">
-          <activiti:value id="sPaspNo" name="ні, буду отримувати перший раз"></activiti:value>
-          <activiti:value id="sPaspChange" name="так, хочу замінити"></activiti:value>
-          <activiti:value id="sPaspMore" name="так, потрібно отримати другий"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sWarning2" name="Зверніть увагу" type="label" default="Для отримання другого закордонного паспорту перший повинен бути діючим, та потреба у другому має бути обргунтована у заяві (наявність діючих віз, документи про регулярні відрядження за кордон тощо)"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Ваш телефон" type="string" default="+38" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш телефон;заповніть перед обранням підрозділу ДМС" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Type_visitDay" name="sID_Type_visitDay" type="invisible" default="DMS"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNotification_day" name="sNotification_day" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTicketNumber" name="Номер талону" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTicketCode" name="Код талону" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски" type="invisible"></activiti:formProperty>
+        
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sInfoFAQ" name=" ; ;labelType=info" type="label" default="Відповіді на найчастіші питання по закордонних паспортах (в т.ч. про наявність черги) Ви можете знайти за &lt;a href=&quot;https://docs.google.com/document/d/12tTbPz081dMJPxPicyXEe8xMMQdYNUet4Qx04VNCnys/edit?usp=sharing&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay" name="Номер черги за довідником ДМС; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sID_Type_visitDay" name="sID_Type_visitDay; ;bVisible=false" type="string" default="DMS"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ДМС; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="sNotification_day; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTicketNumber" name="Номер талону; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTicketCode" name="Код талону; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -89,47 +86,40 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Отримання паспорта громадянина України для виїзду за кордон]]></activiti:string>
+          <activiti:string><![CDATA[Паспорт громадянина України для виїзду за кордон]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 								<p>
-								Для того щоб закінчити процедуру необхідно:
-								<ul>
-								<li>У будь-якому банку зробити необхідні платежі та отримати квитанції про сплату. Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a></b><br></li>
-								<li>Прийти з необхідними документами (перелік нижче) за адресою: ${sAddress}
-								</ul>
+								Для того щоб закінчити процедуру необхідно прийти з необхідними документами за адресою: ${sAddress}.<br>
+                                                                Дата та час візиту - ${sNotification_day}.Номер талону - ${sTicketNumber}. 
 								</p>
-								<p>
-									<b>Деталі зустрічі:</b><br>
-									Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
-								</p>
-								<p>
-									Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a>
-									<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.
-								</p>
-								<p>
+								
+								<p><br>
+              
 								<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон:</b>
 									<ul>
-										<li>оригінал та копію паспорта громадянина України;</li>
-										<li>оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);</li>
-										<li>оригінал та копію індивідуального податкового номеру (ІПН);</li>
-										<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
+										<li>оригінал та копію паспорта громадянина України;</li><br>
+										<li>оригінал та копію паспорта громадянина України для виїзду за кордон (за наявності);</li><br>
+										<li>оригінал та копію індивідуального податкового номеру (ІПН);</li><br>
+										<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник. <br>
+                                                                                   Реквізити можна отримати за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a></b>.</li><br>
 									</ul>
 								</p>
 								<p>	
-								<b>Зверніть увагу:</b> 
+								<b>Зверніть увагу:</b> <br>
 									<ul>
-										<li>Вам не потрібно реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.</li>
-										<li>Якщо Ви замінюєте паспорт після зміни прізвища, ім'я або по батькові, то Вам необхідно мати з собою оригінал та копію документу про зміну прізвища, ім'я або по батькові.</li>
-										<li>Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам доцільно додатково підготувати ксерокопію та оригінал довідки переселенця і ксерокопію та оригінал посвідчення водія, якщо вони у Вас є.</li>
+                                                                                <li>В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.</li><br>
+										<li>Вам не потрібно реєструватися у черзі на місці, просимо Вас не запізнюватись.</li><br>
+										<li>Якщо Ви замінюєте паспорт після зміни прізвища, ім'я або по батькові, то Вам необхідно мати з собою оригінал та копію документу про зміну прізвища, ім'я або по батькові.</li><br>
+										<li>Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам доцільно додатково підготувати ксерокопію та оригінал довідки переселенця і ксерокопію та оригінал посвідчення водія, якщо вони у Вас є.</li><br>
+                                                                                <li>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a></li><br>
+                                                                                <li>Якщо Вам потрібно скасувати заявку, зверніться, будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05.<br> При цьому потрібно буде вказати код талону = ${sTicketCode}.</li>
 									</ul>
 								</p>
-								<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
-								<p>Якщо Вам потрібно скасувати заявку, зверніться, будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
-								При цьому потрібно буде вказати код талону = ${sTicketCode}.
-								</p>
+								      
+					
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
@@ -147,16 +137,8 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asHave_passport" name="Наявність у громадянина закордонного паспорту" type="enum" writable="false">
-          <activiti:value id="sPaspChange" name="вже є, буде замінювати"></activiti:value>
-          <activiti:value id="sPaspNo" name="буде отримувати в перший раз"></activiti:value>
-          <activiti:value id="sPaspMore" name="так, потрібно отримати другий"></activiti:value>
-        </activiti:formProperty>
+        
         <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="finish" name="Результат візиту" type="enum" required="true">
-          <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
-          <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
-        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>

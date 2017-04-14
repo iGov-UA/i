@@ -4,7 +4,7 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть найближчий центр надання безоплатної вторинної допомоги" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Місцезнаходження центру" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Місцезнаходження центру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -88,7 +88,7 @@
           <activiti:string><![CDATA[Нове звернення. Про надання безоплатної вторинної правової допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -113,16 +113,19 @@
           <activiti:string><![CDATA[Звернення про надання безоплатної вторинної правової допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt; Ваше звернення №[sID_Order] щодо Надання безоплатної вторинної правової допомоги було зареєстровано у системі.&lt;br/&gt;
-			Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				Ваше звернення №[sID_Order] щодо Надання безоплатної вторинної правової допомоги було зареєстровано у системі.<br/>
+				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.<br>
+				${sPhoneOrgan}
+			</p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -169,12 +172,8 @@
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка" type="invisible" default="Першого дніпропетровського місцевого центру з надання безоплатної вторинної правової допомоги"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Довіреність" type="markers" default="${markerService.loadFromFile('minust/justice_989.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nPassport},${nFamily},${nIncome},${nEmployee},${nTax},${nPensioner},${nPensionSum},${nPowers},${nOrphan},${nViolence},${nRecord},${nCertificate},${nWork},${nNazi},${nRehabilit},${nPassportRight},${nGuardian},${nCourt},${nDecree},${nPasspRefugee},${nProtect},${nDenyRefugee},${nFileTrust}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -196,25 +195,22 @@
           <activiti:string><![CDATA[Звернення про надання безоплатної вторинної правової допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt;
-			Звенення №[sID_Order] щодо надання безоплатної вторинної правової допомоги - схвалене&lt;br /&gt;
-			&lt;/p&gt;
-			Коментар держслужбовців (за наявності): ${comment}
-			&lt;p&gt;
-			Зверніться до Вашого центру з надання безоплатної вторинної правової допомоги:
-			&lt;br /&gt;
-			&lt;br /&gt;
-			${sAddress}&lt;br /&gt;
-			${sWorkTime}&lt;br /&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				Звенення №[sID_Order] щодо надання безоплатної вторинної правової допомоги - схвалене.<br><br>
+			 	Зверніться до Вашого центру з надання безоплатної вторинної правової допомоги.<br>
+			 	При собі необхідно мати документ, що посівідчує особу і документ, що посвідчує Ваш соціальний стан.<br>
+				${sAddress}<br>
+				${sWorkTime}<br>
+				${sPhoneOrgan}<br>
+			</p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>" "</activiti:expression>
@@ -242,21 +238,21 @@
           <activiti:string><![CDATA[Звернення про надання безоплатної вторинної правової допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			На жаль, Ваше звернення №[sID_Order] щодо надання безоплатної вторинної правової допомоги було прийнято, проте винесено рішення про відмову у наданні безоплатної правової допомоги.&lt;/p&gt;
-			&lt;p&gt;Причина в наступному:&lt;/p&gt;
-			${comment}
-			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;br /&gt;
-			${sAddress}&lt;br /&gt;
-			${sWorkTime}&lt;br /&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				На жаль, Ваше звернення №[sID_Order] щодо надання безоплатної вторинної правової допомоги було прийнято, проте винесено рішення про відмову у наданні безоплатної правової допомоги.<br>
+				Причина в наступному:<br>
+				${comment}<br><br>
+				${sPhoneOrgan}<br>
+			</p>
+			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -300,21 +296,21 @@
           <activiti:string><![CDATA[Звернення про надання безоплатної вторинної правової допомоги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			На жаль, Ваше звернення №[sID_Order] щодо надання безоплатної вторинної правової допомоги було відхилено.&lt;/p&gt;
-			&lt;p&gt;Причина в наступному:&lt;/p&gt;
-			${comment}
-			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;br /&gt;
-			${sAddress}&lt;br /&gt;
-			${sWorkTime}&lt;br /&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
-			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				На жаль, Ваше звернення №[sID_Order] щодо надання безоплатної вторинної правової допомоги було відхилено.<br>
+				Причина в наступному:<br>				
+				${comment}<br><br>
+				${sPhoneOrgan}<br>
+			</p>
+			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

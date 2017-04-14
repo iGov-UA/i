@@ -17,33 +17,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author olga
  */
 @javax.persistence.Entity
-public class SubjectGroupTree extends AbstractEntity{
-    
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class SubjectGroupTree extends AbstractEntity {
 
-	@JsonProperty(value = "oSubjectGroup_Child")
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    @JsonProperty(value = "oSubjectGroup_Child")
     @ManyToOne(targetEntity = SubjectGroup.class)
-    @JoinColumn(name="nID_SubjectGroup_Child", nullable = false, updatable = false)
+    @JoinColumn(name = "nID_SubjectGroup_Child", nullable = false, updatable = false)
     private SubjectGroup oSubjectGroup_Child;
-    
+
     @JsonProperty(value = "oSubjectGroup_Parent")
     @ManyToOne(targetEntity = SubjectGroup.class)
-    @JoinColumn(name="nID_SubjectGroup_Parent", nullable = false, updatable = false)
+    @JoinColumn(name = "nID_SubjectGroup_Parent", nullable = false, updatable = false)
     private SubjectGroup oSubjectGroup_Parent;
-    
-    
 
+    @Override
+    public String toString() {
+        return "SubjectGroupTree [oSubjectGroup_Child=" + oSubjectGroup_Child + ", oSubjectGroup_Parent="
+                + oSubjectGroup_Parent + "]";
+    }
 
-	@Override
-	public String toString() {
-		return "SubjectGroupTree [oSubjectGroup_Child=" + oSubjectGroup_Child + ", oSubjectGroup_Parent="
-				+ oSubjectGroup_Parent + "]";
-	}
-
-	public SubjectGroup getoSubjectGroup_Child() {
+    public SubjectGroup getoSubjectGroup_Child() {
         return oSubjectGroup_Child;
     }
 
@@ -58,6 +55,5 @@ public class SubjectGroupTree extends AbstractEntity{
     public void setoSubjectGroup_Parent(SubjectGroup oSubjectGroup_Parent) {
         this.oSubjectGroup_Parent = oSubjectGroup_Parent;
     }
-    
-    
+
 }

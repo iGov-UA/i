@@ -1,0 +1,39 @@
+<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top"></div>
+
+<div class="container ecp-template-container" ng-if="!unsignedDocumentsList.length">
+  <h3>Документи для перегляду вiдсутнi</h3>
+</div>
+
+<div class="container ecp-template-container" ng-if="unsignedDocumentsList.length">
+  <h3>Документи з вiдкладеним пiдписом</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>
+          <input type="checkbox" title="Вибрати всi документи" ng-model="documents.selectAll" ng-click="selectAllDocuments()">
+        </th>
+        <th>Документ</th>
+        <th>Етап документа</th>
+        <th>Дата створення документа</th>
+        <th>Дата розгляду документа</th>
+        <th>Номер документа</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="doc in unsignedDocumentsList">
+        <td><input type="checkbox" title="Обрати цей документ" ng-model="doc.selected"></td>
+        <td>{{doc.sNameBP}}</td>
+        <td>{{doc.sUserTaskName}}</td>
+        <td>{{doc.sDateCreateProcess}}</td>
+        <td>{{doc.sDateSubmit}}</td>
+        <td>{{doc.sID_Order}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="ecp-template-sign-button">
+    <hr><input type="button" value="Пiдписати" class="btn btn-default" ng-click="signDocuments()"><hr>
+  </div>
+
+</div>

@@ -193,24 +193,6 @@
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" default="sEnumNotRegularDoc">
-          <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
-          <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateBegin" name="Дата початку" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asPeriodicity" name="Періодичність" type="enum">
-          <activiti:value id="sEnumDay" name="щоденно"></activiti:value>
-          <activiti:value id="sEnumWeek" name="щотижнево"></activiti:value>
-          <activiti:value id="sEnumMonth" name="щомісяця"></activiti:value>
-          <activiti:value id="sEnumQuarter" name="щокварталу"></activiti:value>
-          <activiti:value id="sEnumYear" name="щороку"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asControl" name="Контроль; ;sID_CheckboxTrue=sEnumYesControl" type="enum" default="sEnumNoControl">
-          <activiti:value id="sEnumYesControl" name="взяти на особливий контроль"></activiti:value>
-          <activiti:value id="sEnumNoControl" name="не брати на особливий контроль"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="asJustified" name="Обґрунтовано; ;sID_CheckboxTrue=sEnumJustified" type="enum" default="sEnumNotJustified">
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
@@ -224,7 +206,7 @@
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_MJU]]></activiti:string>
@@ -415,24 +397,6 @@
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum">
-          <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
-          <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateBegin" name="Дата початку" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asPeriodicity" name="Періодичність" type="enum">
-          <activiti:value id="sEnumDay" name="щоденно"></activiti:value>
-          <activiti:value id="sEnumWeek" name="щотижнево"></activiti:value>
-          <activiti:value id="sEnumMonth" name="щомісяця"></activiti:value>
-          <activiti:value id="sEnumQuarter" name="щокварталу"></activiti:value>
-          <activiti:value id="sEnumYear" name="щороку"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asControl" name="Контроль; ;sID_CheckboxTrue=sEnumYesControl" type="enum">
-          <activiti:value id="sEnumYesControl" name="взяти на особливий контроль"></activiti:value>
-          <activiti:value id="sEnumNoControl" name="не брати на особливий контроль"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="asJustified" name="Обґрунтовано; ;sID_CheckboxTrue=sEnumJustified" type="enum">
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
@@ -465,13 +429,13 @@
             <activiti:string><![CDATA[_task_justice]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
-            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+            <activiti:expression>${processDefinitionId}</activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sName_SubjectRole::${sLogin_AutorResolution};;sTypeDoc::${sTypeDoc};;sNumberPrevious::${sNumberPrevious};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sDateRegistration::${sDateRegistration};;sNumberRegistration::${sNumberRegistration};;sDateDoc::${sDateDoc};;sNumberDoc::${sNumberDoc};;nCountSheets::${nCountSheets};;sContent::${sContent};;sApplicant::${sApplicant};;asTypeDelivery::${asTypeDelivery};;asTypeIncoming::${asTypeIncoming};;asSocialStatus::${asSocialStatus};;asSex::${asSex};;asTypeAppeal::${asTypeAppeal};;asKindAppeal::${asKindAppeal};;asCategory::${asCategory};;asSubject::${asSubject};;asFrom::${asFrom};;asPlace::${asPlace};;sAdress::${sAdress};;sDateExecution::${sDateExecution};;sNote::${sNote};;sAutorResolution::${sName_AutorResolution};;asUrgently::${asUrgently};;asRegular::${asRegular};;sDateBegin::${sDateBegin};;asPeriodicity::${asPeriodicity};;sDateEnd::${sDateEnd};;asControl::${asControl};;asJustified::${asJustified};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sTable1::${sTable1}]]></activiti:expression>
+            <activiti:expression>sDoc1::${sDoc1};;sName_SubjectRole::${sLogin_AutorResolution};;sTypeDoc::${sTypeDoc};;sNumberPrevious::${sNumberPrevious};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sDateRegistration::${sDateRegistration};;sNumberRegistration::${sNumberRegistration};;sDateDoc::${sDateDoc};;sNumberDoc::${sNumberDoc};;nCountSheets::${nCountSheets};;sContent::${sContent};;sApplicant::${sApplicant};;asTypeDelivery::${asTypeDelivery};;asTypeIncoming::${asTypeIncoming};;asSocialStatus::${asSocialStatus};;asSex::${asSex};;asTypeAppeal::${asTypeAppeal};;asKindAppeal::${asKindAppeal};;asCategory::${asCategory};;asSubject::${asSubject};;asFrom::${asFrom};;asPlace::${asPlace};;sAdress::${sAdress};;sDateExecution::${sDateExecution};;sNote::${sNote};;sAutorResolution::${sName_AutorResolution};;asUrgently::${asUrgently};;asRegular::${asRegular};;sDateBegin::${sDateBegin};;asPeriodicity::${asPeriodicity};;sDateEnd::${sDateEnd};;asControl::${asControl};;asJustified::${asJustified};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sTable1::${sTable1}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -644,24 +608,6 @@
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" writable="false">
-          <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
-          <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateBegin" name="Дата початку" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asPeriodicity" name="Періодичність" type="enum">
-          <activiti:value id="sEnumDay" name="щоденно"></activiti:value>
-          <activiti:value id="sEnumWeek" name="щотижнево"></activiti:value>
-          <activiti:value id="sEnumMonth" name="щомісяця"></activiti:value>
-          <activiti:value id="sEnumQuarter" name="щокварталу"></activiti:value>
-          <activiti:value id="sEnumYear" name="щороку"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asControl" name="Контроль; ;sID_CheckboxTrue=sEnumYesControl" type="enum" writable="false">
-          <activiti:value id="sEnumYesControl" name="взяти на особливий контроль"></activiti:value>
-          <activiti:value id="sEnumNoControl" name="не брати на особливий контроль"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asJustified" name="Обґрунтовано; ;sID_CheckboxTrue=sEnumJustified" type="enum" writable="false">
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
@@ -876,24 +822,6 @@
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" writable="false">
-          <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
-          <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateBegin" name="Дата початку" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asPeriodicity" name="Періодичність" type="enum">
-          <activiti:value id="sEnumDay" name="щоденно"></activiti:value>
-          <activiti:value id="sEnumWeek" name="щотижнево"></activiti:value>
-          <activiti:value id="sEnumMonth" name="щомісяця"></activiti:value>
-          <activiti:value id="sEnumQuarter" name="щокварталу"></activiti:value>
-          <activiti:value id="sEnumYear" name="щороку"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asControl" name="Контроль; ;sID_CheckboxTrue=sEnumYesControl" type="enum" writable="false">
-          <activiti:value id="sEnumYesControl" name="взяти на особливий контроль"></activiti:value>
-          <activiti:value id="sEnumNoControl" name="не брати на особливий контроль"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="asJustified" name="Обґрунтовано; ;sID_CheckboxTrue=sEnumJustified" type="enum" writable="false">
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
@@ -945,7 +873,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
           <activiti:field name="snID_Process_Activiti">
-            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+            <activiti:expression>${processInstanceId}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_ProcessSubjectStatus">
             <activiti:string><![CDATA[unactual]]></activiti:string>
@@ -1115,24 +1043,6 @@
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" writable="false">
-          <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
-          <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateBegin" name="Дата початку" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asPeriodicity" name="Періодичність" type="enum">
-          <activiti:value id="sEnumDay" name="щоденно"></activiti:value>
-          <activiti:value id="sEnumWeek" name="щотижнево"></activiti:value>
-          <activiti:value id="sEnumMonth" name="щомісяця"></activiti:value>
-          <activiti:value id="sEnumQuarter" name="щокварталу"></activiti:value>
-          <activiti:value id="sEnumYear" name="щороку"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asControl" name="Контроль; ;sID_CheckboxTrue=sEnumYesControl" type="enum" writable="false">
-          <activiti:value id="sEnumYesControl" name="взяти на особливий контроль"></activiti:value>
-          <activiti:value id="sEnumNoControl" name="не брати на особливий контроль"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="asJustified" name="Обґрунтовано; ;sID_CheckboxTrue=sEnumJustified" type="enum" writable="false">
           <activiti:value id="sEnumJustified" name="Обґрунтовано"></activiti:value>
           <activiti:value id="sEnumNotJustified" name="не Обґрунтовано"></activiti:value>
@@ -1193,7 +1103,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
           <activiti:field name="snID_Process_Activiti">
-            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+            <activiti:expression>${processInstanceId}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_ProcessSubjectStatus">
             <activiti:string><![CDATA[unactual]]></activiti:string>
@@ -1400,7 +1310,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
         <omgdi:waypoint x="443.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="541.0" y="237.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="81.0" x="480.0" y="291.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="81.0" x="480.0" y="291.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
@@ -1413,7 +1323,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
         <omgdi:waypoint x="445.0" y="52.0"></omgdi:waypoint>
         <omgdi:waypoint x="445.0" y="80.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="484.0" y="16.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="484.0" y="16.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">

@@ -369,5 +369,138 @@
         <modifyDataType tableName="DocumentStepSubjectRight" columnName="sName" newDataType="varchar(255)" />
         <modifyDataType tableName="DocumentStepSubjectRight" columnName="sLogin" newDataType="varchar(255)" />
     </changeSet>
+
+     <changeSet id="issue-1553-create_table_SubjectMessageQuestionField" author="Elena">
+        
+         <createTable tableName="SubjectMessageQuestionField">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_SubjectMessage" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_SubjectMessageQuestionField_SubjectMessage"
+                             referencedTableName="SubjectMessage"
+                             referencedColumnNames="nID" deleteCascade="false"/>
+             </column>
+            <column name="sID" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sType" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sValue" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sValueNew" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNotify" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+    
+    <changeSet id="issue-1615-create-tables" author="Kovylin Yegor">
+        
+        <createTable tableName="RelationClass">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sClass" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Relation">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sID" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_RelationClass" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_RelationClass_Relation"
+                             referencedTableName="RelationClass" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="ObjectGroup">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Subject_Source" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_ObjectGroup_Subject"
+                             referencedTableName="Subject" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+            <column name="sID_Private_Source" type="varchar(5000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Relation_ObjectGroup">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Relation" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Relation_ObjectGroup_Relation"
+                             referencedTableName="Relation" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+            <column name="nID_ObjectGroup_Parent" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_ObjectGroup_Child" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Relation_ObjectGroup_ObjectGroup"
+                             referencedTableName="ObjectGroup" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="ObjectItem">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Subject_Source" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_ObjectItem_Subject"
+                             referencedTableName="Subject" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+            <column name="sID_Private_Source" type="varchar(5000)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <createTable tableName="Relation_ObjectItem">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_Relation" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Relation_ObjectItem_Relation"
+                             referencedTableName="Relation" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+            <column name="nID_ObjectItem_Parent" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_ObjectItem_Child" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_Relation_ObjectItem_ObjectItem"
+                             referencedTableName="ObjectItem" referencedColumnNames="nID" deleteCascade="false"/>
+            </column>
+        </createTable>
+        
+        <addUniqueConstraint constraintName="Relation_ObjectGroup_key"
+                             tableName="Relation_ObjectGroup"
+                             columnNames="nID_ObjectGroup_Parent, nID_ObjectGroup_Child"/>
+
+        <addUniqueConstraint constraintName="Relation_ObjectItem_key"
+                             tableName="Relation_ObjectItem"
+                             columnNames="nID_ObjectItem_Parent, nID_ObjectItem_Child"/>
+                
+    </changeSet>
     
 </databaseChangeLog>

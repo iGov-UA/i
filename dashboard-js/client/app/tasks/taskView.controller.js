@@ -386,7 +386,7 @@
           angular.forEach($scope.taskForm, function (i, k, o) {
             if(i.type === 'fileHTML' && i.value && i.value.indexOf('sKey') > -1) {
               tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, i.id, true).then(function (res) {
-                o[k].value = res;
+                o[k].valueVisible = res;
               })
             }
           })
@@ -503,6 +503,23 @@
         $scope.correctSignName = function (name) {
           var splitName = name.split(';');
           return splitName.length !== 1 ? splitName[0] : name;
+        };
+
+        $scope.takeTheKeyFromJSON = function (item) {
+          return JSON.parse(item.value).sKey;
+        };
+
+        $scope.takeTheFileNameFromJSON = function (item) {
+          var originalFileName = JSON.parse(item.value).sFileNameAndExt;
+          var ext;
+          if (originalFileName && originalFileName.indexOf('.') > 0){
+            var parts = originalFileName.split(".");
+            ext = parts[parts.length - 1];
+          }
+          if(ext){
+            return item.name + '.' + ext;
+          }
+          return item.name;
         };
 
         $scope.takeTheKeyFromJSON = function (item) {
@@ -792,7 +809,7 @@
         $scope.unpopulatedFields = function () {
           if ($scope.selectedTask && $scope.taskForm) {
             var unpopulated = $scope.taskForm.filter(function (item) {
-              return (item.value === undefined || item.value === null || item.value.trim() === "") && (item.required || $scope.isCommentAfterReject(item));//&& item.type !== 'file'
+              return (item.value === null && !item.valueVisible) && (item.value === undefined || item.value === null || item.value.trim() === "") && (item.required || $scope.isCommentAfterReject(item));//&& item.type !== 'file'
             });
             return unpopulated;
           } else {
@@ -1057,7 +1074,7 @@
 
         $scope.sFieldLabel = function (sField) {
           var s = '';
-          if (sField !== null) {
+          if (sField) {
             var a = sField.split(';');
             s = a[0].trim();
           }
@@ -1604,6 +1621,23 @@
 
         $scope.switchDelegateMenu = function () {
           $rootScope.delegateSelectMenu = !$rootScope.delegateSelectMenu;
+        };
+
+
+        $scope.getBpAndFieldID = function (field) {
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id;
+          } else {
+            return field.id;
+          }
+        };
+
+        $scope.getFullCellId = function(field, column, row){
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          } else {
+            return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          }
         };
 
         $rootScope.$broadcast("update-search-counter");

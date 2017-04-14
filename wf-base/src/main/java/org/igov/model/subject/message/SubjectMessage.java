@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.igov.model.core.AbstractEntity;
 import org.igov.model.subject.Subject;
@@ -13,10 +15,13 @@ import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @javax.persistence.Entity
 public class SubjectMessage extends AbstractEntity {
@@ -86,6 +91,18 @@ public class SubjectMessage extends AbstractEntity {
     
     @JsonProperty(value = "sID_DataLink")
     private String sID_DataLink;
+    
+    @OneToMany(targetEntity = SubjectMessageQuestionField.class, mappedBy = "subjectMessage")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<SubjectMessageQuestionField> subjectMessageQuestionFields;
+
+    public List<SubjectMessageQuestionField> getSubjectMessageQuestionField() {
+        return subjectMessageQuestionFields;
+    }
+
+    public void setSubjectMessageQuestionField(List<SubjectMessageQuestionField> subjectMessageQuestionField) {
+        this.subjectMessageQuestionFields = subjectMessageQuestionField;
+    }
 
     public String getHead() {
         return head;

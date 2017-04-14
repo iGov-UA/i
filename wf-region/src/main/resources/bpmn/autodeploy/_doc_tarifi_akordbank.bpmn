@@ -36,7 +36,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахункової комісії" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -67,7 +67,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="sTarif" name="Тариф" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахункової комісії" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
@@ -88,7 +88,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахункової комісії" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
@@ -160,7 +160,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="обгрунтування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахункової комісії" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
@@ -204,7 +204,7 @@ execution.setVariable('nCountSubmiteLimit', (parseInt(nCountSubmitePlan , 10)/2)
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAmount_of_commission" name="Процес суми розрахункової комісії" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Рішення" type="enum" required="true">
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
           <activiti:value id="accept" name="погодитися"></activiti:value>
@@ -217,6 +217,7 @@ execution.setVariable('nCountSubmiteLimit', (parseInt(nCountSubmitePlan , 10)/2)
         <activiti:formProperty id="nCountAccept" name="Кількість голосів за" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="nCountReject" name="Кількість голосів проти" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible" default="4"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -228,7 +229,7 @@ execution.setVariable('nCountSubmiteLimit', (parseInt(nCountSubmitePlan , 10)/2)
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow28" sourceRef="exclusivegateway2" targetRef="scripttask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission<=sAmount_of_commission}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow31" sourceRef="exclusivegateway3" targetRef="scripttask3">
@@ -291,7 +292,7 @@ ${sTarif}</activiti:expression>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow51" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow52" sourceRef="exclusivegateway2" targetRef="scripttask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission>sAmount_of_commission}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLimit_sAmount_of_commission<=sAmount_of_commission}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask8" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
@@ -347,7 +348,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахункової комісії" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -369,7 +370,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахункової комісії" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -377,7 +378,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <sequenceFlow id="flow59" sourceRef="scripttask9" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="usertask6" targetRef="servicetask3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <scriptTask id="scripttask10" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask10" name="условие половины подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var nCountAccept = execution.getVariable('nCountAccept')
 var nCountReject = execution.getVariable('nCountReject')
@@ -511,7 +512,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="-365.0" y="540.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
-        <omgdc:Bounds height="55.0" width="105.0" x="-400.0" y="241.0"></omgdc:Bounds>
+        <omgdc:Bounds height="63.0" width="105.0" x="-400.0" y="233.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
         <omgdc:Bounds height="40.0" width="40.0" x="-368.0" y="368.0"></omgdc:Bounds>
@@ -520,7 +521,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="-368.0" y="307.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="-400.0" y="430.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="105.0" x="-400.0" y="430.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway10" id="BPMNShape_exclusivegateway10">
         <omgdc:Bounds height="40.0" width="40.0" x="860.0" y="349.0"></omgdc:Bounds>
@@ -579,7 +580,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="-171.0" y="268.0"></omgdi:waypoint>
-        <omgdi:waypoint x="-295.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-295.0" y="264.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="-151.0" y="248.0"></omgdi:waypoint>
@@ -639,7 +640,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
         <omgdi:waypoint x="70.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="-295.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-295.0" y="264.0"></omgdi:waypoint>
         <omgdi:waypoint x="-348.0" y="307.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
@@ -661,7 +662,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
         <omgdi:waypoint x="-348.0" y="368.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="-348.0" y="485.0"></omgdi:waypoint>
+        <omgdi:waypoint x="-348.0" y="500.0"></omgdi:waypoint>
         <omgdi:waypoint x="-348.0" y="540.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">

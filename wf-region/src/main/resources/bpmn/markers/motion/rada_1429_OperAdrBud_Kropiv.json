@@ -9,60 +9,61 @@
 			{
 				"sClient": "sSubekt" 
 			},
-		" sCondition":" [sClient] == 'fiz'" 
+		"sCondition":" [sClient]=='fiz'" 
 		},
 		"ShowFieldsOnCondition_2":
 		{
 		"aField_ID": ["vipiska"],
 			"asID_Field":
 			{
-				"sClient":"sSubekt"
+				"sClient1":"sSubekt"
 			},
-		"sCondition":"[sClient] == 'ur'"
+		"sCondition":"[sClient1]=='ur'"
 		},
 		"ShowFieldsOnCondition_4":
 		{
 			"aField_ID":["sDivideHouse","sTehPasport","sOwnershipHouse"],
 			"asID_Field":
 			{
-				"sClient":"sObject"
+				"sClient2":"sObject"
 			},
-			"sCondition":"[sClient] == 'house'"
+			"sCondition":"[sClient2]=='house'"
 		},
 		"ShowFieldsOnCondition_5":
 		{
 			"aField_ID":["sDocDivideHouse"],
 			"asID_Field":
 			{
-				"sClient":"sDivideHouse"
-			},"sCondition":"[sClient] == 'yes'"
+				"sClient3":"sDivideHouse"
+			},
+			"sCondition":"[sClient3]=='yes'"
 		},
 		"ShowFieldsOnCondition_6":
 		{
-			"aField_ID":["sDivideZemlya","sShemaZemlya"],
+			"aField_ID":["sDivideZemlya","sShemaZemlya","sOwnershipZemlya"],
 			"asID_Field":
 			{
-				"sClient":"sObject"
+				"sClient4":"sObject"
 			},
-			"sCondition":"[sClient] == 'zemlya'"
+			"sCondition":"[sClient4]=='zemlya'"
 		},
 		"ShowFieldsOnCondition_7":
 		{
 			"aField_ID":["sDocDivideZemlya"],
 			"asID_Field":
 			{
-				"sClient":"sDivideZemlya"
+				"sClient5":"sDivideZemlya"
 			},
-			"sCondition":"[sClient] == 'yes'"
+			"sCondition":"[sClient5]=='yes'"
 		},
 		"ShowFieldsOnCondition_8":
 		{
 			"aField_ID":["sDeclaration"],
 			"asID_Field":
 			{
-				"sClient1":"sObject","sClient2":"sID_Public_SubjectOrganJoin"
+				"sClient6":"sObject"
 			},
-			"sCondition":"[sClient1] == 'house' && [sClient2] == 'lviv_drohob' || [sClient2] == 'Kropivn_KropivnytskyiT'"
+			"sCondition":"[sClient6]=='house'"
 		},
 		"ShowFieldsOnCondition_9":
 		{
@@ -71,16 +72,25 @@
 			{
 				"sFunc":"sID_Public_SubjectOrganJoin"
 			},
-			"sCondition":"[sFunc] == 'Kropivn_KropivnytskyiT'"
+			"sCondition":"[sFunc]=='Kropivn_KropivnytskyiT'||[sFunc]=='lviv_drohob'"
 		},
 		"ShowFieldsOnCondition_10":
 		{
-			"aField_ID":["sAction","sReferenceBTI","sDivideZemlya"],
+			"aField_ID":["sReferenceBTI","sObject","sDovidka"],
 			"asID_Field":
 			{
 				"sFunc1":"sID_Public_SubjectOrganJoin"
 			},
-			"sCondition":"[sFunc1] != 'Kropivn_KropivnytskyiT'"
+			"sCondition":"[sFunc1]!='Kropivn_KropivnytskyiT'"
+		},
+		"ShowFieldsOnCondition_101":
+		{
+			"aField_ID":["sAction","sDocConfidant"],
+			"asID_Field":
+			{
+				"sFunc14":"sID_Public_SubjectOrganJoin"
+			},
+			"sCondition":"[sFunc14]!='Kropivn_KropivnytskyiT'&&[sFunc14]!='lviv_drohob'"
 		},
 		"ShowFieldsOnCondition_11":
 		{
@@ -89,7 +99,7 @@
 			{
 				"sFunc2":"sAction1"
 			},
-			"sCondition":"[sFunc2] == 'renew' || [sFunc2] == 'уточнити'"
+			"sCondition":"[sFunc2]=='renew'"
 		},
 		"RequiredFieldsOnCondition_12":
 		{
@@ -98,28 +108,55 @@
 			{
 				"sFunc3":"decision_1"
 			},
-			"sCondition":"[sFunc3] == 'reject' || [sFunc3] == 'Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)'"
+			"sCondition":"[sFunc3]=='reject'"
 		},
 		"RequiredFieldsOnCondition_13":
 		{
 			"aField_ID":["comment_2"],
 			"asID_Field":
 			{
-				"sFunc3":"decision_2"
+				"sFunc4":"decision_2"
 			},
-			"sCondition":"[sFunc3] == 'reject' || [sFunc3] == 'надіслати відмову у присвоєнні (зміні) поштової адреси'"
+			"sCondition":"[sFunc4]=='reject'"
 		},
-		"ShowFieldsOnCondition_14":
+		"ShowFieldsOnCondition_15":
 		{
-			"aField_ID":["sReferenceBTI"],
+			"aField_ID":["sShemaObject"],
 			"asID_Field":
 			{
-				"sClient1":"sObject","sClient2":"sID_Public_SubjectOrganJoin"
+				"sFunc5":"sID_Public_SubjectOrganJoin"
 			},
-			"sCondition":"[sClient1] == 'house' && [sClient2] == 'lviv_drohob'"
+			"sCondition":"[sFunc5]=='Kropivn_KropivnytskyiT'"
+		},
+		"RequiredFieldsOnCondition_16":
+		{
+			"aField_ID":["sDeclaration","sTehPasport","sOwnershipHouse","sShemaObject"],
+			"asID_Field":
+			{
+				"sFunc6":"sAction1",
+				"sFunc61":"sID_Public_SubjectOrganJoin"
+			},
+			"sCondition":"[sFunc6]=='get'&&[sFunc61]=='Kropivn_KropivnytskyiT'"
+		},
+		"RequiredFieldsOnCondition_17":
+		{
+			"aField_ID":["sVisnDivideHouse","sOwnershipHouse","sShemaObject"],
+			"asID_Field":
+			{
+				"sFunc8":"sAction1",
+				"sFunc81":"sDivideHouse"
+			},
+			"sCondition":"[sFunc8]=='get'&&[sFunc81]=='yes'"
+		},
+		"RequiredFieldsOnCondition_18":
+		{
+			"aField_ID":["sLetterDouble","sTehPasport","sOwnershipHouse","sShemaObject"],
+			"asID_Field":
+			{
+				"sFunc7":"sAction1",
+				"sFunc71":"sID_Public_SubjectOrganJoin"
+			},
+			"sCondition":"[sFunc7]=='renew'&&[sFunc71]=='Kropivn_KropivnytskyiT'"
 		}
 	}
 }
-
-
-

@@ -1,40 +1,43 @@
 {
-  "motion": {
-    "ShowFieldsOnCondition_1": {
-      "aField_ID": 
-	  [
-        "asResultWay"
-      ],
-      "asID_Field": {
+  "motion": 
+  {
+    "ShowFieldsOnCondition_1": 
+    {
+      "aField_ID": ["asResultWay"],
+      "asID_Field": 
+      {
         "sClient":"sID_Public_SubjectOrganJoin"
       },
       "sCondition":"[sClient]!='zt_ztT'"
     },
-    "ShowFieldsOnCondition_2": {
-      "aField_ID": 
-	  [
-        "sCopyDovidk"
-      ],
-      "asID_Field": {
-        "sClient":"asResultWay",
-        "sClient1":"asResultWay"
+    "RequiredFieldsOnCondition_2": 
+    {
+      "aField_ID": ["sCopyDovidk"],
+      "asID_Field": 
+      {
+        "sClient1":"asResultWay",
+        "sClient2":"asDecision"
       },
-      "sCondition":"([sClient]=='sDigital' || [sClient]=='Електронна версія') && ([sClient1]=='sAccept' || [sClient1] == 'Повідимити громадянина, що довідка підготовлена до отримання')"
-  },
-  "RequiredFieldsOnCondition_1" : {
-			"aField_ID" : ["sComment"], 
-			"asID_Field" : {
-				"sReason" : "asDecision"
-			}, 
-			"sCondition" : "[sReason]=='sDecline' || [sReason] == 'Повідомити громадянина про відмову в наданні послуги'"
-		},
-		"ValuesFieldsOnCondition_1" : {
-			"aField_ID" : ["sComment"], 
-			"asID_Field_sValue" : [" "], 
-			"asID_Field" : {
-				"sReason" : "asDecision"
-			}, 
-			"sCondition" : "[sReason]=='sAccept' || [sReason] == 'Повідимити громадянина, що довідка підготовлена до отримання'"
-		}
+      "sCondition":"([sClient1]=='sDigital' || [sClient1]=='Електронна версія') && ([sClient2]=='sAccept' || [sClient2] == 'Повідимити громадянина, що довідка підготовлена до отримання')"
+  	},
+ 	"RequiredFieldsOnCondition_3" : 
+ 	{
+		"aField_ID" : ["sComment"], 
+		"asID_Field" : 
+		{
+			"sReason" : "asDecision"
+		}, 
+		"sCondition" : "[sReason]=='sDecline' || [sReason] == 'Повідомити громадянина про відмову в наданні послуги'"
+	},
+	"ValuesFieldsOnCondition_4" : 
+	{
+		"aField_ID" : ["sComment"], 
+		"asID_Field_sValue" : [" "], 
+		"asID_Field" : 
+		{
+			"sReason1" : "asDecision"
+		}, 
+		"sCondition" : "[sReason1]=='sAccept' || [sReason1] == 'Повідимити громадянина, що довідка підготовлена до отримання'"
 	}
+  }
 }
