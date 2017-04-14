@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_task_btsol" name="Задание. Протокол оперативного совещания" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDurationMeeting" name="Длительность совещания" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAmtParticipants" name="Количество участников" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAmtDecisions" name="Количество принятых решений" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sChairperson" name="Ф.И.О." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPresent" name="Присутствовали" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sHearken" name="Слушали" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTask" name="Задание" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Исполнители; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_meeting.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1_red" name="Задание">
+      <extensionElements>
+        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина!" type="invisible" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Протокол оперативного совещания" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDurationMeeting" name="Длительность совещания" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAmtParticipants" name="Количество участников" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAmtDecisions" name="Количество принятых решений" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия Председатель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sChairperson&quot;],&quot;sValue&quot;:&quot;Председатель&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sChairperson" name="Ф.И.О." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия Присутствовали" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sPresent&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPresent" name="Присутствовали" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_03" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sHearken&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sHearken" name="Слушали" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_04" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_04&quot;:{&quot;aElement_ID&quot;:[&quot;sTask&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTask" name="Задание" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Исполнители; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_meeting.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;sReport&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
+          <activiti:value id="executed" name="Виконано"></activiti:value>
+          <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
+          <activiti:value id="unactual" name="Неактуально"></activiti:value>
+          <activiti:value id="delegated" name="Делегування іншому виконавцю"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLogin_isExecute}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_btsol]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[_task_btsol]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable3}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sTextMeeting::${sTextMeeting};;sDateMeeting::${sDateMeeting};;sDurationMeeting::${sDurationMeeting};;sAmtParticipants::${sAmtParticipants};;sAmtDecisions::${sAmtDecisions};;sChairperson::${sChairperson};;sPresent::${sPresent};;sHearken::${sHearken};;sTask::${sTask}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:expression><![CDATA[${saStatusTask}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sReport">
+            <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1_red"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow2" sourceRef="usertask1_red" targetRef="exclusivegateway1"></sequenceFlow>
+    <endEvent id="endevent1" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${UpdateStatusTask}">
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[closed]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sReport">
+            <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
+          </activiti:field>
+        </activiti:executionListener>
+      </extensionElements>
+    </endEvent>
+    <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="usertask1_red"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__task_btsol">
+    <bpmndi:BPMNPlane bpmnElement="_task_btsol" id="BPMNPlane__task_btsol">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="310.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1_red" id="BPMNShape_usertask1_red">
+        <omgdc:Bounds height="55.0" width="105.0" x="390.0" y="240.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="540.0" y="248.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="625.0" y="251.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="345.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="267.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="495.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="268.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="580.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="625.0" y="268.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="560.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="191.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="191.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="240.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

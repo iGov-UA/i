@@ -134,7 +134,7 @@
               <div id="label-{{property.id}}" class="col-md-5"
                    ng-if="property.type!='invisible' && property.type!='markers' && property.type!='table' && !(property.type==='label' && isSetClasses(property))">
                 <span ng-if="property.sFieldLabel">
-                  {{property.sFieldLabel}}<span class="red-star" ng-if="isFieldRequired(property)==true">* </span>
+                    {{property.sFieldLabel}}<label class="red-star" ng-if="isFieldRequired(property)==true">* </label>
                 </span>
 
                 <div class="s-field-notes"
@@ -419,7 +419,7 @@
                                      form-data="data.formData"
                                      reach-infinity="requestMoreItems($select.items)"
                                      ng-disabled="!isFieldWritable(item.writable)"
-                                     on-select="onSelectDataList($item, tableName, rowIndex)">
+                                     on-select="onSelectDataList($item, tableName, rowIndex, item)">
 
                             <ui-select-match>
                               {{$select.selected[autocompleteData.titleProperty] || item.value}}

@@ -15,16 +15,16 @@
         <activiti:formProperty id="RegistrationAddress" name="Місце реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта; у форматі pdf" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKab280" name="Номер кабінету" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganType" name="Тип органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKab280" name="Номер кабінету; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район/місто звернення; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Registrationservice" name="Відділ ДМС; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -39,7 +39,7 @@
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -209,7 +209,7 @@ ${sNameOrgan},<br>
           <activiti:value id="reestr" name="Громадянин подав фотокартки"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/foto_mail(dnepr).html]" type="invisible" default="Повідомлення про вклеювання" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/foto_mail(dnepr).html]" type="string" default="Повідомлення про вклеювання" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>

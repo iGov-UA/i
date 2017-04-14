@@ -3,38 +3,65 @@
   <process id="DFS_F1301801" name="Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище;Прізвище заявника;writable=true,sID_Field_SWinEd=HLNAME" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я;Ім'я заявника;writable=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові;По батькові заявника;writable=true,sID_Field_SWinEd=HFNAME" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWarning0" name=" " type="label" default="Вам необхідно скористатися Вашим &lt;b&gt; персональним електронно-цифровим підписом або підписом підприємця&lt;/b&gt;. Ви не можете скористатися ЕЦП представника юридичної особи."></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище; ;writable=true,sID_Field_SWinEd=HLNAME" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;writable=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;writable=true,sID_Field_SWinEd=HFNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Податковий номер;реєстраційний номер облікової картки платника податків;writable=true,sID_Field_SWinEd=HTIN" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCode" name="Код  територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HKSTI" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Назва територіального органу ДФС; ;writable=true,sID_Field_SWinEd=HSTI" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна адреса; ;writable=true,sID_Field_SWinEd=HEMAIL" type="string" default="olga.kuzminova87@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sNameCountry" name="Назва країни ; ;writable=true,sID_Field_SWinEd=HCOUNTRY" type="string" default="Україна"></activiti:formProperty>
-        <activiti:formProperty id="sNameCity" name="Назва населеного пункту; ;writable=true,sID_Field_SWinEd=HCITY" type="string" default="Дніпро"></activiti:formProperty>
-        <activiti:formProperty id="sNameStreet" name="Назва вулиці ; ;writable=true,sID_Field_SWinEd=HSTREET" type="string" default="Красний камінь"></activiti:formProperty>
-        <activiti:formProperty id="sNumberBuild" name="Номер будинку; ;writable=true,sID_Field_SWinEd=HBUILD" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sStartPeriod" name="Квартал;початок періоду;writable=true,sID_Field_SWinEd=R01G01" type="string" default="4"></activiti:formProperty>
-        <activiti:formProperty id="sStartYear" name="Рік;початок періоду;writable=true,sID_Field_SWinEd=R01G02" type="string" default="2015"></activiti:formProperty>
-        <activiti:formProperty id="sEndPeriod" name="Квартал;кінець періоду;writable=true,sID_Field_SWinEd=R02G01" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sEndYear" name="Рік;кінець періоду;writable=true,sID_Field_SWinEd=R02G02" type="string" default="2016"></activiti:formProperty>
-        <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string"></activiti:formProperty>
-        <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон;для отримання смс-повідомлення" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCode" name="Код  територіального органу ДФС;system;writable=true,sID_Field_SWinEd=HKSTI" type="string" default="0463"></activiti:formProperty>
+        <activiti:formProperty id="HSTI" name="Назва територіального органу ДФС;system;writable=true,sID_Field_SWinEd=HSTI" type="string" default="0463"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса;для отримання відповіді ;writable=true" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email1" name="Електронна адреса;для отримання відповіді ;writable=true,sID_Field_SWinEd=HEMAIL" type="string" default="f1301801@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sNameCountry" name="Назва країни громадянства;сервіс працює лише для громадян України;writable=true,sID_Field_SWinEd=HCOUNTRY" type="string" default="Україна" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameCity" name="Назва населеного пункту;за місцем реєстрації ;writable=true,sID_Field_SWinEd=HCITY" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameStreet" name="Назва вулиці ;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSTREET" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberBuild" name="Номер будинку;за місцем реєстрації;writable=true,sID_Field_SWinEd=HBUILD" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sHSHOT" name="Додаток до номеру будинку;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSHOT" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHCORP" name="Корпус;за місцем реєстрації;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHAPT" name="Номер квартири;за місцем реєстрації;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asStartPeriod&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asStartPeriod" name="Квартал;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G01" type="enum" required="true">
+          <activiti:value id="1" name="1"></activiti:value>
+          <activiti:value id="2" name="2"></activiti:value>
+          <activiti:value id="3" name="3"></activiti:value>
+          <activiti:value id="4" name="4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStartYear" name="Рік;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G02" type="enum" required="true">
+          <activiti:value id="2014" name="2014"></activiti:value>
+          <activiti:value id="2015" name="2015"></activiti:value>
+          <activiti:value id="2016" name="2016"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEndPeriod" name="Квартал;кінець періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R02G01" type="enum" required="true">
+          <activiti:value id="1" name="1"></activiti:value>
+          <activiti:value id="2" name="2"></activiti:value>
+          <activiti:value id="3" name="3"></activiti:value>
+          <activiti:value id="4" name="4"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEndYear" name="Рік;кінець періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R02G02" type="enum" required="true">
+          <activiti:value id="2014" name="2014"></activiti:value>
+          <activiti:value id="2015" name="2015"></activiti:value>
+          <activiti:value id="2016" name="2016"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markersStyle_1" name="Маркер стилю" type="markers" default="{&quot;attributes&quot;:{&quot;Style_1&quot;:{&quot;aSelectors&quot;:[&quot;#field-sWarning0&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;100%!important&quot;}},&quot;Style_2&quot;:{&quot;aElement_ID&quot;:[&quot;sWarning0&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;100%!important&quot;,&quot;padding&quot;:&quot;16px 20px&quot;,&quot;border-radius&quot;:&quot;5px&quot;,&quot;background-color&quot;:&quot;lightyellow&quot;,&quot;text-align&quot;:&quot;left&quot;}}}}"></activiti:formProperty>
+        <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string" default="04"></activiti:formProperty>
+        <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string" default="63"></activiti:formProperty>
         <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string"></activiti:formProperty>
         <activiti:formProperty id="C_DOC" name="C_DOC;system;writable=true,sID_Field_SWinEd=C_DOC" type="string" default="F13"></activiti:formProperty>
         <activiti:formProperty id="C_DOC_SUB" name="C_DOC_SUB;system;writable=true,sID_Field_SWinEd=C_DOC_SUB" type="string" default="018"></activiti:formProperty>
         <activiti:formProperty id="C_DOC_VER" name="C_DOC_VER;system;writable=true,sID_Field_SWinEd=C_DOC_VER" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="C_DOC_STAN" name="C_DOC_STAN;system;writable=true,sID_Field_SWinEd=C_DOC_STAN" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="C_DOC_TYPE" name="C_DOC_TYPE;system;writable=true,sID_Field_SWinEd=C_DOC_TYPE" type="string" default="00"></activiti:formProperty>
-        <activiti:formProperty id="C_DOC_CNT" name="C_DOC_CNT;system;writable=true,sID_Field_SWinEd=C_DOC_CNT" type="string" default="0000001"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_CNT" name="C_DOC_CNT;system;writable=true,sID_Field_SWinEd=C_DOC_CNT" type="string"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_TYPE" name="PERIOD_TYPE;system;writable=true,sID_Field_SWinEd=PERIOD_TYPE" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_SWinEd=PERIOD_MONTH" type="string" default="12"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR" type="string" default="2015"></activiti:formProperty>
-        <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Writable" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable.json')}"></activiti:formProperty>
+        <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string" default="0463"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system" type="file" default="F1301801"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="F1401801" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCounter" name="Счетчик для закрытия (при отказе)" type="string" default="0"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="sales">
@@ -42,42 +69,63 @@
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
           <activiti:field name="sID_File_XML_SWinEd">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sEmail">
-            <activiti:expression>${email}</activiti:expression>
+            <activiti:expression><![CDATA[${email}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему Запит</activiti:expression>
+          <activiti:expression><![CDATA[Відповідь на Ваш запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Ви подавали звернення на тему Запит до ДФС. &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p>Вітаємо, Ви отримали  віповідь на запит про суми виплачених доходів та утриманих податків від ДФС.  Щоб переглянути відповідь, Вам потрібно: </p>
 
-Ви можете відкрити криптопакет відповіді ДФС з допомогою  &lt;a href="https://alpha.test.igov.org.ua/journal/answer/DFS"&gt;цього інструменту&lt;/a&gt; із використанням своєї ЕЦП, що ви використали під час подання запиту. &lt;br /&gt; &lt;br /&gt;
-                        [pattern/mail/_common_signature_end.html]
-                        [pattern/mail/_common_footer.html]</activiti:expression>
+<br >
+<ul>
+<li> <b> Крок 1.</b> Перейти на сторінку Вашого звернення   <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>. </li>
+<br >
+<li><b> Крок 2.</b>Увійти в систему за допомогою свого електронно-цифрового підпису (ЕЦП).</li>
+<br >
+<li><b> Крок 3.</b>Натиснути на "Переглянути відповідь", обрати свій ЕЦП та ввести пароль до нього.
+ </li>
+<br >
+</ul>
+
+
+Дякуємо, що скористалися сервісом iGov.
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_Dfs}</activiti:expression>
+          <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vy otrymaly vidpovid' na Vash zapyt u reyestr dokhodiv na Vash Email. Nomer zayavky  [sID_Order]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -93,17 +141,22 @@
         <activiti:formProperty id="anID_Attach_Dfs" name="Файл с ответом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
           <activiti:field name="sINN">
-            <activiti:expression>${bankIdinn}</activiti:expression>
+            <activiti:expression><![CDATA[${bankIdinn}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="snCountYear">
+            <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sFile_XML_SWinEd_Filter">
+            <activiti:expression><![CDATA[${sFileName_XML_SWinEd_Answer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${oFile_XML_SWinEd}</activiti:expression>
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>PT1M</timeDuration>
@@ -117,41 +170,169 @@
     </intermediateCatchEvent>
     <sequenceFlow id="flow14" sourceRef="timerintermediatecatchevent1" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow16" sourceRef="exclusivegateway1" targetRef="timerintermediatecatchevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anID_Attach_Dfs == ''}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${anID_Attach_Dfs != ''}]]></conditionExpression>
-    </sequenceFlow>
-    <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow18" sourceRef="boundarytimer2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="escalationTimer1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p><b>Ви зробили запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків.</b></p>
+<br ><br >
+Максимальний час очікування відповіді - 1 доба (але зазвичай відповідь надається швидше). Ви отримаєте повідомлення через SMS та на цей email. 
+<br ><br >
+<p>Документ буде розміщено у розділі <a href="https://igov.org.ua/journal">Мій журнал</a>. Щоб переглянути його, Вам знадобиться той самий електронно-цифровий підпис, який Ви використали для цього запиту.
+ </p>
+
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Nomer Vashoyi zayavky [sID_Order]. Chas vidpovidi — do doby. Vy otrymayete povidomlennya po SMS ta Email.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow19" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Счетчик для автозакрытия" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var src=execution.getVariable('sCounter')
+src=(+src + +1)
+execution.setVariable('sCounter', src)</script>
+    </scriptTask>
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 205}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Відповідь на Ваш запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p>
+Раніше Ви подавали запит у Державний реєстр фізичних осіб – платників податків про суми виплачених доходів та утриманих податків. На жаль, Державна фіскальна служба відмовилась надати Вам відповідь. <br>
+ Щоб переглянути підстави для відмови, Вам потрібно:</p>
+
+<br >
+<ul>
+<li> <b> Крок 1.</b> Перейти на сторінку Вашого звернення   <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a>. </li>
+<br >
+<li><b> Крок 2.</b>Увійти в систему за допомогою свого електронно-цифрового підпису (ЕЦП).</li>
+<br >
+<li><b> Крок 3.</b>Натиснути на "Переглянути відповідь", обрати свій ЕЦП та ввести пароль до нього.
+ </li>
+<br >
+</ul>
+
+
+Дякуємо, що скористалися сервісом iGov.
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vy otrymaly vidpovid' na Vash zapyt u reyestr dokhodiv na Vash Email. Nomer zayavky [sID_Order]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 205}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent3" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
+    <sequenceFlow id="flow24" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'true'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask3" name="User Task">
+      <extensionElements>
+        <activiti:formProperty id="result" name="Результат" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="anID_Attach_Dfs" name="Файл с ответом" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
+          <activiti:field name="sINN">
+            <activiti:expression><![CDATA[${bankIdinn}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="snCountYear">
+            <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask3" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow26" sourceRef="boundarytimer2" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_DFS_F1301801">
     <bpmndi:BPMNPlane bpmnElement="DFS_F1301801" id="BPMNPlane_DFS_F1301801">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="41.0" width="41.0" x="57.0" y="126.0"></omgdc:Bounds>
+        <omgdc:Bounds height="41.0" width="41.0" x="30.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="67.0" width="105.0" x="150.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="133.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="67.0" width="105.0" x="530.0" y="114.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="105.0" x="650.0" y="24.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="700.0" y="129.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="810.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="295.0" y="218.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer2" id="BPMNShape_boundarytimer2">
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
         <omgdc:Bounds height="30.0" width="30.0" x="360.0" y="240.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="330.0" y="129.0"></omgdc:Bounds>
@@ -159,13 +340,27 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="418.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="70.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="384.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="63.0" width="105.0" x="704.0" y="183.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="844.0" y="197.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer2" id="BPMNShape_boundarytimer2">
+        <omgdc:Bounds height="30.0" width="30.0" x="580.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="635.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="146.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="98.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="150.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="755.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="810.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="255.0" y="148.0"></omgdi:waypoint>
@@ -175,18 +370,44 @@
         <omgdi:waypoint x="347.0" y="164.0"></omgdi:waypoint>
         <omgdi:waypoint x="347.0" y="218.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="418.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="365.0" y="146.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="458.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="530.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="390.0" y="255.0"></omgdi:waypoint>
         <omgdi:waypoint x="438.0" y="255.0"></omgdi:waypoint>
         <omgdi:waypoint x="438.0" y="166.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="50.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="122.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="122.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="202.0" y="113.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="438.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="436.0" y="75.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="384.0" y="47.0"></omgdi:waypoint>
+        <omgdi:waypoint x="347.0" y="48.0"></omgdi:waypoint>
+        <omgdi:waypoint x="347.0" y="129.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="458.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="170.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="809.0" y="214.0"></omgdi:waypoint>
+        <omgdi:waypoint x="844.0" y="214.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="438.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="511.0" y="62.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="610.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="704.0" y="214.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -522,6 +522,23 @@
           return item.name;
         };
 
+        $scope.takeTheKeyFromJSON = function (item) {
+          return JSON.parse(item.value).sKey;
+        };
+
+        $scope.takeTheFileNameFromJSON = function (item) {
+          var originalFileName = JSON.parse(item.value).sFileNameAndExt;
+          var ext;
+          if (originalFileName && originalFileName.indexOf('.') > 0){
+            var parts = originalFileName.split(".");
+            ext = parts[parts.length - 1];
+          }
+          if(ext){
+            return item.name + '.' + ext;
+          }
+          return item.name;
+        };
+
         $scope.clarify = false;
 
         $scope.clarifyToggle = function () {
@@ -1604,6 +1621,23 @@
 
         $scope.switchDelegateMenu = function () {
           $rootScope.delegateSelectMenu = !$rootScope.delegateSelectMenu;
+        };
+
+
+        $scope.getBpAndFieldID = function (field) {
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id;
+          } else {
+            return field.id;
+          }
+        };
+
+        $scope.getFullCellId = function(field, column, row){
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          } else {
+            return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          }
         };
 
         $rootScope.$broadcast("update-search-counter");
