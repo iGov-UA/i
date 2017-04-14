@@ -24,6 +24,7 @@ angular.module('dashboardJsApp')
         selfAssigned: 'selfAssigned',
         unassigned: 'unassigned',
         documents: 'documents',
+        ecp: 'ecp',
         finished: 'finished',
         tickets: 'tickets',
         all: 'all'
@@ -35,11 +36,13 @@ angular.module('dashboardJsApp')
        * @return {Promise}
        */
       list: function (filterType, params) {
-        return simpleHttpPromise({
-          method: 'GET',
-          url: '/api/tasks',
-          params: angular.merge({filterType: filterType}, params)
-        });
+        if(filterType !== 'ecp') {
+          return simpleHttpPromise({
+            method: 'GET',
+            url: '/api/tasks',
+            params: angular.merge({filterType: filterType}, params)
+          });
+        }
       },
       getEventMap: function () {
         var deferred = $q.defer();
@@ -1002,12 +1005,22 @@ angular.module('dashboardJsApp')
           })
         },
       delegateDocToUser : function (params) {
-        if(params)
+        if (params)
           return simpleHttpPromise({
             method: 'GET',
             url: '/api/documents/delegateDocument',
             params: params
           })
+      },
+      getUnsignedDocsList: function () {
+        var currentUser = Auth.getCurrentUser();
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getDocumentSubmittedUnsigned',
+          params: {
+            sLogin: currentUser.id
+          }
+        })
       }
     }
   });
