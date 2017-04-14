@@ -103,8 +103,6 @@ public class DocumentStepService {
     
     @Autowired
     protected RepositoryService repositoryService;
-    @Autowired
-	private RepositoryService oRepositoryService;
 
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject oJSON = new JSONObject(soJSON);
@@ -1560,11 +1558,23 @@ public class DocumentStepService {
 						long nID_Process = Long.valueOf(snID_Process_Activiti);
 						int nID_Server = generalConfig.getSelfServerId();
 						String sID_Order = generalConfig.getOrderId_ByProcess(nID_Server, nID_Process);
+						
+						HistoricProcessInstance oHistoricProcessInstance
+                        = historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process_Activiti).singleResult();
+      
+                  ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
+                          .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
+                  
+                  LOG.info("oProcessDefinition {}", oProcessDefinition);
+                  
+                  String sProcessName = oProcessDefinition.getName();
+                  
+                  LOG.info("sProcessName {}", sProcessName);
 
 						// String sID_Order =
 						// oFindedDocumentStepSubjectRight.getDocumentStep().getId().toString();
 
-						List<ProcessDefinition> aProcessDefinition = oRepositoryService.createProcessDefinitionQuery()
+						List<ProcessDefinition> aProcessDefinition = repositoryService.createProcessDefinitionQuery()
 								.processDefinitionKeyLike(snID_Process_Activiti).active().latestVersion().list();
 
 						if (!aProcessDefinition.isEmpty()) {
