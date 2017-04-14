@@ -2,12 +2,10 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="_task_btsol" name="Задание. Протокол оперативного совещания" isExecutable="true">
     <startEvent id="startevent1" name="Start">
-     <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date"></activiti:formProperty>
@@ -23,15 +21,13 @@
       </extensionElements>
     </startEvent>
     <userTask id="usertask1_red" name="Задание">
-     <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина!" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Протокол оперативного совещания" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date" writable="false"></activiti:formProperty>
@@ -56,42 +52,35 @@
           <activiti:value id="unactual" name="Неактуально"></activiti:value>
           <activiti:value id="delegated" name="Делегування іншому виконавцю"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLogin_isExecute}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_Velta_Answ]]></activiti:string>
+            <activiti:string><![CDATA[_default_btsol]]></activiti:string>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[_task_velta]]></activiti:string>
+            <activiti:string><![CDATA[_task_btsol]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable1}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sTable3}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[asUrgently::${asUrgently};;sName_SubjectRole::${sName_SubjectRole};;sContent::${sContent};;sComment::${sComment};;sTypeDoc::${sTypeDoc};;sResultJustice::${sResultJustice};;sResultFinance::${sResultFinance};;sResultTech::${sResultTech}]]></activiti:expression>
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sTextMeeting::${sTextMeeting};;sDateMeeting::${sDateMeeting};;sDurationMeeting::${sDurationMeeting};;sAmtParticipants::${sAmtParticipants};;sAmtDecisions::${sAmtDecisions};;sChairperson::${sChairperson};;sPresent::${sPresent};;sHearken::${sHearken};;sTask::${sTask}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
           <activiti:field name="sID_ProcessSubjectStatus">
             <activiti:expression><![CDATA[${saStatusTask}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sResultJustice">
-            <activiti:expression><![CDATA[${sResultJustice}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sResultFinance">
-            <activiti:expression><![CDATA[${sResultFinance}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sResultTech">
-            <activiti:expression><![CDATA[${sResultTech}]]></activiti:expression>
+          <activiti:field name="sReport">
+            <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -99,7 +88,18 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1_red"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="usertask1_red" targetRef="exclusivegateway1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
+    <endEvent id="endevent1" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${UpdateStatusTask}">
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:string><![CDATA[closed]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sReport">
+            <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
+          </activiti:field>
+        </activiti:executionListener>
+      </extensionElements>
+    </endEvent>
     <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="usertask1_red"></sequenceFlow>
   </process>

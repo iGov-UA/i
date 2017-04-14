@@ -35,11 +35,11 @@
         <activiti:formProperty id="sTable3" name="Исполнители; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_meeting.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;asActionDocUT1&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum" default="sEnumEditing">
-          <activiti:value id="sEnumEditing" name="не отправлять за визами"></activiti:value>
-          <activiti:value id="sEnumSighting" name="отправить за визами"></activiti:value>
+          <activiti:value id="sEnumEditing" name="не отправлять"></activiti:value>
+          <activiti:value id="sEnumSighting" name="отправить в работу"></activiti:value>
           <activiti:value id="sEnumEnd" name="удалить"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_meeting_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_meeting_print.html]" type="invisible" default="Протокол" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -50,16 +50,16 @@
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[_task_justice]]></activiti:string>
+            <activiti:string><![CDATA[_task_btsol]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression>${sTable2}</activiti:expression>
+            <activiti:expression><![CDATA[${sTable3}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
-            <activiti:expression>${processDefinitionId}</activiti:expression>
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression>sDoc1::${sDoc1};;sTableViewed::${sTableViewed};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}</activiti:expression>
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sTextMeeting::${sTextMeeting};;sDateMeeting::${sDateMeeting};;sDurationMeeting::${sDurationMeeting};;sAmtParticipants::${sAmtParticipants};;sAmtDecisions::${sAmtDecisions};;sChairperson::${sChairperson};;sPresent::${sPresent};;sHearken::${sHearken};;sTask::${sTask}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -93,14 +93,10 @@
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
-          <activiti:value id="sEnumDelegate" name="Делегировать"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sName_DelegateUT2" name="кому делегировать; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_DelegateUT2" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="если делегировать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sName_DelegateUT2&quot;,&quot;sLogin_DelegateUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDelegate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_meeting_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_meeting_print.html]" type="invisible" default="Протокол" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -116,7 +112,7 @@ execution.setVariable('processInstanceId', processInstanceId)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEditing'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow59" sourceRef="exclusivegateway3" targetRef="scripttask10">
+    <sequenceFlow id="flow59" sourceRef="exclusivegateway3" targetRef="endevent4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumSign'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow63" name="за визами" sourceRef="exclusivegateway2" targetRef="scripttask6">
@@ -141,36 +137,7 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
     <sequenceFlow id="flow72" name="замечание" sourceRef="exclusivegateway3" targetRef="scripttask16">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumRemark'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask10" name="All Signes Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var nID_Process = execution.getProcessInstanceId();
-var bSubmitedAll2="";
-var oCheckSubmitedAll2= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_2')
-execution.setVariable('bSubmitedAll2', oCheckSubmitedAll2.bSubmitedAll.toString())
-		</script>
-    </scriptTask>
-    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow78" sourceRef="scripttask10" targetRef="exclusivegateway5"></sequenceFlow>
-    <sequenceFlow id="flow79" sourceRef="exclusivegateway5" targetRef="usertask2_red">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll2 == false}]]></conditionExpression>
-    </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow86" sourceRef="usertask2_red" targetRef="exclusivegateway8"></sequenceFlow>
-    <scriptTask id="scripttask13" name="Step2 Delegate" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var nID_Process = execution.getProcessInstanceId()
-var sKeyGroup= execution.getVariable('sLogin_LastSubmited')
-var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, 'step_2', sKeyGroup)
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_2')
-</script>
-    </scriptTask>
-    <sequenceFlow id="flow87" sourceRef="exclusivegateway8" targetRef="exclusivegateway3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumSign' || asActionDocUT2 == 'sEnumRemark'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow88" name="делегирование согл." sourceRef="exclusivegateway8" targetRef="scripttask13">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumDelegate'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow89" sourceRef="scripttask13" targetRef="usertask2_red"></sequenceFlow>
+    <sequenceFlow id="flow86" sourceRef="usertask2_red" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow102" sourceRef="exclusivegateway2" targetRef="endevent3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEnd'}]]></conditionExpression>
     </sequenceFlow>
@@ -182,9 +149,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <sequenceFlow id="flow103" sourceRef="scripttask16" targetRef="usertask1"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow104" sourceRef="exclusivegateway5" targetRef="endevent4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll2 == true}]]></conditionExpression>
-    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_meeting">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_meeting" id="BPMNPlane__doc_btsol_meeting">
@@ -195,7 +159,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="84.0" width="130.0" x="247.0" y="85.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_red" id="BPMNShape_usertask2_red">
-        <omgdc:Bounds height="84.0" width="131.0" x="654.0" y="267.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="131.0" x="567.0" y="267.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="100.0"></omgdc:Bounds>
@@ -204,7 +168,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="40.0" width="40.0" x="453.0" y="106.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
-        <omgdc:Bounds height="56.0" width="105.0" x="667.0" y="99.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="105.0" x="580.0" y="99.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
         <omgdc:Bounds height="55.0" width="105.0" x="337.0" y="17.0"></omgdc:Bounds>
@@ -215,23 +179,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="453.0" y="288.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
-        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="373.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="699.0" y="380.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
-        <omgdc:Bounds height="40.0" width="40.0" x="581.0" y="289.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask13" id="BPMNShape_scripttask13">
-        <omgdc:Bounds height="56.0" width="105.0" x="549.0" y="196.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask16" id="BPMNShape_scripttask16">
         <omgdc:Bounds height="56.0" width="105.0" x="259.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="784.0" y="383.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="456.0" y="370.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="215.0" y="127.0"></omgdi:waypoint>
@@ -252,18 +204,18 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="473.0" y="328.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="373.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="370.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
         <omgdi:waypoint x="493.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="667.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="127.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="52.0" x="493.0" y="126.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="719.0" y="155.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="632.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
         <omgdi:waypoint x="337.0" y="44.0"></omgdi:waypoint>
@@ -278,33 +230,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <omgdc:Bounds height="14.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
-        <omgdi:waypoint x="526.0" y="400.0"></omgdi:waypoint>
-        <omgdi:waypoint x="699.0" y="400.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
-        <omgdi:waypoint x="719.0" y="380.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="351.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
-        <omgdi:waypoint x="654.0" y="309.0"></omgdi:waypoint>
-        <omgdi:waypoint x="621.0" y="309.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow87" id="BPMNEdge_flow87">
-        <omgdi:waypoint x="581.0" y="309.0"></omgdi:waypoint>
+        <omgdi:waypoint x="567.0" y="309.0"></omgdi:waypoint>
         <omgdi:waypoint x="493.0" y="308.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
-        <omgdi:waypoint x="601.0" y="289.0"></omgdi:waypoint>
-        <omgdi:waypoint x="601.0" y="252.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="552.0" y="268.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
-        <omgdi:waypoint x="654.0" y="224.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="224.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow102" id="BPMNEdge_flow102">
         <omgdi:waypoint x="473.0" y="146.0"></omgdi:waypoint>
@@ -313,10 +241,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
         <omgdi:waypoint x="311.0" y="200.0"></omgdi:waypoint>
         <omgdi:waypoint x="312.0" y="169.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow104" id="BPMNEdge_flow104">
-        <omgdi:waypoint x="739.0" y="400.0"></omgdi:waypoint>
-        <omgdi:waypoint x="784.0" y="400.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
