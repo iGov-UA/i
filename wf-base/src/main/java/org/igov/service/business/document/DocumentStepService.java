@@ -1561,11 +1561,12 @@ public class DocumentStepService {
 						// oFindedDocumentStepSubjectRight.getDocumentStep().getId().toString();
 
 						ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionCategoryLike(snID_Process_Activiti)
-								.active().latestVersion().singleResult();
+								.singleResult();
 						
-		                                if(oProcessDefinition != null){
-		                                    String sNameBP = oProcessDefinition.getName();
+		                             //   if(oProcessDefinition != null)
+		                String sNameBP = oProcessDefinition.getName();
 		                                    LOG.info("sNameBP {}", sNameBP);
+		                                
 		                                
 						// через апи активити по nID_Process_Activity
 						HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
@@ -1618,7 +1619,7 @@ public class DocumentStepService {
 							LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
 						} else {
 							LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process_Activiti));
-						}
+
 						}
 					}
 
@@ -1631,7 +1632,7 @@ public class DocumentStepService {
 
 		return aResDocumentSubmitedUnsigned;
 	}
-	
+
 	public void removeDocumentSteps(String snID_Process_Activiti) {
 		List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
 		LOG.info("aDocumentStep finded...");
