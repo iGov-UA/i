@@ -46,6 +46,8 @@ import org.igov.model.document.DocumentStepType;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupTreeService;
+import org.igov.service.business.subject.SubjectRightBPVO;
+
 import static org.igov.service.business.subject.SubjectGroupTreeService.HUMAN;
 import org.igov.service.conf.AttachmetService;
 import org.igov.util.Tool;
@@ -101,6 +103,8 @@ public class DocumentStepService {
     
     @Autowired
     protected RepositoryService repositoryService;
+    @Autowired
+	private RepositoryService oRepositoryService;
 
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject oJSON = new JSONObject(soJSON);
@@ -1560,76 +1564,79 @@ public class DocumentStepService {
 						// String sID_Order =
 						// oFindedDocumentStepSubjectRight.getDocumentStep().getId().toString();
 
-						ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionCategoryLike(snID_Process_Activiti)
-								.singleResult();
-						
-		                             //   if(oProcessDefinition != null)
-		                String sNameBP = oProcessDefinition.getName();
-		                                    LOG.info("sNameBP {}", sNameBP);
-		                                
-		                                
-						// через апи активити по nID_Process_Activity
-						HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
-								.processInstanceId(snID_Process_Activiti).singleResult();
+						List<ProcessDefinition> aProcessDefinition = oRepositoryService.createProcessDefinitionQuery()
+								.processDefinitionKeyLike(snID_Process_Activiti).active().latestVersion().list();
 
-						LOG.info(String.format("oProcessInstance [id = '%s']  ", oProcessInstance));
-						if (oProcessInstance != null) {
-							// вытаскиваем дату создания процесса
+						if (!aProcessDefinition.isEmpty()) {
+							String sNameBP = aProcessDefinition.get(0).getName();
+							LOG.info("sNameBP {}", sNameBP);
 
-							// Date sDateCreateProcess =
-							// oProcessInstance.getStartTime();
+							// через апи активити по nID_Process_Activity
+							HistoricProcessInstance oProcessInstance = historyService
+									.createHistoricProcessInstanceQuery().processInstanceId(snID_Process_Activiti)
+									.singleResult();
 
-							long sDCP = oProcessInstance.getStartTime().getTime();
-							String sDateCreateProcess = convertMilliSecondsToFormattedDate(sDCP);
-							LOG.info("sDateCreateProcess ", sDateCreateProcess);
-							// вытаскиваем название бп
+							LOG.info(String.format("oProcessInstance [id = '%s']  ", oProcessInstance));
+							if (oProcessInstance != null) {
+								// вытаскиваем дату создания процесса
 
-							//String sNameBP = oProcessInstance.getName();
-							//LOG.info("sNameBP {}", sNameBP);
-							// вытаскиваем список активных тасок по процесу
-							List<Task> aTask = oTaskService.createTaskQuery()
-									.processInstanceId(oProcessInstance.getId()).active().list();
-							if (aTask.size() < 1 || aTask.get(0) == null) {
-								continue;
+								// Date sDateCreateProcess =
+								// oProcessInstance.getStartTime();
+
+								long sDCP = oProcessInstance.getStartTime().getTime();
+								String sDateCreateProcess = convertMilliSecondsToFormattedDate(sDCP);
+								LOG.info("sDateCreateProcess ", sDateCreateProcess);
+								// вытаскиваем название бп
+
+								// String sNameBP = oProcessInstance.getName();
+								// LOG.info("sNameBP {}", sNameBP);
+								// вытаскиваем список активных тасок по процесу
+								List<Task> aTask = oTaskService.createTaskQuery()
+										.processInstanceId(oProcessInstance.getId()).active().list();
+								if (aTask.size() < 1 || aTask.get(0) == null) {
+									continue;
+								}
+								// берем первую
+								Task oTaskCurr = aTask.get(0);
+								LOG.info("oTaskCurr ={} ", oTaskCurr);
+								// вытаскиваем дату создания таски
+								long sDCUT = oTaskCurr.getCreateTime().getTime();
+								String sDateCreateUserTask = convertMilliSecondsToFormattedDate(sDCUT);
+								// Date sDateCreateUserTask =
+								// oTaskCurr.getCreateTime();
+								LOG.info("sDateCreateUserTask = ", oTaskCurr.getCreateTime());
+								// и ее название
+								String sUserTaskName = oTaskCurr.getName();
+								// Создаем обьект=обертку, в который сетим
+								// нужные
+								// полученные поля
+								DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
+
+								oDocumentSubmitedUnsignedVO
+										.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
+								oDocumentSubmitedUnsignedVO.setsNameBP(sNameBP);
+								oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
+								oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
+								oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
+								oDocumentSubmitedUnsignedVO.setsDateSubmit(setsDateSubmit);
+								oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
+
+								aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
+								LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
+							} else {
+								LOG.error(
+										String.format("oProcessInstance [id = '%s']  is null", snID_Process_Activiti));
+
 							}
-							// берем первую
-							Task oTaskCurr = aTask.get(0);
-							LOG.info("oTaskCurr ={} ", oTaskCurr);
-							// вытаскиваем дату создания таски
-							long sDCUT = oTaskCurr.getCreateTime().getTime();
-							String sDateCreateUserTask = convertMilliSecondsToFormattedDate(sDCUT);
-							// Date sDateCreateUserTask =
-							// oTaskCurr.getCreateTime();
-							LOG.info("sDateCreateUserTask = ", oTaskCurr.getCreateTime());
-							// и ее название
-							String sUserTaskName = oTaskCurr.getName();
-							// Создаем обьект=обертку, в который сетим нужные
-							// полученные поля
-							DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
-
-							oDocumentSubmitedUnsignedVO.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
-							oDocumentSubmitedUnsignedVO.setsNameBP(sNameBP);
-							oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
-							oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
-							oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
-							oDocumentSubmitedUnsignedVO.setsDateSubmit(setsDateSubmit);
-							oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
-
-							aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
-							LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
-						} else {
-							LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process_Activiti));
-
 						}
+
 					}
 
+				} else {
+					LOG.info("oFindedDocumentStepSubjectRight not found");
 				}
-
-			} else {
-				LOG.info("oFindedDocumentStepSubjectRight not found");
 			}
 		}
-
 		return aResDocumentSubmitedUnsigned;
 	}
 
