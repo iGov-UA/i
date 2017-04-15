@@ -16,13 +16,13 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="guardian" name="Висновок про можливість бути опікуном" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="text_zayava" name="Опишіть обгрунтування для прийняття рішення про встановлення опіки (піклування) над дитиною" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameArea" name="назва населеного пункту" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPost" name="пошта посадовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса адм.органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneUnit" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameArea" name="назва населеного пункту ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPost" name="пошта посадовця ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адм.органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneUnit" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка ; ;bVisible=false" type="string"></activiti:formProperty>
         </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
@@ -41,10 +41,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови у прийнятті змін внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію документа" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_245_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_245_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_245_print.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
