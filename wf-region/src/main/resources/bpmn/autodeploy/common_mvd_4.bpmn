@@ -7,7 +7,7 @@
         <activiti:formProperty id="markers01" name="extended_marker01" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_01.json')}"></activiti:formProperty>
         <activiti:formProperty id="InfoStart01" name=" " type="label" default="&lt;a href=&quot;https://igov.org.ua/subcategory/1/5/situation/27&quot; target=&quot;_blank&quot;&gt;Ознайомтесь з порядком отримання послуги.&lt;/a&gt;"></activiti:formProperty>
 
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA ; ;bVisible=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -155,7 +155,7 @@
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="weapon_${sID_UA}_1486">
       <extensionElements>
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA ; ;bVisible=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -177,7 +177,7 @@
           <activiti:value id="rejectMain" name="Є зауваження (до наданих документів)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-<!--        <activiti:formProperty id="sBody_1" name="[pattern/print/mvd/common_mvd_4_print.html]" type="invisible" default="Заява на придбання зброї" writable="false"></activiti:formProperty>-->
+<!--        <activiti:formProperty id="sBody_1" name="[pattern/print/mvd/common_mvd_4_print.html] ; ;bVisible=false" type="string" default="Заява на придбання зброї" writable="false"></activiti:formProperty>-->
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
