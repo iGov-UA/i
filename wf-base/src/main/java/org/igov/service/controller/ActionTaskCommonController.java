@@ -1365,7 +1365,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if(asField_Filter != null && asField_Filter.equals("[sFormulaFilter_Export]")){
             FormulaFilter_Export = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
             LOG.info("FormulaFilter_Export is {} ", FormulaFilter_Export);
-            asField_Filter = FormulaFilter_Export;
         }
         
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
@@ -1384,7 +1383,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         LOG.info("result csvLines {}", csvLines);
         
-        List<Map<String, Object>> filteredCSVLine = new ArrayList<>();
+        /*List<Map<String, Object>> filteredCSVLine = new ArrayList<>();
         try{
             if (asField_Filter != null){
                 ToolJS oToolJs = new ToolJS();
@@ -1400,7 +1399,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         
         csvLines.clear();
-        csvLines.addAll(filteredCSVLine);
+        csvLines.addAll(filteredCSVLine);*/
                 
         LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
         if (saFieldSummary != null) {
