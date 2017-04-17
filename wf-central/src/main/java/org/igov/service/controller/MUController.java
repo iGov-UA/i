@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.rpc.ServiceException;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.igov.bjust.IService;
 import org.igov.bjust.ResultModel;
 import org.igov.bjust.ServiceLocator;
@@ -94,9 +95,13 @@ public class MUController {
     		@RequestParam(value = "service_code", required = true) String service_code,
     		@ApiParam(value = "application_id", required = true) 
     		@RequestParam(value = "application_id", required = true) Integer application_id,
-    		@ApiParam(value = "session_id", required = true) 
-    		@RequestParam(value = "session_id", required = true) String session_id,
+    		@ApiParam(value = "session_id", required = false) 
+    		@RequestParam(value = "session_id", required = false) String session_id,
             HttpServletRequest request) throws ServiceException, RemoteException {
+		if (session_id == null){
+			session_id = RandomStringUtils.random(20, true, true);
+		}
+		
 		ServiceLocator serviceLocator = new ServiceLocator();
 		IService service = serviceLocator.getBinding_IService();
 		LOG.info("Got web service locator. Parameter of the method. service_code: " + service_code);
