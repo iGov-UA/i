@@ -1360,16 +1360,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("asField_Filter is {}", asField_Filter);
         LOG.info("sLogin is {}", sLogin);
         
+        String FormulaFilter_Export = null;
+        
         if(asField_Filter != null && asField_Filter.equals("[sFormulaFilter_Export]")){
-            String FormulaFilter_Export = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
+            FormulaFilter_Export = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
             LOG.info("FormulaFilter_Export is {} ", FormulaFilter_Export);
             asField_Filter = FormulaFilter_Export;
-        }else{
-            asField_Filter = null;
         }
         
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-                csvLines, saFields, saFieldsCalc, headers, asField_Filter);
+                csvLines, saFields, saFieldsCalc, headers, FormulaFilter_Export);
         
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
@@ -1379,7 +1379,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP, asField_Filter);
+                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP, FormulaFilter_Export);
         }
         
         LOG.info("result csvLines {}", csvLines);
