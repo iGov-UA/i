@@ -46,7 +46,7 @@ public class ToolJS {
         }
         LOG.info("sCondition is {}", sCondition);
         String sFunctionJS = getJavaScriptStr(sCondition);
-        LOG.debug("sFunctionJS is {}",sFunctionJS);
+        LOG.info("sFunctionJS is {}",sFunctionJS);
         oScriptEngine.eval(sFunctionJS);
         Invocable oInvocable = (Invocable) oScriptEngine;
         oInvocable.invokeFunction("getResult");
