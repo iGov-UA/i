@@ -41,6 +41,7 @@ public class ToolJS {
         }
         for (String sKey : mParamCasted.keySet()) {
             //mParam.put(sKey, mParamCasted.get(sKey));
+            LOG.info("mParamCasted put: {}, {}", sKey, mParamCasted.get(sKey));
             oScriptEngine.put(sKey, mParamCasted.get(sKey));
         }
         String sFunctionJS = getJavaScriptStr(sCondition);

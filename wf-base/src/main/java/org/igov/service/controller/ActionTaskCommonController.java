@@ -1370,8 +1370,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         LOG.info("result csvLines {}", csvLines);
         
+        ToolJS oToolJs = new ToolJS();
+        
         for(Map<String, Object> currCSVLine : csvLines){
-            LOG.info("ToolJSResult is {}", ToolJS.getCalculatedFormulaValue(asField_Filter, currCSVLine));
+            LOG.info("ToolJSResult is {}", 
+                    oToolJs.ToolJSgetObjectResultOfCondition(new HashMap<>(),currCSVLine, asField_Filter));
+        }
+        
+         for(Map<String, Object> currCSVLine : csvLines){
+            LOG.info("ToolJSResult is {}", 
+                    oToolJs.ToolJSgetObjectResultOfCondition(currCSVLine, new HashMap<>(), asField_Filter));
         }
         
         LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
