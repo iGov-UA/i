@@ -79,6 +79,7 @@ import java.util.*;
 import org.activiti.engine.task.NativeTaskQuery;
 
 import org.igov.model.subject.SubjectAccountDao;
+import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
@@ -98,6 +99,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private HttpRequester httpRequester;
+    @Autowired
+    private SubjectRightBPDao subjectRightBPDao;
     @Autowired
     private ActionEventHistoryService actionEventHistoryService;
     @Autowired
@@ -1356,7 +1359,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers, asField_Filter);
-
+        
+        if(asField_Filter.equals("[sFormulaFilter_Export]")){
+            asField_Filter = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
+        }
+        
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
