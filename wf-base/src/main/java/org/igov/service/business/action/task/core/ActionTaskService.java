@@ -1015,8 +1015,9 @@ public class ActionTaskService {
         
         ToolJS oToolJs = new ToolJS();
         for (Task oTask : aTaskFound) {
-            try{
-                if (asField_Filter != null){
+            
+            if (asField_Filter != null){
+                try{
                     Map<String, Object> variablesToFilter = new HashMap<>();
                     variablesToFilter.putAll(oTask.getProcessVariables());
                     variablesToFilter.putAll(oTask.getTaskLocalVariables());
@@ -1024,11 +1025,11 @@ public class ActionTaskService {
                         LOG.info("filtered Task Id in fillTheCSVMap {curTask.getId()}", oTask.getId());
                         continue;
                     }
+
+                }catch(ScriptException | NoSuchMethodException ex){
+                    LOG.info("Error during fillTheCSVMapHistoricTasks filtering {}", ex);    
                 }
-            }catch(ScriptException | NoSuchMethodException ex){
-                LOG.info("Error during fillTheCSVMapHistoricTasks filtering {}", ex);    
             }
-            
             String sRow = pattern;
             LOG.trace("Process task - {}", oTask);
             TaskFormData oTaskFormData = oFormService.getTaskFormData(oTask.getId());
