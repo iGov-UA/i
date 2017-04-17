@@ -1357,12 +1357,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         LOG.info("foundResults is {}", foundResults);
         
+        LOG.info("asField_Filter is {}", asField_Filter);
+        LOG.info("sLogin is {}", sLogin);
+        
+        if(asField_Filter != null && asField_Filter.equals("[sFormulaFilter_Export]")){
+            String FormulaFilter_Export = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
+            LOG.info("FormulaFilter_Export is {} ", FormulaFilter_Export);
+            asField_Filter = FormulaFilter_Export;
+        }else{
+            asField_Filter = null;
+        }
+        
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers, asField_Filter);
-        
-        if(asField_Filter.equals("[sFormulaFilter_Export]")){
-            asField_Filter = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
-        }
         
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
