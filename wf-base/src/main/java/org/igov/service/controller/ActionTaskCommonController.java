@@ -1371,7 +1371,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("result csvLines {}", csvLines);
         
         for(Map<String, Object> currCSVLine : csvLines){
-            ToolJS.getCalculatedFormulaValue(asField_Filter, currCSVLine);
+            LOG.info("ToolJSResult is {}", ToolJS.getCalculatedFormulaValue(asField_Filter, currCSVLine));
         }
         
         LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
