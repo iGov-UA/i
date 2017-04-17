@@ -1355,7 +1355,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("foundResults is {}", foundResults);
         
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-                csvLines, saFields, saFieldsCalc, headers);
+                csvLines, saFields, saFieldsCalc, headers, asField_Filter);
 
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
@@ -1365,7 +1365,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
+                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP, asField_Filter);
         }
         
         LOG.info("result csvLines {}", csvLines);
@@ -1457,7 +1457,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
     }
-
+    
+    
+    
+    
     /**
      * Returns business processes which belong to a specified user
      *
