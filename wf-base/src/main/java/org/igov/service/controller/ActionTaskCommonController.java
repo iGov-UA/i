@@ -1370,19 +1370,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         LOG.info("result csvLines {}", csvLines);
         
-        if (asField_Filter != null){
-            ToolJS oToolJs = new ToolJS();
+        try{
+            if (asField_Filter != null){
+                ToolJS oToolJs = new ToolJS();
 
-            for(Map<String, Object> currCSVLine : csvLines){
-                LOG.info("ToolJSResult is {}", 
-                        oToolJs.getObjectResultOfCondition(new HashMap<>(),currCSVLine, asField_Filter));
-            }
+                for(Map<String, Object> currCSVLine : csvLines){
+                    LOG.info("ToolJSResult is {}", 
+                            oToolJs.getObjectResultOfCondition(new HashMap<>(),currCSVLine, asField_Filter));
+                }
 
-            for(Map<String, Object> currCSVLine : csvLines){
-                LOG.info("ToolJSResult is {}", 
-                        oToolJs.getObjectResultOfCondition(currCSVLine, new HashMap<>(), asField_Filter));
+                for(Map<String, Object> currCSVLine : csvLines){
+                    LOG.info("ToolJSResult is {}", 
+                            oToolJs.getObjectResultOfCondition(currCSVLine, new HashMap<>(), asField_Filter));
+                }
             }
+        }catch (Exception ex){
+            LOG.info("Exception during formula calculation {}", ex);
         }
+        
         
         LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
         if (saFieldSummary != null) {
