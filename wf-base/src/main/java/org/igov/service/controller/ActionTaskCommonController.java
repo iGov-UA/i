@@ -1385,7 +1385,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Exception during formula calculation {}", ex);
         }
         
-        
+        csvLines.clear();
+        csvLines.addAll(filteredCSVLine);
+                
         LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
         if (saFieldSummary != null) {
 
