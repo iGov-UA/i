@@ -15,13 +15,13 @@
         <activiti:formProperty id="weapon" name="Найменування зброї" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="weapon_number" name="Заводський номер зброї" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="weapon_caliber" name="Калібр зброї" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i14273228627"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="85.94"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default=";04000043; 036032;1;відстрілювання вогнепальної зброї та огляд її технічного стану: нарізної і комбінованої мисливської та спортивної зброї. (у т.ч. коміссія 1.8% та ПДВ)"></activiti:formProperty>
-        <activiti:formProperty id="response" name="message" type="invisible" default="Протягом 1 робочого дня Ви отримаєте лист з бланком заяви, реквізитами для оплати і докладною інструкцією щодо подальших дій."></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина) ; ;bVisible=false" type="string" default="i14273228627"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string" default="85.94"></activiti:formProperty>
+        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string" default=";04000043; 036032;1;відстрілювання вогнепальної зброї та огляд її технічного стану: нарізної і комбінованої мисливської та спортивної зброї. (у т.ч. коміссія 1.8% та ПДВ)"></activiti:formProperty>
+        <activiti:formProperty id="response" name="message ; ;bVisible=false" type="string" default="Протягом 1 робочого дня Ви отримаєте лист з бланком заяви, реквізитами для оплати і докладною інструкцією щодо подальших дій."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="обробка звернення" activiti:candidateGroups="dnepr_mvd_199">
@@ -35,7 +35,7 @@
         <activiti:formProperty id="weapon_number" name="Заводський номер зброї" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="weapon_caliber" name="Калібр зброї" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_mvd_199.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_mvd_199.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_mvd_199.html] ; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>

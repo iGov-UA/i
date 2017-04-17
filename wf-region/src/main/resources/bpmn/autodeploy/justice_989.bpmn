@@ -67,11 +67,11 @@
         <activiti:formProperty id="nProtect" name="Довідка про звернення за захистом в Україні" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDenyRefugee" name="Рішення про задоволення/відхилення/залишення без розгляду скарги на рішення органу міграційної служби про відмову в прийнятті заяви про визнання біженцем або особою, яка потребує додаткового захисту, або про відмову в оформленні документів для вирішення питання щодо визнання біженцем або особою, яка потребує додаткового захисту; у разі наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="nOther" name="Інші документи, що підтверджують порушене право особи та необхідність його захисту; декілька сторінок об'єднайте у один pdf файл або zip архів" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Довіреність" type="markers" default="${markerService.loadFromFile('minust/justice_989.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -167,11 +167,11 @@
         <activiti:formProperty id="comment" name="Примітки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/justice_989_print1.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/minust/justice_989_print2.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/minust/justice_989_print1.html]" type="invisible" default="Звернення" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern/print/minust/justice_989_print2.html]" type="invisible" default="Згода" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка" type="invisible" default="Першого дніпропетровського місцевого центру з надання безоплатної вторинної правової допомоги"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/minust/justice_989_print1.html] ; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/minust/justice_989_print2.html] ; ;bVisible=false" type="string" default="Згода" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка ; ;bVisible=false" type="string" default="Першого дніпропетровського місцевого центру з надання безоплатної вторинної правової допомоги"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Довіреність" type="markers" default="${markerService.loadFromFile('minust/justice_989.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
