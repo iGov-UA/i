@@ -83,6 +83,7 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
+import org.igov.util.ToolJS;
 //import com.google.common.base.Optional;
 
 /**
@@ -1350,7 +1351,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             LOG.info("headers" + headers);
         }
-
+        
+        LOG.info("foundResults is {}", foundResults);
+        
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers);
 
@@ -1364,6 +1367,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
         }
+        
+        LOG.info("result csvLines {}", csvLines);
+        
+        for(Map<String, Object> currCSVLine : csvLines){
+            ToolJS.getCalculatedFormulaValue(asField_Filter, currCSVLine);
+        }
+        
         LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
         if (saFieldSummary != null) {
 
