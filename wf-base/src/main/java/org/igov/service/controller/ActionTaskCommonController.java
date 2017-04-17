@@ -1370,18 +1370,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         LOG.info("result csvLines {}", csvLines);
         
+        List<Map<String, Object>> filteredCSVLine = new ArrayList<>();
         try{
             if (asField_Filter != null){
                 ToolJS oToolJs = new ToolJS();
 
                 for(Map<String, Object> currCSVLine : csvLines){
-                    LOG.info("ToolJSResult is {}", 
-                            oToolJs.getObjectResultOfCondition(new HashMap<>(),currCSVLine, asField_Filter));
-                }
-
-                for(Map<String, Object> currCSVLine : csvLines){
-                    LOG.info("ToolJSResult is {}", 
-                            oToolJs.getObjectResultOfCondition(currCSVLine, new HashMap<>(), asField_Filter));
+                    if((Boolean)(oToolJs.getObjectResultOfCondition(new HashMap<>(),currCSVLine, asField_Filter))){
+                        filteredCSVLine.add(currCSVLine);
+                    }
                 }
             }
         }catch (Exception ex){
