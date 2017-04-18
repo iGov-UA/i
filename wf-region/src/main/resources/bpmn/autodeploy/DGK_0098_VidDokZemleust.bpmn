@@ -14,8 +14,9 @@
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sGOorgform&quot;],&quot;sValue&quot;:&quot;Інформація про земельну ділянку&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdres" name="Адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sPloscha" name="Площа (га)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPloscha" name="Площа (га)" type="double" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -63,10 +64,10 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sGOorgform&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sAdres" name="Адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="long" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPloscha" name="Площа (га)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdres&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPloscha" name="Площа (га)" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати листи заявнику та в ЦНАП"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
@@ -159,10 +160,10 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sGOorgform&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sAdressa" name="Адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nKadasrt_num" name="Кадастровий номер" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPloscha" name="Площа (га)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdres&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sAdres" name="Адреса" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPloscha" name="Площа (га)" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decideMU" name="Рішення відділу Держгеокадастру" type="enum" required="true">
           <activiti:value id="accept" name="Звернення задоволено"></activiti:value>
           <activiti:value id="reject" name="ЦНАП виніс відмову по заяві"></activiti:value>
