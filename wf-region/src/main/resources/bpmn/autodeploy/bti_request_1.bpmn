@@ -27,11 +27,11 @@
           <activiti:value id="type5" name="П'ять адрес (1080 грн)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="warningMessage1" name=" ; ;labelType=warning" type="label" default="Адреса власності має бути в межах м.Дніпро. В іншому випадку Вам буде відмовлено в наданні інформації"></activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress1" name="Зазначте адресу #1" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress2" name="Зазначте адресу #2" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress3" name="Зазначте адресу #3" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress4" name="Зазначте адресу #4" type="string" default="."></activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress5" name="Зазначте адресу #5" type="string" default="."></activiti:formProperty>
+        <activiti:formProperty id="sAskedAddress1" name="Зазначте адресу #1" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAskedAddress2" name="Зазначте адресу #2" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAskedAddress3" name="Зазначте адресу #3" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAskedAddress4" name="Зазначте адресу #4" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAskedAddress5" name="Зазначте адресу #5" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="saQuestion2" name="Подаючи запит Ви дієте як..." type="enum" required="true">
           <activiti:value id="type1" name="ПРИВАТНА ОСОБА"></activiti:value>
           <activiti:value id="type2" name="ПРИВАТНИЙ НОТАРІУС"></activiti:value>
@@ -164,6 +164,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="comment_reject" name="Причина відмови в наданні послуги" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="waiting_time" name="waiting_time" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="waiting_limit" name="waiting_limit" type="invisible" default="10"></activiti:formProperty>
+        <activiti:formProperty id="waiting_status" name="waiting_status" type="invisible" default="0"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -217,6 +218,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sSum" name="сумма платежа" type="string"></activiti:formProperty>
         <activiti:formProperty id="waiting_time" name="waiting_time" type="string"></activiti:formProperty>
         <activiti:formProperty id="waiting_limit" name="waiting_limit" type="string"></activiti:formProperty>
+        <activiti:formProperty id="waiting_status" name="waiting_status" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow23" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
@@ -321,7 +323,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     </boundaryEvent>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow29" sourceRef="escalationTimer1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow30" name="є сплата" sourceRef="exclusivegateway2" targetRef="usertask3">
+    <sequenceFlow id="flow30" name="є сплата" sourceRef="exclusivegateway2" targetRef="scripttask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment != 'Очікує сплати'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask1" name="аналіз часу  очікування" activiti:autoStoreVariables="false">
@@ -376,6 +378,22 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     </sequenceFlow>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow35" sourceRef="servicetask5" targetRef="endevent7"></sequenceFlow>
+    <scriptTask id="scripttask2" name="аналіз статусу сплати" activiti:autoStoreVariables="false">
+      <script>var payment=execution.getVariable('sID_Payment')
+var status='0'
+if (payment.indexOf('_Успешный платеж')!=-1){status='true'}
+else {if (payment.indexOf('_Тестовый платеж')!=-1){status='true'}
+else {status='false'}}
+execution.setVariable('waiting_status', status)</script>
+    </scriptTask>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow36" sourceRef="scripttask2" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow37" name="успешно" sourceRef="exclusivegateway4" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${waiting_status = 'true'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow38" name="пока неуспешно" sourceRef="exclusivegateway4" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${waiting_status = 'false'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_bti_request_1">
     <bpmndi:BPMNPlane bpmnElement="bti_request_1" id="BPMNPlane_bti_request_1">
@@ -398,10 +416,10 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdc:Bounds height="55.0" width="172.0" x="200.0" y="181.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="171.0" x="860.0" y="471.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="171.0" x="860.0" y="660.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="928.0" y="571.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="928.0" y="760.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="172.0" x="850.0" y="181.0"></omgdc:Bounds>
@@ -410,7 +428,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdc:Bounds height="30.0" width="30.0" x="850.0" y="222.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="172.0" x="860.0" y="391.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="172.0" x="860.0" y="580.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="410.0" y="188.0"></omgdc:Bounds>
@@ -436,6 +454,12 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
         <omgdc:Bounds height="35.0" width="35.0" x="1162.0" y="571.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="91.0" width="105.0" x="893.0" y="391.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="925.0" y="510.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="155.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="200.0" y="107.0"></omgdi:waypoint>
@@ -449,8 +473,8 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="286.0" y="181.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="945.0" y="526.0"></omgdi:waypoint>
-        <omgdi:waypoint x="945.0" y="571.0"></omgdi:waypoint>
+        <omgdi:waypoint x="945.0" y="715.0"></omgdi:waypoint>
+        <omgdi:waypoint x="945.0" y="760.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="722.0" y="208.0"></omgdi:waypoint>
@@ -468,8 +492,8 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="946.0" y="446.0"></omgdi:waypoint>
-        <omgdi:waypoint x="945.0" y="471.0"></omgdi:waypoint>
+        <omgdi:waypoint x="946.0" y="635.0"></omgdi:waypoint>
+        <omgdi:waypoint x="945.0" y="660.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="430.0" y="228.0"></omgdi:waypoint>
@@ -490,7 +514,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="945.0" y="327.0"></omgdi:waypoint>
-        <omgdi:waypoint x="946.0" y="391.0"></omgdi:waypoint>
+        <omgdi:waypoint x="945.0" y="391.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="13.0" width="44.0" x="950.0" y="369.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -524,6 +548,25 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="1180.0" y="446.0"></omgdi:waypoint>
         <omgdi:waypoint x="1179.0" y="571.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="945.0" y="482.0"></omgdi:waypoint>
+        <omgdi:waypoint x="945.0" y="510.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="945.0" y="550.0"></omgdi:waypoint>
+        <omgdi:waypoint x="946.0" y="580.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="13.0" width="45.0" x="945.0" y="550.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="965.0" y="530.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1062.0" y="530.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1062.0" y="351.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="13.0" width="83.0" x="964.0" y="510.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
