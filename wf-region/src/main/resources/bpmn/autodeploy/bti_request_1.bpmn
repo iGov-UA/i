@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="bti_request_1" name="Запит інформації про власність згідно матеріалів інвентаризаційної справи" isExecutable="true">
+    <documentation>#КОЛЯ_НЕ_ТРОГАЙ_ПРОЦЕСС!!!</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -158,7 +159,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html]" type="invisible" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker4" name="set printform content (jur)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="result" name="Запит складено  без помилок?" type="enum">
-          <activiti:value id="accept" name="Помілкі відсутні. Надіслати ліст для сплаті вартості послуги"></activiti:value>
+          <activiti:value id="accept" name="Помилкі відсутні. Надіслати ліст для сплати вартості послуги"></activiti:value>
           <activiti:value id="reject" name="Запит містить помилки. Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_reject" name="Причина відмови в наданні послуги" type="textArea"></activiti:formProperty>
@@ -212,39 +213,11 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion1" name="Тип запиту" type="enum" writable="false">
-          <activiti:value id="type1" name="стандартний запит (дані про власника, підстава)"></activiti:value>
-          <activiti:value id="type2" name="запит з додатковою інформацією (наявність арештів, копії документів, тощо)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sRequestGoal" name="Додаткова запитувана інформація" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion3" name="Стосовно якої кількості адрес було створено запит стандартного типу?" type="enum" writable="false">
-          <activiti:value id="type1" name="Одна адреса (315 грн)"></activiti:value>
-          <activiti:value id="type2" name="Дві адреси (495 грн)"></activiti:value>
-          <activiti:value id="type3" name="Три адреси (675 грн)"></activiti:value>
-          <activiti:value id="type4" name="Чотири адреси (855 грн)"></activiti:value>
-          <activiti:value id="type5" name="П'ять адрес (1035 грн)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="saQuestion4" name="Стосовно якої кількості адрес було створено запит з додатковою інформацією?" type="enum" writable="false">
-          <activiti:value id="type1" name="Одна адреса (340 грн)"></activiti:value>
-          <activiti:value id="type2" name="Дві адреси (525 грн)"></activiti:value>
-          <activiti:value id="type3" name="Три адреси (710 грн)"></activiti:value>
-          <activiti:value id="type4" name="Чотири адреси (895 грн)"></activiti:value>
-          <activiti:value id="type5" name="П'ять адрес (1080 грн)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress1" name=" адреса #1" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress2" name=" адреса #2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress3" name=" адреса #3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress4" name=" адреса #4" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAskedAddress5" name=" адреса #5" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion2" name="Автор запиту діє як" type="enum" writable="false">
-          <activiti:value id="type1" name="ПРИВАТНА ОСОБА"></activiti:value>
-          <activiti:value id="type2" name="ПРИВАТНИЙ НОТАРІУС"></activiti:value>
-          <activiti:value id="type3" name="ДЕРЖАВНИЙ НОТАРІУС"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sJurAddress" name="Юридична адреса автора запиту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPhisAddress" name="Адреса реєстрації автора запиту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="waiting_time" name="waiting_time" type="string"></activiti:formProperty>
+        <activiti:formProperty id="waiting_limit" name="waiting_limit" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow23" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
@@ -344,7 +317,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow28" sourceRef="servicetask4" targetRef="endevent6"></sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT10S</timeDuration>
+        <timeDuration>PT20S</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -491,7 +464,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="450.0" y="208.0"></omgdi:waypoint>
         <omgdi:waypoint x="550.0" y="208.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="450.0" y="208.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="58.0" x="450.0" y="208.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
@@ -519,14 +492,14 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="945.0" y="327.0"></omgdi:waypoint>
         <omgdi:waypoint x="946.0" y="391.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="950.0" y="369.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="44.0" x="950.0" y="369.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="965.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="1010.0" y="305.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="949.0" y="279.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="57.0" x="949.0" y="279.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
@@ -538,14 +511,14 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="1179.0" y="208.0"></omgdi:waypoint>
         <omgdi:waypoint x="1022.0" y="208.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="1180.0" y="254.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="56.0" x="1180.0" y="254.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="1179.0" y="325.0"></omgdi:waypoint>
         <omgdi:waypoint x="1180.0" y="391.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="1179.0" y="349.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="79.0" x="1179.0" y="349.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
