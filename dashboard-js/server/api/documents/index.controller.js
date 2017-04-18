@@ -107,3 +107,15 @@ exports.delegateDocument = function (req, res) {
     res.send(result);
   })
 };
+
+exports.getDocumentSubmittedUnsigned = function (req, res) {
+  activiti.get({
+    path: 'common/document/getDocumentSubmitedUnsigned',
+    query: req.query
+  }, function (error, statusCode, result) {
+    if(!error) {
+      res.statusCode = statusCode;
+      res.send(result)
+    }
+  })
+};

@@ -157,14 +157,13 @@
         <activiti:formProperty id="TAG" name="Примітки; ;writable=true,sID_Field_SWinEd=TAG" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nReport" name="Файл зі звітом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="DayDepOrg"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="Report"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('NKCPFR/NKCPFR_1000.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="data fields" type="markers" default="${markerService.loadFromFile('NKCPFR/NKCPFR_1000_Data.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="style fields" type="markers" default="${markerService.loadFromFile('NKCPFR/NKCPFR_1000_Style.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="validate fields" type="markers" default="${markerService.loadFromFile('NKCPFR/NKCPFR_1000_Validate.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="style fields" type="markers" default="${markerService.loadFromFile('NKCPFR/NKCPFR_1000_Style.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask3" name="Повідомлення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask3" name="Повідомлення про успішну реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -186,8 +185,14 @@
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${oFile_XML_SWinEd}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${nReport}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -292,7 +297,7 @@
         <omgdc:Bounds height="41.0" width="41.0" x="59.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="67.0" width="105.0" x="130.0" y="113.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="119.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="220.0" y="220.0"></omgdc:Bounds>
@@ -322,7 +327,7 @@
         <omgdc:Bounds height="40.0" width="40.0" x="417.0" y="127.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="182.0" y="180.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="174.0"></omgdi:waypoint>
         <omgdi:waypoint x="237.0" y="220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -331,7 +336,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="100.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="130.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="385.0" y="80.0"></omgdi:waypoint>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-89sd" name="Зняття з реєстрації особи у зв'язку зі смертю" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 07.03.2017</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 04.04.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -20,29 +20,29 @@
         <activiti:formProperty id="sChildBirth" name="Дата народження померлого;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildPOB" name="Місце народження померлого;Країна, область, район і населений пункт" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildCitizenship" name="Громадянство померлого" type="string" default="Україна" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChildDoc" name="Документ померлого; Тип, серія та номер документу, дата і орган, що його видав" type="textArea" default="паспорт " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChildDoc" name="Документ померлого; Тип, серія та номер документу, дата і орган, що його видав" type="textArea" default="паспорт "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації померлого;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить поточне місце реєстрації померлого" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_death" name="Дата смерті;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть, дата видачі документа" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-		<activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди" type="invisible" default="4"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKab89" name="Номер кабінету" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationOrgan" name="Орган реєстрації" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="sFlag" name="Флаг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином" type="invisible" default="False"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги ; ;bVisible=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganType" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKab89" name="Номер кабінету ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район/місто звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrgan" name="Орган реєстрації ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo ; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sFlag" name="Флаг ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином ; ;bVisible=false" type="string" default="False"></activiti:formProperty>
         <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
@@ -176,16 +176,16 @@ execution.setVariable('sMaxPay', maxpay)
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення; Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги &lt;br /&gt; АБО &lt;br /&gt; Додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для сплати адмінсбору" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFrDeath.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFrDeath.html] ; ;bVisible=false" type="string" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html] ; ;bVisible=false" type="string" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_znFrDeath.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_znBk.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNewAddress" name="Поле для прінтформи" type="invisible" default="помер від ${sDate_of_death}"></activiti:formProperty>
-        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Поле для прінтформи ; ;bVisible=false" type="string" default="помер від ${sDate_of_death}"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
         </activiti:taskListener>
@@ -417,21 +417,21 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації померлого; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює зняття з реєстрації" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює зняття з реєстрації ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum" required="true">
           <activiti:value id="sReestr" name="Померлого знято з реєстрації"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFrDeath.html]" type="invisible" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html]" type="invisible" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_12" name="[pattern/print/dms/DovidkaZnChild.html]" type="invisible" default="Довідка про зняття з реєстрації" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/dms/TalonFrDeath.html]" type="invisible" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_8" name="[pattern/print/dms/TalonBkDeath.html]" type="invisible" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNewAddress" name="Поле для прінтформи" type="invisible" default="помер від ${sDate_of_death}"></activiti:formProperty>
+        <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_znFrDeath.html] ; ;bVisible=false" type="string" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html] ; ;bVisible=false" type="string" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_12" name="[pattern/print/dms/DovidkaZnChild.html] ; ;bVisible=false" type="string" default="Довідка про зняття з реєстрації" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/dms/TalonFrDeath.html] ; ;bVisible=false" type="string" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_8" name="[pattern/print/dms/TalonBkDeath.html] ; ;bVisible=false" type="string" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNewAddress" name="Поле для прінтформи ; ;bVisible=false" type="string" default="помер від ${sDate_of_death}"></activiti:formProperty>
         <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>

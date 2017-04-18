@@ -115,7 +115,7 @@
           <activiti:value id="2" name="7 днів (74.4 грн.)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPaySum" name="Вартість послуги; Ви можете сплатити онлайн або іншим зручним для Вас чином" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sServiceTerm" name="Обраний громадянином термін отримання послуги" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sServiceTerm" name="Обраний громадянином термін отримання послуги ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="scan_bill" name="Завантажте скан-копію  квитанції про сплату вартості послуги;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFamily_RU" name="Фамилия (рус.)" type="string" required="true"></activiti:formProperty>
@@ -175,8 +175,8 @@
           <activiti:value id="man" name="Чоловіча"></activiti:value>
           <activiti:value id="woman" name="Жіноча"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Country" name="Country Code (Code)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdsID_Country" name="Громадянство (Code) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Country" name="Country Code (Code) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry" name="Громадянство" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_UA" name="Країна народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegion" name="Регіон" type="string"></activiti:formProperty>
@@ -204,8 +204,8 @@
         <activiti:formProperty id="markers2" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hide-show fields with terms of service" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_urgent_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="Employee_mail" name="Employee_mail" type="string"></activiti:formProperty>
-        <activiti:formProperty id="filial1" name="filial_name" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="filial1" name="filial_name ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -309,7 +309,7 @@
         <activiti:formProperty id="comment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги. Ця інформація буде відправлена на e-mail заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="Employee_mail" name="employee_name" type="string"></activiti:formProperty>
         <activiti:formProperty id="filial1" name="filial_name" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>

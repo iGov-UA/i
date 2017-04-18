@@ -12,6 +12,7 @@
         <activiti:formProperty id="sAdress" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('Rada/rada_1443_GytNeGyt.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTypeRoom" name="Оберіть тип переведення" type="enum" required="true">
           <activiti:value id="live" name="житлових приміщень в нежитлові під розміщення об’єктів невиробничої сфери"></activiti:value>
           <activiti:value id="not_live" name="нежитлових приміщень у житлові"></activiti:value>
@@ -74,27 +75,18 @@
         <activiti:formProperty id="sDocZgodaBigHouse" name="Письмова згода власників та квартиронаймачів суміжних квартир в жилому будинку, завірена обслуговуючою організацією; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Дозвіл органів опіки; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocNotLive" name="Засвідчена Власником або балансоутримувачем згода власників суміжних житлових приміщень (блокованих будинків, квартир) з нежитловим приміщенням, яке пропонується перевести у житлове; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sZgodaBalOwn" name="Згоду балансоутримувача житлового будинку, в якому розташована квартира; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocCommon" name="Засвідчена Власником або балансоутримувачем згода мешканців будинку; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця; ;bVisible=false" type="string" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="назва населеного пункту; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nArea" name="номер з довідника населеного пункту; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka273" name="шапка у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="маркер якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;bankId_scan_passport&quot;,&quot;bankId_scan_inn&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="маркер якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;,&quot;sNumberReestration&quot;,&quot;sDateReestration&quot;,&quot;sAdressUr&quot;,&quot;sDocUr&quot;,&quot;sDocStatute&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="маркер якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sDocConfidant&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubekt2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'confidant'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="маркер якщо фоп" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sDocFop&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="маркер якщо житловий будинок" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sDocZemlya&quot;,&quot;sDocZgodaSmallHouse&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;slocationRoom&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sSmallHouse'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="маркер якщо будинок з ОСББ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sDocZgodaBigHouseOSBB&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;slocationRoom&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBigHouseOSBB'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="маркер якщо будинок без ОСББ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sDocZgodaBigHouse&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;slocationRoom&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sBigHouse'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers8" name="якщо є дитина" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sDocChild&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sChild&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="якщо у НЕжитлове" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sDocNotLive&quot;,&quot;sCommon&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sTypeRoom&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'not_live'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="якщо приміщення загального користування" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sDocCommon&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCommon&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка документів і вхідних даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -158,7 +150,7 @@
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву; ;bVisible=false" type="string"></activiti:formProperty>
-        
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('Rada/rada_1443_GytNeGyt.json')}"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -180,11 +172,8 @@
         <activiti:formProperty id="sDocZgodaBigHouse" name="Письмова згода власників та квартиронаймачів суміжних квартир в жилому будинку, завірена обслуговуючою організацією; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Дозвіл органів опіки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNotLive" name="Засвідчена Власником або балансоутримувачем згода власників суміжних житлових приміщень (блокованих будинків, квартир) з нежитловим приміщенням, яке пропонується перевести у житлове; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sZgodaBalOwn" name="Згоду балансоутримувача житлового будинку, в якому розташована квартира; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocCommon" name="Засвідчена Власником або балансоутримувачем згода мешканців будинку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
-        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;shapka_ur&quot;,&quot;zagolovok&quot;,&quot;telo&quot;,&quot;zgoda&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;telo&quot;,&quot;zgoda&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'||[sCond]=='fop'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="принтформа якщо Нікополь" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;nikopol_details&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]=='nikopolT'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_273_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -252,10 +241,8 @@
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka273" name="шапка у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;shapka_ur&quot;,&quot;zagolovok&quot;,&quot;telo&quot;,&quot;zgoda&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;telo&quot;,&quot;zgoda&quot;,&quot;end&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'||[sCond]=='fop'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="принтформа якщо Нікополь" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;nikopol_details&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]=='nikopolT'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_273_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('Rada/rada_1443_GytNeGyt.json')}"></activiti:formProperty>
+		<activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_273_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_273_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Сканкопія ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -278,8 +265,8 @@
         <activiti:formProperty id="sDocZgodaBigHouse" name="Письмова згода власників та квартиронаймачів суміжних квартир в жилому будинку, завірена обслуговуючою організацією; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocChild" name="Дозвіл органів опіки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNotLive" name="Засвідчена Власником або балансоутримувачем згода власників суміжних житлових приміщень (блокованих будинків, квартир) з нежитловим приміщенням, яке пропонується перевести у житлове; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sZgodaBalOwn" name="Згоду балансоутримувача житлового будинку, в якому розташована квартира; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocCommon" name="Засвідчена Власником або балансоутримувачем згода мешканців будинку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -348,6 +335,7 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 На жаль, Ваше звернення щодо переведення enum{[sTypeRoom]}, відхилено через недостатню або неправильну інформацію.<br>
+Комментар спеціаліста:<br>
 ${comment_1}<br><br>
 ${sPhoneOrgan}<br>
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
@@ -477,10 +465,13 @@ if(execution.getVariable('sDocNotLive') != null){
 per17 = "&lt;li&gt;Засвідчена власником або балансоутримувачем згоду власників суміжних житлових приміщень (блокованих будинків, квартир) з нежитловим приміщенням, яке пропонується перевести у житлове.&lt;/li&gt;"
 }
 if(execution.getVariable('sDocCommon') != null){
-per18 = "&lt;li&gt;Засвідчена власником або балансоутримувачем згоду мешканців будинку.&lt;/li&gt;"
+per18 = "&lt;li&gt;Засвідчена власником або балансоутримувачем згода мешканців будинку.&lt;/li&gt;"
 }
-res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15+per16+per17+per18+'&lt;/ol&gt;'
-res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15+per16+per17+per18+'&lt;/ol&gt;'
+if(execution.getVariable('sZgodaBalOwn') != null){
+per19 = "&lt;li&gt;Згоду балансоутримувача житлового будинку, в якому розташована квартира.&lt;/li&gt;"
+}
+res = '&lt;ol&gt;'+per1+per2+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15+per16+per17+per18+per19+'&lt;/ol&gt;'
+res2 = '&lt;ol&gt;'+per3+per4+per5+per6+per7+per8+per9+per10+per11+per12+per13+per14+per15+per16+per17+per18+per19+'&lt;/ol&gt;'
 execution.setVariable('sListDocumentsLetter', res)
 execution.setVariable('sListDocumentsPrint', res2)</script>
     </scriptTask>

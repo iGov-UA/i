@@ -79,10 +79,12 @@ import java.util.*;
 import org.activiti.engine.task.NativeTaskQuery;
 
 import org.igov.model.subject.SubjectAccountDao;
+import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
+import org.igov.util.ToolJS;
 //import com.google.common.base.Optional;
 
 /**
@@ -97,6 +99,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private HttpRequester httpRequester;
+    @Autowired
+    private SubjectRightBPDao subjectRightBPDao;
     @Autowired
     private ActionEventHistoryService actionEventHistoryService;
     @Autowired
@@ -1350,10 +1354,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             LOG.info("headers" + headers);
         }
-
+        
+        LOG.info("foundResults is {}", foundResults);
+        
+        LOG.info("asField_Filter is {}", asField_Filter);
+        LOG.info("sLogin is {}", sLogin);
+        
+        String FormulaFilter_Export = null;
+        
+        if(asField_Filter != null && asField_Filter.equals("[sFormulaFilter_Export]")){
+            FormulaFilter_Export = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
+            LOG.info("FormulaFilter_Export is {} ", FormulaFilter_Export);
+        }
+        
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-                csvLines, saFields, saFieldsCalc, headers);
-
+                csvLines, saFields, saFieldsCalc, headers, FormulaFilter_Export);
+        
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
@@ -1362,8 +1378,29 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
+                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP, FormulaFilter_Export);
         }
+        
+        LOG.info("result csvLines {}", csvLines);
+        
+        /*List<Map<String, Object>> filteredCSVLine = new ArrayList<>();
+        try{
+            if (asField_Filter != null){
+                ToolJS oToolJs = new ToolJS();
+
+                for(Map<String, Object> currCSVLine : csvLines){
+                    if((Boolean)(oToolJs.getObjectResultOfCondition(new HashMap<>(),currCSVLine, asField_Filter))){
+                        filteredCSVLine.add(currCSVLine);
+                    }
+                }
+            }
+        }catch (Exception ex){
+            LOG.info("Exception during formula calculation {}", ex);
+        }
+        
+        csvLines.clear();
+        csvLines.addAll(filteredCSVLine);*/
+                
         LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
         if (saFieldSummary != null) {
 
@@ -1433,7 +1470,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
     }
-
+    
+    
+    
+    
     /**
      * Returns business processes which belong to a specified user
      *

@@ -3,6 +3,9 @@
   <process id="_test_NAIS_minust" name="_test_NAIS_minust" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+		<activiti:formProperty id="sID_NAIS_Service_code" name="Код услуги; ;bVisible=false" type="string" default="45_10_00_00"></activiti:formProperty>
+		<activiti:formProperty id="sID_NAIS_Application_id" name="Код документа; ;bVisible=false" type="string" default="93"></activiti:formProperty>
+
         <activiti:formProperty id="bankIdlastName" name="Прізвище; ;writable=true,sID_Field_Export=HLNAME" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;writable=true,sID_Field_Export=HPNAME" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;writable=true,sID_Field_Export=HFNAME" type="string" required="true"></activiti:formProperty>
@@ -50,6 +53,9 @@
     </startEvent>
     <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="test_NAIS">
       <extensionElements>
+		<activiti:formProperty id="sID_NAIS_Service_code" name="Код услуги; ;bVisible=false" type="string" default="45_10_00_00"></activiti:formProperty>
+		<activiti:formProperty id="sID_NAIS_Application_id" name="Код документа; ;bVisible=false" type="string" default="93"></activiti:formProperty>
+
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
         <activiti:formProperty id="oFile_Export" name="File; ;sID_Export=minust, bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
@@ -104,6 +110,9 @@
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
     <userTask id="usertask2" name="Получение ответа" activiti:candidateGroups="test_NAIS">
       <extensionElements>
+		<activiti:formProperty id="sID_NAIS_Service_code" name="Код услуги; ;bVisible=false" type="string" default="45_10_00_00"></activiti:formProperty>
+		<activiti:formProperty id="sID_NAIS_Application_id" name="Код документа; ;bVisible=false" type="string" default="93"></activiti:formProperty>
+
         <activiti:formProperty id="result" name="Результат" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anID_Attach_minust" name="Файл с ответом" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">

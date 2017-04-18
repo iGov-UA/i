@@ -528,9 +528,9 @@ public class ActionTaskService {
     }
 
     public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern,
-            Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP) {
+            Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP, String asField_Filter) {
         LOG.info("!!!!!csvLines: " + csvLines);
-
+        ToolJS oToolJs = new ToolJS();
         LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_begin---------------------------------------------------------->");
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String.format("No historic tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
@@ -566,6 +566,19 @@ public class ActionTaskService {
             Map<String, Object> variables = curTask.getProcessVariables();
             LOG.info("!!!!!!!!!!!!!!!variablessb= " + variables);
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
+            try{
+                if (asField_Filter != null){
+                     Map<String, Object> variablesToFilter = new HashMap<>();
+                    variablesToFilter.putAll(curTask.getProcessVariables());
+                    variablesToFilter.putAll(curTask.getTaskLocalVariables());
+                    if(!(Boolean)(oToolJs.getObjectResultOfCondition(new HashMap<>(), variables, asField_Filter))){
+                        LOG.info("filtered Task Id in fillTheCSVMapHistoricTasks {curTask.getId()}", curTask.getId());
+                        continue;
+                    }
+                }
+            }catch(ScriptException | NoSuchMethodException ex){
+                LOG.info("Error during fillTheCSVMapHistoricTasks filtering {}", ex);    
+            }
             currentRow = replaceFormProperties(currentRow, variables, enumProperties);
             if (saFieldsCalc != null) {
                 currentRow = addCalculatedFields(saFieldsCalc, curTask, currentRow);
@@ -987,7 +1000,7 @@ public class ActionTaskService {
     }
 
     public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> aTaskFound, SimpleDateFormat sDateCreateDF,
-            List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] asHeader) {
+            List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] asHeader, String asField_Filter) {
         if (CollectionUtils.isEmpty(aTaskFound)) {
 
             LOG.info(String.format("No tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
@@ -999,10 +1012,28 @@ public class ActionTaskService {
         } else {
             LOG.info("Will retreive all fields from tasks");
         }
+        
+        ToolJS oToolJs = new ToolJS();
         for (Task oTask : aTaskFound) {
+            
+            if (asField_Filter != null){
+                try{
+                    Map<String, Object> variablesToFilter = new HashMap<>();
+                    variablesToFilter.putAll(oTask.getProcessVariables());
+                    variablesToFilter.putAll(oTask.getTaskLocalVariables());
+                    if(!(Boolean)(oToolJs.getObjectResultOfCondition(new HashMap<>(), variablesToFilter, asField_Filter))){
+                        LOG.info("filtered Task Id in fillTheCSVMap {curTask.getId()}", oTask.getId());
+                        continue;
+                    }
+
+                }catch(ScriptException | NoSuchMethodException ex){
+                    LOG.info("Error during fillTheCSVMapHistoricTasks filtering {}", ex);    
+                }
+            }
             String sRow = pattern;
             LOG.trace("Process task - {}", oTask);
             TaskFormData oTaskFormData = oFormService.getTaskFormData(oTask.getId());
+            
             sRow = replaceFormProperties(sRow, oTaskFormData);
             LOG.info("!!!!!!!!!!!!!!!!!!!!!!fillTheCSVMap!_!sRows= " + sRow);
             if (saFieldsCalc != null) {

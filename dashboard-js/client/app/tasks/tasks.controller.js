@@ -248,47 +248,48 @@
 
       $scope.tasksLoading = true;
 
-      tasks.list($stateParams.type, data)
-        .then(function (oResult) {
-          try {
-            if (oResult.code || (oResult.data && oResult.data.code)) {
-              var e = new Error(oResult.message || (oResult.data && oResult.data.message));
-              e.name = oResult.code || (oResult.data && oResult.data.code);
+      if($stateParams.type !== 'ecp')
+        tasks.list($stateParams.type, data)
+          .then(function (oResult) {
+            try {
+              if (oResult.data.code) {
+                var e = new Error(oResult.data.message);
+                e.name = oResult.data.code;
 
-              throw e;
+                throw e;
+              }
+
+              if (oResult.data !== null && oResult.data !== undefined) {
+                // build tasks array
+                var aTaskFiltered = _.filter(oResult.data, function (oTask) {
+                  return oTask.endTime !== null;
+                });
+                if (!$scope.tasks)
+                  $scope.tasks = [];
+                for (var i = 0; i < aTaskFiltered.length; i++)
+                  $scope.tasks.push(aTaskFiltered[i]);
+                lastTasksResult = oResult;
+                // build filtered tasks array
+                filterLoadedTasks();
+
+                defer.resolve(aTaskFiltered);
+                tasksPage++;
+              }
+
+            } catch (e) {
+              Modal.inform.error()(e);
+              defer.reject(e);
             }
+          })
+          .catch(function (err) {
+            //Modal.inform.error()(err);
+            defer.reject(err);
+          })
+          .finally(function () {
+            $scope.tasksLoading = false;
+          });
 
-            if (oResult.data !== null && oResult.data !== undefined) {
-              // build tasks array
-              var aTaskFiltered = _.filter(oResult.data, function (oTask) {
-                return oTask.endTime !== null;
-              });
-              if (!$scope.tasks)
-                $scope.tasks = [];
-              for (var i = 0; i < aTaskFiltered.length; i++)
-                $scope.tasks.push(aTaskFiltered[i]);
-              lastTasksResult = oResult;
-              // build filtered tasks array
-              filterLoadedTasks();
-
-              defer.resolve(aTaskFiltered);
-              tasksPage++;
-            }
-
-          } catch (e) {
-            Modal.inform.error()(e);
-            defer.reject(e);
-          }
-        })
-        .catch(function (err) {
-          //Modal.inform.error()(err);
-          defer.reject(err);
-        })
-        .finally(function () {
-          $scope.tasksLoading = false;
-        });
-
-      return defer.promise;
+        return defer.promise;
     };
 
     $scope.applyTaskFilter = function () {
