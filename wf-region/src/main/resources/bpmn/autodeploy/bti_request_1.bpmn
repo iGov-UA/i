@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="bti_request_1" name="Запит інформації про власність згідно матеріалів інвентаризаційної справи" isExecutable="true">
-    <documentation>#КОЛЯ_НЕ_ТРОГАЙ_ПРОЦЕСС!!! </documentation>
+    <documentation>#КОЛЯ_НЕ_ТРОГАЙ_ПРОЦЕСС!!!</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -155,7 +155,6 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Файл Запиту з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form2_signed" name="Додайте файл відповіді з накладеним ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html]" type="invisible" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker4" name="set printform content (jur)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="result" name="Запит складено  без помилок?" type="enum">
@@ -164,7 +163,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:formProperty>
         <activiti:formProperty id="comment_reject" name="Причина відмови в наданні послуги" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="waiting_time" name="waiting_time" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="waiting_limit" name="waiting_limit" type="invisible" default="3"></activiti:formProperty>
+        <activiti:formProperty id="waiting_limit" name="waiting_limit" type="invisible" default="10"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -213,9 +212,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По Батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа" type="string"></activiti:formProperty>
         <activiti:formProperty id="waiting_time" name="waiting_time" type="string"></activiti:formProperty>
         <activiti:formProperty id="waiting_limit" name="waiting_limit" type="string"></activiti:formProperty>
       </extensionElements>
@@ -317,7 +316,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow28" sourceRef="servicetask4" targetRef="endevent6"></sequenceFlow>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT20S</timeDuration>
+        <timeDuration>PT30S</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -326,8 +325,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment != 'Очікує сплати'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask1" name="аналіз часу  очікування" activiti:autoStoreVariables="false">
-      <script>var counter=execution.getVariable('waiting_time ')
-execution.setVariable('waiting_time', (counter+1))</script>
+      <script>var count=execution.getVariable('waiting_time')
+count=count+1 
+execution.setVariable('waiting_time', count)</script>
     </scriptTask>
     <sequenceFlow id="flow31" name="нет оплаты" sourceRef="exclusivegateway2" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment == 'Очікує сплати'}]]></conditionExpression>
@@ -346,7 +346,7 @@ execution.setVariable('waiting_time', (counter+1))</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит відхилено ( waiting_time = ${waiting_time} )]]></activiti:string>
+          <activiti:expression><![CDATA[Запит відхилено ( waiting_time = ${waiting_time} )]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
