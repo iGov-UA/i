@@ -17,6 +17,7 @@
         <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ на отпуск" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Комментарий руководителя" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeVacation" name="Выберите тип отпуска" type="enum" required="true">
@@ -29,9 +30,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата начала отпуска" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Дата конца отпуска" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAssignTo" name="Исполнение обязанностей возложить на; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sName_AssignTo" name="Исполнение обязанностей возложить на; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum" default="sEnumEditing">
           <activiti:value id="sEnumEditing" name="не отправлять за визами"></activiti:value>
           <activiti:value id="sEnumSighting" name="отправить за визами"></activiti:value>
@@ -58,6 +60,7 @@
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ФИО заявителя" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeVacation" name="Выберите тип отпуска" type="enum" writable="false">
           <activiti:value id="sEnumVac_1" name="Ежегодный отпуск"></activiti:value>
           <activiti:value id="sEnumVac_2" name="Кратковременный отпуск без сохранения зарплаты по инициативе работника"></activiti:value>
@@ -97,8 +100,14 @@ execution.setVariable('processInstanceId', processInstanceId)
     </sequenceFlow>
     <scriptTask id="scripttask6" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2', 'step_2',false,'sLogin_isExecute')</script>
+var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_2')
+
+// ФИО заявителя
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
+execution.setVariable('sAuthorName', oResultAuthorName.sLabel)</script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask8" name="сброс подписи" scriptFormat="javascript" activiti:autoStoreVariables="false">
