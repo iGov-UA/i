@@ -66,6 +66,8 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
                           if(item.nWidth.indexOf('px') === -1) item.nWidth = item.nWidth + 'px';
                         }
                       })
+                    } else {
+                      console.warn('В таблице "' + prop.name.split(';')[0] + '" [id=' + prop.id + '] в массиве строк отсутствуют элементы');
                     }
                 })
             }
