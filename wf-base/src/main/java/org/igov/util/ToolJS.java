@@ -41,10 +41,12 @@ public class ToolJS {
         }
         for (String sKey : mParamCasted.keySet()) {
             //mParam.put(sKey, mParamCasted.get(sKey));
+            LOG.info("mParamCasted put: {}, {}", sKey, mParamCasted.get(sKey));
             oScriptEngine.put(sKey, mParamCasted.get(sKey));
         }
+        LOG.info("sCondition is {}", sCondition);
         String sFunctionJS = getJavaScriptStr(sCondition);
-        LOG.debug("(sFunctionJS={})",sFunctionJS);
+        LOG.info("sFunctionJS is {}",sFunctionJS);
         oScriptEngine.eval(sFunctionJS);
         Invocable oInvocable = (Invocable) oScriptEngine;
         oInvocable.invokeFunction("getResult");

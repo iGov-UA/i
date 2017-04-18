@@ -87,7 +87,7 @@ public class ActionFlowController {
 	 * @param nSlots число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук
      */
     @ApiOperation(value = "Получение слотов по сервису сгруппированных по дням", notes = "##### Пример:\n"
-	        + "https://test.igov.org.ua/wf/service/action/flow/getFlowSlots_ServiceData?nID_ServiceData=1 \n"
+	        + "https://alpha.test.igov.org.ua/wf/service/action/flow/getFlowSlots?nID_ServiceData=1 \n"
 	        + "или\n"
 	        + "https://test.region.igov.org.ua/wf/service/action/flow/getSheduleFlowIncludes?sID_BP=kiev_mreo_1 \n"
 	        + "Ответ: HTTP STATUS 200\n\n"
@@ -127,7 +127,7 @@ public class ActionFlowController {
             + "- флаг \"bFree\" - является ли слот свободным? Слот считается свободным если на него нету тикетов у которых nID_Task_Activiti равен null,"
             + " а у тех у которых nID_Task_Activiti = null - время создания тикета (sDateEdit) не позднее чем текущее время минус 5 минут (предопределенная константа)\n"
             + "- флаг \"bHasFree\" равен true , если данных день содержит хотя бы один свободный слот.\n") })
-    @RequestMapping(value = "/getFlowSlots_ServiceData", method = RequestMethod.GET)
+    @RequestMapping(value = "/getFlowSlots", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity getFlowSlots(
@@ -137,8 +137,9 @@ public class ActionFlowController {
 	    @ApiParam(value = "ИД департамента субьекта-органа", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
 	    @ApiParam(value = "булевое значение, если false то из возвращаемого объекта исключаются элементы, содержащие \"bHasFree\":false \"bFree\":false (опциональный, по умолчанию false)", required = false) @RequestParam(value = "bAll", required = false, defaultValue = "false") boolean bAll,
 	    @ApiParam(value = "число дней со слотами будут включаться в результат пока не наберется указанное кол-во свободных дней (опциональный, по умолчанию 60)", required = false) @RequestParam(value = "nFreeDays", required = false, defaultValue = "60") int nFreeDays,
-	    @ApiParam(value = "число дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будующее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)", required = false) @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
+	    @ApiParam(value = "число дней от сегодняшего включительно(или sDateStart, если задан), до nDays в будущее за который нужно вернуть слоты (опциональный, по умолчанию 177 - пол года)", required = false) @RequestParam(value = "nDays", required = false, defaultValue = "177") int nDays,
             @ApiParam(value = "число рабочих дней пропуска от даты начала выборки (если не задана - от текущего), с которой начинать отображать расписание", required = false) @RequestParam(value = "nDiffDays", required = false, defaultValue = "0") int nDiffDays,
+            @ApiParam(value = "число смещения даты начала выборки с которой начинать отбирать расписание", required = false) @RequestParam(value = "nDiffDaysForStartDate", required = false, defaultValue = "0") int nDiffDaysForStartDate,
 	    @ApiParam(value = "строка параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
             @ApiParam(value = "число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук", required = false) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots
     ) throws Exception {
@@ -155,7 +156,15 @@ public class ActionFlowController {
             oDateEnd = oDateStart.plusDays(nDays);
         }*/
         
-        DateTime oDateStart = DateTime.now().withTimeAtStartOfDay().plusDays(1);
+        DateTime oDateStart = null;
+        
+        if(nDiffDaysForStartDate != 0){
+            oDateStart = DateTime.now().withTimeAtStartOfDay().plusDays(nDiffDaysForStartDate);
+        }else{
+            oDateStart = DateTime.now().withTimeAtStartOfDay().plusDays(1);
+        }
+        
+        
         DateTime oDateEnd = oDateStart.plusDays(nDays);
         
         SimpleDateFormat df_DayTime = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -173,6 +182,7 @@ public class ActionFlowController {
 
             if (sDateStart != null) {
                 oDateStart = JsonDateSerializer.DATE_FORMATTER.parseDateTime(sDateStart);
+                oDateStart = oDateStart.plusDays(nDiffDaysForStartDate);
             }
 
             int nDiffDaysCounter = nDiffDays;

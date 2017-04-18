@@ -41,7 +41,8 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
                     = (this.sKey_GroupPostfix != null) ? getStringFromFieldExpression(this.sKey_GroupPostfix, delegateTask.getExecution()) : "";
             LOG.info("sKey_GroupPostfix_Value in clone listener is {}", sKey_GroupPostfix_Value);
             
-            sKey_GroupPostfix_New_Value = (this.sKey_GroupPostfix_New != null) ? getStringFromFieldExpression(this.sKey_GroupPostfix_New, delegateTask.getExecution()) : "";
+            sKey_GroupPostfix_New_Value = (this.sKey_GroupPostfix_New != null) 
+                    ? getStringFromFieldExpression(this.sKey_GroupPostfix_New, delegateTask.getExecution()) : "";
             LOG.info("sKey_GroupPostfix_New_Value in clone listener is {}", sKey_GroupPostfix_New_Value);
         } catch (Exception ex) {
             LOG.error("sKey_GroupPostfix_Value error: {}", ex);
@@ -51,14 +52,9 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
             List<DocumentStep> aResDocumentStep = oDocumentStepService.checkDocumentInit(execution, sKey_GroupPostfix_Value, sKey_GroupPostfix_New_Value);
             LOG.info("aResDocumentStep in DocumentInit_iDoc is {}", aResDocumentStep);
             oDocumentStepService.syncDocumentGroups(delegateTask, aResDocumentStep);
-            
         } catch (Exception oException) {
             LOG.error("DocumentInit_iDoc: ", oException);
-            try {
-                throw oException;
-            } catch (Exception ex) {
-                java.util.logging.Logger.getLogger(DocumentInit_iDoc.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            java.util.logging.Logger.getLogger(DocumentInit_iDoc.class.getName()).log(Level.SEVERE, null, oException);
         }
     }
 

@@ -370,7 +370,8 @@ public class SubjectController {
             @ApiParam(value = "ИД-номер Джоина Субьекта-органа", required = true) @RequestParam(value = "nID", required = true) Long nID,
             @ApiParam(value = "Карта кастомніх атрибутов", required = true) @RequestBody String smAttributeCustom
     ) {
-
+        LOG.info("getAllSubjectOrganJoinAttributes smAttributeCustom: {}", smAttributeCustom);
+        LOG.info("nID: {}", nID);
         //LOG.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, sCut(50, smAttributeCustom));
         //oLogBig_Controller.info("(nID_SubjectOrganJoin={},smAttributeCustom(short)={})", nID, smAttributeCustom);
         Map<String, String> mAttributeCustom = JsonRestUtils.readObject(smAttributeCustom, Map.class);
