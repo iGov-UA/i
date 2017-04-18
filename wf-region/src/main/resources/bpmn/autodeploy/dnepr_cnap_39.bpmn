@@ -19,16 +19,16 @@
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер фізичної особи – підприємця" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRukov" name="П.І.Б. керівника юридичної особи / фізичної особи  – підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sOrgAdress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця; Індекс, Область, Місто, Вулиця, Будинок, Квартира або Офіс" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sIsSelo" name="Флаг щодо села" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIsSelo" name="Флаг щодо села ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачі заявки ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта для службових повідомлень" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Hide invisible" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_39.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Hide string" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_39.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -122,14 +122,14 @@
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації зверення у форматі ДД.ММ.РРРР" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="kopi" name="копія рішення" type="invisible" default="надання дозволу на розроблення проекту відведення земельної ділянки"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_36.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kopi" name="копія рішення ; ;bVisible=false" type="string" default="надання дозволу на розроблення проекту відведення земельної ділянки"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_36.html] ; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dneprOblSnap/dnepr_cnap_36.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Set Print" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_36_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачі заявки ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -251,9 +251,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment1" name="Коментар адміністратора у разі неможливості видати копію рішень міської (селищної) ради" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeRadi" name="Назва Ради органу (міської, сільскої) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="До кого звернення в заяві ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачі заявки ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow13" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>

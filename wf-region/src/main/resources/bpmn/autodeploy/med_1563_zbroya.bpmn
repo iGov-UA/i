@@ -11,13 +11,13 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть медичний заклад, в якому Ви бажаєте отримати медичну довідку для дозволу на зброю" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="lable" name="Зверніть увагу" type="label" default="&lt;b&gt;Запис на видачу медичної довідки для отримання дозволу на зброю проводиться особисто&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Телефон органу; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Тип органу; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo; ;bVisible=false" type="invisible" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Телефон органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -170,11 +170,11 @@ execution.setVariable('sNotification_day', timer)</script>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Тип органу; ;bVisible=false" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат зустрічі" type="enum">
           <activiti:value id="reestr" name="Громадянин з'явився"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>

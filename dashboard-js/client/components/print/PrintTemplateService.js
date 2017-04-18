@@ -126,7 +126,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Fiel
       if (markerExists){
           templates = form.filter(function (item) {
           var result = false;
-          if (item.id && item.id.indexOf('sBody') >= 0
+          //if (item.id && item.id.indexOf('sBody') >= 0
+          if (((item.id && item.id.indexOf('sBody') >= 0) || (item.name && item.name.indexOf('bPrintform=true') >= 0)) 
             && (!FieldMotionService.FieldMentioned.inShow(item.id)
             || (FieldMotionService.FieldMentioned.inShow(item.id)
             && FieldMotionService.isFieldVisible(item.id, form)))) {
@@ -145,7 +146,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Fiel
       } else {
           templates = form.filter(function (item) {
           var result = false;
-          if (item.id && item.id.indexOf('sBody') >= 0) {
+          //if (item.id && item.id.indexOf('sBody') >= 0) {
+          if ((item.id && item.id.indexOf('sBody') >= 0) || (item.name && item.name.indexOf('bPrintform=true') >= 0)) {
             result = true;
             // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
             // брать название для каждого элемента комбобокса #792

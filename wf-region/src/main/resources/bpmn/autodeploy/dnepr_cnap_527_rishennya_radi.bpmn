@@ -48,13 +48,13 @@
         <activiti:formProperty id="sReasonForEdit" name="Причина внесення змін до рішення" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNewText" name="Нова редакція відповідного пункту" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_ConfirmDocum" name="Документи, що підтверджують необхідність внесення змін до рішення; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sShapka527" name="Керівнику якого робочого органу" type="invisible" default="Міському голові м.Нікополь"></activiti:formProperty>
-        <activiti:formProperty id="sShapka527_rishennyaOrgan" name="Рішення якого робочого органу треба змінити" type="invisible" default="Нікопольської міської ради"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва оргструктури (району)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka527" name="Керівнику якого робочого органу ; ;bVisible=false" type="string" default="Міському голові м.Нікополь"></activiti:formProperty>
+        <activiti:formProperty id="sShapka527_rishennyaOrgan" name="Рішення якого робочого органу треба змінити ; ;bVisible=false" type="string" default="Нікопольської міської ради"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_1.json')}"></activiti:formProperty>
       </extensionElements>
@@ -106,10 +106,10 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka527_rishennyaOrgan" name="Рішення якого робочого органу треба змінити" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka527_rishennyaOrgan" name="Рішення якого робочого органу треба змінити ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_2_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html] ; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Форма заяви;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ідентифікаційного номеру фізичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -118,7 +118,7 @@
         <activiti:formProperty id="nFile_LandManagment" name="Копія документації із землеустрою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyRishennya" name="Копія рішення міської ради (в яке необхідно внести зміни); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_ConfirmDocum" name="Документи, що підтверджують необхідність внесення змін до рішення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
         </activiti:taskListener>
       </extensionElements>
@@ -170,10 +170,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment_2" name="У разі необхідності внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_Rishen" name="Завантажте копію рішення; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka527_rishennyaOrgan" name="Рішення якого робочого органу треба змінити" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka527_rishennyaOrgan" name="Рішення якого робочого органу треба змінити ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_2_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html] ; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Форма заяви;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ідентифікаційного номеру фізичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -182,7 +182,7 @@
         <activiti:formProperty id="nFile_LandManagment" name="Копія документації із землеустрою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyRishennya" name="Копія рішення міської ради (в яке необхідно внести зміни); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_ConfirmDocum" name="Документи, що підтверджують необхідність внесення змін до рішення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask5" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
