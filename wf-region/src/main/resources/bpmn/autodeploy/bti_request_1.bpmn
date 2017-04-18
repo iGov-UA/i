@@ -380,12 +380,12 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow35" sourceRef="servicetask5" targetRef="endevent7"></sequenceFlow>
     <scriptTask id="scripttask2" name="аналіз статусу сплати" activiti:autoStoreVariables="false">
-      <script>var payment=execution.getVariable('sID_Payment')
+      <script>
+var payment=execution.getVariable('sID_Payment')
 var status='0'
-if (payment.indexOf('_Успешный платеж')!=-1){status='true'}
-else {if (payment.indexOf('_Тестовый платеж')!=-1){status='true'}
-else {status='false'}}
-execution.setVariable('waiting_status', status)</script>
+if (payment.indexOf('_Успешный платеж')!=-1){status='true'} else {if (payment.indexOf('_Тестовый платеж')!=-1){status='true'} else {status='false'}}
+execution.setVariable('waiting_status', status)
+</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow36" sourceRef="scripttask2" targetRef="exclusivegateway4"></sequenceFlow>
