@@ -37,12 +37,12 @@
         <activiti:formProperty id="file_ato_vidradj" name="Документ про направлення  (прибуття) у відрядження для безпосередньої участі в АТО" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPrich" name="Вкажіть причину видачі посвідчення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_tip_osobu" name="tip_osobu" type="markers" default="${markerService.loadFromFile('soczah/kalush_upszn_400.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="Пароль" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="Пароль ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -134,7 +134,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="aEnamDok_bad" name="Документи невірні, відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню.(Вкажіть дату отримання посвідчення, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/kalush_uszn_400_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/kalush_uszn_400_print.html] ; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="v_komisiu" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;aEnamNo_Svid&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSvidki&quot;,&quot;sCond2&quot;:&quot;asWar_category&quot;,&quot;sCond3&quot;:&quot;asWW_Rob_Dok&quot;},&quot;sCondition&quot;:&quot;[sCond] == 'aEnamNo_Svid'&amp;&amp; [sCond2] == 'aEnamWw2'&amp;&amp; [sCond3] == 'aEnamNo_Dok'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;aEnamEst_Svid&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSvidki&quot;,&quot;sCond2&quot;:&quot;asWar_category&quot;,&quot;sCond3&quot;:&quot;asWW_Rob_Dok&quot;},&quot;sCondition&quot;:&quot;[sCond] == 'aEnamEst_Svid'&amp;&amp; [sCond2] == 'aEnamWw2'&amp;&amp; [sCond3] == 'aEnamNo_Dok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

@@ -43,13 +43,13 @@
         <activiti:formProperty id="nAgree" name="Нотаріально посвідчена заява  щодо згоди  на знесення самочинно розміщеної тимчасової споруди для провадження підприємницької діяльності" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="label1" name="Бланк заяви щодо згоди  на знесення самочинно розміщеної ТС" type="label" default="можна надрукувати  за цим посиланням"></activiti:formProperty>
         <activiti:formProperty id="nInfrastr" name="Копія платіжного документу, який підтверджує внесення до міського бюджету коштів пайової участі на створення і розвиток інженерно-транспортної та соціальної інфраструктури у розмірі, визначеному у відповідності до рішення міської ради" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="documents" name="Список документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="documents" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="markers1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_541.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -111,7 +111,7 @@
     </serviceTask>
     <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFIO" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків (ІПН); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
@@ -149,10 +149,10 @@
           <activiti:value id="reject" name="відмовити громадянину"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="documents" name="Список документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="documents" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява;Заява;pattern/print/dneprOblSnap/cnap_541_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/cnap_541_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/cnap_541_print.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Принтформа" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_541_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">

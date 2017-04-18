@@ -47,13 +47,13 @@
         <activiti:formProperty id="sDocNumb" name="Серія І-КИ №" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="Поля що залежать від ЕЦП" type="markers" default="${markerService.loadFromFile('soczah/upszn_0752.json')}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява в УПСЗН і Запит в РАЦС;;bPrintFormFileAsPDF=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Заява в УПСЗН і Запит в РАЦС" type="invisible" default="pattern/print/UPSZN/upszn_0752_print.html"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="Графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Заява в УПСЗН і Запит в РАЦС ; ;bVisible=false" type="string" default="pattern/print/UPSZN/upszn_0752_print.html"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="Графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -155,7 +155,7 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/UPSZN/socialhelp_kids_zayava.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/justice_0014_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -335,7 +335,7 @@ ${sNameOrgan}<br />
           <activiti:value id="attr2_bad" name="Рішення отримане, в допомозі відмовлено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="document" name="Сканована копія рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html]" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html] ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${bankticket},${bankId_scan_passport},${inn_scan},${birthdocument_scan},${form_signed},${nNoHelp}]]></activiti:expression>
@@ -356,7 +356,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса; на неї Ви будете отримувати повідомлення про обробку Вашої заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="label" name="Відповідь РАЦС отримана:" type="label" default="Свідоцтво про народження не підтверджено. Натисніть кнопку &quot;Опрацювати&quot;, щоб сповістити Заявника і закрити заявку."></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html]" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/UPSZN/socialhelp_kids_zayava.html] ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${bankticket},${bankId_scan_passport},${inn_scan},${birthdocument_scan},${form_signed},${nNoHelp}]]></activiti:expression>

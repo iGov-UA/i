@@ -88,7 +88,7 @@
         <activiti:formProperty id="warning3" name="Зверніть увагу" type="label" default="Вам потрібно завантажити та заповнити &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYRzA5M0FteEE1TWc&quot;&gt;Відомості про кваліфікацію персоналу автомобільного перевізника&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="nDocKvalif" name="Відомості про кваліфікацію персоналу автомобільного перевізника" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/avto_license.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask6"></sequenceFlow>
@@ -235,7 +235,7 @@ execution.setVariable('sTypeBiz', res)
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата найближчого засідання комісії" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть причину відмови або додаткові дані для отримання ліцензії у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/avto_license.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/avto_license.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/avto_license.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/avto_license.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>

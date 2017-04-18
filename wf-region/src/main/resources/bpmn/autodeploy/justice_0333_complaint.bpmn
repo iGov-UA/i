@@ -145,7 +145,7 @@
         <activiti:formProperty id="markers2" name="hideShowElements2" type="markers" default="${markerService.loadFromFile('minust/justice_0333_complaint_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersStyle_1" name="Маркер стилю" type="markers" default="{&quot;attributes&quot;:{&quot;Style_1&quot;:{&quot;aSelectors&quot;:[&quot;#field-sText1&quot;,&quot;#field-sText2&quot;,&quot;#field-sText3&quot;,&quot;#field-sText4&quot;,&quot;#field-sTextLaw1&quot;,&quot;#field-sTextLaw2&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;100%!important&quot;}},&quot;Style_2&quot;:{&quot;aElement_ID&quot;:[&quot;sText1&quot;,&quot;sText2&quot;,&quot;sText3&quot;,&quot;sText4&quot;,&quot;sTextLaw1&quot;,&quot;sTextLaw2&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;40%!important&quot;,&quot;border-radius&quot;:&quot;5px&quot;,&quot;background-color&quot;:&quot;white&quot;,&quot;text-align&quot;:&quot;left&quot;,&quot;color&quot;:&quot;#AAA&quot;,&quot;font-size&quot;:&quot;12px&quot;}}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/minust/justice_0333_complaint_print.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/minust/justice_0333_complaint_print.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення про нову скаргу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -196,7 +196,7 @@
         <activiti:formProperty id="sRepresentCompFirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRepresentCompMiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRepresentCompDoc" name="Реквізити документа, що підтверджує повноваження представника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubjectCategory" name="Категорія суб’єктів оскарження" type="enum" writable="false">
           <activiti:value id="sExecutiveCommittee" name="виконавчого комітету міської, сільської, селищної ради"></activiti:value>
@@ -301,7 +301,7 @@
           <activiti:value id="reject" name="Відмовити громадянину в прийнятті скарги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/justice_0333_complaint_print.html]" type="invisible" default="скарга" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/justice_0333_complaint_print.html] ; ;bVisible=false" type="string" default="скарга" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -410,7 +410,7 @@
         <activiti:formProperty id="sRepresentCompFirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRepresentCompMiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRepresentCompDoc" name="Реквізити документа, що підтверджує повноваження представника;(представник за довіреністю (довіреність), адвокат (ордер), юридична особа (договір про надання правової допомоги))" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSubjectCategory" name="Категорія суб’єктів оскарження" type="enum" writable="false">
           <activiti:value id="sExecutiveCommittee" name="виконавчий комітет міської, сільської, селищної ради"></activiti:value>
@@ -507,7 +507,7 @@
           <activiti:value id="sEnumNo" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nAnswerDoc" name="Завантажте скан-копію відповіді; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/justice_0333_complaint_print.html]" type="invisible" default="скарга" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/justice_0333_complaint_print.html] ; ;bVisible=false" type="string" default="скарга" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDoc1" name="Копія документа, що підтверджує повноваження представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDoc2" name="Копія рішення або повідомлення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDoc3" name="Інші документи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
