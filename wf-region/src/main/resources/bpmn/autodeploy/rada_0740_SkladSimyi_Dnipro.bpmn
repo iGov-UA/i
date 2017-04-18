@@ -14,7 +14,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Паспорт заявника; (тип, серія та номер документу, дата і орган, що його видав)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт заявника; (тип, серія та номер документу, дата і орган, що його видав)" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="asStatus" name="Статус заявника" type="enum" required="true">
           <activiti:value id="sVlasn" name="Власник житла"></activiti:value>
@@ -67,7 +67,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб" type="table" default="${markerService.loadFromFile('table/registr/form3_table_Dnipro.json')}"></activiti:formProperty>
+        <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб; ;bNew=true" type="table" default="${markerService.loadFromFile('table/registr/form3_table_Dnipro.json')}"></activiti:formProperty>
         <activiti:formProperty id="nFile_ZarPasports" name="Паспорти зареєстрованих осіб;(сканкопії оригіналу, завантажте одним ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="chekDitu" name="Чи є серед зараєстрованих осіб діти до 16ти років?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -145,44 +145,44 @@ var pasZ1 = execution.getVariable('bankIdlastName')
 var pasZ2 = execution.getVariable('bankIdfirstName')
 var pasZ3 = execution.getVariable('bankIdmiddleName')
 var pasZ4 = execution.getVariable('bankIdinn')
-var pasZ5 = execution.getVariable('sBankIdPassport')
+var pasZ5 = execution.getVariable('bankIdPassport')
 var pasD1 = execution.getVariable('DovirutLastName')
 var pasD2 = execution.getVariable('DovirutFirstName')
 var pasD3 = execution.getVariable('DovirutMiddleName')
 var pasD4 = execution.getVariable('DovirutdInn')
 var pasD5 = execution.getVariable('DovirutdPassport')
 
-if(execution.getVariable('asStatus') == 'sVlasn')
+if(execution.getVariable('asStatus') == 'sVlasn') execution.setVariable('pasZ1', ScriptLastName);
   {
-  execution.setVariable('pasZ1', ScriptLastName);
-  execution.setVariable('pasZ2', ScriptFirstName);
-  execution.setVariable('pasZ3', ScriptMiddleName);
-  execution.setVariable('pasZ4', ScriptInn);
-  execution.setVariable('pasZ5', ScriptPassport);
+  execution.setVariable('ScriptLastName', pasZ1)
+  execution.setVariable('ScriptFirstName', pasZ2)
+  execution.setVariable('ScriptMiddleName', pasZ3)
+  execution.setVariable('ScriptInn', pasZ4)
+  execution.setVariable('ScriptPassport', pasZ5)
   }
 if(execution.getVariable('asStatus') == 'sZarey')
   {
-  execution.setVariable('pasZ1', ScriptLastName);
-  execution.setVariable('pasZ2', ScriptFirstName);
-  execution.setVariable('pasZ3', ScriptMiddleName);
-  execution.setVariable('pasZ4', ScriptInn);
-  execution.setVariable('pasZ5', ScriptPassport);
+  execution.setVariable('ScriptLastName', pasZ1)
+  execution.setVariable('ScriptFirstName', pasZ2)
+  execution.setVariable('ScriptMiddleName', pasZ3)
+  execution.setVariable('ScriptInn', pasZ4)
+  execution.setVariable('ScriptPassport', pasZ5)
   }
 if(execution.getVariable('asStatus') == 'sVlasnDov')
   {
-  execution.setVariable('pasD1', ScriptLastName);
-  execution.setVariable('pasD2', ScriptFirstName);
-  execution.setVariable('pasD3', ScriptMiddleName);
-  execution.setVariable('pasD4', ScriptInn);
-  execution.setVariable('pasD5', ScriptPassport);
+  execution.setVariable('ScriptLastName', pasD1)
+  execution.setVariable('ScriptFirstName', pasD2)
+  execution.setVariable('ScriptMiddleName', pasD3)
+  execution.setVariable('ScriptInn', pasD4)
+  execution.setVariable('ScriptPassport', pasD5)
   }
 if(execution.getVariable('asStatus') == 'sZareyDov')
   {
-  execution.setVariable('pasD1', ScriptLastName);
-  execution.setVariable('pasD2', ScriptFirstName);
-  execution.setVariable('pasD3', ScriptMiddleName);
-  execution.setVariable('pasD4', ScriptInn);
-  execution.setVariable('pasD5', ScriptPassport);
+  execution.setVariable('ScriptLastName', pasD1)
+  execution.setVariable('ScriptFirstName', pasD2)
+  execution.setVariable('ScriptMiddleName', pasD3)
+  execution.setVariable('ScriptInn', pasD4)
+  execution.setVariable('ScriptPassport', pasD5)
   }
       </script>
     </scriptTask>
@@ -248,7 +248,7 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sVlasn" name="Власник житла"></activiti:value>
           <activiti:value id="sZarey" name="Зареєстрована особа, що не є власником"></activiti:value>
@@ -295,7 +295,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб" type="table" default="${markerService.loadFromFile('table/registr/form3_table_Dnipro.json')}"></activiti:formProperty>
+        <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_ZarPasports" name="Паспорти зареєстрованих осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="chekDitu" name="Чи є серед зараєстрованих осіб діти до 16ти років?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -489,7 +489,7 @@ ${sNameOrgan}<br>
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asWhere" name="Для чого громадянину потрібна довідка" type="enum" writable="false">
@@ -557,7 +557,7 @@ ${sNameOrgan}<br>
         <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
