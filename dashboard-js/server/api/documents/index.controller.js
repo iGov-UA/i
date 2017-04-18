@@ -52,7 +52,7 @@ exports.getProcessSubject = function (req, res) {
   })
 };
 
-exports.getBPs = function (req, res) {
+exports.getBPs_ForReferent = function (req, res) {
   cache.get(buildKey(req.query), function (error, value) {
     if (value) {
       res.send(value);
@@ -67,7 +67,7 @@ exports.getBPs = function (req, res) {
         }
       };
       activiti.get({
-        path: 'subject/group/getSubjectRightBPs',
+        path: 'subject/group/getBPs_ForReferent',
         query: req.query
       }, callback)
     }
@@ -95,5 +95,27 @@ exports.getProcessSubjectTree = function (req, res) {
   }, function (error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);
+  })
+};
+
+exports.delegateDocument = function (req, res) {
+  activiti.get({
+    path: 'common/document/delegateDocumentStepSubject',
+    query: req.query
+  }, function (error, statusCode, result) {
+    res.statusCode = statusCode;
+    res.send(result);
+  })
+};
+
+exports.getDocumentSubmittedUnsigned = function (req, res) {
+  activiti.get({
+    path: 'common/document/getDocumentSubmitedUnsigned',
+    query: req.query
+  }, function (error, statusCode, result) {
+    if(!error) {
+      res.statusCode = statusCode;
+      res.send(result)
+    }
   })
 };

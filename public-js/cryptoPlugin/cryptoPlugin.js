@@ -2,351 +2,773 @@ angular.module('cryptoPlugin', [])
     .factory('cryptoPluginFactory', function () {
         return {
             initialize: function () {
-                return "undefined" === typeof CryptoPlugin && (window.CryptoPlugin = {
+                if (typeof CryptoPlugin === "undefined") {
+                    window.CryptoPlugin = {
                         config: {
                             pluginspage: "https://www.privatbank.ua",
-                            minimalVersion: "1.0.2.0",
+                            minimalVersion: "1.2.2.0",
                             debugFunction: null,
-                            OCXPath: "cryptoplugin.cab",
-                            lagDelay: 100,
-                            chromeExtensionId: ["idfiabaafjemgcecklpgnebaebonghka", "pgfbdgicjmhenccemcijooffohcdanic", ""],
-                            chromeExtensionPreamble: ["crypto.plugin", "bankid.crypto.plugin", ""],
-                            chromeExtensionIndex: 0
+                            enableWarning: true,
+                            OCXPath: "/cryptoplugin.cab",
+                            lagDelay: 300,
+                            chromeExtensionId: ["pgfbdgicjmhenccemcijooffohcdanic", "hhgceiljneockhjiakblpicadmfcipii", "idfiabaafjemgcecklpgnebaebonghka"],
+                            chromeExtensionPreamble: ["bankid.crypto.plugin", "papka24.crypto.plugin", "crypto.plugin"],
+                            operaExtensionId: ["iofcmdkhogeiiijjppbnbclpikhldfac", "aiikngbhbnkcahmaelhdfeaeenccfkej"],
+                            operaExtensionPreamble: ["crypto.plugin", "bankid.crypto.plugin"],
+                            extensionIndex: 0,
+                            extensionId: null,
+                            extensionPreamble: null,
+                            extensionFound: false,
+                            chromeExtensionMode: 2,
+                            isOpera: false,
+                            isMozilla: false,
+                            browserRegexp: {
+                                kindle: /(kindle)\/([\w.]+)/,
+                                avant: /avant\sbrowser?[\/\s]?([\w.]*)/,
+                                chromium: /(chromium)\/([\w.-]+)/,
+                                skyfire: /(skyfire)\/([\w.-]+)/,
+                                vivaldi: /(vivaldi)\/([\w.-]+)/,
+                                yandex: /(yabrowser)\/([\w.]+)/,
+                                ucbrowser: /(uc\s?browser)[\/\s]?([\w.]+)/,
+                                firefox: /(firefox)\/([\w.-]+)/,
+                                netscape: /(navigator|netscape)\/([\w.-]+)/,
+                                coast: /(coast)\/([\w.]+)/,
+                                opera: /(op(era|r|ios))[\/\s]+([\w.]+)/,
+                                msie: /(?:ms|\()(ie)|((trident).+rv[:\s]([\w.]+).+like\sgecko)|(edge)\/((\d+)?[\w.]+)/,
+                                androidBrowser: /android.+version\/([\w.]+)\s+(?:mobile\s?safari|safari)/,
+                                safari: /version\/([\w.]+).+?(mobile\s?safari|safari)/,
+                                chrome: /(chrome|crmo|crios)\/([\w.]+)/,
+                                spartan: /edge\/12/
+                            }
                         }, connect: function () {
-                            function p() {
-                                navigator.plugins.refresh(!1);
-                                if (null == document.getElementById("CryptoPluginInstance") || "undefined" === typeof document.getElementById("CryptoPluginInstance").send) {
-                                    if (null != document.getElementById("CryptoPluginInstance")) {
-                                        var a = document.getElementById("CryptoPluginInstance");
-                                        a.parentNode.removeChild(a)
-                                    }
-                                    a = document.createElement("EMBED");
-                                    a.setAttribute("id", "CryptoPluginInstance");
-                                    a.setAttribute("type", "application/x-vnd-cryptoplugin");
-                                    a.setAttribute("embed", "false");
-                                    a.setAttribute("width", "1");
-                                    a.setAttribute("height", "1");
-                                    a.setAttribute("pluginspage", CryptoPlugin.config.pluginspage);
-                                    document.body.appendChild(a)
+                            return function (n, e) {
+                                CryptoPlugin.config.isOpera = CryptoPlugin.config.browserRegexp.opera.test(navigator.userAgent.toLowerCase());
+                                CryptoPlugin.config.isMozilla = CryptoPlugin.config.browserRegexp.firefox.test(navigator.userAgent.toLowerCase());
+                                var i = navigator.userAgent.toLowerCase();
+                                if (CryptoPlugin.config.browserRegexp.androidBrowser.test(i) || CryptoPlugin.config.browserRegexp.vivaldi.test(i) || CryptoPlugin.config.browserRegexp.spartan.test(i)) {
+                                    e({code: -100, message: "Браузер не поддерживается", source: "CryptoPlugin"});
+                                    return null
                                 }
-                                CryptoPlugin.plugin =
-                                    document.getElementById("CryptoPluginInstance");
+                                if (typeof CryptoPlugin.plugin === "undefined" || CryptoPlugin.plugin === null || CryptoPlugin.plugin.pluginType !== "OCX") {
+                                    t()
+                                }
+                                if (CryptoPlugin.plugin === null || CryptoPlugin.plugin.pluginType !== "OCX" && typeof CryptoPlugin.plugin.send === "undefined") {
+                                    if (typeof e === "function") {
+                                        e({
+                                            code: 0,
+                                            message: "Плагин не обнаружен или заблокирован",
+                                            source: "CryptoPlugin"
+                                        });
+                                        e = null
+                                    }
+                                    return null
+                                }
+                                var o = {pluginType: CryptoPlugin.plugin.pluginType, version: ""};
+                                l(o);
+                                window.setTimeout(function () {
+                                    if (CryptoPlugin.plugin.pluginType === "NM") {
+                                        var i = function () {
+                                            return function () {
+                                                CryptoPlugin.plugin.callback = function () {
+                                                    return function (i) {
+                                                        if (typeof i.answer !== "undefined" && typeof i.answer.api !== "undefined") {
+                                                            CryptoPlugin.API = JSON.parse(i.answer.api);
+                                                            s(o);
+                                                            u("getPluginInfo", null, null, function (e) {
+                                                                l(o, e);
+                                                                u("getVersion", null, null, function (e) {
+                                                                    if (e && e.hasOwnProperty("version")) {
+                                                                        o.version = e.version
+                                                                    }
+                                                                    if (typeof n === "function") {
+                                                                        n(o)
+                                                                    }
+                                                                }, null)
+                                                            }, null)
+                                                        } else if (typeof e === "function") {
+                                                            e({
+                                                                code: 0,
+                                                                message: "Плагин не обнаружен или заблокирован",
+                                                                source: "connect"
+                                                            });
+                                                            e = null
+                                                        }
+                                                    }
+                                                }();
+                                                CryptoPlugin.plugin.send('{"function":"getAPI"}');
+                                                return o
+                                            }
+                                        }();
+                                        var t = 0;
+                                        var r = CryptoPlugin.config.chromeExtensionId.length - 1;
+                                        var f = CryptoPlugin.config.chromeExtensionId;
+                                        var a = CryptoPlugin.config.chromeExtensionPreamble;
+                                        if (CryptoPlugin.config.isOpera) {
+                                            r = CryptoPlugin.config.operaExtensionId.length - 1;
+                                            f = CryptoPlugin.config.operaExtensionId;
+                                            a = CryptoPlugin.config.operaExtensionPreamble
+                                        }
+                                        if (!CryptoPlugin.config.extensionFound) {
+                                            if (CryptoPlugin.config.isMozilla) {
+                                                if (document.head.querySelector(".CryptoPluginExtensionLoaded") !== null) {
+                                                    CryptoPlugin.config.extensionIndex = 0;
+                                                    CryptoPlugin.config.extensionFound = true;
+                                                    CryptoPlugin.config.extensionPreamble = "crypto.plugin";
+                                                    CryptoPlugin.config.extensionId = "";
+                                                    window.setTimeout(function () {
+                                                        var n = i();
+                                                        return function () {
+                                                            if (typeof e === "function" && n.version === "") {
+                                                                e({
+                                                                    code: 0,
+                                                                    message: "Плагин не обнаружен или заблокирован",
+                                                                    source: "connect"
+                                                                });
+                                                                e = null
+                                                            }
+                                                        }
+                                                    }(), 600)
+                                                } else {
+                                                    e({
+                                                        code: -1,
+                                                        message: "Расширение для Firefox не установлено",
+                                                        source: "connect"
+                                                    })
+                                                }
+                                            } else {
+                                                var g = function (n) {
+                                                    CryptoPlugin.config.extensionIndex = n;
+                                                    var o = new XMLHttpRequest;
+                                                    o.open("GET", "chrome-extension://" + f[CryptoPlugin.config.extensionIndex] + "/manifest.json", true);
+                                                    o.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                                    o.timeout = 100;
+                                                    o.onreadystatechange = function () {
+                                                        if (o.readyState === 4) {
+                                                            if (o.status === 200) {
+                                                                CryptoPlugin.config.extensionFound = true;
+                                                                CryptoPlugin.config.extensionId = f[CryptoPlugin.config.extensionIndex];
+                                                                CryptoPlugin.config.extensionPreamble = a[CryptoPlugin.config.extensionIndex];
+                                                                var t = i();
+                                                                window.setTimeout(function () {
+                                                                    if (typeof e === "function" && t.version === "") {
+                                                                        e({
+                                                                            code: 0,
+                                                                            message: "Плагин не обнаружен или заблокирован",
+                                                                            source: "connect"
+                                                                        });
+                                                                        e = null
+                                                                    }
+                                                                }, 600)
+                                                            } else {
+                                                                if (n === r) {
+                                                                    if (typeof e === "function") {
+                                                                        window.setTimeout(function () {
+                                                                            e({
+                                                                                code: -1,
+                                                                                message: "Расширение для " + (CryptoPlugin.config.isOpera ? "Opera" : "Chrome") + " не установлено",
+                                                                                source: "connect"
+                                                                            })
+                                                                        }, 0)
+                                                                    }
+                                                                } else {
+                                                                    g(n + 1)
+                                                                }
+                                                            }
+                                                        }
+                                                    };
+                                                    o.send()
+                                                };
+                                                g(t)
+                                            }
+                                        } else {
+                                            o = i();
+                                            window.setTimeout(function () {
+                                                if (typeof e === "function" && o.version === "") {
+                                                    e({
+                                                        code: 0,
+                                                        message: "Плагин не обнаружен или заблокирован",
+                                                        source: "connect"
+                                                    });
+                                                    e = null
+                                                }
+                                            }, 100)
+                                        }
+                                    } else {
+                                        try {
+                                            var c = CryptoPlugin.plugin.send('{"function":"getAPI"}');
+                                            CryptoPlugin.API = JSON.parse(JSON.parse(c).answer.api);
+                                            s(o)
+                                        } catch (n) {
+                                            if (typeof e === "function") {
+                                                e({
+                                                    code: 0,
+                                                    message: "Плагин не обнаружен или заблокирован",
+                                                    source: "connect"
+                                                });
+                                                e = null;
+                                                return
+                                            }
+                                        }
+                                        u("getPluginInfo", null, null, function (e) {
+                                            l(o, e);
+                                            u("getVersion", null, null, function (e) {
+                                                if (e && e.hasOwnProperty("version")) {
+                                                    o.version = e.version
+                                                }
+                                                if (typeof n === "function") {
+                                                    n(o)
+                                                }
+                                            }, null)
+                                        }, null)
+                                    }
+                                }, CryptoPlugin.plugin.pluginType === "OCX" ? 333 : 50)
+                            };
+                            function n() {
+                                return "\v" == "v" || /msie/.test(navigator.userAgent.toLowerCase()) || /trident.*rv[ :]*11\./.test(navigator.userAgent.toLowerCase()) || typeof window.ActiveXObject !== "undefined"
+                            }
+
+                            function e() {
+                                navigator.plugins.refresh(false);
+                                if (document.getElementById("CryptoPluginInstance") !== null) {
+                                    var n = document.getElementById("CryptoPluginInstance");
+                                    n.parentNode.removeChild(n)
+                                }
+                                var e = document.createElement("EMBED");
+                                e.setAttribute("id", "CryptoPluginInstance");
+                                e.setAttribute("type", "application/x-vnd-cryptoplugin");
+                                e.setAttribute("embed", "false");
+                                e.setAttribute("width", "1");
+                                e.setAttribute("height", "1");
+                                e.setAttribute("pluginspage", CryptoPlugin.config.pluginspage);
+                                document.body.appendChild(e);
+                                CryptoPlugin.plugin = document.getElementById("CryptoPluginInstance");
                                 CryptoPlugin.plugin.pluginType = "NPAPI"
                             }
 
-                            function s() {
-                                if (null == document.getElementById("CryptoPluginInstance")) {
-                                    var a = document.createElement("INPUT");
-                                    a.setAttribute("id", "CryptoPluginInstance");
-                                    a.setAttribute("type", "hidden");
-                                    a.setAttribute("value", "");
-                                    document.body.appendChild(a)
+                            function i() {
+                                if (document.getElementById("CryptoPluginInstance") === null) {
+                                    var n = document.createElement("INPUT");
+                                    n.setAttribute("id", "CryptoPluginInstance");
+                                    n.setAttribute("type", "hidden");
+                                    n.setAttribute("value", "");
+                                    document.body.appendChild(n)
+                                }
+                                if (typeof chrome === "undefined" || typeof chrome.runtime === "undefined" || typeof chrome.runtime.sendMessage === "undefined") {
+                                    CryptoPlugin.config.chromeExtensionMode = 1
                                 }
                                 CryptoPlugin.plugin = {};
-                                CryptoPlugin.plugin.onMessage = function (a) {
-                                    a.data.sender == CryptoPlugin.config.chromeExtensionPreamble[CryptoPlugin.config.chromeExtensionIndex] + ".native" &&
-                                    (a.data.error && "disconnected" === a.data.error && "function" === typeof CryptoPlugin.config.debugFunction && CryptoPlugin.config.debugFunction("Chrome NM disconnect!", "warn"), window.removeEventListener("message", CryptoPlugin.plugin.onMessage, !0), null != CryptoPlugin.plugin.callback && CryptoPlugin.plugin.callback.call(null, a.data))
+                                CryptoPlugin.plugin.onMessage = function (n) {
+                                    if (n.data.sender === CryptoPlugin.config.extensionPreamble + ".native") {
+                                        if (n.data.error && n.data.error === "disconnected") {
+                                            if (typeof CryptoPlugin.config.debugFunction === "function") {
+                                                CryptoPlugin.config.debugFunction("Chrome NM disconnect!", "warn")
+                                            }
+                                        }
+                                        window.removeEventListener("message", CryptoPlugin.plugin.onMessage, true);
+                                        if (CryptoPlugin.plugin.callback !== null && typeof CryptoPlugin.plugin.callback === "function") {
+                                            CryptoPlugin.plugin.callback.call(null, n.data)
+                                        }
+                                    }
                                 };
-                                CryptoPlugin.plugin.send = function (a) {
-                                    window.addEventListener("message", CryptoPlugin.plugin.onMessage, !0);
-                                    document.getElementById("CryptoPluginInstance").value = a;
-                                    window.postMessage({
-                                        sender: CryptoPlugin.config.chromeExtensionPreamble[CryptoPlugin.config.chromeExtensionIndex] +
-                                        ".js"
-                                    }, "*")
+                                CryptoPlugin.plugin.send = function (n) {
+                                    window.addEventListener("message", CryptoPlugin.plugin.onMessage, true);
+                                    if (CryptoPlugin.config.chromeExtensionMode === 1) {
+                                        document.getElementById("CryptoPluginInstance").value = n;
+                                        window.postMessage({sender: CryptoPlugin.config.extensionPreamble + ".js"}, "*")
+                                    } else {
+                                        chrome.runtime.sendMessage(CryptoPlugin.config.extensionId, n, {includeTlsChannelId: true}, function (e) {
+                                            if (typeof e === "undefined") {
+                                                CryptoPlugin.config.chromeExtensionMode = 1;
+                                                document.getElementById("CryptoPluginInstance").value = n;
+                                                window.postMessage({sender: CryptoPlugin.config.extensionPreamble + ".js"}, "*")
+                                            }
+                                        })
+                                    }
                                 };
                                 CryptoPlugin.plugin.pluginType = "NM"
                             }
 
+                            function o() {
+                                if (document.getElementById("CryptoPluginInstance") !== null) {
+                                    var n = document.getElementById("CryptoPluginInstance");
+                                    n.parentNode.removeChild(n)
+                                }
+                                var e = document.createElement("OBJECT");
+                                e.setAttribute("ID", "CryptoPluginInstance");
+                                e.setAttribute("codebase", CryptoPlugin.config.OCXPath + "#version=" + CryptoPlugin.config.minimalVersion.replace(/\./g, ","));
+                                e.setAttribute("CLASSID", "CLSID:03EBA73D-329C-45D1-A2E4-9D7719BAD366");
+                                e.setAttribute("width", "0");
+                                e.setAttribute("height", "0");
+                                document.body.appendChild(e);
+                                CryptoPlugin.plugin = e;
+                                CryptoPlugin.plugin.pluginType = "OCX"
+                            }
+
                             function t() {
-                                if ("\v" == "v" || /msie/.test(navigator.userAgent.toLowerCase()) || /trident.*rv[ :]*11\./.test(navigator.userAgent.toLowerCase()) || "undefined" !== typeof window.ActiveXObject) {
-                                    if (null != document.getElementById("CryptoPluginInstance")) {
-                                        var a = document.getElementById("CryptoPluginInstance");
-                                        a.parentNode.removeChild(a)
-                                    }
-                                    a = document.createElement("OBJECT");
-                                    a.setAttribute("ID", "CryptoPluginInstance");
-                                    a.setAttribute("codebase", CryptoPlugin.config.OCXPath +
-                                        "#version\x3d" + CryptoPlugin.config.minimalVersion.replace(/\./g, ","));
-                                    a.setAttribute("CLASSID", "CLSID:03EBA73D-329C-45D1-A2E4-9D7719BAD366");
-                                    a.setAttribute("width", "0");
-                                    a.setAttribute("height", "0");
-                                    document.body.appendChild(a);
-                                    CryptoPlugin.plugin = a;
-                                    CryptoPlugin.plugin.pluginType = "OCX"
-                                } else window.chrome ? (a = parseInt(window.navigator.appVersion.match(/Chrome\/(\d+)\./)[1], 10), -1 != navigator.appVersion.indexOf("Linux") && 35 <= a || -1 === navigator.appVersion.indexOf("Win") && 42 <= a || -1 === navigator.appVersion.indexOf("Mac") &&
-                                41 <= a || -1 !== navigator.userAgent.toLowerCase().indexOf("opr/") && 40 <= a ? s() : p()) : p()
-                            }
-
-                            function n(a, b, d, l, c) {
-                                if ("success" === a.type)if (null !== b && 0 < b.functionLevel && "NM" !== CryptoPlugin.plugin.pluginType && ("closeSession" === c || "closeAllSessions" === c ? e(b, k("getPluginInfo", null, b, null, null)) : e(b, k("getSessionInfo", null, b, null, null))), l = ((new Date).getTime() - CryptoPlugin.plugin.time) / 1E3, a.hasOwnProperty("answer"))if ("function" === typeof d) "function" === typeof CryptoPlugin.config.debugFunction && "getSessionInfo" !==
-                                c && "getPluginInfo" !== c && CryptoPlugin.config.debugFunction("P(" + l + "s)\u2708 " + JSON.stringify(a.answer), "info"), "NM" === CryptoPlugin.plugin.pluginType && null != b && 0 < b.functionLevel ? k("getSessionInfo", null, b, function () {
-                                    return function (c) {
-                                        e(b, c);
-                                        d(a.answer)
-                                    }
-                                }(), null) : d(a.answer); else return "function" === typeof CryptoPlugin.config.debugFunction && "getSessionInfo" !== c && "getPluginInfo" !== c && CryptoPlugin.config.debugFunction("P(" + l + "s)\u2192 " + JSON.stringify(a.answer), "info"), a.answer; else"function" === typeof d ?
-                                    ("function" === typeof CryptoPlugin.config.debugFunction && "getSessionInfo" !== c && "getPluginInfo" !== c && CryptoPlugin.config.debugFunction("P(" + l + "s)\u2708 [without arguments]", "info"), "NM" === CryptoPlugin.plugin.pluginType && null != b && 0 < b.functionLevel ? k("getSessionInfo", null, b, function () {
-                                        return function (a) {
-                                            e(b, a);
-                                            d()
-                                        }
-                                    }(), null) : d()) : "function" === typeof CryptoPlugin.config.debugFunction && "getSessionInfo" !== c && "getPluginInfo" !== c && CryptoPlugin.config.debugFunction("P(" + l + "s)\u2192 [without arguments]", "info");
-                                else if ("error" === a.type || "message" === a.type) "getSessionInfo" === c && 2 === a.answer.errorCode ? null != b && e(b, {sessionState: "absent"}) : "function" === typeof CryptoPlugin.config.debugFunction && CryptoPlugin.config.debugFunction("\u2717 code \x3d " + a.answer.errorCode + (a.answer.hasOwnProperty("errorText") ? ", message \x3d " + a.answer.errorText : "") + ("undefined" !== typeof c ? ", source \x3d " + c : ""), "warn"), "restoreSession" === c && e(b, {sessionState: ""}), null != b && 0 < b.functionLevel && ("NM" === CryptoPlugin.plugin.pluginType ?
-                                    k("getSessionInfo", null, b, function (a) {
-                                        e(b, a)
-                                    }, null) : e(b, k("getSessionInfo", null, b, null, null))), "function" === typeof l && l({
-                                    code: a.answer.errorCode,
-                                    message: a.answer.hasOwnProperty("errorText") ? a.answer.errorText : "",
-                                    source: c
-                                })
-                            }
-
-                            function k(a, b, d, l, c) {
-                                var e = "";
-                                if (null != CryptoPlugin.plugin && "undefined" !== typeof CryptoPlugin.plugin.send) {
-                                    "undefined" !== typeof d && null != d && d.hasOwnProperty("sessionId") && null != d.sessionId && "" != d.sessionId && (e = d.sessionId);
-                                    var g = null, g = "undefined" !== typeof b && null != b && "" != b ? {
-                                        "function": a,
-                                        params: b, sessionId: e
-                                    } : {"function": a, sessionId: e};
-                                    "undefined" === typeof d || null == d || d.callback || "selectDir" !== a && "selectFile" !== a && "getDeviceList" !== a && "device" !== d.storageType || "NM" == CryptoPlugin.plugin.pluginType || -1 == navigator.appVersion.indexOf("Win") || (g.lag = !0);
-                                    b = JSON.parse(JSON.stringify(g));
-                                    if ("undefined" !== typeof b.params) {
-                                        delete b.url;
-                                        for (var h in b.params)b.params.hasOwnProperty(h) && -1 != h.toLowerCase().indexOf("password") && (b.params[h] = Array(b.params[h].length).join("*"))
-                                    }
-                                    "function" === typeof CryptoPlugin.config.debugFunction &&
-                                    "getSessionInfo" !== a && "getPluginInfo" !== a && CryptoPlugin.config.debugFunction("P\u2190 " + JSON.stringify(b), "info");
-                                    "getSessionInfo" !== a && (CryptoPlugin.plugin.time = (new Date).getTime());
-                                    var f = null, m = null;
-                                    "getSessionInfo" !== a && "undefined" !== typeof d && null != d && d.hasOwnProperty("sessionId") && "" != d.sessionId && (m = d);
-                                    d = null;
-                                    g.url = document.URL;
-                                    if ("NM" === CryptoPlugin.plugin.pluginType) "" != document.getElementById("CryptoPluginInstance").value ? (d = JSON.parse(document.getElementById("CryptoPluginInstance").value)["function"],
-                                    "function" === typeof c && c({
-                                        code: 5,
-                                        message: '\u0412\u044b\u043f\u043e\u043b\u043d\u044f\u0435\u0442\u0441\u044f \u043c\u0435\u0442\u043e\u0434 "' + d + '", \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u043f\u0440\u043e\u0438\u0433\u043d\u043e\u0440\u0438\u0440\u043e\u0432\u0430\u043d\u0430',
-                                        source: a
-                                    }), "function" === typeof CryptoPlugin.config.debugFunction && CryptoPlugin.config.debugFunction('\u2717 code \x3d 5, message \x3d \u0412\u044b\u043f\u043e\u043b\u043d\u044f\u0435\u0442\u0441\u044f \u043c\u0435\u0442\u043e\u0434 "' +
-                                        d + '", \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u043f\u0440\u043e\u0438\u0433\u043d\u043e\u0440\u0438\u0440\u043e\u0432\u0430\u043d\u0430, source \x3d ' + a, "warn")) : ("function" === typeof l && (CryptoPlugin.plugin.callback = function () {
-                                        return function (b) {
-                                            n(b, m, l, c, a)
-                                        }
-                                    }()), CryptoPlugin.plugin.send(JSON.stringify(g))); else {
-                                        h = CryptoPlugin.plugin.send(JSON.stringify(g));
-                                        try {
-                                            f = JSON.parse(h)
-                                        } catch (k) {
-                                            "function" === typeof CryptoPlugin.config.debugFunction && CryptoPlugin.config.debugFunction("Unpredictable behavior of plugin",
-                                                "warn");
-                                            return
-                                        }
-                                        if ("lag" === f.type)if ("function" === typeof l) {
-                                            var q = "interval" + Math.floor(1E5 * Math.random());
-                                            CryptoPlugin[q] = window.setInterval(function () {
-                                                return function () {
-                                                    var b = "";
-                                                    try {
-                                                        b = CryptoPlugin.plugin.send(JSON.stringify(g)), f = JSON.parse(b)
-                                                    } catch (d) {
-                                                        "function" === typeof CryptoPlugin.config.debugFunction && CryptoPlugin.config.debugFunction("Unpredictable behavior of plugin: " + b, "warn");
-                                                        return
-                                                    }
-                                                    "lag" !== f.type && (clearInterval(CryptoPlugin[q]), delete CryptoPlugin[q], n(f, m, l, c, a))
-                                                }
-                                            }(), CryptoPlugin.config.lagDelay)
-                                        } else for (; ;) {
-                                            for (d =
-                                                     (new Date).getTime(); !((new Date).getTime() - d > CryptoPlugin.config.lagDelay););
-                                            try {
-                                                h = CryptoPlugin.plugin.send(JSON.stringify(g)), f = JSON.parse(h)
-                                            } catch (p) {
-                                                "function" === typeof CryptoPlugin.config.debugFunction && CryptoPlugin.config.debugFunction("Unpredictable behavior of plugin: " + h, "warn");
-                                                break
-                                            }
-                                            if ("lag" !== f.type)return n(f, m, null, c, a)
-                                        } else return n(f, m, l, c, a)
-                                    }
-                                } else"function" === typeof c && c({
-                                    code: 0,
-                                    message: "\u041f\u043b\u0430\u0433\u0438\u043d \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d \u0438\u043b\u0438 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d",
-                                    source: a
-                                })
-                            }
-
-                            function r(a) {
-                                if (CryptoPlugin.hasOwnProperty("API"))for (var b = CryptoPlugin.API.length - 1; 0 <= b; b--) {
-                                    var d = CryptoPlugin.API[b];
-                                    a.hasOwnProperty(CryptoPlugin.API[b].name) || (a[d.name] = function () {
-                                        var b = d, c;
-                                        return function () {
-                                            var d = {}, g = !1;
-                                            if (b.hasOwnProperty("params"))if (arguments.length > b.params.length + 2) "function" === typeof CryptoPlugin.config.debugFunction && CryptoPlugin.config.debugFunction("\u041f\u0435\u0440\u0435\u0434\u0430\u043d\u043e \u0431\u043e\u043b\u044c\u0448\u0435 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u043e\u0432 \u0447\u0435\u043c \u043d\u0443\u0436\u043d\u043e \u0434\u043b\u044f \u0444\u0443\u043d\u043a\u0446\u0438\u0438 " +
-                                                b.name, "warn"); else {
-                                                var h = 0;
-                                                for (c = 0; c < b.params.length; c++)b.params[c].hasOwnProperty("optional") && b.params[c].optional || h++;
-                                                "function" === typeof CryptoPlugin.config.debugFunction && (2 <= arguments.length && "function" === typeof arguments[arguments.length - 2] && h + 2 > arguments.length && CryptoPlugin.config.debugFunction("\u041f\u0435\u0440\u0435\u0434\u0430\u043d\u043e \u043c\u0435\u043d\u044c\u0448\u0435 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u043e\u0432 \u0447\u0435\u043c \u043d\u0443\u0436\u043d\u043e \u0434\u043b\u044f \u0444\u0443\u043d\u043a\u0446\u0438\u0438 " +
-                                                    b.name, "warn"), 1 <= arguments.length && "function" === typeof arguments[arguments.length - 1] && h + 1 > arguments.length && CryptoPlugin.config.debugFunction("\u041f\u0435\u0440\u0435\u0434\u0430\u043d\u043e \u043c\u0435\u043d\u044c\u0448\u0435 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u043e\u0432 \u0447\u0435\u043c \u043d\u0443\u0436\u043d\u043e \u0434\u043b\u044f \u0444\u0443\u043d\u043a\u0446\u0438\u0438 " + b.name, "warn"))
-                                            } else 2 < arguments.length && "function" === typeof CryptoPlugin.config.debugFunction &&
-                                            CryptoPlugin.config.debugFunction("\u041f\u0435\u0440\u0435\u0434\u0430\u043d\u043e \u0431\u043e\u043b\u044c\u0448\u0435 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u043e\u0432 \u0447\u0435\u043c \u043d\u0443\u0436\u043d\u043e \u0434\u043b\u044f \u0444\u0443\u043d\u043a\u0446\u0438\u0438 " + b.name, "warn");
-                                            var f = null, m = null;
-                                            if (b.hasOwnProperty("params"))for (c = 0; c < arguments.length; c++)if ("function" === typeof arguments[c])if (c === arguments.length - 2 && "function" === typeof arguments[c + 1]) {
-                                                f = arguments[c];
-                                                m = arguments[c + 1];
-                                                break
-                                            } else if (c === arguments.length - 1) {
-                                                f = arguments[c];
-                                                break
-                                            } else"function" === typeof CryptoPlugin.config.debugFunction && CryptoPlugin.config.debugFunction("\u0424\u0443\u043d\u043a\u0446\u0438\u0438 \u043e\u0431\u0440\u0430\u0442\u043d\u043e\u0433\u043e \u0432\u044b\u0437\u043e\u0432\u0430 \u043f\u0435\u0440\u0435\u0434\u0430\u043d\u044b \u0432 \u043d\u0435\u043f\u0440\u0430\u0432\u0438\u043b\u044c\u043d\u044b\u0445 \u043f\u043e\u0437\u0438\u0446\u0438\u044f\u0445 " + b.name, "warn"); else {
-                                                if (b.params[c].hasOwnProperty("type"))if (h =
-                                                        b.params[c].type, "Number" === h) {
-                                                    if (arguments[c] = parseInt(arguments[c]), isNaN(arguments[c]))continue
-                                                } else"Boolean" === h && "boolean" !== typeof arguments[c] && (arguments[c] = "true" === arguments[c].toLowerCase());
-                                                g = !0;
-                                                null != arguments[c] && (d[b.params[c].name] = arguments[c]);
-                                                "sessionId" === b.params[c].name && "restoreSession" === b.name && (a.sessionId = arguments[c])
-                                            }
-                                            g || (d = null);
-                                            g = null;
-                                            if ("updateInfo" === b.name) k("getPluginInfo", null, null, function (b) {
-                                                e(a, b);
-                                                null != a.sessionId && 0 < a.sessionId.length ? k("getSessionInfo", null,
-                                                    a, function (b) {
-                                                        e(a, b);
-                                                        f()
-                                                    }, function (b) {
-                                                        2 === b.code ? (e(a), "function" === typeof f && f()) : "function" === typeof m && m()
-                                                    }) : "function" === typeof f && f()
-                                            }, m); else return g = "openSession" === b.name || "restoreSession" === b.name ? function () {
-                                                return function (b) {
-                                                    e(a);
-                                                    a.sessionId = b.sessionId;
-                                                    k("getPluginInfo", null, null, function (b) {
-                                                        e(a, b);
-                                                        k("getSessionInfo", null, a, function (b) {
-                                                            e(a, b);
-                                                            f(a.sessionId)
-                                                        }, m)
-                                                    }, m);
-                                                    return b
-                                                }
-                                            }() : f, k(b.name, d, a, g, m)
-                                        }
-                                    }())
-                                }
-                            }
-
-                            function e(a, b) {
-                                if ("undefined" !== typeof a && null !== a)if ("undefined" === typeof b) a.functionLevel =
-                                    0, a.activeSessionCount = 0, a.sessionId = null, a.sessionExpiryTime = null, a.sessionState = "absent", a.filePath = null, a.deviceId = null, a.storageType = null, a.storageSpec = null, a.storageVersion = null, a.deviceDriverVersion = null, a.deviceModel = null, a.deviceName = null, a.deviceSerialNumber = null, a.deviceState = null, a.deviceHasPuk = null, a.keyType = null, a.keyAlias = null, a.fileModified = null; else for (var d in b)if (b.hasOwnProperty(d) && ("" === b[d] || null == b[d] ? a.hasOwnProperty(d) && (a[d] = null) : a[d] = "sessionExpiryTime" === d ? new Date(parseInt(1E3 *
-                                        b[d])) : b[d], "sessionState" === d))switch (b[d]) {
-                                    case "":
-                                        a.functionLevel = 0;
-                                        a.sessionId = null;
-                                        a.sessionState = "absent";
-                                        break;
-                                    case "new":
-                                        a.functionLevel = 1;
-                                        break;
-                                    case "createStorage":
-                                    case "selectModifiedFileStorage":
-                                        a.functionLevel = 2;
-                                        break;
-                                    case "selectFileStorage":
-                                        a.functionLevel = 3;
-                                        break;
-                                    case "selectDeviceStorage":
-                                        a.functionLevel = 4;
-                                        break;
-                                    case "selectKey":
-                                        a.functionLevel = 5
-                                }
-                            }
-
-                            return function (a, b) {
-                                ("undefined" === typeof CryptoPlugin.plugin || null == CryptoPlugin.plugin || "OCX" != CryptoPlugin.plugin.pluginType && "undefined" === typeof CryptoPlugin.plugin.send) && t();
-                                if (null == CryptoPlugin.plugin || "OCX" != CryptoPlugin.plugin.pluginType && "undefined" === typeof CryptoPlugin.plugin.send)return "function" === typeof b && b({
-                                    code: 0,
-                                    message: "\u041f\u043b\u0430\u0433\u0438\u043d \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d \u0438\u043b\u0438 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d",
-                                    source: "CryptoPlugin"
-                                }), null;
-                                var d = {pluginType: CryptoPlugin.plugin.pluginType, version: ""};
-                                e(d);
-                                window.setTimeout(function () {
-                                    if ("NM" ===
-                                        CryptoPlugin.plugin.pluginType) {
-                                        var l = function () {
-                                            return function () {
-                                                var c = {pluginType: CryptoPlugin.plugin.pluginType, version: ""};
-                                                e(c);
-                                                CryptoPlugin.plugin.callback = function () {
-                                                    return function (d) {
-                                                        "undefined" !== typeof d.answer && "undefined" !== typeof d.answer.api ? (CryptoPlugin.API = JSON.parse(d.answer.api), r(c), k("getPluginInfo", null, null, function (b) {
-                                                            e(c, b);
-                                                            k("getVersion", null, null, function (b) {
-                                                                c.version = b.version;
-                                                                "function" === typeof a && a(c)
-                                                            }, null)
-                                                        }, null)) : "function" === typeof b && b({
-                                                            code: 0,
-                                                            message: "\u041f\u043b\u0430\u0433\u0438\u043d \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d \u0438\u043b\u0438 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d",
-                                                            source: "connect"
-                                                        })
-                                                    }
-                                                }();
-                                                CryptoPlugin.plugin.send('{"function":"getAPI"}')
-                                            }
-                                        }(), c = 0, n = CryptoPlugin.config.chromeExtensionId.length - 2;
-                                        -1 !== navigator.userAgent.toLowerCase().indexOf("opr/") && (c = CryptoPlugin.config.chromeExtensionId.length - 1, n = CryptoPlugin.config.chromeExtensionId.length - 1);
-                                        var g = function (a) {
-                                            CryptoPlugin.config.chromeExtensionIndex = a;
-                                            var c = new XMLHttpRequest;
-                                            c.open("GET", "chrome-extension://" + CryptoPlugin.config.chromeExtensionId[CryptoPlugin.config.chromeExtensionIndex] + "/manifest.json",
-                                                !0);
-                                            c.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                                            c.timeout = 100;
-                                            c.onreadystatechange = function () {
-                                                4 === c.readyState && (200 === c.status ? (l(), window.setTimeout(function () {
-                                                    "function" === typeof b && null == d.version && (b({
-                                                        code: 0,
-                                                        message: "\u041f\u043b\u0430\u0433\u0438\u043d \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d \u0438\u043b\u0438 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d",
-                                                        source: "connect"
-                                                    }), b = null)
-                                                }, 200)) : a == n ? window.setTimeout(b({
-                                                    code: -1,
-                                                    message: "\u0420\u0430\u0441\u0448\u0438\u0440\u0435\u043d\u0438\u0435 \u0434\u043b\u044f " + (-1 == navigator.userAgent.toLowerCase().indexOf("opr/")) ? "Chrome" : "Opera \u043d\u0435 \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u043e",
-                                                    source: "connect"
-                                                }), 0) : g(a + 1))
-                                            };
-                                            c.send()
-                                        };
-                                        g(c)
+                                var t;
+                                if (n()) {
+                                    o()
+                                } else if (window.chrome) {
+                                    t = parseInt(navigator.userAgent.match(/Chrome\/(\d+)\./)[1], 10);
+                                    if ((navigator.appVersion.indexOf("Linux") !== -1 || navigator.appVersion.indexOf("X11") !== -1) && t >= 35 || navigator.appVersion.indexOf("Win") === -1 && t >= 42 || navigator.appVersion.indexOf("Mac") === -1 && t >= 41 || CryptoPlugin.config.isOpera() && t >= 40) {
+                                        i()
                                     } else {
-                                        try {
-                                            c = CryptoPlugin.plugin.send('{"function":"getAPI"}'), CryptoPlugin.API = JSON.parse(JSON.parse(c).answer.api), r(d)
-                                        } catch (h) {
-                                            if ("function" === typeof b) {
-                                                b({
-                                                    code: 0,
-                                                    message: "\u041f\u043b\u0430\u0433\u0438\u043d \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d \u0438\u043b\u0438 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d",
-                                                    source: "connect"
-                                                });
+                                        e()
+                                    }
+                                } else {
+                                    t = 0;
+                                    if (navigator.userAgent.match(/Firefox\/(\d+)\./)[1]) {
+                                        t = parseInt(navigator.userAgent.match(/Firefox\/(\d+)\./)[1], 10)
+                                    }
+                                    if (CryptoPlugin.config.isMozilla && t > 51) {
+                                        i()
+                                    } else {
+                                        e()
+                                    }
+                                }
+                            }
+
+                            function r(n, e, i, o, t) {
+                                if (n.type === "success") {
+                                    var r = ((new Date).getTime() - CryptoPlugin.plugin.time) / 1e3;
+                                    if (n.hasOwnProperty("answer")) {
+                                        if (typeof i === "function") {
+                                            if (typeof CryptoPlugin.config.debugFunction === "function" && t !== "getSessionInfo") {
+                                                CryptoPlugin.config.debugFunction("P1(" + r + "s)✈ " + JSON.stringify(n.answer), "info")
+                                            }
+                                            if (CryptoPlugin.plugin.pluginType === "NM" && e !== null && e.functionLevel > 0) {
+                                                u("getSessionInfo", null, e, function () {
+                                                    return function (o) {
+                                                        l(e, o);
+                                                        setTimeout(function () {
+                                                            i(n.answer)
+                                                        }, 0)
+                                                    }
+                                                }(), null)
+                                            } else {
+                                                setTimeout(function () {
+                                                    i(n.answer)
+                                                }, 0)
+                                            }
+                                        } else {
+                                            if (typeof CryptoPlugin.config.debugFunction === "function" && t !== "getSessionInfo") {
+                                                CryptoPlugin.config.debugFunction("P2(" + r + "s)→ " + JSON.stringify(n.answer), "info")
+                                            }
+                                            return n.answer
+                                        }
+                                    } else {
+                                        if (typeof i === "function") {
+                                            if (typeof CryptoPlugin.config.debugFunction === "function" && t !== "getSessionInfo") {
+                                                CryptoPlugin.config.debugFunction("P3(" + r + "s)✈ [without arguments]", "info")
+                                            }
+                                            if (e !== null && e.functionLevel > 0) {
+                                                u("getSessionInfo", null, e, function () {
+                                                    return function (o) {
+                                                        l(e, o);
+                                                        setTimeout(function () {
+                                                            i(n.answer)
+                                                        }, 0)
+                                                    }
+                                                }(), function () {
+                                                    return function () {
+                                                        l(e, {sessionState: ""});
+                                                        setTimeout(function () {
+                                                            i(n.answer)
+                                                        }, 0)
+                                                    }
+                                                }())
+                                            } else {
+                                                setTimeout(function () {
+                                                    i(n.answer)
+                                                }, 0)
+                                            }
+                                        } else {
+                                            if (typeof CryptoPlugin.config.debugFunction === "function" && t !== "getSessionInfo") {
+                                                CryptoPlugin.config.debugFunction("P4(" + r + "s)→ [without arguments]", "info")
+                                            }
+                                        }
+                                    }
+                                } else if (n.type === "error" || n.type === "message") {
+                                    if (t === "getSessionInfo" && n.answer.errorCode === 2) {
+                                        if (e !== null) {
+                                            l(e, {sessionState: ""})
+                                        }
+                                    } else if (typeof CryptoPlugin.config.debugFunction === "function" && t !== "getSessionInfo") {
+                                        CryptoPlugin.config.debugFunction("✗1 code = " + n.answer.errorCode + (n.answer.hasOwnProperty("errorText") ? ", message = " + n.answer.errorText : "") + (typeof t !== "undefined" ? ", source = " + t : ""), "warn")
+                                    }
+                                    if (t === "restoreSession") {
+                                        l(e, {sessionState: ""})
+                                    }
+                                    if (e !== null && e.functionLevel > 0) {
+                                        u("getSessionInfo", null, e, function (i) {
+                                            l(e, i);
+                                            if (typeof o === "function") {
+                                                o({
+                                                    code: n.answer.errorCode,
+                                                    message: n.answer.hasOwnProperty("errorText") ? n.answer.errorText : "",
+                                                    source: t
+                                                })
+                                            }
+                                        }, null)
+                                    } else if (typeof o === "function") {
+                                        o({
+                                            code: n.answer.errorCode,
+                                            message: n.answer.hasOwnProperty("errorText") ? n.answer.errorText : "",
+                                            source: t
+                                        })
+                                    }
+                                }
+                            }
+
+                            function u(n, e, i, o, t) {
+                                setTimeout(function () {
+                                    var u = "";
+                                    if (CryptoPlugin.plugin !== null && typeof CryptoPlugin.plugin.send !== "undefined") {
+                                        if (CryptoPlugin.config.enableWarning && console.warn) {
+                                            if (typeof o !== "function" && o !== null) {
+                                                if (typeof o === "undefined") {
+                                                    console.warn("successCallback isn't set in " + n)
+                                                } else {
+                                                    console.warn("successCallback isn't function in " + n)
+                                                }
+                                            }
+                                            if (typeof t !== "function" && t !== null) {
+                                                if (typeof t === "undefined") {
+                                                    console.warn("errorCallback isn't set in " + n)
+                                                } else {
+                                                    console.warn("errorCallback isn't function in " + n)
+                                                }
+                                            }
+                                        }
+                                        if (typeof i !== "undefined" && i !== null && i.hasOwnProperty("sessionId") && i.sessionId !== null && i.sessionId !== "") {
+                                            u = i.sessionId
+                                        }
+                                        var s = null;
+                                        if (typeof e !== "undefined" && e !== null && e !== "") {
+                                            s = {function: n, params: e, sessionId: u}
+                                        } else {
+                                            s = {function: n, sessionId: u}
+                                        }
+                                        if (typeof i !== "undefined" && i !== null && !i.callback && (n === "selectDir" && navigator.appVersion.indexOf("Win") !== -1 || n === "selectFile" && navigator.appVersion.indexOf("Win") !== -1 || n === "getDeviceList" || n === "checkOCSP" || n === "testConnection" || i.storageType === "device" && n !== "getSessionInfo" && n !== "getPluginInfo" && n !== "getCertificateInfo") && CryptoPlugin.plugin.pluginType !== "NM") {
+                                            s.lag = true
+                                        }
+                                        var l = JSON.parse(JSON.stringify(s));
+                                        if (typeof l.params !== "undefined") {
+                                            delete l.url;
+                                            for (var f in l.params) {
+                                                if (l.params.hasOwnProperty(f) && f.toLowerCase().indexOf("password") !== -1) {
+                                                    l.params[f] = new Array(l.params[f].length).join("*")
+                                                }
+                                            }
+                                        }
+                                        if (typeof CryptoPlugin.config.debugFunction === "function" && n !== "getSessionInfo") {
+                                            CryptoPlugin.config.debugFunction("P5← " + JSON.stringify(l), "info")
+                                        }
+                                        if (n !== "getSessionInfo") {
+                                            CryptoPlugin.plugin.time = (new Date).getTime()
+                                        }
+                                        var a = null;
+                                        var g = null;
+                                        if (n !== "getSessionInfo" && typeof i !== "undefined" && i && i.hasOwnProperty("sessionId") && i.sessionId !== "") {
+                                            g = i
+                                        }
+                                        var c = null;
+                                        s.url = document.URL;
+                                        if (CryptoPlugin.plugin.pluginType === "NM") {
+                                            if (document.getElementById("CryptoPluginInstance").value !== "") {
+                                                var p = JSON.parse(document.getElementById("CryptoPluginInstance").value)["function"];
+                                                if (typeof t === "function") {
+                                                    t({
+                                                        code: 5,
+                                                        message: 'Выполняется метод "' + p + '", команда проигнорирована',
+                                                        source: n
+                                                    })
+                                                }
+                                                if (typeof CryptoPlugin.config.debugFunction === "function" && n !== "getSessionInfo") {
+                                                    CryptoPlugin.config.debugFunction('✗2 code = 5, message = Выполняется метод "' + p + '", команда проигнорирована, source = ' + n, "warn")
+                                                }
                                                 return
                                             }
+                                            if (typeof o === "function") {
+                                                CryptoPlugin.plugin.callback = function () {
+                                                    return function (e) {
+                                                        r(e, g, o, t, n)
+                                                    }
+                                                }()
+                                            }
+                                            CryptoPlugin.plugin.send(JSON.stringify(s))
+                                        } else {
+                                            var y = CryptoPlugin.plugin.send(JSON.stringify(s));
+                                            try {
+                                                a = JSON.parse(y)
+                                            } catch (e) {
+                                                if (typeof CryptoPlugin.config.debugFunction === "function" && n !== "getSessionInfo") {
+                                                    CryptoPlugin.config.debugFunction("Unpredictable behavior of plugin", "warn")
+                                                }
+                                                return
+                                            }
+                                            if (a.type === "lag") {
+                                                if (typeof o === "function") {
+                                                    var d = "interval" + Math.floor(Math.random() * 1e5);
+                                                    CryptoPlugin[d] = window.setInterval(function () {
+                                                        var e = d;
+                                                        return function () {
+                                                            var i = "";
+                                                            try {
+                                                                i = CryptoPlugin.plugin.send(JSON.stringify(s));
+                                                                a = JSON.parse(i);
+                                                                if (a.type !== "lag") {
+                                                                    clearInterval(CryptoPlugin[e]);
+                                                                    delete CryptoPlugin[e];
+                                                                    r(a, g, o, t, n)
+                                                                }
+                                                            } catch (e) {
+                                                                if (typeof CryptoPlugin.config.debugFunction === "function" && n !== "getSessionInfo") {
+                                                                    CryptoPlugin.config.debugFunction("Unpredictable behavior of plugin: " + i, "warn")
+                                                                }
+                                                            }
+                                                        }
+                                                    }(), CryptoPlugin.config.lagDelay)
+                                                } else {
+                                                    while (true) {
+                                                        c = (new Date).getTime();
+                                                        while (true) {
+                                                            if ((new Date).getTime() - c > CryptoPlugin.config.lagDelay) {
+                                                                break
+                                                            }
+                                                        }
+                                                        try {
+                                                            y = CryptoPlugin.plugin.send(JSON.stringify(s));
+                                                            a = JSON.parse(y)
+                                                        } catch (e) {
+                                                            if (typeof CryptoPlugin.config.debugFunction === "function" && n !== "getSessionInfo") {
+                                                                CryptoPlugin.config.debugFunction("Unpredictable behavior of plugin: " + y, "warn")
+                                                            }
+                                                            return
+                                                        }
+                                                        if (a.type !== "lag") {
+                                                            return r(a, g, null, t, n)
+                                                        }
+                                                    }
+                                                }
+                                            } else {
+                                                return r(a, g, o, t, n)
+                                            }
                                         }
-                                        k("getPluginInfo", null, null, function (b) {
-                                            e(d, b);
-                                            k("getVersion", null, null, function (b) {
-                                                d.version = b.version;
-                                                "function" === typeof a && a(d)
-                                            }, null)
-                                        }, null)
+                                    } else {
+                                        if (typeof t === "function") {
+                                            t({code: 0, message: "Плагин не обнаружен или заблокирован", source: n});
+                                            t = null
+                                        }
                                     }
-                                }, "OCX" == CryptoPlugin.plugin.pluginType ? 299 : 10)
+                                }, 10)
+                            }
+
+                            function s(n) {
+                                if (CryptoPlugin.hasOwnProperty("API")) {
+                                    for (var e = CryptoPlugin.API.length - 1; e >= 0; e--) {
+                                        var i = CryptoPlugin.API[e];
+                                        if (!n.hasOwnProperty(CryptoPlugin.API[e].name)) {
+                                            n[i.name] = function () {
+                                                var e = i;
+                                                var o;
+                                                return function () {
+                                                    var i = {}, t = false;
+                                                    if (e.hasOwnProperty("params")) {
+                                                        if (arguments.length > e.params.length + 2) {
+                                                            if (typeof CryptoPlugin.config.debugFunction === "function") {
+                                                                CryptoPlugin.config.debugFunction("Передано больше параметров чем нужно для функции " + e.name, "warn")
+                                                            }
+                                                        } else {
+                                                            var r = 0;
+                                                            for (o = 0; o < e.params.length; o++) {
+                                                                if (!e.params[o].hasOwnProperty("optional") || !e.params[o]["optional"]) {
+                                                                    r++
+                                                                }
+                                                            }
+                                                            if (typeof CryptoPlugin.config.debugFunction === "function") {
+                                                                if (arguments.length >= 2 && typeof arguments[arguments.length - 2] === "function" && r + 2 > arguments.length) {
+                                                                    CryptoPlugin.config.debugFunction("Передано меньше параметров чем нужно для функции " + e.name, "warn")
+                                                                }
+                                                                if (arguments.length >= 1 && typeof arguments[arguments.length - 1] === "function" && r + 1 > arguments.length) {
+                                                                    CryptoPlugin.config.debugFunction("Передано меньше параметров чем нужно для функции " + e.name, "warn")
+                                                                }
+                                                            }
+                                                        }
+                                                    } else if (arguments.length > 2 && typeof CryptoPlugin.config.debugFunction === "function") {
+                                                        CryptoPlugin.config.debugFunction("Передано больше параметров чем нужно для функции " + e.name, "warn")
+                                                    }
+                                                    var s = null;
+                                                    var f = null;
+                                                    if (e.hasOwnProperty("params")) {
+                                                        for (o = 0; o < arguments.length; o++) {
+                                                            if (typeof arguments[o] === "function") {
+                                                                if (o === arguments.length - 2 && typeof arguments[o + 1] === "function") {
+                                                                    s = arguments[o];
+                                                                    f = arguments[o + 1];
+                                                                    break
+                                                                } else if (o === arguments.length - 1) {
+                                                                    s = arguments[o];
+                                                                    break
+                                                                } else if (typeof CryptoPlugin.config.debugFunction === "function") {
+                                                                    CryptoPlugin.config.debugFunction("Функции обратного вызова переданы в неправильных позициях " + e.name, "warn")
+                                                                }
+                                                            } else {
+                                                                if (e.params[o].hasOwnProperty("type")) {
+                                                                    var a = e.params[o].type;
+                                                                    if (a === "Number") {
+                                                                        arguments[o] = parseInt(arguments[o]);
+                                                                        if (isNaN(arguments[o])) {
+                                                                            continue
+                                                                        }
+                                                                    } else if (a === "Boolean" && typeof arguments[o] !== "boolean") {
+                                                                        if (arguments[o] === "") {
+                                                                            continue
+                                                                        }
+                                                                        arguments[o] = arguments[o].toLowerCase() === "true"
+                                                                    }
+                                                                }
+                                                                t = true;
+                                                                if (arguments[o] !== null) {
+                                                                    i[e.params[o].name] = arguments[o]
+                                                                }
+                                                                if (e.params[o].name === "sessionId" && e.name === "restoreSession") {
+                                                                    n.sessionId = arguments[o]
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    if (!t) {
+                                                        i = null
+                                                    }
+                                                    var g = null;
+                                                    if (e.name === "updateInfo") {
+                                                        u("getPluginInfo", null, null, function (e) {
+                                                            l(n, e);
+                                                            if (n.sessionId !== null && n.sessionId.length > 0) {
+                                                                u("getSessionInfo", null, n, function (e) {
+                                                                    l(n, e);
+                                                                    s()
+                                                                }, function (e) {
+                                                                    if (e.code === 2) {
+                                                                        l(n);
+                                                                        if (typeof s === "function") {
+                                                                            s()
+                                                                        }
+                                                                    } else {
+                                                                        if (typeof f === "function") {
+                                                                            f()
+                                                                        }
+                                                                    }
+                                                                })
+                                                            } else {
+                                                                if (typeof s === "function") {
+                                                                    s()
+                                                                }
+                                                            }
+                                                        }, f);
+                                                        return
+                                                    }
+                                                    if (e.name === "openSession" || e.name === "restoreSession") {
+                                                        g = function () {
+                                                            return function (e) {
+                                                                l(n);
+                                                                if (typeof n !== "undefined" && typeof e !== "undefined" && e && n && n.hasOwnProperty("sessionId") && n.sessionId !== "" && e.hasOwnProperty("sessionId")) {
+                                                                    n.sessionId = e.sessionId
+                                                                }
+                                                                u("getPluginInfo", null, null, function (e) {
+                                                                    l(n, e);
+                                                                    u("getSessionInfo", null, n, function (e) {
+                                                                        l(n, e);
+                                                                        s(n.sessionId)
+                                                                    }, f)
+                                                                }, f);
+                                                                return e
+                                                            }
+                                                        }()
+                                                    } else {
+                                                        g = s
+                                                    }
+                                                    return u(e.name, i, n, g, f)
+                                                }
+                                            }()
+                                        }
+                                    }
+                                }
+                            }
+
+                            function l(n, e) {
+                                if (typeof n === "undefined" || n === null) {
+                                    return
+                                }
+                                if (typeof e === "undefined") {
+                                    n.functionLevel = 0;
+                                    n.activeSessionCount = 0;
+                                    n.sessionId = null;
+                                    n.sessionExpiryTime = null;
+                                    n.sessionState = "absent";
+                                    n.filePath = null;
+                                    n.deviceId = null;
+                                    n.storageType = null;
+                                    n.storageSpec = null;
+                                    n.storageVersion = null;
+                                    n.deviceDriverVersion = null;
+                                    n.deviceModel = null;
+                                    n.deviceName = null;
+                                    n.deviceSerialNumber = null;
+                                    n.deviceState = null;
+                                    n.deviceHasPuk = null;
+                                    n.keyType = null;
+                                    n.keyAlias = null;
+                                    n.fileModified = null
+                                } else {
+                                    for (var i in e) {
+                                        if (e.hasOwnProperty(i)) {
+                                            if (e[i] === "" || e[i] === null) {
+                                                if (n.hasOwnProperty(i)) {
+                                                    n[i] = null
+                                                }
+                                            } else {
+                                                if (i === "sessionExpiryTime") {
+                                                    n[i] = new Date(parseInt(e[i] * 1e3))
+                                                } else {
+                                                    n[i] = e[i]
+                                                }
+                                            }
+                                            if (i === "sessionState") {
+                                                switch (e[i]) {
+                                                    case"":
+                                                    case"absent":
+                                                        n.functionLevel = 0;
+                                                        n.sessionId = null;
+                                                        n.sessionState = "absent";
+                                                        break;
+                                                    case"new":
+                                                        n.functionLevel = 1;
+                                                        break;
+                                                    case"createStorage":
+                                                    case"selectModifiedFileStorage":
+                                                        n.functionLevel = 2;
+                                                        break;
+                                                    case"selectFileStorage":
+                                                        n.functionLevel = 3;
+                                                        break;
+                                                    case"selectDeviceStorage":
+                                                        n.functionLevel = 4;
+                                                        break;
+                                                    case"selectKey":
+                                                        n.functionLevel = 5;
+                                                        break
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }()
-                    });
+                    }
+                }
+                return "undefined" !== typeof CryptoPlugin;
             }
         }
     });

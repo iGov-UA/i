@@ -135,7 +135,7 @@ exports.deleteExemption = function(req, res) {
 
 exports.getFlowSlots = function(req, res) {
   var options = {
-    path: 'action/flow/getFlowSlots_ServiceData',
+    path: 'action/flow/getFlowSlots',
     query: {
       sID_BP: req.query.sID_BP,
       nID_Department: req.query.nID_Department,

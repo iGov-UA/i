@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -24,23 +23,25 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.igov.io.web.RestRequest;
+import org.igov.util.cache.CachedInvocationBean;
 import org.springframework.http.HttpHeaders;
 
 @Component("ObjectPlaceCommonService")
 @Service
 public class ObjectPlaceCommonService {
 	private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceCommonService.class);
+	private static final String GET_SERVICE_SUB_PLACES_CACHE_KEY = "ObjectPlaceCommonService.getSubPlaces_";
 
 	private static final String SUB_URL_ADDRESS_BY_TYPE = "/AddressReference/address/listAddressByType.do";
 	private static final String SUB_URL_ADDRESS_BY_NAME = "/AddressReference/address/searchByName.do";
 	private static final String NULL_RESPONSE = "{}";
 
-	// Кеш списка адресов
-	private HashMap<String, List<ObjectAddress>> mCacheListAddress = new HashMap<String, List<ObjectAddress>>();
-
 	@Autowired
 	GeneralConfig generalConfig;
 
+	@Autowired
+	private CachedInvocationBean cachedInvocationBean;
+	    
 	private String sURLSendAddressByType = null;
 	private String sURLSendAddressByName = null;
 
@@ -83,11 +84,7 @@ public class ObjectPlaceCommonService {
 	 * ]}
 	 * 
 	 * Адреса ищуться по коду места sID_SubPlace_PB, опционально можно отфильтровать результат указав подстроку в наименовании адреса.
-	 * 
-	 * Программа кеширует объекты запросов. Объекты заносяться в кеш - sID_SubPlace_PB, там они привязаны к ключу sID_SubPlace_PB.
-	 * 
-	 * Данные в кеш добавляются только если не задан, ограничивающий запрос, параметр sFind.
-	 * 
+	 * Программа кеширует объекты запросов.
 	 */
 	public String getSubPlaces_(String sID_SubPlace_PB, String sFind) {
 		if (!isReadyWork) {
@@ -102,51 +99,13 @@ public class ObjectPlaceCommonService {
 			return NULL_RESPONSE;
 		}
 
-		sID_SubPlace_PB = sID_SubPlace_PB.trim();
-
-		List<ObjectAddress> lObjectAddress = null;
-
-		// Берем или из кеша, или запрашиваем сервис
-		if (mCacheListAddress.containsKey(sID_SubPlace_PB)) {
-			LOG.debug("Берем данные из кеша");
-			List<ObjectAddress> lObjectAddressCache = (List<ObjectAddress>) mCacheListAddress.get(sID_SubPlace_PB);
-
-			// Отдаем или полный список или фильтруем его по названию
-			if (sFind == null) {
-				lObjectAddress = lObjectAddressCache;
-			} else {
-				lObjectAddress = new ArrayList<>();
-
-				String sFind2 = sFind.toUpperCase().trim();
-				for (ObjectAddress objectAddress : lObjectAddressCache) {
-					if (objectAddress.getDesc().toUpperCase().contains(sFind2)) {
-						lObjectAddress.add(objectAddress);
-					}
-				}
-			}
-
-		} else {
-			LOG.debug("Берем данные из сервиса");
-			try {
-				String xmlString = getSubPlacesFromService(sID_SubPlace_PB, sFind);
-				lObjectAddress = parseDataFromXMLString(xmlString);
-
-				// В кеш добавляем только полный список адресов по коду
-				if (sFind == null && lObjectAddress != null) {
-					mCacheListAddress.put(sID_SubPlace_PB, lObjectAddress);
-					LOG.info("Add cache: key={}, size={}", sID_SubPlace_PB, lObjectAddress.size());
-				}
-
-			} catch (Exception e) {
-				LOG.error("ошибка получения данных сервиса", e);
-			}
-		}
+		List<ObjectAddress> lObjectAddress = getListAddressesCached(sID_SubPlace_PB, sFind);
 
 		if (lObjectAddress == null) {
 		    return NULL_RESPONSE;
 		}
 
-		StringBuffer sb = new StringBuffer(lObjectAddress.size() * 50);
+		StringBuffer sb = new StringBuffer(lObjectAddress.size() * 65);
 		sb.append("{\"listAddress\":[");
 		int i = 0;
 		for (ObjectAddress objectAddress : lObjectAddress) {
@@ -163,6 +122,34 @@ public class ObjectPlaceCommonService {
 
 		return sb.toString();
 	}
+	
+	
+	private List<ObjectAddress> getListAddressesCached(String sID_SubPlace_PB, String sFind) {
+	        return cachedInvocationBean.invokeUsingCache(new CachedInvocationBean.Callback<List<ObjectAddress>>(
+	        	GET_SERVICE_SUB_PLACES_CACHE_KEY, sID_SubPlace_PB, sFind) {
+	            @Override
+	            public List<ObjectAddress> execute() {
+	                return getListAddresses(sID_SubPlace_PB, sFind);
+	            }
+	        });
+	}
+
+	private List<ObjectAddress> getListAddresses(String sID_SubPlace_PB, String sFind) {
+	    	LOG.debug("Start request, sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+
+		List<ObjectAddress> lObjectAddress = null;
+	    
+		try {
+			String xmlString = getSubPlacesFromService(sID_SubPlace_PB, sFind);
+			lObjectAddress = parseDataFromXMLString(xmlString);
+		} catch (Exception e) {
+			LOG.error("ошибка получения данных сервиса", e);
+		}
+		
+		return lObjectAddress;
+	}
+	
+	
 	
 	/*
 	 * Получение данных из сервиса. Документация:

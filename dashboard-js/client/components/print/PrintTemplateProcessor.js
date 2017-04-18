@@ -246,8 +246,11 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
             }
           } else
             return '';
-        }
-        else {
+        } else if(item.type === 'fileHTML') {
+          if(item.valueVisible) {
+            return item.valueVisible;
+          }
+        } else {
           return item.value;
         }
       }

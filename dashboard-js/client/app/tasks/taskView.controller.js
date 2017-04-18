@@ -299,6 +299,7 @@
         $scope.taskData.aTable = [];
         $scope.usersHierarchyOpened = false;
         $scope.taskData.aNewAttachment = [];
+        $rootScope.delegateSelectMenu = false;
 
         // todo соеденить с isUnasigned
         $scope.isDocument = function () {
@@ -383,9 +384,9 @@
 
         function downloadFileHTMLContent() {
           angular.forEach($scope.taskForm, function (i, k, o) {
-            if(i.type === 'fileHTML') {
+            if(i.type === 'fileHTML' && i.value && i.value.indexOf('sKey') > -1) {
               tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, i.id, true).then(function (res) {
-                o[k].value = res;
+                o[k].valueVisible = res;
               })
             }
           })
@@ -519,10 +520,6 @@
             return item.name + '.' + ext;
           }
           return item.name;
-        };
-
-        $scope.takeTheKeyFromJSON = function (item) {
-          return JSON.parse(item.value).sKey;
         };
 
         $scope.takeTheKeyFromJSON = function (item) {
@@ -812,7 +809,7 @@
         $scope.unpopulatedFields = function () {
           if ($scope.selectedTask && $scope.taskForm) {
             var unpopulated = $scope.taskForm.filter(function (item) {
-              return (item.value === undefined || item.value === null || item.value.trim() === "") && (item.required || $scope.isCommentAfterReject(item));//&& item.type !== 'file'
+              return (item.value === null && !item.valueVisible) && (item.value === undefined || item.value === null || item.value.trim() === "") && (item.required || $scope.isCommentAfterReject(item));//&& item.type !== 'file'
             });
             return unpopulated;
           } else {
@@ -883,7 +880,8 @@
             rollbackReadonlyEnumFields();
             if($scope.model.printTemplate){
               $scope.taskForm.sendDefaultPrintForm = false;
-            } else {
+            }
+            if($scope.taskData.oProcess && $scope.taskData.oProcess.sBP && $scope.taskData.oProcess.sBP.match(/^_doc_/)){
               var sKey_Step_field = $scope.taskForm.filter(function (item) {
                 return item.id === "sKey_Step_Document";
               })[0];
@@ -909,6 +907,10 @@
                   });
 
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
+
+                  if(!bNotShowSuccessModal && iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
+                    bNotShowSuccessModal = true;
+                  }
 
                   if(bNotShowSuccessModal){
                     $scope.lightweightRefreshAfterSubmit();
@@ -1072,7 +1074,7 @@
 
         $scope.sFieldLabel = function (sField) {
           var s = '';
-          if (sField !== null) {
+          if (sField) {
             var a = sField.split(';');
             s = a[0].trim();
           }
@@ -1234,7 +1236,7 @@
           }
         });
 
-        $scope.insertSeparator = function(sPropertyId){
+        $scope.insertOrdersSeparator = function(sPropertyId){
           var oLine = FieldAttributesService.insertSeparators(sPropertyId);
           var oItem = null;
           if (oLine.bShow){
@@ -1248,6 +1250,10 @@
             }
           }
           return oLine;
+        };
+
+        $scope.insertSeparator = function(sPropertyId){
+          return FieldAttributesService.insertSeparators(sPropertyId);
         };
 
         $scope.isTableAttachment = function (item) {
@@ -1533,6 +1539,88 @@
 
         $scope.viewTrustedHTMLContent = function (html) {
           return $sce.trustAsHtml(html);
+        };
+        $scope.getOrgData = function (code, id) {
+          var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
+          var keys = {activities:'sID_SubjectActionKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
+          function findAndFillOKPOFields(res) {
+            angular.forEach(res.data, function (data, key) {
+              if (key in keys) {
+                for (var i=0; i<$scope.taskForm.length; i++) {
+                  var prop = $scope.taskForm[i].id;
+                  if (prop.indexOf(keys[key]) === 0) {
+                    var checkPostfix = prop.split(/_/),
+                      elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
+                    if (elementPostfix !== null && elementPostfix === fieldPostfix)
+                      if(prop.indexOf('sID_SubjectActionKVED') > -1) {
+                        var onlyKVEDNum = data.match(/\d{1,2}[\.]\d{1,2}/),
+                          onlyKVEDText = data.split(onlyKVEDNum)[1].trim(),
+                          pieces = prop.split('_');
+                        onlyKVEDNum.length !== 0 ? $scope.taskForm[i].value = onlyKVEDNum[0] : $scope.taskForm[i].value = data;
+
+                        pieces.splice(0, 1, 'sNote_ID');
+                        var autocompleteKVED = pieces.join('_');
+                        if(prop === autocompleteKVED)
+                          $scope.taskForm[i].value = onlyKVEDText;
+                      } else {
+                        $scope.taskForm[i].value = data;
+                      }
+                  }
+                }
+              }
+            })
+          }
+          function clearFieldsWhenError() {
+            for (var i=0; i<$scope.taskForm.length; i++) {
+              var prop = $scope.taskForm[i].id;
+              if ($scope.data.formData.params.hasOwnProperty(prop) && prop.indexOf('_SubjectOrgan_') > -1) {
+                var checkPostfix = prop.split(/_/),
+                  elementPostfix = checkPostfix.length > 1 ? checkPostfix.pop() : null;
+                if (elementPostfix !== null && elementPostfix === fieldPostfix && prop.indexOf('sID_SubjectOrgan_OKPO') === -1)
+                  $scope.taskForm[i].value = '';
+              }
+            }
+          }
+          if(code) {
+            $scope.orgIsLoading = {status:true,field:id};
+            tasks.getOrganizationData(code).then(function (res) {
+              $scope.orgIsLoading = {status:false,field:id};
+              if (res.data === '' || res.data.error) {
+                clearFieldsWhenError();
+              } else {
+                findAndFillOKPOFields(res);
+              }
+            });
+          }
+        };
+
+        $scope.isOKPOField = function (i) {
+          if(i){
+            var splitID = i.split(/_/);
+            if (splitID.length === 4 && splitID[1] === 'SubjectOrgan' && splitID[2] === 'OKPO') {
+              return true
+            }
+          }
+        };
+
+        $scope.getBpAndFieldID = function (field) {
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id;
+          } else {
+            return field.id;
+          }
+        };
+
+        $scope.getFullCellId = function(field, column, row){
+          if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
+            return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          } else {
+            return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
+          }
+        };
+
+        $scope.switchDelegateMenu = function () {
+          $rootScope.delegateSelectMenu = !$rootScope.delegateSelectMenu;
         };
 
 

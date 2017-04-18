@@ -64,18 +64,17 @@
           <div class="nav navbar-nav navbar-right right-menu-group">
 
             <div class="nav navbar-nav document-button"
-                 ng-if="(userTasksBPs.length > 0 || usersDocumentsBPs.length > 0) && showCreateDocButton()"
-                 ng-class="{'move-group-buttons-to-top': userTasksBPs.length !== 0 && usersDocumentsBPs.length !== 0}">
+                 ng-if="(userTasksBPs.length > 0 || usersDocumentsBPs.length > 0) && showCreateDocButton()">
+
               <div class="btn-group-vertical" role="group" aria-label="...">
                 <a ng-click="openCloseUsersSelect('doc')"
-                   class="btn btn-default"
-                   ng-class="{'btn-md':userTasksBPs.length === 0, 'btn-xs':userTasksBPs.length > 0}"
+                   class="btn btn-md btn-default"
                    ng-if="usersDocumentsBPs.length > 0 && iGovNavbarHelper.currentTab === 'documents'">Створити документ</a>
-                <a class="btn btn-default"
-                   ng-class="{'btn-md':usersDocumentsBPs.length === 0, 'btn-xs':usersDocumentsBPs.length > 0}"
+                <a class="btn btn-md btn-default"
                    ng-click="openCloseUsersSelect('task')"
                    ng-if="userTasksBPs.length > 0 && iGovNavbarHelper.currentTab === 'selfAssigned'">Створити заявку</a>
               </div>
+
               <div class="document-select-block"
                    ng-show="showOrHideSelect.show && showOrHideSelect.type === 'doc'"
                    ng-class="{'move-select-block-to-bottom': userTasksBPs.length === 0}">

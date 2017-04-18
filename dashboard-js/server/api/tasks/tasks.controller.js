@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
+var activitiUpload = require('../../components/activiti/upload');
 var errors = require('../../components/errors');
 var userService = require('../user/user.service');
 var authService = require('../../auth/activiti/basic');
@@ -99,7 +100,6 @@ exports.index = function (req, res) {
     query.soaFilterField = req.query.soaFilterField;
   }
   query.nSize = 50;
-  query.nStart = (req.query.page || 0) * query.nSize;
 
   if (req.query.filterType === 'all') {
     async.waterfall([
@@ -116,6 +116,9 @@ exports.index = function (req, res) {
     });
   } else {
     var path = 'action/task/getTasks';
+
+    query.nStart = (req.query.page || 0) * query.nSize;
+
     if (req.query.filterType === 'selfAssigned') {
       query.sLogin = user.id;
       query.sFilterStatus = 'OpenedAssigned';
@@ -127,12 +130,13 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
       query.size = query.nSize;
-      query.start = query.nStart;
+ 	    query.start = query.nStart;
       query.taskInvolvedUser = user.id;
       query.finished = true;
     } else if (req.query.filterType === 'documents') {
-      query.sFilterStatus = 'Opened';
+      query.sFilterStatus = 'Documents';
       query.sLogin = user.id;
+      query.includeProcessVariables = true;
       query.nSize = 15;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
@@ -142,6 +146,8 @@ exports.index = function (req, res) {
         query.sDate = req.query.sDate;
       }
     }
+
+    query.nStart = (req.query.page || 0) * query.nSize;
 
     var options = {
       path: path,
@@ -442,6 +448,12 @@ exports.getPatternFile = function (req, res) {
   activiti.filedownload(req, res, options);
 };
 
+exports.signAndUpload = function (req, res) {
+  var encodedContent = req.body.content;
+  var contentSign = req.body.sign;
+  //TODO decode content and activitiUpload
+};
+
 /**
  * https://github.com/e-government-ua/i/issues/1382
  * added pdf conversion if file name is sPrintFormFileAsPDF
@@ -465,7 +477,7 @@ exports.upload_content_as_attachment = function (req, res) {
             quality: 100
           }
         };
-        if(req.body.isSendDefaultPrintForm){
+        if(req.body.isSendAsDocument){
           req.body.url = "setDocumentImage";
         } else {
           req.body.url = 'setProcessAttach';
@@ -496,6 +508,7 @@ exports.upload_content_as_attachment = function (req, res) {
             nID_Process: req.params.taskId,
             stream: data.content,
             sFileNameAndExt: req.body.sFileNameAndExt,
+            sID_Field: req.body.sID_Field,
             sKey_Step: req.body.sKey_Step,
             sLogin: user.id,
             headers: {
