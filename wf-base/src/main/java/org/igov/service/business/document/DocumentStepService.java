@@ -1,50 +1,70 @@
 package org.igov.service.business.document;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import static org.igov.service.business.subject.SubjectGroupTreeService.HUMAN;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import org.activiti.engine.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+import org.activiti.engine.FormService;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.IdentityService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.form.FormProperty;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.identity.Group;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.IdentityLink;
 import org.activiti.engine.task.Task;
+import org.apache.commons.io.IOUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepSubjectRight;
-import org.igov.model.document.DocumentStepSubjectRightField;
-import org.igov.service.exception.RecordNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
-import java.util.stream.Collectors;
-import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.DelegateTask;
-import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.identity.User;
-import org.activiti.engine.task.IdentityLink;
-import org.apache.commons.io.IOUtils;
-import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.document.DocumentStepSubjectRightDao;
+import org.igov.model.document.DocumentStepSubjectRightField;
 import org.igov.model.document.DocumentStepType;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupTreeService;
-import static org.igov.service.business.subject.SubjectGroupTreeService.HUMAN;
 import org.igov.service.conf.AttachmetService;
+import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.Tool;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Component("documentStepService")
 @Service
@@ -54,10 +74,10 @@ public class DocumentStepService {
 
     @Autowired
     @Qualifier("documentStepDao")
-    private GenericEntityDao<Long, DocumentStep> documentStepDao;
+    private GenericEntityDao<Long, DocumentStep> oDocumentStepDao;
 
     @Autowired
-    private GenericEntityDao<Long, DocumentStepType> documentStepType;
+    private GenericEntityDao<Long, DocumentStepType> oDocumentStepTypeDao;
 
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
@@ -85,13 +105,19 @@ public class DocumentStepService {
 
     @Autowired
     private SubjectGroupTreeService oSubjectGroupTreeService;
+    
+    @Autowired
+    GeneralConfig generalConfig;
+    
+    @Autowired
+    protected RepositoryService repositoryService;
 
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject oJSON = new JSONObject(soJSON);
         List<DocumentStep> aDocumentStep_Result = new ArrayList<>();
         // process common step if it exists
         Object oStep_Common = oJSON.opt("_");
-        LOG.info("Common step is - {}", oStep_Common);
+        LOG.info("snID_Process_Activiti {} Common step is - {}", snID_Process_Activiti, oStep_Common);
 
         DocumentStepType oDocumentStepType = new DocumentStepType();
         oDocumentStepType.setId(1L);
@@ -109,11 +135,12 @@ public class DocumentStepService {
             if (aDocumentStepSubjectRightToSet != null) {
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRightToSet) {
                     if (!oDocumentStepSubjectRight.getsKey_GroupPostfix().startsWith("_default_")) {
+                        
                         aDocumentStepSubjectRightToSet_Common.add(oDocumentStepSubjectRight);
                     }
                 }
             }
-            documentStepDao.saveOrUpdate(oDocumentStep_Common);
+            oDocumentStepDao.saveOrUpdate(oDocumentStep_Common);
             aDocumentStep_Result.add(oDocumentStep_Common);
         }
         // process all other steps
@@ -132,7 +159,7 @@ public class DocumentStepService {
             String[] asKey_Step_Split = sKey_Step.split(";");
             sKey_Step = asKey_Step_Split[0];
             if (asKey_Step_Split.length == 2) {
-                oDocumentStepType = documentStepType.findByExpected("name", asKey_Step_Split[1]);
+                oDocumentStepType = oDocumentStepTypeDao.findByExpected("name", asKey_Step_Split[1]);
             }
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
@@ -159,7 +186,7 @@ public class DocumentStepService {
 
             LOG.info("oDocumentStep is before saving {}", oDocumentStep);
             LOG.info("oDocumentStep right is before saving {}", oDocumentStep.getRights());
-            oDocumentStep = documentStepDao.saveOrUpdate(oDocumentStep);
+            oDocumentStep = oDocumentStepDao.saveOrUpdate(oDocumentStep);
             aDocumentStep_Result.add(oDocumentStep);
         }
 
@@ -170,7 +197,7 @@ public class DocumentStepService {
     private boolean isNew_DocumentStepSubjectRight(String snID_Process_Activiti, String sKey_Step_Document,
             String sKey_GroupPostfix_New) {
 
-        List<DocumentStep> aCheckDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti",
+        List<DocumentStep> aCheckDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                 snID_Process_Activiti);
         boolean isNew = true;
         for (DocumentStep oCheckDocumentStep : aCheckDocumentStep) {
@@ -302,7 +329,7 @@ public class DocumentStepService {
     }
 
     public DocumentStep getDocumentStep(String snID_Process_Activiti, String sKey_Step) {
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
 
         final String SKEY_STEP_DOCUMENT = sKey_Step;
@@ -331,20 +358,34 @@ public class DocumentStepService {
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
-            DocumentStepSubjectRight oDocumentStepSubjectRight = null;
-            for (DocumentStepSubjectRight o : aDocumentStepSubjectRight) {
-                if (sKey_Group.equals(o.getsKey_GroupPostfix())) {
-                    oDocumentStepSubjectRight = o;
+            //DocumentStepSubjectRight oDocumentStepSubjectRight = null;
+            //List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = new ArrayList<>();
+            
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                    //oDocumentStepSubjectRight = oDocumentStepSubjectRight;
+                    oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
+                    bRemoved = true;
+                    //aDocumentStepSubjectRight_New.add(o);
                     break;
-                }
+                }/*else{
+                    oDocumentStepSubjectRight = o;
+                }*/
             }
-            if (oDocumentStepSubjectRight != null) {
+            
+            /*if (oDocumentStepSubjectRight != null) {
                 LOG.info("sKey_Group: {} oDocumentStepSubjectRight.getsKey_GroupPostfix(): {}", sKey_Group,
                         oDocumentStepSubjectRight.getsKey_GroupPostfix());
 
-                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
+                oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight.getId());
+                
                 bRemoved = true;
-            }
+            }*/
+            
+            /*if(!aDocumentStepSubjectRight_New.isEmpty()){
+                oDocumentStep.setRights(aDocumentStepSubjectRight_New);
+                oDocumentStepDao.saveOrUpdate(oDocumentStep);
+            }*/
 
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
@@ -355,6 +396,34 @@ public class DocumentStepService {
         return bRemoved;
     }
 
+    
+    
+    public List<DocumentStepSubjectRight> delegateDocumentStepSubject(String snID_Process_Activiti, String sKey_Step, String sKey_Group, String sKey_Group_Delegate)
+            throws Exception {
+
+        LOG.info("started... sKey_Group={}, snID_Process_Activiti={}, sKey_Step={}", sKey_Group, snID_Process_Activiti,
+                sKey_Step);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = new LinkedList();
+        try {
+
+            aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
+            //delegateTask.addCandidateGroups(asGroup);
+            //delegateTask.addCandidateGroup(sGroup);
+            //delegateTask.deleteCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
+        
+//            removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+            
+            //syncDocumentGroups(DelegateTask delegateTask, List<DocumentStep> aDocumentStep);
+
+        } catch (Exception oException) {
+            LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
+                    + ",sKey_Step=" + sKey_Step + "" + ",sKey_GroupPostfix=" + sKey_Group + "" + ")");
+            LOG.error("ERROR: ", oException);
+            throw oException;
+        }
+        return aDocumentStepSubjectRight_Current;
+    }    
+    
     private void reCloneRight(List<DocumentStepSubjectRight> aDocumentStepSubjectRight_To,
             DocumentStepSubjectRight oDocumentStepSubjectRight_From, String sKey_GroupPostfix_New) {
 
@@ -422,6 +491,32 @@ public class DocumentStepService {
         }
     }
 
+    /*public List<DocumentStepSubjectRight> addDocumentStepSubject_CandidateGroup(String snID_Process_Activiti, String sKey_GroupPostfix_New, String sKey_Step_Document){
+        List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active()
+                .list();
+        if (aTaskActive.size() < 1 || aTaskActive.get(0) == null) {
+            throw new IllegalArgumentException("Process with ID: " + snID_Process_Activiti + " has no active task.");
+        }
+        Task oTaskActive = aTaskActive.get(0);
+        ProcessInstance oProcessInstance = runtimeService.createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti).active().singleResult();
+        oTaskActive.getExecutionId();
+        //Execution oExecution = runtimeService.createExecutionQuery().executionId(oTaskActive.getExecutionId()).singleResult();
+        Execution oExecution = runtimeService.createExecutionQuery().executionId(oTaskActive.getExecutionId()).singleResult();
+        oExecution.
+        oTaskActive.getDelegationState().addCandidateGroups(asGroup);
+            //delegateTask.addCandidateGroups(asGroup);
+            //delegateTask.addCandidateGroup(sGroup);
+            //delegateTask.deleteCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
+            
+        String sID_BP = oTaskActive.getProcessDefinitionId();
+        ProcessInstance oProcessInstance = runtimeService.createProcessInstanceQuery()
+                .processInstanceId(snID_Process_Activiti).active().singleResult();
+        Map<String, Object> mProcessVariable = oProcessInstance.getProcessVariables();
+        LOG.info("mProcessVariable={}", mProcessVariable);
+        String snID_Task = oTaskActive.getId();
+    }*/
+    
     public List<DocumentStepSubjectRight> cloneDocumentStepSubject(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sKey_GroupPostfix_New, String sKey_Step_Document_To, boolean bReClone)
             throws Exception {
@@ -466,11 +561,11 @@ public class DocumentStepService {
 
             LOG.info("asID_Group_Activiti_New is {}", asID_Group_Activiti_New);
 
-            List<DocumentStep> aDocumentStep_From = documentStepDao.findAllBy("snID_Process_Activiti",
+            List<DocumentStep> aDocumentStep_From = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                     snID_Process_Activiti);
             LOG.info("aDocumentStep={}", aDocumentStep_From);
 
-            List<DocumentStep> aDocumentStep_To = documentStepDao.findAllBy("snID_Process_Activiti",
+            List<DocumentStep> aDocumentStep_To = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                     snID_Process_Activiti);
             LOG.info("aDocumentStep={}", aDocumentStep_To);
 
@@ -554,7 +649,7 @@ public class DocumentStepService {
                 oDocumentStep_To.setRights(aDocumentStepSubjectRight_To);
                 resultList.add(oDocumentStepSubjectRight_New);
                 LOG.info("aDocumentStepSubjectRight_To before saving is {} ", aDocumentStepSubjectRight_To);
-                documentStepDao.saveOrUpdate(oDocumentStep_To);
+                oDocumentStepDao.saveOrUpdate(oDocumentStep_To);
             }
 
         } catch (Exception oException) {
@@ -577,8 +672,17 @@ public class DocumentStepService {
     }
 
     public List<String> getLoginsFromField(String snID_Process_Activiti, String sID_Field) throws Exception {
+        return getLoginsFromField(snID_Process_Activiti, sID_Field, null);
+    }
+    
+    public List<String> getLoginsFromField(String snID_Process_Activiti, String sID_Field, String sID_FieldTable) throws Exception {
         List<String> asLogin = new LinkedList();
         try {
+            
+            if(sID_FieldTable == null){
+                sID_FieldTable = "sLogin_isExecute";
+            }
+            
             String sValue = (String) runtimeService.getVariable(snID_Process_Activiti, sID_Field);
             // String soJSON=(String)
             // runtimeService.getVariable(snID_Process_Activiti, sID_Field);
@@ -613,8 +717,10 @@ public class DocumentStepService {
                                     LOG.info("oJsonMap in cloneDocumentStepFromTable is {}", oJsonMap);
                                     if (oJsonMap != null) {
                                         Object oId = oJsonMap.get("id");
-                                        if (((String) oId).equals("sLogin_isExecute")
-                                                || ((String) oId).equals("sID_Group_Activiti_isExecute")) {
+                                        if (((String) oId).equals(sID_FieldTable)
+                                                || ((String) oId).equals("sID_Group_Activiti_isExecute")
+                                                || ((String) oId).equals("sLogin_Approver")
+                                                || ((String) oId).equals("sLogin_Addressee")) {
                                             Object oValue = oJsonMap.get("value");
                                             if (oValue != null) {
                                                 LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
@@ -641,16 +747,21 @@ public class DocumentStepService {
         }
         return asLogin;
     }
-
+    
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti, String sKey_Group,
             String sID_Field, String sKey_Step, boolean bReClone) throws Exception {
+        return  cloneDocumentStepFromTable(snID_Process_Activiti, sKey_Group, sID_Field, sKey_Step, bReClone, null);
+    }
+
+    public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti, String sKey_Group,
+            String sID_Field, String sKey_Step, boolean bReClone, String sID_FieldTable) throws Exception {
 
         LOG.info("started...");
         LOG.info("sKey_Group={}, snID_Process_Activiti={}, sID_Field={}, sKey_Step={}", sKey_Group,
                 snID_Process_Activiti, sID_Field, sKey_Step);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Return = new ArrayList<>();
         try {
-            List<String> asLogin = getLoginsFromField(snID_Process_Activiti, sID_Field);
+            List<String> asLogin = getLoginsFromField(snID_Process_Activiti, sID_Field, sID_FieldTable);
             for (String sLogin : asLogin) {
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(
                         snID_Process_Activiti, sKey_Group, sLogin, sKey_Step, bReClone);
@@ -671,7 +782,7 @@ public class DocumentStepService {
     public List<DocumentStepSubjectRight> cloneDocumentStepFromTable(String snID_Process_Activiti,
             String sKey_GroupPostfix, String sID_Field, String sKey_Step_Document_To) throws Exception {
         return cloneDocumentStepFromTable(snID_Process_Activiti, sKey_GroupPostfix, sID_Field, sKey_Step_Document_To,
-                false);
+                false, null);
     }
 
     public List<DocumentStepSubjectRight> syncDocumentSubmitersByField(String snID_Process_Activiti,
@@ -851,7 +962,7 @@ public class DocumentStepService {
         }
         LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
 
         DocumentStep oDocumentStep_Common = aDocumentStep.stream().filter(o -> o.getsKey_Step().equals("_")).findAny()
@@ -902,6 +1013,7 @@ public class DocumentStepService {
                 if (oUser.getId().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
                     Map<String, Object> mUser = new HashMap();
                     mUser.put("sLogin", oUser.getId());
+                    mUser.put("sID_Group", sID_Group);
                     mUser.put("sFIO", oUser.getLastName() + " " + oUser.getFirstName());
                     amUserProperty.add(mUser);
                 }
@@ -963,7 +1075,7 @@ public class DocumentStepService {
         }
         LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
 
         DocumentStep oDocumentStep_Common = aDocumentStep.stream().filter(o -> o.getsKey_Step().equals("_")).findAny()
@@ -1252,7 +1364,7 @@ public class DocumentStepService {
                 LOG.info("soJSON={}", soJSON);
 
                 setDocumentSteps(snID_Process_Activiti, soJSON);
-                List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti",
+                List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                         snID_Process_Activiti);
                 LOG.info("aDocumentStep={}", aDocumentStep);
 
@@ -1283,10 +1395,16 @@ public class DocumentStepService {
 
         }
 
-        List<DocumentStep> aResultDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti",
-                snID_Process_Activiti);
+        List<DocumentStep> aResultDocumentStep = new ArrayList<>();
 
-        LOG.info("aResultDocumentStep in initDocChecker is {}", aResultDocumentStep);
+        try {
+            aResultDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
+                    snID_Process_Activiti);
+        } catch (Exception ex) {
+
+        }
+
+        LOG.info("aResultDocumentStep in initDocChecker is {}", aResultDocumentStep.size());
 
         for (DocumentStep oDocumentStep : aResultDocumentStep) {
             if (oDocumentStep.getsKey_Step().equals(sKey_Step_Document)) {
@@ -1322,7 +1440,7 @@ public class DocumentStepService {
 
             LOG.debug("BEFORE:sKey_Step_Document={}", sKey_Step_Document);
 
-            List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti",
+            List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
                     snID_Process_Activiti);
             LOG.debug("aDocumentStep={}", aDocumentStep);
 
@@ -1356,12 +1474,14 @@ public class DocumentStepService {
 
         return "";
     }
-
-    public Map<String, Boolean> isDocumentStepSubmitedAll(String snID_Process, String sLogin, String sKey_Step)
+    
+    public Map<String, Object> isDocumentStepSubmitedAll(String snID_Process, String sLogin, String sKey_Step)
             throws Exception {
         LOG.info("isDocumentStepSubmitedAll: snID_Process {}, sKey_Step {} ...", snID_Process, sKey_Step);
-        Map<String, Boolean> mReturn = new HashMap();
-        List<DocumentStep> aDocumentStep = documentStepDao.findAllBy("snID_Process_Activiti", snID_Process);//
+        Map<String, Object> mReturn = new HashMap();
+        long countSubmited = 0;
+        long countNotSubmited = 0;
+        List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process);//
         LOG.info("The size of list aDocumentStep is {}", (aDocumentStep != null ? aDocumentStep.size() : null));
         DocumentStep oFindedDocumentStep = null;
 
@@ -1388,110 +1508,155 @@ public class DocumentStepService {
                         bSubmitedAll = false;
                         LOG.info("oDocumentStepSubjectRight: " + oDocumentStepSubjectRight.getsKey_GroupPostfix()
                                 + " sDate: " + oDocumentStepSubjectRight.getsDate() + "bSubmitedAll: " + bSubmitedAll);
-                        break;
+                        //break;
+                        countNotSubmited++;
+                    } else{
+                        countSubmited++;
                     }
                 } else {
                     LOG.error("oDocumentStepSubjectRight is null");
                 }
             }
             mReturn.put("bSubmitedAll", bSubmitedAll);
+            mReturn.put("nCountSubmited", countSubmited);
+            mReturn.put("nCountNotSubmited", countNotSubmited);
+            mReturn.put("nCountSubmitePlan", (countSubmited + countNotSubmited));
+            
+            LOG.info("mReturn in isDocumentStepSubmitedAll {}", mReturn);
+            
             return mReturn;
         }
     }
 
-    public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
-            throws JsonProcessingException, RecordNotFoundException {
+	public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
+			throws JsonProcessingException, RecordNotFoundException, ParseException {
 
-        List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
+		List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
-                sLogin);
-        LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
-        DocumentStepSubjectRight oFindedDocumentStepSubjectRight = null;
+		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
+				sLogin);
+		LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
+		DocumentStepSubjectRight oFindedDocumentStepSubjectRight;
 
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+		for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
-            if (oDocumentStepSubjectRight != null) {
+			if (oDocumentStepSubjectRight != null) {
 
-                DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
-                DateTime sDate = oDocumentStepSubjectRight.getsDate();
-                // проверяем, если даты ецп нет, но есть дата подписания - нашли
-                // нужный объект, который кладем в VO-обьект-обертку
-                if (sDateECP == null) {
-                    if (sDate != null) {
-                        oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
-                        LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
-                        // Достаем nID_Process_Activiti у найденного oDocumentStepSubjectRight через DocumentStep
-                        String snID_Process_Activiti = oFindedDocumentStepSubjectRight.getDocumentStep()
-                                .getSnID_Process_Activiti();
-                        LOG.info("snID_Process of oFindedDocumentStepSubjectRight: ", snID_Process_Activiti);
+				DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+				LOG.info("sDateECP = ", oDocumentStepSubjectRight.getsDateECP());
+				DateTime sDate = oDocumentStepSubjectRight.getsDate();
+				LOG.info("sDate = ", oDocumentStepSubjectRight.getsDate());
 
-                        String sID_Order = oFindedDocumentStepSubjectRight.getDocumentStep().getnOrder().toString();
+				long sDS = oDocumentStepSubjectRight.getsDate().getMillis();
+				String setsDateSubmit = convertMilliSecondsToFormattedDate(sDS);
 
-                        // через апи активити по nID_Process_Activity
-                        HistoricProcessInstance oProcessInstance = historyService.createHistoricProcessInstanceQuery()
-                                .processInstanceId(snID_Process_Activiti).singleResult();
+				Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
+				// проверяем, если даты ецп нет, но есть дата подписания - нашли
+				// нужный объект, который кладем в VO-обьект-обертку
+				if (bNeedECP != null && bNeedECP != false && sDateECP == null) {
+					if (sDate != null) {
+						oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
+						LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
+						// Достаем nID_Process_Activiti у найденного
+						// oDocumentStepSubjectRight через DocumentStep
+						String snID_Process_Activiti = oFindedDocumentStepSubjectRight.getDocumentStep()
+								.getSnID_Process_Activiti();
+						LOG.info("snID_Process of oFindedDocumentStepSubjectRight: {}", snID_Process_Activiti);
+						// Получаем sID_Order через generalConfig
+						long nID_Process = Long.valueOf(snID_Process_Activiti);
+						int nID_Server = generalConfig.getSelfServerId();
+						String sID_Order = generalConfig.getOrderId_ByProcess(nID_Server, nID_Process);
+						
+						HistoricProcessInstance oHistoricProcessInstance
+                        = historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process_Activiti).singleResult();
+						
+						if (oHistoricProcessInstance != null) {
+		                  ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
+		                          .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
+                  
+                  
+						if (oProcessDefinition !=null) {
+							 String sProcessName = oProcessDefinition.getName();
+			                  
+								// вытаскиваем дату создания процесса
 
-                        LOG.info("oProcessInstance = {} ", oProcessInstance);
-                        if (oProcessInstance != null) {
-                            // вытаскиваем дату создания процесса
-                            Date sDateCreateProcess = oProcessInstance.getStartTime();
-                            LOG.info("sDateCreateProcess", sDateCreateProcess);
-                            // вытаскиваем название бп
-                            String sNameBP = oProcessInstance.getName();
-                            LOG.info("sNameBP", sNameBP);
-                            // вытаскиваем список активных тасок по процесу
-                            List<Task> aTask = oTaskService.createTaskQuery()
-                                    .processInstanceId(oProcessInstance.getId()).active().list();
-                            if (aTask.size() < 1 || aTask.get(0) == null) {
-                                throw new IllegalArgumentException(
-                                        "Process with ID: " + snID_Process_Activiti + " has no active task.");
-                            }
-                            // берем первую
-                            Task oTaskCurr = aTask.get(0);
-                            LOG.info("oTaskCurr ={} ", oTaskCurr);
+								// Date sDateCreateProcess =
+								// oProcessInstance.getStartTime();
 
-                            // вытаскиваем дату создания таски
-                            Date sDateCreateUserTask = oTaskCurr.getCreateTime();
-                            // и ее название
-                            String sUserTaskName = oTaskCurr.getName();
+								long sDCP = oHistoricProcessInstance.getStartTime().getTime();
+								String sDateCreateProcess = convertMilliSecondsToFormattedDate(sDCP);
+								LOG.info("sDateCreateProcess ", sDateCreateProcess);
+								// вытаскиваем название бп
 
-                            /*List<HistoricTaskInstance> aHistoricTask = historyService.createHistoricTaskInstanceQuery().processInstanceId(snID_Process_Activiti).list();
-							 if (aHistoricTask == null || aHistoricTask.isEmpty()) {
-					                LOG.error(String.format("Tasks for Process Instance [id = '%s'] not found", snID_Process_Activiti));
-					                throw new RecordNotFoundException();
-					            }
-					            HistoricTaskInstance historicTask = aHistoricTask.get(0);
-					            Date sDateCreateUserTask = historicTask.getCreateTime();
-					                String sUserTaskName = historicTask.getName();
-					                LOG.info(String.format("Historic Task [id = '%s'] is found", historicTask.getId()));
-                             */
-                            // Создаем обьект=обертку, в который сетим нужные полученные поля
-                            DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
+								// String sNameBP = oProcessInstance.getName();
+								// LOG.info("sNameBP {}", sNameBP);
+								// вытаскиваем список активных тасок по процесу
+								List<Task> aTask = oTaskService.createTaskQuery()
+										.processInstanceId(oHistoricProcessInstance.getId()).active().list();
+								if (aTask.size() < 1 || aTask.get(0) == null) {
+									continue;
+								}
+								// берем первую
+								Task oTaskCurr = aTask.get(0);
+								LOG.info("oTaskCurr ={} ", oTaskCurr);
+								// вытаскиваем дату создания таски
+								long sDCUT = oTaskCurr.getCreateTime().getTime();
+								String sDateCreateUserTask = convertMilliSecondsToFormattedDate(sDCUT);
+								// Date sDateCreateUserTask =
+								// oTaskCurr.getCreateTime();
+								LOG.info("sDateCreateUserTask = ", oTaskCurr.getCreateTime());
+								// и ее название
+								String sUserTaskName = oTaskCurr.getName();
+								// Создаем обьект=обертку, в который сетим
+								// нужные
+								// полученные поля
+								DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
 
-                            oDocumentSubmitedUnsignedVO.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
-                            oDocumentSubmitedUnsignedVO.setsNameBP(sNameBP);
-                            oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
-                            oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
-                            oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
-                            oDocumentSubmitedUnsignedVO.setsDateSubmit(sDate);
-                            oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
+								oDocumentSubmitedUnsignedVO
+										.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
+								oDocumentSubmitedUnsignedVO.setsNameBP(sProcessName);
+								oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
+								oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
+								oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
+								oDocumentSubmitedUnsignedVO.setsDateSubmit(setsDateSubmit);
+								oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
-                            aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
-                        } else {
-                            LOG.error(String.format("oProcessInstance [id = '%s']  is null", snID_Process_Activiti));
+								aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
+								LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
+							} else {
+								LOG.error(
+										String.format("oProcessDefinition [id = '%s']  is null", oHistoricProcessInstance.getProcessDefinitionId()));
 
-                        }
-                    }
+							}
+						} else {
+							LOG.error(
+									String.format("oHistoricProcessInstance [id = '%s']  is null", snID_Process_Activiti));
+						}
 
-                }
+					}
 
-            } else {
-                LOG.info("oFindedDocumentStepSubjectRight not found");
-            }
-        }
+				} else {
+					LOG.info("oFindedDocumentStepSubjectRight not found");
+				}
+			}
+		}
+		return aResDocumentSubmitedUnsigned;
+	}
 
-        return aResDocumentSubmitedUnsigned;
-    }
+	public void removeDocumentSteps(String snID_Process_Activiti) {
+		List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+		LOG.info("aDocumentStep finded...");
+		if (aDocumentStep != null) {
+			oDocumentStepDao.delete(aDocumentStep);
+		}
+		LOG.info("aDocumentStep deleted...");
+	}
+
+	public static String convertMilliSecondsToFormattedDate(Long milliSeconds) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(milliSeconds);
+		return simpleDateFormat.format(calendar.getTime());
+	}
 
 }

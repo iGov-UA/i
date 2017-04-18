@@ -43,8 +43,14 @@
       title: 'Документи',
       type: tasks.filterTypes.documents,
       count: 0,
-      showCount: false,
+      showCount: true,
       tab: 'documents'
+    }, {
+      title: 'ЕЦП',
+      type: tasks.filterTypes.ecp,
+      count: 0,
+      showCount: false,
+      tab: 'ecp'
     }, {
       title: 'Мій розклад',
       type: tasks.filterTypes.tickets,

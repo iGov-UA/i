@@ -121,7 +121,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="746cc7bf-a84c-4950-85b6-80dfd0bbd16b" name="Чорнобильська відпустка"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар робітника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionSectionChief" name="Статус рішення (узгодження)" type="enum">
           <activiti:value id="allowed" name="Дозволити"></activiti:value>
           <activiti:value id="notAllowed" name="Заборонити"></activiti:value>
@@ -165,7 +165,9 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:field name="text">
           <activiti:expression><![CDATA[<b>Шановний колего.</b><br>
 Вам не затверджена відпустка. <br>
-Коментар: ${sNote}]]></activiti:expression>
+Коментар: ${sNotePredicating}<br>
+sDateVacationBegin: ${sDateVacationBegin}<br>
+sDateVacationEnd: ${sDateVacationEnd}<br>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -212,7 +214,7 @@ var sDateVacationBegin = execution.getVariable('sDateVacationBegin')
 var sDateVacationBegin_Email = dateUtil.getDateFormatted_ByField(snID_Process, sDateVacationBegin, 'dd.MM.yyyy')
 execution.setVariable('sDateVacationBegin_Email', sDateVacationBegin_Email)</script>
     </scriptTask>
-    <sequenceFlow id="flow15" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="usertask1" targetRef="scripttask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway2" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bVerificationSignatures == 'false'}]]></conditionExpression>
@@ -245,7 +247,6 @@ var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test',
 execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
     </scriptTask>
     <sequenceFlow id="flow19" sourceRef="scripttask4" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow20" sourceRef="scripttask2" targetRef="scripttask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_mriya_vacation">
     <bpmndi:BPMNPlane bpmnElement="_doc_mriya_vacation" id="BPMNPlane__doc_mriya_vacation">
@@ -331,8 +332,8 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdi:waypoint x="1509.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="492.0" y="138.0"></omgdi:waypoint>
-        <omgdi:waypoint x="562.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="545.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="174.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="1049.0" y="193.0"></omgdi:waypoint>
@@ -351,10 +352,6 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="995.0" y="173.0"></omgdi:waypoint>
         <omgdi:waypoint x="1029.0" y="173.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="562.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="642.0" y="139.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

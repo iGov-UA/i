@@ -253,9 +253,18 @@ public class SubjectGroupTreeService {
                 LOG.info("hierarchyProcessSubject" + hierarchyProcessSubject);
             }
 
-            List<SubjectGroup> aChildResultByUser = filtrChildResultByUser(sFind, aChildResult);
-
-            LOG.info("aChildResultByUser" + aChildResultByUser);
+            LOG.info("aChildResult {}", aChildResult);
+            
+            List<SubjectGroup> aChildResultByUser = new ArrayList<>();
+            
+            if(HUMAN.equals(sSubjectType)){
+                aChildResultByUser = filtrChildResultByUser_Human(sFind, aChildResult);
+            }
+            if(ORGAN.equals(sSubjectType)){
+                aChildResultByUser = filtrChildResultByUser_Organ(sFind, aChildResult);
+            }
+            
+            LOG.info("aChildResultByUser {}", aChildResultByUser);
 
             List<SubjectGroup> resultTree;
             if (sFind != null && !sFind.isEmpty()) {
@@ -324,6 +333,22 @@ public class SubjectGroupTreeService {
         return aChildResult;
     }
 
+    private List<SubjectGroup> filtrChildResultByUser_Organ(String sFind, List<SubjectGroup> aChildResult) {
+        List<SubjectGroup> aChildResultByUser = new ArrayList<>();
+        if (aChildResult != null) 
+        {
+            if (sFind != null && !sFind.isEmpty()) {
+                for(SubjectGroup oSubjecetGroup : aChildResult){
+                   if(oSubjecetGroup.getName() != null && oSubjecetGroup.getName().toLowerCase().contains(sFind.toLowerCase())){
+                       aChildResultByUser.add(oSubjecetGroup);
+                   } 
+                } 
+            }
+        }
+        
+        return aChildResultByUser;
+    }
+    
     /**
      * Метод получения отфильтрованного списка объектов по заданному условию
      * поиска
@@ -333,13 +358,14 @@ public class SubjectGroupTreeService {
      * @return List<SubjectGroup> - отфильтрованный список по строке поиска в
      * фио
      */
-    private List<SubjectGroup> filtrChildResultByUser(String sFind, List<SubjectGroup> aChildResult) {
+    private List<SubjectGroup> filtrChildResultByUser_Human(String sFind, List<SubjectGroup> aChildResult) {
         List<SubjectGroup> aChildResultByUser = new ArrayList<>();
         if (aChildResult != null && !aChildResult.isEmpty()) {
             if (sFind != null && !sFind.isEmpty()) {
                 for (SubjectGroup subjectGroup : aChildResult) {
                     List<SubjectUser> aSubjectUser = getUsersByGroupSubject(
                             subjectGroup.getsID_Group_Activiti());
+                    LOG.info("aSubjectUser {}", aSubjectUser);
                     final List<SubjectUser> subjectUserFiltr = Lists
                             .newArrayList(Collections2.filter(aSubjectUser, new Predicate<SubjectUser>() {
                                 @Override
@@ -350,6 +376,7 @@ public class SubjectGroupTreeService {
                                     return subjectUser.getsFirstName().toLowerCase().contains(sFind.toLowerCase());
                                 }
                             }));
+                    LOG.info("subjectUserFiltr {}", subjectUserFiltr);
                     // получаем только их логины
                     final List<String> sFindLogin = Lists.newArrayList(
                             Collections2.transform(subjectUserFiltr, new Function<SubjectUser, String>() {
@@ -362,6 +389,9 @@ public class SubjectGroupTreeService {
                     // и оставляем только processSubject чьи логины
                     // содержаться
                     // в отфильтрованном списке
+                    LOG.info("sFindLogin {}", sFindLogin);
+                    LOG.info("subjectGroup.getsID_Group_Activiti {}", subjectGroup.getsID_Group_Activiti());
+                    
                     if (sFindLogin.contains(subjectGroup.getsID_Group_Activiti())) {
                         aChildResultByUser.add(subjectGroup);
 

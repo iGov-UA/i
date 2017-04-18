@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.igov.model.action.vo.DocumentSubmitedUnsignedVO;
 import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
@@ -35,6 +36,9 @@ public class DocumentCommonController {
 
     @Autowired
     private DocumentStepService documentStepService;
+    
+    @Autowired
+    private DeleteProccess deleteProccess;
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentCommonController.class);
 
@@ -42,16 +46,15 @@ public class DocumentCommonController {
     @RequestMapping(value = "/isDocumentStepSubmitedAll", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
-    Map<String, Boolean> isDocumentStepSubmitedAll(
-            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
-            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
-            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
+    Map<String, Object> isDocumentStepSubmitedAll(
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "Логин подписанта", required = true) @RequestParam(required = true, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
             HttpServletResponse httpResponse) throws Exception {
 
         LOG.info("snID_Process_Activiti: " + nID_Process);
         LOG.info("sLogin: " + sLogin);
         LOG.info("sKey_Step: " + sKey_Step);
-
         return documentStepService.isDocumentStepSubmitedAll(nID_Process, sLogin, sKey_Step);
 
     }
@@ -160,11 +163,46 @@ public class DocumentCommonController {
         return m;
     }
     
+    @ApiOperation(value = "Делегировать подписанта документа")
+    @RequestMapping(value = "/delegateDocumentStepSubject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    //@Transactional
+    public @ResponseBody
+    List<DocumentStepSubjectRight> delegateDocumentStepSubject(
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "группа", required = true) @RequestParam(required = true, value = "sKey_Group") String sKey_Group,
+            @ApiParam(value = "группа делегирования", required = true) @RequestParam(required = true, value = "sKey_Group_Delegate") String sKey_Group_Delegate,
+            @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step
+    ) throws Exception {
+
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        LOG.info("sKey_Group={}", sKey_Group);
+        LOG.info("sKey_Group_Delegate={}", sKey_Group_Delegate);
+        LOG.info("sKey_Step={}", sKey_Step);
+
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService.delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate);
+        
+        LOG.info("aDocumentStepSubjectRight_Current={}", aDocumentStepSubjectRight_Current);
+        
+        return aDocumentStepSubjectRight_Current;
+    }
+    
+//delegateDocumentStepSubject(String snID_Process_Activiti, String sKey_Step, String sKey_Group, String sKey_Group_Delegate)
+        
+        
+    @ApiOperation(value = "Удаление степов и процесса")
+    @RequestMapping(value = "/removeDocumentSteps", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody String removeDocumentSteps(
+                    @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti)
+                    throws Exception {
+
+             return deleteProccess.closeProcessInstance(snID_Process_Activiti);
+    }
+    
 
     @ApiOperation(value = "Получение списка подписанных документов без ЕЦП")
     @RequestMapping(value = "/getDocumentSubmitedUnsigned", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     // @Transactional
-    public @ResponseBody String getDocumentSubmitedUnsigned(
+    public @ResponseBody List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(
                     @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
                     throws Exception {
 
@@ -174,12 +212,12 @@ public class DocumentCommonController {
 
             LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
 
-            if (aDocumentSubmitedUnsignedVO != null) {
+            /*if (aDocumentSubmitedUnsignedVO != null) {
                     return JSONValue.toJSONString(aDocumentSubmitedUnsignedVO);
             }
 
-            return "aDocumentSubmitedUnsignedVO is null";
-
+            return "aDocumentSubmitedUnsignedVO is null";*/
+             return aDocumentSubmitedUnsignedVO;
     }
 
 }

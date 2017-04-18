@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.Map;
 import org.igov.service.business.subject.SubjectGroupTreeService_new;
 
 @Controller
@@ -96,22 +97,24 @@ public class SubjectGroupController {
                 sFind, bIncludeRoot, nDeepLevelWidth, sSubjectType);
     }
 
-    @RequestMapping(value = "/getSubjectRightBPs", method = RequestMethod.GET)
+    @RequestMapping(value = "/getBPs_ForReferent", method = RequestMethod.GET)
     @ResponseBody
-    public List<SubjectRightBPVO> getSubjectRightBPs(
+    public List<SubjectRightBPVO> getBPs_ForReferent(
             @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
             throws Exception {
-
         LOG.info("sLogin: ", sLogin);
-
-        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getSubjectRightBPs(sLogin);
-
+        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
         LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
-
-        if (aResSubjectRightBPVO != null) {
-            return aResSubjectRightBPVO;
-        }
-
-        return new ArrayList<>();
+        return aResSubjectRightBPVO;
     }
+    
+    @RequestMapping(value = "/getBPs_ForExport", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Map<String, String>> getBPs_ForExport(
+            @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
+            throws Exception {
+        
+        return subjectRightBPService.getBPs_ForExport(sLogin);
+    }
+    
 }

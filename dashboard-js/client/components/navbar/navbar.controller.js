@@ -192,6 +192,8 @@
     function fillHasDocuments(user) {
       $rootScope.sUserOnTab = user;
       tasks.isUserHasDocuments(user).then(function (res) {
+        $rootScope.usersDocumentsBPs = [];
+        $rootScope.userTasksBPs = [];
         if(Array.isArray(res) && res.length > 0) {
           $rootScope.usersDocumentsBPs = res.filter(function (item) {
             return item.oSubjectRightBP.sID_BP.charAt(0) === '_' && item.oSubjectRightBP.sID_BP.split('_')[1] === 'doc';
@@ -263,7 +265,7 @@
     });
 
     $scope.showSignDialog = function () {
-      signDialog.signContent({id: "someid", content: "sign this string"}, function (signedContent) {
+      signDialog.signManuallySelectedFile(function (signedContent) {
         console.log('Sign Result ' + JSON.stringify(signedContent));
       }, function () {
         console.log('Sign Dismissed');

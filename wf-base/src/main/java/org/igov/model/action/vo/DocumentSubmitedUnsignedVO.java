@@ -1,22 +1,26 @@
 package org.igov.model.action.vo;
 
+
 import java.util.Date;
 
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.joda.time.DateTime;
 
 public class DocumentSubmitedUnsignedVO {
+	
+	
+	
 	DocumentStepSubjectRight oDocumentStepSubjectRight;
 
 	private String sNameBP;
 
 	private String sUserTaskName;
 	
-	private Date sDateCreateProcess;
+	private String sDateCreateProcess;
 
-	private Date sDateCreateUserTask;
+	private String sDateCreateUserTask;
 
-	private DateTime sDateSubmit;
+	private String sDateSubmit;
 
 	private String sID_Order;
 
@@ -48,27 +52,27 @@ public class DocumentSubmitedUnsignedVO {
 		this.sUserTaskName = sUserTaskName;
 	}
 
-	public Date getsDateCreateProcess() {
+	public String getsDateCreateProcess() {
 		return sDateCreateProcess;
 	}
 
-	public void setsDateCreateProcess(Date sDateCreateProcess) {
+	public void setsDateCreateProcess(String sDateCreateProcess) {
 		this.sDateCreateProcess = sDateCreateProcess;
 	}
 
-	public Date getsDateCreateUserTask() {
+	public String getsDateCreateUserTask() {
 		return sDateCreateUserTask;
 	}
 
-	public void setsDateCreateUserTask(Date sDateCreateUserTask) {
+	public void setsDateCreateUserTask(String sDateCreateUserTask) {
 		this.sDateCreateUserTask = sDateCreateUserTask;
 	}
 
-	public DateTime getsDateSubmit() {
+	public String getsDateSubmit() {
 		return sDateSubmit;
 	}
 
-	public void setsDateSubmit(DateTime sDateSubmit) {
+	public void setsDateSubmit(String sDateSubmit) {
 		this.sDateSubmit = sDateSubmit;
 	}
 

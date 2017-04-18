@@ -18,6 +18,10 @@ var default_headers = {
   'Authorization': authBase
 };
 
+module.exports.getAuthHeaderValue = function () {
+  return authBase;
+};
+
 /* 'Authorization': config.activiti.auth.basic */
 
 request.debug = config.request.debug;
