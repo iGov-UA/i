@@ -2724,13 +2724,13 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 # Николай
 ###### bvisible=false
 ### **bVisible=false**
-Используется для невидимости поля, вместо #invisible
-Исключение при использовании в name &quot... (кавычек), прописывать необходимо в 5 поле name
-Пример правильного заполнения поля с флагом: name="&quot;Используем кавычки&quot; ; ;bVisible=false"
-###### bprintform=true
-### **bPrintform=true**
-Используется для идентификации принтформ на данный момент id sBody и sPrintForm    
-[issue 1630](https://github.com/e-government-ua/i/issues/1630)
+Используется для невидимости поля, вместо #invisible      
+Исключение при использовании в name &quot... (кавычек), прописывать необходимо в 5 поле name    
+Пример правильного заполнения поля с флагом: name="&quot;Используем кавычки&quot; ; ;bVisible=false"  
+###### bprintform=true   
+### **bPrintform=true**  
+Используется для идентификации принтформ на данный момент id sBody и sPrintForm      
+[issue 1630](https://github.com/e-government-ua/i/issues/1630)   
 
 # Николай
 
