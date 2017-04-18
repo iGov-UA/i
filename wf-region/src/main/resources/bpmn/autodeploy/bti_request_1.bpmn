@@ -222,7 +222,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow23" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask3" name="Підготовка відповіді" activiti:candidateGroups="sales">
+    <userTask id="usertask4" name="Підготовка відповіді" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -272,7 +272,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow25" name="нет ошибок" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow26" sourceRef="usertask3" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="usertask4" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask4" name="Сповіщення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -349,7 +349,7 @@ execution.setVariable('waiting_time', count)</script>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Запит відхилено ( waiting_time = ${waiting_time} )]]></activiti:expression>
+          <activiti:string><![CDATA[Запит відхилено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -379,9 +379,8 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     </sequenceFlow>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow35" sourceRef="servicetask5" targetRef="endevent7"></sequenceFlow>
-    <scriptTask id="scripttask2" name="аналіз статусу сплати" activiti:autoStoreVariables="false">
-      <script>
-var payment=execution.getVariable('sID_Payment')
+    <scriptTask id="scripttask2" name="аналіз статусу сплати" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var payment=execution.getVariable('sID_Payment')
 var status='0'
 if (payment.indexOf('_Успешный платеж')!=-1){status='true'} else {if (payment.indexOf('_Тестовый платеж')!=-1){status='true'} else {status='false'}}
 execution.setVariable('waiting_status', status)
@@ -389,11 +388,11 @@ execution.setVariable('waiting_status', status)
     </scriptTask>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow36" sourceRef="scripttask2" targetRef="exclusivegateway4"></sequenceFlow>
-    <sequenceFlow id="flow37" name="успешно" sourceRef="exclusivegateway4" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${waiting_status = 'true'}]]></conditionExpression>
+    <sequenceFlow id="flow37" name="успешно" sourceRef="exclusivegateway4" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${waiting_status == 'true'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow38" name="пока неуспешно" sourceRef="exclusivegateway4" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${waiting_status = 'false'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${waiting_status == 'false'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_bti_request_1">
@@ -428,7 +427,7 @@ execution.setVariable('waiting_status', status)
       <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
         <omgdc:Bounds height="30.0" width="30.0" x="850.0" y="222.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="55.0" width="172.0" x="860.0" y="580.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
@@ -558,7 +557,7 @@ execution.setVariable('waiting_status', status)
         <omgdi:waypoint x="945.0" y="550.0"></omgdi:waypoint>
         <omgdi:waypoint x="946.0" y="580.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="45.0" x="945.0" y="550.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="100.0" x="945.0" y="550.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -566,7 +565,7 @@ execution.setVariable('waiting_status', status)
         <omgdi:waypoint x="1062.0" y="530.0"></omgdi:waypoint>
         <omgdi:waypoint x="1062.0" y="351.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="83.0" x="964.0" y="510.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="100.0" x="964.0" y="510.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
