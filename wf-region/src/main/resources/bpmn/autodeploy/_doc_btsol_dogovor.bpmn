@@ -82,7 +82,7 @@
         <activiti:formProperty id="sSubjectContract" name="Предмет договора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocPreview" name="№ карточки согласованного ранее договора" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNamePartner" name="Наименование контрагента" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextContrtact" name="Текст договора; ;bPrintFormFileAsPDF=true,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextContrtact" name="Текст договора" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Подрядчик&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введите код ЕДРПОУ" type="string" writable="false"></activiti:formProperty>
@@ -221,8 +221,6 @@
         <activiti:formProperty id="sTable5" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable5_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Kontroler" name="Логін" type="invisible"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sName_DelegateUT4" name="кому делегировать; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_DelegateUT4" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT4" name="Внесите комментарий" type="string"></activiti:formProperty>
@@ -242,7 +240,7 @@
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sSubjectContract::${sSubjectContract};;sNamePartner::${sNamePartner};;sTextContrtact::${sTextContrtact};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sName_Kontroler::${sName_Kontroler};;sLogin_Kontroler::${sLogin_Kontroler}]]></activiti:expression>
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sSubjectContract::${sSubjectContract};;sNamePartner::${sNamePartner};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
