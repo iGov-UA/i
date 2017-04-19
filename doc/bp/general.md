@@ -250,9 +250,12 @@ type="queueData" required="true"></activiti:formProperty>
 Маркеры и позволяют работать с уже существующими полями и расширяют их возможности.
 
 ### invisible
+# Николай 
+invisible - болеее не используется, вместо него используем [#bvisible=false] в третьем поле name
+# Николай
 Невидимый тип данных. Используется, как правило для записи технических полей, которые нужны в процессе, но заявителю или чиновнику не должны быть показаны.
 ```xml
-<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
+<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа " type="invisible"></activiti:formProperty>
 ```
 
 [детальней...](#_invisible)
