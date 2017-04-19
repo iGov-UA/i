@@ -2,12 +2,10 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="justice_2517_GOopen" name="Державна реєстрація створення громадського об'єднання" isExecutable="true">
     <documentation>
-		AGVersion: 2017.04.14
+		AGVersion: 2017.04.14		
 	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-<!--        <activiti:formProperty id="markers_ext_01" name="extra_required_fields; ;bVisible=false" type="markers" default="${markerService.loadFromFile('dnepr_cnap_560_ur.json')}"></activiti:formProperty>  -->
-<!--		<activiti:formProperty id="markerDateBirth" name="для правки DateBirth; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_DateBirth&quot;:{&quot;aField_ID&quot;:[&quot;bankIdbirthDay&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty> -->
         <activiti:formProperty id="InfoStart" name="; ;labelType=info" type="label" default="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує). &lt;/br&gt; Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -30,18 +28,22 @@
         <activiti:formProperty id="fVarDod_04" name="Відомості;про керівні органи ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fVarDod_05" name="Заява про включення до Реєстру неприбуткових установ та організацій;за бажанням ;bNew=true" type="file"></activiti:formProperty>
 
+        <activiti:formProperty id="InfoTestMail" name="; ;labelType=warning" type="label" default="Для демонстрації послуги"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Вкажіть E-Mail адресу для отримання листа держслужбовцю" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги; ;bVisible=false" type="string" default="Державна реєстрація створення громадського об'єднання"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all" name=" ; ;bNew=true" type="file" required="true"></activiti:formProperty>
-<!--        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/dnepr_cnap_560_ur_print.html"></activiti:formProperty> -->
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="jur_${sID_UA}_2517">
       <extensionElements>
+        <activiti:formProperty id="sMailClerk" name="E-Mail держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;bVisible=false" type="string"></activiti:formProperty>
@@ -71,8 +73,6 @@
         <activiti:formProperty id="fVarDod_04" name="Відомості;про керівні органи ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fVarDod_05" name="Заява про включення до Реєстру неприбуткових установ та організацій; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 
-<!--        <activiti:formProperty id="form_signed_all" name=" ; ;bNew=true" type="file"></activiti:formProperty>-->
-		
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -145,7 +145,7 @@
     <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[august_@i.ua]]></activiti:string>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
