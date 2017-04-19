@@ -17,6 +17,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCloningOfLaw_Author" name="sCloningOfLaw_Author" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum">
           <activiti:value id="sEnumEditing" name="вернуть на этот же шаг чтоб сбросить подпись"></activiti:value>
           <activiti:value id="sEnumEnd" name="Прогнать на ЮТ2"></activiti:value>
@@ -77,7 +78,8 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 
 // клонирование прав 
 var sKey_GroupPostfix = '_default_btsol'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sLoginAuthor, sKey_Step)
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 execution.setVariable('sCloningOfLaw_Author', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow76" sourceRef="scripttask10" targetRef="usertask2"></sequenceFlow>
