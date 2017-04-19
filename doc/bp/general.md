@@ -251,7 +251,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ### invisible
 # Николай 
-** invisible - болеее не используется, вместо него используем [bVisible=false](#bvisiblefalse) в третьем поле name
+** invisible - болеее не используется, вместо него используем [bVisible=false](#bvisiblefalse) в третьем поле name**
 # Николай
 Невидимый тип данных. Используется, как правило для записи технических полей, которые нужны в процессе, но заявителю или чиновнику не должны быть показаны.
 ```xml
@@ -2731,7 +2731,7 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 ```xml
 <activiti:formProperty id="sPlace" name="Місце народження дев'ятої дитини; ;bVisible=false" type="string"></activiti:formProperty>
 ```
-Исключение при использовании в name &quot... (кавычек), прописывать bVisible=false необходимо в 5 поле name    
+**Исключение:** при использовании в поле name &quot... (кавычек), прописывать bVisible=false необходимо в 5 поле name    
 Пример:
 ```xml
 <activiti:formProperty id="sPlace" name="&quot;Используем кавычки&quot; ; ;bVisible=false" type="string"></activiti:formProperty>
