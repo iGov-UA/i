@@ -22,7 +22,7 @@
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія картки платника податків (довідки про присвоєння індивідуального податкового номеру ІПН)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nNazi" name="Довідка про факт нацистських переслідувань" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFamily" name="Довідка про склад сім'ї" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSubstance" name="&quot;Інвалід війни&quot; ; ;bVisible=false" type="string" default="&quot;Інвалід війни&quot;"></activiti:formProperty>
+        <activiti:formProperty id="sSubstance" name="&quot;Жертва нацистських переслідувань&quot; ; ;bVisible=false" type="string" default="&quot;Жертва нацистських переслідувань&quot;"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -74,6 +74,19 @@
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему "Надання статусу та видача (заміна) посвідчення «Жертва нацистських переслідувань» прийняте]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+&lt;p&gt; Ваше звернення №[sID_Order] на тему: enum{[asType]} було зареєстровано у системі.&lt;br/&gt;
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
