@@ -251,7 +251,8 @@ type="queueData" required="true"></activiti:formProperty>
 
 ### invisible
 # Николай 
-invisible - болеее не используется, вместо него используем [bvisible=false](#bvisible=false) в третьем поле name
+
+** invisible - больше не используется  , вместо него используем [bVisible=false](#bvisiblefalse) в третьем поле name **    
 # Николай
 Невидимый тип данных. Используется, как правило для записи технических полей, которые нужны в процессе, но заявителю или чиновнику не должны быть показаны.
 ```xml
@@ -2725,16 +2726,30 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 Используются для переопределения стандартных  атрибутов, имеющие более высокий приоритет на уровне отрисовки интерфейса на юзертасках.
 
 # Николай
-###### bvisible=false
+###### bvisiblefalse
 ### **bVisible=false**
-Используется для невидимости поля, вместо [#invisible]      
-Исключение при использовании в name &quot... (кавычек), прописывать необходимо в 5 поле name    
-Пример правильного заполнения поля с флагом: name=" &quot; Используем кавычки &quot; ; ;bVisible=false"  
-###### bprintform=true   
+Используется для невидимости поля, вместо [invisible](#invisible). Прописать bVisible=false необходимо в третьем поле name, type используется только string
+```xml
+<activiti:formProperty id="sPlace" name="Місце народження дев'ятої дитини; ;bVisible=false" type="string"></activiti:formProperty>
+```
+**Исключение:** при использовании в поле name &quot... (кавычек), прописывать bVisible=false необходимо в 5 поле name    
+Пример:
+```xml
+<activiti:formProperty id="sPlace" name="&quot;Используем кавычки&quot; ; ;bVisible=false" type="string"></activiti:formProperty>
+```
+
+###### bprintformtrue   
 ### **bPrintform=true**  
 Используется для идентификации принтформ на данный момент id sBody и sPrintForm      
-[issue 1630](https://github.com/e-government-ua/i/issues/1630)   
+[issue 1630](https://github.com/e-government-ua/i/issues/1630) 
 
+Пример: 
+```xml
+<activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr233.html; ;bPrintform=true"  type="file" writable="false"></activiti:formProperty>
+```
+```xml
+  <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false, bPrintform=true" type="string" default="Тест Заява про внесення відомостей" writable="false"></activiti:formProperty>
+```
 # Николай
 
 ### **writable=false**  
