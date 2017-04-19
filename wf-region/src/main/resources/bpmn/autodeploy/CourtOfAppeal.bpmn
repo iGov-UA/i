@@ -110,7 +110,7 @@
         <activiti:formProperty id="sComment" name="укажіть причину" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAkt" name="Сканкопія акту Суду про те, що документи надіслані користувачем до суду не можуть бути визнані як такі, що надійшли до суду" type="file"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all" name="ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/court/CourtOfAppeal_print.html] ; ;bVisible=false" type="string" default="Супровідний лист" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/court/CourtOfAppeal_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/court/CourtOfAppeal_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'||[sReason] == 'фізична особа або фізична особа-підприємець'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'||[sReason] == 'юридична особа'&quot;}}}"></activiti:formProperty>
@@ -135,7 +135,6 @@
           <activiti:expression><![CDATA[
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 Процесуальні документи, що Ви подавали по справі ${sNumberCase} зареєстровані і передані на розгляд судді.<br />
 Супроводний лист щодо отриманих документів знаходиться у додатку до листа.<br />
 Реєстраційний номер ${sNumberAplication}<br />
@@ -175,7 +174,6 @@ enum{[saCourt]}<br />
           <activiti:expression><![CDATA[
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 На жаль, Вам відмовлено у реєстрації процесуальних документів.
 Причина: enum{[reject_1]} ${sComment}<br/>
 Cканкопія відповідного акту Суду знаходиться у додатку до листа.<br/>
