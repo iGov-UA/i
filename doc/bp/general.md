@@ -2741,12 +2741,14 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 ### **bPrintform=true**  
 Используется для идентификации принтформ на данный момент id sBody и sPrintForm      
 [issue 1630](https://github.com/e-government-ua/i/issues/1630) 
+
 Пример: 
-
+```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr233.html; ;bPrintform=true"  type="file" writable="false"></activiti:formProperty>
-
+```
+```xml
   <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false, bPrintform=true" type="string" default="Тест Заява про внесення відомостей" writable="false"></activiti:formProperty>
-
+```
 # Николай
 
 ### **writable=false**  
