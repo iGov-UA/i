@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_task_btsol" name="Задание. Протокол оперативного совещания" isExecutable="true">
+  <process id="_task_btsol" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
@@ -16,8 +16,8 @@
         <activiti:formProperty id="sPresent" name="Присутствовали" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sHearken" name="Слушали" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTask" name="Задание" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sSubjectContract" name="Предмет договора" type="string" ></activiti:formProperty>
-        <activiti:formProperty id="sNamePartner" name="Наименование контрагента" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="sSubjectContract" name="Предмет договора" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNamePartner" name="Наименование контрагента" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextContrtact" name="Текст договора" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sTextTask" name="Задание" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Срок выполнения задания" type="date"></activiti:formProperty>
@@ -28,7 +28,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Kontroler" name="Логін" type="invisible"></activiti:formProperty>
-        
         <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Исполнители; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_meeting.json')}"></activiti:formProperty>
       </extensionElements>
@@ -160,11 +159,11 @@
           <activiti:value id="transfered" name="Согласится с переносом срока"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sRemark" name="Комментарий - что необходимо доработать" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReport" name="Текст отчета" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sReport" name="Текст отчета" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable5_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateExecutionNew" name="Перенос срока выполнения на" type="date"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Если другой исполнитель" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sTable5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегировать другому исполнителю'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="Если перенос срока" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sDateExecutionNew&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'transfered'||[sClient] == 'Прошу перенести срок'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="Если перенос срока" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sDateExecutionNew&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'transfered'||[sClient] == 'Прошу перенести срок'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -370,7 +369,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="182.0" y="163.0"></omgdi:waypoint>
         <omgdi:waypoint x="182.0" y="200.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="203.0" y="165.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="71.0" x="203.0" y="165.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
