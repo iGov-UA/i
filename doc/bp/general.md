@@ -250,9 +250,12 @@ type="queueData" required="true"></activiti:formProperty>
 Маркеры и позволяют работать с уже существующими полями и расширяют их возможности.
 
 ### invisible
+# Николай 
+invisible - болеее не используется, вместо него используем [bvisible=false](#bvisible=false) в третьем поле name
+# Николай
 Невидимый тип данных. Используется, как правило для записи технических полей, которые нужны в процессе, но заявителю или чиновнику не должны быть показаны.
 ```xml
-<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
+<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа " type="invisible"></activiti:formProperty>
 ```
 
 [детальней...](#_invisible)
@@ -2724,9 +2727,9 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 # Николай
 ###### bvisible=false
 ### **bVisible=false**
-Используется для невидимости поля, вместо #invisible      
+Используется для невидимости поля, вместо [#invisible]      
 Исключение при использовании в name &quot... (кавычек), прописывать необходимо в 5 поле name    
-Пример правильного заполнения поля с флагом: name="&quot;Используем кавычки&quot; ; ;bVisible=false"  
+Пример правильного заполнения поля с флагом: name=" &quot; Используем кавычки &quot; ; ;bVisible=false"  
 ###### bprintform=true   
 ### **bPrintform=true**  
 Используется для идентификации принтформ на данный момент id sBody и sPrintForm      
