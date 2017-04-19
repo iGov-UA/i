@@ -4,9 +4,6 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="label_info" name=" ; ;labelType=info" type="label" default="Звернення, що подані до 16 години 00 хвилин, будуть невідкладно опрацьовані працівником служби діловодства в день надходження звернення у продовж робочого часу, а ті звернення, які подані після 16 години 00 хвилин, будуть невідкладно опрацьовані на наступний робочий день"></activiti:formProperty>
-         <activiti:formProperty id="saCourt" name="Оберіть відповідний апеляційний суд" type="enum" required="true" default="sEnumCourtDnipro">
-          <activiti:value id="sEnumCourtDnipro" name="Дніпропетровський апеляційний господарський суд"></activiti:value>
-         </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ваше м'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string"></activiti:formProperty>
@@ -39,29 +36,22 @@
           <activiti:value id="other" name="Інший"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sStatus" name="Інший процесуальний статус учасника судового процесу, від імені якого подається документ" type="string"></activiti:formProperty>
-       
-       
         <activiti:formProperty id="sNameUr" name="Найменування юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/court/CourtOfCassation_sTableDoc.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="тільки пдф" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_1&quot;:{&quot;aField_ID&quot;:[&quot;sDoc&quot;],&quot;saExtension&quot;:&quot;pdf&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'||[sReason] == 'фізична особа або фізична особа-підприємець'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'||[sReason] == 'юридична особа'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers24" name="якщо інший процесуальний статус" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;sStatus&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;saStatus&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'other'||[sReason] == 'Інший'&quot;}}}"></activiti:formProperty>
-     
         <activiti:formProperty id="markers22" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;markers0&quot;,&quot;markers1&quot;,&quot;markers2&quot;,&quot;markers3&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sCategoryDoc10&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all" name="ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Супровідний лист для накладення ЭЦП; ;bVisible=false" type="string" default="pattern/print/court/CourtOfCassation_print.html"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Appeal">
+    <userTask id="usertask1" name="прийняття рішення про реєстрацію документів" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
-       <activiti:formProperty id="saCourt" name="Оберіть відповідний апеляційний суд" type="enum" writable="false">
-          <activiti:value id="sEnumCourtDnipro" name="Дніпропетровський апеляційний господарський суд"></activiti:value>
-         </activiti:formProperty>
         <activiti:formProperty id="fio" name="ПІБ особи, яка внесла дані" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="sPositionAplicant" name="Посада особи, яка внесла дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPositionAplicant" name="Посада особи, яка внесла дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса особистої електронної пошти(e-mail); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberCase" name="Номер судової справи; ;writable=false" type="string"></activiti:formProperty>
@@ -69,7 +59,7 @@
           <activiti:value id="fiz" name="фізична особа або фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="юридична особа"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="saStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ" type="enum" writable="false">
+        <activiti:formProperty id="saStatus" name="Процесуальний статус учасника судового процесу, від імені якого подається документ" type="enum" writable="false">
           <activiti:value id="one" name="Позивач"></activiti:value>
           <activiti:value id="two" name="Відповідач"></activiti:value>
           <activiti:value id="three" name="Треті особи, які заявляють самостійні вимоги на предмет спору"></activiti:value>
@@ -90,11 +80,8 @@
           <activiti:value id="other" name="Інший"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sStatus" name="Інший процесуальний статус учасника судового процесу, від імені якого подається документ" type="string" writable="false"></activiti:formProperty>
-      
-     
         <activiti:formProperty id="sNameUr" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу; ;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberAplication" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення" type="enum" required="true">
@@ -111,7 +98,7 @@
         <activiti:formProperty id="sAkt" name="Сканкопія акту Суду про те, що документи надіслані користувачем до суду не можуть бути визнані як такі, що надійшли до суду" type="file"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all" name="ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/court/CourtOfCassation_print.html]" type="invisible" default="Супровідний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/court/CourtOfCassation_print.html"  type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/court/CourtOfCassation_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'||[sReason] == 'фізична особа або фізична особа-підприємець'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо юр" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sNameUr&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'ur'||[sReason] == 'юридична особа'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers20" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;reject_1&quot;,&quot;sAkt&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відхилити звернення'&quot;}}}"></activiti:formProperty>
@@ -132,8 +119,7 @@
           <activiti:string><![CDATA[Подання процесуальних документів для розгляду у відкритому касаційному провадженні]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Процесуальні документи, що Ви подавали по справі ${sNumberCase} зареєстровані і передані на розгляд судді.<br />
 Супроводний лист щодо отриманих документів знаходиться у додатку до листа.<br />
@@ -145,8 +131,7 @@
 [pattern/mail/new_design/_common_signature_start.html]
 Вищий господарський суд України<br />
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -171,8 +156,7 @@
           <activiti:string><![CDATA[Подання процесуальних документів для розгляду у відкритому касаційному провадженні]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 На жаль, Вам відмовлено у реєстрації процесуальних документів.
 Причина: enum{[reject_1]} ${sComment}<br/>
@@ -184,8 +168,7 @@ Cканкопія відповідного акту Суду знаходить�
 [pattern/mail/new_design/_common_signature_start.html]
 Вищий господарський суд України<br />
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
