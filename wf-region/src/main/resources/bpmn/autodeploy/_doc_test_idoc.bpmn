@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_test_idoc" name="тест сброс подписи" isExecutable="true">
+  <process id="_doc_test_idoc" name="тест - замечание" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
@@ -10,11 +10,14 @@
     </startEvent>
     <userTask id="usertask1" name="Создание документа">
       <extensionElements>
+        <activiti:formProperty id="sCommentUT2" name="Замечание с ЮТ2" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum" default="sEnumEditing">
+        <activiti:formProperty id="sCloningOfLaw_Author" name="sCloningOfLaw_Author" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum">
           <activiti:value id="sEnumEditing" name="вернуть на этот же шаг чтоб сбросить подпись"></activiti:value>
-          <activiti:value id="sEnumEnd" name="закрыть"></activiti:value>
+          <activiti:value id="sEnumEnd" name="Прогнать на ЮТ2"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -42,13 +45,58 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
     <endEvent id="endevent3" name="End"></endEvent>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow72" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow73" sourceRef="exclusivegateway1" targetRef="endevent3">
+    <sequenceFlow id="flow73" sourceRef="exclusivegateway1" targetRef="scripttask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEnd'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow74" sourceRef="exclusivegateway1" targetRef="scripttask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT1 == 'sEnumEditing'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow75" sourceRef="scripttask9" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask2" name="Утверждение или закрытие">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCloningOfLaw_Author" name="sCloningOfLaw_Author" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" default="sEnumEditing">
+          <activiti:value id="sEnumEnd" name="завершить процесс"></activiti:value>
+          <activiti:value id="sEnumRemark" name="замечание автору"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask10" name="Step 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав 
+var sKey_GroupPostfix = '_default_btsol'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sLoginAuthor, sKey_Step)
+execution.setVariable('sCloningOfLaw_Author', oResult)</script>
+    </scriptTask>
+    <sequenceFlow id="flow76" sourceRef="scripttask10" targetRef="usertask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow77" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow78" sourceRef="exclusivegateway2" targetRef="endevent3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumEnd'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow79" sourceRef="exclusivegateway2" targetRef="scripttask11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumRemark'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask11" name="Возврат на Step 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_1'
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+// клонирование прав 
+var sKey_GroupPostfix = '_default_btsol'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sLoginAuthor, sKey_Step)
+execution.setVariable('sCloningOfLaw_Author', oResult)</script>
+    </scriptTask>
+    <sequenceFlow id="flow80" sourceRef="scripttask11" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_idoc">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_idoc" id="BPMNPlane__doc_test_idoc">
@@ -56,7 +104,7 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
         <omgdc:Bounds height="35.0" width="35.0" x="200.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="84.0" width="130.0" x="406.0" y="89.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="130.0" x="406.0" y="104.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="269.0" y="104.0"></omgdc:Bounds>
@@ -65,10 +113,22 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
         <omgdc:Bounds height="55.0" width="105.0" x="418.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="680.0" y="113.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1030.0" y="115.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="590.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="800.0" y="104.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="104.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="950.0" y="112.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="374.0" y="131.0"></omgdi:waypoint>
@@ -84,7 +144,7 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
         <omgdi:waypoint x="630.0" y="130.0"></omgdi:waypoint>
-        <omgdi:waypoint x="680.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="131.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
         <omgdi:waypoint x="610.0" y="110.0"></omgdi:waypoint>
@@ -93,7 +153,29 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
         <omgdi:waypoint x="470.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="471.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="471.0" y="104.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
+        <omgdi:waypoint x="765.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="131.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow77" id="BPMNEdge_flow77">
+        <omgdi:waypoint x="905.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="950.0" y="132.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
+        <omgdi:waypoint x="990.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1030.0" y="132.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
+        <omgdi:waypoint x="970.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="969.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
+        <omgdi:waypoint x="660.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="471.0" y="159.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
