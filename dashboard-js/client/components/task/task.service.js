@@ -843,6 +843,7 @@ angular.module('dashboardJsApp')
             bIncludeGroups: true,
             bIncludeStartForm: true,
             bIncludeAttachments: true,
+            bIncludeProcessVariables: true,
             bIncludeMessages: true
           });
         return simpleHttpPromise({
