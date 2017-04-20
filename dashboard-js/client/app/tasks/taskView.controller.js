@@ -1603,6 +1603,18 @@
           }
         };
 
+        $scope.isRemoveDocumentButtonVisible = function () {
+          return $scope.taskData.mProcessVariable && $scope.taskData.mProcessVariable.sLoginAuthor === iGovNavbarHelper.currentUser.id && $scope.sSelectedTask !== 'finished' && $scope.isDocument;
+        };
+
+        $scope.removeDocument = function (nID_Process) {
+          $scope.taskForm.isInProcess = true;
+          Modal.confirm.delete(function (event) {
+            tasks.removeDocumentSteps(nID_Process)
+              .then($scope.lightweightRefreshAfterSubmit()).cache(defaultErrorHandler);
+          })('документ');
+        };
+
         $scope.getBpAndFieldID = function (field) {
           if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
             return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id;

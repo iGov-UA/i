@@ -443,6 +443,12 @@
             </div>
           </div>
 
+          <button ng-hide="!isRemoveDocumentButtonVisible()"
+                  ng-click="removeDocument(selectedTask.processInstanceId)"
+                  class="btn btn-danger"
+                  ng-disabled="isTaskInProcess()">Видалити
+          </button>
+
           <div ng-hide="(selectedTask.assignee === null && !isDocument())
            || sSelectedTask === 'finished'
            || sSelectedTask === 'all'
