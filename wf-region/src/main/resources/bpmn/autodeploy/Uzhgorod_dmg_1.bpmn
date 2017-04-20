@@ -31,7 +31,12 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ID_zayava" name="реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_0724_AvDozvZem.json')}"></activiti:formProperty>
+		<activiti:formProperty id="application_zayava" name="Копія заяви на дозвіл на проведення земляних робіт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scheme" name="Схема виконання робіт - викопіювання з генплану; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="podtvergdenie" name="Письмове підтвердження факту аварії; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="blagoustroistvo" name="Документи які підтверджують здійснення заходів з відновлення благоустрою; договір чи угода зі спеціалізованою організацією на відновлення елементів благоустрою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="payment" name="Підтвердження про оплату заходів з відновлення благоустрою; чеки або платіжні доручення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="marker1" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_0724_AvDozvZem.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Документи пройшли перевірку. Послуга може бути надана."></activiti:value>
           <activiti:value id="reject" name="Відхилити запит"></activiti:value>
@@ -47,7 +52,12 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ID_zayava" name="реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker2" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_0724_AvDozvZem.json')}"></activiti:formProperty>
+        <activiti:formProperty id="application_zayava" name="Копія заяви на дозвіл на проведення земляних робіт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scheme" name="Схема виконання робіт - викопіювання з генплану; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="podtvergdenie" name="Письмове підтвердження факту аварії; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="blagoustroistvo" name="Документи які підтверджують здійснення заходів з відновлення благоустрою; договір чи угода зі спеціалізованою організацією на відновлення елементів благоустрою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="payment" name="Підтвердження про оплату заходів з відновлення благоустрою; чеки або платіжні доручення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="marker2" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_0724_AvDozvZem.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняття рішення про надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="надати дозвіл на проведення земляних робіт"></activiti:value>
           <activiti:value id="reject" name="відмовити у дозволі на проведення земляних робіт"></activiti:value>
@@ -90,6 +100,7 @@
 				Орієнтовний термін виконання запиту ${date_start_approx}<br>
 				Реєстраційний номер заяви ${ID_zayava}<br>
 				Ви отримаєте додаткове повідомлення за результатами розгляду зверення.<br>
+				${sPhoneOrgan}<br>
 			</p>
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
@@ -117,6 +128,7 @@
 			<p>
 				На жаль, Ваше звернення щодо надання аварійного дозволу на проведення земляних робіт відхилено через недостатню або неправильну інформацію.<br><br>
 				${comment_1}<br>
+				${sPhoneOrgan}<br>
 			</p>
 			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 			[pattern/mail/new_design/_common_content_end.html] 
