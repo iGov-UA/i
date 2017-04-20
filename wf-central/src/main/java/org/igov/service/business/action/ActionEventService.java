@@ -84,10 +84,7 @@ public class ActionEventService {
     private HistoryService oHistoryService;
     
     @Autowired
-    private SubjectMessageQuestionField oSubjectMessageQuestionField;
-    
-    @Autowired
-    private SubjectMessage oSubjectMessages;
+    private SubjectMessagesDao SubjectMessagesDao;
 
     @Autowired
     private SubjectMessageQuestionFieldDao subjectMessageQuestionFieldDao;
@@ -522,12 +519,23 @@ public class ActionEventService {
                                     HttpStatus.FORBIDDEN);
                         }
                         m.put("sNotify", osNotify.toString());
+                        Object osType;
+                        if ((osType = oField.opt("sType")) == null) {
+                            throw new CommonServiceException(
+                                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                                    "Field sType of array is null",
+                                    HttpStatus.FORBIDDEN);
+                        }
+                        m.put("sType", osType.toString());
                         oSMQF.setsID(m.get(osID).toString());
                         oSMQF.setsName(m.get(osName).toString());
                         oSMQF.setsValue(m.get(osValue).toString());
                         oSMQF.setsValueNew(m.get(osValueNew).toString());
                         oSMQF.setsNotify(m.get(osNotify).toString());
+                        oSMQF.setsType(m.get(osType).toString());
+                        subjectMessageQuestionFieldDao.saveOrUpdate(oSMQF);
                         LOG.info("SubjectMessageQuestionField oSMQF is ", oSMQF);
+                        
                         listFilds.add(oSMQF);
                         LOG.info("listFilds is ", listFilds);
                     }
@@ -554,6 +562,7 @@ public class ActionEventService {
                 //List<Map<String,String>> amReturnAnswer = amFieldMessageQuestion(soData, bQuestion);//saField
                 //mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(amReturnAnswer, true, false));//soData
                 mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//soData
+                
                 
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
                 

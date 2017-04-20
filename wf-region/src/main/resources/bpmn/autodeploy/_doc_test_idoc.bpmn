@@ -15,8 +15,11 @@
         <activiti:formProperty id="sCommentUT2" name="Замечание с ЮТ2" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCloningOfLaw_Author" name="sCloningOfLaw_Author" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        
+        
+       <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum">
           <activiti:value id="sEnumEditing" name="вернуть на этот же шаг чтоб сбросить подпись"></activiti:value>
@@ -61,12 +64,13 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCloningOfLaw_Author" name="sCloningOfLaw_Author" type="string"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" default="sEnumEditing">
           <activiti:value id="sEnumEnd" name="завершить процесс"></activiti:value>
           <activiti:value id="sEnumRemark" name="замечание автору"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -79,8 +83,8 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 // клонирование прав 
 var sKey_GroupPostfix = '_default_btsol'
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Author', oResult)</script>
+var oResult = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti, sKey_GroupPostfix, 'sTable2', sKey_Step, false, 'sLogin_isExecute')
+execution.setVariable('sCloningOfLaw_btsol', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow76" sourceRef="scripttask10" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -92,15 +96,10 @@ execution.setVariable('sCloningOfLaw_Author', oResult)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumRemark'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask11" name="Возврат на Step 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//переключение степа
-var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_1'
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
-
-// клонирование прав 
-var sKey_GroupPostfix = '_default_btsol'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sLoginAuthor, sKey_Step)
-execution.setVariable('sCloningOfLaw_Author', oResult)</script>
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
+var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_1')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_1')</script>
     </scriptTask>
     <sequenceFlow id="flow80" sourceRef="scripttask11" targetRef="usertask1"></sequenceFlow>
   </process>
