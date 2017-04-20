@@ -384,8 +384,7 @@ public class ActionEventService {
             isChanged = true;
         }
         if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
-        	//не сохраняем новое значение 	в табл HistoryEventService
-        //	oHistoryEvent_Service.setSoData(soData);
+        	oHistoryEvent_Service.setSoData(soData);
             isChanged = true;
         }
 
@@ -460,15 +459,15 @@ public class ActionEventService {
                 nID_SubjectMessageType = 5L;
                 LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
                 LOG.info("nID_SubjectMessageType is set to" + nID_SubjectMessageType);
-                //распарсить soData и сохранить значения в новую сущность сабджект меседж квешнфилд
+               /* //распарсить soData и сохранить значения в новую сущность сабджект меседж квешнфилд
                 
                 JSONObject oFields = new JSONObject("{ \"soData\":" + soData + "}");
                 JSONArray aField = oFields.getJSONArray("soData");
                 List<SubjectMessageQuestionField> listFilds = null;
-               /* if (aField.length() == 0) {
+                if (aField.length() == 0) {
                     throw new Exception("soData is empty");
                    
-                }*/
+                }
                 for (int i = 0; i < aField.length(); i++) {
                     JSONObject oField = aField.getJSONObject(i);
                     SubjectMessageQuestionField oSMQF = null;                
@@ -538,7 +537,7 @@ public class ActionEventService {
                         
                         listFilds.add(oSMQF);
                         LOG.info("listFilds is ", listFilds);
-                    }
+                    }*/
                 
               
                 
