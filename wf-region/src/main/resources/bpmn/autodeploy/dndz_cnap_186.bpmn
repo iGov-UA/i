@@ -29,8 +29,7 @@
         <activiti:formProperty id="date_1" name="Термін проведення ярмарку з" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_2" name="Термін проведення ярмарку по" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Маркери якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;adres_3&quot;,&quot;phone_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
- 
+        <activiti:formProperty id="marker1" name="Обов'язковість/видимість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_1376_DozvOrgYarm.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -46,6 +45,7 @@
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Обов'язковість/видимість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_1376_DozvOrgYarm.json')}"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -81,6 +81,7 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Обов'язковість/видимість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_1376_DozvOrgYarm.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="повідомлення громадянина про прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="схвалено організацію ярмарки"></activiti:value>
           <activiti:value id="reject" name="відмовлено у організації ярмарки"></activiti:value>
