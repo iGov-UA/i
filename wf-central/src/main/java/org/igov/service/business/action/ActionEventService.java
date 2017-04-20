@@ -30,6 +30,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.util.JSON;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -459,18 +461,23 @@ public class ActionEventService {
                 nID_SubjectMessageType = 5L;
                 LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
                 LOG.info("nID_SubjectMessageType is set to" + nID_SubjectMessageType);
-               /* //распарсить soData и сохранить значения в новую сущность сабджект меседж квешнфилд
+                //распарсить soData и сохранить значения в новую сущность сабджект меседж квешнфилд
                 
+                             
                 JSONObject oFields = new JSONObject("{ \"soData\":" + soData + "}");
                 JSONArray aField = oFields.getJSONArray("soData");
                 List<SubjectMessageQuestionField> listFilds = null;
+                
                 if (aField.length() == 0) {
-                    throw new Exception("soData is empty");
-                   
+                	throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Can't make task question with no fields! ",
+                            HttpStatus.FORBIDDEN);
                 }
+                
                 for (int i = 0; i < aField.length(); i++) {
                     JSONObject oField = aField.getJSONObject(i);
-                    SubjectMessageQuestionField oSMQF = null;                
+                  //  SubjectMessageQuestionField oSMQF = null;                
                     Map<String, String> m = new HashMap();
 
                     Object osID;
@@ -526,6 +533,8 @@ public class ActionEventService {
                                     HttpStatus.FORBIDDEN);
                         }
                         m.put("sType", osType.toString());
+                        
+                        SubjectMessageQuestionField oSMQF = null;
                         oSMQF.setsID(m.get(osID).toString());
                         oSMQF.setsName(m.get(osName).toString());
                         oSMQF.setsValue(m.get(osValue).toString());
@@ -537,7 +546,8 @@ public class ActionEventService {
                         
                         listFilds.add(oSMQF);
                         LOG.info("listFilds is ", listFilds);
-                    }*/
+                    }
+                
                 
               
                 
@@ -584,8 +594,7 @@ public class ActionEventService {
         return oHistoryEvent_Service;
     }
 
-
-    public HistoryEvent_Service addActionStatus_Central(
+       public HistoryEvent_Service addActionStatus_Central(
             String sID_Order,
             Long nID_Subject,
             String sUserTaskName,
@@ -634,4 +643,5 @@ public class ActionEventService {
         setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
         return oHistoryEvent_Service;
     }
+   
 }
