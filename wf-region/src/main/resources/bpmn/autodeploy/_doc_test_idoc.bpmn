@@ -15,7 +15,6 @@
         <activiti:formProperty id="sCommentUT2" name="Замечание с ЮТ2" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCloningOfLaw_Author" name="sCloningOfLaw_Author" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum">
@@ -61,7 +60,6 @@ var oCancel = documentStepService.cancelDocumentSubmit(nID_Process, 'step_1', sK
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCloningOfLaw_Author" name="sCloningOfLaw_Author" type="string"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" default="sEnumEditing">
           <activiti:value id="sEnumEnd" name="завершить процесс"></activiti:value>
           <activiti:value id="sEnumRemark" name="замечание автору"></activiti:value>
@@ -80,7 +78,7 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 var sKey_GroupPostfix = '_default_btsol'
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-execution.setVariable('sCloningOfLaw_Author', oResult)</script>
+execution.setVariable('sCloningOfLaw_btsol', oResult)</script>
     </scriptTask>
     <sequenceFlow id="flow76" sourceRef="scripttask10" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
