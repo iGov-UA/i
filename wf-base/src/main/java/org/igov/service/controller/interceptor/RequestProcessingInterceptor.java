@@ -230,12 +230,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (POSTPROCESSING)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
+                /*LOG.info("sRequestBody: {}", sRequestBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("sResponseBody: {}", sResponseBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("mRequestParam {}", mRequestParam);
-                LOG.info("-----------------------------------------------");
+                LOG.info("-----------------------------------------------");*/
             }
             
             if(((mRequestParam.containsKey("sID_BP")||mRequestParam.containsKey("snID_Process_Activiti"))&&
@@ -245,12 +245,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 sURL = oRequest.getRequestURL().toString();
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
+                /*LOG.info("sRequestBody: {}", sRequestBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("sResponseBody: {}", sResponseBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("mRequestParam {}", mRequestParam);        
-                LOG.info("-----------------------------------------------");
+                LOG.info("-----------------------------------------------");*/
             
                 String sID_Process = null;
                 String sID_Order = null;
@@ -395,12 +395,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (PREPROCESSING)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
+                /*LOG.info("sRequestBody: {}", sRequestBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("sResponseBody: {}", sResponseBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("mRequestParam {}", mRequestParam);
-                LOG.info("-----------------------------------------------");
+                LOG.info("-----------------------------------------------");*/
             }
             
             if (isDocumentSubmit(oRequest)) {
@@ -408,12 +408,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
+                /*LOG.info("sRequestBody: {}", sRequestBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("sResponseBody: {}", sResponseBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("mRequestParam {}", mRequestParam);
-                LOG.info("-----------------------------------------------");
+                LOG.info("-----------------------------------------------");*/
                 
                 processDocumentSubmit(mRequestParam, omRequestBody);
                 

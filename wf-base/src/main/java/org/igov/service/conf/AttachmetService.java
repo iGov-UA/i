@@ -102,7 +102,7 @@ public class AttachmetService {
         LOG.info("createAttachment sID_StorageType: " + sID_StorageType);
         LOG.info("createAttachment sContentType: " + sContentType);
         LOG.info("createAttachment saAttribute_JSON size: " + saAttribute_JSON.size());
-        LOG.info("createAttachment aContent: " + new String(aContent));
+        //LOG.info("createAttachment aContent: " + new String(aContent));
         LOG.info("----------------------------------------------------");
 
         TaskAttachVO oTaskAttachVO = new TaskAttachVO();
