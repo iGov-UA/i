@@ -8,12 +8,12 @@
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
-      'processSubject', '$sce', 'eaTreeViewFactory',
+      'processSubject', '$sce', 'eaTreeViewFactory', '$location',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
-                processSubject, $sce, eaTreeViewFactory) {
+                processSubject, $sce, eaTreeViewFactory, $location) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -1608,10 +1608,30 @@
         };
 
         $scope.removeDocument = function (nID_Process) {
-          $scope.taskForm.isInProcess = true;
           Modal.confirm.delete(function (event) {
+            $scope.taskForm.isInProcess = true;
             tasks.removeDocumentSteps(nID_Process)
-              .then($scope.lightweightRefreshAfterSubmit()).cache(defaultErrorHandler);
+              .then(function(){
+                $scope.taskForm.isInProcess = false;
+                for(var taskIndex = 0; taskIndex < $scope.filteredTasks.length; taskIndex++){
+                  if($scope.filteredTasks[taskIndex].processInstanceId === nID_Process){
+                    $scope.filteredTasks.splice(taskIndex, 1);
+                    if(angular.isArray(iGovNavbarHelper.menus)){
+                      angular.forEach(iGovNavbarHelper.menus, function (menu) {
+                        if(menu.type === 'documents'){
+                          if(menu.count){
+                            menu.count = menu.count - 1;
+                          }
+                        }
+                      });
+                    }
+                    break;
+                  }
+                }
+                $location.path("/tasks/documents");
+              }, function () {
+                $scope.lightweightRefreshAfterSubmit();
+              });
           })('документ');
         };
 
