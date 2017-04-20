@@ -12,10 +12,13 @@ import org.igov.model.document.Document;
 import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
 import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessageQuestionField;
+import org.igov.model.subject.message.SubjectMessageQuestionFieldDao;
 import org.igov.model.subject.message.SubjectMessagesDao;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.subject.SubjectMessageService;
+import org.igov.service.controller.ExceptionCommonController;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.ToolLuna;
@@ -24,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -31,6 +35,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.impl.util.json.JSONArray;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
 import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
@@ -76,6 +82,16 @@ public class ActionEventService {
 
     @Autowired
     private HistoryService oHistoryService;
+    
+    @Autowired
+    private SubjectMessageQuestionField oSubjectMessageQuestionField;
+    
+    @Autowired
+    private SubjectMessage oSubjectMessages;
+
+    @Autowired
+    private SubjectMessageQuestionFieldDao subjectMessageQuestionFieldDao;
+    
 
     /*public void setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService) {
         LOG.info(String.format("Finding task [id = %s] and its dates as historic object", nId_Task));
@@ -356,6 +372,7 @@ public class ActionEventService {
         LOG.info("Status type is " + nID_StatusType);
 
         HistoryEvent_Service oHistoryEvent_Service = null;
+       
         try {
             oHistoryEvent_Service = getHistoryEventService(sID_Order);
         } catch (CRCInvalidException e) {
@@ -370,7 +387,8 @@ public class ActionEventService {
             isChanged = true;
         }
         if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
-            oHistoryEvent_Service.setSoData(soData);
+        	//не сохраняем новое значение 	в табл HistoryEventService
+        //	oHistoryEvent_Service.setSoData(soData);
             isChanged = true;
         }
 
@@ -445,27 +463,106 @@ public class ActionEventService {
                 nID_SubjectMessageType = 5L;
                 LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
                 LOG.info("nID_SubjectMessageType is set to" + nID_SubjectMessageType);
+                //распарсить soData и сохранить значения в новую сущность сабджект меседж квешнфилд
+                
+                JSONObject oFields = new JSONObject("{ \"soData\":" + soData + "}");
+                JSONArray aField = oFields.getJSONArray("soData");
+                List<SubjectMessageQuestionField> listFilds = null;
+               /* if (aField.length() == 0) {
+                    throw new Exception("soData is empty");
+                   
+                }*/
+                for (int i = 0; i < aField.length(); i++) {
+                    JSONObject oField = aField.getJSONObject(i);
+                    SubjectMessageQuestionField oSMQF = null;                
+                    Map<String, String> m = new HashMap();
+
+                    Object osID;
+                    if ((osID = oField.opt("sID")) == null) {
+                        if ((osID = oField.opt("id")) == null) {
+                            throw new CommonServiceException(
+                                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                                    "Field sID and id of array is null",
+                                    HttpStatus.FORBIDDEN);
+                        }
+                    }
+                    m.put("sID", osID.toString());
+
+                    Object osName;
+                    if ((osName = oField.opt("sName")) == null) {
+                        osName = osID.toString();
+                    }
+                    m.put("sName", osName.toString());
+
+                    Object osValue;
+                    if ((osValue = oField.opt("sValue")) == null) {
+                        if ((osValue = oField.opt("value")) == null) {
+                            throw new CommonServiceException(
+                                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                                    "Field sValue and value of array is null",
+                                    HttpStatus.FORBIDDEN);
+                        }
+                    }
+                    m.put("sValue", osValue.toString());
+
+                    
+                        Object osValueNew;
+                        if ((osValueNew = oField.opt("sValueNew")) == null) {
+                            throw new CommonServiceException(
+                                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                                    "Field sValueNew of array is null",
+                                    HttpStatus.FORBIDDEN);
+                        }
+                        m.put("sValueNew", osValueNew.toString());
+                        Object osNotify;
+                        if ((osNotify = oField.opt("sNotify")) == null) {
+                            throw new CommonServiceException(
+                                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                                    "Field sNotify of array is null",
+                                    HttpStatus.FORBIDDEN);
+                        }
+                        m.put("sNotify", osNotify.toString());
+                        oSMQF.setsID(m.get(osID).toString());
+                        oSMQF.setsName(m.get(osName).toString());
+                        oSMQF.setsValue(m.get(osValue).toString());
+                        oSMQF.setsValueNew(m.get(osValueNew).toString());
+                        oSMQF.setsNotify(m.get(osNotify).toString());
+                        LOG.info("SubjectMessageQuestionField oSMQF is ", oSMQF);
+                        listFilds.add(oSMQF);
+                        LOG.info("listFilds is ", listFilds);
+                    }
+                
+              
+                
+                
+                
             }
 
             if (nID_SubjectMessageType != null) {
                 LOG.info("nID_SubjectMessageType is not null");
                 List<Map<String,String>> amReturn = amFieldMessageQuestion(soData, bQuestion);//saField
+                //вместо сохранения soData в 
                 String soTable=ActionTaskService.createTable_TaskProperties(amReturn, bQuestion, false);
                 
                 osBody.append("<br/>").append(soTable).append("<br/>");//soData
-
+ 
+                
+                
                 Map<String, String> mParamMessage = new HashMap<>();
                 mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
                 mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
                 //List<Map<String,String>> amReturnAnswer = amFieldMessageQuestion(soData, bQuestion);//saField
                 //mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(amReturnAnswer, true, false));//soData
                 mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//soData
+                
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
+                
+                
 
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                         sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
-                LOG.info("setting message");
+                LOG.info("setting message {}", oSubjectMessage);
                 subjectMessagesDao.setMessage(oSubjectMessage);
             }
 
@@ -473,6 +570,7 @@ public class ActionEventService {
         if (isChanged) {
             LOG.info("updating oHistoryEvent_Service: {}", oHistoryEvent_Service);
             historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+           
         }
         LOG.info("Mehtod updateActionStatus_Central started for task " + sID_Order);
         return oHistoryEvent_Service;
