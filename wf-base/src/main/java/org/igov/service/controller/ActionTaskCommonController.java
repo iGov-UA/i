@@ -2846,7 +2846,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //Map<String,Object> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
     List<Map<String, Object>> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true)
             @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
-        return oDocumentStepService.getDocumentStepLogins(nID_Process + "");
+        return oDocumentStepService.getDocumentStepLogins(String.valueOf(nID_Process));
     }
 
     //save curretn values to Form
