@@ -1022,6 +1022,15 @@ angular.module('dashboardJsApp')
             sLogin: currentUser.id
           }
         })
+      },
+      removeDocumentSteps: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/removeDocumentSteps',
+          params: {
+            snID_Process_Activiti: nID_Process
+          }
+        })
       }
     }
   });
