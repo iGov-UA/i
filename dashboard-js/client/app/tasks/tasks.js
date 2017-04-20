@@ -78,7 +78,15 @@
             'tasks',
             '$stateParams',
             function(tasks, $stateParams) {
-              return tasks.getTaskData({nID_Task:$stateParams.id}, true)
+              var params = {
+                nID_Task: $stateParams.id,
+                bIncludeGroups: true,
+                bIncludeStartForm: true,
+                bIncludeAttachments: true,
+                bIncludeProcessVariables: $stateParams.type === 'documents',
+                bIncludeMessages: true
+              };
+              return tasks.getTaskData(params, false)
             }
           ],
           oTask: [

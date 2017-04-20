@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-@Entity
+@javax.persistence.Entity
 public class SubjectMessageQuestionField extends AbstractEntity {
 	
 	/**
