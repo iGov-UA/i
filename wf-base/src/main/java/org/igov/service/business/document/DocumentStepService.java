@@ -927,10 +927,7 @@ public class DocumentStepService {
     }
 
     public List<Map<String, Object>> getDocumentStepLogins(String snID_Process_Activiti) {// JSONObject
-        // //Map<String,
-        // Object>
-        // assume that we can have only one active task per process at the same
-        // time
+
         LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active()
                 .list();
@@ -998,7 +995,11 @@ public class DocumentStepService {
             Map<String, Object> mParamDocumentStepSubjectRight = new HashMap();
             mParamDocumentStepSubjectRight.put("sDate", oDocumentStepSubjectRight.getsDate() == null ? ""
                     : formatter.print(oDocumentStepSubjectRight.getsDate()));// "2016-05-15
-            // 12:12:34"
+            mParamDocumentStepSubjectRight.put("sDateECP", oDocumentStepSubjectRight.getsDateECP() == null ? ""
+                    : formatter.print(oDocumentStepSubjectRight.getsDateECP()));// "2016-05-15
+            mParamDocumentStepSubjectRight.put("bNeedECP", oDocumentStepSubjectRight.getbNeedECP() == null ? false
+                    : oDocumentStepSubjectRight.getbNeedECP());
+            
             mParamDocumentStepSubjectRight.put("bWrite", oDocumentStepSubjectRight.getbWrite());// false
             mParamDocumentStepSubjectRight.put("sName",
                     oDocumentStepSubjectRight.getsName() == null ? "" : oDocumentStepSubjectRight.getsName());// "Главный
