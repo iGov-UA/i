@@ -45,7 +45,7 @@
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Обов'язковість/видимість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_1376_DozvOrgYarm.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="Обов'язковість/видимість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_1376_DozvOrgYarm.json')}"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -71,7 +71,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/rada_1376_DozvOrgYarm.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/rada_1376_DozvOrgYarm.html]; ;bVisible=false" type="string" default="заява фізичної особи-підприємця" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/rada_1376_DozvOrgYarm.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -81,7 +81,11 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Обов'язковість/видимість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_1376_DozvOrgYarm.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker3" name="Обов'язковість/видимість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_1376_DozvOrgYarm.json')}"></activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="decision_2" name="повідомлення громадянина про прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="схвалено організацію ярмарки"></activiti:value>
           <activiti:value id="reject" name="відмовлено у організації ярмарки"></activiti:value>
@@ -90,6 +94,7 @@
         <activiti:formProperty id="head" name="Завантажте розпорядження міського голови про організацію та проведення ярмарку; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="protokol" name="Завантажте протокол засідання організаційного комітету; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="dogovor" name="Завантажте договір про спільну діяльність щодо підготовки та проведення ярмарку; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/rada_1376_DozvOrgYarm.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask5" name="Повідомлення співробітника цнапу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
