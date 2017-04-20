@@ -749,6 +749,44 @@ module.exports.signForm = function (req, res) {
         });
       },
       function (formData, callback) {
+
+        var fileHTMLs = formData.activitiForm.formProperties.filter(function (property) {
+          return property.type === 'fileHTML';
+        });
+
+        fileHTMLs.forEach(function (fileField) {
+          if (formData.formDataPrintPdf.params[fileField.id]) {
+            fileField.value = formData.formData.params[fileField.id];
+          }
+        });
+
+        fileHTMLs = fileHTMLs.filter(function (fileField) {
+          return fileField.value;
+        });
+
+        async.forEach(fileHTMLs, function (fileField, callbackEach) {
+          var params = {};
+
+          var obj = JSON.parse(fileField.value);
+
+          params.ID = obj.sKey;
+          params.storageType = obj.sID_StorageType;
+          uploadFileService.downloadBuffer(params, function (error, response, buffer) {
+
+            formData.formDataPrintPdf.params[fileField.id] = buffer.toString();
+            
+            callbackEach();
+          }, sHost)
+        }, function (error) {
+          if (error) {
+            callback(error, null);
+          } else {
+            callback(null, formData);
+          }
+        });
+
+      },
+      function (formData, callback) {
         var accessToken = req.session.access.accessToken;
         createHtml(formData, function (formToUpload) {
           if (bConvertToPDF === 'true' || bConvertToPDF == true) {

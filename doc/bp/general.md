@@ -250,9 +250,13 @@ type="queueData" required="true"></activiti:formProperty>
 Маркеры и позволяют работать с уже существующими полями и расширяют их возможности.
 
 ### invisible
+# Николай 
+
+** invisible - больше не используется  , вместо него используем [bVisible=false](#bvisiblefalse) в третьем поле name **    
+# Николай
 Невидимый тип данных. Используется, как правило для записи технических полей, которые нужны в процессе, но заявителю или чиновнику не должны быть показаны.
 ```xml
-<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
+<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа " type="invisible"></activiti:formProperty>
 ```
 
 [детальней...](#_invisible)
@@ -2719,7 +2723,34 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 **description** - описание или  подсказка к этой переменной/полю. Отображается на интерфейсе на старттаске серым цветом. На юзертасках не отображается. Необязательный атрибут.
 
 ## флаги аттрибута name  
-Используются для переопределения стандартных  атрибутов, имеющие более высокий приоритет на уровне отрисовки интерфейса на юзертасках. 
+Используются для переопределения стандартных  атрибутов, имеющие более высокий приоритет на уровне отрисовки интерфейса на юзертасках.
+
+# Николай
+###### bvisiblefalse
+### **bVisible=false**
+Используется для невидимости поля, вместо [invisible](#invisible). Прописать bVisible=false необходимо в третьем поле name, type используется только string
+```xml
+<activiti:formProperty id="sPlace" name="Місце народження дев'ятої дитини; ;bVisible=false" type="string"></activiti:formProperty>
+```
+**Исключение:** при использовании в поле name &quot... (кавычек), прописывать bVisible=false необходимо в 5 поле name    
+Пример:
+```xml
+<activiti:formProperty id="sPlace" name="&quot;Используем кавычки&quot; ; ;bVisible=false" type="string"></activiti:formProperty>
+```
+
+###### bprintformtrue   
+### **bPrintform=true**  
+Используется для идентификации принтформ на данный момент id sBody и sPrintForm      
+[issue 1630](https://github.com/e-government-ua/i/issues/1630) 
+
+Пример: 
+```xml
+<activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr233.html; ;bPrintform=true"  type="file" writable="false"></activiti:formProperty>
+```
+```xml
+  <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false, bPrintform=true" type="string" default="Тест Заява про внесення відомостей" writable="false"></activiti:formProperty>
+```
+# Николай
 
 ### **writable=false**  
 Cделает текущее поле нередактируемым для пользователя интерфейса, при этом на уровне процесса поле остается редактируемым.
