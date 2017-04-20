@@ -19,7 +19,7 @@
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ на увольнение" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameDismissal" name="ФИО увольняемого" type="string" default="${sLoginAuthor}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameDismissal" name="ФИО увольняемого" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPositionDismissal" name="Должность увольняемого" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSubdivisionDismissal" name="Подразделение увольняемого" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Комментарий руководителя" type="string" writable="false"></activiti:formProperty>
@@ -159,6 +159,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDismissal" name="Уволить с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT2" name="Статус документа" type="enum" writable="false">
+          <activiti:value id="sEnumSign" name="Завизирован"></activiti:value>
+          <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
