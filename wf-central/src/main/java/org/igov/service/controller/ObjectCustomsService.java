@@ -1,5 +1,6 @@
 package org.igov.service.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.igov.model.object.ObjectCustoms;
@@ -29,16 +30,17 @@ import static org.igov.service.business.object.ObjectService.*;
  */
 
 @Controller
+@Api(tags = { "ObjectCustomsService -- Обьекты и смежные сущности" })
 @RequestMapping(value = "/object")
 public class ObjectCustomsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ObjectCustomsService.class);
 
-    public static final String[] ERROR_MESSAGE = new String[] {
+    private static final String[] ERROR_MESSAGE = new String[] {
             "it must be set at least one parameter to execute this service: sID_UA, sName_UA",
             "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)",
             "length sName_UA is more than 2000" };
-    public static final String[] ERROR_MESSAGE_NO_RECORD = new String[] {
+    private static final String[] ERROR_MESSAGE_NO_RECORD = new String[] {
             "Record not found! No such Entity with sID_UA: ",
             "Record not found! No such Entity with sName_UA: " };
 
