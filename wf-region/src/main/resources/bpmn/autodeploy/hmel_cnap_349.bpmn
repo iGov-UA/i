@@ -108,15 +108,15 @@
         <activiti:formProperty id="sDateDocZemlya" name="Укажіть дату затвердження документу, який засвідчує право власності на земельну ділянку" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberDocZemlya" name="Укажіть номер документу, який засвідчує право власності на земельну ділянку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSumGarbage" name="Сумма по договору на вивіз твердих побутових відходів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Маркери" type="markers" default="${markerService.loadFromFile('Rada/rada_0013_OrgRynYarm.json')}"></activiti:formProperty>
         <activiti:formProperty id="rAdresat" name="Адресат заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -165,7 +165,7 @@
         <activiti:formProperty id="sNumberDocZemlya" name="Укажіть номер документу, який засвідчує право власності на земельну ділянку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSumGarbage" name="Сумма по договору на вивіз твердих побутових відходів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняття рішення про надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="надано дозвіл на організацію ринку"></activiti:value>
@@ -174,8 +174,9 @@
         <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Маркери" type="markers" default="${markerService.loadFromFile('Rada/rada_0013_OrgRynYarm.json')}"></activiti:formProperty>
-        <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rAdresat" name="Адресат заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="rDovirenist" name="строчка про доверенность в принтформу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/khmelnitsky/hmel_cnap_349_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_349_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
@@ -294,6 +295,7 @@
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
 				Вам enum{[decision_2]}.<br> 
+				Коментар спеціаліста:<br>
 				${comment_2}<br> 
 				Копія рішення знаходиться у додатку до листа.<br>
 				Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.<br><br>
