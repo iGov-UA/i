@@ -250,10 +250,9 @@ type="queueData" required="true"></activiti:formProperty>
 Маркеры и позволяют работать с уже существующими полями и расширяют их возможности.
 
 ### invisible
-# Николай 
 
 ** invisible - больше не используется  , вместо него используем [bVisible=false](#bvisiblefalse) в третьем поле name **    
-# Николай
+
 Невидимый тип данных. Используется, как правило для записи технических полей, которые нужны в процессе, но заявителю или чиновнику не должны быть показаны.
 ```xml
 <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа " type="invisible"></activiti:formProperty>
@@ -2725,7 +2724,7 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 ## флаги аттрибута name  
 Используются для переопределения стандартных  атрибутов, имеющие более высокий приоритет на уровне отрисовки интерфейса на юзертасках.
 
-# Николай
+
 ###### bvisiblefalse
 ### **bVisible=false**
 Используется для невидимости поля, вместо [invisible](#invisible). Прописать bVisible=false необходимо в третьем поле name, type используется только string
@@ -2750,7 +2749,6 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 ```xml
   <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false, bPrintform=true" type="string" default="Тест Заява про внесення відомостей" writable="false"></activiti:formProperty>
 ```
-# Николай
 
 ### **writable=false**  
 Cделает текущее поле нередактируемым для пользователя интерфейса, при этом на уровне процесса поле остается редактируемым.
