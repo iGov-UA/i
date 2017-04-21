@@ -33,10 +33,11 @@ public class RelationController {
     @RequestMapping(value = "/getRelations", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
-    List<Relation_VO> getRelations(@RequestParam(value = "sID_Relation", required = true) String sID_Relation,
-                                     @RequestParam(value = "nID_Parent", required = false) Long nID_Parent) throws Exception
+    List<Relation_VO> getRelations (@RequestParam(value = "sID_Relation", required = true) String sID_Relation,
+                                    @RequestParam(value = "sFindChild", required = true) String sFindChild,
+                                    @RequestParam(value = "nID_Parent", required = false) Long nID_Parent) throws Exception
     {
         LOG.info("getRelations started");
-        return oRelationService.getRelations(sID_Relation, nID_Parent);
+        return oRelationService.getRelations(sID_Relation, nID_Parent, sFindChild);
     }
 }
