@@ -34,7 +34,7 @@ public class RelationController {
     @Transactional
     public @ResponseBody
     List<Relation_VO> getRelations (@RequestParam(value = "sID_Relation", required = true) String sID_Relation,
-                                    @RequestParam(value = "sFindChild", required = true) String sFindChild,
+                                    @RequestParam(value = "sFindChild", required = false) String sFindChild,
                                     @RequestParam(value = "nID_Parent", required = false) Long nID_Parent) throws Exception
     {
         LOG.info("getRelations started");

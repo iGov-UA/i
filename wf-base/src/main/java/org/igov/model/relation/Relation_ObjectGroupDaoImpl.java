@@ -19,11 +19,11 @@ public class Relation_ObjectGroupDaoImpl extends GenericEntityDao<Long, Relation
     }
     
     @Override
-    public List<Relation_ObjectGroup> getRelation_ObjectGroups(Long nID_Relation, Long nID_Parent, String sFindChild) {
+    public List<Relation_ObjectGroup> getRelation_ObjectGroups(Long nID_Relation, Long nID_Parent) {
         Criteria criteria = createCriteria();
-        if(sFindChild != null){
+        /*if(sFindChild != null){
             criteria.add(Restrictions.like("oObjectGroup.sName", sFindChild, MatchMode.ANYWHERE));
-        }
+        }*/
         if (nID_Relation != null) {
             criteria.add(Restrictions.eq("nID_Relation", nID_Relation));
         }

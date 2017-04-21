@@ -9,5 +9,5 @@ import org.igov.model.core.EntityDao;
  */
 public interface Relation_ObjectGroupDao extends EntityDao<Long, Relation_ObjectGroup>{
     
-    public List<Relation_ObjectGroup> getRelation_ObjectGroups(Long nID_Relation, Long nID_Parent, String sFindChild);
+    public List<Relation_ObjectGroup> getRelation_ObjectGroups(Long nID_Relation, Long nID_Parent);
 }

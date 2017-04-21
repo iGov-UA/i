@@ -43,18 +43,19 @@ public class RelationService {
             
             List<Relation_ObjectGroup> aRelation_ObjectGroup = new ArrayList<>();
             
-            aRelation_ObjectGroup.addAll(oRelation_ObjectGroupDao.getRelation_ObjectGroups(oRelation.getId(), nID_Parent, sFindChild));
+            aRelation_ObjectGroup.addAll(oRelation_ObjectGroupDao.getRelation_ObjectGroups(oRelation.getId(), nID_Parent));
             
             for(Relation_ObjectGroup oRelation_ObjectGroup : aRelation_ObjectGroup){
                 ObjectGroup oObjectGroup = oRelation_ObjectGroup.getoObjectGroup();
                         //oObjectGroupDao.findByExpected("id", oRelation_ObjectGroup.getnID_ObjectGroup_Child());
-                
-                Relation_VO oRelation_VO = new Relation_VO();
-                oRelation_VO.setnID(oObjectGroup.getId());
-                oRelation_VO.setsID_Private_Source(oObjectGroup.getsID_Private_Source());
-                oRelation_VO.setsName(oObjectGroup.getsName());
-                
-                aRelation_VO.add(oRelation_VO);
+                if(sFindChild == null||oObjectGroup.getsName().contains(sFindChild)){
+                    Relation_VO oRelation_VO = new Relation_VO();
+                    oRelation_VO.setnID(oObjectGroup.getId());
+                    oRelation_VO.setsID_Private_Source(oObjectGroup.getsID_Private_Source());
+                    oRelation_VO.setsName(oObjectGroup.getsName());
+
+                    aRelation_VO.add(oRelation_VO);
+                }
             }
         }
         
