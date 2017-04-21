@@ -22,7 +22,6 @@
         <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи/місце проживання фізичної особи–підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc_pidpriemci" name="Завантажте копію документа, що посвідчує право на здійснення підприємницької діяльності; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="perelic" name="Інформація про використання національної символіки (герба міста, назви чи зображення архітектурних, історичних пам’яток); ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -47,15 +46,17 @@
         <activiti:formProperty id="edrpo_inn" name="Ідентифікаційний код згідно з ЄДРПОУ або Ідентифікаційний номер фізичної особи–підприємця" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib" name="П.І.Б. керівника юридичної особи/фізичної особи–підприємця/уповноваженої особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи/місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації звернення" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Видимість полів" type="markers" default="${markerService.loadFromFile('rada_0005_LocalSymb.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="документи пройшли перевірку, послуга може бути надана"></activiti:value>
           <activiti:value id="reject" name="відхилити запит"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, підставу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів; ;bNew=true " type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_56_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_56_print.html]; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -65,13 +66,22 @@
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="obect" name="Укажіть об’єкт, на який потрібно надати дозвіл" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_2" name="Адреса об’єкта, на який видається дозвіл" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="imya_ur" name="У давальному відмінку повне найменування юридичної особи/П.І.Б.фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; заповнюється в числовому форматі  хх:хх" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="edrpo_inn" name="Ідентифікаційний код згідно з ЄДРПОУ або Ідентифікаційний номер фізичної особи–підприємця" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pib" name="П.І.Б. керівника юридичної особи/фізичної особи–підприємця/уповноваженої особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи/місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="Видимість полів" type="markers" default="${markerService.loadFromFile('rada_0005_LocalSymb.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="Прийняття рішення про надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="надати дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовити у наданні дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_56_print.html]; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, підставу" type="textArea"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -188,7 +198,6 @@
 				4. Документ, що посвідчує право на здійснення підприємницької діяльності. <br>
 				5. Інформація про використання національної символіки (герба міста, назви чи зображення архітектурних, історичних пам’яток).<br>
 				<br>
-				${sNameOrgan}
 				${sAddress}
 				${sWorkTime}
 				${sPhoneOrgan}
@@ -232,7 +241,6 @@
 				4. Документ, що посвідчує право на здійснення підприємницької діяльності. <br>
 				5. Інформація про використання національної символіки (герба міста, назви чи зображення архітектурних, історичних пам’яток).<br>
 				<br>
-				${sNameOrgan}
 				${sAddress}
 				${sWorkTime}
 				${sPhoneOrgan}
