@@ -48,7 +48,7 @@ public class RelationService {
             for(Relation_ObjectGroup oRelation_ObjectGroup : aRelation_ObjectGroup){
                 ObjectGroup oObjectGroup = oRelation_ObjectGroup.getoObjectGroup();
                         //oObjectGroupDao.findByExpected("id", oRelation_ObjectGroup.getnID_ObjectGroup_Child());
-                if(sFindChild == null||oObjectGroup.getsName().contains(sFindChild)){
+                if(sFindChild == null||oObjectGroup.getsName().toLowerCase().contains(sFindChild.toLowerCase())){
                     Relation_VO oRelation_VO = new Relation_VO();
                     oRelation_VO.setnID(oObjectGroup.getId());
                     oRelation_VO.setsID_Private_Source(oObjectGroup.getsID_Private_Source());
