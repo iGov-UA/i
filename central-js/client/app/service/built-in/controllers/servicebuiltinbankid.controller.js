@@ -1158,12 +1158,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       */
 
       $scope.labelStyle = function (field) {
-        if(field)
-          return LabelService.labelStyle(field);
+        return LabelService.labelStyle(field);
       };
 
       $scope.isSetClasses = function (field) {
-        if(field)
-          return LabelService.isLabelHasClasses(field)
+        return LabelService.isLabelHasClasses(field)
       }
 });
