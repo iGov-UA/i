@@ -509,4 +509,18 @@
         </addColumn>
     </changeSet>
     
+    <changeSet id="issue-1615-change-relation-tables" author="Kovylin Yegor">
+        
+        <addColumn tableName="ObjectItem">
+            <column name="sName" type="varchar(5000)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        
+        <modifyDataType tableName="ObjectGroup" columnName="sName" newDataType="varchar(5000)" />
+        <modifyDataType tableName="ObjectGroup" columnName="sID_Private_Source" newDataType="varchar(255)" />
+        <modifyDataType tableName="ObjectItem" columnName="sID_Private_Source" newDataType="varchar(255)" />
+        
+    </changeSet>
+    
 </databaseChangeLog>
