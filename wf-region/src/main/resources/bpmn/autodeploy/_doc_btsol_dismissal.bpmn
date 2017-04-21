@@ -94,7 +94,7 @@
 execution.setVariable('processInstanceId', processInstanceId)
 </script>
     </scriptTask>
-    <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="scripttask18"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -190,19 +190,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow108" sourceRef="servicetask1" targetRef="scripttask17"></sequenceFlow>
-    <scriptTask id="scripttask18" name="ФИО" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>// ФИО заявителя
-var sLoginAuthor = execution.getVariable('sLoginAuthor')
-var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
-execution.setVariable('sNameDismissal', oResultAuthorName.sLabel)
-</script>
-    </scriptTask>
-    <sequenceFlow id="flow109" sourceRef="scripttask18" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_dismissal">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_dismissal" id="BPMNPlane__doc_btsol_dismissal">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="41.0" y="109.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="211.0" y="108.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="84.0" width="130.0" x="432.0" y="85.0"></omgdc:Bounds>
@@ -214,7 +206,7 @@ execution.setVariable('sNameDismissal', oResultAuthorName.sLabel)
         <omgdc:Bounds height="35.0" width="35.0" x="641.0" y="610.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="100.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="99.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="638.0" y="108.0"></omgdc:Bounds>
@@ -240,16 +232,13 @@ execution.setVariable('sNameDismissal', oResultAuthorName.sLabel)
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="606.0" y="352.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask18" id="BPMNShape_scripttask18">
-        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="100.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="215.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="432.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="76.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="246.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="126.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="562.0" y="127.0"></omgdi:waypoint>
@@ -301,10 +290,6 @@ execution.setVariable('sNameDismissal', oResultAuthorName.sLabel)
       <bpmndi:BPMNEdge bpmnElement="flow108" id="BPMNEdge_flow108">
         <omgdi:waypoint x="658.0" y="407.0"></omgdi:waypoint>
         <omgdi:waypoint x="658.0" y="444.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow109" id="BPMNEdge_flow109">
-        <omgdi:waypoint x="375.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="432.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_btsol_acceptance" name="Приказ о приеме на работу" isExecutable="true">
+  <process id="_doc_btsol_businessTrip" name="Приказ на офрмлене группы командировок" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
@@ -20,15 +20,28 @@
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="btsol_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ о приеме на работу" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ на офрмлене группы командировок" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sPlaceCompilation" name="Место составления" type="string" default="49000, Украина, Днепропетровская обл., г Днепр"></activiti:formProperty>
+        <activiti:formProperty id="sAscertainingPart" name="Констатирующая часть" type="textArea"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTable1" name="Командировать; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_businessTrip.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Заказ гостиницы; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_businessTrip.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sOrderHotel" name="Распоряжение" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDestinations" name="Пункты назначения" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCountryTrip" name="Страна" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCityTrip" name="Город(а)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBranchTrip" name="Филиал предприятия, организации и т.п." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRoute" name="Маршрут" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPurposeTrip" name="Цель командировки" type="string"></activiti:formProperty>
+        
+        
+        
         <activiti:formProperty id="markersLine_1" name="линия данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Данные нового сотрудника&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sHiredPersonLastName" name="Фамилия" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sHiredPersonFirstName" name="Имя" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sHiredPersonMiddleName" name="Отчество" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sHiredPersonPosition" name="Должность" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Департамент; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_acceptance.json')}"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Личный E-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateStart" name="Принять с" type="date" required="true"></activiti:formProperty>
+        
+        
+        
+        
         <activiti:formProperty id="markersLine_2" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2" type="invisible"></activiti:formProperty>
@@ -36,7 +49,7 @@
           <activiti:value id="sEnumSighting" name="отправить за визами"></activiti:value>
           <activiti:value id="sEnumEnd" name="удалить"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_businessTrip_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -69,7 +82,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_businessTrip_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -167,8 +180,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </serviceTask>
     <sequenceFlow id="flow108" sourceRef="servicetask1" targetRef="scripttask17"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_acceptance">
-    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_acceptance" id="BPMNPlane__doc_btsol_acceptance">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_businessTrip">
+    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_businessTrip" id="BPMNPlane__doc_btsol_businessTrip">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="190.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
