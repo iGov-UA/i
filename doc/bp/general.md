@@ -858,10 +858,10 @@ digit3 - переменная, куда присвоится результат 
 ### PrintForm
 -Принтформа прописывается на Юзертаске:
 
-        activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_declaration_2.html" type="file"></activiti:formProperty
-
-        activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty
- 
+```xml
+ <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_declaration_2.html" type="file"></activiti:formProperty>
+  <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+``` 
  [детальней...](#_printformmd)
  
 ###### display_hidefields
