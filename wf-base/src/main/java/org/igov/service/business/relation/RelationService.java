@@ -32,7 +32,7 @@ public class RelationService {
     @Autowired
     Relation_ObjectGroupDao oRelation_ObjectGroupDao;
     
-    public List<Relation_VO> getRelations(String sID_Relation, Long nID_Parent){
+    public List<Relation_VO> getRelations(String sID_Relation, Long nID_Parent, String sFindChild){
         
        List<Relation_VO> aRelation_VO = new ArrayList<>();
                
@@ -43,7 +43,7 @@ public class RelationService {
             
             List<Relation_ObjectGroup> aRelation_ObjectGroup = new ArrayList<>();
             
-            aRelation_ObjectGroup.addAll(oRelation_ObjectGroupDao.getRelation_ObjectGroups(oRelation.getId(), nID_Parent));
+            aRelation_ObjectGroup.addAll(oRelation_ObjectGroupDao.getRelation_ObjectGroups(oRelation.getId(), nID_Parent, sFindChild));
             
             for(Relation_ObjectGroup oRelation_ObjectGroup : aRelation_ObjectGroup){
                 ObjectGroup oObjectGroup = oRelation_ObjectGroup.getoObjectGroup();
