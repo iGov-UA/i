@@ -1,9 +1,14 @@
 package org.igov.model.subject.message;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.igov.model.core.AbstractEntity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,6 +23,11 @@ public class SubjectMessageQuestionField extends AbstractEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	@JsonIgnore
+	@ManyToOne(targetEntity = SubjectMessage.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "nID_SubjectMessage")
+	private SubjectMessage subjectMessage;
 	
 	@JsonProperty(value = "sID")
     @Column(name = "sID", nullable = false)
@@ -90,5 +100,15 @@ public class SubjectMessageQuestionField extends AbstractEntity {
 	public void setsNotify(String sNotify) {
 		this.sNotify = sNotify;
 	}
+
+	public SubjectMessage getSubjectMessage() {
+		return subjectMessage;
+	}
+
+	public void setSubjectMessage(SubjectMessage subjectMessage) {
+		this.subjectMessage = subjectMessage;
+	}
+	
+	
 
 }
