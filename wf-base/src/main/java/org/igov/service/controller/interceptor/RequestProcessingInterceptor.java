@@ -741,9 +741,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      */
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
-
+        
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
-
+        
+        LOG.info("sRequestBody {}", sRequestBody);
+        LOG.info("sResponseBody {}", sResponseBody);
+        LOG.info("mParamRequest {}", mParamRequest);
+        
         if (sResponseBody == null) {
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
