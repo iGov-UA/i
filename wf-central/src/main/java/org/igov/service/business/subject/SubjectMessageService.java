@@ -283,7 +283,7 @@ public class SubjectMessageService {
 //
 //        if(!subjectMessagesMails.contains(sMail))
 //            message.setMail(sMail == null ? "" : sMail);
-        List<SubjectMessageQuestionField> subjectMessageQuestionField = createSubjectMessageQuestionField(sData,bQuestion);
+        List<SubjectMessageQuestionField> subjectMessageQuestionField = createSubjectMessageQuestionField(sData);
         LOG.info("subjectMessageQuestionFielddddddddd " + subjectMessageQuestionField);
         message.setSubjectMessageQuestionField(subjectMessageQuestionField);
         message.setContacts((sContacts == null) ? "" : sContacts);
@@ -699,8 +699,8 @@ public class SubjectMessageService {
      * @return
      * @throws CommonServiceException
      */
-    public List<SubjectMessageQuestionField> createSubjectMessageQuestionField(String saField, Boolean bNew) throws CommonServiceException {
-    	LOG.info("createSubjectMessageQuestionField " + saField + "bNewwwwwwwwwww " + bNew);
+    public List<SubjectMessageQuestionField> createSubjectMessageQuestionField(String saField) throws CommonServiceException {
+    	LOG.info("createSubjectMessageQuestionField " + saField);
         if (saField == null || "".equals(saField.trim()) || "[]".equals(saField.trim())) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -722,15 +722,10 @@ public class SubjectMessageService {
 
             Object osID;
             if ((osID = oField.opt("sID")) == null) {
-                if ((osID = oField.opt("id")) == null) {
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Field sID and id of array is null",
-                            HttpStatus.FORBIDDEN);
-                }
+            	osID="";
             }
             subjectMessageQuestionField.setsID(osID.toString());
-
+            	
             Object osName;
             if ((osName = oField.opt("sName")) == null) {
                 osName = osID.toString();
@@ -745,12 +740,7 @@ public class SubjectMessageService {
 
             Object osValue;
             if ((osValue = oField.opt("sValue")) == null) {
-                if ((osValue = oField.opt("value")) == null) {
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Field sValue and value of array is null",
-                            HttpStatus.FORBIDDEN);
-                }
+            	osValue="";
             }
             subjectMessageQuestionField.setsValue(osValue.toString());
             
@@ -763,32 +753,10 @@ public class SubjectMessageService {
             
             Object osNotify;
             if ((osNotify = oField.opt("sNotify")) == null) {
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Field sNotify of array is null",
-                        HttpStatus.FORBIDDEN);
+            	osNotify="";
             }
             subjectMessageQuestionField.setsNotify(osNotify.toString());
 
-            /*if (bNew) {
-                Object osValueNew;
-                if ((osValueNew = oField.opt("sValueNew")) == null) {
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Field sValueNew of array is null",
-                            HttpStatus.FORBIDDEN);
-                }
-                subjectMessageQuestionField.setsValueNew(osValueNew.toString());
-            } else {
-                Object osNotify;
-                if ((osNotify = oField.opt("sNotify")) == null) {
-                    throw new CommonServiceException(
-                            ExceptionCommonController.BUSINESS_ERROR_CODE,
-                            "Field sNotify of array is null",
-                            HttpStatus.FORBIDDEN);
-                }
-                subjectMessageQuestionField.setsNotify(osNotify.toString());
-            }*/
             subjectMessageQuestionFieldDao.saveOrUpdate(subjectMessageQuestionField);
             subjectMessageQuestionFieldList.add(subjectMessageQuestionField);
         }
