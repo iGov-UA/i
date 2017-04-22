@@ -65,7 +65,18 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter implements ConstantsInterceptor {
 
     private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming|_doc_justice_171";
-    private static final String asID_BP_SkipSendMail = "dnepr_mvk_291_common|rada_0676_citizensAppeals|dnepr_dms-212|dnepr_dms-212s|dnepr_dms-89|dnepr_dms-89s|dnepr_dms-89sd|DFS_F1301801|joke_0959_Deputat";
+	private static final String asID_BP_SkipSendMail = "bti_request_1|cnap_489|common_mreo_1_jur|common_mreo_2|common_zags_change_name|CourtOfAppeal|CourtOfCassation|dabi_build_declaration_dupl|dabi_build_notif_change|dabi_build_notification|"
+			+ " dabi_build_permit_change|dabi_build_permit_dupl|dabi_ready_certificate_dupl|dabi_ready_declaration|dabi_works_declaration_dupl|dabi_works_declaration|dabi_works_notif_cancel|dabi_works_notif_change|dabi_works_notification|DFS_0360_F1310104|"
+			+ " DFS_F3000410|dms_0178_2545|dndz_cnap_186|dnepr_cnap_53|dnepr_cnap_213|dnepr_cnap_214|dnepr_cnap_215|dnepr_cnap_217|dnepr_cnap_218|dnepr_cnap_219|"
+			+ " dnepr_cnap_228|dnepr_cnap_229|dnepr_cnap_230|dnepr_cnap_261|dnepr_cnap_262|dnepr_cnap_263|dnepr_cnap_265|dnepr_cnap_266|dnepr_cnap_267|dnepr_cnap_268|"
+			+ " dnepr_cnap_273|dnepr_cnap_275|dnepr_cnap_277|dnepr_cnap_286|dnepr_cnap_446|dnepr_cnap_447|dnepr_cnap_51|dnepr_cnap_52|dnepr_cnap_54_55|dnepr_cnap_56|"
+			+ " dnepr_cnap_560_fop|dnepr_cnap_560_ur|dnepr_cnap_560|dnepr_cnap_561|dnepr_cnap_628|dnepr_cnap_629|dnepr_cnap_630|dnepr_cnap_631|dnepr_cnap_632|dnepr_cnap_70|"
+			+ " dnepr_inn|dnepr_mvd_199|dnepr_mvk_335|dnepr_mvk_383|dnepr_mvk_386|dnepr_soc_help_148|dnepr_soc_help_149|dnepr_soc_help_175|dnepr_soc_help_177|dpi_reestr_68|"
+			+ " dpss_1441_visnovok|eco_0033_fonConts|health_ministry_10|hmel_cnap_264_1|hmel_cnap_264_2|hmel_cnap_264|hmel_cnap_349|infrastr_845|justice_0014|justice_0087_FOPclose|"
+			+ " justice_0333_complaint|justice_2517_GOopen|justice_989|kherson_racs_757|kiev_mda_273|kiev_mda_824|kiev_mda_834|kiev_soc_help_177|kmda_works_notification|kyiv_mda_1093|"
+			+ " kyiv_mda_1194|kyiv_mda_929|lviv_mvk_1113|lviv_mvk_268_dovidka|lviv_mvk_268|lviv_mvk_701|lviv_mvk_742|lviv_mvk_743|mert_0160_RazLic|netishin_soc_help_177|"
+			+ " nikopol_cnap_268_dovidka|nikopol_cnap_273_dovidka|nikopol_cnap_273|poltava_eko_693|post_spravka_o_doxodax_pens|rada_0035_constractionPass|rada_0063_dozvilZN|rada_0450_mother_heroine|rada_0455_buildingPassp|rada_0676_citizensAppeals|"
+			+ " rada_1429_OperAdrBud_Kropiv|SpecInspection_965|system_escalation|system_feedback|system_task_mu_read|system_task|trostyanec_mvk_dereva|uzhgorod_cnap_391|Uzhgorod_dmg_1"; // "dnepr_mvk_291_common|rada_0676_citizensAppeals|dnepr_dms-212|dnepr_dms-212s|dnepr_dms-89|dnepr_dms-89s|dnepr_dms-89sd|DFS_F1301801|joke_0959_Deputat";
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     private boolean bFinish = false;
@@ -730,9 +741,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      */
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
-
+        
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
-
+        
+        LOG.info("sRequestBody {}", sRequestBody);
+        LOG.info("sResponseBody {}", sResponseBody);
+        LOG.info("mParamRequest {}", mParamRequest);
+        
         if (sResponseBody == null) {
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
@@ -891,7 +906,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         //dnepr_mvk_291_common
 
         if (sMailTo != null) {
-            if (!asID_BP_SkipSendMail.contains(oProcessDefinition.getKey())) {
+            if (asID_BP_SkipSendMail.contains(oProcessDefinition.getKey())) {
                 ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
                 LOG.info("Send notification mail... (sMailTo={})", sMailTo);
                 oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
