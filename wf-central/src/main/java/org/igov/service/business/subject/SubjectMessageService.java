@@ -5,22 +5,43 @@
  */
 package org.igov.service.business.subject;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.activiti.engine.impl.util.json.JSONArray;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.igov.model.core.EntityDao;
-import org.igov.model.subject.*;
-import org.igov.model.subject.message.*;
+import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectContact;
+import org.igov.model.subject.SubjectContactDao;
+import org.igov.model.subject.SubjectContactType;
+import org.igov.model.subject.SubjectContactTypeDao;
+import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectHuman;
+import org.igov.model.subject.SubjectHumanDao;
+import org.igov.model.subject.SubjectHumanIdType;
+import org.igov.model.subject.message.SubjectMessage;
+import org.igov.model.subject.message.SubjectMessageFeedback;
+import org.igov.model.subject.message.SubjectMessageFeedbackAnswer;
+import org.igov.model.subject.message.SubjectMessageFeedbackAnswerDao;
+import org.igov.model.subject.message.SubjectMessageFeedbackDao;
+import org.igov.model.subject.message.SubjectMessageQuestionField;
+import org.igov.model.subject.message.SubjectMessageQuestionFieldDao;
+import org.igov.model.subject.message.SubjectMessageType;
+import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.controller.ExceptionCommonController;
 import org.igov.service.exception.CommonServiceException;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  *
@@ -45,6 +66,8 @@ public class SubjectMessageService {
     private SubjectMessagesDao subjectMessageDao;
     @Autowired
     private SubjectMessageFeedbackAnswerDao subjectMessageFeedbackAnswerDao;
+    @Autowired
+    private SubjectMessageQuestionFieldDao subjectMessageQuestionFieldDao;
 
     @Autowired
     @Qualifier("subjectMessageTypeDao")
@@ -197,11 +220,11 @@ public class SubjectMessageService {
     /*issue1215 Перегружен ради добавлениия нового параметра (sSubjectInfo) в /setTaskQuestions, чтобы не рушить
     существующие сервисыБ которые используют этот метод  */
     public SubjectMessage createSubjectMessage(String sHead, String sBody, Long nID_subject, String sMail,
-            String sContacts, String sData, Long nID_subjectMessageType, String sSubjectInfo) throws CommonServiceException {
+            String sContacts, String sData, Long nID_subjectMessageType, String sSubjectInfo,Boolean bQuestion) throws CommonServiceException {
+    	
         SubjectContact subjectContact = null;
         Subject subject = new Subject();
         SubjectMessage message = null;
-
         if (sMail != null && !sMail.isEmpty()) {
             LOG.info("(createSubjectMessage: sMail{}, nID_subject{}) ", sMail, nID_subject);
             if (nID_subject != null) {
@@ -260,10 +283,11 @@ public class SubjectMessageService {
 //
 //        if(!subjectMessagesMails.contains(sMail))
 //            message.setMail(sMail == null ? "" : sMail);
-
-
+        List<SubjectMessageQuestionField> subjectMessageQuestionField = createSubjectMessageQuestionField(sData,bQuestion);
+        LOG.info("subjectMessageQuestionFielddddddddd " + subjectMessageQuestionField);
+        message.setSubjectMessageQuestionField(subjectMessageQuestionField);
         message.setContacts((sContacts == null) ? "" : sContacts);
-        message.setData((sData == null) ? "" : sData);
+        message.setData((sData == null) ? "" : sData); //TODO: - убрать после тестирования 1553
         message.setDate(new DateTime());
         message.setsSubjectInfo((sSubjectInfo == null) ? "" : sSubjectInfo);
         LOG.info("(createSubjectMessage: message sSubjectInfo{})", message.getsSubjectInfo());
@@ -271,7 +295,7 @@ public class SubjectMessageService {
             SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(nID_subjectMessageType);
             message.setSubjectMessageType(subjectMessageType);
         }
-
+        LOG.info("SubjectMessageeeeeeeee " + message);
         return message;
     }
 
@@ -665,5 +689,93 @@ public class SubjectMessageService {
         }
 
         return false;
+    }
+    
+    
+    /**
+     * Метод заполнения объекта SubjectMessageQuestionField - замечание чиновника
+     * @param saField
+     * @param bNew
+     * @return
+     * @throws CommonServiceException
+     */
+    public List<SubjectMessageQuestionField> createSubjectMessageQuestionField(String saField, Boolean bNew) throws CommonServiceException {
+    	
+        if (saField == null || "".equals(saField.trim()) || "[]".equals(saField.trim())) {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Can't make task question with no fields! (saField=" + saField + ")",
+                    HttpStatus.FORBIDDEN);
+        }
+        List<SubjectMessageQuestionField> subjectMessageQuestionFieldList = new ArrayList<>();
+        JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
+        JSONArray aField = oFields.getJSONArray("soData");
+        if (aField.length() == 0) {
+            throw new CommonServiceException(
+                    ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    "Can't make task question with no fields! (saField=" + saField + ")",
+                    HttpStatus.FORBIDDEN);
+        }
+        for (int i = 0; i < aField.length(); i++) {
+            JSONObject oField = aField.getJSONObject(i);
+            SubjectMessageQuestionField subjectMessageQuestionField = new SubjectMessageQuestionField();
+
+            Object osID;
+            if ((osID = oField.opt("sID")) == null) {
+                if ((osID = oField.opt("id")) == null) {
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Field sID and id of array is null",
+                            HttpStatus.FORBIDDEN);
+                }
+            }
+            subjectMessageQuestionField.setsID(osID.toString());
+
+            Object osName;
+            if ((osName = oField.opt("sName")) == null) {
+                osName = osID.toString();
+            }
+            subjectMessageQuestionField.setsName(osName.toString());
+            
+            Object osType;
+            if ((osType = oField.opt("sType")) == null) {
+            	osType = "string";
+            }
+            subjectMessageQuestionField.setsType(osType.toString());
+
+            Object osValue;
+            if ((osValue = oField.opt("sValue")) == null) {
+                if ((osValue = oField.opt("value")) == null) {
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Field sValue and value of array is null",
+                            HttpStatus.FORBIDDEN);
+                }
+            }
+            subjectMessageQuestionField.setsValue(osValue.toString());
+
+            if (bNew) {
+                Object osValueNew;
+                if ((osValueNew = oField.opt("sValueNew")) == null) {
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Field sValueNew of array is null",
+                            HttpStatus.FORBIDDEN);
+                }
+                subjectMessageQuestionField.setsValueNew(osValueNew.toString());
+            } else {
+                Object osNotify;
+                if ((osNotify = oField.opt("sNotify")) == null) {
+                    throw new CommonServiceException(
+                            ExceptionCommonController.BUSINESS_ERROR_CODE,
+                            "Field sNotify of array is null",
+                            HttpStatus.FORBIDDEN);
+                }
+                subjectMessageQuestionField.setsNotify(osNotify.toString());
+            }
+            subjectMessageQuestionFieldDao.saveOrUpdate(subjectMessageQuestionField);
+            subjectMessageQuestionFieldList.add(subjectMessageQuestionField);
+        }
+        return subjectMessageQuestionFieldList;
     }
 }

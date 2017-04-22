@@ -2,7 +2,6 @@ package org.igov.model.subject.message;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,7 +11,11 @@ import org.igov.model.core.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
+/**
+ * #1553-Сущность для хранения замечаний чиновника
+ * @author Elena
+ *
+ */
 @javax.persistence.Entity
 public class SubjectMessageQuestionField extends AbstractEntity {
 	
