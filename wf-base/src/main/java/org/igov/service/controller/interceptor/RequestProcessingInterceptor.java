@@ -972,7 +972,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         return POST.equalsIgnoreCase(oRequest.getMethod().trim())
                 && (((sResponseBody == null || "".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0)
-                || TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find());
+                || TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()
+                || oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0);
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
