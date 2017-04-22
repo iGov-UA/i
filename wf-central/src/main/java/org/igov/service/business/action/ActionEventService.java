@@ -5,8 +5,26 @@
  */
 package org.igov.service.business.action;
 
+import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
+import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
+import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
 import org.igov.io.web.HttpRequester;
-import org.igov.model.action.event.*;
+import org.igov.model.action.event.HistoryEventDao;
+import org.igov.model.action.event.HistoryEventMessage;
+import org.igov.model.action.event.HistoryEventType;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.event.ServicesStatistics;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.Document;
 import org.igov.model.document.DocumentDao;
@@ -25,16 +43,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import org.activiti.engine.HistoryService;
-import org.igov.service.business.action.event.ActionEventHistoryService;
-import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
-import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
-import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 /**
  *
@@ -61,9 +69,6 @@ public class ActionEventService {
     private HistoryEvent_ServiceDao historyEventServiceDao;
 
     @Autowired
-    private ActionEventHistoryService actionEventHistoryService;
-
-    @Autowired
     private SubjectMessagesDao subjectMessagesDao;
 
     @Autowired
@@ -73,11 +78,6 @@ public class ActionEventService {
     @Qualifier("regionDao")
     private GenericEntityDao<Long, Region> regionDao;
 
-    @Autowired
-    private HistoryService oHistoryService;
-
-    @Autowired
-    private SubjectMessagesDao SubjectMessagesDao;
 
 
     /*public void setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService) {
@@ -447,7 +447,7 @@ public class ActionEventService {
             } else if (oHistoryEvent_Service_StatusType == HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION) {
                 oHistoryEventType = HistoryEventType.SET_TASK_QUESTIONS;
                 bQuestion = false;
-                nID_SubjectMessageType = 5L;
+                nID_SubjectMessageType = 5L;//TODO - почему 5 стоит а не 3?????
                 LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
                 LOG.info("nID_SubjectMessageType is set to" + nID_SubjectMessageType);
             }
@@ -468,7 +468,7 @@ public class ActionEventService {
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
 
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                        sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
+                        sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo,bQuestion);
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
                 LOG.info("setting message");
                 subjectMessagesDao.setMessage(oSubjectMessage);
