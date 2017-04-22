@@ -663,6 +663,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
         }
         String sType = "";
+        
+        if(oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0){
+            LOG.info("We catch cancel task...");
+            LOG.info("mRequestParam {}", mRequestParam);
+            LOG.info("mRequestParam {}", mRequestParam);
+            
+        }
+        
         try {
             LOG.info("URL: {} method: {}", oRequest.getRequestURL(), oRequest.getMethod());
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
@@ -698,6 +706,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
                 LOG.info("saveNewTaskInfo block finished");
             } else if (isCloseTask(oRequest, sResponseBody)) {
+                
                 sType = "Close";
                 LOG.info("saveClosedTaskInfo block started");
                 saveClosedTaskInfo(sRequestBody, snTaskId, bSaveHistory);
@@ -970,7 +979,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 || oRequest.getRequestURL().toString().indexOf("action/task/updateProcess") > 0
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim());
     }
-
+    
     private boolean isCloseTask(HttpServletRequest oRequest, String sResponseBody) {
         return POST.equalsIgnoreCase(oRequest.getMethod().trim())
                 && (((sResponseBody == null || "".equals(sResponseBody))
