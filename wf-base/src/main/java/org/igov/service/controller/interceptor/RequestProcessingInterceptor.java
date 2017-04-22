@@ -9,6 +9,7 @@ import static org.igov.util.Tool.sCut;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.CloseTaskEvent;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
 import org.joda.time.DateTime;
@@ -101,6 +103,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private RepositoryService repositoryService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private ActionTaskService actionTaskService;
     @Autowired
     private IdentityService identityService;
     @Autowired
@@ -664,13 +668,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         }
         String sType = "";
         
-        if(oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0){
-            LOG.info("We catch cancel task...");
-            LOG.info("mRequestParam {}", mRequestParam);
-            LOG.info("mRequestParam {}", mRequestParam);
-            
-        }
-        
         try {
             LOG.info("URL: {} method: {}", oRequest.getRequestURL(), oRequest.getMethod());
             if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
@@ -706,10 +703,24 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
                 LOG.info("saveNewTaskInfo block finished");
             } else if (isCloseTask(oRequest, sResponseBody)) {
-                
-                sType = "Close";
                 LOG.info("saveClosedTaskInfo block started");
-                saveClosedTaskInfo(sRequestBody, snTaskId, bSaveHistory);
+                List<String> aTaskId = new ArrayList<>();
+                
+                if(oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0){
+                    LOG.info("We catch cancel task...");
+                    LOG.info("mRequestParam {}", mRequestParam);
+                    String nID_Order = mRequestParam.get("nID_Order");
+                    aTaskId = actionTaskService.getTaskIdsByProcessInstanceId(
+                            actionTaskService.getOriginalProcessInstanceId(Long.parseLong(nID_Order)));
+                    
+                    for(String taskId : aTaskId){
+                         saveClosedTaskInfo(sRequestBody, taskId, bSaveHistory);
+                    }
+                }
+                sType = "Close";
+                if(aTaskId.isEmpty()){
+                    saveClosedTaskInfo(sRequestBody, snTaskId, bSaveHistory);
+                }
                 LOG.info("saveClosedTaskInfo block finished");
             } else if (isUpdateTask(oRequest)) {
                 sType = "Update";
