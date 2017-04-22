@@ -700,7 +700,7 @@ public class SubjectMessageService {
      * @throws CommonServiceException
      */
     public List<SubjectMessageQuestionField> createSubjectMessageQuestionField(String saField, Boolean bNew) throws CommonServiceException {
-    	
+    	LOG.info("createSubjectMessageQuestionField " + saField + "bNewwwwwwwwwww " + bNew);
         if (saField == null || "".equals(saField.trim()) || "[]".equals(saField.trim())) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -753,8 +753,24 @@ public class SubjectMessageService {
                 }
             }
             subjectMessageQuestionField.setsValue(osValue.toString());
+            
+            Object osValueNew;
+            if ((osValueNew = oField.opt("sValueNew")) == null) {
+            	subjectMessageQuestionField.setsValueNew(osValue.toString());
+            }else{
+            	subjectMessageQuestionField.setsValueNew(osValueNew.toString());
+            }
+            
+            Object osNotify;
+            if ((osNotify = oField.opt("sNotify")) == null) {
+                throw new CommonServiceException(
+                        ExceptionCommonController.BUSINESS_ERROR_CODE,
+                        "Field sNotify of array is null",
+                        HttpStatus.FORBIDDEN);
+            }
+            subjectMessageQuestionField.setsNotify(osNotify.toString());
 
-            if (bNew) {
+            /*if (bNew) {
                 Object osValueNew;
                 if ((osValueNew = oField.opt("sValueNew")) == null) {
                     throw new CommonServiceException(
@@ -772,7 +788,7 @@ public class SubjectMessageService {
                             HttpStatus.FORBIDDEN);
                 }
                 subjectMessageQuestionField.setsNotify(osNotify.toString());
-            }
+            }*/
             subjectMessageQuestionFieldDao.saveOrUpdate(subjectMessageQuestionField);
             subjectMessageQuestionFieldList.add(subjectMessageQuestionField);
         }
