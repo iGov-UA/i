@@ -30,7 +30,7 @@ public interface ConstantsInterceptor {
 	static final String SERVICE_ACTION_TASK_GET_START_FORM_DATA = "/service/action/task/getStartFormData";
 	static final String SERVICE_REPOSITORY_PROCESS_DEFINITIONS = "/service/repository/process-definitions";
 	static final String SERVICE_FORM_FORM_DATA = "/service/form/form-data";
-        static final String SERVICE_CANCELTASK = "/service/task/cancelTask";
+        static final String SERVICE_CANCELTASK = "/service/action/task/cancelTask";
 	static final String SERVICE_ACTION_ITEM_GET_SERVICES_TREE = "/service/action/item/getServicesTree";
 	static final String SERVICE_ACTION_ITEM_GET_SERVICE = "/service/action/item/getService";
 	static final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
