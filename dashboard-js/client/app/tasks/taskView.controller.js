@@ -1311,7 +1311,7 @@
           angular.forEach(tableRow, function (row) {
             angular.forEach(row.aField, function (field) {
               fixName(field);
-              if(field.type === 'date') {
+              if(field.type === 'date' && field.value) {
                 var match = /^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/.test(field.props.value);
                 if(!match) {
                   var onlyDate = field.props.value.split('T')[0];
@@ -1439,6 +1439,21 @@
                 fixFieldsForTable(table);
                 $scope.taskData.aTable.push(table);
               })
+            }
+          });
+
+          angular.forEach($scope.taskData.aNewAttachment, function (attachment) {
+            if(attachment.type === 'table' && attachment.value && attachment.value.indexOf('sKey') > -1) {
+              try {
+                var data = JSON.parse(attachment.value);
+                tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, attachment.id, true).then(function (res) {
+                  if(res.type && res.type === 'table') {
+                    $scope.taskData.aTable.push(res);
+                  }
+                })
+              } catch (e) {
+                console.log( 'Помилка в таблицi ' + attachment.id + ' ' + e )
+              }
             }
           });
           $scope.updateTemplateList();
@@ -1671,7 +1686,7 @@
             return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
           }
         };
-
+console.log($scope)
         $rootScope.$broadcast("update-search-counter");
       }
     ])
