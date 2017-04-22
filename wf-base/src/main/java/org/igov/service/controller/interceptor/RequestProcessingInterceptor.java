@@ -828,7 +828,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     //(#1234) added additional parameter snClosedTaskId
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
         LOG.info("Method saveClosedTaskInfo started");
-
+        
+        LOG.info("sRequestBody is {}", sRequestBody);
+        LOG.info("snClosedTaskId is {}", snClosedTaskId);
+        
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
 
         String snID_Task = (String) omRequestBody.get("taskId");
@@ -973,7 +976,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && (((sResponseBody == null || "".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0)
                 || TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()
-                || oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0);
+                || (oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0));
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
