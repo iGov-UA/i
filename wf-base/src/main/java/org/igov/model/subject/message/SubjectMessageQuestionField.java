@@ -25,10 +25,10 @@ public class SubjectMessageQuestionField extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 	
 	@JsonIgnore
-    @ManyToOne(targetEntity = SubjectMessage.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "nID_SubjectMessage")
-    private SubjectMessage subjectMessage;
-
+	@ManyToOne(targetEntity = SubjectMessage.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "nID_SubjectMessage")
+	private SubjectMessage subjectMessage;
+	
 	@JsonProperty(value = "sID")
     @Column(name = "sID", nullable = false)
     private String sID;
@@ -52,14 +52,6 @@ public class SubjectMessageQuestionField extends AbstractEntity {
     @JsonProperty(value = "sNotify")
     @Column(name = "sNotify", nullable = true)
     private String sNotify;
-
-	public SubjectMessage getSubjectMessage() {
-		return subjectMessage;
-	}
-
-	public void setSubjectMessage(SubjectMessage subjectMessage) {
-		this.subjectMessage = subjectMessage;
-	}
 
 	public String getsID() {
 		return sID;
@@ -108,5 +100,15 @@ public class SubjectMessageQuestionField extends AbstractEntity {
 	public void setsNotify(String sNotify) {
 		this.sNotify = sNotify;
 	}
+
+	public SubjectMessage getSubjectMessage() {
+		return subjectMessage;
+	}
+
+	public void setSubjectMessage(SubjectMessage subjectMessage) {
+		this.subjectMessage = subjectMessage;
+	}
+	
+	
 
 }
