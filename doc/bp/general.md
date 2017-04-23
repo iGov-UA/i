@@ -308,7 +308,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ##### reservedvariablesforelectronicqueues
 ### Зарезервированные переменные для электронных очередей
-* **date_of_visit** - bVisible=false - автоматом принимает значение выбранное  из электронной очереди
+* **date_of_visit** - [bVisible=false](#bvisiblefalse) - автоматом принимает значение выбранное  из электронной очереди
 * **nID_Department_visitDay** - string/bVisible=false/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
 * **nSlots_visitDay** - string/bVisible=false/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
 
@@ -317,7 +317,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### reservedattributevariables
 ### Зарезервированные переменные атрибутов
-* **sNameOrgan** - string/bVisible=false/label - название органа в подписи письма
+* **sNameOrgan** - string/[bVisible=false](#bvisiblefalse)/label - название органа в подписи письма
 * **sWorkTime** - string/bVisible=false/label - график работы
 * **sPhoneOrgan** - string/bVisible=false/label - телефон для справок
 
