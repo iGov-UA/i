@@ -710,10 +710,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     LOG.info("We catch cancel task...");
                     LOG.info("mRequestParam {}", mRequestParam);
                     String nID_Order = mRequestParam.get("nID_Order");
+                    LOG.info("nID_Order {}", nID_Order);
+                    
                     aTaskId = actionTaskService.getTaskIdsByProcessInstanceId(
                             actionTaskService.getOriginalProcessInstanceId(Long.parseLong(nID_Order)));
                     
                     for(String taskId : aTaskId){
+                        LOG.info("taskId {}", taskId);
                          saveClosedTaskInfo(sRequestBody, taskId, bSaveHistory);
                     }
                 }
