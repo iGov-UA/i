@@ -292,9 +292,9 @@ public class SubjectMessageService {
             SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(nID_subjectMessageType);
             message.setSubjectMessageType(subjectMessageType);
         }
-        List<SubjectMessageQuestionField> subjectMessageQuestionField = createSubjectMessageQuestionField(sData, message);
-        LOG.info("subjectMessageQuestionFielddddddddd " + subjectMessageQuestionField);
-        message.setSubjectMessageQuestionField(subjectMessageQuestionField);
+        List<SubjectMessageQuestionField> aSubjectMessageQuestionField = createSubjectMessageQuestionField(sData, message);
+        LOG.info("subjectMessageQuestionFielddddddddd " + aSubjectMessageQuestionField);
+        message.setSubjectMessageQuestionField(aSubjectMessageQuestionField);
         LOG.info("SubjectMessageeeeeeeee " + message);
         return message;
     }
@@ -707,7 +707,7 @@ public class SubjectMessageService {
                     "Can't make task question with no fields! (saField=" + saField + ")",
                     HttpStatus.FORBIDDEN);
         }
-        List<SubjectMessageQuestionField> subjectMessageQuestionFieldList = new ArrayList<>();
+        List<SubjectMessageQuestionField> aSubjectMessageQuestionFieldList = new ArrayList<>();
         JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
         JSONArray aField = oFields.getJSONArray("soData");
         LOG.info("soData JSONArray aField " + aField.length());
@@ -753,11 +753,11 @@ public class SubjectMessageService {
             	osNotify="";
             }
             oSubjectMessageQuestionField.setsNotify(osNotify.toString());
-            LOG.info("subjectMessageQuestionField.toString " + oSubjectMessageQuestionField.toString());
+            LOG.info("oSubjectMessageQuestionField.toString " + oSubjectMessageQuestionField.toString());
             subjectMessageQuestionFieldDao.saveOrUpdate(oSubjectMessageQuestionField);
-            subjectMessageQuestionFieldList.add(oSubjectMessageQuestionField);
-            LOG.info("subjectMessageQuestionFieldList " + subjectMessageQuestionFieldList);
+            aSubjectMessageQuestionFieldList.add(oSubjectMessageQuestionField);
+            LOG.info("aSubjectMessageQuestionFieldList " + aSubjectMessageQuestionFieldList);
         }
-        return subjectMessageQuestionFieldList;
+        return aSubjectMessageQuestionFieldList;
     }
 }
