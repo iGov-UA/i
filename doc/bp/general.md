@@ -342,7 +342,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### other
 ### Другие
-* **response** - bVisible=false - задать кастомизированный текст на спасибо странице, после подачи обращения (с поддержкой html)
+* **response** - [bVisible=false](#bvisiblefalse) - задать кастомизированный текст на спасибо странице, после подачи обращения (с поддержкой html)
 * **footer** - string - задать кастомизированный текст на стандартной форме для печати в дашборде( с поддержкой html)
 * **sNotifyEvent_AfterSubmit** - bVisible=false- Отображение кастомного текста в дашборде после нажатия на кнопку “Опрацювати”. Текст  подсказки задаем в аттрибуте default. [Issue 1027](https://github.com/e-government-ua/i/issues/1027).
 
@@ -1002,7 +1002,7 @@ digit3 - переменная, куда присвоится результат 
 
 * добавить в  БП такие поля (можно на стартовой таске):
 ```xml
-<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;[bVisible=false](#bvisiblefalse)" type="string" default=" "></activiti:formProperty>
 <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" ></activiti:formProperty>
 <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина); ;bVisible=false" type="string" default="i10172968078"></activiti:formProperty>
 <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="0.01"></activiti:formProperty>
@@ -2184,7 +2184,7 @@ src/main/java/org/igov/service/controller/interceptor/RequestProcessingIntercept
 
 используется зарезервированная переменная sID_Order_GovPublic
 ```xml
-<activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР; ;bVisible=false" type="string"></activiti:formProperty>
+<activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР; ;[bVisible=false](#bvisiblefalse)" type="string"></activiti:formProperty>
 ```
 счетчик начинает считать с 0 и обнуляется в начале года.
 
@@ -2773,7 +2773,7 @@ Cделает текущее поле нередактируемым для по
 [вернуться...](#attributesbankid)
 * **bankId_scan_passport** - file - скан паспорта гражданина
 * **bankIdAddressFactual** - string - адрес регистрации гражданина
-* **bankIdAddressFactual_country** - string/bVisible=false - страна 
+* **bankIdAddressFactual_country** - string/[bVisible=false](#bvisiblefalse) - страна 
 * **bankIdAddressFactual_state** - string/bVisible=false - область
 * **bankIdAddressFactual_area** - string/bVisible=false - район
 * **bankIdAddressFactual_city** - string/bVisible=false - город
@@ -2797,7 +2797,7 @@ Cделает текущее поле нередактируемым для по
 ### Зарезервированные переменные атрибутов
 
 [вернуться...](#reservedattributevariables)
-* **sAddress** - string/bVisible=false/label - адрес органа
+* **sAddress** - string/[bVisible=false](#bvisiblefalse)/label - адрес органа
 * **sMailClerk** - string/bVisible=false/label - почта чиновника
 * **sArea** - string/bVisible=false/label - yазвание нас.пункта/района куда подается заявка
 * **nArea** - string/bVisible=false/label - yомер в справочнике нас.пункта/района куда подается заявка
@@ -3281,7 +3281,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 * на этой же  таске указываем переменную с id = **nID_Department_visitDate**, где **_visitDate** - это ИД необходимой переменной с нужной нам электронной очередью. 
 ```xml
-<activiti:formProperty id="nID_Department_visitDate" name="Департамент; ;bVisible=false" type="string"></activiti:formProperty>
+<activiti:formProperty id="nID_Department_visitDate" name="Департамент; ;[bVisible=false](#bvisiblefalse)" type="string"></activiti:formProperty>
 ```
 значение для переменной id="nID_Department_visitDate" берем из  файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)
 
