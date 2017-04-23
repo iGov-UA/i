@@ -715,10 +715,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     aTaskId = actionTaskService.getTaskIdsByProcessInstanceId(
                             actionTaskService.getOriginalProcessInstanceId(Long.parseLong(nID_Order)));
                     
-                    for(String taskId : aTaskId){
-                        LOG.info("taskId {}", taskId);
-                         saveClosedTaskInfo(sRequestBody, taskId, bSaveHistory);
-                    }
+                    //for(String taskId : aTaskId){
+                    LOG.info("taskId {}", aTaskId.get(aTaskId.size() - 1));
+                    saveClosedTaskInfo(sRequestBody, aTaskId.get(aTaskId.size() - 1), bSaveHistory);
+                    //}
                 }
                 sType = "Close";
                 if(aTaskId.isEmpty()){
