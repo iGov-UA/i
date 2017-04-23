@@ -855,14 +855,21 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         LOG.info("sRequestBody is {}", sRequestBody);
         LOG.info("snClosedTaskId is {}", snClosedTaskId);
         
-        JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
-
-        String snID_Task = (String) omRequestBody.get("taskId");
-        if ((snID_Task == null) && (snClosedTaskId != null)) {
-            snID_Task = snClosedTaskId.trim();
-
-            LOG.info("Task id from requestbody is null, so using task id from url - " + snID_Task);
+        JSONObject omRequestBody = null;
+        String snID_Task = null;
+        try{
+            omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+            snID_Task = (String) omRequestBody.get("taskId");
         }
+        catch(Exception ex){
+            LOG.info("sRequestBody in saveClosedTaskInfo is unparsable {}", ex);
+        }
+        
+        if ((snID_Task == null) && (snClosedTaskId != null)) {
+                snID_Task = snClosedTaskId.trim();
+                LOG.info("Task id from requestbody is null, so using task id from url - " + snID_Task);
+        }
+        
         LOG.info("Task id is - " + snID_Task);
         if (snID_Task != null) {
             closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory, snID_Task, omRequestBody);
