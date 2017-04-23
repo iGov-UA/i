@@ -308,7 +308,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ##### reservedvariablesforelectronicqueues
 ### Зарезервированные переменные для электронных очередей
-* **date_of_visit** - bVisible=false - автоматом принимает значение выбранное  из электронной очереди
+* **date_of_visit** - [bVisible=false](#bvisiblefalse) - автоматом принимает значение выбранное  из электронной очереди
 * **nID_Department_visitDay** - string/bVisible=false/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
 * **nSlots_visitDay** - string/bVisible=false/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
 
@@ -317,7 +317,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### reservedattributevariables
 ### Зарезервированные переменные атрибутов
-* **sNameOrgan** - string/bVisible=false/label - название органа в подписи письма
+* **sNameOrgan** - string/[bVisible=false](#bvisiblefalse)/label - название органа в подписи письма
 * **sWorkTime** - string/bVisible=false/label - график работы
 * **sPhoneOrgan** - string/bVisible=false/label - телефон для справок
 
@@ -342,7 +342,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### other
 ### Другие
-* **response** - bVisible=false - задать кастомизированный текст на спасибо странице, после подачи обращения (с поддержкой html)
+* **response** - [bVisible=false](#bvisiblefalse) - задать кастомизированный текст на спасибо странице, после подачи обращения (с поддержкой html)
 * **footer** - string - задать кастомизированный текст на стандартной форме для печати в дашборде( с поддержкой html)
 * **sNotifyEvent_AfterSubmit** - bVisible=false- Отображение кастомного текста в дашборде после нажатия на кнопку “Опрацювати”. Текст  подсказки задаем в аттрибуте default. [Issue 1027](https://github.com/e-government-ua/i/issues/1027).
 
@@ -2773,7 +2773,7 @@ Cделает текущее поле нередактируемым для по
 [вернуться...](#attributesbankid)
 * **bankId_scan_passport** - file - скан паспорта гражданина
 * **bankIdAddressFactual** - string - адрес регистрации гражданина
-* **bankIdAddressFactual_country** - string/bVisible=false - страна 
+* **bankIdAddressFactual_country** - string/[bVisible=false](#bvisiblefalse) - страна 
 * **bankIdAddressFactual_state** - string/bVisible=false - область
 * **bankIdAddressFactual_area** - string/bVisible=false - район
 * **bankIdAddressFactual_city** - string/bVisible=false - город
@@ -2797,7 +2797,7 @@ Cделает текущее поле нередактируемым для по
 ### Зарезервированные переменные атрибутов
 
 [вернуться...](#reservedattributevariables)
-* **sAddress** - string/bVisible=false/label - адрес органа
+* **sAddress** - string/[bVisible=false](#bvisiblefalse)/label - адрес органа
 * **sMailClerk** - string/bVisible=false/label - почта чиновника
 * **sArea** - string/bVisible=false/label - yазвание нас.пункта/района куда подается заявка
 * **nArea** - string/bVisible=false/label - yомер в справочнике нас.пункта/района куда подается заявка
