@@ -720,42 +720,42 @@ public class SubjectMessageService {
         for (int i = 0; i < aField.length(); i++) {
         	LOG.info("aField count JSONObject "+ "<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+ i + ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             JSONObject oField = aField.getJSONObject(i);
-            SubjectMessageQuestionField subjectMessageQuestionField = new SubjectMessageQuestionField();
-            subjectMessageQuestionField.setSubjectMessage(nID_SubjectMessage);
+            SubjectMessageQuestionField oSubjectMessageQuestionField = new SubjectMessageQuestionField();
+            oSubjectMessageQuestionField.setSubjectMessage(nID_SubjectMessage);
             Object osID;
             if ((osID = oField.opt("sID")) == null) {
             	osID="";
             }
-            subjectMessageQuestionField.setsID(osID.toString());
+            oSubjectMessageQuestionField.setsID(osID.toString());
             Object osName;
             if ((osName = oField.opt("sName")) == null) {
                 osName = osID.toString();
             }
-            subjectMessageQuestionField.setsName(osName.toString());
+            oSubjectMessageQuestionField.setsName(osName.toString());
             Object osType;
             if ((osType = oField.opt("sType")) == null) {
             	osType = "string";
             }
-            subjectMessageQuestionField.setsType(osType.toString());
+            oSubjectMessageQuestionField.setsType(osType.toString());
             Object osValue;
             if ((osValue = oField.opt("sValue")) == null) {
             	osValue="";
             }
-            subjectMessageQuestionField.setsValue(osValue.toString());
+            oSubjectMessageQuestionField.setsValue(osValue.toString());
             Object osValueNew;
             if ((osValueNew = oField.opt("sValueNew")) == null) {
-            	subjectMessageQuestionField.setsValueNew(osValue.toString());
+            	oSubjectMessageQuestionField.setsValueNew(osValue.toString());
             }else{
-            	subjectMessageQuestionField.setsValueNew(osValueNew.toString());
+            	oSubjectMessageQuestionField.setsValueNew(osValueNew.toString());
             }
             Object osNotify;
             if ((osNotify = oField.opt("sNotify")) == null) {
             	osNotify="";
             }
-            subjectMessageQuestionField.setsNotify(osNotify.toString());
-            LOG.info("subjectMessageQuestionField.toString " + subjectMessageQuestionField.toString());
-            subjectMessageQuestionFieldDao.saveOrUpdate(subjectMessageQuestionField);
-            subjectMessageQuestionFieldList.add(subjectMessageQuestionField);
+            oSubjectMessageQuestionField.setsNotify(osNotify.toString());
+            LOG.info("subjectMessageQuestionField.toString " + oSubjectMessageQuestionField.toString());
+            subjectMessageQuestionFieldDao.saveOrUpdate(oSubjectMessageQuestionField);
+            subjectMessageQuestionFieldList.add(oSubjectMessageQuestionField);
             LOG.info("subjectMessageQuestionFieldList " + subjectMessageQuestionFieldList);
         }
         return subjectMessageQuestionFieldList;
