@@ -43,14 +43,11 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default="Очікує сплати"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
-        
         <activiti:formProperty id="sDescription" name="назначение платежа; поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа з ПДВ + комиссия 1.8%;  поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
-        
         <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sSumPDV" name="сумма ПДВ;  поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sSumWithPDV" name="сумма платежа З ПДВ;  поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
-        
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта ; ;bVisible=false" type="string" default="i49105812005"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа;  поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Запит з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
@@ -126,7 +123,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow18" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Початкова перевірка запиту" activiti:candidateGroups="sales">
+    <userTask id="usertask1" name="Початкова перевірка запиту" activiti:candidateGroups="bti_request1_1">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -163,14 +160,11 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sJurAddress" name="Юридична адреса автора запиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhisAddress" name="Адреса реєстрації автора запиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="назначение платежа;буде заповнено автоматічно після сплати;writable=false" type="invisible" ></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа;буде заповнено автоматічно після сплати;writable=false" type="invisible" ></activiti:formProperty>
-        
-        <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати" type="label" ></activiti:formProperty>
-        <activiti:formProperty id="sSumPDV" name="сумма ПДВ;  поле відображено для тестування сплати" type="label" ></activiti:formProperty>
-        <activiti:formProperty id="sSumWithPDV" name="сумма платежа З ПДВ;  поле відображено для тестування сплати" type="label" ></activiti:formProperty>
-        
-        
+        <activiti:formProperty id="sDescription" name="назначение платежа;буде заповнено автоматічно після сплати;writable=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа;буде заповнено автоматічно після сплати;writable=false" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
+        <activiti:formProperty id="sSumPDV" name="сумма ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
+        <activiti:formProperty id="sSumWithPDV" name="сумма платежа З ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Файл Запиту з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html]" type="invisible" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
@@ -224,7 +218,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     </serviceTask>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow21" sourceRef="servicetask3" targetRef="endevent5"></sequenceFlow>
-    <userTask id="usertask2" name="Очікування сплати вартості послуги" activiti:candidateGroups="sales1">
+    <userTask id="usertask2" name="Очікування сплати вартості послуги" activiti:candidateGroups="bti_request1_all">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -238,7 +232,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow23" sourceRef="servicetask2" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask4" name="Підготовка відповіді" activiti:candidateGroups="sales">
+    <userTask id="usertask4" name="Підготовка відповіді" activiti:candidateGroups="bti_request1_1">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -275,14 +269,11 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sJurAddress" name="Юридична адреса автора запиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhisAddress" name="Адреса реєстрації автора запиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="назначение платежа; поле відображено для тестування сплати" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="назначение платежа; поле відображено для тестування сплати" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа;  поле відображено для тестування сплати" type="invisible"></activiti:formProperty>
-        
-        <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати" type="label" ></activiti:formProperty>
-        <activiti:formProperty id="sSumPDV" name="сумма ПДВ;  поле відображено для тестування сплати" type="label" ></activiti:formProperty>
-        <activiti:formProperty id="sSumWithPDV" name="сумма платежа З ПДВ;  поле відображено для тестування сплати" type="label" ></activiti:formProperty>
-        
-       
+        <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
+        <activiti:formProperty id="sSumPDV" name="сумма ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
+        <activiti:formProperty id="sSumWithPDV" name="сумма платежа З ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Файл Запиту з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form2_signed" name="Додайте файл відповіді з накладеним ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
