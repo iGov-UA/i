@@ -283,9 +283,6 @@ public class SubjectMessageService {
 //
 //        if(!subjectMessagesMails.contains(sMail))
 //            message.setMail(sMail == null ? "" : sMail);
-        List<SubjectMessageQuestionField> subjectMessageQuestionField = createSubjectMessageQuestionField(sData);
-        LOG.info("subjectMessageQuestionFielddddddddd " + subjectMessageQuestionField);
-        message.setSubjectMessageQuestionField(subjectMessageQuestionField);
         message.setContacts((sContacts == null) ? "" : sContacts);
         message.setData((sData == null) ? "" : sData); //TODO: - убрать после тестирования 1553
         message.setDate(new DateTime());
@@ -295,6 +292,9 @@ public class SubjectMessageService {
             SubjectMessageType subjectMessageType = subjectMessageTypeDao.findByIdExpected(nID_subjectMessageType);
             message.setSubjectMessageType(subjectMessageType);
         }
+        List<SubjectMessageQuestionField> subjectMessageQuestionField = createSubjectMessageQuestionField(sData, message);
+        LOG.info("subjectMessageQuestionFielddddddddd " + subjectMessageQuestionField);
+        message.setSubjectMessageQuestionField(subjectMessageQuestionField);
         LOG.info("SubjectMessageeeeeeeee " + message);
         return message;
     }
@@ -699,7 +699,7 @@ public class SubjectMessageService {
      * @return
      * @throws CommonServiceException
      */
-    public List<SubjectMessageQuestionField> createSubjectMessageQuestionField(String saField) throws CommonServiceException {
+    public List<SubjectMessageQuestionField> createSubjectMessageQuestionField(String saField, SubjectMessage nID_SubjectMessage) throws CommonServiceException {
     	LOG.info("createSubjectMessageQuestionField " + saField);
         if (saField == null || "".equals(saField.trim()) || "[]".equals(saField.trim())) {
             throw new CommonServiceException(
@@ -719,7 +719,8 @@ public class SubjectMessageService {
         for (int i = 0; i < aField.length(); i++) {
             JSONObject oField = aField.getJSONObject(i);
             SubjectMessageQuestionField subjectMessageQuestionField = new SubjectMessageQuestionField();
-
+            subjectMessageQuestionField.setSubjectMessage(nID_SubjectMessage);
+            
             Object osID;
             if ((osID = oField.opt("sID")) == null) {
             	osID="";
