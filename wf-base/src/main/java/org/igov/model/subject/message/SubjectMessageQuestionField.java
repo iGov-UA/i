@@ -7,9 +7,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.igov.model.core.AbstractEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 /**
  * #1553-Сущность для хранения замечаний чиновника
@@ -23,6 +28,7 @@ public class SubjectMessageQuestionField extends AbstractEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	 private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageQuestionField.class);
 	
 	@JsonIgnore
 	@ManyToOne(targetEntity = SubjectMessage.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -109,6 +115,14 @@ public class SubjectMessageQuestionField extends AbstractEntity {
 		this.subjectMessage = subjectMessage;
 	}
 	
-	
-
+	@Override
+	 public String toString() {
+	  try {
+	   return new ObjectMapper().configure(SerializationFeature.WRAP_ROOT_VALUE, true)
+	     .writerWithDefaultPrettyPrinter().writeValueAsString(this);
+	  } catch (JsonProcessingException e) {
+	   LOG.info(String.format("error [%s]", e.getMessage()));
+	  }
+	  return null;
+	}
 }
