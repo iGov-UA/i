@@ -75,7 +75,7 @@ public class CloseTaskEvent {
 
 	private final JSONParser oJSONParser = new JSONParser();
 
-	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snID_Task, JSONObject omRequestBody)
+	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snID_Task, JSONObject omRequestBody, boolean bCloseAnyWay)
 			throws ParseException {
             LOG.info("Method doWorkOnCloseTaskEvent started");
             
@@ -215,7 +215,7 @@ public class CloseTaskEvent {
                 if (bSaveHistory) {
                     // Cохранение нового события для задачи
                     HistoryEvent_Service_StatusType status;
-                    if (bProcessClosed) {
+                    if (bProcessClosed || bCloseAnyWay) {
                       
                         status = HistoryEvent_Service_StatusType.CLOSED;
                           LOG.info("HistoryEvent_Service_StatusType is CLOSED ", status.toString()); 
