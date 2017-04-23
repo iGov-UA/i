@@ -710,6 +710,7 @@ public class SubjectMessageService {
         List<SubjectMessageQuestionField> subjectMessageQuestionFieldList = new ArrayList<>();
         JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
         JSONArray aField = oFields.getJSONArray("soData");
+        LOG.info("soData JSONArray aField " + aField.length());
         if (aField.length() == 0) {
             throw new CommonServiceException(
                     ExceptionCommonController.BUSINESS_ERROR_CODE,
@@ -717,49 +718,51 @@ public class SubjectMessageService {
                     HttpStatus.FORBIDDEN);
         }
         for (int i = 0; i < aField.length(); i++) {
+        	LOG.info("aField iiiiiiiiiiiii  " + i);
             JSONObject oField = aField.getJSONObject(i);
             SubjectMessageQuestionField subjectMessageQuestionField = new SubjectMessageQuestionField();
             subjectMessageQuestionField.setSubjectMessage(nID_SubjectMessage);
-            
+            LOG.info("subjectMessageQuestionField aField iiiiiiiiiiiii  " + subjectMessageQuestionField);
             Object osID;
             if ((osID = oField.opt("sID")) == null) {
             	osID="";
             }
             subjectMessageQuestionField.setsID(osID.toString());
-            	
+            LOG.info("subjectMessageQuestionField subjectMessageQuestionField.setsID(osID.toString())  " + subjectMessageQuestionField);	
             Object osName;
             if ((osName = oField.opt("sName")) == null) {
                 osName = osID.toString();
             }
             subjectMessageQuestionField.setsName(osName.toString());
-            
+            LOG.info("subjectMessageQuestionField subjectMessageQuestionField.setsName(osName.toString())  " + subjectMessageQuestionField);
             Object osType;
             if ((osType = oField.opt("sType")) == null) {
             	osType = "string";
             }
             subjectMessageQuestionField.setsType(osType.toString());
-
+            LOG.info("subjectMessageQuestionField subjectMessageQuestionField.setsType(osType.toString())  " + subjectMessageQuestionField);
             Object osValue;
             if ((osValue = oField.opt("sValue")) == null) {
             	osValue="";
             }
             subjectMessageQuestionField.setsValue(osValue.toString());
-            
+            LOG.info("subjectMessageQuestionField subjectMessageQuestionField.setsValue(osValue.toString());  " + subjectMessageQuestionField);
             Object osValueNew;
             if ((osValueNew = oField.opt("sValueNew")) == null) {
             	subjectMessageQuestionField.setsValueNew(osValue.toString());
             }else{
             	subjectMessageQuestionField.setsValueNew(osValueNew.toString());
             }
-            
+            LOG.info("subjectMessageQuestionField subjectMessageQuestionField.setsValueNew;  " + subjectMessageQuestionField);
             Object osNotify;
             if ((osNotify = oField.opt("sNotify")) == null) {
             	osNotify="";
             }
             subjectMessageQuestionField.setsNotify(osNotify.toString());
-
+            LOG.info("subjectMessageQuestionField.setsNotify " + subjectMessageQuestionField);
             subjectMessageQuestionFieldDao.saveOrUpdate(subjectMessageQuestionField);
             subjectMessageQuestionFieldList.add(subjectMessageQuestionField);
+            LOG.info("subjectMessageQuestionFieldList " + subjectMessageQuestionFieldList);
         }
         return subjectMessageQuestionFieldList;
     }
