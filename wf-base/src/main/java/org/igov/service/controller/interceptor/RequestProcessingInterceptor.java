@@ -717,7 +717,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                     //for(String taskId : aTaskId){
                     LOG.info("taskId {}", aTaskId.get(aTaskId.size() - 1));
-                    saveClosedTaskInfo(sRequestBody, aTaskId.get(aTaskId.size() - 1), bSaveHistory);
+                    closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory,  aTaskId.get(aTaskId.size() - 1), null, true);
                     //}
                 }
                 sType = "Close";
@@ -872,7 +872,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         LOG.info("Task id is - " + snID_Task);
         if (snID_Task != null) {
-            closeTaskEvent.doWorkOnCloseTaskEvent(true, snID_Task, omRequestBody, true);
+            closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory, snID_Task, omRequestBody, false);
         }
         LOG.info("Method saveClosedTaskInfo END");
     }
