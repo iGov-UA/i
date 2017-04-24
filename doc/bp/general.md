@@ -2791,7 +2791,7 @@ Cделает текущее поле нередактируемым для по
 ###### _reservedvariablesforelectronicqueues
 
 [вернуться...](#reservedvariablesforelectronicqueues)
-  ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
+  ![3_51](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_51.JPG)
 
 ###### _reservedattributevariables
 ### Зарезервированные переменные атрибутов
@@ -2802,7 +2802,7 @@ Cделает текущее поле нередактируемым для по
 * **sArea** - string/bVisible=false/label - yазвание нас.пункта/района куда подается заявка
 * **nArea** - string/bVisible=false/label - yомер в справочнике нас.пункта/района куда подается заявка
 * **sShapka** - string/bVisible=false/label - шапка принтформы
-   ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
+   ![3_51](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_51.JPG)
 
 ###### _variablesforprintforms
 ### Переменные принтформ
