@@ -2,17 +2,25 @@ package org.igov.model.subject.message;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.igov.model.core.AbstractEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
-
+/**
+ * #1553-Сущность для хранения замечаний чиновника
+ * @author Elena
+ *
+ */
 @javax.persistence.Entity
 public class SubjectMessageQuestionField extends AbstractEntity {
 	
@@ -20,12 +28,13 @@ public class SubjectMessageQuestionField extends AbstractEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	 private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageQuestionField.class);
 	
 	@JsonIgnore
-    @ManyToOne(targetEntity = SubjectMessage.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "nID_SubjectMessage")
-    private SubjectMessage subjectMessage;
-
+	@ManyToOne(targetEntity = SubjectMessage.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "nID_SubjectMessage")
+	private SubjectMessage subjectMessage;
+	
 	@JsonProperty(value = "sID")
     @Column(name = "sID", nullable = false)
     private String sID;
@@ -49,14 +58,6 @@ public class SubjectMessageQuestionField extends AbstractEntity {
     @JsonProperty(value = "sNotify")
     @Column(name = "sNotify", nullable = true)
     private String sNotify;
-
-	public SubjectMessage getSubjectMessage() {
-		return subjectMessage;
-	}
-
-	public void setSubjectMessage(SubjectMessage subjectMessage) {
-		this.subjectMessage = subjectMessage;
-	}
 
 	public String getsID() {
 		return sID;
@@ -106,4 +107,22 @@ public class SubjectMessageQuestionField extends AbstractEntity {
 		this.sNotify = sNotify;
 	}
 
+	public SubjectMessage getSubjectMessage() {
+		return subjectMessage;
+	}
+
+	public void setSubjectMessage(SubjectMessage subjectMessage) {
+		this.subjectMessage = subjectMessage;
+	}
+	
+	@Override
+	 public String toString() {
+	  try {
+	   return new ObjectMapper().configure(SerializationFeature.WRAP_ROOT_VALUE, true)
+	     .writerWithDefaultPrettyPrinter().writeValueAsString(this);
+	  } catch (JsonProcessingException e) {
+	   LOG.info(String.format("error [%s]", e.getMessage()));
+	  }
+	  return null;
+	}
 }

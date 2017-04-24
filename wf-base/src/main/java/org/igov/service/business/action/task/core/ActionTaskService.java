@@ -1416,7 +1416,8 @@ public class ActionTaskService {
 
         mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
         mParam.put("sToken", sToken);
-
+LOG.info("mParam from ActionTaskService = {};", mParam);
+LOG.info("mBody from ActionTaskService = {};", mBody);
         return oHistoryEventService.updateHistoryEvent(mParam, mBody);
     }
 

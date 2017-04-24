@@ -31,7 +31,7 @@ public class DoWorkOnCloseTaskEvent implements TaskListener {
         LOG.info("DoWorkOnCloseTaskEvent start..." + delegateTask.getProcessInstanceId());
 
         try {
-            closeTaskEvent.doWorkOnCloseTaskEvent(true, delegateTask.getId(), null);
+            closeTaskEvent.doWorkOnCloseTaskEvent(true, delegateTask.getId(), null, false);
         } catch (ParseException e) {
            LOG.info("DoWorkOnCloseTaskEvent throws an errorrrrrrrrrrrrr", e);
             throw new RuntimeException(e);

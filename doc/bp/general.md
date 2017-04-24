@@ -81,7 +81,7 @@
 * При разработке БП из всего арсенала Activiti Designer используются следующие элементы:
 ###### startevent
 ### StartEvent
-– начало любого процесса. В его наполнение заносятся все поля, которые должны быть отображены на портале гражданина, а также переменные, необходимые для работы процесса. Если переменную гражданин видеть не должен, то присваиваем ей тип invisible.
+– начало любого процесса. В его наполнение заносятся все поля, которые должны быть отображены на портале гражданина, а также переменные, необходимые для работы процесса. Если переменную гражданин видеть не должен, то присваиваем ей флаг [bVisible=false](#bvisiblefalse) в 3-ем поле name.
 ###### endevent
 ### EndEvent
 – закрытие процесса. Необходимо ставить в конце каждой ветви, чтобы не было «вечных» задач
@@ -249,17 +249,6 @@ type="queueData" required="true"></activiti:formProperty>
 ### [markers](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B)
 Маркеры и позволяют работать с уже существующими полями и расширяют их возможности.
 
-### invisible
-# Николай 
-
-** invisible - больше не используется  , вместо него используем [bVisible=false](#bvisiblefalse) в третьем поле name **    
-# Николай
-Невидимый тип данных. Используется, как правило для записи технических полей, которые нужны в процессе, но заявителю или чиновнику не должны быть показаны.
-```xml
-<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа " type="invisible"></activiti:formProperty>
-```
-
-[детальней...](#_invisible)
 
 ### select
 Тип данных, который формирует динамические выпадающие списки (в зависимости от параметров).
@@ -319,18 +308,18 @@ type="queueData" required="true"></activiti:formProperty>
 
 ##### reservedvariablesforelectronicqueues
 ### Зарезервированные переменные для электронных очередей
-* **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
-* **nID_Department_visitDay** - string/invisible/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
-* **nSlots_visitDay** - string/invisible/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
+* **date_of_visit** - [bVisible=false](#bvisiblefalse) - автоматом принимает значение выбранное  из электронной очереди
+* **nID_Department_visitDay** - string/bVisible=false/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
+* **nSlots_visitDay** - string/bVisible=false/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
 
 [детальней...](#_reservedvariablesforelectronicqueues)
 
 
 ###### reservedattributevariables
 ### Зарезервированные переменные атрибутов
-* **sNameOrgan** - string/invisible/label - название органа в подписи письма
-* **sWorkTime** - string invisible/label - график работы
-* **sPhoneOrgan** - string/invisible/label - телефон для справок
+* **sNameOrgan** - string/[bVisible=false](#bvisiblefalse)/label - название органа в подписи письма
+* **sWorkTime** - string/bVisible=false/label - график работы
+* **sPhoneOrgan** - string/bVisible=false/label - телефон для справок
 
 [детальней...](#_reservedattributevariables)
 
@@ -353,9 +342,9 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### other
 ### Другие
-* **response** - invisible - задать кастомизированный текст на спасибо странице, после подачи обращения (с поддержкой html)
+* **response** - [bVisible=false](#bvisiblefalse) - задать кастомизированный текст на спасибо странице, после подачи обращения (с поддержкой html)
 * **footer** - string - задать кастомизированный текст на стандартной форме для печати в дашборде( с поддержкой html)
-* **sNotifyEvent_AfterSubmit** - invisible - Отображение кастомного текста в дашборде после нажатия на кнопку “Опрацювати”. Текст  подсказки задаем в аттрибуте default. [Issue 1027](https://github.com/e-government-ua/i/issues/1027).
+* **sNotifyEvent_AfterSubmit** - bVisible=false- Отображение кастомного текста в дашборде после нажатия на кнопку “Опрацювати”. Текст  подсказки задаем в аттрибуте default. [Issue 1027](https://github.com/e-government-ua/i/issues/1027).
 
 [детальней...](#_other)
 
@@ -859,10 +848,10 @@ digit3 - переменная, куда присвоится результат 
 ### PrintForm
 -Принтформа прописывается на Юзертаске:
 
-        activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_declaration_2.html" type="file"></activiti:formProperty
-
-        activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty
- 
+```xml
+ <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/subsidy_declaration_2.html" type="file"></activiti:formProperty>
+  <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+``` 
  [детальней...](#_printformmd)
  
 ###### display_hidefields
@@ -903,7 +892,7 @@ digit3 - переменная, куда присвоится результат 
 Необходимо добавить строки на стартовую таску:
 ```xml
 <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
-<activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/example_print_01.html"></activiti:formProperty>
+<activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/example_print_01.html"></activiti:formProperty>
 ```
 
 [детальней...](#_creationofasignededsdocument)
@@ -1002,7 +991,7 @@ digit3 - переменная, куда присвоится результат 
 По умолчанию: заказ осуществляется на послезавтра  
 Если необходимо "сдвинуть" начало генерации слотово (например, не ранее, чем через 4 дня), прописываем в дефолте количество дней
 ```xml
-<activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1" type="invisible" default="4"></activiti:formProperty>
+<activiti:formProperty id="nDiffDays_visitDate1" name="nDiffDays_visitDate1; ;bVisible=false" type="string" default="4"></activiti:formProperty>
 ```
 [детальней...](#_changetheorderofanelectronicqueue)
 
@@ -1013,12 +1002,12 @@ digit3 - переменная, куда присвоится результат 
 
 * добавить в  БП такие поля (можно на стартовой таске):
 ```xml
-<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible" default=" "></activiti:formProperty>
-<activiti:formProperty id="nID_Subject" name="ИД-номер субъекта" type="invisible" ></activiti:formProperty>
-<activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="invisible" default="i10172968078"></activiti:formProperty>
-<activiti:formProperty id="sSum" name="сумма платежа" type="invisible" default="0.01"></activiti:formProperty>
-<activiti:formProperty id="sID_Currency" name="ИД-строковой валюты" type="invisible" default="UAH"></activiti:formProperty>
-<activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible" default="Тестовая транзакция"></activiti:formProperty>
+<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+<activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" ></activiti:formProperty>
+<activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина); ;bVisible=false" type="string" default="i10172968078"></activiti:formProperty>
+<activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="0.01"></activiti:formProperty>
+<activiti:formProperty id="sID_Currency" name="ИД-строковой валюты; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
+<activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string" default="Тестовая транзакция"></activiti:formProperty>
 ```
 * ![13_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/13_0.JPG)
 * в письмо встроить тэг **[paymentButton_LiqPay]**, где необходимо разместить кнопку для проплаты
@@ -2022,12 +2011,12 @@ Empty
 
 ### Case 1. Не отображается тест выбранного Enum в принтформе, а отображается ID
 Возможные проблемы:
-Enum объявлен на юзертаске, как type="invisible"
-***
+Enum объявлен на юзертаске, как name="... ; ;bVisible=false " type="string"
+
 ### Case 2. Повідомленя: Transaction rolled back because it has been marked as rollback-only Код: SYSTEM_ERRІнші дані (обь'єкт): {"code":null,"message":null}
 Возможные проблемы:
 Используемый email получателя блокируется юнисендером
-***
+
 ### Case 3. Повідомленя: add the file to sendКод: SYSTEM_ERR
 Повідомленя: Unknown property used in expression: ${PrintForm_1}  
 Повідомленя: Unknown property used in expression: "${file}"  
@@ -2195,7 +2184,7 @@ src/main/java/org/igov/service/controller/interceptor/RequestProcessingIntercept
 
 используется зарезервированная переменная sID_Order_GovPublic
 ```xml
-<activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="invisible"></activiti:formProperty>
+<activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР; ;bVisible=false" type="string"></activiti:formProperty>
 ```
 счетчик начинает считать с 0 и обнуляется в начале года.
 
@@ -2602,11 +2591,6 @@ _тестирование и проливка на бету и боевой
 [вернуться...](#queueData)
   ![2_31](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_31.JPG)
 
-###### _invisible
-
-[вернуться...](#invisible)
-  ![2_30](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_30.JPG)
-
 ###### _select
 
 [вернуться...](#select)
@@ -2717,27 +2701,32 @@ default=” “ - в дефолте в виде json - объекта пропи
 
 **required** - обязательность поля к заполнению. (true / false) по умолчанию стоит флаг false. Необязательный атрибут.
 
-**name** - в нашей расширенной версии активити тег состоит из нескольких частей. Сепаратором выступает точка с запятой.
-name= "Имя;[description];[флаги]". Имя переменной/поля - отображается на  интерфейсе. Обязательный атрибут.
-
 **description** - описание или  подсказка к этой переменной/полю. Отображается на интерфейсе на старттаске серым цветом. На юзертасках не отображается. Необязательный атрибут.
 
 ## флаги аттрибута name  
 Используются для переопределения стандартных  атрибутов, имеющие более высокий приоритет на уровне отрисовки интерфейса на юзертасках.
 
-# Николай
+**name** - в нашей расширенной версии активити тег состоит из нескольких частей. Сепаратором выступает точка с запятой.
+name= "Имя;[description];[флаги]". Имя переменной/поля - отображается на  интерфейсе. Обязательный атрибут.
+
+**Исключение:** при использовании в поле name &quot... (кавычек), прописывать флаги необходимо в 5 поле name    
+Пример:
+```xml
+<activiti:formProperty id="sPlace" name="&quot;Используем кавычки&quot; ; ;[флаги]" type="string"></activiti:formProperty>
+```
 ###### bvisiblefalse
 ### **bVisible=false**
-Используется для невидимости поля, вместо [invisible](#invisible). Прописать bVisible=false необходимо в третьем поле name, type используется только string
+Используется для невидимости поля. Прописать bVisible=false необходимо в третьем поле name, type используется только string
+
 ```xml
 <activiti:formProperty id="sPlace" name="Місце народження дев'ятої дитини; ;bVisible=false" type="string"></activiti:formProperty>
 ```
-**Исключение:** при использовании в поле name &quot... (кавычек), прописывать bVisible=false необходимо в 5 поле name    
+**Исключение:**   при использовании в поле name &quot... (кавычек), прописывать bVisible=false необходимо в 5 поле name    
 Пример:
+
 ```xml
 <activiti:formProperty id="sPlace" name="&quot;Используем кавычки&quot; ; ;bVisible=false" type="string"></activiti:formProperty>
 ```
-
 ###### bprintformtrue   
 ### **bPrintform=true**  
 Используется для идентификации принтформ на данный момент id sBody и sPrintForm      
@@ -2750,7 +2739,6 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 ```xml
   <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false, bPrintform=true" type="string" default="Тест Заява про внесення відомостей" writable="false"></activiti:formProperty>
 ```
-# Николай
 
 ### **writable=false**  
 Cделает текущее поле нередактируемым для пользователя интерфейса, при этом на уровне процесса поле остается редактируемым.
@@ -2765,8 +2753,9 @@ Cделает текущее поле нередактируемым для по
 ### **nRowsLimit=5**  
 Задает ограничение по количеству добавляемых строк в таблице
 ```xml
- <activiti:formProperty id="sTable1" name="Поточні рахунки у національній валюті; ;nRowsLimit=5" type="table" default=""}]}"></activiti:formProperty>
-``` 
+ <activiti:formProperty id="sTable1" name="Поточні рахунки у національній валюті; ;nRowsLimit=5" type="table" default=""}]}></activiti:formProperty>
+```
+
 ### **html = sTextInHtmlFormat** 
 В атрибуте name HTML-текст отделяется двойной точкой с запятой:  
 `name=" sTitleText ; sDescription ;; html = sTextInHtmlFormat ;; key2 = value2 ;; key3 = value3 "`  
@@ -2784,13 +2773,13 @@ Cделает текущее поле нередактируемым для по
 [вернуться...](#attributesbankid)
 * **bankId_scan_passport** - file - скан паспорта гражданина
 * **bankIdAddressFactual** - string - адрес регистрации гражданина
-* **bankIdAddressFactual_country** - string/invisible - страна 
-* **bankIdAddressFactual_state** - string/invisible - область
-* **bankIdAddressFactual_area** - string/invisible - район
-* **bankIdAddressFactual_city** - string/invisible - город
-* **bankIdAddressFactual_street** - string/invisible - улица
-* **bankIdAddressFactual_houseNo** - string/invisible - дом
-* **bankIdAddressFactual_flatNo** - string/invisible - квартира регистрации
+* **bankIdAddressFactual_country** - string/[bVisible=false](#bvisiblefalse) - страна 
+* **bankIdAddressFactual_state** - string/bVisible=false - область
+* **bankIdAddressFactual_area** - string/bVisible=false - район
+* **bankIdAddressFactual_city** - string/bVisible=false - город
+* **bankIdAddressFactual_street** - string/bVisible=false - улица
+* **bankIdAddressFactual_houseNo** - string/bVisible=false - дом
+* **bankIdAddressFactual_flatNo** - string/bVisible=false - квартира регистрации
 * **bankIdinn** - string - инн заявителя
 * **bankIdbirthDay** - string - дата рождения гражданина (у форматі ДД.ММ.РРРР)
 * **bankIdemail** - string - емейл гражданина
@@ -2808,11 +2797,11 @@ Cделает текущее поле нередактируемым для по
 ### Зарезервированные переменные атрибутов
 
 [вернуться...](#reservedattributevariables)
-* **sAddress** - string/invisible/label - адрес органа
-* **sMailClerk** - string/invisible/label - почта чиновника
-* **sArea** - string/invisible/label - yазвание нас.пункта/района куда подается заявка
-* **nArea** - string/invisible/label - yомер в справочнике нас.пункта/района куда подается заявка
-* **sShapka** - string/invisible/label - шапка принтформы
+* **sAddress** - string/[bVisible=false](#bvisiblefalse)/label - адрес органа
+* **sMailClerk** - string/bVisible=false/label - почта чиновника
+* **sArea** - string/bVisible=false/label - yазвание нас.пункта/района куда подается заявка
+* **nArea** - string/bVisible=false/label - yомер в справочнике нас.пункта/района куда подается заявка
+* **sShapka** - string/bVisible=false/label - шапка принтформы
    ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
 
 ###### _variablesforprintforms
@@ -2824,7 +2813,7 @@ Cделает текущее поле нередактируемым для по
 * **[sDateCreateProcess]**- Возвращает значение системной даты на момент сохранения\подачи заявки гражданином.
 * **[sTimeCreateProcess]** - Возвращает значение системного времени на момент сохранения\подачи заявки гражданином.
 * **[sCurrentDateTime]** - Возвращает значение системной даты и времени на текущий момент.
-* **sBody** - invisible - задать печатную форму.  
+* **sBody** - bVisible=false - задать печатную форму.  
 Прописывается в юзертаске. Для корректной работы обязательно надо прописать листнер “fileTaskInheritance”
 Путь на печатную форму в папке patterns задается в поле name (типа [pattern/print/subsidy_zayava.html]) 
 * **PrintForm** - Позволяет автоматически создавать файл из соответствующей принтформы, который потом можно подгружать к вложениям в письмо на сервис-таске (используем ${PrintForm_1} при отправке письма с вложениями). Номер PrintForm должен совпадать с номером sBody.
@@ -2854,7 +2843,7 @@ Cделает текущее поле нередактируемым для по
 ### Другие
 
 [вернуться...](#other)
-* **bReferent** - invisible - признак заполнения заявки референтом (true/false).
+* **bReferent** - bVisible=false - признак заполнения заявки референтом (true/false).
 * **form_signed** - если объявлена эта переменная на стартовой форме, то при нажатии на кнопку "замовити послугу" заявитель будет перенаправлен на доп.страницу для наложения ЕЦП на заявку.
   ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
 * **form_signed_all** - при наложении ЕЦП на заявку, она так же будет наложена и на все прикрепленные файлы. При этом все файлы, которые прикрепил гражданин, должны иметь расширение *.pdf.
@@ -3292,7 +3281,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 * на этой же  таске указываем переменную с id = **nID_Department_visitDate**, где **_visitDate** - это ИД необходимой переменной с нужной нам электронной очередью. 
 ```xml
-<activiti:formProperty id="nID_Department_visitDate" name="Департамент" type="invisible"></activiti:formProperty>
+<activiti:formProperty id="nID_Department_visitDate" name="Департамент; ;bVisible=false" type="string"></activiti:formProperty>
 ```
 значение для переменной id="nID_Department_visitDate" берем из  файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)
 

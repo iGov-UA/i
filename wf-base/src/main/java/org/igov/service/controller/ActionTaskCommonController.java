@@ -1641,7 +1641,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
                     saField,
-                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sO(sBody)), sToken, null, sSubjectInfo, nID_Subject);
+                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sBody), sToken, null, sSubjectInfo, nID_Subject);//sO(sBody))
             LOG.info("(sReturn={})", sReturn);
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042
@@ -2846,7 +2846,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //Map<String,Object> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
     List<Map<String, Object>> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true)
             @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
-        return oDocumentStepService.getDocumentStepLogins(nID_Process + "");
+        return oDocumentStepService.getDocumentStepLogins(String.valueOf(nID_Process));
     }
 
     //save curretn values to Form

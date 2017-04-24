@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_btsol_dismissal" name="Приказ на увольнение" isExecutable="true">
+  <process id="_doc_btsol_acceptance" name="Приказ о приеме на работу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
@@ -17,32 +17,26 @@
         <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="btsol_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ на увольнение" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameDismissal" name="ФИО увольняемого" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPositionDismissal" name="Должность увольняемого" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivisionDismissal" name="Подразделение увольняемого" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCommentUT2" name="Комментарий руководителя" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeLaw" name="Статья" type="enum" required="true">
-          <activiti:value id="sEnumLaw_1" name="по соглашению сторон (Ст.36 п.1)"></activiti:value>
-          <activiti:value id="sEnumLaw_2" name="по собственному желанию (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_3" name="по переводу (Ст.36 п.5)"></activiti:value>
-          <activiti:value id="sEnumLaw_4" name="по собственному желанию (уход за ребенком до 14 лет) (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_5" name="в связи с призывом в ВС (Ст.36 п.3)"></activiti:value>
-          <activiti:value id="sEnumLaw_6" name="по собственному желанию (в связи с выходом на пенсию) (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_7" name="по собственному желанию (прием на работу по конкурсу) (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_8" name="по собственному желанию (в связи с невозможностью продолжения работы по состоянию здоровья) (Ст.38)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ о приеме на работу" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="линия данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Данные нового сотрудника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonLastName" name="Фамилия" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonFirstName" name="Имя" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonMiddleName" name="Отчество" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonPosition" name="Должность" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Департамент; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_acceptance.json')}"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateDismissal" name="Уволить с" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDateStart" name="Принять с" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSighting" name="отправить за визами"></activiti:value>
           <activiti:value id="sEnumEnd" name="удалить"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_dismissal_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -53,7 +47,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Согласование заявления на увольнение">
+    <userTask id="usertask2" name="Согласование приказа о приеме на работу">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -63,28 +57,19 @@
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameDismissal" name="ФИО увольняемого" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPositionDismissal" name="Должность увольняемого" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivisionDismissal" name="Подразделение увольняемого" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeLaw" name="Статья" type="enum" writable="false">
-          <activiti:value id="sEnumLaw_1" name="по соглашению сторон (Ст.36 п.1)"></activiti:value>
-          <activiti:value id="sEnumLaw_2" name="по собственному желанию (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_3" name="по переводу (Ст.36 п.5)"></activiti:value>
-          <activiti:value id="sEnumLaw_4" name="по собственному желанию (уход за ребенком до 14 лет) (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_5" name="в связи с призывом в ВС (Ст.36 п.3)"></activiti:value>
-          <activiti:value id="sEnumLaw_6" name="по собственному желанию (в связи с выходом на пенсию) (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_7" name="по собственному желанию (прием на работу по конкурсу) (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_8" name="по собственному желанию (в связи с невозможностью продолжения работы по состоянию здоровья) (Ст.38)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="линия данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Данные нового сотрудника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonFullName" name="ФИО нового сотрудника" type="string" default="${sHiredPersonLastName} ${sHiredPersonFirstName} ${sHiredPersonMiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonPosition" name="Должность" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateDismissal" name="Уволить с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateStart" name="Принять с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Департамент; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_dismissal_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -144,21 +129,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameDismissal" name="ФИО увольняемого" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPositionDismissal" name="Должность увольняемого" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivisionDismissal" name="Подразделение увольняемого" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeLaw" name="Статья" type="enum" writable="false">
-          <activiti:value id="sEnumLaw_1" name="по соглашению сторон (Ст.36 п.1)"></activiti:value>
-          <activiti:value id="sEnumLaw_2" name="по собственному желанию (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_3" name="по переводу (Ст.36 п.5)"></activiti:value>
-          <activiti:value id="sEnumLaw_4" name="по собственному желанию (уход за ребенком до 14 лет) (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_5" name="в связи с призывом в ВС (Ст.36 п.3)"></activiti:value>
-          <activiti:value id="sEnumLaw_6" name="по собственному желанию (в связи с выходом на пенсию) (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_7" name="по собственному желанию (прием на работу по конкурсу) (Ст.38)"></activiti:value>
-          <activiti:value id="sEnumLaw_8" name="по собственному желанию (в связи с невозможностью продолжения работы по состоянию здоровья) (Ст.38)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="линия данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Данные нового сотрудника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonFullName" name="ФИО нового сотрудника" type="string" default="${sHiredPersonLastName} ${sHiredPersonFirstName} ${sHiredPersonMiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonPosition" name="Должность" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateDismissal" name="Уволить с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateStart" name="Принять с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Департамент; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Статус документа" type="enum" writable="false">
           <activiti:value id="sEnumSign" name="Завизирован"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
@@ -181,7 +157,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[<b>Добрый день!</b><br><br>
-Ваше заявление на увольнение - подписано.<br>
+Приказ о принятии на работу - подписан.<br>
 Хорошего дня!<br>
 <p>
     Обязательно ознакомтесь с приказом по <a href="https://alpha.test.region.igov.org.ua">ссылке</a>
@@ -191,10 +167,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </serviceTask>
     <sequenceFlow id="flow108" sourceRef="servicetask1" targetRef="scripttask17"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_dismissal">
-    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_dismissal" id="BPMNPlane__doc_btsol_dismissal">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_acceptance">
+    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_acceptance" id="BPMNPlane__doc_btsol_acceptance">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="211.0" y="108.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="190.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="84.0" width="130.0" x="432.0" y="85.0"></omgdc:Bounds>
@@ -206,7 +182,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="35.0" width="35.0" x="641.0" y="610.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="99.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="260.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="638.0" y="108.0"></omgdc:Bounds>
@@ -233,12 +209,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="55.0" width="105.0" x="606.0" y="352.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="385.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="365.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="432.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="246.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="280.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="562.0" y="127.0"></omgdi:waypoint>

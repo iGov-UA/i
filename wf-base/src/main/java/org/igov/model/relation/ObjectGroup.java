@@ -16,11 +16,11 @@ public class ObjectGroup extends AbstractEntity{
     private Long nID_Subject_Source;
     
     @JsonProperty(value = "sID_Private_Source")
-    @Column(name = "sID_Private_Source", length = 5000, nullable = false)
+    @Column(name = "sID_Private_Source", length = 255, nullable = false)
     private String sID_Private_Source;
     
     @JsonProperty(value = "sName")
-    @Column(name = "sName", length = 255, nullable = false)
+    @Column(name = "sName", length = 5000, nullable = false)
     private String sName;
 
     public void setnID_Subject_Source(Long nID_Subject_Source) {

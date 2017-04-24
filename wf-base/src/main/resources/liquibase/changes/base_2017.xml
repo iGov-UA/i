@@ -509,4 +509,32 @@
         </addColumn>
     </changeSet>
     
+    <changeSet id="issue-1615-change-relation-tables" author="Kovylin Yegor">
+        
+        <addColumn tableName="ObjectItem">
+            <column name="sName" type="varchar(5000)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        
+        <modifyDataType tableName="ObjectGroup" columnName="sName" newDataType="varchar(5000)" />
+        <modifyDataType tableName="ObjectGroup" columnName="sID_Private_Source" newDataType="varchar(255)" />
+        <modifyDataType tableName="ObjectItem" columnName="sID_Private_Source" newDataType="varchar(255)" />
+        
+    </changeSet>
+    
+    <changeSet id="issue-1615-add-default-values" author="Kovylin Yegor">
+        <addDefaultValue columnName="sName" defaultValue=" " tableName="ObjectItem"/>
+        <addDefaultValue columnName="sName" defaultValue=" " tableName="ObjectGroup"/>
+    </changeSet>
+    
+    
+     <changeSet id="issue-1553-modify DataType" author="Elena">
+        <modifyDataType tableName="SubjectMessageQuestionField" columnName="sID" newDataType="varchar(255)" />
+        <modifyDataType tableName="SubjectMessageQuestionField" columnName="sName" newDataType="varchar(255)" />
+        <modifyDataType tableName="SubjectMessageQuestionField" columnName="sType" newDataType="varchar(255)" />
+        <modifyDataType tableName="SubjectMessageQuestionField" columnName="sValue" newDataType="varchar(255)" />
+        <modifyDataType tableName="SubjectMessageQuestionField" columnName="sValueNew" newDataType="varchar(255)" />
+        <modifyDataType tableName="SubjectMessageQuestionField" columnName="sNotify" newDataType="varchar(255)" />
+    </changeSet>
 </databaseChangeLog>
