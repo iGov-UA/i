@@ -174,7 +174,7 @@ if(execution.getVariable('asStatus') == 'sZareyDov')
       </script>
     </scriptTask>
     <sequenceFlow id="flow30" name="Обробка" sourceRef="exclusivegateway5" targetRef="servicetask11">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept' && asVidpovid == 'sEnamnarochno'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDistrict == 'sSamar'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask10" name="Заяву прийнято" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -746,7 +746,7 @@ ${sNameOrgan}<br>
     <sequenceFlow id="flow68" sourceRef="scripttask1" targetRef="exclusivegateway5"></sequenceFlow>
     <userTask id="usertask5" name="Формування заяви" activiti:candidateGroups="Tex_usertask"></userTask>
     <sequenceFlow id="flow69" name="Формування заяви" sourceRef="exclusivegateway5" targetRef="usertask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept' && asVidpovid == 'sEnamnarochno'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDistrict == 'sSamar'}]]></conditionExpression>
     </sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask5" cancelActivity="true">
       <timerEventDefinition>
