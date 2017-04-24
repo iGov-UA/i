@@ -5,8 +5,26 @@
  */
 package org.igov.service.business.action;
 
+import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
+import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
+import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
 import org.igov.io.web.HttpRequester;
-import org.igov.model.action.event.*;
+import org.igov.model.action.event.HistoryEventDao;
+import org.igov.model.action.event.HistoryEventMessage;
+import org.igov.model.action.event.HistoryEventType;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.event.ServicesStatistics;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.Document;
 import org.igov.model.document.DocumentDao;
@@ -26,17 +44,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.history.HistoricTaskInstance;
-import org.igov.service.business.action.event.ActionEventHistoryService;
-import static org.igov.model.action.event.HistoryEvent_ServiceDaoImpl.DASH;
-import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
-import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
-import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
-
 /**
  *
  * @author Belyavtsev Vladimir Vladimirovich (BW)
@@ -45,25 +52,22 @@ import static org.igov.service.business.subject.SubjectMessageService.sMessageHe
 public class ActionEventService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionEventService.class);
-    
+
     @Autowired
     HttpRequester httpRequester;
-    
+
     @Autowired
     private HistoryEventService historyEventService;
-    
+
     @Autowired
     private HistoryEventDao historyEventDao;
-    
+
     @Autowired
     private DocumentDao documentDao;
-    
+
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
-    
-    @Autowired
-    private  ActionEventHistoryService actionEventHistoryService;
-    
+
     @Autowired
     private SubjectMessagesDao subjectMessagesDao;
 
@@ -74,8 +78,7 @@ public class ActionEventService {
     @Qualifier("regionDao")
     private GenericEntityDao<Long, Region> regionDao;
 
-    @Autowired
-    private HistoryService oHistoryService;
+
 
     /*public void setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService) {
         LOG.info(String.format("Finding task [id = %s] and its dates as historic object", nId_Task));
@@ -84,7 +87,6 @@ public class ActionEventService {
             historyEventService.setsDateCreate(new DateTime(task.getCreateTime()));
         }
     }*/
-
     public void checkAuth(HistoryEvent_Service oHistoryEvent_Service, Long nID_Subject, String sToken) throws Exception {
         if (sToken != null) {
             if (sToken.equals(oHistoryEvent_Service.getsToken())) {
@@ -310,7 +312,7 @@ public class ActionEventService {
         }
         return aRowReturn;
     }
- 
+
     public void setHistoryEvent(HistoryEventType eventType,
             Long nID_Subject, Map<String, String> mParamMessage, Long nID_HistoryEvent_Service, Long nID_Document, String sSubjectInfo) {
         try {
@@ -325,7 +327,6 @@ public class ActionEventService {
             LOG.trace("FAIL:", e);
         }
     }
-
 
     public HistoryEvent_Service getHistoryEventService(String sID_Order)
             throws CommonServiceException, CRCInvalidException {
@@ -349,8 +350,8 @@ public class ActionEventService {
             Long nID_StatusType,
             String sSubjectInfo,
             Long nID_Subject
-          //  String sDateCreate,
-           // String sDateClosed
+    //  String sDateCreate,
+    // String sDateClosed
     ) throws CommonServiceException {
         LOG.info("Mehtod updateActionStatus_Central started for task " + sID_Order);
         LOG.info("Status type is " + nID_StatusType);
@@ -369,8 +370,8 @@ public class ActionEventService {
             oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
             isChanged = true;
         }
-        if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
-            oHistoryEvent_Service.setSoData(soData);
+        if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) { //TODO: убрать после реализации задачи 1553
+        	oHistoryEvent_Service.setSoData(soData);
             isChanged = true;
         }
 
@@ -424,6 +425,10 @@ public class ActionEventService {
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
                     null, sSubjectInfo);
         } else {
+            /*if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
+                oHistoryEvent_Service.setSoData(soData);
+                isChanged = true;
+            }*/
             LOG.info("soData is not null or empty array: " + soData);
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: Move To Interceptor!!!
             StringBuilder osBody = new StringBuilder(sBody);
@@ -442,16 +447,16 @@ public class ActionEventService {
             } else if (oHistoryEvent_Service_StatusType == HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION) {
                 oHistoryEventType = HistoryEventType.SET_TASK_QUESTIONS;
                 bQuestion = false;
-                nID_SubjectMessageType = 5L;
+                nID_SubjectMessageType = 5L;//TODO - почему 5 стоит а не 3?????
                 LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
                 LOG.info("nID_SubjectMessageType is set to" + nID_SubjectMessageType);
             }
 
             if (nID_SubjectMessageType != null) {
                 LOG.info("nID_SubjectMessageType is not null");
-                List<Map<String,String>> amReturn = amFieldMessageQuestion(soData, bQuestion);//saField
-                String soTable=ActionTaskService.createTable_TaskProperties(amReturn, bQuestion, false);
-                
+                List<Map<String, String>> amReturn = amFieldMessageQuestion(soData, bQuestion);//saField
+                String soTable = ActionTaskService.createTable_TaskProperties(amReturn, bQuestion, false);
+
                 osBody.append("<br/>").append(soTable).append("<br/>");//soData
 
                 Map<String, String> mParamMessage = new HashMap<>();
@@ -463,7 +468,7 @@ public class ActionEventService {
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
 
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                        sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo);
+                        sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo,bQuestion);
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
                 LOG.info("setting message");
                 subjectMessagesDao.setMessage(oSubjectMessage);
@@ -477,7 +482,6 @@ public class ActionEventService {
         LOG.info("Mehtod updateActionStatus_Central started for task " + sID_Order);
         return oHistoryEvent_Service;
     }
-
 
     public HistoryEvent_Service addActionStatus_Central(
             String sID_Order,
@@ -528,4 +532,5 @@ public class ActionEventService {
         setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
         return oHistoryEvent_Service;
     }
+
 }

@@ -334,7 +334,12 @@
               </span>
               </div>
               <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
+                <div ng-if="!users.bNeedECP">
+                  <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
+                </div>
+                <div ng-if="users.bNeedECP">
+                  <span class="documentDate">{{users.sDateECP ? users.sDateECP : 'Немає ЕЦП'}}</span>
+                </div>
               </div>
             </div>
 
@@ -442,6 +447,12 @@
               <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Задачу опрацьовано.</label>
             </div>
           </div>
+
+          <button ng-hide="!isRemoveDocumentButtonVisible()"
+                  ng-click="removeDocument(selectedTask.processInstanceId)"
+                  class="btn btn-danger"
+                  ng-disabled="isTaskInProcess()">Видалити
+          </button>
 
           <div ng-hide="(selectedTask.assignee === null && !isDocument())
            || sSelectedTask === 'finished'

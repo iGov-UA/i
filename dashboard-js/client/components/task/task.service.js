@@ -843,6 +843,7 @@ angular.module('dashboardJsApp')
             bIncludeGroups: true,
             bIncludeStartForm: true,
             bIncludeAttachments: true,
+            bIncludeProcessVariables: true,
             bIncludeMessages: true
           });
         return simpleHttpPromise({
@@ -1019,6 +1020,15 @@ angular.module('dashboardJsApp')
           url: '/api/documents/getDocumentSubmittedUnsigned',
           params: {
             sLogin: currentUser.id
+          }
+        })
+      },
+      removeDocumentSteps: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/removeDocumentSteps',
+          params: {
+            snID_Process_Activiti: nID_Process
           }
         })
       }
