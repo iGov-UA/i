@@ -95,11 +95,11 @@
       bSelectedTasksSortReverse = false;
     });
 
-    $scope.tasksSearch = iGovNavbarHelper.tasksSearch;
+    //$scope.tasksSearch = iGovNavbarHelper.tasksSearch;
     var tempCountValue = 0;
 
     $scope.searchInputKeyup = function ($event) {
-      if ($event.keyCode === 13 && $scope.tasksSearch.value) {
+      if ($event.keyCode === 13 && $rootScope.tasksSearch.value) {
         runSearchingProcess();
       }
       if($event.keyCode === 8 || $event.keyCode === 46) {
@@ -108,18 +108,20 @@
     };
 
     // запуск поиска для автотестов
-    $scope.runSearchingProcess = function () {
-      if ($scope.tasksSearch.value) {
+    $rootScope.runSearchingProcess = function () {
+      console.log('Start searching process');
+      if ($rootScope.tasksSearch.value) {
         runSearchingProcess();
       }
+      console.log('End searching process');
     };
 
     function runSearchingProcess() {
-      $scope.tasksSearch.loading=true;
-      $scope.tasksSearch.count=0;
-      $scope.tasksSearch.submited=true;
-      if($scope.tasksSearch.archive) {
-        tasks.getProcesses($scope.tasksSearch.value).then(function (res) {
+      $rootScope.tasksSearch.loading=true;
+      $rootScope.tasksSearch.count=0;
+      $rootScope.tasksSearch.submited=true;
+      if($rootScope.tasksSearch.archive) {
+        tasks.getProcesses($rootScope.tasksSearch.value).then(function (res) {
           var response = JSON.parse(res);
           $scope.archive = response[0];
           $scope.archive.aVisibleAttributes = [];
@@ -134,7 +136,7 @@
           $scope.switchArchive = true;
         })
       } else {
-        tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab, bSelectedTasksSortReverse)
+        tasksSearchService.searchTaskByUserInput($rootScope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab, bSelectedTasksSortReverse)
           .then(function(res) {
             if(res.aIDs.length > 1){
               if(bSelectedTasksSortReverse){
@@ -142,20 +144,20 @@
               } else {
                 tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
               }
-              $scope.tasksSearch.count = '... / ' + res.aIDs.length;
+              $rootScope.tasksSearch.count = '... / ' + res.aIDs.length;
             } else {
               tempCountValue = res.aIDs.length;
-              $scope.tasksSearch.count = res.aIDs.length;
+              $rootScope.tasksSearch.count = res.aIDs.length;
             }
           })
           .finally(function(res) {
-            $scope.tasksSearch.loading=false;
+            $rootScope.tasksSearch.loading=false;
           });
       }
     }
 
     $scope.$on('update-search-counter', function () {
-      $scope.tasksSearch.count = tempCountValue;
+      $rootScope.tasksSearch.count = tempCountValue;
     });
 
     $scope.closeArchive = function () {
@@ -163,7 +165,7 @@
     };
 
     $scope.archiveTextValue = function () {
-      return isNaN($scope.tasksSearch.value);
+      return isNaN($rootScope.tasksSearch.value);
     };
 
     $scope.isSelectedInstrumentsMenu = function(menuItem) {
