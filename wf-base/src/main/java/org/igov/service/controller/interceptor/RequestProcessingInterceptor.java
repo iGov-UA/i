@@ -67,7 +67,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter implements ConstantsInterceptor {
 
     private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming|_doc_justice_171";
-	private static final String asID_BP_SkipSendMail = "bti_request_1|cnap_489|common_mreo_1_jur|common_mreo_2|common_zags_change_name|CourtOfAppeal|CourtOfCassation|dabi_build_declaration_dupl|dabi_build_notif_change|dabi_build_notification|"
+	private static final String asID_BP_SendMail = "bti_request_1|cnap_489|common_mreo_1_jur|common_mreo_2|common_zags_change_name|CourtOfAppeal|CourtOfCassation|dabi_build_declaration_dupl|dabi_build_notif_change|dabi_build_notification|"
 			+ " dabi_build_permit_change|dabi_build_permit_dupl|dabi_ready_certificate_dupl|dabi_ready_declaration|dabi_works_declaration_dupl|dabi_works_declaration|dabi_works_notif_cancel|dabi_works_notif_change|dabi_works_notification|DFS_0360_F1310104|"
 			+ " DFS_F3000410|dms_0178_2545|dndz_cnap_186|dnepr_cnap_53|dnepr_cnap_213|dnepr_cnap_214|dnepr_cnap_215|dnepr_cnap_217|dnepr_cnap_218|dnepr_cnap_219|"
 			+ " dnepr_cnap_228|dnepr_cnap_229|dnepr_cnap_230|dnepr_cnap_261|dnepr_cnap_262|dnepr_cnap_263|dnepr_cnap_265|dnepr_cnap_266|dnepr_cnap_267|dnepr_cnap_268|"
@@ -939,7 +939,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         //dnepr_mvk_291_common
 
         if (sMailTo != null) {
-            if (asID_BP_SkipSendMail.contains(oProcessDefinition.getKey())) {
+            if (asID_BP_SendMail.contains(oProcessDefinition.getKey())) {
                 ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
                 LOG.info("Send notification mail... (sMailTo={})", sMailTo);
                 oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
