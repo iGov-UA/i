@@ -95,7 +95,10 @@ angular.module('autocompleteService')
     };
 
     var getNameWithPostFix = function (field) {
-      return field && field.id ? field.id.split('_') : null;
+        if(field && field.id && field.id.indexOf('_') > -1)
+            return field.id.split('_');
+        else
+            return null;
     };
 
     $scope.requestMoreItems = function(collection) {
@@ -211,7 +214,7 @@ angular.module('autocompleteService')
     $scope.onSelectDataList = function (item, tableName, rowIndex, field) {
         var additionalPropertyName = getAdditionalPropertyName();
         var nameWithPostFix = getNameWithPostFix(field);
-        var selectPostfix = nameWithPostFix[nameWithPostFix.length - 1];
+        var selectPostfix = nameWithPostFix ? nameWithPostFix[nameWithPostFix.length - 1] : '';
 
         if (rowIndex !== null && (rowIndex || rowIndex >= 0)) {
             var form = $scope.activitiForm ? $scope.activitiForm.formProperties : $scope.taskForm;
