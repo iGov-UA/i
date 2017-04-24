@@ -15,7 +15,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sLabeRayon" name=" ; ;labelType=warning" type="label" default="УВАГА! Ця послуга діє тільки для Самарського району, інші райони будуть поступово під'єднані протягом 2х найближчих місяців. &lt;br&gt;Обравши інші райони і заповнивши всі поля, ви отримаєте автоматично сформовану і заповнену заяву, яку можна буде використати під час особистого візиту за довідкою"></activiti:formProperty>
         
-        <activiti:formProperty id="markerLabels" name="markerLabels" type="markers" default="${markerService.loadFromFile('form3/forma_3Dn_Labels.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerLabels" name="markerLabels" type="markers" default="${markerService.loadFromFile('form3/forma_3Dn_labels.json')}"></activiti:formProperty>
         <activiti:formProperty id="sLabeZIP" name=" ; ;labelType=info" type="label" default="Для замовлення послуги, буде необхідно завантажувати сканкопії документів, щоб завантажити кілька документів одним файлом скористайтесь ZIP архівом. Посилання - &lt;a href=&quot;https://docs.google.com/document/d/1vkTj7DlfjHj8TYylHZKpESU5cGQF5N0R4ck1EBScVdM/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;Як зробити ZIP архів&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sLabeNevidaemo" name=" ; ;labelType=danger" type="label" default="ПОПЕРЕДЖЕННЯ! Ви обрали район, який ще не підключений до порталу. Ви можете заповнити форму і отримати на електронну пошту заповнену заву яку треба буде роздрукувати підписати і віднести до відділу видачі довідок.&lt;br&gt; Адреси відділів - &lt;a href=&quot;https://docs.google.com/document/d/1ucS5WC6YK2AWg2Yxmpmg8cVgSvoznV_vkLeXi_rjdww/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;Де отримати довідку&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sLabeNoFiles" name=" ; ;labelType=warning" type="label" default="УВАГА! Якщо ви хочете сформувати заповнений бланк заяви, система все одно буде вимагати завантаження сканкопій документів. Завантажуйте будь який файл!"></activiti:formProperty>
@@ -47,8 +47,8 @@
         <activiti:formProperty id="DovirutdPassport" name="Паспорт довірителя; (тип, серія та номер документу, дата і орган, що його видав)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про житло" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asBudType&quot;],&quot;sValue&quot;:&quot;Інформація про житло&quot;}}}"></activiti:formProperty>
         
+        <activiti:formProperty id="markersLine_2" name="Інформація про житло" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asBudType&quot;],&quot;sValue&quot;:&quot;Інформація про житло&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asBudType" name="Вкажіть тип вашого будинку" type="enum" required="true">
           <activiti:value id="sBagkvatur" name="багатоквартирний"></activiti:value>
           <activiti:value id="sPrivSector" name="приватний"></activiti:value>
@@ -187,6 +187,25 @@ if(execution.getVariable('asStatus') == 'sZareyDov')
   execution.setVariable('ScriptInn', pasD4)
   execution.setVariable('ScriptPassport', pasD5)
   }
+
+var Vul = execution.getVariable('sRegistrationVul')
+var Bud = execution.getVariable('sRegistrationBud')
+var Korp = execution.getVariable('lRegistrationKorp')
+var Kvart = execution.getVariable('lRegistrationKvart')
+var Adres = ' ' 
+ 
+  
+if(execution.getVariable('asBudType') == 'sBagkvatur')
+  {
+  if(execution.getVariable('asKorp') == 'yes'){Rod='Заявник особисто на себе'}
+  if(execution.getVariable('asKorp') == 'no'){Rod='Заявник особисто на себе'}
+  }
+if(execution.getVariable('asBudType') == 'sPrivSector')
+  {
+  if(execution.getVariable('asKvart') == 'yes'){Rod='Другий з подружжя'}
+  if(execution.getVariable('asKvart') == 'no'){Rod='Батько'}
+  }  
+  
       </script>
     </scriptTask>
     <sequenceFlow id="flow30" name="Обробка" sourceRef="exclusivegateway5" targetRef="servicetask11">
