@@ -75,7 +75,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 			+ " dnepr_cnap_560_fop|dnepr_cnap_560_ur|dnepr_cnap_560|dnepr_cnap_561|dnepr_cnap_628|dnepr_cnap_629|dnepr_cnap_630|dnepr_cnap_631|dnepr_cnap_632|dnepr_cnap_70|"
 			+ " dnepr_inn|dnepr_mvd_199|dnepr_mvk_335|dnepr_mvk_383|dnepr_mvk_386|dnepr_soc_help_148|dnepr_soc_help_149|dnepr_soc_help_175|dnepr_soc_help_177|dpi_reestr_68|"
 			+ " dpss_1441_visnovok|eco_0033_fonConts|health_ministry_10|hmel_cnap_264_1|hmel_cnap_264_2|hmel_cnap_264|hmel_cnap_349|infrastr_845|justice_0014|justice_0087_FOPclose|"
-			+ " justice_0333_complaint|justice_2517_GOopen|justice_989|kherson_racs_757|kiev_mda_273|kiev_mda_824|kiev_mda_834|kiev_soc_help_177|kmda_works_notification|kyiv_mda_1093|"
+			+ " justice_0333_complaint|justice_2517_GOopen|kherson_racs_757|kiev_mda_273|kiev_mda_824|kiev_mda_834|kiev_soc_help_177|kmda_works_notification|kyiv_mda_1093|"
 			+ " kyiv_mda_1194|kyiv_mda_929|lviv_mvk_1113|lviv_mvk_268_dovidka|lviv_mvk_268|lviv_mvk_701|lviv_mvk_742|lviv_mvk_743|mert_0160_RazLic|netishin_soc_help_177|"
 			+ " nikopol_cnap_268_dovidka|nikopol_cnap_273_dovidka|nikopol_cnap_273|poltava_eko_693|post_spravka_o_doxodax_pens|rada_0035_constractionPass|rada_0063_dozvilZN|rada_0450_mother_heroine|rada_0455_buildingPassp|rada_0676_citizensAppeals|"
 			+ " rada_1429_OperAdrBud_Kropiv|SpecInspection_965|system_escalation|system_feedback|system_task_mu_read|system_task|trostyanec_mvk_dereva|uzhgorod_cnap_391|Uzhgorod_dmg_1"; // "dnepr_mvk_291_common|rada_0676_citizensAppeals|dnepr_dms-212|dnepr_dms-212s|dnepr_dms-89|dnepr_dms-89s|dnepr_dms-89sd|DFS_F1301801|joke_0959_Deputat";

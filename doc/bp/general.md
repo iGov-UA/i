@@ -1045,7 +1045,7 @@ digit3 - переменная, куда присвоится результат 
 ```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
-* ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
+* ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
 а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
 ###### usingvariablesinemailtemplates
@@ -2791,7 +2791,7 @@ Cделает текущее поле нередактируемым для по
 ###### _reservedvariablesforelectronicqueues
 
 [вернуться...](#reservedvariablesforelectronicqueues)
-  ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
+  ![3_51](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_51.JPG)
 
 ###### _reservedattributevariables
 ### Зарезервированные переменные атрибутов
@@ -2802,7 +2802,7 @@ Cделает текущее поле нередактируемым для по
 * **sArea** - string/bVisible=false/label - yазвание нас.пункта/района куда подается заявка
 * **nArea** - string/bVisible=false/label - yомер в справочнике нас.пункта/района куда подается заявка
 * **sShapka** - string/bVisible=false/label - шапка принтформы
-   ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
+   ![3_51](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_51.JPG)
 
 ###### _variablesforprintforms
 ### Переменные принтформ
@@ -3222,7 +3222,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 [вернуться...](#converthtmltopdf)
 
-  ![11_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_0.JPG)
+  ![11_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_1.jpg)
 На юзертасках добавить стандартный набор листнеров для подгрузки файлов.  
 
 [валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
