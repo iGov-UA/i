@@ -399,7 +399,7 @@ type="queueData" required="true"></activiti:formProperty>
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
    * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
    
-   [детальней...](#_Listener)
+   [детальней...](#_listener)
 
 
 ##### settasks
@@ -1045,7 +1045,7 @@ digit3 - переменная, куда присвоится результат 
 ```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
-* ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
+* ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
 а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
 ###### usingvariablesinemailtemplates
