@@ -265,7 +265,7 @@ public class SubjectMessageService {
 
         message = new SubjectMessage();
         message.setHead(sHead);
-        message.setBody(sBody == null ? "" : sBody);
+        message.setBody(sBody == null ? "" : sBody.split("<br/>", 2)[0]);
 
         LOG.info("(createSubjectMessage: subject Id{})", subject.getId());
 
