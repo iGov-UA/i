@@ -406,7 +406,7 @@ public class DocumentStepService {
                 sKey_Step);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = new LinkedList();
         try {
-
+            setDocumentStep(snID_Process_Activiti, sKey_Step);
             aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
             
             oTaskService.addCandidateGroup(oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
