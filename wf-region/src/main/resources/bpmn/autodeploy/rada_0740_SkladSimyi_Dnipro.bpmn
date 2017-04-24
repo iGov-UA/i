@@ -59,7 +59,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб; ;bNew=true" type="table" default="${markerService.loadFromFile('table/registr/form3_table_Dnipro.json')}"></activiti:formProperty>
+        <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_test_DateEnumDouble.json')}"></activiti:formProperty>
         <activiti:formProperty id="nFile_ZarPasports" name="Паспорти зареєстрованих осіб;(сканкопії оригіналу, завантажте одним ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="chekDitu" name="Чи є серед зараєстрованих осіб діти до 16ти років?;позначте галочкою - якщо так, якщо ні - натисніть двічі на квадратик;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -174,7 +174,7 @@ if(execution.getVariable('asStatus') == 'sZareyDov')
       </script>
     </scriptTask>
     <sequenceFlow id="flow30" name="Обробка" sourceRef="exclusivegateway5" targetRef="servicetask11">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept' && asVidpovid == 'sEnamnarochno'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDistrict == 'sSamar'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask10" name="Заяву прийнято" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -746,7 +746,7 @@ ${sNameOrgan}<br>
     <sequenceFlow id="flow68" sourceRef="scripttask1" targetRef="exclusivegateway5"></sequenceFlow>
     <userTask id="usertask5" name="Формування заяви" activiti:candidateGroups="Tex_usertask"></userTask>
     <sequenceFlow id="flow69" name="Формування заяви" sourceRef="exclusivegateway5" targetRef="usertask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept' && asVidpovid == 'sEnamnarochno'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDistrict == 'sInshi'}]]></conditionExpression>
     </sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask5" cancelActivity="true">
       <timerEventDefinition>
@@ -880,7 +880,7 @@ ${sNameOrgan}<br>
         <omgdi:waypoint x="233.0" y="168.0"></omgdi:waypoint>
         <omgdi:waypoint x="267.0" y="168.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="213.0" y="197.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="43.0" x="213.0" y="197.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
