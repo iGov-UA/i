@@ -10,6 +10,11 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEssence" name="Тип поля fileHTML" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="nTestingTable" name="Тестовая таблица; Число" type="table" default="${markerService.loadFromFile('table/_test_autosign_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker3" name="хочу ЭЦП или нет" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;ECP&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ecp_yes'&quot;},&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;ECP&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ecp_yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="ECP" name="Чи подаєте звернення з ЕЦП або без ЕЦП?" type="enum" required="true">
+          <activiti:value id="ecp_yes" name="з ЕЦП (для отримання електронної послуги про призначення субсидії)"></activiti:value>
+          <activiti:value id="ecp_no" name="без ЕЦП (погоджуєтесь на особистий візит після перевірки правильності даних)"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Наложение ЭЦП на дефолтную форму; ;bNew=true;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/_test_autosign_printform_ECP.html"></activiti:formProperty>
       </extensionElements>
