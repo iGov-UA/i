@@ -6,7 +6,7 @@
 <style>
 html, body {margin: 0; padding: 0; height: 100%; font: 400 14px/16px 'Times New Roman';}
 
-.print_wrap {width: 705px; padding: 35px 25px 85px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
+.print_wrap {width: 705px; padding: 15px 25px 85px 35px; min-height: 100%; height: 100%; margin: 0 auto;}
 
 .ta-r {text-align: right !important;}
 .ta-l {text-align: left !important;}
@@ -105,10 +105,10 @@ p {font-size: 11px;}
 <body>
 <section class="print_wrap">
     <div class="line_col ta-r">
-        <div class="under_field w350 ta-l"><i>[sShapka_mode_worktime_529]</i><span></span></div><br /> <br />
+        <div class="under_field w350 ta-l"><i>[sShapka_mode_worktime_529]</i><span></span></div><br />
         <div id="hide_izyum">
         	<div class="under_field w350 ta-l"><i>[sFIO]<br>(ІПН [bankIdinn])</i><span></span></div><br />
-        	<div class="under_field w350 ta-l"><i>Паспорт: [bankIdPassport]<br>Телефон: [phone]</i><span></span></div><br /><br />
+        	<div class="under_field w350 ta-l"><i>Паспорт: [bankIdPassport]<br>Телефон: [phone]</i><span></span></div>
         </div>
 	</div>
     <div class="line_col ta-c m-t-25">
@@ -119,11 +119,14 @@ p {font-size: 11px;}
         <br /><br />
 
        	<div class="ta-l">Заявник</div>
-		<div class="under_field_line ta-c">[sFioTrusted_Person] ([sEdrpou])<span>(найменування підприємства;  П.І.Б. громадянина-підприємця)</span></div>
+		<div id="UR" class="under_field_line ta-c">[sFullName_SubjectOrgan_01] ([sID_SubjectOrgan_OKPO_01])<span>(найменування підприємства;  П.І.Б. громадянина-підприємця)</span></div>
+		<div id="FOP" class="under_field_line ta-c">[sFIO] ([bankIdinn])<span>(найменування підприємства;  П.І.Б. громадянина-підприємця)</span></div>
        	<div class="ta-l">Юридична  адреса</div>
-		<div class="under_field_line ta-c">[sAdressContragent]<span>(підприємства або місце реєстрації  громадянина-підприємця)</span></div>
+		<div id="UR_ADR" class="under_field_line ta-c">[sLocation_SubjectOrgan_01]<span>(підприємства або місце реєстрації громадянина-підприємця)</span></div>
+		<div id="FOP_ADR" class="under_field_line ta-c">[sAddressRegistr]<span>(підприємства або місце реєстрації громадянина-підприємця)</span></div>
        	<div class="ta-l">ЄДРПОУ / Код ІНН</div>
-		<div class="under_field_line ta-c">[sEdrpou]<span>&nbsp;</span></div>
+		<div id="UR_EDRPOU" class="under_field_line ta-c">[sID_SubjectOrgan_OKPO_01]<span>&nbsp;</span></div>
+		<div id="FOP_INN" class="under_field_line ta-c">[bankIdinn]<span>&nbsp;</span></div>
        	<div class="ta-l">Вид діяльності</div>
 		<div class="under_field_line ta-c">[asEnumVydDiyalnosti]<span>(роздрібна торгівля, ресторанне господарство, послуги)</span></div>
        	<div class="ta-l">Тип об'єкту</div>
@@ -133,8 +136,8 @@ p {font-size: 11px;}
        	<div class="ta-l">Спеціалізація </div>
 		<div class="under_field_line ta-c">[asEnumSpesialObject]<span>(продовольчі, непродовольчі товари, вид послуг)</span></div>
 		<br />
-		<div class="ta-l" id="show_Plosha">
-				Торгова площа<b><u>&nbsp;&nbsp;[nSquareObject]&nbsp;&nbsp;</u></b> кв.м, в т.ч. торговельна площа <b><u>&nbsp;&nbsp;[nTorgSquareObject]&nbsp;&nbsp;</u></b> кв.м.<br />
+		<div class="ta-l">
+				Торгова площа<b><u>&nbsp;&nbsp;[nSquareObject]&nbsp;&nbsp;</u></b> кв.м<br />
 				Кількість посадкових місць <b><u>&nbsp;&nbsp;[nKolvoMest]&nbsp;&nbsp;</u></b><br />
 		</div>
 		<div class="ta-l">Режим роботи (початок та закінчення роботи): <span><b>[sTime_Full]</b></span></div>
@@ -152,10 +155,9 @@ p {font-size: 11px;}
         
 	<div class="date_subm m-t-85">
         <div class="inv" align="CENTER">[date_today]<span>(дата)</span></div>
-        <div class="signature">Заявника авторизовано через портал igov.org.ua, заявка [sID_Order]<span>(підпис заявника)</span></div>
+        <div class="signature"><span>(підпис заявника)</span></div>
 		<div class="clear"></div>
     </div>
-	   <br />
        <div class="ta-l">Ознайомлений з тим, що:</div> 
        <br />
        <div class="ta-l">- Узгодження не є дозвільним документом і не дає право заняття вказаним видом діяльності без документів, передбачених чинним законодавством;</div>
