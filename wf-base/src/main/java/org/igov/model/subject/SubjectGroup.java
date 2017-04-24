@@ -50,7 +50,7 @@ public class SubjectGroup extends NamedEntity {
     @JoinColumn(name = "nID_Subject")
     private Subject oSubject;
     
-    @JsonProperty(value = "nID_SubjectHumanPositionCustom")
+    @JsonProperty(value = "oSubjectHumanPositionCustom")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_SubjectHumanPositionCustom")
     private SubjectHumanPositionCustom oSubjectHumanPositionCustom;

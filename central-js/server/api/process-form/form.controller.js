@@ -730,7 +730,33 @@ module.exports.signForm = function (req, res) {
           }
           var dateCreate = new Date();
           var formatedDateCreate = dateCreate.getFullYear() + '-' + ('0' + (dateCreate.getMonth() + 1)).slice(-2) + '-' + ('0' + dateCreate.getDate()).slice(-2);
+          var formatedTimeCreate = ('0' + dateCreate.getHours()).slice(-2) + ':' + ('0' + dateCreate.getMinutes()).slice(-2);
           body = body.split('[sDateCreateProcess]').join(formatedDateCreate);
+          body = body.split('[sTimeCreateProcess]').join(formatedTimeCreate);
+          body = body.split('[sDateTimeCreateProcess]').join(formatedDateCreate + ' ' + formatedTimeCreate);
+          body = body.split('[sDateCreate]').join(formatedDateCreate + ' ' + formatedTimeCreate);
+          body = body.split('[sCurrentDateTime]').join(formatedDateCreate + ' ' + formatedTimeCreate);
+          body = body.split('[sUserInfo]').join(function () {
+            var sUserInfo = '';
+            if(printFormData.params){
+              if(printFormData.params.bankIdlastName){
+                sUserInfo = sUserInfo + printFormData.params.bankIdlastName;
+              }
+              if(printFormData.params.bankIdfirstName){
+                if(sUserInfo !== ''){
+                  sUserInfo = sUserInfo + ' ';
+                }
+                sUserInfo = sUserInfo + printFormData.params.bankIdfirstName;
+              }
+              if(printFormData.params.bankIdmiddleName){
+                if(sUserInfo !== ''){
+                  sUserInfo = sUserInfo + ' ';
+                }
+                sUserInfo = sUserInfo + printFormData.params.bankIdmiddleName;
+              }
+            }
+            return sUserInfo;
+          });
           callback(body);
         });
       } else {
@@ -774,7 +800,7 @@ module.exports.signForm = function (req, res) {
           uploadFileService.downloadBuffer(params, function (error, response, buffer) {
 
             formData.formDataPrintPdf.params[fileField.id] = buffer.toString();
-            
+
             callbackEach();
           }, sHost)
         }, function (error) {

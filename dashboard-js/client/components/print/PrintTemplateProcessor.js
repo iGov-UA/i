@@ -113,9 +113,8 @@ angular.module('dashboardJsApp').factory('PrintTemplateProcessor', ['$sce', 'Aut
                     var fieldId = function () {
                       if(field.type === 'enum' && field.value) {
                         for (var j = 0; j < field.a.length; j++) {
-                          if (field.a[j].id === field.value) {
-                            if (field.a[j].name && field.a[j].name)
-                              return field.a[j].name ? field.a[j].name : ' ';
+                          if (field.a[j].name === field.value) {
+                            return field.a[j].name ? field.a[j].name : ' ';
                           }
                         }
                       } else if(field.type === 'enum' && !field.value) {

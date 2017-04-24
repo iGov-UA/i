@@ -23,6 +23,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.Map;
+import org.igov.model.subject.SubjectGroup;
 import org.igov.service.business.subject.SubjectGroupTreeService_new;
 
 @Controller
@@ -115,6 +116,18 @@ public class SubjectGroupController {
             throws Exception {
         
         return subjectRightBPService.getBPs_ForExport(sLogin);
+    }
+    
+    @ApiOperation(value = "Получение организаций для каждого юзера, который входит в заданную группу.")
+    @RequestMapping(value = "/getDeparByGroup_Activiti", method = RequestMethod.GET)
+    @ResponseBody
+    public List<SubjectGroup> getDeparByGroup_Activiti(
+            @ApiParam(value = "Идентификатор группы", required = true)
+            @RequestParam(value = "sID_Group_Activiti", required = true) 
+            String sID_Group_Activiti) {
+        
+        return subjectGroupTreeService.getDeparByGroup_Activiti(sID_Group_Activiti);
+       
     }
     
 }

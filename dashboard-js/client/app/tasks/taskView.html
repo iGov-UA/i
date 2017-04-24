@@ -334,7 +334,12 @@
               </span>
               </div>
               <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
+                <div ng-if="!users.bNeedECP">
+                  <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
+                </div>
+                <div ng-if="users.bNeedECP">
+                  <span class="documentDate">{{users.sDateECP ? users.sDateECP : 'Немає ЕЦП'}}</span>
+                </div>
               </div>
             </div>
 
