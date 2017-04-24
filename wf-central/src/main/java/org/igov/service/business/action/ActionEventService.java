@@ -447,7 +447,7 @@ public class ActionEventService {
             } else if (oHistoryEvent_Service_StatusType == HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION) {
                 oHistoryEventType = HistoryEventType.SET_TASK_QUESTIONS;
                 bQuestion = false;
-                nID_SubjectMessageType = 5L;//TODO - почему 5 стоит а не 3?????
+                nID_SubjectMessageType = 5L;
                 LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
                 LOG.info("nID_SubjectMessageType is set to" + nID_SubjectMessageType);
             }
