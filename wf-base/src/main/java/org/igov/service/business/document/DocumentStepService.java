@@ -411,17 +411,21 @@ public class DocumentStepService {
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) 
             {
                 if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
-                    LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, sKey_Group_Delegate);
+                    LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight.getsKey_GroupPostfix());
                     oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group_Delegate);
+                    oDocumentStepSubjectRight.setsDateECP(null);
                     oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                    break;
                 }
             }
+            
+            oTaskService.addCandidateGroup(oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
+                    active().singleResult().getId(), sKey_Group_Delegate);
             
             //setDocumentStep(snID_Process_Activiti, sKey_Step);
             /*aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
 
-            oTaskService.addCandidateGroup(oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
-                    active().singleResult().getId(), sKey_Group_Delegate);*/
+            */
 
             //delegateTask.addCandidateGroups(asGroup);
             //delegateTask.addCandidateGroup(sGroup);
