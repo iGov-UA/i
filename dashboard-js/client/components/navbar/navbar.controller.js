@@ -110,6 +110,8 @@
     // запуск поиска для автотестов
     $rootScope.runSearchingProcess = function () {
       console.log('Start searching process');
+      $rootScope.tasksSearch.value = $('.searched-text')["0"].value;
+      console.log('$rootScope.tasksSearch.value = ' + $rootScope.tasksSearch.value);
       if ($rootScope.tasksSearch.value) {
         runSearchingProcess();
       }
