@@ -376,7 +376,9 @@ public class ActionEventService {
         }*/
 
         if (sBody != null && !sBody.equals(oHistoryEvent_Service.getsBody())) {
+        	 LOG.info("sBodyнннннннннннннннннннннннннннннннннны " + sBody);
             oHistoryEvent_Service.setsBody(sBody);
+            LOG.info("sBodyнннннннннннннннннннннннннннннннннныФАЕУКККККККККККККККККК " + sBody);
             isChanged = true;
         }
         if (sToken == null || !sToken.equals(oHistoryEvent_Service.getsToken())) {
