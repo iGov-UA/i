@@ -411,7 +411,7 @@ public class DocumentStepService {
             //delegateTask.addCandidateGroups(asGroup);
             //delegateTask.addCandidateGroup(sGroup);
             //delegateTask.deleteCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
-            //removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+            removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
             //syncDocumentGroups(DelegateTask delegateTask, List<DocumentStep> aDocumentStep);
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
