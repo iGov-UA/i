@@ -1296,7 +1296,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
-        List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(0,5000000);   //    .listPage(nRowStart, nRowsMax);
+        List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
 
         if ("*".equals(saFields)){
         	saFields = null;
@@ -1316,7 +1316,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sTaskEndDateAt == null && sTaskEndDateTo == null) {
             // we need to call runtime query only when non completed tasks are selected.
             // if only completed tasks are selected - results of historic query will be used
-            foundResults = query.listPage(0, 5000000);//.listPage(nRowStart, nRowsMax);
+            foundResults = query.listPage(nRowStart, nRowsMax);
         }
 
         // 3. response
