@@ -2494,11 +2494,21 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
                 processInstanceId(task.getProcessInstanceId()).
                 includeProcessVariables().singleResult();
+        
+        Long point1Start = System.nanoTime();
+        
         String sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
         LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
-
+        
+        Long point1EndPoint2Start = System.nanoTime();
+        Long res1 = point1EndPoint2Start - point1Start;
+                
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         Map<String, Object> taskInfo = new HashMap<>();
+        
+        Long point2EndPoint3Start = System.nanoTime();
+        Long res2 = point2EndPoint3Start - point1EndPoint2Start;
+                
         taskInfo.put("id", task.getId());
         taskInfo.put("url", oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
         taskInfo.put("owner", task.getOwner());
@@ -2523,6 +2533,10 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
         taskInfo.put("processDefinitionUrl", oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
         taskInfo.put("variables", new LinkedList());
+        
+        Long point3EndPoint4Start = System.nanoTime();
+        Long res3 = point3EndPoint4Start - point2EndPoint3Start;
+        
         if (flowSlotTicket != null) {
             LOG.info("Populating flow slot ticket");
             DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
@@ -2533,6 +2547,11 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()) : null);
             taskInfo.put("flowSlotTicket", flowSlotTicketData);
         }
+        
+        Long point4End = System.nanoTime();
+        Long res4 = point4End - point3EndPoint4Start;
+        LOG.info("res1: " + res1 + "\n" + "res2: " + res2 + "\n" + "res3: " + res3 + "\n" + "res4: " + res4);
+        
         return taskInfo;
     }
 
