@@ -416,7 +416,7 @@ public class DocumentStepService {
             //delegateTask.addCandidateGroup(sGroup);
             //delegateTask.deleteCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
         
-            //removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+            removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
             
             //syncDocumentGroups(DelegateTask delegateTask, List<DocumentStep> aDocumentStep);
 
