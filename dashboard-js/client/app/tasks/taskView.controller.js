@@ -1537,8 +1537,10 @@
           });
           var currentUser = $scope.getCurrentUserLogin();
           for(var i=0; i<notSigned.length; i++) {
-            if(notSigned[i].aUser[0].sLogin === currentUser) {
-              return true;
+            for(var l=0; l<notSigned[i].aUser.length; l++) {
+              if(notSigned[i].aUser[l].sLogin === currentUser) {
+                return true;
+              }
             }
           }
         };

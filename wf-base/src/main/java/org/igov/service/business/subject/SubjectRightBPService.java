@@ -41,19 +41,23 @@ public class SubjectRightBPService {
             List<String> asID_Group = new ArrayList<>();
 
             if (aGroup != null) {
-		aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
+            	aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
             }
             
             List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group_Referent", asID_Group);
             
-            LOG.info("List<SubjectRightBP> " + aSubjectRightBP);
-            
 		if (aSubjectRightBP != null) {
 			for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) {
-				LOG.info("SubjectRightBP " + oSubjectRightBP.toString());
+				List<ProcessDefinition> aProcessDefinition = oRepositoryService.createProcessDefinitionQuery()
+						.processDefinitionKeyLike(oSubjectRightBP.getsID_BP()).active().latestVersion().list();
 				Map<String, String> mSubjectRightBP = new HashMap<>();
-				mSubjectRightBP.put("sName_BP", oSubjectRightBP.getsID_BP());
+				mSubjectRightBP.put("sID_BP", oSubjectRightBP.getsID_BP());
 				mSubjectRightBP.put("sNote", oSubjectRightBP.getsNote());
+				 if(!aProcessDefinition.isEmpty()){
+					 mSubjectRightBP.put("sName_BP",aProcessDefinition.get(0).getName());
+				 }else {
+					 mSubjectRightBP.put("sName_BP","");
+				 }
 				aResultMap.add(mSubjectRightBP);
 			}
 		}

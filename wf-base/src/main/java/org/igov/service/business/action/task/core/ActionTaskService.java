@@ -2474,11 +2474,15 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     }
 
     public Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket) {
+        
+        Long missedPoint = System.nanoTime();
+        
         HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
                 processInstanceId(task.getProcessInstanceId()).
                 includeProcessVariables().singleResult();
         
         Long point1Start = System.nanoTime();
+        Long res5 = point1Start - missedPoint;
         
         String sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
         LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
@@ -2533,7 +2537,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         
         Long point4End = System.nanoTime();
         Long res4 = point4End - point3EndPoint4Start;
-        LOG.info("res1: " + res1 + "\n" + "res2: " + res2 + "\n" + "res3: " + res3 + "\n" + "res4: " + res4);
+        LOG.info("\n"+ "res1: " + res1 + "\n" + "res2: " + res2 + "\n" + "res3: " + res3 + "\n" + "res4: " + res4 + "\n" + "res5: " + res5);
         
         return taskInfo;
     }
