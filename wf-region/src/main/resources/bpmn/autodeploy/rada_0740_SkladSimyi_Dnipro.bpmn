@@ -134,7 +134,7 @@ var workTime = '';
 switch (asDistrict){
   case 'sSamar':
     mail = "samara105@ukr.net";
-    adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, вул. 20-річчя Перемоги, 51 каб. 105";
+    adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, вул. 20-річчя Перемоги, 51 каб. 105 (Самарська районна рада)";
     workTime = "&lt;b&gt;Графік роботи:&lt;/b&gt; понеділок - пятниця з 9:00 до 19:00";
   break;
   default:
@@ -241,7 +241,7 @@ execution.setVariable('ScriptAdress', Adres)
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Заявка про ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -370,7 +370,7 @@ ${sNameOrgan}.<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[${sPosluga_name}]]></activiti:string>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -404,7 +404,7 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Контроль відмов. ${sPosluga_name}]]></activiti:string>
+          <activiti:expression><![CDATA[Контроль відмов. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -429,14 +429,14 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[${sPosluga_name}]]></activiti:string>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 Ваша заявка опрацьована. Довідка може бути надана!<br>
 <p><b>Отримати довідку можливо з value{[dateVuzit]}.</b></p>
-Вам необхідно прийти value{[dateVuzit]} або в інший після вказаної дати день, за адресою: ${sAddress}<br>
+Вам необхідно прийти value{[dateVuzit]} або в інший після вказаної дати день, до відділу обліку фізичних осіб.<br>
 Заявка через портал дає вам право на позачергове отримання послуги.<br>
 З собою мати документ, що посвідчує особу та підтверджує реєстрацію за вказаною в заявці адресою.<br><br>
 ${sAddress}<br>
@@ -555,13 +555,13 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[${sPosluga_name}]]></activiti:string>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Нагадування!
-Для отримання довідки необхідно прийти за адресою: ${sAddress}<br>
+Для отримання довідки необхідно прийти до відділу обліку фізичних осіб<br>
 Заявка через портал дає вам право на позачергове отримання послуги.<br>
 З собою мати документ, що посвідчує особу та підтверджує реєстрацію за вказаною в заявці адресою.<br>
 ${sAddress}<br>
@@ -583,7 +583,7 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[${sPosluga_name}]]></activiti:string>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -598,6 +598,7 @@ ${sNameOrgan}<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    
     <serviceTask id="servicetask7" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
