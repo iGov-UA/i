@@ -3198,8 +3198,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         mParam.put("sLoginAuthor", sLogin);
         LOG.info("Processing process with key {} mParam {}", StringUtils.substringBefore(sID_BP, ":"), mParam);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(StringUtils.substringBefore(sID_BP, ":"), mParam);
+        
         Map<String, Object> mReturn = new HashMap<>();
-
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(oProcessInstanceChild.getId()).active().list();
         if (tasks != null && tasks.size() > 0) {
