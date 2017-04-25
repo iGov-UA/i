@@ -3081,7 +3081,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "/getProcessTemplate", notes = "##### Получение шаблона процесса#####\n\n")
     @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public @ResponseBody
-    Map<String, Object> setProcess(
+    Map<String, Object> getProcessTemplate(
             @ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
@@ -3101,10 +3101,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             StartFormData formData = formService.getStartFormData(resProcessDefinitions.get(0).getId());
 
             LOG.info("Received form " + formData);
-            Map<String, Object> formDataDTO = new HashMap<String, Object>();
+            Map<String, Object> formDataDTO = new HashMap<>();
             formDataDTO.put("formKey", formData.getFormKey());
             formDataDTO.put("deploymentId", formData.getDeploymentId());
-            formDataDTO.put("formProperties", processFormProperties(formData.getFormProperties()));
+            formDataDTO.put("aFormProperty", processFormProperties(formData.getFormProperties()));
             formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
 
             Map[] res = new Map[1];
@@ -3183,7 +3183,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
             if (mJsonBody != null) {
                 if (mJsonBody.containsKey("properties")) {
-                    LOG.info("Parsing properties: " + mJsonBody.get("properties"));
+                    LOG.info("Parsing properties: " + mJsonBody.get("aFormProperty"));
 
                     for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")) {
                         LOG.info("Parsing param: " + param);
