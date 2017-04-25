@@ -799,6 +799,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
+        LOG.info("sBodySource------>>>>>>>>>>>>>> (sBodySource={})", sBodySource);
         String sBody = replaceTags(sBodySource, oExecution);
 
         //saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
