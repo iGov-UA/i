@@ -1143,7 +1143,7 @@ public class ActionTaskService {
                     "Unable to found business processes for sLogin=" + sLogin,
                     ProcessDefinition.class);
         }
-        LOG.info("Selecting business processes for the user with login: {}", sLogin);
+        LOG.debug("Selecting business processes for the user with login: {}", sLogin);
 
         List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
         List<ProcessDefinition> aProcessDefinition = oRepositoryService
@@ -1152,41 +1152,28 @@ public class ActionTaskService {
                 .latestVersion().list();
 
         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
-            LOG.info("Found {} active process definitions", aProcessDefinition.size());
-//            aProcessDefinition_Return = getAvailabilityProcessDefinitionByLogin(sLogin, aProcessDefinition);
-
-//            List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
-            List<Group> aGroup;
-            aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+            LOG.debug("Found {} active process definitions", aProcessDefinition.size());
+            List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
             if (aGroup != null && !aGroup.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 for (Group oGroup : aGroup) {
                     sb.append(oGroup.getId());
                     sb.append(",");
                 }
-                LOG.info("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
+                LOG.debug("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
             }
 
             for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
 
                 String sID_BP = oProcessDefinition.getId();
 
-                LOG.info("process definition id: sID_BP={}", oProcessDefinition.getId());
+                LOG.debug("process definition id: sID_BP={}", oProcessDefinition.getId());
 
                 if (!bDocOnly || sID_BP.startsWith("_doc_")) {
-//                    Set<String> aCandidateCroupsToCheck = getGroupsByProcessDefinition(oProcessDefinition);
-
-//                    Set<String> aCandidateCroupsToCheck = new HashSet<>();
-//                    loadCandidateGroupsFromTasks(oProcessDefinition, aCandidateCroupsToCheck);
                     Set<String> aCandidateCroupsToCheck = getGroupsOfProcessTask(oProcessDefinition);
 
                     loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
-                    //return aCandidateCroupsToCheck;
 
-
-                    /*if(checkIncludeProcessDefinitionIntoGroupList(aGroup, aCandidateCroupsToCheck)){
-                        aProcessDefinition_Return.add(oProcessDefinition);
-                    }*/
                     for (Group oGroup : aGroup) {
                         for (String sProcessGroupMask : aCandidateCroupsToCheck) {//asProcessGroupMask
                             if (sProcessGroupMask.contains("${")) {
@@ -1200,12 +1187,8 @@ public class ActionTaskService {
                             }
                         }
                     }
-                    //return false;
                 }
-
             }
-            //return aProcessDefinition_Return;
-
         } else {
             LOG.info("Have not found active process definitions.");
         }
@@ -2494,11 +2477,21 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
                 processInstanceId(task.getProcessInstanceId()).
                 includeProcessVariables().singleResult();
+        
+        Long point1Start = System.nanoTime();
+        
         String sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
         LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
-
+        
+        Long point1EndPoint2Start = System.nanoTime();
+        Long res1 = point1EndPoint2Start - point1Start;
+                
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         Map<String, Object> taskInfo = new HashMap<>();
+        
+        Long point2EndPoint3Start = System.nanoTime();
+        Long res2 = point2EndPoint3Start - point1EndPoint2Start;
+                
         taskInfo.put("id", task.getId());
         taskInfo.put("url", oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
         taskInfo.put("owner", task.getOwner());
@@ -2523,6 +2516,10 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
         taskInfo.put("processDefinitionUrl", oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
         taskInfo.put("variables", new LinkedList());
+        
+        Long point3EndPoint4Start = System.nanoTime();
+        Long res3 = point3EndPoint4Start - point2EndPoint3Start;
+        
         if (flowSlotTicket != null) {
             LOG.info("Populating flow slot ticket");
             DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
@@ -2533,6 +2530,11 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()) : null);
             taskInfo.put("flowSlotTicket", flowSlotTicketData);
         }
+        
+        Long point4End = System.nanoTime();
+        Long res4 = point4End - point3EndPoint4Start;
+        LOG.info("res1: " + res1 + "\n" + "res2: " + res2 + "\n" + "res3: " + res3 + "\n" + "res4: " + res4);
+        
         return taskInfo;
     }
 
