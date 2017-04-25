@@ -65,6 +65,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.activiti.engine.task.IdentityLinkType;
 
 @Component("documentStepService")
 @Service
@@ -405,13 +406,17 @@ public class DocumentStepService {
                 sKey_Step);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = new LinkedList();
         try {
-
+            setDocumentStep(snID_Process_Activiti, sKey_Step);
             aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
+            
+            oTaskService.addCandidateGroup(oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
+                    active().singleResult().getId(), sKey_Group_Delegate);
+            
             //delegateTask.addCandidateGroups(asGroup);
             //delegateTask.addCandidateGroup(sGroup);
             //delegateTask.deleteCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
         
-//            removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+            //removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
             
             //syncDocumentGroups(DelegateTask delegateTask, List<DocumentStep> aDocumentStep);
 
