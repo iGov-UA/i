@@ -370,10 +370,10 @@ public class ActionEventService {
             oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
             isChanged = true;
         }
-        if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) { //TODO: убрать после реализации задачи 1553
+        /*if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) { //TODO: убрать после реализации задачи 1553
         	oHistoryEvent_Service.setSoData(soData);
             isChanged = true;
-        }
+        }*/
 
         if (sBody != null && !sBody.equals(oHistoryEvent_Service.getsBody())) {
             oHistoryEvent_Service.setsBody(sBody);
@@ -425,7 +425,7 @@ public class ActionEventService {
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
                     null, sSubjectInfo);
         } else {
-            /*if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
+           /* if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
                 oHistoryEvent_Service.setSoData(soData);
                 isChanged = true;
             }*/
