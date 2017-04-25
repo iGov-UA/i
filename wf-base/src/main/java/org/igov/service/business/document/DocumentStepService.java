@@ -402,16 +402,37 @@ public class DocumentStepService {
                 sKey_Step);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = new LinkedList();
         try {
-            setDocumentStep(snID_Process_Activiti, sKey_Step);
-            aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
+            
+            DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
+            
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
+            LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) 
+            {
+                if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                    LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                    oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group_Delegate);
+                    oDocumentStepSubjectRight.setsDateECP(null);
+                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                    break;
+                }
+            }
+            
+            String nId_Task = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
+                    active().singleResult().getId();
+            oTaskService.addCandidateGroup(nId_Task, sKey_Group_Delegate);
+            
+             oTaskService.deleteCandidateGroup(nId_Task, sKey_Group);
+            //setDocumentStep(snID_Process_Activiti, sKey_Step);
+            /*aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
 
-            oTaskService.addCandidateGroup(oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
-                    active().singleResult().getId(), sKey_Group_Delegate);
+            */
 
             //delegateTask.addCandidateGroups(asGroup);
             //delegateTask.addCandidateGroup(sGroup);
             //delegateTask.deleteCandidateGroup(oDocumentStepSubjectRight.getsKey_GroupPostfix());
-            removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
+            //removeDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group);
             //syncDocumentGroups(DelegateTask delegateTask, List<DocumentStep> aDocumentStep);
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
