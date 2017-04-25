@@ -419,9 +419,11 @@ public class DocumentStepService {
                 }
             }
             
-            oTaskService.addCandidateGroup(oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
-                    active().singleResult().getId(), sKey_Group_Delegate);
+            String nId_Task = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
+                    active().singleResult().getId();
+            oTaskService.addCandidateGroup(nId_Task, sKey_Group_Delegate);
             
+             oTaskService.deleteCandidateGroup(nId_Task, sKey_Group);
             //setDocumentStep(snID_Process_Activiti, sKey_Step);
             /*aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
 
