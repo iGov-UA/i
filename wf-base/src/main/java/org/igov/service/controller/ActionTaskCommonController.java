@@ -3081,7 +3081,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "/getProcessTemplate", notes = "##### Получение шаблона процесса#####\n\n")
     @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public @ResponseBody
-    Map<String, Object> setProcess(
+    Map<String, Object> getProcessTemplate(
             @ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
@@ -3101,10 +3101,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             StartFormData formData = formService.getStartFormData(resProcessDefinitions.get(0).getId());
 
             LOG.info("Received form " + formData);
-            Map<String, Object> formDataDTO = new HashMap<String, Object>();
+            Map<String, Object> formDataDTO = new HashMap<>();
             formDataDTO.put("formKey", formData.getFormKey());
             formDataDTO.put("deploymentId", formData.getDeploymentId());
-            formDataDTO.put("formProperties", processFormProperties(formData.getFormProperties()));
+            formDataDTO.put("aFormProperty", processFormProperties(formData.getFormProperties()));
             formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
 
             Map[] res = new Map[1];
@@ -3130,9 +3130,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     protected List<Map<String, Object>> processFormProperties(List<FormProperty> formProperties) {
-        List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+        List<Map<String, Object>> res = new LinkedList<>();
         for (FormProperty property : formProperties) {
-            Map<String, Object> currProperty = new HashMap<String, Object>();
+            Map<String, Object> currProperty = new HashMap<>();
             currProperty.put("id", property.getId());
             currProperty.put("name", property.getName());
             currProperty.put("type", property.getType().getName());
@@ -3142,11 +3142,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             currProperty.put("writable", property.isWritable());
             if ("enum".equals(property.getType().getName())) {
                 Object oValues = property.getType().getInformation("values");
-                List<Map> enumValuesPossible = new LinkedList<Map>();
+                List<Map> enumValuesPossible = new LinkedList<>();
                 if (oValues instanceof Map) {
                     Map<String, String> mValue = (Map) oValues;
                     for (Map.Entry<String, String> mapEntry : mValue.entrySet()) {
-                        Map<String, Object> currEnumValue = new HashMap<String, Object>();
+                        Map<String, Object> currEnumValue = new HashMap<>();
                         currEnumValue.put("id", mapEntry.getKey());
                         currEnumValue.put("name", mapEntry.getValue());
                         enumValuesPossible.add(currEnumValue);
@@ -3164,9 +3164,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
-            @ApiParam(value = "nID_Subject", required = true) @RequestParam(value = "nID_Subject", required = true) String snID_Subject,
-             @ApiParam(value = "nID_Service", required = true) @RequestParam(value = "nID_Service", required = true) String snID_Service,
-            @ApiParam(value = "nID_ServiceData", required = true) @RequestParam(value = "nID_ServiceData", required = true) String snID_ServiceData,
+            @ApiParam(value = "nID_Subject", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
+             @ApiParam(value = "nID_Service", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+            @ApiParam(value = "nID_ServiceData", required = true) @RequestParam(value = "nID_ServiceData", required = true) Long nID_ServiceData,
              @ApiParam(value = "sID_UA", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA,
             @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
     ) throws Exception {
@@ -3182,10 +3182,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
             if (mJsonBody != null) {
-                if (mJsonBody.containsKey("properties")) {
-                    LOG.info("Parsing properties: " + mJsonBody.get("properties"));
+                if (mJsonBody.containsKey("aFormProperty")) {
+                    LOG.info("Parsing aFormProperty: " + mJsonBody.get("aFormProperty"));
 
-                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")) {
+                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("aFormProperty")) {
                         LOG.info("Parsing param: " + param);
                         mParam.put((String) param.get("id"), param.get("value"));
                     }
@@ -3196,7 +3196,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         mParam.put("sLoginAuthor", sLogin);
-        LOG.info("Processing process with key " + StringUtils.substringBefore(sID_BP, ":"));
+        LOG.info("Processing process with key {} mParam {}", StringUtils.substringBefore(sID_BP, ":"), mParam);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(StringUtils.substringBefore(sID_BP, ":"), mParam);
         Map<String, Object> mReturn = new HashMap<>();
 

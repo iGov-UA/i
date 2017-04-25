@@ -370,13 +370,15 @@ public class ActionEventService {
             oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
             isChanged = true;
         }
-        if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) { //TODO: убрать после реализации задачи 1553
+        /*if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) { //TODO: убрать после реализации задачи 1553
         	oHistoryEvent_Service.setSoData(soData);
             isChanged = true;
-        }
+        }*/
 
         if (sBody != null && !sBody.equals(oHistoryEvent_Service.getsBody())) {
+        	 LOG.info("sBodyнннннннннннннннннннннннннннннннннны " + sBody);
             oHistoryEvent_Service.setsBody(sBody);
+            LOG.info("sBodyнннннннннннннннннннннннннннннннннныФАЕУКККККККККККККККККК " + sBody);
             isChanged = true;
         }
         if (sToken == null || !sToken.equals(oHistoryEvent_Service.getsToken())) {
@@ -425,7 +427,7 @@ public class ActionEventService {
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
                     null, sSubjectInfo);
         } else {
-            /*if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
+           /* if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
                 oHistoryEvent_Service.setSoData(soData);
                 isChanged = true;
             }*/
@@ -472,6 +474,7 @@ public class ActionEventService {
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
                 LOG.info("setting message");
                 subjectMessagesDao.setMessage(oSubjectMessage);
+                LOG.info("setting message after setMessage ");
             }
 
         }
