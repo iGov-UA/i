@@ -3185,7 +3185,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (mJsonBody.containsKey("aFormProperty")) {
                     LOG.info("Parsing aFormProperty: " + mJsonBody.get("aFormProperty"));
 
-                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")) {
+                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("aFormProperty")) {
                         LOG.info("Parsing param: " + param);
                         mParam.put((String) param.get("id"), param.get("value"));
                     }
