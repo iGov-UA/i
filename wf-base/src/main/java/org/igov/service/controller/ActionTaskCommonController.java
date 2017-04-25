@@ -3130,9 +3130,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     protected List<Map<String, Object>> processFormProperties(List<FormProperty> formProperties) {
-        List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+        List<Map<String, Object>> res = new LinkedList<>();
         for (FormProperty property : formProperties) {
-            Map<String, Object> currProperty = new HashMap<String, Object>();
+            Map<String, Object> currProperty = new HashMap<>();
             currProperty.put("id", property.getId());
             currProperty.put("name", property.getName());
             currProperty.put("type", property.getType().getName());
@@ -3142,11 +3142,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             currProperty.put("writable", property.isWritable());
             if ("enum".equals(property.getType().getName())) {
                 Object oValues = property.getType().getInformation("values");
-                List<Map> enumValuesPossible = new LinkedList<Map>();
+                List<Map> enumValuesPossible = new LinkedList<>();
                 if (oValues instanceof Map) {
                     Map<String, String> mValue = (Map) oValues;
                     for (Map.Entry<String, String> mapEntry : mValue.entrySet()) {
-                        Map<String, Object> currEnumValue = new HashMap<String, Object>();
+                        Map<String, Object> currEnumValue = new HashMap<>();
                         currEnumValue.put("id", mapEntry.getKey());
                         currEnumValue.put("name", mapEntry.getValue());
                         enumValuesPossible.add(currEnumValue);
@@ -3182,8 +3182,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
             if (mJsonBody != null) {
-                if (mJsonBody.containsKey("properties")) {
-                    LOG.info("Parsing properties: " + mJsonBody.get("aFormProperty"));
+                if (mJsonBody.containsKey("aFormProperty")) {
+                    LOG.info("Parsing aFormProperty: " + mJsonBody.get("aFormProperty"));
 
                     for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")) {
                         LOG.info("Parsing param: " + param);
