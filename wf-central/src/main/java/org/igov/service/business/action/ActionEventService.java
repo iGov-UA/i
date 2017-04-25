@@ -466,9 +466,10 @@ public class ActionEventService {
                 mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
                 //List<Map<String,String>> amReturnAnswer = amFieldMessageQuestion(soData, bQuestion);//saField
                 //mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(amReturnAnswer, true, false));//soData
-                mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//soData
+              //  mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//soData - ЕСЛИ ЧТО ОТКОММЕНТАРИТЬ!!!!!!!
+                LOG.info("ssetHistoryEvent STARTTTTTTTTTTTTTTTTTTTTTTTT ");
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
-
+                LOG.info("ssetHistoryEvent ENDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD ");
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                         sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo,bQuestion);
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
