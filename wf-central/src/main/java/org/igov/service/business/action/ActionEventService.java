@@ -370,10 +370,10 @@ public class ActionEventService {
             oHistoryEvent_Service.setsUserTaskName(sUserTaskName);
             isChanged = true;
         }
-        if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) { //TODO: убрать после реализации задачи 1553
+        /*if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) { //TODO: убрать после реализации задачи 1553
         	oHistoryEvent_Service.setSoData(soData);
             isChanged = true;
-        }
+        }*/
 
         if (sBody != null && !sBody.equals(oHistoryEvent_Service.getsBody())) {
             oHistoryEvent_Service.setsBody(sBody);
@@ -425,7 +425,7 @@ public class ActionEventService {
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
                     null, sSubjectInfo);
         } else {
-            /*if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
+           /* if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
                 oHistoryEvent_Service.setSoData(soData);
                 isChanged = true;
             }*/
@@ -450,6 +450,8 @@ public class ActionEventService {
                 nID_SubjectMessageType = 5L;
                 LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
                 LOG.info("nID_SubjectMessageType is set to" + nID_SubjectMessageType);
+                LOG.info("soData in oHistoryEvent_Service is 5l ={}", oHistoryEvent_Service.getSoData().toString());
+                
             }
 
             if (nID_SubjectMessageType != null) {
@@ -478,6 +480,7 @@ public class ActionEventService {
         if (isChanged) {
             LOG.info("updating oHistoryEvent_Service: {}", oHistoryEvent_Service);
             historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+            LOG.info("soData in oHistoryEvent_Service is END ={}", oHistoryEvent_Service.getSoData());
         }
         LOG.info("Mehtod updateActionStatus_Central started for task " + sID_Order);
         return oHistoryEvent_Service;
