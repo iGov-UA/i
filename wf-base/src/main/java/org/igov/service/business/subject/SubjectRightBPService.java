@@ -46,8 +46,6 @@ public class SubjectRightBPService {
             
             List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group_Referent", asID_Group);
             
-            LOG.info("List<SubjectRightBP> " + aSubjectRightBP);
-            
 		if (aSubjectRightBP != null) {
 			for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) {
 				List<ProcessDefinition> aProcessDefinition = oRepositoryService.createProcessDefinitionQuery()
