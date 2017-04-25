@@ -474,6 +474,7 @@ public class ActionEventService {
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
                 LOG.info("setting message");
                 subjectMessagesDao.setMessage(oSubjectMessage);
+                LOG.info("setting message after setMessage ");
             }
 
         }
