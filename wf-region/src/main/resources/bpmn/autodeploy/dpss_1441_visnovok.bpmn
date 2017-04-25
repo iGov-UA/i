@@ -77,7 +77,13 @@
         <activiti:formProperty id="sDoc308" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки, якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі за кордоном;за наявності;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDoc309" name="Акт про обстеження підприємства;за наявності;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDoc310" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками безпечності; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="label_info" name=" ; ;labelType=info" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
+          <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" required="true"></activiti:formProperty>
+          <activiti:formProperty id="marker_08" name="Наявність поля для завантаження висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+          <activiti:formProperty id="saConclusionAvaliable" name="Я вже маю проект висновку державної санітарно-епідеміологічної експертизи" type="enum" required="true">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+          </activiti:formProperty>
+          <activiti:formProperty id="label_info" name=" ; ;labelType=info" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="ASO">
@@ -86,7 +92,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]; ;bVisible=false" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="exclusivegateway8"></sequenceFlow>
     <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -142,14 +148,17 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow41" sourceRef="usertask8" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="servicetask5" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="usertask2" targetRef="usertask5"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow44" sourceRef="exclusivegateway8" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow45" sourceRef="exclusivegateway8" targetRef="usertask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dpss_1441_visnovok">
     <bpmndi:BPMNPlane bpmnElement="dpss_1441_visnovok" id="BPMNPlane_dpss_1441_visnovok">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="230.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="91.0" y="154.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="220.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="221.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="340.0" y="220.0"></omgdc:Bounds>
@@ -214,12 +223,15 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNShape bpmnElement="usertask8" id="BPMNShape_usertask8">
         <omgdc:Bounds height="55.0" width="105.0" x="1408.0" y="470.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
+        <omgdc:Bounds height="40.0" width="40.0" x="90.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="145.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="190.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="108.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="110.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="242.0" y="275.0"></omgdi:waypoint>
+        <omgdi:waypoint x="242.0" y="276.0"></omgdi:waypoint>
         <omgdi:waypoint x="242.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
@@ -332,6 +344,15 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="720.0" y="435.0"></omgdi:waypoint>
         <omgdi:waypoint x="720.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="130.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="248.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="110.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="110.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="668.0" y="497.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
