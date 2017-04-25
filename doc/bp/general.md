@@ -140,15 +140,6 @@
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 ``` 
 
-
-gfdsgfdg
-[SPOILER]
-dfdsgdfsg
-[/SPOILER]
-
-
-
-
 [детальней...](#_string)
 
 ### long
@@ -399,7 +390,7 @@ type="queueData" required="true"></activiti:formProperty>
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
    * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
    
-   [детальней...](#_Listener)
+   [детальней...](#_listener)
 
 
 ##### settasks
@@ -447,13 +438,15 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### addingauser
 ### Добавляем пользователя
-* Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
+* Выбираем ссылку исходя из ветки в которой мы будем работать с бизнес-процессом: Альфа(ветка test), Бета(ветка test-beta), Дельта (ветка test-delta), Омега (ветка master). Пример указан для test-beta:  
+   Заходим по ссылке https://beta.test.region.igov.org.ua/groups. Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
 
 [детальней...](#_addingauser)
 
 ###### addingausertoagroup 
 ### Добавляем пользователя в группу
-* Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
+* Выбираем ссылку исходя из ветки в которой мы будем работать с процессом Альфа(ветка test), Бета(ветка test-beta), Дельта (ветка test-delta), Омега (ветка master). Пример указан для test-beta:  
+    Заходим по ссылке https://beta.test.region.igov.org.ua/groups. Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
 
 [детальней...](#_addingausertoagroup)
 
@@ -1045,7 +1038,7 @@ digit3 - переменная, куда присвоится результат 
 ```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
-* ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
+* ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
 а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
 ###### usingvariablesinemailtemplates
@@ -1531,7 +1524,7 @@ execution.setVariable('sExecutor', sExecutor)
 ###### 	branchs
 ### Ветки
 Очень упрощенная схема веток, с которыми работают бизнес-аналитики приведена на рисунке:  
-![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sTU1vOU12R2tLc0k)  
+![19_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/19_0.jpg)  
 Основная разработка и тестирование бизнес-процессов происходит в ветке test-delta.
 Как установить и зятнуть себе локально репозиторий описано [здесь](https://github.com/e-government-ua/i/wiki/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-ActivitiDesigner,-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D0%B2). 
 Програмисты ведут свою разработку в ветке test.  

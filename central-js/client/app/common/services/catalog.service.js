@@ -29,6 +29,9 @@ angular.module('app')
           bNew: true,
           sID_SubjectOwner : sID_SubjectOwner
         };
+        if($rootScope.profile.nID_Place_Profile && $rootScope.profile.nID_Place_Profile > 0){
+          data.nID_Place_Profile = $rootScope.profile.nID_Place_Profile
+        }
         return $http.get('./api/catalog/getCatalogTree', {
           params: data,
           data: data
@@ -44,6 +47,9 @@ angular.module('app')
           nID_Category: nID_Category,
           sID_SubjectOwner : sID_SubjectOwner
         };
+        if($rootScope.profile.nID_Place_Profile && $rootScope.profile.nID_Place_Profile > 0){
+          data.nID_Place_Profile = $rootScope.profile.nID_Place_Profile
+        }
         return $http.get('./api/catalog/getCatalogTree', {
           params: data,
           data: data
@@ -128,6 +134,9 @@ angular.module('app')
       sFind: sFind,
       nID_Category: 1
     };
+    if($rootScope.profile.nID_Place_Profile && $rootScope.profile.nID_Place_Profile > 0){
+      data.nID_Place_Profile = $rootScope.profile.nID_Place_Profile
+    }
     return $http.get('./api/catalog/getCatalogTree', {
       params: data,
       data: data
@@ -154,6 +163,9 @@ angular.module('app')
       nID_Category: nID_Category,
       sFind: sFind || null
     };
+    if($rootScope.profile.nID_Place_Profile && $rootScope.profile.nID_Place_Profile > 0){
+      data.nID_Place_Profile = $rootScope.profile.nID_Place_Profile
+    }
     return $http.get('./api/catalog/getCatalogTree', {
       params: data,
       data: data

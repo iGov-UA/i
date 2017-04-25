@@ -728,15 +728,142 @@ module.exports.signForm = function (req, res) {
               body = body.split(keyValue).join(printFormData.params[key]);
             }
           }
+          var aFormProperties = [];
+          if(data.activitiForm && data.activitiForm.formProperties){
+            aFormProperties = data.activitiForm.formProperties;
+          }
+          body = fillPrintTable(aFormProperties, body, /(?=<!--\[)([\s\S]*?]-->)/g);
           var dateCreate = new Date();
           var formatedDateCreate = dateCreate.getFullYear() + '-' + ('0' + (dateCreate.getMonth() + 1)).slice(-2) + '-' + ('0' + dateCreate.getDate()).slice(-2);
+          var formatedTimeCreate = ('0' + dateCreate.getHours()).slice(-2) + ':' + ('0' + dateCreate.getMinutes()).slice(-2);
           body = body.split('[sDateCreateProcess]').join(formatedDateCreate);
+          body = body.split('[sTimeCreateProcess]').join(formatedTimeCreate);
+          body = body.split('[sDateTimeCreateProcess]').join(formatedDateCreate + ' ' + formatedTimeCreate);
+          body = body.split('[sDateCreate]').join(formatedDateCreate + ' ' + formatedTimeCreate);
+          body = body.split('[sCurrentDateTime]').join(formatedDateCreate + ' ' + formatedTimeCreate);
+          body = body.split('[sUserInfo]').join(function () {
+            var sUserInfo = '';
+            if(printFormData.params){
+              if(printFormData.params.bankIdlastName){
+                sUserInfo = sUserInfo + printFormData.params.bankIdlastName;
+              }
+              if(printFormData.params.bankIdfirstName){
+                if(sUserInfo !== ''){
+                  sUserInfo = sUserInfo + ' ';
+                }
+                sUserInfo = sUserInfo + printFormData.params.bankIdfirstName;
+              }
+              if(printFormData.params.bankIdmiddleName){
+                if(sUserInfo !== ''){
+                  sUserInfo = sUserInfo + ' ';
+                }
+                sUserInfo = sUserInfo + printFormData.params.bankIdmiddleName;
+              }
+            }
+            return sUserInfo;
+          });
           callback(body);
         });
       } else {
         callback(formTemplate.createHtml(templateData));
       }
     };
+
+    function fillPrintTable(form, printTemplate, reg) {
+      var _printTemplate = printTemplate;
+      var templates = [], ids = [], found, idArray = [];
+      while (found = reg.exec(_printTemplate)) {
+        templates.push(found[1]);
+        ids.push(found[2]);
+      }
+      var matchesIds = [];
+
+      // ищем маркеры что определяют в принтформе таблицы
+      templates.forEach(function (template) {
+        var comment = template.match(/<!--[\s\S]*?-->/g);
+        if(Array.isArray(comment)) {
+          for(var i=0; i<comment.length; i++) {
+            comment[i] = comment[i].match(/\w+/)[0];
+          }
+        }
+        if(comment) matchesIds.push(comment);
+      });
+
+      // формируем массив из ид маркеров таблиц что встретились в принтформе
+      matchesIds.forEach(function (ids) {
+        var arr = ids.filter(function(item, pos, self) {
+          return self.indexOf(item) === pos;
+        });
+        idArray.push(arr);
+      });
+
+      // когда ид маркера принтформы совпало с ид таблицы - заменяем теги на поля таблицы. проверяем к-во строк таблицы
+      // если больше одной - клонируем до нужного к-ва, после наполняем таблицей.
+      idArray.forEach(function(id) {
+        var tables = form.filter(function (property) {
+          return property.type === 'table';
+        });
+        tables.forEach(function(item) {
+          if(item.id === id[0]) {
+            templates.forEach(function (template) {
+              var commentedField = template.match(/<!--.*?-->/)[0];
+              var uncommentedField = commentedField.split('--')[1];
+              var result = uncommentedField.slice(1);
+              if(result === id[0]){
+                var withAddedRowsTemplate = template.repeat(item.aRow.length);
+                item.aRow.forEach(function (row) {
+                  row.aField.forEach(function (field) {
+                    var fieldId = function () {
+                      if(field.type === 'enum' && field.value) {
+                        for (var j = 0; j < field.a.length; j++) {
+                          if (field.a[j].name === field.value) {
+                            return field.a[j].name ? field.a[j].name : ' ';
+                          }
+                        }
+                      } else if(field.type === 'enum' && !field.value) {
+                        return ' ';
+                      } else if(field.type === 'date' && !field.value) {
+                        return field.props && field.props.value ? field.props.value.split('T')[0] : ' ';
+                      } else if (field.value) {
+                        return field.value;
+                      } else if (field.default) {
+                        return field.default;
+                      } else if (field.props) {
+                        return field.props.value;
+                      } else {
+                        return ' ';
+                      }
+                    };
+                    withAddedRowsTemplate = populateSystemTag(withAddedRowsTemplate, '['+ field.id +']', fieldId, true);
+                  })
+                });
+                _printTemplate = _printTemplate.replace(template, withAddedRowsTemplate);
+              }
+            })
+          }
+        });
+      });
+
+      function populateSystemTag (printTemplate, tag, replaceWith, table) {
+        var replacement;
+        if (replaceWith instanceof Function) {
+          replacement = replaceWith();
+        } else {
+          replacement = replaceWith;
+        }
+        if(table) {
+          return printTemplate.replace(new RegExp(escapeRegExp(tag)), replacement);
+        } else {
+          return printTemplate.replace(new RegExp(escapeRegExp(tag), 'g'), replacement);
+        }
+
+        function escapeRegExp (str) {
+          return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+        }
+      }
+
+      return _printTemplate;
+    }
 
     async.waterfall([
       function (callback) {
@@ -774,7 +901,7 @@ module.exports.signForm = function (req, res) {
           uploadFileService.downloadBuffer(params, function (error, response, buffer) {
 
             formData.formDataPrintPdf.params[fileField.id] = buffer.toString();
-            
+
             callbackEach();
           }, sHost)
         }, function (error) {
