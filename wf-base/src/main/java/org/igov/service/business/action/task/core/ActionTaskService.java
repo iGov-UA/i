@@ -2288,26 +2288,43 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     public void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
             Map<String, FlowSlotTicket> mapOfTickets, List<Map<String, Object>> data) {
         LOG.info("Sorting result by flow slot ticket create date. Number of tasks:{} number of tickets:{}", tasks.size(), mapOfTickets.size());
+        
+        Long point1Start = System.nanoTime();
+                
         List<FlowSlotTicket> tickets = new LinkedList<>();
         tickets.addAll(mapOfTickets.values());
         Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
         LOG.info("Sorted tickets by order create date");
+        
+        Long point1EndPoint2Start = System.nanoTime();
+        LOG.info("point1 service time: " + String.format("%,12d", (point1EndPoint2Start - point1Start)));
+        
         Map<String, TaskInfo> tasksMap = new HashMap<>();
         for (int i = 0; i < tasks.size(); i++) {
             TaskInfo task = (TaskInfo) tasks.get(i);
             tasksMap.put(((TaskInfo) tasks.get(i)).getProcessInstanceId(), task);
         }
+        
+        Long point2EndPoint3Start = System.nanoTime();
+        LOG.info("point2 service time: " + String.format("%,12d", (point2EndPoint3Start - point1EndPoint2Start)));
+        
         for (int i = 0; i < tickets.size(); i++) {
             try {
                 FlowSlotTicket ticket = tickets.get(i);
                 TaskInfo task = tasksMap.get(ticket.getnID_Task_Activiti());
+                
+                Long point1SpecialStart = System.nanoTime();
                 Map<String, Object> taskInfo = populateTaskInfo(task, ticket);
+                Long point1SpecialEndt = System.nanoTime();
+                LOG.info("point1 special service time: " + String.format("%,12d", (point1SpecialEndt - point1SpecialStart)));
 
                 data.add(taskInfo);
             } catch (Exception e) {
                 LOG.error("error: ", e);
             }
         }
+        Long point3End = System.nanoTime();
+        LOG.info("point3 service time: " + String.format("%,12d", (point3End - point2EndPoint3Start)));
     }
 
     public List<TaskInfo> returnTasksFromCache(final String sLogin, final String sFilterStatus, final boolean bIncludeAlienAssignedTasks,
