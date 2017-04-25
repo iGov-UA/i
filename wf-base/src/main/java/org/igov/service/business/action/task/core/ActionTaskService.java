@@ -2476,17 +2476,17 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     public Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket) {
         
         Long missedPoint = System.nanoTime();
-        /*
+        
         HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
                 processInstanceId(task.getProcessInstanceId()).
                 includeProcessVariables().singleResult();
-        */
+        
         Long point1Start = System.nanoTime();
         Long res5 = point1Start - missedPoint;
         
-       /* String sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
+        String sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
         LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
-        */
+        
         Long point1EndPoint2Start = System.nanoTime();
         Long res1 = point1EndPoint2Start - point1Start;
                 
@@ -2501,7 +2501,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         taskInfo.put("owner", task.getOwner());
         taskInfo.put("assignee", task.getAssignee());
         taskInfo.put("delegationState", (task instanceof Task) ? ((Task) task).getDelegationState() : null);
-     //   taskInfo.put("name", sPlace + task.getName());
+        taskInfo.put("name", sPlace + task.getName());
         taskInfo.put("description", task.getDescription());
         taskInfo.put("createTime", sdf.format(task.getCreateTime()));
         taskInfo.put("dueDate", task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
