@@ -1020,7 +1020,7 @@ public class DocumentStepService {
             LOG.info("amUserProperty={}", amUserProperty);
             String sLogin = oDocumentStepSubjectRight.getsLogin();
             LOG.info("sLogin={}", sLogin);
-            String sLogin_Referent = null, sFIO_Referent = null;
+            String sLogin_Referent = "", sFIO_Referent = "";
             if (sLogin != null) {
                 User oUser = oIdentityService.createUserQuery().userId(sLogin).singleResult();
                 if (oUser != null) {
