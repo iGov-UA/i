@@ -21,6 +21,7 @@
       <!--field for OKPO search start-->
       <div class="okpo" ng-if="isOKPOField(item.id)">
         <input type="text"
+               ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()"
                name="{{item.id}}"
                ng-model="item.value"
                ng-required="isRequired(item)"
