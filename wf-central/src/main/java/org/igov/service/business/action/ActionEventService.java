@@ -376,9 +376,7 @@ public class ActionEventService {
         }*/
 
         if (sBody != null && !sBody.equals(oHistoryEvent_Service.getsBody())) {
-        	 LOG.info("sBodyнннннннннннннннннннннннннннннннннны " + sBody);
             oHistoryEvent_Service.setsBody(sBody);
-            LOG.info("sBodyнннннннннннннннннннннннннннннннннныФАЕУКККККККККККККККККК " + sBody);
             isChanged = true;
         }
         if (sToken == null || !sToken.equals(oHistoryEvent_Service.getsToken())) {
@@ -452,6 +450,8 @@ public class ActionEventService {
                 nID_SubjectMessageType = 5L;
                 LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
                 LOG.info("nID_SubjectMessageType is set to" + nID_SubjectMessageType);
+                LOG.info("soData in oHistoryEvent_Service is 5l ={}", oHistoryEvent_Service.getSoData().toString());
+                
             }
 
             if (nID_SubjectMessageType != null) {
@@ -480,6 +480,7 @@ public class ActionEventService {
         if (isChanged) {
             LOG.info("updating oHistoryEvent_Service: {}", oHistoryEvent_Service);
             historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+            LOG.info("soData in oHistoryEvent_Service is END ={}", oHistoryEvent_Service.getSoData());
         }
         LOG.info("Mehtod updateActionStatus_Central started for task " + sID_Order);
         return oHistoryEvent_Service;
