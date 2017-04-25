@@ -1022,6 +1022,11 @@ digit3 - переменная, куда присвоится результат 
 # 15. Емайлы
 [вернуться в начало](general.md)
 
+По умолчанию почта об уведомлении клиента об успешной отправке заявки c сайта iGov (https://igov.org.ua/)  автоматически рассылаться не будет. Для того, чтобы добавить отправку стандартной почты необходимо прописать ID  бизнес-процесса в следующий файл:
+i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessingInterceptor.java
+В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.
+![15_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_1.jpg)
+
 Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
 `#{MailTaskWithoutAttachment}`  
 `#{MailTaskWithAttachments}`  
@@ -1038,7 +1043,7 @@ digit3 - переменная, куда присвоится результат 
 ```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
-* ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
+ ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
 а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
 ###### usingvariablesinemailtemplates
