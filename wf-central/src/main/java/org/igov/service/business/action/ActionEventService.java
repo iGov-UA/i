@@ -425,10 +425,6 @@ public class ActionEventService {
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
                     null, sSubjectInfo);
         } else {
-           /* if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
-                oHistoryEvent_Service.setSoData(soData);
-                isChanged = true;
-            }*/
             LOG.info("soData is not null or empty array: " + soData);
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: Move To Interceptor!!!
             StringBuilder osBody = new StringBuilder(sBody);
@@ -464,12 +460,8 @@ public class ActionEventService {
                 Map<String, String> mParamMessage = new HashMap<>();
                 mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
                 mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
-                //List<Map<String,String>> amReturnAnswer = amFieldMessageQuestion(soData, bQuestion);//saField
-                //mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(amReturnAnswer, true, false));//soData
-              //  mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//soData - ЕСЛИ ЧТО ОТКОММЕНТАРИТЬ!!!!!!!
-                LOG.info("ssetHistoryEvent STARTTTTTTTTTTTTTTTTTTTTTTTT ");
+              //  mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//TODO://soData - убрать после реализации задачи 1553
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
-                LOG.info("ssetHistoryEvent ENDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD ");
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                         sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo,bQuestion);
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());

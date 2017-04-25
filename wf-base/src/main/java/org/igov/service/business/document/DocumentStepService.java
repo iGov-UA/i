@@ -402,11 +402,32 @@ public class DocumentStepService {
                 sKey_Step);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = new LinkedList();
         try {
-            setDocumentStep(snID_Process_Activiti, sKey_Step);
-            aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
+            
+            DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
+            
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
+            LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) 
+            {
+                if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                    LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                    oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group_Delegate);
+                    oDocumentStepSubjectRight.setsDateECP(null);
+                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                    break;
+                }
+            }
+            
+            String nId_Task = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
+                    active().singleResult().getId();
+            oTaskService.addCandidateGroup(nId_Task, sKey_Group_Delegate);
+            
+             oTaskService.deleteCandidateGroup(nId_Task, sKey_Group);
+            //setDocumentStep(snID_Process_Activiti, sKey_Step);
+            /*aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
 
-            oTaskService.addCandidateGroup(oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
-                    active().singleResult().getId(), sKey_Group_Delegate);
+            */
 
             //delegateTask.addCandidateGroups(asGroup);
             //delegateTask.addCandidateGroup(sGroup);
@@ -967,7 +988,7 @@ public class DocumentStepService {
 
         DocumentStep oDocumentStep_Active = aDocumentStep.stream().filter(
                 o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
-                .findAny().orElse(null);
+                .findAny().orElse(null);    
         LOG.info("oDocumentStep_Active={}", oDocumentStep_Active);
         if (oDocumentStep_Active == null) {
             throw new IllegalStateException(
@@ -982,10 +1003,15 @@ public class DocumentStepService {
                 aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
             }
         }
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Active.getRights()) {
-            aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
+        
+        List<DocumentStep> oDocumentStep_ExceptCommon = aDocumentStep.stream()
+                .filter(o -> !o.getsKey_Step().equals("_")).collect(Collectors.toList());
+        for(DocumentStep oDocumentStep : oDocumentStep_ExceptCommon){
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep.getRights()) { //oDocumentStep_Active.getRights()
+                aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
+            }
         }
-
+        
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
