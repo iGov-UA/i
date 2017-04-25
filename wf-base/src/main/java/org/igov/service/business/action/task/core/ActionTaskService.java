@@ -2272,17 +2272,28 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     public void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
             List<?> tasks, Map<String, FlowSlotTicket> mapOfTickets,
             List<Map<String, Object>> data) {
+        
+        Long point1Start = System.nanoTime();
+        
         LOG.info("populateResultSortedByTasksOrder. number of tasks:{} number of tickets:{} ", tasks.size(), mapOfTickets.size());
         for (int i = 0; i < tasks.size(); i++) {
             try {
                 TaskInfo task = (TaskInfo) tasks.get(i);
+                
+                Long point1SpecialStart = System.nanoTime();
+                
                 Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getProcessInstanceId()));
-
+                
+                Long point1SpecialEndt = System.nanoTime();
+                LOG.info("point1.2 special service time: " + String.format("%,12d", (point1SpecialEndt - point1SpecialStart)));
+                
                 data.add(taskInfo);
             } catch (Exception e) {
                 LOG.error("error: Error while populatiing task", e);
             }
         }
+        Long point1EndPoint2Start = System.nanoTime();
+        LOG.info("point1.2 service time: " + String.format("%,12d", (point1EndPoint2Start - point1Start)));
     }
 
     public void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
