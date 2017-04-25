@@ -54,16 +54,14 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+38" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail  Ви отримаєте результат обробки Вашого запиту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="infoMessage2" name=" ; ;labelType=info" type="label" default="Для пiдтвердження Ваших повноважень, скористайтесь Вашим ЕЦП нотаріуса для підпісання цього запиту"></activiti:formProperty>
-        <activiti:formProperty id="infoMessage4" name=" ; ;labelType=info" type="label" default="Після замовлення послуги, Ви отримаєте електроного листа для сплати  вартості послуги онлайн. Сума до сплати враховує також комісію карткових систем 1.8%. Сплачуючи вартість послуги, Ви надаєте свою згоду з актом-рахунком, що буде створено після надання послуги."></activiti:formProperty>
+        <activiti:formProperty id="infoMessage4" name=" ; ;labelType=info" type="label" default="Після замовлення послуги, Ви отримаєте електроного листа для сплати  вартості послуги онлайн. Сума до сплати враховує також комісію карткових систем 1.8%. Сплачуючи вартість послуги, Ви надаєте свою згоду з актом виконаних робіт, що буде створено після надання послуги."></activiti:formProperty>
         <activiti:formProperty id="marker1" name="form fields show-hide" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="set sSum" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2_1" name="set sSum" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_2_2.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="marker3" name="set printform content (phis)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker4" name="set printform content (jur)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker5" name="set required fields" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTime" name="sTime;  ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        
         <activiti:formProperty id="sLimit" name="sLimit - количество циклов ожидания оплаты;   field for test" type="string" default="48"></activiti:formProperty>
         <activiti:formProperty id="sStatus" name="sStatus;   field for test;bVisible=false" type="string" default="false"></activiti:formProperty>
       </extensionElements>
@@ -101,7 +99,7 @@
  ${sAskedAddress5} <br/>
 <br/>
 Для початку опрацювання запиту, Вам необхідно сплатити вартість послуги.<br/>
-Сплачуючи вартість послуги, Ви надаєте свою згоду з актом-рахунком, що буде створено після надання послуги.<br/>
+Сплачуючи вартість послуги, Ви надаєте свою згоду з актом виконаних робіт, що буде створено після надання послуги.<br/>
 
 [paymentButton_LiqPay]
 <br/>
@@ -170,7 +168,6 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="form_signed" name="Файл Запиту з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html]" type="invisible" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/bti/bti_request_1_3.html]" type="invisible" default="Акт виконаних робіт" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker4" name="set printform content (jur)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="result" name="Запит складено  без помилок?" type="enum">
           <activiti:value id="accept" name="Помилкі відсутні. Надіслати ліст для сплати вартості послуги"></activiti:value>
@@ -404,6 +401,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
 var status='0'
 if (payment.indexOf('_Успешный платеж')!=-1){status='true'} else {if (payment.indexOf('_Тестовый платеж')!=-1){status='true'} else {status='false'}}
 execution.setVariable('sStatus', status)
+
 </script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
