@@ -1143,7 +1143,7 @@ public class ActionTaskService {
                     "Unable to found business processes for sLogin=" + sLogin,
                     ProcessDefinition.class);
         }
-        LOG.info("Selecting business processes for the user with login: {}", sLogin);
+        LOG.debug("Selecting business processes for the user with login: {}", sLogin);
 
         List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
         List<ProcessDefinition> aProcessDefinition = oRepositoryService
@@ -1152,41 +1152,28 @@ public class ActionTaskService {
                 .latestVersion().list();
 
         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
-            LOG.info("Found {} active process definitions", aProcessDefinition.size());
-//            aProcessDefinition_Return = getAvailabilityProcessDefinitionByLogin(sLogin, aProcessDefinition);
-
-//            List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
-            List<Group> aGroup;
-            aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+            LOG.debug("Found {} active process definitions", aProcessDefinition.size());
+            List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
             if (aGroup != null && !aGroup.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 for (Group oGroup : aGroup) {
                     sb.append(oGroup.getId());
                     sb.append(",");
                 }
-                LOG.info("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
+                LOG.debug("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
             }
 
             for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
 
                 String sID_BP = oProcessDefinition.getId();
 
-                LOG.info("process definition id: sID_BP={}", oProcessDefinition.getId());
+                LOG.debug("process definition id: sID_BP={}", oProcessDefinition.getId());
 
                 if (!bDocOnly || sID_BP.startsWith("_doc_")) {
-//                    Set<String> aCandidateCroupsToCheck = getGroupsByProcessDefinition(oProcessDefinition);
-
-//                    Set<String> aCandidateCroupsToCheck = new HashSet<>();
-//                    loadCandidateGroupsFromTasks(oProcessDefinition, aCandidateCroupsToCheck);
                     Set<String> aCandidateCroupsToCheck = getGroupsOfProcessTask(oProcessDefinition);
 
                     loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
-                    //return aCandidateCroupsToCheck;
 
-
-                    /*if(checkIncludeProcessDefinitionIntoGroupList(aGroup, aCandidateCroupsToCheck)){
-                        aProcessDefinition_Return.add(oProcessDefinition);
-                    }*/
                     for (Group oGroup : aGroup) {
                         for (String sProcessGroupMask : aCandidateCroupsToCheck) {//asProcessGroupMask
                             if (sProcessGroupMask.contains("${")) {
@@ -1200,12 +1187,8 @@ public class ActionTaskService {
                             }
                         }
                     }
-                    //return false;
                 }
-
             }
-            //return aProcessDefinition_Return;
-
         } else {
             LOG.info("Have not found active process definitions.");
         }

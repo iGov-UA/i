@@ -376,9 +376,7 @@ public class ActionEventService {
         }*/
 
         if (sBody != null && !sBody.equals(oHistoryEvent_Service.getsBody())) {
-        	 LOG.info("sBodyнннннннннннннннннннннннннннннннннны " + sBody);
             oHistoryEvent_Service.setsBody(sBody);
-            LOG.info("sBodyнннннннннннннннннннннннннннннннннныФАЕУКККККККККККККККККК " + sBody);
             isChanged = true;
         }
         if (sToken == null || !sToken.equals(oHistoryEvent_Service.getsToken())) {
@@ -427,10 +425,6 @@ public class ActionEventService {
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
                     null, sSubjectInfo);
         } else {
-           /* if (soData != null && !soData.equals(oHistoryEvent_Service.getSoData())) {
-                oHistoryEvent_Service.setSoData(soData);
-                isChanged = true;
-            }*/
             LOG.info("soData is not null or empty array: " + soData);
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: Move To Interceptor!!!
             StringBuilder osBody = new StringBuilder(sBody);
@@ -452,6 +446,8 @@ public class ActionEventService {
                 nID_SubjectMessageType = 5L;
                 LOG.info("oHistoryEvent_Service_StatusType is set to OPENED_REMARK_EMPLOYEE_QUESTION");
                 LOG.info("nID_SubjectMessageType is set to" + nID_SubjectMessageType);
+                LOG.info("soData in oHistoryEvent_Service is 5l ={}", oHistoryEvent_Service.getSoData().toString());
+                
             }
 
             if (nID_SubjectMessageType != null) {
@@ -464,11 +460,8 @@ public class ActionEventService {
                 Map<String, String> mParamMessage = new HashMap<>();
                 mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
                 mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
-                //List<Map<String,String>> amReturnAnswer = amFieldMessageQuestion(soData, bQuestion);//saField
-                //mParamMessage.put(HistoryEventMessage.TABLE_BODY, createTable_TaskProperties(amReturnAnswer, true, false));//soData
-                mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//soData
+              //  mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//TODO://soData - убрать после реализации задачи 1553
                 setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
-
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                         sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo,bQuestion);
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
@@ -480,6 +473,7 @@ public class ActionEventService {
         if (isChanged) {
             LOG.info("updating oHistoryEvent_Service: {}", oHistoryEvent_Service);
             historyEventServiceDao.updateHistoryEvent_Service(oHistoryEvent_Service);
+            LOG.info("soData in oHistoryEvent_Service is END ={}", oHistoryEvent_Service.getSoData());
         }
         LOG.info("Mehtod updateActionStatus_Central started for task " + sID_Order);
         return oHistoryEvent_Service;

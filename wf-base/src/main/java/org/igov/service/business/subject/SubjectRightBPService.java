@@ -46,15 +46,17 @@ public class SubjectRightBPService {
             
             List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group_Referent", asID_Group);
             
-            if(aSubjectRightBP != null){
-                for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) 
-                {
-                    Map<String, String> mSubjectRightBP = new HashMap<>();
-                    mSubjectRightBP.put("sName_BP", oSubjectRightBP.getsID_BP());
-                    mSubjectRightBP.put("sNote", oSubjectRightBP.getsNote());
-                    aResultMap.add(mSubjectRightBP);
+            LOG.info("List<SubjectRightBP> " + aSubjectRightBP);
+            
+		if (aSubjectRightBP != null) {
+			for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) {
+				LOG.info("SubjectRightBP " + oSubjectRightBP.toString());
+				Map<String, String> mSubjectRightBP = new HashMap<>();
+				mSubjectRightBP.put("sName_BP", oSubjectRightBP.getsID_BP());
+				mSubjectRightBP.put("sNote", oSubjectRightBP.getsNote());
+				aResultMap.add(mSubjectRightBP);
+			}
 		}
-            }
             
             return aResultMap;
         }
