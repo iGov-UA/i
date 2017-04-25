@@ -3196,7 +3196,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         mParam.put("sLoginAuthor", sLogin);
-        LOG.info("Processing process with key " + StringUtils.substringBefore(sID_BP, ":"));
+        LOG.info("Processing process with key {} mParam {}", StringUtils.substringBefore(sID_BP, ":"), mParam);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(StringUtils.substringBefore(sID_BP, ":"), mParam);
         Map<String, Object> mReturn = new HashMap<>();
 
