@@ -111,6 +111,7 @@ module.exports.getCatalogTreeTag = function (req, res) {
       bShowEmptyFolders: req.query.bShowEmptyFolders || false,
       nID_Category: req.query.nID_Category || 1,
       bNew: req.query.bNew,
+      nID_Place_Profile: req.query.nID_Place_Profile,
       sID_SubjectOwner: req.query.sID_SubjectOwner || null
     }
   };
@@ -138,6 +139,10 @@ module.exports.getCatalogTreeTag = function (req, res) {
 
       if (options.params.bNew) {
         query['bNew'] = options.params.bNew;
+      }
+
+      if (options.params.nID_Place_Profile && parseInt(options.params.nID_Place_Profile) > 0) {
+        query['nID_Place_Profile'] = parseInt(options.params.nID_Place_Profile);
       }
 
       if (options.params.sID_SubjectOwner) {

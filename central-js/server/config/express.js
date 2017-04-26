@@ -26,7 +26,10 @@ module.exports = function (app) {
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
     app.use(compression());
-    app.use(bodyParser.urlencoded({extended: false}));
+    app.use(bodyParser.urlencoded({
+      limit: 5*1024*1024,
+      extended: false
+    }));
     app.use(bodyParser.json({limit: '5mb'}));
     app.use(session({
       secret: config.server.session.secret,

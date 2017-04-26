@@ -265,7 +265,7 @@ public class SubjectMessageService {
 
         message = new SubjectMessage();
         message.setHead(sHead);
-        message.setBody(sBody == null ? "" : sBody);
+        message.setBody(sBody == null ? "" : sBody.split("<br/>", 2)[0]);
 
         LOG.info("(createSubjectMessage: subject Id{})", subject.getId());
 
@@ -284,7 +284,7 @@ public class SubjectMessageService {
 //        if(!subjectMessagesMails.contains(sMail))
 //            message.setMail(sMail == null ? "" : sMail);
         message.setContacts((sContacts == null) ? "" : sContacts);
-        message.setData((sData == null) ? "" : sData); //TODO: - убрать после тестирования 1553
+       // message.setData((sData == null) ? "" : sData); //TODO: - убрать после тестирования 1553
         message.setDate(new DateTime());
         message.setsSubjectInfo((sSubjectInfo == null) ? "" : sSubjectInfo);
         LOG.info("(createSubjectMessage: message sSubjectInfo{})", message.getsSubjectInfo());
@@ -294,7 +294,7 @@ public class SubjectMessageService {
         }
         List<SubjectMessageQuestionField> aSubjectMessageQuestionField = createSubjectMessageQuestionField(sData, message);
         LOG.info("subjectMessageQuestionFielddddddddd " + aSubjectMessageQuestionField);
-        message.setSubjectMessageQuestionField(aSubjectMessageQuestionField);
+        message.setaSubjectMessageQuestionFields(aSubjectMessageQuestionField);
         LOG.info("SubjectMessageeeeeeeee " + message);
         return message;
     }

@@ -97,15 +97,16 @@ public class SubjectMessage extends AbstractEntity {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<SubjectMessageQuestionField> aSubjectMessageQuestionFields;
 
-    public List<SubjectMessageQuestionField> getSubjectMessageQuestionField() {
-        return aSubjectMessageQuestionFields;
-    }
 
-    public void setSubjectMessageQuestionField(List<SubjectMessageQuestionField> aSubjectMessageQuestionFields) {
-        this.aSubjectMessageQuestionFields = aSubjectMessageQuestionFields;
-    }
+    public List<SubjectMessageQuestionField> getaSubjectMessageQuestionFields() {
+		return aSubjectMessageQuestionFields;
+	}
 
-    public String getHead() {
+	public void setaSubjectMessageQuestionFields(List<SubjectMessageQuestionField> aSubjectMessageQuestionFields) {
+		this.aSubjectMessageQuestionFields = aSubjectMessageQuestionFields;
+	}
+
+	public String getHead() {
         return head;
     }
 

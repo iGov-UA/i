@@ -34,6 +34,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.task.Task;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
@@ -59,6 +60,7 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -799,12 +801,22 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
+        LOG.info("sBodySource------>>>>>>>>>>>>>> (sBodySource={})", sBodySource);
         String sBody = replaceTags(sBodySource, oExecution);
 
         //saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
 
         Mail oMail = context.getBean(Mail.class);
+    //=================================================================================================================================================    
+        JSONParser parser = new JSONParser();
+        org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(sBodySource);
+        LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + oTableJSONObject);
+        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
+                (String)oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
 
+        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
+    //================================================================================================================================================= 
+        
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
                 ._Body(sBody)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)

@@ -140,15 +140,6 @@
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 ``` 
 
-
-gfdsgfdg
-[SPOILER]
-dfdsgdfsg
-[/SPOILER]
-
-
-
-
 [детальней...](#_string)
 
 ### long
@@ -223,6 +214,11 @@ dfdsgdfsg
 Рекомендуется Топ-процессы переводить на новую схему аттачей – с ней файлы не будут теряться.
 
 [детальней...](#_file (New))
+
+ ###### filehtml
+ ### fileHTML   
+ Используется для ввода текста, цифр, символов. С возможностью форматирования  шрифта, цвета текста, добавления ссылок гражданином в момент создания обращения  
+ [детальней...](#_filehtml)
 
 ###### textarea
 ### textArea
@@ -399,7 +395,7 @@ type="queueData" required="true"></activiti:formProperty>
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
    * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
    
-   [детальней...](#_Listener)
+   [детальней...](#_listener)
 
 
 ##### settasks
@@ -447,13 +443,15 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### addingauser
 ### Добавляем пользователя
-* Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
+* Выбираем ссылку исходя из ветки в которой мы будем работать с бизнес-процессом: Альфа(ветка test), Бета(ветка test-beta), Дельта (ветка test-delta), Омега (ветка master). Пример указан для test-beta:  
+   Заходим по ссылке https://beta.test.region.igov.org.ua/groups. Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
 
 [детальней...](#_addingauser)
 
 ###### addingausertoagroup 
 ### Добавляем пользователя в группу
-* Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
+* Выбираем ссылку исходя из ветки в которой мы будем работать с процессом Альфа(ветка test), Бета(ветка test-beta), Дельта (ветка test-delta), Омега (ветка master). Пример указан для test-beta:  
+    Заходим по ссылке https://beta.test.region.igov.org.ua/groups. Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
 
 [детальней...](#_addingausertoagroup)
 
@@ -1029,6 +1027,11 @@ digit3 - переменная, куда присвоится результат 
 # 15. Емайлы
 [вернуться в начало](general.md)
 
+По умолчанию почта об уведомлении клиента об успешной отправке заявки c сайта iGov (https://igov.org.ua/)  автоматически рассылаться не будет. Для того, чтобы добавить отправку стандартной почты необходимо прописать ID  бизнес-процесса в следующий файл:
+i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessingInterceptor.java
+В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.
+![15_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_1.jpg)
+
 Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
 `#{MailTaskWithoutAttachment}`  
 `#{MailTaskWithAttachments}`  
@@ -1045,7 +1048,7 @@ digit3 - переменная, куда присвоится результат 
 ```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
-* ![14_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_2.JPG)
+ ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
 а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
 ###### usingvariablesinemailtemplates
@@ -1531,7 +1534,7 @@ execution.setVariable('sExecutor', sExecutor)
 ###### 	branchs
 ### Ветки
 Очень упрощенная схема веток, с которыми работают бизнес-аналитики приведена на рисунке:  
-![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sTU1vOU12R2tLc0k)  
+![19_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/19_0.jpg)  
 Основная разработка и тестирование бизнес-процессов происходит в ветке test-delta.
 Как установить и зятнуть себе локально репозиторий описано [здесь](https://github.com/e-government-ua/i/wiki/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-ActivitiDesigner,-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D0%B2). 
 Програмисты ведут свою разработку в ветке test.  
@@ -2584,6 +2587,10 @@ _тестирование и проливка на бету и боевой
 
 Теперь так же доступна подгрузка файлов в тейбл.
 
+###### _filehtml
+[вернуться...](#filehtml)
+![3_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_11.jpg)
+
 ###### _textarea
 [вернуться...](#textarea)
   ![2_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_9.JPG)
@@ -2791,7 +2798,7 @@ Cделает текущее поле нередактируемым для по
 ###### _reservedvariablesforelectronicqueues
 
 [вернуться...](#reservedvariablesforelectronicqueues)
-  ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
+  ![3_51](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_51.JPG)
 
 ###### _reservedattributevariables
 ### Зарезервированные переменные атрибутов
@@ -2802,7 +2809,7 @@ Cделает текущее поле нередактируемым для по
 * **sArea** - string/bVisible=false/label - yазвание нас.пункта/района куда подается заявка
 * **nArea** - string/bVisible=false/label - yомер в справочнике нас.пункта/района куда подается заявка
 * **sShapka** - string/bVisible=false/label - шапка принтформы
-   ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
+   ![3_51](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_51.JPG)
 
 ###### _variablesforprintforms
 ### Переменные принтформ
@@ -3222,7 +3229,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 [вернуться...](#converthtmltopdf)
 
-  ![11_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_0.JPG)
+  ![11_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_1.jpg)
 На юзертасках добавить стандартный набор листнеров для подгрузки файлов.  
 
 [валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
