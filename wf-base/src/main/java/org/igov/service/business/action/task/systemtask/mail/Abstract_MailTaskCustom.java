@@ -175,15 +175,23 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String sTextReturn = sTextSource;
 
         sTextReturn = replaceTags_LIQPAY(sTextReturn, execution);
+        
+        LOG.info("replaceTags_LIQPAY=" + sTextReturn);
 
         sTextReturn = populatePatternWithContent(sTextReturn);
+        LOG.info("populatePatternWithContent=" + sTextReturn);
 
         sTextReturn = replaceTags_Enum(sTextReturn, execution);
+        
+        LOG.info("replaceTags_Enum=" + sTextReturn);
 
         sTextReturn = replaceTags_Catalog(sTextReturn, execution);
+        LOG.info("replaceTags_Catalog=" + sTextReturn);
 
         sTextReturn = new FileSystemDictonary()
                 .replaceMVSTagWithValue(sTextReturn);
+        
+        LOG.info("replaceMVSTagWithValue=" + sTextReturn);
 
         Long nID_Order = getProtectedNumber(Long.valueOf(execution
                 .getProcessInstanceId()));
@@ -816,6 +824,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         return oMail;
     }
     
+    /**
+     * Метод, который отправляет 
+     * @param oExecution
+     * @return
+     * @throws Exception
+     */
     public Mail sendToMailFromMongo(DelegateExecution oExecution)
             throws Exception {
 
@@ -823,23 +837,32 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
         
+        LOG.info("sBodySource-->> : " +sBodySource);
         Mail oMail = context.getBean(Mail.class);
         
-        String sJsonHtml = loadFormPropertyFromTaskHTMLText(oExecution);
-        
-	    String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonHtml); 
+        /**
+         * достаем json который приходит в тексте из шага в виде ключ значение из монги 
+         */
+        String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
+        LOG.info("sJsonMongo-->> : " +sJsonMongo);
+        /**
+         * достаем оригинальный текст html из mongo
+         */
+	    String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonMongo); 
+	    LOG.info("sBodyFromMongoResult-->> : " +sBodyFromMongoResult);
 	    
-	String patternBefore="[pattern/mail/new_design/_common_header.html]"+"[pattern/mail/new_design/_common_content_start_noBankIDname.html]"+"Тестирование подписания формы ЭЦП<br>"+"Поле fileHTML<br><br>";
-	String patternAfter="<br><br>"+"[pattern/mail/new_design/_common_content_end.html]"+"[pattern/mail/new_design/_common_signature_start.html]"+"Тестовая служба,<br>"+"[pattern/mail/new_design/_common_signature_end.html]+[pattern/mail/new_design/_common_footer.html]";
+	    /**
+	     * из полного текста с патернами, который в бп мы заменяем json на textHtml из монги
+	     */
+	    String sBodyForMail = sBodySource.replaceAll(sJsonMongo, sBodyFromMongoResult);
+	    LOG.info("sBodyForMail-->> : " +sBodyForMail);
 	    
-	    String sBody = patternBefore+sBodyFromMongoResult+patternAfter;
-	    
-	    String sBodyResult = replaceTags(sBody, oExecution);
+	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
 	       
-           LOG.info("sBodyFromMongo in -: " +sBodyResult);
+	    LOG.info("sBodyForMailResult-->> : " +sBodyForMailResult);
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
-                ._Body(sBodyResult)._AuthUser(mailServerUsername)
+                ._Body(sBodyForMailResult)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
                 ._Port(Integer.valueOf(mailServerPort))
                 // ._SSL(true)
