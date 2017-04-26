@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEventDao;
@@ -31,6 +32,7 @@ import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.subject.SubjectMessageService;
@@ -77,7 +79,9 @@ public class ActionEventService {
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Long, Region> regionDao;
-
+    
+    @Autowired
+    private ActionEventHistoryService oActionEventHistoryService;
 
 
     /*public void setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService) {
@@ -421,13 +425,18 @@ public class ActionEventService {
         LOG.info("checking conditions ended");
         
         if ("TaskCancelByUser".equals(soData)){
-            LOG.info("TASK_CANCELED was catched");
+            try {
+                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, null, 19L);
+            } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(ActionEventService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            /*LOG.info("TASK_CANCELED was catched");
             Map<String, String> mParamMessage = new HashMap<>();
             LOG.info("SERVICE_STATE: " + sUserTaskName);
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName == null ? oHistoryEvent_Service_StatusType.getsName_UA() : sUserTaskName);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
             setHistoryEvent(HistoryEventType.TASK_CANCELED, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
-                    null, sSubjectInfo, "aaa");
+                    null, sSubjectInfo, "");*/
         }
         else if (soData == null || "[]".equals(soData)) { //My journal. change status of task
             LOG.info("soData is null or empty array: " + soData);
