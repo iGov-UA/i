@@ -228,10 +228,8 @@ public class CloseTaskEvent {
                     mParam.put("sUserTaskName", sUserTaskName);
                     try {
                         if (!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)) {
-                            historyEventService.updateHistoryEvent(sID_Order, status, mParam);
+                            //historyEventService.updateHistoryEvent(sID_Order, status, mParam);
                             
-                            
-                    
                     LOG.info(" historyEventService.updateHistoryEvent", sID_Order, status);    
                         }
                     } catch (Exception oException) {
