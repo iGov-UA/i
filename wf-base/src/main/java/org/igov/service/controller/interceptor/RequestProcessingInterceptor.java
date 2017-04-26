@@ -717,7 +717,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                     //for(String taskId : aTaskId){
                     LOG.info("taskId {}", aTaskId.get(aTaskId.size() - 1));
-                    //closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory,  aTaskId.get(aTaskId.size() - 1), null, true);
+                    closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory,  aTaskId.get(aTaskId.size() - 1), null, true);
                     //}
                 }
                 sType = "Close";
