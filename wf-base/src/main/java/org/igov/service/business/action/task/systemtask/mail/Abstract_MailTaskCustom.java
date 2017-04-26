@@ -685,7 +685,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 if (oFormData != null && oFormData.getFormProperties() != null) {
                     for (FormProperty oFormProperty : oFormData.getFormProperties()) {
                         aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
-                        LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+                        LOG.info("Matching1 property (Id={},Name={},Type={},Value={})",
                                 oFormProperty.getId(), oFormProperty.getName(),
                                 oFormProperty.getType().getName(),
                                 oFormProperty.getValue());
@@ -706,7 +706,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     && oTaskFormData.getFormProperties() != null) {
                 for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
                     aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
-                    LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+                    LOG.info("Matching2 property (Id={},Name={},Type={},Value={})",
                             oFormProperty.getId(), oFormProperty.getName(),
                             oFormProperty.getType().getName(),
                             oFormProperty.getValue());
@@ -805,33 +805,41 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
         Mail oMail = context.getBean(Mail.class);
     //=================================================================================================================================================    
-        Map<String, String> aFormPropertyReturn = new HashMap<>();
-        FormData oTaskFormData = oExecution.getEngineServices()
-                .getFormService()
-                .getStartFormData(oExecution.getProcessDefinitionId());
-        if (oTaskFormData != null
-                && oTaskFormData.getFormProperties() != null) {
-            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
-            	if(oFormProperty.getValue()!=null) {
-            		  LOG.info("FormProperty.getValue() (Value={})",
-                              oFormProperty.getValue());
-            		if(oFormProperty.getValue().startsWith("{\"sID_StorageType")) {
-            			LOG.info("FormProperty.sID_StorageType() (Value={})",
-                                oFormProperty.getValue());
-                aFormPropertyReturn.put("HTML", oFormProperty.getValue());
-                LOG.info("Matching property (Value={})",
-                        oFormProperty.getValue());
-            		}
-            	}
+        List<String> previousUserTaskId = getPreviousTaskId(oExecution);
+        List<String> aFormPropertyReturn = new ArrayList<>();
+        for (String sID_UserTaskPrevious : previousUserTaskId) {
+            try {
+                FormData oFormData = null;
+                if (previousUserTaskId != null && !previousUserTaskId.isEmpty()) {
+                    oFormData = oExecution.getEngineServices()
+                            .getFormService().getTaskFormData(sID_UserTaskPrevious);
+                }
+                if (oFormData != null && oFormData.getFormProperties() != null) {
+                    for (FormProperty oFormProperty : oFormData.getFormProperties()) {
+                    	if(oFormProperty.getValue()!=null && "fileHTML".equals(oFormProperty.getType().getName())) {
+                  		  LOG.info("FormProperty.getValue() (Value={})",
+                                    oFormProperty.getValue());
+                  			  aFormPropertyReturn.add(oFormProperty.getValue());
+                  	}
+                    }
+                }
+            } catch (Exception e) {
+                LOG.error(
+                        "Error: {}, occured while looking for a form for task:{}",
+                        e.getMessage(), sID_UserTaskPrevious);
+                LOG.debug("FAIL:", e);
             }
         }
-        JSONParser parser = new JSONParser();
-        org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(aFormPropertyReturn.get("HTML"));
-        LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + oTableJSONObject);
-        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
-                (String)oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
-
-        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
+        LOG.info("FormProperty.getValue() (aFormPropertyReturn={})",
+        		aFormPropertyReturn);
+        for(String aFormProperty:aFormPropertyReturn) {
+	       JSONParser parser = new JSONParser();
+	       JSONObject jsonObj = new JSONObject(aFormProperty);
+	       LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + aFormProperty);
+	        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
+	        		(String)jsonObj.get("sKey"), (String)jsonObj.get("sID_StorageType")).getInputStream(), "UTF-8"));
+	        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
+        }
     //================================================================================================================================================= 
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
