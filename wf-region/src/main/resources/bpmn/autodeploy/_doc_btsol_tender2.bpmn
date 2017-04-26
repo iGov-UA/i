@@ -432,7 +432,12 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
     <scriptTask id="scripttask7" name="Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol', 'sTable4', 'step_4','sLogin_Addressee')</script>
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol', 'sTable4', 'step_4','sLogin_Addressee')
+
+//4. получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)</script>
     </scriptTask>
     <sequenceFlow id="flow66" sourceRef="scripttask7" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -508,7 +513,7 @@ var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_5')</script>
     </scriptTask>
     <userTask id="usertask4" name="ознакомление с утвержденным документом">
-    <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
@@ -596,13 +601,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sTextTask" name="Текст задания" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Срок выполнения задания" type="date" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sTable5_1" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Kontroler" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT4" name="Комментарий" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow104" sourceRef="scripttask17" targetRef="usertask4"></sequenceFlow>
