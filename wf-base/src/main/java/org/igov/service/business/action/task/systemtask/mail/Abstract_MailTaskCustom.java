@@ -821,17 +821,22 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
-
+        String sBodySource = getStringFromFieldExpression(text, oExecution);
+	    LOG.info("sBodySource in -: " +sBodySource);
+	    
         Mail oMail = context.getBean(Mail.class);
         
         String sJsonHtml = loadFormPropertyFromTaskHTMLText(oExecution);
         
 	    String sBodyFromMongo = getHtmlTextFromMongo(sJsonHtml); 
+	   
+	    
+	    String sBody = replaceTags(sBodyFromMongo, oExecution);
 	       
-           LOG.info("sBodyFromMongo in -: " +sBodyFromMongo);
+           LOG.info("sBodyFromMongo in -: " +sBody);
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
-                ._Body(sBodyFromMongo)._AuthUser(mailServerUsername)
+                ._Body(sBody)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
                 ._Port(Integer.valueOf(mailServerPort))
                 // ._SSL(true)
