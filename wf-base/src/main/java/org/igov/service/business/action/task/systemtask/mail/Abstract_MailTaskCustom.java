@@ -814,7 +814,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
                 (String)oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
 
-        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString()+oJSONObject);
+        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
     //================================================================================================================================================= 
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
