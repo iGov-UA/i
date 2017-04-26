@@ -4,20 +4,20 @@
     <documentation>
     	Рефакторинг: 28.04.2016. Аналитик: Ставицкий В.Д.
     	Рефакторинг с 19.10.16 по 20.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы  
-    	Рефакторинг с 09.11.16 Ставицкий В.Д. - Переделка заявления под подпись ЕЦП   	
+    	Рефакторинг с 09.11.16 Ставицкий В.Д. - Переделка заявления под подпись ЕЦП   
+    	Рефакторинг: 26.04.17 Ставицкий В.Д. - под автозаполнение ЕДГРПОУ, переделка принтформы с ЕЦП на новый шаблон.	
     </documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-      <!-- 
         <activiti:formProperty id="infoZapit" name="Зверніть увагу" type="label" default="Для отримання послуги Вам необхідно:&lt;ol&gt;&lt;li&gt;Завантажити та роздрукувати &lt;a href=&quot;https://drive.google.com/uc?export=download&amp;id=0B91XFkuwrCQbLUFXazBpQnhndVE&quot; target=&quot;_blank&quot;&gt;бланк запиту&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Заповнити відповідні поля&lt;/li&gt;&lt;li&gt;Відсканувати та підписати документ за допомогою ЕЦП.&lt;/li&gt;&lt;li&gt;Прикріпити підписаний запит&lt;/li&gt;&lt;/ol&gt;&lt;br /&gt;Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;.&lt;br /&gt;Один з варіантів накладення ЕЦП на файл &lt;a href=&quot;https://papka24.com.ua/&quot; target=&quot;_blank&quot;&gt;papka24.com.ua&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;Додаткова інформація &lt;a href=&quot;https://docs.google.com/document/d/17kd6pC_2PwfDgk1zJpZ6D1BkTRMJqDQLIAYq_9Pvri0/edit&quot; target=&quot;_blank&quot;&gt;примітка&lt;/a&gt;"></activiti:formProperty>
 		<activiti:formProperty id="nFileZapit" name="Прикріпіть заповнений запит" type="file" required="true"></activiti:formProperty>
-       -->
+      
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>        
 
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="subekt" name="Суб'єкт звернення" type="enum" required="true">
+        <activiti:formProperty id="asSubekt" name="Суб'єкт звернення" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="представник юридичної особи"></activiti:value>
         </activiti:formProperty>
@@ -31,7 +31,6 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="textArea" required="true"></activiti:formProperty>
 
-		<activiti:formProperty id="markers_01" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 01&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
@@ -39,13 +38,11 @@
         
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?" type="string" required="true"></activiti:formProperty>
         
-        
 		<activiti:formProperty id="sVf" name="Галочка физик; ;bVisible=false" type="string" default=" "></activiti:formProperty>
 		<activiti:formProperty id="sVu" name="Галочка юрик; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Автор звернення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresECP" name="адресс; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-
 
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailCler1k" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
@@ -57,9 +54,10 @@
 
         <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_start.json')}"></activiti:formProperty>
 
+      <!-- 
         <activiti:formProperty id="form_signed" name="Заява, з накладеним ЕЦП; ;bPrintFormFileAsPDF=true bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для накладення ЭЦП; ;bVisible=false" type="string" default="pattern/print/dfs/gni_69_print_ecp.html"></activiti:formProperty>
-
+ -->
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -128,14 +126,14 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dfs_dnepr_vutyag_nalog_${sID_Public_SubjectOrganJoin}_${subekt}">
+    <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dfs_dnepr_vutyag_nalog_${sID_Public_SubjectOrganJoin}_${asSubekt}">
       <extensionElements>      
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення фіскальної служби; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган обслуговування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="subekt" name="Суб'єкт звернення" type="enum" writable="false">
+        <activiti:formProperty id="asSubekt" name="Суб'єкт звернення" type="enum" writable="false">
           <activiti:value id="fiz" name="фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="представник юридичної особи"></activiti:value>
         </activiti:formProperty>
