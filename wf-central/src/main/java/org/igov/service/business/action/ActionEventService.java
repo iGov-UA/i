@@ -426,7 +426,7 @@ public class ActionEventService {
         
         if ("TaskCancelByUser".equals(soData)){
             try {
-                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, null, 19L);
+                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, new HashMap<>(), 19L);
             } catch (Exception ex) {
                 java.util.logging.Logger.getLogger(ActionEventService.class.getName()).log(Level.SEVERE, null, ex);
             }
