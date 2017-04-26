@@ -4,6 +4,7 @@ import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -836,9 +837,18 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	       JSONParser parser = new JSONParser();
 	       JSONObject jsonObj = new JSONObject(aFormProperty);
 	       LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + aFormProperty);
-	        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
-	        		(String)jsonObj.get("sKey"), (String)jsonObj.get("sID_StorageType")).getInputStream(), "UTF-8"));
-	        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
+	       LOG.info("jsonObj--->>>>>>>>>>>>>>>>>" + jsonObj);
+	       LOG.info("jsonObj sKey--->>>>>>>>>>>>>>>>>" + jsonObj.getString("sKey"));
+	       LOG.info("jsonObj sID_StorageType--->>>>>>>>>>>>>>>>>" + jsonObj.getString("sID_StorageType"));
+	       
+	       InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+	    		   jsonObj.getString("sKey"), jsonObj.getString("sID_StorageType"))
+                   .getInputStream();
+
+	       String theString = IOUtils.toString(oAttachmet_InputStream, "UTF-8"); 
+	       
+           LOG.info("oTableJSONObject in -: " +theString);
+	       
         }
     //================================================================================================================================================= 
         
