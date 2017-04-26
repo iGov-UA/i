@@ -927,6 +927,16 @@
           }
         };
 
+        $scope.$on('refresh-task-view-after-delegate', function () {
+          for(var taskIndex = 0; taskIndex < $scope.filteredTasks.length; taskIndex++){
+            if($scope.filteredTasks[taskIndex].Id === this.taskId){
+              $scope.filteredTasks.splice(taskIndex, 1);
+              break;
+            }
+          }
+          $scope.lightweightRefreshAfterSubmit();
+        });
+
         $scope.submitTaskQuestion = function (form) {
           Modal.inform.submitTaskQuestion(function() {return $scope.submitTask(form);});
         };
@@ -935,7 +945,7 @@
           console.log("println");
           console.log(form);
           return true;
-        }
+        };
         $scope.saveChangesTask = function (form) {
           if ($scope.selectedTask && $scope.taskForm) {
             console.log($scope.taskForm);
