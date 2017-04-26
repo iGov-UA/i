@@ -833,12 +833,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         LOG.info("FormProperty.getValue() (aFormPropertyReturn={})",
         		aFormPropertyReturn);
         for(String aFormProperty:aFormPropertyReturn) {
-       // JSONParser parser = new JSONParser();
-      //  org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(aFormProperty);
-        LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + aFormProperty);
-       /* org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
-                (String)oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
-        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());*/
+	       JSONParser parser = new JSONParser();
+	       JSONObject jsonObj = new JSONObject(aFormProperty);
+	       LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + aFormProperty);
+	        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
+	        		(String)jsonObj.get("sKey"), (String)jsonObj.get("sID_StorageType")).getInputStream(), "UTF-8"));
+	        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
         }
     //================================================================================================================================================= 
         
