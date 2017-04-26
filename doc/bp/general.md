@@ -1118,6 +1118,7 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 
 ###### newemailtemplates
 ### Oбновленные шаблоны емейлов
+Расположены : \wf-region\src\main\resources\pattern\mail\new_design  
 ```
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
@@ -1126,7 +1127,7 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 
 ###### emailtemplates
 ### Шаблоны емейлов
-В данный момент устаревшие шаблоны е-майл, вместо них используем [mail/new_design](#newemailtemplates)
+В данный момент устаревшие шаблоны е-майл, вместо них используем [Oбновленные шаблоны емейлов](#newemailtemplates)
 расположены : \wf-region\src\main\resources\pattern\mail    
 В сервис-таске прописываем тэги с учётом того что из шаблонов не подтягиваются значения переменных активити:  
 Тело письма с обращением к клиенту и опросом качества  в таком случае будет выглядеть как:  
@@ -3428,30 +3429,23 @@ value != enum.
 
 [вернуться...](#newemailtemplates)
 
-  ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
-здесь мы пишем наш контент
-```
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
-```
-здесь мы можем добавить орган в подпись <br/>
-```
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-```    
-Другой пример использования новых шаблонов:
-Используем до текста   
+  ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)  
+
+  
+Пример использования новых шаблонов:  
+
+``` Используем до текста   
 [pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]    
-Используем после текста         
+[pattern/mail/new_design/_common_content_start.html]     
+
+Используем после текста           
 [pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}  
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-
-
+[pattern/mail/new_design/_common_signature_start.html]  
+${sNameOrgan}    
+[pattern/mail/new_design/_common_signature_end.html]  
+[pattern/mail/new_design/_common_footer.html]  
+```  
+[pattern/mail/new_design/_common_feedback.html] - Обратная связь 
 
 ###### 16. Отправка СМС-оповещений
 ###### _smsnotifications

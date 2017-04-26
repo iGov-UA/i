@@ -102,6 +102,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     private static final String PATTERN_CURRENCY_ID = "sID_Currency%s";
     private static final String PATTERN_DESCRIPTION = "sDescription%s";
     private static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
+    private static final Pattern TAG_PATTERN_JSON_BRACKET = Pattern
+            .compile("\\{.*?\\}");
 
     @Autowired
     public HistoryService historyService;
@@ -854,7 +856,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	    /**
 	     * из полного текста с патернами, который в бп мы заменяем json на textHtml из монги
 	     */
-	    String sBodyForMail = sBodySource.replaceAll(sJsonMongo, sBodyFromMongoResult);
+	    //убираем json скобки
+	    String sBodySourceReplace = StringUtils.replace(sBodySource, "{", "").replaceAll("}", "");
+	    String sBodySourceReplaceR = sBodySourceReplace.replace("\"[", "").replace("]\"", "");
+		String sJsonMongoReplace = StringUtils.replace(sJsonMongo, "{", "").replaceAll("}", "");
+		String sJsonMongoReplaceR = sJsonMongoReplace.replace("\"[", "").replace("]\"", "");
+	    String sBodyForMail = sBodySourceReplaceR.replaceAll(sJsonMongoReplaceR, sBodyFromMongoResult);
 	    LOG.info("sBodyForMail-->> : " +sBodyForMail);
 	    
 	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
