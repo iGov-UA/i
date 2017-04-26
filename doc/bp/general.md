@@ -1,5 +1,3 @@
-
- 
 1. [Создание бизнес-процессов](#creatingbusinessprocesses)
 1. [Основные элементы Activiti Designer](#themain)
 2. [Типы параметров](#typesofparameters)
@@ -1090,8 +1088,12 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
  ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
-а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
-
+а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}    
+При необходимости можем проименовать PDF файл отправленный клиенту с помощью следующей конструкции в юзертаске:
+ ```xml
+ <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/khmelnitsky/hmel_cnap_333_print.html,sFileName=Zayava_na_oblik,bNew=true" type="file" writable="false"></activiti:formProperty>     
+ ```
+ ![15_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_2.JPG)
 ###### usingvariablesinemailtemplates
 ### Использование переменных в шаблонах емейлов
 
@@ -3408,16 +3410,6 @@ value != enum.
 
 [вернуться...](#emailtemplates)
 
-Используем до текста
-[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-Используем послде текста
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan},<br>
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
- 
 * ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
 кастомизированная подпись в письме с использованием  шаблонов  
 [pattern/mail/_common_signature_start.html]  
@@ -3429,6 +3421,7 @@ ${sNameOrgan},<br>
 
 [pattern/mail/new_design/_common_employee_notify.html] - общий шаблон уведомлений для гос.служащего (новый) 
 [pattern/mail/_common_client_notify.html] - общий шаблон уведомления гражданина / отмены заявки,  в случае если заявка очень долго не берется в работу  
+
 
 ###### _newemailtemplates
 
@@ -3445,7 +3438,19 @@ ${sNameOrgan},<br>
 ```
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]
-```
+```    
+Другой пример использования новых шаблонов:
+Используем до текста   
+[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]    
+Используем после текста         
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}  
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+
+
 
 ###### 16. Отправка СМС-оповещений
 ###### _smsnotifications
