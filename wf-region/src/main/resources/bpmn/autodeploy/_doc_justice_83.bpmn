@@ -205,6 +205,7 @@
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepart" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -423,6 +424,7 @@
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepart" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
@@ -649,6 +651,7 @@
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepart" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -868,6 +871,7 @@
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html]" type="invisible" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html]" type="invisible" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html]" type="invisible" default="бланк ВПВР" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepart" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
           <activiti:field name="snID_Process_Activiti">
@@ -1145,6 +1149,10 @@ var obj = processSubjectTreeService.getCatalogProcessSubjectTree(processInstance
 var sMainExecutor = " ";
 var sFirstName = " ";
 var sLastName = " ";
+var sNameDepart = " ";
+var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
+var obj1 = subjectGroupTreeService.getDeparByGroup_Activiti(sID_Group_Activiti);
+execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
 
 var i = 0;
 do {

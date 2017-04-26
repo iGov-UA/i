@@ -2254,7 +2254,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
 
     public void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
             List<?> tasks, Map<String, FlowSlotTicket> mapOfTickets,
-            List<Map<String, Object>> data, String sFilterStatus) {
+            List<Map<String, Object>> data) {
         
         Long point1Start = System.nanoTime();
         
@@ -2265,7 +2265,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 
                 Long point1SpecialStart = System.nanoTime();
                 
-                Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getProcessInstanceId()), sFilterStatus);
+                Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getProcessInstanceId()));
                 
                 Long point1SpecialEndt = System.nanoTime();
                 LOG.info("point1.2 special service time: " + String.format("%,12d", (point1SpecialEndt - point1SpecialStart)));
@@ -2475,17 +2475,22 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
 
     public Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket) {
         
-        Long missedPoint = System.nanoTime();
-        
-        HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
-                processInstanceId(task.getProcessInstanceId()).
-                includeProcessVariables().singleResult();
-        
         Long point1Start = System.nanoTime();
-        Long res5 = point1Start - missedPoint;
+        Long res5 = 0l;
         
-        String sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
-        LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
+        String sPlace = "";
+        
+        if (task.getProcessDefinitionId().startsWith("system")) {        
+            HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
+                    processInstanceId(task.getProcessInstanceId()).
+                    includeProcessVariables().singleResult();
+
+            sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
+            LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
+            
+            Long missedPoint = System.nanoTime();
+            res5 = missedPoint - point1Start;
+        }
         
         Long point1EndPoint2Start = System.nanoTime();
         Long res1 = point1EndPoint2Start - point1Start;
@@ -2538,77 +2543,6 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         Long point4End = System.nanoTime();
         Long res4 = point4End - point3EndPoint4Start;
         LOG.info("\n"+ "res1: " + res1 + "\n" + "res2: " + res2 + "\n" + "res3: " + res3 + "\n" + "res4: " + res4 + "\n" + "res5: " + res5);
-        
-        return taskInfo;
-    }
-    
-    public Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket, String sFilterStatus) {
-        
-        Long missedPoint = System.nanoTime();
-        
-        String sPlace = null;
-        
-        if (!"Documents".equalsIgnoreCase(sFilterStatus)) {
-            HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
-                    processInstanceId(task.getProcessInstanceId()).
-                    includeProcessVariables().singleResult();
-
-            sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
-            LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
-        }
-        Long point1Start = System.nanoTime();
-        Long res5 = point1Start - missedPoint;
-        Long point1EndPoint2Start = System.nanoTime();
-        Long res1 = point1EndPoint2Start - point1Start;
-                
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        Map<String, Object> taskInfo = new HashMap<>();
-        
-        Long point2EndPoint3Start = System.nanoTime();
-        Long res2 = point2EndPoint3Start - point1EndPoint2Start;
-                
-        taskInfo.put("id", task.getId());
-        taskInfo.put("url", oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
-        taskInfo.put("owner", task.getOwner());
-        taskInfo.put("assignee", task.getAssignee());
-        taskInfo.put("delegationState", (task instanceof Task) ? ((Task) task).getDelegationState() : null);
-        taskInfo.put("name", sPlace + task.getName());
-        taskInfo.put("description", task.getDescription());
-        taskInfo.put("createTime", sdf.format(task.getCreateTime()));
-        taskInfo.put("dueDate", task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
-        taskInfo.put("priority", task.getPriority());
-        taskInfo.put("suspended", (task instanceof Task) ? ((Task) task).isSuspended() : null);
-        taskInfo.put("taskDefinitionKey", task.getTaskDefinitionKey());
-        taskInfo.put("tenantId", task.getTenantId());
-        taskInfo.put("category", task.getCategory());
-        taskInfo.put("formKey", task.getFormKey());
-        taskInfo.put("parentTaskId", task.getParentTaskId());
-        taskInfo.put("parentTaskUrl", "");
-        taskInfo.put("executionId", task.getExecutionId());
-        taskInfo.put("executionUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
-        taskInfo.put("processInstanceId", task.getProcessInstanceId());
-        taskInfo.put("processInstanceUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
-        taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
-        taskInfo.put("processDefinitionUrl", oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
-        taskInfo.put("variables", new LinkedList());
-        
-        Long point3EndPoint4Start = System.nanoTime();
-        Long res3 = point3EndPoint4Start - point2EndPoint3Start;
-        
-        if (flowSlotTicket != null) {
-            LOG.info("Populating flow slot ticket");
-            DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
-            Map<String, Object> flowSlotTicketData = new HashMap<>();
-            flowSlotTicketData.put("nID", flowSlotTicket.getId());
-            flowSlotTicketData.put("nID_Subject", flowSlotTicket.getnID_Subject());
-            flowSlotTicketData.put("sDateStart", flowSlotTicket.getsDateStart() != null ? dtf.print(flowSlotTicket.getsDateStart()) : null);
-            flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()) : null);
-            taskInfo.put("flowSlotTicket", flowSlotTicketData);
-        }
-        
-        Long point4End = System.nanoTime();
-        Long res4 = point4End - point3EndPoint4Start;
-        LOG.info("\n"+ "res1.2: " + res1 + "\n" + "res2.2: " + res2 + "\n" + "res3.2: " + res3 + "\n" + "res4.2: " + res4 + "\n" + "res5.2: " + res5);
         
         return taskInfo;
     }

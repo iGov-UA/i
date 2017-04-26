@@ -4,6 +4,7 @@ import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -36,6 +37,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.fs.FileSystemDictonary;
 import org.igov.io.mail.Mail;
 import org.igov.io.sms.ManagerSMS;
@@ -51,13 +53,15 @@ import org.igov.service.business.object.Language;
 import org.igov.service.business.place.PlaceService;
 import org.igov.service.controller.security.AccessContract;
 import org.igov.service.controller.security.AuthenticationTokenSelector;
+import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.Tool;
 import org.igov.util.ToolWeb;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -685,7 +689,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 if (oFormData != null && oFormData.getFormProperties() != null) {
                     for (FormProperty oFormProperty : oFormData.getFormProperties()) {
                         aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
-                        LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+                        LOG.info("Matching1 property (Id={},Name={},Type={},Value={})",
                                 oFormProperty.getId(), oFormProperty.getName(),
                                 oFormProperty.getType().getName(),
                                 oFormProperty.getValue());
@@ -706,7 +710,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     && oTaskFormData.getFormProperties() != null) {
                 for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
                     aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
-                    LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+                    LOG.info("Matching2 property (Id={},Name={},Type={},Value={})",
                             oFormProperty.getId(), oFormProperty.getName(),
                             oFormProperty.getType().getName(),
                             oFormProperty.getValue());
@@ -794,45 +798,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public Mail Mail_BaseFromTask(DelegateExecution oExecution)
             throws Exception {
 
-        String sFromMail = getStringFromFieldExpression(from, oExecution);
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
-        LOG.info("sBodySource------>>>>>>>>>>>>>> (sBodySource={})", sBodySource);
         String sBody = replaceTags(sBodySource, oExecution);
 
-        //saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
-
         Mail oMail = context.getBean(Mail.class);
-    //=================================================================================================================================================    
-        Map<String, String> aFormPropertyReturn = new HashMap<>();
-        FormData oTaskFormData = oExecution.getEngineServices()
-                .getFormService()
-                .getStartFormData(oExecution.getProcessDefinitionId());
-        if (oTaskFormData != null
-                && oTaskFormData.getFormProperties() != null) {
-            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
-            	if(oFormProperty.getValue()!=null) {
-            		  LOG.info("FormProperty.getValue() (Value={})",
-                              oFormProperty.getValue());
-            		if(oFormProperty.getValue().startsWith("{\"sID_StorageType")) {
-            			LOG.info("FormProperty.sID_StorageType() (Value={})",
-                                oFormProperty.getValue());
-                aFormPropertyReturn.put("HTML", oFormProperty.getValue());
-                LOG.info("Matching property (Value={})",
-                        oFormProperty.getValue());
-            		}
-            	}
-            }
-        }
-        JSONParser parser = new JSONParser();
-        org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(aFormPropertyReturn.get("HTML"));
-        LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + oTableJSONObject);
-        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
-                (String)oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
-
-        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
-    //================================================================================================================================================= 
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
                 ._Body(sBody)._AuthUser(mailServerUsername)
@@ -844,6 +815,96 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
         return oMail;
     }
+    
+    public Mail sendToMailFromMongo(DelegateExecution oExecution)
+            throws Exception {
+
+        String saToMail = getStringFromFieldExpression(to, oExecution);
+        String sHead = getStringFromFieldExpression(subject, oExecution);
+
+        Mail oMail = context.getBean(Mail.class);
+        
+        String sJsonHtml = loadFormPropertyFromTaskHTMLText(oExecution);
+        
+	    String sBodyFromMongo = getHtmlTextFromMongo(sJsonHtml); 
+	       
+           LOG.info("sBodyFromMongo in -: " +sBodyFromMongo);
+        
+        oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
+                ._Body(sBodyFromMongo)._AuthUser(mailServerUsername)
+                ._AuthPassword(mailServerPassword)._Host(mailServerHost)
+                ._Port(Integer.valueOf(mailServerPort))
+                // ._SSL(true)
+                // ._TLS(true)
+                ._SSL(bSSL)._TLS(bTLS);
+
+        return oMail;
+    }
+
+    
+    /**
+     * Метод получения из монго текст письма
+     * @param sJsonHtml
+     * @return
+     * @throws IOException
+     * @throws ParseException
+     * @throws RecordInmemoryException
+     * @throws ClassNotFoundException
+     * @throws CRCInvalidException
+     * @throws RecordNotFoundException
+     */
+	public String getHtmlTextFromMongo(String sJsonHtml) throws IOException, ParseException, RecordInmemoryException,
+			ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
+		JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
+	       LOG.info("sJsonHtmlInFormatMongo--->>>>>>>>>>>>>>>>>" + sJsonHtml);
+	       LOG.info("jsonObj--->>>>>>>>>>>>>>>>>" + sJsonHtmlInFormatMongo);
+	       LOG.info("jsonObj sKey--->>>>>>>>>>>>>>>>>" + sJsonHtmlInFormatMongo.getString("sKey"));
+	       LOG.info("jsonObj sID_StorageType--->>>>>>>>>>>>>>>>>" + sJsonHtmlInFormatMongo.getString("sID_StorageType"));
+	       
+	       InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+	    		   sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
+                   .getInputStream();
+
+	       String sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+		return sBodyFromMongo;
+	}
+
+    
+    /**
+     * Метод для получения json содержащий sKey - sID_StorageType записи в монго текста письма
+     * @param oExecution
+     * @return
+     */
+	public String loadFormPropertyFromTaskHTMLText(DelegateExecution oExecution) {
+		List<String> previousUserTaskId = getPreviousTaskId(oExecution);
+        List<String> aFormPropertyReturnJsonForMongo = new ArrayList<>();
+        for (String sID_UserTaskPrevious : previousUserTaskId) {
+            try {
+                FormData oFormData = null;
+                if (previousUserTaskId != null && !previousUserTaskId.isEmpty()) {
+                    oFormData = oExecution.getEngineServices()
+                            .getFormService().getTaskFormData(sID_UserTaskPrevious);
+                }
+                if (oFormData != null && oFormData.getFormProperties() != null) {
+                    for (FormProperty oFormProperty : oFormData.getFormProperties()) {
+                    	if(oFormProperty.getValue()!=null && "fileHTML".equals(oFormProperty.getType().getName())) {
+                  		aFormPropertyReturnJsonForMongo.add(oFormProperty.getValue());
+                  	}
+                    }
+                }
+            } catch (Exception e) {
+                LOG.error(
+                        "Error: {}, occured while looking for a form for task:{}",
+                        e.getMessage(), sID_UserTaskPrevious);
+                LOG.debug("FAIL:", e);
+            }
+        }
+        
+        if(!aFormPropertyReturnJsonForMongo.isEmpty()) {
+        	return aFormPropertyReturnJsonForMongo.get(0);
+        }
+		return "{\"\":\"\"}";
+	}
 
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)
             throws Exception {
