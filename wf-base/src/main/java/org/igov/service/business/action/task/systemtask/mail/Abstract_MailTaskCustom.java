@@ -845,9 +845,9 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	    		   jsonObj.getString("sKey"), jsonObj.getString("sID_StorageType"))
                    .getInputStream();
 
-           org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser
-                   .parse(IOUtils.toString(oAttachmet_InputStream, "UTF-8"));
-           LOG.info("oTableJSONObject in ------------>>>>>>>>>>>>>>>>>: " + oJSONObject.toJSONString());
+	       String theString = IOUtils.toString(oAttachmet_InputStream, "UTF-8"); 
+	       
+           LOG.info("oTableJSONObject in -: " +theString);
 	       
         }
     //================================================================================================================================================= 
