@@ -3428,28 +3428,28 @@ value != enum.
 
 [вернуться...](#newemailtemplates)
 
-  ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
-здесь мы пишем наш контент
+  ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)  
+  здесь мы пишем наш контент     
+``` 
+[pattern/mail/new_design/_common_content_end.html]   
+[pattern/mail/new_design/_common_feedback.html]     	 
+[pattern/mail/new_design/_common_signature_start.html]  
 ```
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
+здесь мы можем добавить орган в подпись ${sNameOrgan}  
 ```
-здесь мы можем добавить орган в подпись <br/>
-```
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
+[pattern/mail/new_design/_common_signature_end.html]   
+[pattern/mail/new_design/_common_footer.html]  
 ```    
-Другой пример использования новых шаблонов:
+Другой пример использования новых шаблонов:  
 Используем до текста   
-[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_header.html]  
 [pattern/mail/new_design/_common_content_start.html]    
-Используем после текста         
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}  
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
+Используем после текста           
+[pattern/mail/new_design/_common_content_end.html]  
+[pattern/mail/new_design/_common_signature_start.html]  
+${sNameOrgan}    
+[pattern/mail/new_design/_common_signature_end.html]  
+[pattern/mail/new_design/_common_footer.html]  
 
 
 
