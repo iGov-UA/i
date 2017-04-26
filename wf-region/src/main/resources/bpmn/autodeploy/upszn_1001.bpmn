@@ -71,12 +71,12 @@
         <activiti:formProperty id="nCrimeUkr" name="Довідку МВС про те, що іноземець чи особа без громадянства, які на момент оформлення дозволу перебувають на території України, не відбувають покарання за скоєння злочину та стосовно них не здійснюється кримінальне провадження" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="slabel1" name="За бажанням, Ви можете замовити довідку, скориставшись полугою" type="label" default="&lt;a href=&quot;https://igov.org.ua/service/1/general&quot;&gt;Надання довідки про притягнення до кримінальної відповідальності&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="nCrimeForeign" name="Довідку уповноваженого органу країни походження (перебування) про те, що іноземець чи особа без громадянства, які на момент оформлення дозволу перебувають за межами України, не відбувають покарання за скоєння злочину та стосовно них не здійснюється кримінальне провадження" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="Група користувачів iGov" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="Група користувачів iGov ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Довіреність" type="markers" default="${markerService.loadFromFile('soczah/upszn_1001.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -142,7 +142,7 @@ ${sNameOrgan}<br />
     <userTask id="usertask1" name="Первинна обробка документів" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
@@ -206,7 +206,7 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/upszn_1001_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/upszn_1001_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/upszn_1001_print.html] ; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -309,7 +309,7 @@ ${sNameOrgan}<br />
     <userTask id="usertask2" name="Рішення про видачу дозволу">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адреса електронної пошти заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
@@ -375,7 +375,7 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="comment1" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/upszn_1001_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/upszn_1001_print.html]" type="invisible" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/upszn_1001_print.html] ; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

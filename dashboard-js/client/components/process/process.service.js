@@ -72,6 +72,20 @@ angular.module('dashboardJsApp')
             }
       },
 
+      getBPs_ForExport: function () {
+
+        return $http.get('/api/processes/getBPs_ForExport')
+          .then(function (response) {
+            try {
+              var result = JSON.parse(response.data);
+              return result;
+            }
+            catch (error) {
+              return result;
+            }
+          });
+      },
+
       getProcessID: function (sID) {
         return processesDefinitions[sID].id;
       }

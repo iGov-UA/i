@@ -79,10 +79,12 @@ import java.util.*;
 import org.activiti.engine.task.NativeTaskQuery;
 
 import org.igov.model.subject.SubjectAccountDao;
+import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
+import org.igov.util.ToolJS;
 //import com.google.common.base.Optional;
 
 /**
@@ -97,6 +99,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private HttpRequester httpRequester;
+    @Autowired
+    private SubjectRightBPDao subjectRightBPDao;
     @Autowired
     private ActionEventHistoryService actionEventHistoryService;
     @Autowired
@@ -1350,10 +1354,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             LOG.info("headers" + headers);
         }
-
+        
+        LOG.info("foundResults is {}", foundResults);
+        
+        LOG.info("asField_Filter is {}", asField_Filter);
+        LOG.info("sLogin is {}", sLogin);
+        
+        String FormulaFilter_Export = null;
+        
+        if(asField_Filter != null && asField_Filter.equals("[sFormulaFilter_Export]")){
+            FormulaFilter_Export = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
+            LOG.info("FormulaFilter_Export is {} ", FormulaFilter_Export);
+        }
+        
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-                csvLines, saFields, saFieldsCalc, headers);
-
+                csvLines, saFields, saFieldsCalc, headers, FormulaFilter_Export);
+        
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
@@ -1362,8 +1378,29 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP);
+                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP, FormulaFilter_Export);
         }
+        
+        LOG.info("result csvLines {}", csvLines);
+        
+        /*List<Map<String, Object>> filteredCSVLine = new ArrayList<>();
+        try{
+            if (asField_Filter != null){
+                ToolJS oToolJs = new ToolJS();
+
+                for(Map<String, Object> currCSVLine : csvLines){
+                    if((Boolean)(oToolJs.getObjectResultOfCondition(new HashMap<>(),currCSVLine, asField_Filter))){
+                        filteredCSVLine.add(currCSVLine);
+                    }
+                }
+            }
+        }catch (Exception ex){
+            LOG.info("Exception during formula calculation {}", ex);
+        }
+        
+        csvLines.clear();
+        csvLines.addAll(filteredCSVLine);*/
+                
         LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
         if (saFieldSummary != null) {
 
@@ -1433,7 +1470,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
     }
-
+    
+    
+    
+    
     /**
      * Returns business processes which belong to a specified user
      *
@@ -1601,7 +1641,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     HistoryEvent_Service_StatusType.OPENED_REMARK_EMPLOYEE_QUESTION,
                     sID_Order,
                     saField,
-                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sO(sBody)), sToken, null, sSubjectInfo, nID_Subject);
+                    "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sBody), sToken, null, sSubjectInfo, nID_Subject);//sO(sBody))
             LOG.info("(sReturn={})", sReturn);
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042
@@ -1803,6 +1843,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> res = new HashMap<>();
 
         try {
+            
+            Long point1Start = System.nanoTime();
+            
             List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
             if (groups != null && !groups.isEmpty()) {
@@ -1811,6 +1854,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     groupsIds.add(group.getId());
                 }
                 LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+                
+                Long point1EndPoint2Start = System.nanoTime();
+                LOG.info("point1 time: " + String.format("%,12d", (point1EndPoint2Start - point1Start))); 
 
                 Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
                 long totalNumber = 0;
@@ -1822,7 +1868,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
                         : oActionTaskService.getCountOfTasksForGroups(groupsIds);
                 LOG.info("total count before processing is: {}", totalNumber);
-
+                
+                Long point2EndPoint3SStart = System.nanoTime();
+                LOG.info("point2 time: " + String.format("%,12d", (point2EndPoint3SStart - point1EndPoint2Start))); 
+                
                 long totalCountServices = 0;
 
                 if (!"Documents".equalsIgnoreCase(sFilterStatus)) {
@@ -1841,6 +1890,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
 
                 LOG.info("totalCountServices is {}", totalCountServices);
+                
+                Long point3EndPoint4Start = System.nanoTime();
+                LOG.info("point3 time: " + String.format("%,12d", (point3EndPoint4Start - point2EndPoint3SStart))); 
+                
                 int nStartBunch = nStart;
                 List<TaskInfo> tasks = new LinkedList<>();
                 long sizeOfTasksToSelect = nSize;
@@ -1860,6 +1913,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         break;
                     }
                 }
+                
+                Long point4EndPoint5Start = System.nanoTime();
+                LOG.info("point4 time: " + String.format("%,12d", (point4EndPoint5Start - point3EndPoint4Start))); 
 
                 int tasksSize = tasks.size();
                 if (bFilterHasTicket) {
@@ -1874,6 +1930,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         tasks.clear();
                     }
                 }
+                
+                Long point5EndPoint6Start = System.nanoTime();
+                LOG.info("point5 time: " + String.format("%,12d", (point5EndPoint6Start - point4EndPoint5Start)));
 
                 List<Map<String, Object>> data = new LinkedList<>();
                 if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
@@ -1881,6 +1940,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 } else {
                     oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
                 }
+                
+                Long point6EndPoint7Start = System.nanoTime();
+                LOG.info("point6 time: " + String.format("%,12d", (point6EndPoint7Start - point5EndPoint6Start)));
 
                 List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<>();
 
@@ -1909,6 +1971,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
 
                 LOG.info("checkDocumentIncludesData size: {}", checkDocumentIncludesData.size());
+                
+                Long point7EndPoint8Start = System.nanoTime();
+                LOG.info("point7 time: " + String.format("%,12d", (point7EndPoint8Start - point6EndPoint7Start)));
 
                 res.put("data", checkDocumentIncludesData);
                 res.put("size", nSize);
@@ -1921,10 +1986,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 } else {
                     res.put("total", totalCountServices);
                 }
+                
+                Long point8End = System.nanoTime();
+                LOG.info("point8 time: " + String.format("%,12d", (point8End - point7EndPoint8Start)));
+                LOG.info("Total time of all points: " + String.format("%,12d", (point8End - point1Start)));
+                
+                
             }
         } catch (Exception e) {
             LOG.error("Error occured while getting list of tasks", e);
-        }
+        }        
         return res;
     }
 
@@ -2806,7 +2877,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //Map<String,Object> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
     List<Map<String, Object>> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true)
             @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
-        return oDocumentStepService.getDocumentStepLogins(nID_Process + "");
+        return oDocumentStepService.getDocumentStepLogins(String.valueOf(nID_Process));
     }
 
     //save curretn values to Form
@@ -3010,7 +3081,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "/getProcessTemplate", notes = "##### Получение шаблона процесса#####\n\n")
     @RequestMapping(value = "/getProcessTemplate", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public @ResponseBody
-    Map<String, Object> setProcess(
+    Map<String, Object> getProcessTemplate(
             @ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
@@ -3030,10 +3101,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             StartFormData formData = formService.getStartFormData(resProcessDefinitions.get(0).getId());
 
             LOG.info("Received form " + formData);
-            Map<String, Object> formDataDTO = new HashMap<String, Object>();
+            Map<String, Object> formDataDTO = new HashMap<>();
             formDataDTO.put("formKey", formData.getFormKey());
             formDataDTO.put("deploymentId", formData.getDeploymentId());
-            formDataDTO.put("formProperties", processFormProperties(formData.getFormProperties()));
+            formDataDTO.put("aFormProperty", processFormProperties(formData.getFormProperties()));
             formDataDTO.put("processDefinitionId", formData.getProcessDefinition().getId());
 
             Map[] res = new Map[1];
@@ -3059,9 +3130,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     protected List<Map<String, Object>> processFormProperties(List<FormProperty> formProperties) {
-        List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+        List<Map<String, Object>> res = new LinkedList<>();
         for (FormProperty property : formProperties) {
-            Map<String, Object> currProperty = new HashMap<String, Object>();
+            Map<String, Object> currProperty = new HashMap<>();
             currProperty.put("id", property.getId());
             currProperty.put("name", property.getName());
             currProperty.put("type", property.getType().getName());
@@ -3071,11 +3142,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             currProperty.put("writable", property.isWritable());
             if ("enum".equals(property.getType().getName())) {
                 Object oValues = property.getType().getInformation("values");
-                List<Map> enumValuesPossible = new LinkedList<Map>();
+                List<Map> enumValuesPossible = new LinkedList<>();
                 if (oValues instanceof Map) {
                     Map<String, String> mValue = (Map) oValues;
                     for (Map.Entry<String, String> mapEntry : mValue.entrySet()) {
-                        Map<String, Object> currEnumValue = new HashMap<String, Object>();
+                        Map<String, Object> currEnumValue = new HashMap<>();
                         currEnumValue.put("id", mapEntry.getKey());
                         currEnumValue.put("name", mapEntry.getValue());
                         enumValuesPossible.add(currEnumValue);
@@ -3093,18 +3164,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
+            @ApiParam(value = "nID_Subject", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
+             @ApiParam(value = "nID_Service", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+            @ApiParam(value = "nID_ServiceData", required = true) @RequestParam(value = "nID_ServiceData", required = true) Long nID_ServiceData,
+             @ApiParam(value = "sID_UA", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA,
             @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
     ) throws Exception {
 
+//      nID_Subject: nID_Subject,
+//      nID_Service: formData.nID_Service,
+//      nID_ServiceData: formData.nID_ServiceData,
+//      nID_Region: formData.nID_Region,
+//      sID_UA: formData.sID_UA
+        
         Map<String, Object> mParam = new HashMap<>();
         Map<String, Object> mJsonBody;
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
             if (mJsonBody != null) {
-                if (mJsonBody.containsKey("properties")) {
-                    LOG.info("Parsing properties: " + mJsonBody.get("properties"));
+                if (mJsonBody.containsKey("aFormProperty")) {
+                    LOG.info("Parsing aFormProperty: " + mJsonBody.get("aFormProperty"));
 
-                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")) {
+                    for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("aFormProperty")) {
                         LOG.info("Parsing param: " + param);
                         mParam.put((String) param.get("id"), param.get("value"));
                     }
@@ -3115,10 +3196,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         mParam.put("sLoginAuthor", sLogin);
-        LOG.info("Processing process with key " + StringUtils.substringBefore(sID_BP, ":"));
+        LOG.info("Processing process with key {} mParam {}", StringUtils.substringBefore(sID_BP, ":"), mParam);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(StringUtils.substringBefore(sID_BP, ":"), mParam);
+        
         Map<String, Object> mReturn = new HashMap<>();
-
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
         List<Task> tasks = taskService.createTaskQuery().processInstanceId(oProcessInstanceChild.getId()).active().list();
         if (tasks != null && tasks.size() > 0) {

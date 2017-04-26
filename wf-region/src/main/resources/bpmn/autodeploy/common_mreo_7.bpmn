@@ -13,9 +13,9 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в громадянському паспорті" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMail_Signature" name="Підпис" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test)" type="invisible" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса сервісного центру; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMail_Signature" name="Підпис; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMail_Employee" name="sMail_Employee (field for test); ;bVisible=false" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sWork_Time" name="Графік прийому громадян" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="visit" name="Зазначте бажану дату / час візиту до сервісного центра для отримання послуги; ця інформація допоможе співробітнику сервісного центра  зарезервувати для Вас зручний час візиту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumber" name="Існуючий держ.номер транспортного засобу" type="string" required="true"></activiti:formProperty>
@@ -73,8 +73,8 @@
         <activiti:formProperty id="file3" name="Копія сертифікату відповідності ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Копія акту переобладнання транспортного засобу для роботи на зрідженому нафтовому газі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Копія акту технічної експертизи" type="file" required="true"></activiti:formProperty>
-       <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="invisible"  ></activiti:formProperty>
-<activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="invisible"  ></activiti:formProperty>
+       <activiti:formProperty id="sNameOrgan" name="sNameOrgan; ;bVisible=false" type="string"  ></activiti:formProperty>
+<activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan; ;bVisible=false" type="string"  ></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -86,7 +86,7 @@
     <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка інформації" activiti:candidateGroups="common_mreo_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса сервісного центру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
@@ -151,7 +151,7 @@
         <activiti:formProperty id="sBillToPay" name="В разі надання послуги, завантажте файл з реквізитами для сплати вартості послуги. Файл буде відправлено заявнику на  email" type="file"></activiti:formProperty>
         <activiti:formProperty id="visit" name="Побажання громадянина щодо візиту для отримання послуги" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть дату візиту/номер віконця для отримання послуги або підставу для відмови (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="sNotifyEvent_AfterSubmit" type="invisible" default="Електроний лист заявнику успішно відправлено.  В разі надання послуги заявка перейшла в чергу Необроблених з новим статусом - 'Надання послуги' "></activiti:formProperty>
+        <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="sNotifyEvent_AfterSubmit; ;bVisible=false" type="string" default="Електроний лист заявнику успішно відправлено.  В разі надання послуги заявка перейшла в чергу Необроблених з новим статусом - 'Надання послуги' "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -171,7 +171,7 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <userTask id="usertask2" name="Надання послуги" activiti:candidateGroups="common_mreo_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sAddress" name="Адреса сервісного центру" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса сервісного центру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>

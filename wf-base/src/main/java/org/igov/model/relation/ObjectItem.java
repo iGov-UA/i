@@ -16,9 +16,21 @@ public class ObjectItem extends AbstractEntity{
     private Long nID_Subject_Source;
     
     @JsonProperty(value = "sID_Private_Source")
-    @Column(name = "sID_Private_Source", length = 5000, nullable = true)
+    @Column(name = "sID_Private_Source", length = 255, nullable = true)
     private String sID_Private_Source;
 
+    @JsonProperty(value = "sName")
+    @Column(name = "sName", length = 5000, nullable = false)
+    private String sName;
+
+    public String getsName() {
+        return sName;
+    }
+
+    public void setsName(String sName) {
+        this.sName = sName;
+    }
+    
     public Long getnID_Subject_Source() {
         return nID_Subject_Source;
     }

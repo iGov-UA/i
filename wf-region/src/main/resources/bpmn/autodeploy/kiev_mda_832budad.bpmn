@@ -27,14 +27,14 @@
         <activiti:formProperty id="Activity" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_bud_dok" name="Копія проектної документації об'єкта будівництва;(Якщо файлів багато завантажте Zip архівом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible" default="ПОВНА НАЗВА ОРГАНУ"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible" default="ТЕЛЕФОН ДЛЯ ДОВІДОК"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible" default="АДРЕСА ОРГАНУ"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible" default="ЧАС РОБОТИ"></activiti:formProperty>
-        <activiti:formProperty id="Date" name="Дата заяви" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП ; ;bVisible=false" type="string" default="ПОВНА НАЗВА ОРГАНУ"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП ; ;bVisible=false" type="string" default="ТЕЛЕФОН ДЛЯ ДОВІДОК"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП ; ;bVisible=false" type="string" default="АДРЕСА ОРГАНУ"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП ; ;bVisible=false" type="string" default="ЧАС РОБОТИ"></activiti:formProperty>
+        <activiti:formProperty id="Date" name="Дата заяви ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта Органів для тесту" type="string" default="akylish88@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="s3Etap" name="Назва 3го етапу" type="invisible" default="Відділ Правового Забезпечення, перевірка документів, прийняття рішення, підготовка наказу"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги" type="invisible" default="Присвоєння будівельної адреси об'єкту нового будівництва"></activiti:formProperty>
+        <activiti:formProperty id="s3Etap" name="Назва 3го етапу ; ;bVisible=false" type="string" default="Відділ Правового Забезпечення, перевірка документів, прийняття рішення, підготовка наказу"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги ; ;bVisible=false" type="string" default="Присвоєння будівельної адреси об'єкту нового будівництва"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -256,7 +256,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sCommentUr" name="Вкажіть причину відмови" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="file_Nakaz" name="Наказ про присвоєння будівельної адреси" type="file"></activiti:formProperty>
         <activiti:formProperty id="file_Vidmova" name="Лист-відмова" type="file"></activiti:formProperty>
-        <activiti:formProperty id="s3Etap" name="Назва 3го етапу" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="s3Etap" name="Назва 3го етапу ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_Prav_zab_3etap" name="marker_dla vidmoviSMK" type="markers" default="${markerService.loadFromFile('mvk/mda_832_Prav_zab_3etap.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
