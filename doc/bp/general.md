@@ -283,7 +283,7 @@ type="queueData" required="true"></activiti:formProperty>
 в БП на стартовой таске:
 ```
 		 <activiti:formProperty id="nList" name="Динамический список" type="enum"></activiti:formProperty>
-		<activiti:formProperty id="sSelectedListItem" name="Выбранное значение из спика" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="sSelectedListItem" name="Выбранное значение из спика; ;bVisible=false" type="string"></activiti:formProperty>
 ```
 в файле атрибутов
 ```
