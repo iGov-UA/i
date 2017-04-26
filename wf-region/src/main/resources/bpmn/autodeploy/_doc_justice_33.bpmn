@@ -49,6 +49,7 @@
         <activiti:formProperty id="sName_Supervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
+         <activiti:formProperty id="sNameDepart" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_kolegia.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -158,6 +159,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sName_Supervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepart" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html]" type="invisible" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll" name="bSubmitedAll" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -171,6 +173,11 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 //клонування для юзерів в таблиці
     		var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU_read', 'sTableViewed', 'step_2')
 
+//отримання назви департамента
+var sNameDepart = " ";
+var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
+var obj1 = subjectGroupTreeService.getDeparByGroup_Activiti(sID_Group_Activiti);
+execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
 	 </script>
     </scriptTask>
     <sequenceFlow id="flow60" sourceRef="usertask4" targetRef="scripttask2"></sequenceFlow>
