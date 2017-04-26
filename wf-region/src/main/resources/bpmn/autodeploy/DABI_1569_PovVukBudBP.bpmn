@@ -10,7 +10,7 @@
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTextPost" name=" ; ;labelType=info" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
+        <activiti:formProperty id="sTextPost" name=" ; ;labelType=info" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього на ваш e-mail буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
         <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
@@ -196,7 +196,7 @@
         <activiti:formProperty id="markerPidr" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIGPidr.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/DABI/DABI_1569_PovVukBudBP.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/DABI/DABI_1569_PovVukBudBP.html"></activiti:formProperty>
         
         <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -495,7 +495,7 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_1569_PovVukBudBP.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_1569_PovVukBudBP.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>

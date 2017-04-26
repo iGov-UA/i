@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="ternopol_rcnap_117" name="Надання довідки про те, що посвідчення батьків та дитини з багатодітної сім'ї не видавалося" isExecutable="true">
+  <process id="ternopol_rcnap_117" name="Довідка про те, що за місцем реєстрації батька або матері посвідчення батьків та дитини з багатодітної сім'ї не видавались" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
@@ -12,9 +12,9 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="passport_father" name="Копія паспорту батька (1, 2, 10, 11-13 стор.)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="passport_mother" name="Копія паспорту матері (1, 2, 10, 11-13 стор.)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей; завантажте єдиним архівом усі свідоцтва" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="passport_father" name="Копія паспорту батька (1, 2, 10, 11-13 стор.); декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="passport_mother" name="Копія паспорту матері (1, 2, 10, 11-13 стор.); декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей; декілька свідоцтв об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameArea" name="назва населеного пункту; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністартивного органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта посадовця; ;bVisible=false" type="string"></activiti:formProperty>
@@ -37,13 +37,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopol_rcnap_117_print.html" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopol_rcnap_117_print.html]" type="invisible" default="Бланк довідки (Тернопіль)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopol_rcnap_117_print.html] ; ;bVisible=false" type="string" default="Бланк довідки (Тернопіль)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_father" name="Копія паспорту батька (1, 2, 10, 11-13 стор.); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_mother" name="Копія паспорту матері (1, 2, 10, 11-13 стор.); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${passport_father}, ${passport_mother}, ${passport_children}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="прийняття рішення" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
@@ -60,9 +59,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDocNumber" name="Внесіть номер довідки" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови у наданні довідки внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Скан-копія довідки" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Скан-копія довідки; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopol_rcnap_117_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopol_rcnap_117_print.html]; ;bVisible=false" type="string" default="Бланк довідки (Тернопіль)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_father" name="Копія паспорту батька (1, 2, 10, 11-13 стор.); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_mother" name="Копія паспорту матері (1, 2, 10, 11-13 стор.); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="мейл службовцю" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -77,12 +80,7 @@
           <activiti:string><![CDATA[Нове  звернення. Надання довідки про те, що посвідчення батьків та дитини з багатодітної сім'ї не видавалося]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-Шановний колего!<br /><br />
-У Вас в черзі на обробку зареєстровано нове звернення.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-Опрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a><br />
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

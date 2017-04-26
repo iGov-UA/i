@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="justice_2517_GOopen" name="Державна реєстрація створення громадського об'єднання" isExecutable="true">
+    <documentation>
+		AGVersion: 2017.04.14		
+	</documentation>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="InfoStart" name="; ;labelType=info" type="label" default="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує). &lt;/br&gt; Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="sNameGO" name="Найменування громадського об’єднання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressGO" name="Місцезнаходження громадського об’єднання" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="InfoFileLoad" name="; ;labelType=info" type="label" default="Завантажте наступні документи"></activiti:formProperty>
+
+        <activiti:formProperty id="fVarDod_01" name="Заява;про державну реєстрацію створення юридичної особи ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fVarDod_02" name="Реєстр громадян;які брали участь в установчих зборах ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fVarDod_03" name="Статут організації;пронумерований, прошитий та підписаний ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fVarDod_04" name="Відомості;про керівні органи ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fVarDod_05" name="Заява про включення до Реєстру неприбуткових установ та організацій;за бажанням ;bNew=true" type="file"></activiti:formProperty>
+
+        <activiti:formProperty id="InfoTestMail" name="; ;labelType=warning" type="label" default="Для демонстрації послуги"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Вкажіть E-Mail адресу для отримання листа держслужбовцю" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги; ;bVisible=false" type="string" default="Державна реєстрація створення громадського об'єднання"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name=" ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="Опрацювання звернення" activiti:candidateGroups="jur_${sID_UA}_2517">
+      <extensionElements>
+        <activiti:formProperty id="sMailClerk" name="E-Mail держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;bVisible=false" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення: " type="enum" required="true">
+          <activiti:value id="acceptMain" name="Так - Заява розглянута, прийнято позитивне рішення"></activiti:value>
+          <activiti:value id="rejectMain" name="Ні - Заява розглянута, прийнято негативне рішення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_ut01_01" name="показати строки якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;,&quot;fDecisionDoc&quot;,&quot;sUniqNum&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_ut01_02" name="показати строки якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut01_01" name="обов'язково якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut01_02" name="обов'язково якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut01_03" name="обов'язково строки якщо є файл-скан; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_03&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asHaveDecisionFile&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yesDecisionFile'&quot;}}}"></activiti:formProperty>
+
+        <activiti:formProperty id="asHaveDecisionFile" name="Наявність скана копії рішення: " type="enum" default="noDecisionFile">
+          <activiti:value id="yesDecisionFile" name="Так - є скан копії рішення про реєстрацію"></activiti:value>
+          <activiti:value id="noDecisionFile" name="Ні - скан копії рішення про реєстрацію відсутній"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea"></activiti:formProperty>
+
+        <activiti:formProperty id="fVarDod_01" name="Заява;про державну реєстрацію створення юридичної особи ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVarDod_02" name="Реєстр громадян;які брали участь в установчих зборах ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVarDod_03" name="Статут організації;пронумерований, прошитий та підписаний ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVarDod_04" name="Відомості;про керівні органи ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVarDod_05" name="Заява про включення до Реєстру неприбуткових установ та організацій; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (з копією рішення-з кодом опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
+Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
+Вам направлена копія рішення (додаток до листа).
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask4" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (з копією рішення-з кодом опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
+Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
+Вам направлена копія рішення (додаток до листа).
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <serviceTask id="servicetask2" name="Е-mail повідомлення урядовцеві про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${sMailClerk}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Нове звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (без копії рішення-з кодом опису)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
+Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.
+
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask6" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (без копії рішення-з кодом опису)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
+Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.
+
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask7" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (без копії рішення-без коду опису)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})
+
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask8" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (з копією рішення-без коду опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
+Вам направлена копія рішення (додаток до листа).
+
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask9" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (з копією рішення-без коду опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
+Вам направлена копія рішення (додаток до листа).
+
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask10" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (без копії рішення-без коду опису)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.
+
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum !='_' && asHaveDecisionFile=='yesDecisionFile' && asDecisionMain=='acceptMain'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="exclusivegateway1" targetRef="servicetask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum =='_' && asHaveDecisionFile=='yesDecisionFile' && asDecisionMain=='acceptMain'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum !='_' && asHaveDecisionFile=='noDecisionFile' && asDecisionMain=='acceptMain'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway1" targetRef="servicetask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum =="_" && asHaveDecisionFile=='noDecisionFile' && asDecisionMain=='acceptMain'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum !='_' && asHaveDecisionFile=='yesDecisionFile' && asDecisionMain=='rejectMain'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum =='_' && asHaveDecisionFile=='yesDecisionFile' && asDecisionMain=='rejectMain'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="exclusivegateway1" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum =='_' && asHaveDecisionFile=='noDecisionFile' && asDecisionMain=='rejectMain'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="exclusivegateway1" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum !='_' && asHaveDecisionFile=='noDecisionFile' && asDecisionMain=='rejectMain'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="servicetask6" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="servicetask7" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="exclusivegateway3" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="servicetask4" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="servicetask9" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="servicetask5" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="servicetask10" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="servicetask8" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="servicetask3" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_justice_2517_GOopen">
+    <bpmndi:BPMNPlane bpmnElement="justice_2517_GOopen" id="BPMNPlane_justice_2517_GOopen">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="222.0" y="57.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="409.0" y="47.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="539.0" y="54.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="81.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="17.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="1030.0" y="57.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="47.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="-100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="950.0" y="54.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="-40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="-160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="514.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="539.0" y="74.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="385.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="409.0" y="74.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="559.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="44.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="44.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="559.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="-13.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="-13.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="559.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="-72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="-73.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="559.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="-133.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="-133.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="559.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="108.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="108.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="559.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="559.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="288.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="287.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="559.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="941.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="229.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="94.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="941.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="969.0" y="288.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="94.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="990.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1030.0" y="74.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="941.0" y="44.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="45.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="54.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="941.0" y="-13.0"></omgdi:waypoint>
+        <omgdi:waypoint x="969.0" y="-16.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="54.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="941.0" y="-73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="969.0" y="-75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="54.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="941.0" y="-133.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="-132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="54.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="941.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="94.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="941.0" y="108.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="108.0"></omgdi:waypoint>
+        <omgdi:waypoint x="970.0" y="94.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="257.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="74.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

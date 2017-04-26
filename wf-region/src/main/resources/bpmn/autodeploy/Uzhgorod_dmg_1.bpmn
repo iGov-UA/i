@@ -3,6 +3,7 @@
   <process id="Uzhgorod_dmg_1" name="Ужгород - аварійний дозвіл на проведення земляних робіт" isExecutable="true">
     <startEvent id="start1" name="аварійний дозвіл на проведення земляних робіт">
       <extensionElements>
+      <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -12,36 +13,51 @@
         <activiti:formProperty id="application_zayava" name="Копія заяви на дозвіл на проведення земляних робіт; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="scheme" name="Схема виконання робіт - викопіювання з генплану; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="podtvergdenie" name="Письмове підтвердження факту аварії; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="blagoustroistvo" name="Документи які підтверджують здійснення заходів з відновлення благоустрою; договір чи угода зі спеціалізованою організацією на відновлення елементів благоустрою; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="payment" name="Підтвердження про оплату заходів з відновлення благоустрою; чеки або платіжні доручення; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="blagoustroistvo" name="Документи які підтверджують здійснення заходів з відновлення благоустрою; договір чи угода зі спеціалізованою організацією на відновлення елементів благоустрою;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="payment" name="Підтвердження про оплату заходів з відновлення благоустрою;чеки або платіжні доручення;bNew=true" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг у сфері загальної середньої, дошкільної, позашкільної освіти"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="переоформлення, видача копії або дубліката ліцензії на надання освітніх послуг у сфері загальної середньої, дошкільної, позашкільної освіти"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="Uzhgorod_dmg_1">
+    <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ID_zayava" name="реєстраційний номер заяви" type="string"></activiti:formProperty>
+        <activiti:formProperty id="ID_zayava" name="реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="application_zayava" name="Копія заяви на дозвіл на проведення земляних робіт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scheme" name="Схема виконання робіт - викопіювання з генплану; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="podtvergdenie" name="Письмове підтвердження факту аварії; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="blagoustroistvo" name="Документи які підтверджують здійснення заходів з відновлення благоустрою;договір чи угода зі спеціалізованою організацією на відновлення елементів благоустрою;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="payment" name="Підтвердження про оплату заходів з відновлення благоустрою;чеки або платіжні доручення;bNew=true" type="file" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="marker1" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_0724_AvDozvZem.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Документи пройшли перевірку. Послуга може бути надана."></activiti:value>
           <activiti:value id="reject" name="Відхилити запит"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_start_approx" name="Позначте орієнтовну дату надання дозволу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_start_approx" name="Позначте орієнтовну дату надання дозволу" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${application_zayava},${scheme},${podtvergdenie},${blagoustroistvo},${payment}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask4" name="надання адміністративної послуги" activiti:candidateGroups="Uzhgorod_dmg_1">
+    <userTask id="usertask4" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ID_zayava" name="реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="application_zayava" name="Копія заяви на дозвіл на проведення земляних робіт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scheme" name="Схема виконання робіт - викопіювання з генплану; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="podtvergdenie" name="Письмове підтвердження факту аварії; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="blagoustroistvo" name="Документи які підтверджують здійснення заходів з відновлення благоустрою;договір чи угода зі спеціалізованою організацією на відновлення елементів благоустрою;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="payment" name="Підтвердження про оплату заходів з відновлення благоустрою;чеки або платіжні доручення;bNew=true" type="file" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="marker2" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('Rada/rada_0724_AvDozvZem.json')}"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняття рішення про надання дозволу" type="enum" required="true">
           <activiti:value id="accept" name="надати дозвіл на проведення земляних робіт"></activiti:value>
           <activiti:value id="reject" name="відмовити у дозволі на проведення земляних робіт"></activiti:value>
@@ -52,7 +68,7 @@
     <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[alexander.polovenko@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -78,15 +94,20 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-Ваше звернення щодо надання аварійного дозволу на проведення земляних робіт успішно зареєстровано і буде опрацьовано впродовж 3 робочих днів.</h3><br /><br />
-Орієнтовний термін виконання запиту ${date_start_approx}<br />
-Реєстраційний номер заяви ${ID_zayava}<br />
-Ви отримаєте додаткове повідомлення за результатами розгляду зверення.<br />
-[pattern/mail/new_design/_common_signature_start.html]
-ЦНАП м.Ужгород<br />
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				Ваше звернення щодо надання аварійного дозволу на проведення земляних робіт успішно зареєстровано і буде опрацьовано впродовж 3 робочих днів.<br><br>
+				Орієнтовний термін виконання запиту ${date_start_approx}<br>
+				Реєстраційний номер заяви ${ID_zayava}<br>
+				Ви отримаєте додаткове повідомлення за результатами розгляду зверення.<br>
+				${sPhoneOrgan}<br>
+			</p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -103,15 +124,19 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-На жаль, Ваше звернення щодо надання аварійного дозволу на проведення земляних робіт відхилено через недостатню або неправильну інформацію.<br />
-<br />
-${comment_1}<br />
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
-[pattern/mail/new_design/_common_signature_start.html]
-ЦНАП м.Ужгород<br />
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				На жаль, Ваше звернення щодо надання аварійного дозволу на проведення земляних робіт відхилено через недостатню або неправильну інформацію.<br><br>
+				${comment_1}<br>
+				${sPhoneOrgan}<br>
+			</p>
+			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -128,22 +153,22 @@ ${comment_1}<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-Ви отримали схвалення щодо свого звернення - надання аварійного дозволу на проведення земляних робіт.<br />
-Отримайте оригінал документу у адміністатора ЦНАПу за адресою:<br />
-Закарпатська область, м. Ужгород, пл.Поштова,3<br />
-Телефон для довідок (0312)61-76-87<br />
-<br />
-Години роботи ЦНАПу:<br />
-понеділок-четвер з 9.00-17.00;<br />
-п'ятниця з 9.00-14.00;<br />
-обідня перерва з 13.00-13.30<br />
-Реєстраційний номер заяви ${ID_zayava}
-[pattern/mail/_common_signature_start.html]
-ЦНАП м.Ужгород<br />
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_feedback.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				Ви отримали схвалення щодо свого звернення - надання аварійного дозволу на проведення земляних робіт.<br>
+				Реєстраційний номер заяви ${ID_zayava}<br>
+				Отримайте оригінал документу у адміністатора ЦНАПу за адресою:<br>
+				${sAddress}<br>
+				${sWorkTime}<br>
+				${sPhoneOrgan}<br>
+			</p>
+			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -160,22 +185,23 @@ ${comment_1}<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-На жаль, Вам відмовлено у наданні аварійного дозволу на проведення земляних робіт.<br />
-${comment_2}<br /><br />
-Ви можете отримати оригінал документу у адміністатора ЦНАПу за адресою:<br />
-Закарпатська область, м. Ужгород, пл.Поштова,3<br />
-Телефон для довідок (0312)61-76-87<br />
-<br />
-Години роботи ЦНАПу:<br />
-понеділок-четвер з 9.00-17.00;<br />
-п'ятниця з 9.00-14.00;<br />
-обідня перерва з 13.00-13.30<br />
-Реєстраційний номер заяви ${ID_zayava}
-[pattern/mail/new_design/_common_signature_start.html]
-ЦНАП м.Ужгород<br />
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				На жаль, Вам відмовлено у наданні аварійного дозволу на проведення земляних робіт.<br>
+				${comment_2}<br><br>
+				Реєстраційний номер заяви ${ID_zayava}<br>
+				Ви можете отримати оригінал документу у адміністатора ЦНАПу за адресою:<br>
+				${sAddress}<br>
+				${sWorkTime}<br>
+				${sPhoneOrgan}<br>
+			</p>
+			За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

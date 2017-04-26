@@ -29,10 +29,25 @@
           <activiti:value id="sElementPoslugiTurizm" name="діяльність у сфері надання туристичних послуг"></activiti:value>
           <activiti:value id="sElementPoslugi" name="діяльність у сфері надання інших послуг"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asEnumVydDiyalnosti" name="Оберіть вид діяльності" type="enum">
+          <activiti:value id="sElementTrade" name="роздрібна торгівля"></activiti:value>
+          <activiti:value id="sElementRestoran" name="ресторанне господарство"></activiti:value>
+          <activiti:value id="sElementServices" name="послуги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeObject" name="Оберіть тип об'єкту" type="enum">
+          <activiti:value id="sElementType1" name="магазин"></activiti:value>
+          <activiti:value id="sElementType2" name="павільйон"></activiti:value>
+          <activiti:value id="sElementType3" name="кіоск"></activiti:value>
+          <activiti:value id="sElementType4" name="кафе"></activiti:value>
+          <activiti:value id="sElementType5" name="ресторан"></activiti:value>
+          <activiti:value id="sElementType6" name="об'єкт  послуг"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asEnumTypeObjectTempBuild" name="Чи є об'єкт тимчасовою спорудою до 30 кв.м. по зовнішньому контуру (кіоски, каркасно-тентові палатки, павільйони)" type="enum" default="sElementTypeObjectTempBuild_Ni">
           <activiti:value id="sElementTypeObjectTempBuild_Tak" name="так"></activiti:value>
           <activiti:value id="sElementTypeObjectTempBuild_Ni" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDateBeg" name="Початок періоду діяльності об'єкту" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateEnd" name="Кінець періоду діяльності об'єкту" type="date"></activiti:formProperty>
         <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ІПН" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="textArea" required="true"></activiti:formProperty>
@@ -57,14 +72,14 @@
         <activiti:formProperty id="nFileHouseWaste" name="Копія договору про надання послуг з вивезення побутових відходів з підприємством, яке надає даний вид послуг; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFileSvrdnFunc" name="Копія документу, що підтверджує зміну функціонального призначення приміщення , або частини приміщення;подається у разі невідповідності типу об'єкту визначеному у документі, що підтверджує право власності;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFileSvrdnSanSt" name="Копія висновку державної санітарно-епідеміологічної експертизи;подається для 1) підприємств торгівлі з продажу великогабаритних товарів, будівельних матеріалів, синтетичних миючих засобів, товарів побутової хімії, минеральних добрів та засобів захисту рослин або 2) для підприємств сфери послуг, за винятком пунктів прийому замовлень;bNew=true" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес оргструктури (району)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району)" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka_mode_worktime_529" name="Керівнику якого робочого органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka_mode_worktime_529" name="Керівнику якого робочого органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2.json')}"></activiti:formProperty>
       </extensionElements>
@@ -95,10 +110,25 @@
           <activiti:value id="sElementPoslugi" name="діяльність у сфері надання послуг"></activiti:value>
           <activiti:value id="sElementApteka" name="торгівля лікарськими засобами"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asEnumVydDiyalnosti" name="Оберіть вид діяльності" type="enum" writable="false">
+          <activiti:value id="sElementTrade" name="роздрібна торгівля"></activiti:value>
+          <activiti:value id="sElementRestoran" name="ресторанне господарство"></activiti:value>
+          <activiti:value id="sElementServices" name="послуги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeObject" name="Оберіть тип об'єкту" type="enum"  writable="false">
+          <activiti:value id="sElementType1" name="магазин"></activiti:value>
+          <activiti:value id="sElementType2" name="павільйон"></activiti:value>
+          <activiti:value id="sElementType3" name="кіоск"></activiti:value>
+          <activiti:value id="sElementType4" name="кафе"></activiti:value>
+          <activiti:value id="sElementType5" name="ресторан"></activiti:value>
+          <activiti:value id="sElementType6" name="об'єкт  послуг"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asEnumTypeObjectTempBuild" name="Чи є об'єкт тимчасовою спорудою до 30 кв.м. по зовнішньому контуру (кіоски, каркасно-тентові палатки, павільйони)" type="enum" writable="false">
           <activiti:value id="sElementTypeObjectTempBuild_Tak" name="так"></activiti:value>
           <activiti:value id="sElementTypeObjectTempBuild_Ni" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDateBeg" name="Початок періоду діяльності об'єкту" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateEnd" name="Кінець періоду діяльності об'єкту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер ФОП; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="textArea" writable="false"></activiti:formProperty>
@@ -120,10 +150,10 @@
           <activiti:value id="reject" name="Відмовити у розгляду погодження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="У разі відмови внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html] ; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileOwnership" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileDozvilSanEpedimSluzbi" name="Дозвіл Санепідслужби; Для закладів громадського харчування;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -164,10 +194,25 @@
           <activiti:value id="sElementPoslugi" name="діяльність у сфері надання послуг"></activiti:value>
           <activiti:value id="sElementApteka" name="торгівля лікарськими засобами"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asEnumVydDiyalnosti" name="Оберіть вид діяльності" type="enum" writable="false">
+          <activiti:value id="sElementTrade" name="роздрібна торгівля"></activiti:value>
+          <activiti:value id="sElementRestoran" name="ресторанне господарство"></activiti:value>
+          <activiti:value id="sElementServices" name="послуги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeObject" name="Оберіть тип об'єкту" type="enum"  writable="false">
+          <activiti:value id="sElementType1" name="магазин"></activiti:value>
+          <activiti:value id="sElementType2" name="павільйон"></activiti:value>
+          <activiti:value id="sElementType3" name="кіоск"></activiti:value>
+          <activiti:value id="sElementType4" name="кафе"></activiti:value>
+          <activiti:value id="sElementType5" name="ресторан"></activiti:value>
+          <activiti:value id="sElementType6" name="об'єкт  послуг"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asEnumTypeObjectTempBuild" name="Чи є об'єкт тимчасовою спорудою до 30 кв.м. по зовнішньому контуру (кіоски, каркасно-тентові палатки, павільйони)" type="enum" writable="false">
           <activiti:value id="sElementTypeObjectTempBuild_Tak" name="так"></activiti:value>
           <activiti:value id="sElementTypeObjectTempBuild_Ni" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDateBeg" name="Початок періоду діяльності об'єкту" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateEnd" name="Кінець періоду діяльності об'єкту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioTrusted_Person" name="Ім'я, по батькові та прізвище фізичної особи – підприємця або юридичної особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Ідентифікаційний код згідно з ЄДРПОУ або ідентифікаційний номер ФОП; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressContragent" name="Місцезнаходження юридичної особи / місце проживання фізичної особи – підприємця" type="textArea" writable="false"></activiti:formProperty>
@@ -188,11 +233,11 @@
           <activiti:value id="accept" name="Погодження режиму роботи здійснено, очікуємо суб`єкта звернення"></activiti:value>
           <activiti:value id="reject" name="У погодженні режиму роботи відмовлено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report" name="Сканкопія погодженого режиму роботи або відмови; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print.html] ; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileOwnership" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileDozvilSanEpedimSluzbi" name="Дозвіл Санепідслужби; Для закладів громадського харчування;bNew=true" type="file" writable="false"></activiti:formProperty>

@@ -39,17 +39,17 @@
         <activiti:formProperty id="bankId_scan_passport" name="Копія старого паспорта; у форматі pdf" type="file"></activiti:formProperty>
         <activiti:formProperty id="svid1" name="Копія свідоцтва про народження; за наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="doksmen" name="Копія свідоцтва про шлюб/розірвання шлюбу; Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sOrganType" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Тип органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKab205" name="Номер кабінету" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="район/місто звернення" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="Registrationservice" name="Відділ ДМС" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo" type="invisible" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="sRecviziti" name="Реквізити для держмита" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganType" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKab205" name="Номер кабінету ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="район/місто звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Registrationservice" name="Відділ ДМС ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo ; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sRecviziti" name="Реквізити для держмита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -322,16 +322,16 @@ ${sNameOrgan},<br>
           <activiti:value id="reestr" name="Громадянин подав заяву"></activiti:value>
           <activiti:value id="nejav" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="chomy" name="У зв'язку з чим отримується документ" type="invisible" default="замість утраченого або викраденого" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pidstava" name="Підстава для отримання нового документу" type="invisible" default=" " writable="false"></activiti:formProperty>
-        <activiti:formProperty id="zminna_zapyt" name="про втрату засначеного паспорта" type="invisible" default="про втрату засначеного паспорта" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_na_pasport16Fr(dnepr).html]" type="invisible" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_na_pasportBk(dnepr).html]" type="invisible" default="Заява для видачі зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_vtrata(dnepr).html]" type="invisible" default="Заява про втрату паспорта" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/check_mail(dnepr).html]" type="invisible" default="Запит в інше місто" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_5" name="[pattern/print/dms/vremUdost(dnepr).html]" type="invisible" default="Заява на тимчасове посвідчення" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/dms/vidomist16Fr(dnepr).html]" type="invisible" default="Відомості про реєстрацію лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_8" name="[pattern/print/dms/vidomist16Bk(dnepr).html]" type="invisible" default="Відомості про реєстрацію зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="chomy" name="У зв'язку з чим отримується документ ; ;bVisible=false" type="string" default="замість утраченого або викраденого" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pidstava" name="Підстава для отримання нового документу ; ;bVisible=false" type="string" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="zminna_zapyt" name="про втрату засначеного паспорта ; ;bVisible=false" type="string" default="про втрату засначеного паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_na_pasport16Fr(dnepr).html] ; ;bVisible=false" type="string" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_na_pasportBk(dnepr).html] ; ;bVisible=false" type="string" default="Заява для видачі зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/zajava_vtrata(dnepr).html] ; ;bVisible=false" type="string" default="Заява про втрату паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/check_mail(dnepr).html] ; ;bVisible=false" type="string" default="Запит в інше місто" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/dms/vremUdost(dnepr).html] ; ;bVisible=false" type="string" default="Заява на тимчасове посвідчення" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/dms/vidomist16Fr(dnepr).html] ; ;bVisible=false" type="string" default="Відомості про реєстрацію лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_8" name="[pattern/print/dms/vidomist16Bk(dnepr).html] ; ;bVisible=false" type="string" default="Відомості про реєстрацію зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${bankId_scan_passport},${svid1},${doksmen}]]></activiti:expression>
