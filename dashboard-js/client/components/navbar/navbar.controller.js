@@ -266,7 +266,9 @@
 
     $scope.showSignDialog = function () {
       signDialog.signManuallySelectedFile(function (signedContent) {
-        console.log('Sign Result ' + JSON.stringify(signedContent));
+        console.log('PDF Content:' + signedContent.content);
+        console.log('Certificate:' + signedContent.certificate);
+        console.log('Sign:' + signedContent.signedContentHash);
       }, function () {
         console.log('Sign Dismissed');
       })
