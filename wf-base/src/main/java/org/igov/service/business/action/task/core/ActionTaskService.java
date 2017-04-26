@@ -529,6 +529,7 @@ public class ActionTaskService {
 
     public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern,
             Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP, String asField_Filter) {
+    	LOG.info("Method fillTheCSVMapHistoricTasks started...................................");
         LOG.info("!!!!!csvLines: " + csvLines);
         ToolJS oToolJs = new ToolJS();
         LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_begin---------------------------------------------------------->");
@@ -616,6 +617,7 @@ public class ActionTaskService {
             csvLines.add(currRow);
             LOG.info("csvLines= " + csvLines);
             LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_end---------------------------------------------------------->");
+            LOG.info("Method fillTheCSVMapHistoricTasks ended...................................");
         }
     }
 
@@ -874,6 +876,9 @@ public class ActionTaskService {
             if (res.contains(field.getPattern())) {
                 res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);
                 LOG.info("!!!!!!!!!!res: " + res);
+                LOG.info("!!!!!!!!!!curTask: {}" + curTask);
+                LOG.info("!!!!!!!!!!sDateCreateDF: " + sDateCreateDF);
+                LOG.info("!!!!!!!!!!oGeneralConfig: {} " + oGeneralConfig);
             }
         }
         LOG.info("<--------------------------------replaceReportFields_end-------------------------------------------->");
@@ -1001,6 +1006,8 @@ public class ActionTaskService {
 
     public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> aTaskFound, SimpleDateFormat sDateCreateDF,
             List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] asHeader, String asField_Filter) {
+    	
+    	LOG.info("Method fillTheCSVMap started...................................");
         if (CollectionUtils.isEmpty(aTaskFound)) {
 
             LOG.info(String.format("No tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
@@ -1057,16 +1064,20 @@ public class ActionTaskService {
                 }
             }
             csvLines.add(mCell);
+            LOG.info("Method fillTheCSVMap ended...................................");
         }
     }
 
     public String[] createStringArray(Map<String, Object> csvLine, List<String> headers) {
+    	LOG.info("Method createStringArray started................");
         List<String> result = new LinkedList<>();
         for (String header : headers) {
             Object value = csvLine.get(header);
             result.add(value == null ? "" : value.toString());
         }
+        LOG.info("Size of array = ", result.size());
         return result.toArray(new String[result.size()]);
+      
     }
 
     /**
