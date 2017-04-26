@@ -805,7 +805,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
         Mail oMail = context.getBean(Mail.class);
     //=================================================================================================================================================    
-        Map<String, String> aFormPropertyReturn = new HashMap<>();
+        List<String> aFormPropertyReturn = new ArrayList<>();
         FormData oTaskFormData = oExecution.getEngineServices()
                 .getFormService()
                 .getStartFormData(oExecution.getProcessDefinitionId());
@@ -815,23 +815,22 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             	if(oFormProperty.getValue()!=null) {
             		  LOG.info("FormProperty.getValue() (Value={})",
                               oFormProperty.getValue());
-            		if(oFormProperty.getValue().startsWith("{\"sID_StorageType")) {
-            			LOG.info("FormProperty.sID_StorageType() (Value={})",
-                                oFormProperty.getValue());
-                aFormPropertyReturn.put("HTML", oFormProperty.getValue());
-                LOG.info("Matching property (Value={})",
-                        oFormProperty.getValue());
-            		}
+            		  if(oFormProperty.getValue().startsWith("{")) {
+            			  aFormPropertyReturn.add(oFormProperty.getValue());
+            		  }
             	}
             }
         }
-        JSONParser parser = new JSONParser();
-        org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(aFormPropertyReturn.get("HTML"));
-        LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + oTableJSONObject);
-        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
+        LOG.info("FormProperty.getValue() (aFormPropertyReturn={})",
+        		aFormPropertyReturn);
+        for(String aFormProperty:aFormPropertyReturn) {
+       // JSONParser parser = new JSONParser();
+      //  org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(aFormProperty);
+        LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + aFormProperty);
+       /* org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
                 (String)oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
-
-        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
+        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());*/
+        }
     //================================================================================================================================================= 
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
