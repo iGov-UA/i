@@ -3408,12 +3408,16 @@ value != enum.
 
 [вернуться...](#emailtemplates)
 
-
-`<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />`  
-[pattern/mail/test/_test_body.html]  
-[pattern/mail/_common_signature.html]  
-[pattern/mail/_common_feedback.html]  
-[pattern/mail/_common_footer.html]  
+Используем до текста
+[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+Используем послде текста
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+ 
 * ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
 кастомизированная подпись в письме с использованием  шаблонов  
 [pattern/mail/_common_signature_start.html]  
