@@ -1118,6 +1118,7 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 
 ###### newemailtemplates
 ### Oбновленные шаблоны емейлов
+Расположены : \wf-region\src\main\resources\pattern\mail\new_design  
 ```
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
@@ -3432,20 +3433,19 @@ value != enum.
 
   
 Пример использования новых шаблонов:  
-Используем до текста   
-```[pattern/mail/new_design/_common_header.html]
+
+``` Используем до текста   
+[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]     
+
 Используем после текста           
 [pattern/mail/new_design/_common_content_end.html]
-
 [pattern/mail/new_design/_common_signature_start.html]  
-
 ${sNameOrgan}    
 [pattern/mail/new_design/_common_signature_end.html]  
-
 [pattern/mail/new_design/_common_footer.html]  
 ```  
-[pattern/mail/new_design/_common_feedback.html] 
+[pattern/mail/new_design/_common_feedback.html] - Обратная связь 
 
 ###### 16. Отправка СМС-оповещений
 ###### _smsnotifications
