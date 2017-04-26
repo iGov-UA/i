@@ -209,11 +209,12 @@
 ```
 [детальней...](#_file)
 
-### file (New)
+###### filebnewtrue
+### file (New; ;bNew=true)
 В связи с проблемой с пропавшими файлами, был проведен большой рефакторинг, в результате которого реализована новая схема работы с аттачами, при этом остается функциональной и продолжает работать старая схема.  
 Рекомендуется Топ-процессы переводить на новую схему аттачей – с ней файлы не будут теряться.
 
-[детальней...](#_file (New))
+[детальней...](#_filebnewtrue)
 
  ###### filehtml
  ### fileHTML   
@@ -283,7 +284,7 @@ type="queueData" required="true"></activiti:formProperty>
 в БП на стартовой таске:
 ```
 		 <activiti:formProperty id="nList" name="Динамический список" type="enum"></activiti:formProperty>
-		<activiti:formProperty id="sSelectedListItem" name="Выбранное значение из спика" type="invisible"></activiti:formProperty>
+		<activiti:formProperty id="sSelectedListItem" name="Выбранное значение из спика; ;bVisible=false" type="string"></activiti:formProperty>
 ```
 в файле атрибутов
 ```
@@ -2600,8 +2601,8 @@ _тестирование и проливка на бету и боевой
 можно в виде ${file1},${file2},${file1} если файлов несколько
    ![2_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_8.JPG)
 
-###### _file (New)
-[вернуться...](#file (New))
+###### _filebnewtrue
+[вернуться...](#filebnewtrue)
 
 Чтобы обозначить что прикрепляемый файл должен использоваться по новой схеме, добавляем в нейм поля такую конструкцию:
 **; ;bNew=true**  
@@ -3407,12 +3408,16 @@ value != enum.
 
 [вернуться...](#emailtemplates)
 
-
-`<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />`  
-[pattern/mail/test/_test_body.html]  
-[pattern/mail/_common_signature.html]  
-[pattern/mail/_common_feedback.html]  
-[pattern/mail/_common_footer.html]  
+Используем до текста
+[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+Используем послде текста
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]
+ 
 * ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
 кастомизированная подпись в письме с использованием  шаблонов  
 [pattern/mail/_common_signature_start.html]  
