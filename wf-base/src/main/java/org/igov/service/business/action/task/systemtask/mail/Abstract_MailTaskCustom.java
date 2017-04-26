@@ -812,12 +812,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         if (oTaskFormData != null
                 && oTaskFormData.getFormProperties() != null) {
             for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
-            	if(oFormProperty.getValue()!=null) {
+            	if(oFormProperty.getValue()!=null && "fileHTML".equals(oFormProperty.getType())) {
             		  LOG.info("FormProperty.getValue() (Value={})",
                               oFormProperty.getValue());
-            		  if(oFormProperty.getValue().startsWith("{")) {
             			  aFormPropertyReturn.add(oFormProperty.getValue());
-            		  }
             	}
             }
         }
