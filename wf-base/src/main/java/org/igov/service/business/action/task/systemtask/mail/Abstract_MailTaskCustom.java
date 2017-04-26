@@ -61,7 +61,6 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -799,13 +798,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public Mail Mail_BaseFromTask(DelegateExecution oExecution)
             throws Exception {
 
-        String sFromMail = getStringFromFieldExpression(from, oExecution);
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
-
-        //saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
 
         Mail oMail = context.getBean(Mail.class);
         
@@ -904,10 +900,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             }
         }
         
-        if(aFormPropertyReturnJsonForMongo.isEmpty()) {
+        if(!aFormPropertyReturnJsonForMongo.isEmpty()) {
         	return aFormPropertyReturnJsonForMongo.get(0);
         }
-		return "";
+		return "{\"\":\"\"}";
 	}
 
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)
