@@ -823,7 +823,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public Mail sendToMailFromMongo(DelegateExecution oExecution)
             throws Exception {
 
-        String sFromMail = getStringFromFieldExpression(from, oExecution);
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
 
@@ -831,7 +830,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         
         String sJsonHtml = loadFormPropertyFromTaskHTMLText(oExecution);
         
-	       String sBodyFromMongo = getHtmlTextFromMongo(sJsonHtml); 
+	    String sBodyFromMongo = getHtmlTextFromMongo(sJsonHtml); 
 	       
            LOG.info("oTableJSONObject in -: " +sBodyFromMongo);
         
