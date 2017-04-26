@@ -1269,17 +1269,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Charset charset = oActionTaskService.getCharset(sID_Codepage);
         //LOG.info("5555charset " + charset);
         // 2. query
-        TaskQuery query = taskService.createTaskQuery()
-                .processDefinitionKey(sID_BP);
-        LOG.info("query is {}", query.toString());
-        HistoricTaskInstanceQuery historicQuery = historyService
-                .createHistoricTaskInstanceQuery()
-                .processDefinitionKey(sID_BP);
-        LOG.info("historicQuery is {}",historicQuery.toString() );
-        if (sTaskEndDateAt != null) {
-            LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
-            historicQuery.taskCompletedAfter(sTaskEndDateAt);
-            
+		TaskQuery query = taskService.createTaskQuery().processDefinitionKey(sID_BP);
+		// LOG.info("query is {}", query.toString());
+		HistoricTaskInstanceQuery historicQuery = historyService.createHistoricTaskInstanceQuery()
+				.processDefinitionKey(sID_BP);
+		// LOG.info("historicQuery is {}",historicQuery.toString() );
+		if (sTaskEndDateAt != null) {
+			LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
+			historicQuery.taskCompletedAfter(sTaskEndDateAt);
             
         }
         if (sTaskEndDateTo != null) {
