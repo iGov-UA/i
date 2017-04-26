@@ -685,7 +685,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 if (oFormData != null && oFormData.getFormProperties() != null) {
                     for (FormProperty oFormProperty : oFormData.getFormProperties()) {
                         aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
-                        LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+                        LOG.info("Matching1 property (Id={},Name={},Type={},Value={})",
                                 oFormProperty.getId(), oFormProperty.getName(),
                                 oFormProperty.getType().getName(),
                                 oFormProperty.getValue());
@@ -706,7 +706,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     && oTaskFormData.getFormProperties() != null) {
                 for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
                     aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
-                    LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+                    LOG.info("Matching2 property (Id={},Name={},Type={},Value={})",
                             oFormProperty.getId(), oFormProperty.getName(),
                             oFormProperty.getType().getName(),
                             oFormProperty.getValue());
@@ -805,19 +805,29 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
         Mail oMail = context.getBean(Mail.class);
     //=================================================================================================================================================    
+        List<String> previousUserTaskId = getPreviousTaskId(oExecution);
         List<String> aFormPropertyReturn = new ArrayList<>();
-        FormData oTaskFormData = oExecution.getEngineServices()
-                .getFormService()
-                .getStartFormData(oExecution.getProcessDefinitionId());
-        if (oTaskFormData != null
-                && oTaskFormData.getFormProperties() != null) {
-            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
-                LOG.info("getType------>>>>>>>>>>>>>> (getType={})", oFormProperty.getType().getName() + "======" +oFormProperty.getValue() );
-            	if(oFormProperty.getValue()!=null && "fileHTML".equals(oFormProperty.getType().getName())) {
-            		  LOG.info("FormProperty.getValue() (Value={})",
-                              oFormProperty.getValue());
-            			  aFormPropertyReturn.add(oFormProperty.getValue());
-            	}
+        for (String sID_UserTaskPrevious : previousUserTaskId) {
+            try {
+                FormData oFormData = null;
+                if (previousUserTaskId != null && !previousUserTaskId.isEmpty()) {
+                    oFormData = oExecution.getEngineServices()
+                            .getFormService().getTaskFormData(sID_UserTaskPrevious);
+                }
+                if (oFormData != null && oFormData.getFormProperties() != null) {
+                    for (FormProperty oFormProperty : oFormData.getFormProperties()) {
+                    	if(oFormProperty.getValue()!=null && "fileHTML".equals(oFormProperty.getType().getName())) {
+                  		  LOG.info("FormProperty.getValue() (Value={})",
+                                    oFormProperty.getValue());
+                  			  aFormPropertyReturn.add(oFormProperty.getValue());
+                  	}
+                    }
+                }
+            } catch (Exception e) {
+                LOG.error(
+                        "Error: {}, occured while looking for a form for task:{}",
+                        e.getMessage(), sID_UserTaskPrevious);
+                LOG.debug("FAIL:", e);
             }
         }
         LOG.info("FormProperty.getValue() (aFormPropertyReturn={})",
