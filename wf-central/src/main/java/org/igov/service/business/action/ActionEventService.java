@@ -425,11 +425,7 @@ public class ActionEventService {
         LOG.info("checking conditions ended");
         
         if ("TaskCancelByUser".equals(soData)){
-            try {
-                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, new HashMap<>(), 19L);
-            } catch (Exception ex) {
-                java.util.logging.Logger.getLogger(ActionEventService.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
             /*LOG.info("TASK_CANCELED was catched");
             Map<String, String> mParamMessage = new HashMap<>();
             LOG.info("SERVICE_STATE: " + sUserTaskName);
