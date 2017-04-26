@@ -1271,21 +1271,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
                 .processDefinitionKey(sID_BP);
-        //LOG.info("query is {}", ((JSONObject)query).toString());
+        LOG.info("query is {}", query.toString());
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
-        //LOG.info("historicQuery is {}",((JSONObject)historicQuery).toString() );
+        LOG.info("historicQuery is {}",historicQuery.toString() );
         if (sTaskEndDateAt != null) {
             LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
             historicQuery.taskCompletedAfter(sTaskEndDateAt);
-            //LOG.info(" historicQuery {} with selecting tasks which were completed after sTaskEndDateAt {}",((JSONObject)historicQuery).toString(), sTaskEndDateAt);
+            
             
         }
         if (sTaskEndDateTo != null) {
             LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
             historicQuery.taskCompletedBefore(sTaskEndDateTo);
-            //LOG.info(" historicQuery {} with selecting tasks which were completed before sTaskEndDateTo {}",((JSONObject)historicQuery).toString(), sTaskEndDateTo);
+           
         }
         if (dateAt != null) {
             query = query.taskCreatedAfter(dBeginDate);
@@ -1299,7 +1299,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
-        List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
+        List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, 2000);//nRowsMax
 
         if ("*".equals(saFields)){
         	saFields = null;
@@ -1319,7 +1319,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sTaskEndDateAt == null && sTaskEndDateTo == null) {
             // we need to call runtime query only when non completed tasks are selected.
             // if only completed tasks are selected - results of historic query will be used
-            foundResults = query.listPage(nRowStart, nRowsMax);
+            foundResults = query.listPage(nRowStart, 2000); //nRowsMax
         }
 
         // 3. response
