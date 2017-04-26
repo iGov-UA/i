@@ -27,12 +27,11 @@ exports.submitCreatedTask = function (req, res) {
   var user = JSON.parse(req.cookies.user);
   var options = {
     path: 'action/task/startProcess',
-    query: {
-      sID_BP: req.query.sID_BP,
-      sLogin: user.id
-    }
-    ,headers: {"Content-type": "application/json; charset=utf-8"}
+    query: req.query,
+    headers: {"Content-type": "application/json; charset=utf-8"}
   };
+  options.query.sLogin = user.id;
+
   activiti.post(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
     res.send(result);
