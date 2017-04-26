@@ -430,7 +430,11 @@ type="queueData" required="true"></activiti:formProperty>
 [вернуться в начало](general.md)
 
 ### listener
+Пример № 1 (Основной) без использования  ${fileTaskInheritance}:    
+![6_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_8.jpg)
 
+Пример № 2 (Устаревший):    
+В данный момент устаревшая форма добавления файлов, необходимо использовать пример № 1 без ${fileTaskInheritance}
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
    * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
    
