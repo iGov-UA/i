@@ -1938,7 +1938,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
                     oActionTaskService.populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
                 } else {
-                    oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
+                    if (!"Documents".equalsIgnoreCase(sFilterStatus)){
+                        oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
+                    }
                 }
                 
                 Long point6EndPoint7Start = System.nanoTime();
