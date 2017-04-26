@@ -858,9 +858,9 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	     */
 	    //убираем json скобки
 	    String sBodySourceReplace = StringUtils.replace(sBodySource, "{", "").replaceAll("}", "");
-	    String sBodySourceReplaceR = StringUtils.replace(sBodySourceReplace, "[", "").replaceAll("]", "");
+	    String sBodySourceReplaceR = sBodySourceReplace.replace("\"[", "").replace("]\"", "");
 		String sJsonMongoReplace = StringUtils.replace(sJsonMongo, "{", "").replaceAll("}", "");
-		String sJsonMongoReplaceR = StringUtils.replace(sJsonMongoReplace, "[", "").replaceAll("]", "");
+		String sJsonMongoReplaceR = sJsonMongoReplace.replace("\"[", "").replace("]\"", "");
 	    String sBodyForMail = sBodySourceReplaceR.replaceAll(sJsonMongoReplaceR, sBodyFromMongoResult);
 	    LOG.info("sBodyForMail-->> : " +sBodyForMail);
 	    
