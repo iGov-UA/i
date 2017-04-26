@@ -8,24 +8,24 @@
 			"sCondition" : "[sClient] == 'представник юридичної особи' || [sClient] == 'ur'"
 		}, 
 		"ShowFieldsOnCondition_u2" : {
-			"aField_ID" : ["bankIdlastName", "bankIdfirstName", "bankIdmiddleName", "bankIdPassport", "bankIdinn"], 
+			"aField_ID" : ["clFIO", "bankIdPassport", "bankIdinn", "bankIdinn", "sAddressFactual"], 
 			"asID_Field" : {
 				"sClient" : "asSubekt"
 			}, 
 			"sCondition" : "[sClient] == 'фізична особа-підприємець' || [sClient] == 'fiz'"
 		}, 
 		"ShowFieldsOnCondition_u3" : {
-			"aField_ID" : ["decision_reject"], 
+			"aField_ID" : ["asDecisionReject"], 
 			"asID_Field" : {
-				"sClient" : "decision_1"
+				"sClient" : "asDecision1"
 			}, 
 			"sCondition" : "[sClient] == 'reject'"
 		}, 
 		"ShowFieldsOnCondition_u4" : {
 			"aField_ID" : ["comment_1"], 
 			"asID_Field" : {
-				"sClient" : "decision_1", 
-				"sClient_2" : "decision_reject"
+				"sClient" : "asDecision1", 
+				"sClient_2" : "asDecisionReject"
 			}, 
 			"sCondition" : "[sClient] == 'reject' && [sClient_2] == 'other_reason' "
 		}, 
@@ -43,7 +43,7 @@
 			"sValue" : "Дані про юридичну особу"
 		}, 
 		"Line_02" : {
-			"aElement_ID" : ["bankIdlastName"], 
+			"aElement_ID" : ["clFIO"], 
 			"sValue" : "Дані про фізичну особу"
 		}
 	}

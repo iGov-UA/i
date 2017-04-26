@@ -10,7 +10,7 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="infoZapit" name="Зверніть увагу" type="label" default="Для отримання послуги Вам необхідно:&lt;ol&gt;&lt;li&gt;Завантажити та роздрукувати &lt;a href=&quot;https://drive.google.com/uc?export=download&amp;id=0B91XFkuwrCQbLUFXazBpQnhndVE&quot; target=&quot;_blank&quot;&gt;бланк запиту&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Заповнити відповідні поля&lt;/li&gt;&lt;li&gt;Відсканувати та підписати документ за допомогою ЕЦП.&lt;/li&gt;&lt;li&gt;Прикріпити підписаний запит&lt;/li&gt;&lt;/ol&gt;&lt;br /&gt;Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;.&lt;br /&gt;Один з варіантів накладення ЕЦП на файл &lt;a href=&quot;https://papka24.com.ua/&quot; target=&quot;_blank&quot;&gt;papka24.com.ua&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;Додаткова інформація &lt;a href=&quot;https://docs.google.com/document/d/17kd6pC_2PwfDgk1zJpZ6D1BkTRMJqDQLIAYq_9Pvri0/edit&quot; target=&quot;_blank&quot;&gt;примітка&lt;/a&gt;"></activiti:formProperty>
-		<activiti:formProperty id="nFileZapit" name="Прикріпіть заповнений запит" type="file" required="true"></activiti:formProperty>
+		<activiti:formProperty id="nFileZapit" name="Прикріпіть заповнений запит; ;bNew=true" type="file" required="true"></activiti:formProperty>
       
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>        
 
@@ -143,8 +143,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>        
         <activiti:formProperty id="sAddressFactual" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>    
 
-
-		<activiti:formProperty id="markers_01" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 01&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
@@ -152,12 +150,12 @@
        
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?; ;writable=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="decision_1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
+        <activiti:formProperty id="asDecision1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
           <activiti:value id="accept" name="Надати витяг з реєстру платників єдиного податку"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні витягу"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="decision_reject" name="У разі відмови у наданні витягу оберіть причину" type="enum">
+        <activiti:formProperty id="asDecisionReject" name="У разі відмови у наданні витягу оберіть причину" type="enum">
           <activiti:value id="not_subekt" name="не значиться зареєстрованим суб’єктом господарювання (фізичною особою–підприємцем або юридичною особою)"></activiti:value>
           <activiti:value id="not_payer" name="не платник єдиного податку"></activiti:value>
           <activiti:value id="yet" name="платником єдиного податку вже отримано Витяг з реєстру платників єдиного податку, заява щодо внесення нових змін до Реєстру не надходила"></activiti:value>
@@ -173,14 +171,19 @@
         
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/gni_69_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         
+        <activiti:formProperty id="nFileZapit" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <!-- 
         <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+         -->
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow7" name="відмова" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="повідомлення громадянина про відмову у наданні витягу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -208,7 +211,7 @@
 			<p>
 				Ваше звернення було оброблено.<br>
 				На жаль, Вам відмовлено у наданні витягу з реєстру платників єдиного податку.<br/>
-				Підстава: enum{[decision_reject]}<br/>
+				Підстава: enum{[asDecisionReject]}<br/>
 				<b>${comment_1}</b>
 			</p>
 		    <p>
@@ -230,7 +233,7 @@
     </serviceTask>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" name="позитивно" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask5" name="повідомлення громадянина про отримання витягу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
