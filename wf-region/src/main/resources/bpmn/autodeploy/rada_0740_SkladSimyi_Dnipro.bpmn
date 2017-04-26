@@ -13,12 +13,14 @@
           <activiti:value id="sChech" name="Чечелівський"></activiti:value>
           <activiti:value id="sShevch" name="Шевченковський"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sLabeRayon" name=" ; ;labelType=warning" type="label" default="УВАГА! Ця послуга діє тільки для Самарського району, інші райони будуть поступово під'єднані протягом 2х найближчих місяців. &lt;br&gt;Обравши інші райони і заповнивши всі поля, ви отримаєте автоматично сформовану і заповнену заяву, яку можна буде використати під час особистого візиту за довідкою."></activiti:formProperty>
+        
         <activiti:formProperty id="markerLabels" name="markerLabels" type="markers" default="${markerService.loadFromFile('form3/forma_3Dn_labels.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sLabeRayon" name=" ; ;labelType=warning" type="label" default="УВАГА! Ця послуга діє тільки для Самарського району, інші райони будуть поступово під'єднані протягом 2х найближчих місяців."></activiti:formProperty>
         <activiti:formProperty id="sLabeZIP" name=" ; ;labelType=info" type="label" default="Для замовлення послуги, буде необхідно завантажувати сканкопії документів, щоб завантажити кілька документів одним файлом скористайтесь ZIP архівом. Посилання - &lt;a href=&quot;https://docs.google.com/document/d/1vkTj7DlfjHj8TYylHZKpESU5cGQF5N0R4ck1EBScVdM/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;Як зробити ZIP архів&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sLabeNevidaemo" name=" ; ;labelType=danger" type="label" default="ПОПЕРЕДЖЕННЯ! Ви обрали район, який ще не підключений до порталу. Ви можете заповнити форму і отримати на електронну пошту заповнену заяву, яку треба буде роздрукувати підписати і віднести до відділу видачі довідок.&lt;br&gt; Адреси відділів - &lt;a href=&quot;https://docs.google.com/document/d/1ucS5WC6YK2AWg2Yxmpmg8cVgSvoznV_vkLeXi_rjdww/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;Де отримати довідку&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabeNevidaemo" name=" ; ;labelType=danger" type="label" default="ПОПЕРЕДЖЕННЯ! Ви обрали район, який ще не підключений до порталу. Ви можете заповнити форму і отримати на електронну пошту заповнену заяву, яку треба буде роздрукувати, підписати і віднести до відділу видачі довідок.&lt;br&gt; Адреси відділів - &lt;a href=&quot;https://docs.google.com/document/d/1ucS5WC6YK2AWg2Yxmpmg8cVgSvoznV_vkLeXi_rjdww/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;Де отримати довідку&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sLabeNoFiles" name=" ; ;labelType=warning" type="label" default="УВАГА! Якщо ви хочете сформувати заповнений бланк заяви, система все одно буде вимагати завантаження сканкопій документів. Завантажуйте будь який файл!"></activiti:formProperty>
         <activiti:formProperty id="sLabeZayava" name=" ; ;labelType=info" type="label" default="Ви можете завантажити порожній бланк заяви, перейшовши за посиланням і заповнити його самостійно. &lt;br&gt;Посилання - &lt;a href=&quot;https://docs.google.com/document/d/1j9h2UgZwajLOTHaHs-qQL5GCoKIrndJlLlUaOEgzQgk/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;Форма заяви для самостійного заповнення&lt;/a&gt;"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
@@ -45,12 +47,13 @@
         <activiti:formProperty id="DovirutdPassport" name="Паспорт довірителя; (тип, серія та номер документу, дата і орган, що його видав)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_2" name="Інформація про житло" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asBudType&quot;],&quot;sValue&quot;:&quot;Інформація про житло&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asBudType" name="Вкажіть тип вашого будинку" type="enum" required="true">
           <activiti:value id="sBagkvatur" name="багатоквартирний"></activiti:value>
           <activiti:value id="sPrivSector" name="приватний"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRegistrationVul" name="Назва вулиці;(якщо це проспект вкажіть це)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationVul" name="Назва вулиці;(якщо це проспект вкажіть це)" type="string" required="true" default="вул. "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationBud" name="Номер будинку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asKorp" name="Чи поділено ваш будинок на корпуса?;позначте галочкою - якщо так, якщо ні - натисніть двічі на квадратик;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -64,6 +67,7 @@
         <activiti:formProperty id="lRegistrationKvart" name="Номер квартири" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_DomovKnig" name="Домова книга;(сканкопія оригіналу, завантажте сторінки, які підтверджуть реєстрацію вас та інших співмешканців);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_JutVlasn" name="Право власності на житло;(сканкопія оригіналу);bNew=true" type="file" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_3" name="Інші зареєстровані особи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;chekReestrOsob&quot;],&quot;sValue&quot;:&quot;Інші зареєстровані особи&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="chekReestrOsob" name="Чи зареєстровані по цій адресі інші особи?;позначте галочкою - якщо так, якщо ні - натисніть двічі на квадратик;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -77,6 +81,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFile_NarSvid" name="Свідоцтва про народження;(сканкопії оригіналу, завантажте одним ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="ShowFields" type="markers" default="${markerService.loadFromFile('form3/forma_3Dn.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_4" name="Спосіб отримання довідки заявником" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання довідки заявником&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою (з оплатою доставки)"></activiti:value>
@@ -90,6 +95,7 @@
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43.47"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_MarkerNoSOJ.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="ScriptLastName" name="Прізвище довірителя; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ScriptFirstName" name="Ім'я довірителя; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ScriptMiddleName" name="По батькові; ;bVisible=false" type="string"></activiti:formProperty>
@@ -884,8 +890,8 @@ ${sNameOrgan}&lt;br&gt;
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Особисто"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/rada/SkladSimyi_Zayava.html,sFileName=ZapovnenaZayava,bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/rada/SkladSimyi_Zayava.html]; ;bVisible=false" type="string" default="Заява на довідку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/rada/SkladSimyi_ZayavaZap.html,sFileName=ZapovnenaZayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/rada/SkladSimyi_ZayavaZap.html]; ;bVisible=false" type="string" default="Заява на довідку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ScriptLastName" name="Прізвище довірителя; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ScriptFirstName" name="Ім'я довірителя; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ScriptMiddleName" name="По батькові; ;bVisible=false" type="string"></activiti:formProperty>
