@@ -812,10 +812,16 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         if (oTaskFormData != null
                 && oTaskFormData.getFormProperties() != null) {
             for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
-            	if(oFormProperty.getValue()!=null&&oFormProperty.getValue().contains("sID_StorageType")) {
+            	if(oFormProperty.getValue()!=null) {
+            		  LOG.info("FormProperty.getValue() (Value={})",
+                              oFormProperty.getValue());
+            		if(oFormProperty.getValue().startsWith("{\"sID_StorageType")) {
+            			LOG.info("FormProperty.sID_StorageType() (Value={})",
+                                oFormProperty.getValue());
                 aFormPropertyReturn.put("HTML", oFormProperty.getValue());
                 LOG.info("Matching property (Value={})",
                         oFormProperty.getValue());
+            		}
             	}
             }
         }
