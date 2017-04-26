@@ -827,7 +827,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     }
     
     /**
-     * Метод, который отправляет 
+     * Метод, который отправляет емайлу texthtml из json-mongo
      * @param oExecution
      * @return
      * @throws Exception
