@@ -3,9 +3,7 @@
   <process id="dpss_1441_visnovok" name="Висновок державної санітарно-епідеміологічної експертизи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="оберіть комісію" type="select" default="0" required="true"></activiti:formProperty>
-     
-        <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+           <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_07" name="Список технологія, діючий об'єкт тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" required="true">
@@ -81,13 +79,15 @@
         <activiti:formProperty id="sDoc310" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками безпечності; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="label_info_01" name=" ; ;labelType=warning" type="label" default="Для проведення експертизи необхідно надати зразки об'єкта експертизи протягом 14 календарних днів. Адресу для направлення зразків буде надіслано електронною поштою"></activiti:formProperty>
         <activiti:formProperty id="label_info_02" name=" ; ;labelType=warning" type="label" default="Матеріали після проведення експертизи не повертаються"></activiti:formProperty>
-        <activiti:formProperty id="marker_08" name="Наявність поля для завантаження висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
-        <activiti:formProperty id="saConclusionAvaliable" name="Я вже маю проект висновку державної санітарно-епідеміологічної експертизи" type="enum" required="true">
+        <activiti:formProperty id="marker_081" name="Висновок наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_082" name="Висновок відсутній" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+          <activiti:formProperty id="saConclusionAvaliable" name="Я вже маю проект висновку державної санітарно-епідеміологічної експертизи" type="enum" required="true">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+         <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" required="true"></activiti:formProperty>
+          <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" required="true"></activiti:formProperty>
+          <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи" type="enum" required="true">
           <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
           <activiti:value id="Paper" name="Паперова форма надається у Дерджпродспоживслужбі"></activiti:value>
@@ -98,6 +98,7 @@
         <activiti:formProperty id="label_info_05" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надіслано Укрпоштою. Сплата послуги Укрпошти відбувається в момент отримання листа"></activiti:formProperty>
         <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="string"></activiti:formProperty>
         <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
+           
         </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
