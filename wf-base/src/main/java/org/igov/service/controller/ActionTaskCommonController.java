@@ -1271,9 +1271,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
                 .processDefinitionKey(sID_BP);
+        LOG.info("query is {}", query);
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
+        LOG.info("historicQuery is {}", historicQuery);
         if (sTaskEndDateAt != null) {
             LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
             historicQuery.taskCompletedAfter(sTaskEndDateAt);
@@ -1294,8 +1296,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
         }
-        List<HistoricTaskInstance> foundHistoricResults = historicQuery
-                .listPage(nRowStart, nRowsMax);
+        List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
 
         if ("*".equals(saFields)){
         	saFields = null;
