@@ -104,6 +104,7 @@
         <activiti:formProperty id="ScriptAdress" name="Паспорт; ;bVisible=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sAddress" name="Адреса підрозділу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressForPost" name="Адреса підрозділу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkDay" name="Графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string" default="Відділ обліку проживання фізичних осіб управління у сфері державної реєстрації департаменту адміністративних послуг та дозвільних процедур Дніпровської міської ради"></activiti:formProperty>
@@ -130,11 +131,13 @@ execution.setVariable('sSum', sum);
 
 var mail = '';
 var adres = '';
+var adresPost = '';
 var workTime = '';
 switch (asDistrict){
   case 'sSamar':
     mail = "samara105@ukr.net";
     adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, вул. 20-річчя Перемоги, 51 каб. 105 (Самарська районна рада)";
+    adresPost = "м. Дніпро, вул. 20-річчя Перемоги, 51 каб. 105 (Самарська районна рада)";
     workTime = "&lt;b&gt;Графік роботи:&lt;/b&gt; понеділок - пятниця з 9:00 до 19:00";
   break;
   default:
@@ -143,8 +146,8 @@ switch (asDistrict){
 }
 execution.setVariable('sMailClerk', mail);
 execution.setVariable('sAddress', adres);
+execution.setVariable('sAddressForPost', adresPost);
 execution.setVariable('sWorkDay', workTime);
-
 
 var pasZ1 = execution.getVariable('bankIdlastName')
 var pasZ2 = execution.getVariable('bankIdfirstName')
@@ -810,7 +813,7 @@ ${sNameOrgan}<br>
         
         <activiti:formProperty id="markersLine_Org" name="Де отримати документ" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Org&quot;:{&quot;aElement_ID&quot;:[&quot;sNameOrgan&quot;],&quot;sValue&quot;:&quot;Де отримати документ&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу що надає послугу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса підрозділу де забрати документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAddressForPost" name="Адреса підрозділу де забрати документ" type="string" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="sPostIdentif" name="Ідентифікатор поштового відправлення" type="string" required="true"></activiti:formProperty>
         
@@ -873,7 +876,7 @@ ${sNameOrgan}<br>
     <sequenceFlow id="flow67" sourceRef="servicetask14" targetRef="endevent6"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow68" sourceRef="scripttask1" targetRef="exclusivegateway5"></sequenceFlow>
-    <userTask id="usertask5" name="Формування заяви" activiti:candidateGroups="Test_usertask">
+    <userTask id="usertask5" name="Формування заяви" activiti:candidateGroups="Tex_usertask">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
@@ -905,7 +908,7 @@ ${sNameOrgan}<br>
           <activiti:value id="sEnamnarochno" name="Особисто"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/rada/SkladSimyi_Zayava.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/rada/SkladSimyi_Zayava.html,sFileName=ZapovnenaZayava,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/rada/SkladSimyi_Zayava.html]; ;bVisible=false" type="string" default="Заява на довідку" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="ScriptLastName" name="Прізвище довірителя; ;bVisible=false" type="string"></activiti:formProperty>
@@ -920,7 +923,7 @@ ${sNameOrgan}<br>
     
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask5" cancelActivity="true">
       <timerEventDefinition>
-        <timeDuration>PT5S</timeDuration>
+        <timeDuration>PT5H</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <serviceTask id="servicetask16" name="Лист з заявою" activiti:delegateExpression="#{MailTaskWithAttachments}">
