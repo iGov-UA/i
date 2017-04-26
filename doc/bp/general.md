@@ -216,7 +216,7 @@
 
  ###### filehtml
  ### fileHTML   
- Используется для ввода текста, цифр, символов. С возможностью форматирования  шрифта, цвета текста, добавления ссылок гражданином в момент создания обращения  
+ Используется для ввода текста, цифр, символов. С возможностью форматирования  шрифта, цвета текста, добавления ссылок.
  [детальней...](#_filehtml)
 
 ###### textarea
@@ -430,7 +430,11 @@ type="queueData" required="true"></activiti:formProperty>
 [вернуться в начало](general.md)
 
 ### listener
+Пример № 1 (Основной) без использования  ${fileTaskInheritance}:    
+![6_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_8.jpg)
 
+Пример № 2 (Устаревший):    
+В данный момент устаревшая форма добавления файлов, необходимо использовать пример № 1 без ${fileTaskInheritance}
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
    * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
    
@@ -1118,6 +1122,7 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 
 ###### newemailtemplates
 ### Oбновленные шаблоны емейлов
+Расположены : \wf-region\src\main\resources\pattern\mail\new_design  
 ```
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
@@ -3432,20 +3437,19 @@ value != enum.
 
   
 Пример использования новых шаблонов:  
-Используем до текста   
-```[pattern/mail/new_design/_common_header.html]
+
+``` Используем до текста   
+[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]     
+
 Используем после текста           
 [pattern/mail/new_design/_common_content_end.html]
-
 [pattern/mail/new_design/_common_signature_start.html]  
-
 ${sNameOrgan}    
 [pattern/mail/new_design/_common_signature_end.html]  
-
 [pattern/mail/new_design/_common_footer.html]  
 ```  
-[pattern/mail/new_design/_common_feedback.html] 
+[pattern/mail/new_design/_common_feedback.html] - Обратная связь 
 
 ###### 16. Отправка СМС-оповещений
 ###### _smsnotifications
