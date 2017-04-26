@@ -829,8 +829,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         
 	    String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonHtml); 
 	    
-	String patternBefore="[pattern/mail/new_design/_common_header.html]+[pattern/mail/new_design/_common_content_start_noBankIDname.html]+Тестирование подписания формы ЭЦП<br>+Поле fileHTML<br><br>";
-	String patternAfter="<br><br>+[pattern/mail/new_design/_common_content_end.html]+[pattern/mail/new_design/_common_signature_start.html]+Тестовая служба,<br>+[pattern/mail/new_design/_common_signature_end.html]+[pattern/mail/new_design/_common_footer.html]";
+	String patternBefore="[pattern/mail/new_design/_common_header.html]"+"[pattern/mail/new_design/_common_content_start_noBankIDname.html]"+"Тестирование подписания формы ЭЦП<br>"+"Поле fileHTML<br><br>";
+	String patternAfter="<br><br>"+"[pattern/mail/new_design/_common_content_end.html]"+"[pattern/mail/new_design/_common_signature_start.html]"+"Тестовая служба,<br>"+"[pattern/mail/new_design/_common_signature_end.html]+[pattern/mail/new_design/_common_footer.html]";
 	    
 	    String sBody = patternBefore+sBodyFromMongoResult+patternAfter;
 	    

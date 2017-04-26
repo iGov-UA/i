@@ -41,6 +41,7 @@
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Kontroler" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="если задание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;asTypeReport&quot;,&quot;sDateExecution&quot;,&quot;sTextTask&quot;,&quot;sTable5&quot;,&quot;sName_Kontroler&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumYes'||[sClient] == 'да'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -166,7 +167,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-      <userTask id="usertask4" name="ознакомление с утвержденным документом">
+    <userTask id="usertask4" name="ознакомление с утвержденным документом">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
@@ -190,7 +191,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" required="true" writable="false">
+        <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" writable="false">
           <activiti:value id="sEnumSign" name="Разрешаю"></activiti:value>
           <activiti:value id="sEnumRemark" name="Отказать"></activiti:value>
           <activiti:value id="sEnumReply" name="Исполнено"></activiti:value>
@@ -203,6 +204,11 @@
     <scriptTask id="scripttask1" name="ProcessInstanceId" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
+
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
 </script>
     </scriptTask>
     <scriptTask id="scripttask4" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -300,7 +306,6 @@ var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_1')</script>
     </scriptTask>
     <sequenceFlow id="flow103" sourceRef="scripttask16" targetRef="usertask1"></sequenceFlow>
-  
     <sequenceFlow id="flow104" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask17" name="Step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -326,6 +331,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="84.0" width="130.0" x="568.0" y="820.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="84.0" width="130.0" x="130.0" y="908.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="177.0" y="833.0"></omgdc:Bounds>
@@ -368,9 +376,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask16" id="BPMNShape_scripttask16">
         <omgdc:Bounds height="56.0" width="105.0" x="259.0" y="200.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="84.0" width="130.0" x="130.0" y="908.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask17" id="BPMNShape_scripttask17">
         <omgdc:Bounds height="56.0" width="105.0" x="299.0" y="922.0"></omgdc:Bounds>
