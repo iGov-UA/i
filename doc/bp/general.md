@@ -1090,8 +1090,12 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
  ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
-а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
-
+а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}    
+При необходимости можем проименовать PDF файл отправленный клиенту с помощью следующей конструкции в юзертаске:
+ ```xml
+ <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/khmelnitsky/hmel_cnap_333_print.html,sFileName=Zayava_na_oblik,bNew=true" type="file" writable="false"></activiti:formProperty>     
+ ```
+ ![15_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_2.JPG)
 ###### usingvariablesinemailtemplates
 ### Использование переменных в шаблонах емейлов
 
