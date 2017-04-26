@@ -836,9 +836,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	       JSONParser parser = new JSONParser();
 	       JSONObject jsonObj = new JSONObject(aFormProperty);
 	       LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + aFormProperty);
-	        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
-	        		(String)jsonObj.get("sKey"), (String)jsonObj.get("sID_StorageType")).getInputStream(), "UTF-8"));
-	        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
+	       LOG.info("jsonObj--->>>>>>>>>>>>>>>>>" + jsonObj);
+	       LOG.info("jsonObj sKey--->>>>>>>>>>>>>>>>>" + jsonObj.getString("sKey"));
+	       LOG.info("jsonObj sID_StorageType--->>>>>>>>>>>>>>>>>" + jsonObj.getString("sID_StorageType"));
+	       /* org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
+	        		(String)jsonObj.get("sKey"), (String)jsonObj.get("sID_StorageType")).getInputStream(), "UTF-8"));*/
+	       /* LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());*/
         }
     //================================================================================================================================================= 
         
