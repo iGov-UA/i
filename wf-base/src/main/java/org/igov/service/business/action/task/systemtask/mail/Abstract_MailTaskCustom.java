@@ -832,7 +832,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         
 	    String sBodyFromMongo = getHtmlTextFromMongo(sJsonHtml); 
 	       
-           LOG.info("oTableJSONObject in -: " +sBodyFromMongo);
+           LOG.info("sBodyFromMongo in -: " +sBodyFromMongo);
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
                 ._Body(sBodyFromMongo)._AuthUser(mailServerUsername)
