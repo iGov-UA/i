@@ -37,7 +37,7 @@
       if (typeof $scope.processesList === 'undefined') {
           $scope.processesList = "error";
       } else if (typeof $scope.processesList !== 'undefined' && $scope.processesList.length > 0) {
-        $scope.export.sBP = $scope.processesList[0].sName_BP;
+        $scope.export.sBP = $scope.processesList[0].sID_BP;
         $scope.initExportUrl();
       }
     }, function () {

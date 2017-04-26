@@ -2,7 +2,6 @@ package org.igov.service.business.action.task.systemtask.mail;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.util.ToolLuna.getProtectedNumber;
-import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -25,7 +24,6 @@ import java.util.regex.Pattern;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
-import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
@@ -34,6 +32,7 @@ import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.task.Task;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
@@ -44,7 +43,6 @@ import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
-
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import org.igov.service.business.finance.Currency;
@@ -59,6 +57,7 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,7 +166,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             return null;
         }
 
-        LOG.debug("sTextSource=" + sTextSource);
+        LOG.info("sTextSource=" + sTextSource);
 
         String sTextReturn = sTextSource;
 
@@ -799,12 +798,36 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
+        LOG.info("sBodySource------>>>>>>>>>>>>>> (sBodySource={})", sBodySource);
         String sBody = replaceTags(sBodySource, oExecution);
 
         //saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
 
         Mail oMail = context.getBean(Mail.class);
+    //=================================================================================================================================================    
+        Map<String, String> aFormPropertyReturn = new HashMap<>();
+        FormData oTaskFormData = oExecution.getEngineServices()
+                .getFormService()
+                .getStartFormData(oExecution.getProcessDefinitionId());
+        if (oTaskFormData != null
+                && oTaskFormData.getFormProperties() != null) {
+            for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+            	if(oFormProperty.getValue().startsWith("{")) {
+                aFormPropertyReturn.put("HTML", oFormProperty.getValue());
+                LOG.info("Matching property (Value={})",
+                        oFormProperty.getValue());
+            	}
+            }
+        }
+        JSONParser parser = new JSONParser();
+        org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(aFormPropertyReturn.get("HTML"));
+        LOG.info("oTableJSONObject--->>>>>>>>>>>>>>>>>" + oTableJSONObject);
+        org.json.simple.JSONObject oJSONObject = (org.json.simple.JSONObject) parser.parse(IOUtils.toString(oAttachmetService.getAttachment(null, null, 
+                (String)oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType")).getInputStream(), "UTF-8"));
 
+        LOG.info("oJSONObject--->>>>>>>>>>>>>>>>>" + oJSONObject.toJSONString());
+    //================================================================================================================================================= 
+        
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
                 ._Body(sBody)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)

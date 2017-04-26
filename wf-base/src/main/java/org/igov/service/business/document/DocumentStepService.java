@@ -988,7 +988,7 @@ public class DocumentStepService {
 
         DocumentStep oDocumentStep_Active = aDocumentStep.stream().filter(
                 o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
-                .findAny().orElse(null);
+                .findAny().orElse(null);    
         LOG.info("oDocumentStep_Active={}", oDocumentStep_Active);
         if (oDocumentStep_Active == null) {
             throw new IllegalStateException(
@@ -1003,10 +1003,15 @@ public class DocumentStepService {
                 aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
             }
         }
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Active.getRights()) {
-            aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
+        
+        List<DocumentStep> oDocumentStep_ExceptCommon = aDocumentStep.stream()
+                .filter(o -> !o.getsKey_Step().equals("_")).collect(Collectors.toList());
+        for(DocumentStep oDocumentStep : oDocumentStep_ExceptCommon){
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep.getRights()) { //oDocumentStep_Active.getRights()
+                aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
+            }
         }
-
+        
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {

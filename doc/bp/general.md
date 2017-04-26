@@ -215,6 +215,11 @@
 
 [детальней...](#_file (New))
 
+ ###### filehtml
+ ### fileHTML   
+ Используется для ввода текста, цифр, символов. С возможностью форматирования  шрифта, цвета текста, добавления ссылок гражданином в момент создания обращения  
+ [детальней...](#_filehtml)
+
 ###### textarea
 ### textArea
 -многострочный текст - для ввода/отображения многострочного текста
@@ -247,6 +252,46 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення" type="select" default="0"></activiti:formProperty>
 ```
+В справочнике атрибутов можно использовать  формулы, которые могут опираться на значения переменных  в полях на стартовой таске.
+	Пример:
+```
+70;1080;sFilial;ЗАПОРІЗЬКА;
+71;1080;sAddress;м. Запоріжжя, вул. Гагаріна, 2а  ;
+72;1080;sWorkTime;_workTime_;
+73;1080;sMFO;380838;
+74;1080;sBill;26005799972877;
+75;1080;sBillOKPO;36408070;
+76;1080;sEmployee_mail;example@mail.ru;
+77;1080;sPaySum_Days1;10 днів<a href="  " target="blank"> (140 грн. + 1.8% комісія) сплатити онлайн </a>;
+78;1080;sPaySum_Days2;15 днів<a href="  " target="blank"> (120 грн. + 1.8% комісія) сплатити онлайн </a>;
+79;1080;sPaySum;=[nPrice_2300000000]==1?[sPaySum_Days1]:[nPrice_2300000000]==2?[sPaySum_Days2]:''
+```
+где формула записана в формате a == b ? c : d
+
+Также атрибуты позволяют задавать массивы  данных, которые на  форме заявки могут интерпретировать в виде выпадающего списка (enum) с динамическим наполнением - https://github.com/e-government-ua/i/issues/1082 
+.  При этом обязательно - в переменной типа enum  на стартовой таске не должно быть ни одного предварительно описанного пункта( как это обычно  делаем для всех enum в активити )
+```
+80;1080;nList;[“item_0”,”item_1”,”item_2”] - пример массива данных в аттрибуте
+```
+```
+ <activiti:formProperty id="nList" name="Динамический список" type="enum"></activiti:formProperty> - пример элемента, в который будет прогружен массив из атрибутов.
+```
+
+ВАЖНО:
+при выборе значения из динамического спика,  в поле будет сохраняться ( и доступно для анализа) не значение в массиве, а индекс выбранного элемента массива, начиная с нуля.
+если необходимо по процессу передать именно  значение выбранного элемента, то необходимо присвоить соответствующее значение обычному строчному элементу ( в тех же атрибутах ). Получается следующая конструкция:
+в БП на стартовой таске:
+```
+		 <activiti:formProperty id="nList" name="Динамический список" type="enum"></activiti:formProperty>
+		<activiti:formProperty id="sSelectedListItem" name="Выбранное значение из спика" type="invisible"></activiti:formProperty>
+```
+в файле атрибутов
+```
+80;1080;nList;[“item_1”,”item_2”,”item_3”]
+81;1080;sSelectedListItem;=[nList]==’0’?’item_0’:[nList]==’1’?’item_1’:[nList]==’2’?’item_2’:’’
+```
+Далее в процессе мы обращаемся уже к значению строки sSelectedListItem, где содержится выбранное из динамического списка значение
+
 
 [детальней...](#_select)
 
@@ -1022,6 +1067,11 @@ digit3 - переменная, куда присвоится результат 
 # 15. Емайлы
 [вернуться в начало](general.md)
 
+По умолчанию почта об уведомлении клиента об успешной отправке заявки c сайта iGov (https://igov.org.ua/)  автоматически рассылаться не будет. Для того, чтобы добавить отправку стандартной почты необходимо прописать ID  бизнес-процесса в следующий файл:
+i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessingInterceptor.java
+В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.
+![15_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_1.jpg)
+
 Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
 `#{MailTaskWithoutAttachment}`  
 `#{MailTaskWithAttachments}`  
@@ -1038,7 +1088,7 @@ digit3 - переменная, куда присвоится результат 
 ```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
-* ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
+ ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
 а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
 
 ###### usingvariablesinemailtemplates
@@ -2576,6 +2626,10 @@ _тестирование и проливка на бету и боевой
 т.к. аттачи подгружаемые на централе хранятся во временной базе, и этот листенер их перетаскивает в постоянную.  
 
 Теперь так же доступна подгрузка файлов в тейбл.
+
+###### _filehtml
+[вернуться...](#filehtml)
+![3_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_11.jpg)
 
 ###### _textarea
 [вернуться...](#textarea)
