@@ -229,7 +229,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-     <userTask id="usertask4" name="ознакомление с утвержденным документом">
+    <userTask id="usertask4" name="ознакомление с утвержденным документом">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
@@ -287,20 +287,6 @@
         <activiti:formProperty id="markers10" name="если задание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;asTypeReport&quot;,&quot;sDateExecution&quot;,&quot;sTextTask&quot;,&quot;sTable5&quot;,&quot;sName_Kontroler&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumCreateTask'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_dogovor_print.html]" type="invisible" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
-          <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[_task_btsol]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable5}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="processDefinitionId">
-            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="soData">
-            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sSubjectContract::${sSubjectContract};;sNamePartner::${sNamePartner};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -403,7 +389,7 @@ execution.setVariable('bSubmitedAll4', oCheckSubmitedAll4.bSubmitedAll.toString(
     <sequenceFlow id="flow100" name="надо генерить" sourceRef="exclusivegateway11" targetRef="callactivity1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumReply' }]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow101" sourceRef="exclusivegateway11" targetRef="usertask4">
+    <sequenceFlow id="flow101" sourceRef="exclusivegateway11" targetRef="scripttask17">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign' || asActionDocUT4 == 'sEnumRemark'|| asActionDocUT4 == 'sEnumCreateTask' }]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask16" name="Step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -413,8 +399,7 @@ var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_1')</script>
     </scriptTask>
     <sequenceFlow id="flow103" sourceRef="scripttask16" targetRef="usertask1"></sequenceFlow>
-   
-    <scriptTask id="scripttask17" name="Step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask17" name="Step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
@@ -439,6 +424,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="84.0" width="130.0" x="655.0" y="946.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="84.0" width="130.0" x="169.0" y="810.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="216.0" y="728.0"></omgdc:Bounds>
@@ -488,9 +476,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNShape bpmnElement="scripttask16" id="BPMNShape_scripttask16">
         <omgdc:Bounds height="56.0" width="105.0" x="259.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="84.0" width="130.0" x="169.0" y="810.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask17" id="BPMNShape_scripttask17">
         <omgdc:Bounds height="56.0" width="105.0" x="181.0" y="960.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -535,7 +520,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="311.0" y="308.0"></omgdi:waypoint>
         <omgdi:waypoint x="311.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
@@ -543,14 +528,14 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="312.0" y="652.0"></omgdi:waypoint>
         <omgdi:waypoint x="311.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="28.0" x="377.0" y="634.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="27.0" x="377.0" y="634.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="719.0" y="420.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="464.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="76.0" x="721.0" y="426.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="75.0" x="721.0" y="426.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
@@ -569,7 +554,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="719.0" y="765.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="800.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="77.0" x="719.0" y="765.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="74.0" x="719.0" y="765.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
@@ -601,20 +586,20 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="453.0" y="1076.0"></omgdi:waypoint>
         <omgdi:waypoint x="371.0" y="1076.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="76.0" x="382.0" y="1062.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="75.0" x="382.0" y="1062.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
         <omgdi:waypoint x="331.0" y="1076.0"></omgdi:waypoint>
         <omgdi:waypoint x="286.0" y="1076.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="73.0" x="288.0" y="1083.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="72.0" x="288.0" y="1083.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
         <omgdi:waypoint x="351.0" y="1056.0"></omgdi:waypoint>
-        <omgdi:waypoint x="351.0" y="852.0"></omgdi:waypoint>
-        <omgdi:waypoint x="299.0" y="852.0"></omgdi:waypoint>
+        <omgdi:waypoint x="351.0" y="988.0"></omgdi:waypoint>
+        <omgdi:waypoint x="286.0" y="988.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
         <omgdi:waypoint x="311.0" y="200.0"></omgdi:waypoint>
