@@ -427,7 +427,7 @@ public class ActionEventService {
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName == null ? oHistoryEvent_Service_StatusType.getsName_UA() : sUserTaskName);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
             setHistoryEvent(HistoryEventType.TASK_CANCELED, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
-                    null, sSubjectInfo, HistoryEventType.TASK_CANCELED.getsTemplate());
+                    null, sSubjectInfo, "aaa");
         }
         else if (soData == null || "[]".equals(soData)) { //My journal. change status of task
             LOG.info("soData is null or empty array: " + soData);
