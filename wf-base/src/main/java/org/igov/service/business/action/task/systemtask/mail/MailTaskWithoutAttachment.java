@@ -22,7 +22,6 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
             Mail oMail = sendToMailFromMongo(oExecution);
             
             LOG.info("MailTaskWithoutAttachment--->>>>>>>>>>>>>>>>>" + oMail.getBody());
-            //oMail.send();
             sendMailOfTask(oMail, oExecution);
             LOG.info("MailTaskWithoutAttachment ok!");
         } catch (Exception ex) {

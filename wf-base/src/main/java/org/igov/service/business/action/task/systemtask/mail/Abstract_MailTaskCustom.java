@@ -822,21 +822,24 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
-	    LOG.info("sBodySource in -: " +sBodySource);
-	    
+        
         Mail oMail = context.getBean(Mail.class);
         
         String sJsonHtml = loadFormPropertyFromTaskHTMLText(oExecution);
         
-	    String sBodyFromMongo = getHtmlTextFromMongo(sJsonHtml); 
-	   
+	    String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonHtml); 
 	    
-	    String sBody = replaceTags(sBodyFromMongo, oExecution);
+	String patternBefore="[pattern/mail/new_design/_common_header.html]+[pattern/mail/new_design/_common_content_start_noBankIDname.html]+Тестирование подписания формы ЭЦП<br>+Поле fileHTML<br><br>";
+	String patternAfter="<br><br>+[pattern/mail/new_design/_common_content_end.html]+[pattern/mail/new_design/_common_signature_start.html]+Тестовая служба,<br>+[pattern/mail/new_design/_common_signature_end.html]+[pattern/mail/new_design/_common_footer.html]";
+	    
+	    String sBody = patternBefore+sBodyFromMongoResult+patternAfter;
+	    
+	    String sBodyResult = replaceTags(sBody, oExecution);
 	       
-           LOG.info("sBodyFromMongo in -: " +sBody);
+           LOG.info("sBodyFromMongo in -: " +sBodyResult);
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
-                ._Body(sBody)._AuthUser(mailServerUsername)
+                ._Body(sBodyResult)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
                 ._Port(Integer.valueOf(mailServerPort))
                 // ._SSL(true)
