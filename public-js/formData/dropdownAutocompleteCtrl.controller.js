@@ -153,7 +153,7 @@ angular.module('autocompleteService')
                     }
 
                     angular.forEach($scope.taskForm, function (field, key) {
-                        if('aRow' in field) {
+                        if('aRow' in field && field.value) {
                             angular.forEach(field.aRow, function (row, rkey) {
                                 angular.forEach(row.aField, function (f, fkey) {
                                     if(p.split('=')[1] === f.id) {
