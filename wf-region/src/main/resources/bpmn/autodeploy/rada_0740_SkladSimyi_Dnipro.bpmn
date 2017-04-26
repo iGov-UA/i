@@ -118,7 +118,7 @@
 var typeMail = execution.getVariable('asLust');
 var sum = 23.11;
 if (typeMail === 'sEnamLustKur') {
-	sum =  43.46;
+	sum =  43.47;
 }
 execution.setVariable('sSum', sum);
 
@@ -245,7 +245,7 @@ execution.setVariable('ScriptAdress', Adres)
 &lt;p&gt; Ваше звернення про ${sPosluga_nameZV} прийнято в роботу. &lt;br /&gt;
 Видача Довідки здійснюється протягом 15(п'ятнадцяти) календарних днів з дня отримання вами цього повідомлення.&lt;br /&gt;
 Повідомлення про результат розгляду заяви буде спрямоване на Ваш e-mail.&lt;/p&gt;
-В разі обрання доставки відповіді поштою, вам буде необхідно оплатити поштову доставку протягом 2х діб з дня отримання на e-mail листа про можливість видати довідку.&lt;br /&gt;
+У разі обрання доставки відповіді поштою, вам буде необхідно оплатити поштову доставку протягом 2х діб з дня отримання на e-mail листа про можливість видати довідку.&lt;br /&gt;
 Після оплати вам надійде лист з довідкою.&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -369,6 +369,7 @@ ${sNameOrgan}.&lt;br /&gt;
 На жаль, ${sPosluga_nameZV} не можливо надати.&lt;br&gt; 
 Причина: ${comment}.
 &lt;/p&gt;
+Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}&lt;br&gt;
@@ -550,7 +551,7 @@ ${sNameOrgan}&lt;br&gt;
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Нагадування!
-Для отримання довідки необхідно прийти до відділу обліку фізичних осіб&lt;br&gt;
+Для отримання довідки необхідно прийти до відділу обліку фізичних осіб.&lt;br&gt;
 Заявка через портал дає вам право на позачергове отримання послуги.&lt;br&gt;
 З собою мати документ, що посвідчує особу та підтверджує реєстрацію за вказаною в заявці адресою.&lt;br&gt;
 ${sAddress}&lt;br&gt;
@@ -718,7 +719,7 @@ ${sNameOrgan}&lt;br&gt;
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="lRegistrationKvart" name="Номер квартири; ;writable=false" type="long"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_V" name="Спосіб отримання документа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_V&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання документа&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_VP" name="Інформація про поштову доставку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_VP&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Інформація про поштову доставку&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Особисто"></activiti:value>
@@ -778,7 +779,7 @@ ${sNameOrgan}&lt;br&gt;
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_V" name="Інформація про поштову доставку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_V&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Інформація про поштову доставку&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_VP" name="Інформація про поштову доставку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_VP&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Інформація про поштову доставку&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Особисто"></activiti:value>
