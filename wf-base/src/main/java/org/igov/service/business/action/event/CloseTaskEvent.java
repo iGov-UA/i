@@ -222,6 +222,10 @@ public class CloseTaskEvent {
                         status = HistoryEvent_Service_StatusType.CLOSED;
                           LOG.info("HistoryEvent_Service_StatusType is CLOSED ", status.toString()); 
                           
+                        if(bCloseAnyWay){
+                            mParam.put("soData", "TaskCancelByUser");
+                        }  
+                          
                     } else {
                         status = HistoryEvent_Service_StatusType.OPENED;
                           LOG.info("HistoryEvent_Service_StatusType is OPENED ", status.toString()); 
