@@ -810,15 +810,15 @@ ${sNameOrgan}&lt;br&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Вашу ${sPosluga_nameZV} надіслано листом. Укрпошта підтверджує відправлення.&amp;lt;br /&amp;gt;
+Вашу ${sPosluga_nameZV} надіслано листом. Укрпошта підтверджує відправлення.&lt;br&gt;
 
-&amp;lt;p&amp;gt;Ідентифікатор внутрішнього поштового відправлення: ${sPostIdentif}&amp;lt;/p&amp;gt;
-Відстежити доставку тут: &amp;lt;a href="http://services.ukrposhta.ua/bardcodesingle/" target="_blank"&amp;gt;services.ukrposhta.ua&amp;lt;/a&amp;gt;
+&lt;p&gt;Ідентифікатор внутрішнього поштового відправлення: ${sPostIdentif}&lt;/p&gt;
+Відстежити доставку тут: &lt;a href="http://services.ukrposhta.ua/bardcodesingle/" target="_blank"&gt;services.ukrposhta.ua&lt;/a&gt;
 			
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Укрпошта, Дніпро. &amp;lt;br /&amp;gt;
+Укрпошта, Дніпро. &lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
@@ -895,11 +895,6 @@ ${sNameOrgan}&lt;br&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask5" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDuration>PT5H</timeDuration>
-      </timerEventDefinition>
-    </boundaryEvent>
     <serviceTask id="servicetask16" name="Лист з заявою" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
@@ -914,10 +909,10 @@ ${sNameOrgan}&lt;br&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Ви обрали район який не підключений до системи і заповнили форму.&amp;lt;br /&amp;gt;
-Надсилаємо вам автоматично сформовану заяву, яку можна використати для отримання довідки.&amp;lt;br /&amp;gt;
-З цією заявою ви можете звернутись до органів реєстрації, вам треба її лиш роздрукувати і підписати.&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;
-Адреси органів реєтрації що видають довідки: &amp;lt;a href="https://docs.google.com/document/d/1ucS5WC6YK2AWg2Yxmpmg8cVgSvoznV_vkLeXi_rjdww/edit?usp=sharing" target="_blank"&amp;gt;Посилання на документ з адресами&amp;lt;/a&amp;gt;
+Ви обрали район який не підключений до системи і заповнили форму.&lt;br&gt;
+Надсилаємо вам автоматично сформовану заяву, яку можна використати для отримання довідки.&lt;br&gt;
+З цією заявою ви можете звернутись до органів реєстрації, вам треба її лиш роздрукувати і підписати.&lt;br&gt;&lt;br&gt;
+Адреси органів реєтрації що видають довідки: &lt;a href="https://docs.google.com/document/d/1ucS5WC6YK2AWg2Yxmpmg8cVgSvoznV_vkLeXi_rjdww/edit?usp=sharing" target="_blank"&gt;Посилання на документ з адресами&lt;/a&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}&lt;br&gt;
@@ -929,7 +924,6 @@ ${sNameOrgan}&lt;br&gt;
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow70" sourceRef="boundarytimer1" targetRef="servicetask16"></sequenceFlow>
     <endEvent id="endevent7" name="End"></endEvent>
     <sequenceFlow id="flow71" sourceRef="servicetask16" targetRef="endevent7"></sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
@@ -1031,9 +1025,6 @@ ${sNameOrgan}&lt;br&gt;
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="55.0" width="105.0" x="267.0" y="69.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="305.0" y="57.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask16" id="BPMNShape_servicetask16">
         <omgdc:Bounds height="55.0" width="105.0" x="392.0" y="69.0"></omgdc:Bounds>
@@ -1207,12 +1198,6 @@ ${sNameOrgan}&lt;br&gt;
       <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
         <omgdi:waypoint x="175.0" y="168.0"></omgdi:waypoint>
         <omgdi:waypoint x="193.0" y="168.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
-        <omgdi:waypoint x="320.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="319.0" y="34.0"></omgdi:waypoint>
-        <omgdi:waypoint x="444.0" y="34.0"></omgdi:waypoint>
-        <omgdi:waypoint x="444.0" y="69.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
         <omgdi:waypoint x="497.0" y="96.0"></omgdi:waypoint>
