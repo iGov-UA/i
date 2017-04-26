@@ -1271,21 +1271,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
                 .processDefinitionKey(sID_BP);
-        LOG.info("query is {}", ((JSONObject)query).toString());
+        //LOG.info("query is {}", ((JSONObject)query).toString());
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
-        LOG.info("historicQuery is {}",((JSONObject)historicQuery).toString() );
+        //LOG.info("historicQuery is {}",((JSONObject)historicQuery).toString() );
         if (sTaskEndDateAt != null) {
             LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
             historicQuery.taskCompletedAfter(sTaskEndDateAt);
-            LOG.info(" historicQuery {} with selecting tasks which were completed after sTaskEndDateAt {}",((JSONObject)historicQuery).toString(), sTaskEndDateAt);
+            //LOG.info(" historicQuery {} with selecting tasks which were completed after sTaskEndDateAt {}",((JSONObject)historicQuery).toString(), sTaskEndDateAt);
             
         }
         if (sTaskEndDateTo != null) {
             LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
             historicQuery.taskCompletedBefore(sTaskEndDateTo);
-            LOG.info(" historicQuery {} with selecting tasks which were completed before sTaskEndDateTo {}",((JSONObject)historicQuery).toString(), sTaskEndDateTo);
+            //LOG.info(" historicQuery {} with selecting tasks which were completed before sTaskEndDateTo {}",((JSONObject)historicQuery).toString(), sTaskEndDateTo);
         }
         if (dateAt != null) {
             query = query.taskCreatedAfter(dBeginDate);
