@@ -1,18 +1,18 @@
 {
 	"motion" : {
 		"ShowFieldsOnCondition_u1" : {
-			"aField_ID" : ["edrpou", "sNameUr", "sAddressFactualUr"], 
+			"aField_ID" : ["sID_SubjectOrgan_OKPO_01", "sFullName_SubjectOrgan_01", "sLocation_SubjectOrgan_01", "sCEOName_SubjectOrgan_01"], 
 			"asID_Field" : {
-				"sClient" : "subekt"
+				"sClient" : "asSubekt"
 			}, 
-			"sCondition" : "[sClient] == 'представник юридичної особи'"
+			"sCondition" : "[sClient] == 'представник юридичної особи' || [sClient] == 'ur'"
 		}, 
 		"ShowFieldsOnCondition_u2" : {
 			"aField_ID" : ["bankIdlastName", "bankIdfirstName", "bankIdmiddleName", "bankIdPassport", "bankIdinn"], 
 			"asID_Field" : {
-				"sClient" : "subekt"
+				"sClient" : "asSubekt"
 			}, 
-			"sCondition" : "[sClient] == 'фізична особа-підприємець'"
+			"sCondition" : "[sClient] == 'фізична особа-підприємець' || [sClient] == 'fiz'"
 		}, 
 		"ShowFieldsOnCondition_u3" : {
 			"aField_ID" : ["decision_reject"], 
@@ -35,6 +35,16 @@
 				
 			}, 
 			"sCondition" : "false"
+		}
+	}, 
+	"attributes" : {
+		"Line_01" : {
+			"aElement_ID" : ["sID_SubjectOrgan_OKPO_01"], 
+			"sValue" : "Дані про юридичну особу"
+		}, 
+		"Line_02" : {
+			"aElement_ID" : ["bankIdlastName"], 
+			"sValue" : "Дані про фізичну особу"
 		}
 	}
 }
