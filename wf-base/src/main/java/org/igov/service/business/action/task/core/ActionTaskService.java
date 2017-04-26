@@ -2546,7 +2546,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         
         Long missedPoint = System.nanoTime();
         
-        String sPlace = null;
+        String sPlace = "";
         
         if (!"Documents".equalsIgnoreCase(sFilterStatus)) {
             HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
