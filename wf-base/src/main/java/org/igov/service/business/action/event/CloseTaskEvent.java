@@ -80,7 +80,8 @@ public class CloseTaskEvent {
             LOG.info("Method doWorkOnCloseTaskEvent started");
             
             Map<String, String> mParam = new HashMap<>();
-            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
+            //mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
+            mParam.put("nID_StatusType", "19");
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
 
@@ -228,7 +229,7 @@ public class CloseTaskEvent {
                     mParam.put("sUserTaskName", sUserTaskName);
                     try {
                         if (!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)) {
-                            //historyEventService.updateHistoryEvent(sID_Order, status, mParam);
+                            historyEventService.updateHistoryEvent(sID_Order, status, mParam);
                             
                     LOG.info(" historyEventService.updateHistoryEvent", sID_Order, status);    
                         }
