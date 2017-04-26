@@ -46,7 +46,7 @@ public class ToolCellSum {
     private static final String DELIMITER_RIGHT_BRACE = ")";
 
     public List<List<String>> getFieldsSummary(List<Map<String, Object>> csvLines, String saFieldSummary) {
-
+LOG.info("Method getFieldsSummary started///////////////");
         List<List<String>> result = new LinkedList<>();
 
         List<String> csvHeaders = new LinkedList<>();
