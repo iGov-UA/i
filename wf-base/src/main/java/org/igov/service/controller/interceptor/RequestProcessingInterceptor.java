@@ -727,7 +727,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     LOG.info("sID_Order for cancel flowslot {}", sID_Order);
                     mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                     closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory,  aTaskId.get(aTaskId.size() - 1), null, true);
-                    oActionEventHistoryService.addHistoryEvent(sID_Order, "test", mParam, 19L);
+                    //oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 19L);
                 }
                 sType = "Close";
                 if(aTaskId.isEmpty()){
