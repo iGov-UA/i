@@ -3107,10 +3107,10 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 
 [вернуться...](#delegateexpression)
 * #{MailTaskWithoutAttachment} - для отправки емейлов без  вложений
-   * ![5_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_1.JPG)
+   * ![5_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_4.jpg)
    * #{MailTaskWithAttachments} - для отправки емейлов c  вложениями
    * #{MailTaskWithAttachmentsAndSMS} - для отправки емейлов смс обязательно должно быть вложение, при отсутствии вложения в поле saAttachmentsForSend должен быть пробел " "
-   * ![5_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_2.JPG)
+   * ![5_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_5.jpg)
    * #{ProcessCountTaskListener}
    * #{SendObject_Corezoid_New}
    * #{releaseTicketsOfQueue} - При создании сервистаски с таким параметром инициализируется отмена заявки и высвобождение слота  электронной очереди по инициативе сотрудника или системы 
@@ -3465,6 +3465,8 @@ ${sNameOrgan}
 [pattern/mail/new_design/_common_footer.html]  
 ```  
 [pattern/mail/new_design/_common_feedback.html] - Обратная связь 
+[pattern/mail/new_design/_common_header_with_payment.html]  -  
+[pattern/mail/new_design/_common_footer_with_payment.html] - 
 
 ###### 16. Отправка СМС-оповещений
 ###### _smsnotifications
