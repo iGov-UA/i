@@ -1072,10 +1072,13 @@ digit3 - переменная, куда присвоится результат 
 # 15. Емайлы
 [вернуться в начало](general.md)
 
+###### automaticsendingmail
+### Автоматическая отправка почты 
 По умолчанию почта об уведомлении клиента об успешной отправке заявки c сайта iGov (https://igov.org.ua/)  автоматически рассылаться не будет. Для того, чтобы добавить отправку стандартной почты необходимо прописать ID  бизнес-процесса в следующий файл:
 i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessingInterceptor.java
-В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.
-![15_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_1.jpg)
+В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.  
+[детальней...](#_automaticsendingmail)
+
 
 Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
 `#{MailTaskWithoutAttachment}`  
@@ -3330,6 +3333,13 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 
 ###### 15. Емайлы
+###### _automaticsendingmail
+
+[вернуться...](#automaticsendingmail)
+
+![15_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_1.jpg)
+
+
 ###### _usingmultipleelectronicqueues
 
 [вернуться...](#usingmultipleelectronicqueues)
