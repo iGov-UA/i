@@ -719,7 +719,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                             actionTaskService.getOriginalProcessInstanceId(Long.parseLong(nID_Order))).active().list();
                     boolean bProcessClosed = aTask == null || aTask.size() == 0;
                     String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
-                    LOG.info("sUserTaskName in close event is {}", sUserTaskName)
+                    LOG.info("sUserTaskName in close event is {}", sUserTaskName);
                     //for(String taskId : aTaskId){
                     LOG.info("taskId {}", aTaskId.get(aTaskId.size() - 1));
                     Map<String, String> mParam = new HashMap<>();
