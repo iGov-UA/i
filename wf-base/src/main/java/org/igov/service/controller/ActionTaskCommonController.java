@@ -1301,8 +1301,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("HistoricTaskInstanceQuery includeTaskLocalVariables---->>>>>>>>>: " + historicQuery.count());
         }
         List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
-        LOG.info("HistoricTaskInstanceQuery foundHistoricResults listPage---->>>>>>>>>: " + foundHistoricResults);
-
+        LOG.info("HistoricTaskInstanceQuery foundHistoricResults listPage---->>>>>>>>>: " + foundHistoricResults.size());
+        
         if ("*".equals(saFields)){
         	saFields = null;
         	LOG.info("Resetting saFields to null in order to get all the fields values");
@@ -1376,18 +1376,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
                 csvLines, saFields, saFieldsCalc, headers, FormulaFilter_Export);
         
+        LOG.info("bIncludeHistory-->>>> {}", bIncludeHistory);
         if (Boolean.TRUE.equals(bIncludeHistory)) {
             Set<String> tasksIdToExclude = new HashSet<>();
             for (Task task : foundResults) {
                 tasksIdToExclude.add(task.getId());
             }
-
+            LOG.info("tasksIdToExclude-->>>> {}", tasksIdToExclude.size());
+            LOG.info("foundHistoricResults-->>>> {}", foundHistoricResults.size());
+            LOG.info("dBeginDate-->>>> {}", dBeginDate);
+            LOG.info("dBeginDate-->>>> {}", dEndDate);
+            LOG.info("dBeginDate-->>>> {}", saFieldsCalc);
+            LOG.info("headers-->>>> {}", headers);
+            LOG.info("headers-->>>> {}", sID_State_BP);
+            LOG.info("headers-->>>> {}", FormulaFilter_Export);
+            
             oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
                     foundHistoricResults, sDateCreateDF, csvLines, saFields,
                     tasksIdToExclude, saFieldsCalc, headers, sID_State_BP, FormulaFilter_Export);
         }
         
         LOG.info("result csvLines {}", csvLines);
+        LOG.info("result csvLines {}", csvLines.size());
         
         /*List<Map<String, Object>> filteredCSVLine = new ArrayList<>();
         try{
