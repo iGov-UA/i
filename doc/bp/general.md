@@ -1127,7 +1127,7 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 
 
 ###### newemailtemplates
-### Oбновленные шаблоны емейлов
+### Oбновленные шаблоны емейлов (new_design)
 Расположены : \wf-region\src\main\resources\pattern\mail\new_design  
 ```
 [pattern/mail/new_design/_common_header.html]
@@ -1137,8 +1137,8 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 
 ###### emailtemplates
 ### Шаблоны емейлов
-В данный момент устаревшие шаблоны е-майл, вместо них используем [Oбновленные шаблоны емейлов](#newemailtemplates)
-расположены : \wf-region\src\main\resources\pattern\mail    
+В данный момент устаревшие шаблоны е-майл, вместо них используем [Oбновленные шаблоны емейлов(new_design)](#newemailtemplates)
+которые расположены расположены в \wf-region\src\main\resources\pattern\mail\new_design (новые шаблоны)  вместо \wf-region\src\main\resources\pattern\mail (старые шаблоны)   
 В сервис-таске прописываем тэги с учётом того что из шаблонов не подтягиваются значения переменных активити:  
 Тело письма с обращением к клиенту и опросом качества  в таком случае будет выглядеть как:  
 [pattern/mail/_common_header.html]
