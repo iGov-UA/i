@@ -12,9 +12,9 @@
         </activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="Без изменений" activiti:candidateGroups="sales2">
+    <userTask id="usertask1" name="Без изменений" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="bankIdfirstName" name="Автор звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Автор звернення; ;labelType=danger " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_246_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
@@ -51,15 +51,19 @@
     <sequenceFlow id="flow25" sourceRef="startevent1" targetRef="exclusivegateway1"></sequenceFlow>
     <userTask id="usertask2" name="с изменениями" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="bankIdfirstName" name="Автор звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Автор звернення; ;labelType=warning" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_246_print.html,sFileName=Zayava_na_oblik, bNew=true," type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]; ; bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_246_print.html,sFileName=Zayava_na_oblik, bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="s_1" name="[pattern/print/testPrint.html]; ; bVisible=false,bPrintform=true" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow26" sourceRef="exclusivegateway1" targetRef="usertask2" skipExpression="${decision_1=='new'}"></sequenceFlow>
-    <sequenceFlow id="flow27" sourceRef="exclusivegateway1" targetRef="usertask1" skipExpression="${decision_1=='old'}"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="exclusivegateway1" targetRef="usertask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='new'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="exclusivegateway1" targetRef="usertask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='old'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="usertask2" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_print_form">
