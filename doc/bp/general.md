@@ -251,7 +251,7 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення" type="select" default="0"></activiti:formProperty>
 ```
-В справочнике атрибутов можно использовать  формулы, которые могут опираться на значения переменных  в полях на стартовой таске.
+В справочнике атрибутов [SubjectOrganJoinAttribute.csv](#subjectorganjoinattribute) можно использовать  формулы, которые могут опираться на значения переменных  в полях на стартовой таске.
 	Пример:
 ```
 70;1080;sFilial;ЗАПОРІЗЬКА;
@@ -3408,7 +3408,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 при этом файл справочник должен браться MVD_Department.csv  
 находящийся по пути: /patterns/dictonary/  
 
-**3) Для динамической работы со справочниками используем тэг  приоритетной подстановки**  
+**3) Для динамической работы со справочниками используем тэг приоритетной подстановки**   
+* Устаревшая схема работы, для работы с новой схемой используем [sID_Public_SubjectOrganJoin](#select)
+
 [Issue 865](https://github.com/e-government-ua/i/issues/865)  
 в виде value{[название переменной]}  
 где вместо "название переменной" должно быть название переменной, которую нужно будет взять из текущей юзертаски, при этом 
