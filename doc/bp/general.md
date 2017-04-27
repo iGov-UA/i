@@ -1079,7 +1079,7 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.  
 [детальней...](#_automaticsendingmail)
 
-
+### Сервистаска для почты
 Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
 `#{MailTaskWithoutAttachment}`  
 `#{MailTaskWithAttachments}`  
