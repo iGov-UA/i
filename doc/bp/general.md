@@ -1,5 +1,3 @@
-
- 
 1. [Создание бизнес-процессов](#creatingbusinessprocesses)
 1. [Основные элементы Activiti Designer](#themain)
 2. [Типы параметров](#typesofparameters)
@@ -140,15 +138,6 @@
 <activiti:formProperty id="Place" name="Назва поля" type="string"></activiti:formProperty>
 ``` 
 
-
-gfdsgfdg
-[SPOILER]
-dfdsgdfsg
-[/SPOILER]
-
-
-
-
 [детальней...](#_string)
 
 ### long
@@ -218,11 +207,17 @@ dfdsgdfsg
 ```
 [детальней...](#_file)
 
-### file (New)
+###### filebnewtrue
+### file (New; ;bNew=true)
 В связи с проблемой с пропавшими файлами, был проведен большой рефакторинг, в результате которого реализована новая схема работы с аттачами, при этом остается функциональной и продолжает работать старая схема.  
 Рекомендуется Топ-процессы переводить на новую схему аттачей – с ней файлы не будут теряться.
 
-[детальней...](#_file (New))
+[детальней...](#_filebnewtrue)
+
+ ###### filehtml
+ ### fileHTML   
+ Используется для ввода текста, цифр, символов. С возможностью форматирования  шрифта, цвета текста, добавления ссылок.
+ [детальней...](#_filehtml)
 
 ###### textarea
 ### textArea
@@ -256,6 +251,46 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення" type="select" default="0"></activiti:formProperty>
 ```
+В справочнике атрибутов [SubjectOrganJoinAttribute.csv](#subjectorganjoinattribute) можно использовать  формулы, которые могут опираться на значения переменных  в полях на стартовой таске.
+	Пример:
+```
+70;1080;sFilial;ЗАПОРІЗЬКА;
+71;1080;sAddress;м. Запоріжжя, вул. Гагаріна, 2а  ;
+72;1080;sWorkTime;_workTime_;
+73;1080;sMFO;380838;
+74;1080;sBill;26005799972877;
+75;1080;sBillOKPO;36408070;
+76;1080;sEmployee_mail;example@mail.ru;
+77;1080;sPaySum_Days1;10 днів<a href="  " target="blank"> (140 грн. + 1.8% комісія) сплатити онлайн </a>;
+78;1080;sPaySum_Days2;15 днів<a href="  " target="blank"> (120 грн. + 1.8% комісія) сплатити онлайн </a>;
+79;1080;sPaySum;=[nPrice_2300000000]==1?[sPaySum_Days1]:[nPrice_2300000000]==2?[sPaySum_Days2]:''
+```
+где формула записана в формате a == b ? c : d
+
+Также атрибуты позволяют задавать массивы  данных, которые на  форме заявки могут интерпретировать в виде выпадающего списка (enum) с динамическим наполнением - https://github.com/e-government-ua/i/issues/1082 
+.  При этом обязательно - в переменной типа enum  на стартовой таске не должно быть ни одного предварительно описанного пункта( как это обычно  делаем для всех enum в активити )
+```
+80;1080;nList;[“item_0”,”item_1”,”item_2”] - пример массива данных в аттрибуте
+```
+```
+ <activiti:formProperty id="nList" name="Динамический список" type="enum"></activiti:formProperty> - пример элемента, в который будет прогружен массив из атрибутов.
+```
+
+ВАЖНО:
+при выборе значения из динамического спика,  в поле будет сохраняться ( и доступно для анализа) не значение в массиве, а индекс выбранного элемента массива, начиная с нуля.
+если необходимо по процессу передать именно  значение выбранного элемента, то необходимо присвоить соответствующее значение обычному строчному элементу ( в тех же атрибутах ). Получается следующая конструкция:
+в БП на стартовой таске:
+```
+		 <activiti:formProperty id="nList" name="Динамический список" type="enum"></activiti:formProperty>
+		<activiti:formProperty id="sSelectedListItem" name="Выбранное значение из спика; ;bVisible=false" type="string"></activiti:formProperty>
+```
+в файле атрибутов
+```
+80;1080;nList;[“item_1”,”item_2”,”item_3”]
+81;1080;sSelectedListItem;=[nList]==’0’?’item_0’:[nList]==’1’?’item_1’:[nList]==’2’?’item_2’:’’
+```
+Далее в процессе мы обращаемся уже к значению строки sSelectedListItem, где содержится выбранное из динамического списка значение
+
 
 [детальней...](#_select)
 
@@ -395,11 +430,16 @@ type="queueData" required="true"></activiti:formProperty>
 [вернуться в начало](general.md)
 
 ### listener
+* ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
+Пример № 1 (Основной) без использования  ${fileTaskInheritance}:    
+![6_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_8.jpg)
 
-   * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
-   * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
+Пример № 2 (Устаревший):    
+В данный момент устаревшая форма добавления файлов, необходимо использовать пример № 1 без ${fileTaskInheritance}
+  
+   * ${fileTaskInheritance} - устаревший слушатель тянет по ид атача атач на юзертаску (добавляется к ${fileTaskUploadListener}). Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
    
-   [детальней...](#_Listener)
+   [детальней...](#_listener)
 
 
 ##### settasks
@@ -445,15 +485,19 @@ type="queueData" required="true"></activiti:formProperty>
 # Назначение групп и пользователей
 [вернуться в начало](general.md)
 
+В данный момент основной веткой для работы считается Дельта (test-delta). Пользователи и группы заведенные в этой ветки автоматически добавятся в другие ветки на следующий день. В случае необходимости сделать проливку групп и пользователей с Дельты на другие ветки в режиме он-лайн, необходимо перейти по ссылке https://ci-jenkins.tech.igov.org.ua/view/active/job/_sync_users/ нажать Build with Parameters 
+
 ###### addingauser
 ### Добавляем пользователя
-* Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
+* Выбираем ссылку исходя из ветки в которой мы будем работать с бизнес-процессом: Альфа(ветка test), Бета(ветка test-beta), Дельта (ветка test-delta), Омега (ветка master). Пример указан для test-beta:  
+   Заходим по ссылке https://beta.test.region.igov.org.ua/groups. Нажимаем в левом верхнем углу знак настройки, користувачи, додати користувача, заполняем данные в появившемся окне и сохраняем. В списке пользователей появится ваш созданный пользователь.
 
 [детальней...](#_addingauser)
 
 ###### addingausertoagroup 
 ### Добавляем пользователя в группу
-* Заходим по ссылке https://beta.test.region.igov.org.ua/groups . Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
+* Выбираем ссылку исходя из ветки в которой мы будем работать с процессом Альфа(ветка test), Бета(ветка test-beta), Дельта (ветка test-delta), Омега (ветка master). Пример указан для test-beta:  
+    Заходим по ссылке https://beta.test.region.igov.org.ua/groups. Нажимаем в левом верхнем углу знак настройки, группи, додати в группу. Вводим в появившемся окне id и название группы и добавляем необходимого пользователя в эту группу.
 
 [детальней...](#_addingausertoagroup)
 
@@ -1029,6 +1073,14 @@ digit3 - переменная, куда присвоится результат 
 # 15. Емайлы
 [вернуться в начало](general.md)
 
+###### automaticsendingmail
+### Автоматическая отправка почты 
+По умолчанию почта об уведомлении клиента об успешной отправке заявки c сайта iGov (https://igov.org.ua/)  автоматически рассылаться не будет. Для того, чтобы добавить отправку стандартной почты необходимо прописать ID  бизнес-процесса в следующий файл:
+i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessingInterceptor.java
+В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.  
+[детальней...](#_automaticsendingmail)
+
+### Сервистаска для почты
 Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
 `#{MailTaskWithoutAttachment}`  
 `#{MailTaskWithAttachments}`  
@@ -1045,9 +1097,13 @@ digit3 - переменная, куда присвоится результат 
 ```xml
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
-* ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
-а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
-
+ ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
+а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}    
+При необходимости можем проименовать PDF файл отправленный клиенту с помощью следующей конструкции в юзертаске:
+ ```xml
+ <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/khmelnitsky/hmel_cnap_333_print.html,sFileName=Zayava_na_oblik,bNew=true" type="file" writable="false"></activiti:formProperty>     
+ ```
+ ![15_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_2.JPG)
 ###### usingvariablesinemailtemplates
 ### Использование переменных в шаблонах емейлов
 
@@ -1070,22 +1126,24 @@ digit3 - переменная, куда присвоится результат 
 [детальней...](#_workingwithdatadirectoriesinemails)
 
 
-###### emailtemplates
-### Шаблоны емейлов
-расположены : \wf-region\src\main\resources\pattern\mail    
-В сервис-таске прописываем тэги с учётом того что из шаблонов не подтягиваются значения переменных активити:  
-Тело письма с обращением к клиенту и опросом качества  в таком случае будет выглядеть как:  
-[pattern/mail/_common_header.html]
-
-[детальней...](#_emailtemplates)
-
 ###### newemailtemplates
-### Oбновленные шаблоны емейлов
+### Oбновленные шаблоны емейлов (new_design)
+Расположены : \wf-region\src\main\resources\pattern\mail\new_design  
 ```
 [pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 ```
 [детальней...](#_newemailtemplates)
+
+###### emailtemplates
+### Шаблоны емейлов
+В данный момент устаревшие шаблоны е-майл, вместо них используем [Oбновленные шаблоны емейлов(new_design)](#newemailtemplates)
+которые расположены расположены в \wf-region\src\main\resources\pattern\mail\new_design (новые шаблоны)  вместо \wf-region\src\main\resources\pattern\mail (старые шаблоны)   
+В сервис-таске прописываем тэги с учётом того что из шаблонов не подтягиваются значения переменных активити:  
+Тело письма с обращением к клиенту и опросом качества  в таком случае будет выглядеть как:  
+[pattern/mail/_common_header.html]
+
+[детальней...](#_emailtemplates)
 
 
 ###### sendingsmsnotifications
@@ -1531,7 +1589,7 @@ execution.setVariable('sExecutor', sExecutor)
 ###### 	branchs
 ### Ветки
 Очень упрощенная схема веток, с которыми работают бизнес-аналитики приведена на рисунке:  
-![3](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sTU1vOU12R2tLc0k)  
+![19_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/19_0.jpg)  
 Основная разработка и тестирование бизнес-процессов происходит в ветке test-delta.
 Как установить и зятнуть себе локально репозиторий описано [здесь](https://github.com/e-government-ua/i/wiki/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-ActivitiDesigner,-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D0%B2). 
 Програмисты ведут свою разработку в ветке test.  
@@ -2557,8 +2615,8 @@ _тестирование и проливка на бету и боевой
 можно в виде ${file1},${file2},${file1} если файлов несколько
    ![2_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2_8.JPG)
 
-###### _file (New)
-[вернуться...](#file (New))
+###### _filebnewtrue
+[вернуться...](#filebnewtrue)
 
 Чтобы обозначить что прикрепляемый файл должен использоваться по новой схеме, добавляем в нейм поля такую конструкцию:
 **; ;bNew=true**  
@@ -2583,6 +2641,10 @@ _тестирование и проливка на бету и боевой
 т.к. аттачи подгружаемые на централе хранятся во временной базе, и этот листенер их перетаскивает в постоянную.  
 
 Теперь так же доступна подгрузка файлов в тейбл.
+
+###### _filehtml
+[вернуться...](#filehtml)
+![3_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_11.jpg)
 
 ###### _textarea
 [вернуться...](#textarea)
@@ -3045,10 +3107,10 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 
 [вернуться...](#delegateexpression)
 * #{MailTaskWithoutAttachment} - для отправки емейлов без  вложений
-   * ![5_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_1.JPG)
+   * ![5_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_4.jpg)
    * #{MailTaskWithAttachments} - для отправки емейлов c  вложениями
    * #{MailTaskWithAttachmentsAndSMS} - для отправки емейлов смс обязательно должно быть вложение, при отсутствии вложения в поле saAttachmentsForSend должен быть пробел " "
-   * ![5_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_2.JPG)
+   * ![5_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_5.jpg)
    * #{ProcessCountTaskListener}
    * #{SendObject_Corezoid_New}
    * #{releaseTicketsOfQueue} - При создании сервистаски с таким параметром инициализируется отмена заявки и высвобождение слота  электронной очереди по инициативе сотрудника или системы 
@@ -3272,6 +3334,13 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 
 ###### 15. Емайлы
+###### _automaticsendingmail
+
+[вернуться...](#automaticsendingmail)
+
+![15_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_1.jpg)
+
+
 ###### _usingmultipleelectronicqueues
 
 [вернуться...](#usingmultipleelectronicqueues)
@@ -3291,7 +3360,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 Использование тэга позволяет закрыть заявку и высвободить тэг электронной очереди.  
 Тэг можно использовать только в процессе с электронной очередью.
-  ![12_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_1.JPG) 
+  ![12_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_2.jpg) 
 ### Вариант №2. Использование системного тега [cancelTaskSimple]
 в емейл добавляем системный тэг **[cancelTaskSimple]**, который преобразуется в кнопку **вже неактуально, закрити заявку**. Можно использовать в  любых процессах.  
 На первом этапе  отмена заявки по этому тэгу не  освобождает слот электронной очереди.
@@ -3339,7 +3408,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 при этом файл справочник должен браться MVD_Department.csv  
 находящийся по пути: /patterns/dictonary/  
 
-**3) Для динамической работы со справочниками используем тэг  приоритетной подстановки**  
+**3) Для динамической работы со справочниками используем тэг приоритетной подстановки**   
+* Устаревшая схема работы, для работы с новой схемой используем [sID_Public_SubjectOrganJoin](#select)
+
 [Issue 865](https://github.com/e-government-ua/i/issues/865)  
 в виде value{[название переменной]}  
 где вместо "название переменной" должно быть название переменной, которую нужно будет взять из текущей юзертаски, при этом 
@@ -3360,12 +3431,6 @@ value != enum.
 
 [вернуться...](#emailtemplates)
 
-
-`<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />`  
-[pattern/mail/test/_test_body.html]  
-[pattern/mail/_common_signature.html]  
-[pattern/mail/_common_feedback.html]  
-[pattern/mail/_common_footer.html]  
 * ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
 кастомизированная подпись в письме с использованием  шаблонов  
 [pattern/mail/_common_signature_start.html]  
@@ -3378,22 +3443,30 @@ value != enum.
 [pattern/mail/new_design/_common_employee_notify.html] - общий шаблон уведомлений для гос.служащего (новый) 
 [pattern/mail/_common_client_notify.html] - общий шаблон уведомления гражданина / отмены заявки,  в случае если заявка очень долго не берется в работу  
 
+
 ###### _newemailtemplates
 
 [вернуться...](#newemailtemplates)
 
-  ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
-здесь мы пишем наш контент
-```
+  ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)  
+
+  
+Пример использования новых шаблонов:  
+
+``` Используем до текста   
+[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]     
+
+Используем после текста           
 [pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
-```
-здесь мы можем добавить орган в подпись <br/>
-```
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-```
+[pattern/mail/new_design/_common_signature_start.html]  
+${sNameOrgan}    
+[pattern/mail/new_design/_common_signature_end.html]  
+[pattern/mail/new_design/_common_footer.html]  
+```  
+[pattern/mail/new_design/_common_feedback.html] - Обратная связь 
+[pattern/mail/new_design/_common_header_with_payment.html]  -  
+[pattern/mail/new_design/_common_footer_with_payment.html] - 
 
 ###### 16. Отправка СМС-оповещений
 ###### _smsnotifications

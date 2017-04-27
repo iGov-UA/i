@@ -284,7 +284,7 @@ public class SubjectMessageService {
 //        if(!subjectMessagesMails.contains(sMail))
 //            message.setMail(sMail == null ? "" : sMail);
         message.setContacts((sContacts == null) ? "" : sContacts);
-        message.setData((sData == null) ? "" : sData); //TODO: - убрать после тестирования 1553
+       // message.setData((sData == null) ? "" : sData); //TODO: - убрать после тестирования 1553
         message.setDate(new DateTime());
         message.setsSubjectInfo((sSubjectInfo == null) ? "" : sSubjectInfo);
         LOG.info("(createSubjectMessage: message sSubjectInfo{})", message.getsSubjectInfo());

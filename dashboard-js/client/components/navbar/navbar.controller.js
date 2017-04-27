@@ -95,56 +95,71 @@
       bSelectedTasksSortReverse = false;
     });
 
-    $scope.tasksSearch = iGovNavbarHelper.tasksSearch;
+    //$scope.tasksSearch = iGovNavbarHelper.tasksSearch;
     var tempCountValue = 0;
 
     $scope.searchInputKeyup = function ($event) {
-      if ($event.keyCode === 13 && $scope.tasksSearch.value) {
-        $scope.tasksSearch.loading=true;
-        $scope.tasksSearch.count=0;
-        $scope.tasksSearch.submited=true;
-        if($scope.tasksSearch.archive) {
-          tasks.getProcesses($scope.tasksSearch.value).then(function (res) {
-            var response = JSON.parse(res);
-            $scope.archive = response[0];
-            $scope.archive.aVisibleAttributes = [];
-            angular.forEach($scope.archive.aAttribute, function (oAttribute) {
-              if (oAttribute.oAttributeName.nOrder !== -1){
-                $scope.archive.aVisibleAttributes.push(oAttribute);
-              }
-            });
-            $scope.archive.aVisibleAttributes.sort(function (a, b) {
-              return a.oAttributeName.nOrder - b.oAttributeName.nOrder;
-            });
-            $scope.switchArchive = true;
-          })
-        } else {
-          tasksSearchService.searchTaskByUserInput($scope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab, bSelectedTasksSortReverse)
-            .then(function(res) {
-              if(res.aIDs.length > 1){
-                if(bSelectedTasksSortReverse){
-                  tempCountValue = (res.aIDs.length - res.nCurrentIndex) + ' / ' + res.aIDs.length;
-                } else {
-                  tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
-                }
-                $scope.tasksSearch.count = '... / ' + res.aIDs.length;
-              } else {
-                tempCountValue = res.aIDs.length;
-                $scope.tasksSearch.count = res.aIDs.length;
-              }
-            })
-            .finally(function(res) {
-              $scope.tasksSearch.loading=false;
-            });
-        }
+      if ($event.keyCode === 13 && $rootScope.tasksSearch.value) {
+        runSearchingProcess();
       }
       if($event.keyCode === 8 || $event.keyCode === 46) {
         $scope.switchArchive = false;
       }
     };
 
+    // запуск поиска для автотестов
+    $rootScope.runSearchingProcess = function () {
+      console.log('Start searching process');
+      $rootScope.tasksSearch.value = $('.searched-text')["0"].value;
+      console.log('$rootScope.tasksSearch.value = ' + $rootScope.tasksSearch.value);
+      if ($rootScope.tasksSearch.value) {
+        runSearchingProcess();
+      }
+      console.log('End searching process');
+    };
+
+    function runSearchingProcess() {
+      $rootScope.tasksSearch.loading=true;
+      $rootScope.tasksSearch.count=0;
+      $rootScope.tasksSearch.submited=true;
+      if($rootScope.tasksSearch.archive) {
+        tasks.getProcesses($rootScope.tasksSearch.value).then(function (res) {
+          var response = JSON.parse(res);
+          $scope.archive = response[0];
+          $scope.archive.aVisibleAttributes = [];
+          angular.forEach($scope.archive.aAttribute, function (oAttribute) {
+            if (oAttribute.oAttributeName.nOrder !== -1){
+              $scope.archive.aVisibleAttributes.push(oAttribute);
+            }
+          });
+          $scope.archive.aVisibleAttributes.sort(function (a, b) {
+            return a.oAttributeName.nOrder - b.oAttributeName.nOrder;
+          });
+          $scope.switchArchive = true;
+        })
+      } else {
+        tasksSearchService.searchTaskByUserInput($rootScope.tasksSearch.value, $scope.iGovNavbarHelper.currentTab, bSelectedTasksSortReverse)
+          .then(function(res) {
+            if(res.aIDs.length > 1){
+              if(bSelectedTasksSortReverse){
+                tempCountValue = (res.aIDs.length - res.nCurrentIndex) + ' / ' + res.aIDs.length;
+              } else {
+                tempCountValue = (res.nCurrentIndex + 1) + ' / ' + res.aIDs.length;
+              }
+              $rootScope.tasksSearch.count = '... / ' + res.aIDs.length;
+            } else {
+              tempCountValue = res.aIDs.length;
+              $rootScope.tasksSearch.count = res.aIDs.length;
+            }
+          })
+          .finally(function(res) {
+            $rootScope.tasksSearch.loading=false;
+          });
+      }
+    }
+
     $scope.$on('update-search-counter', function () {
-      $scope.tasksSearch.count = tempCountValue;
+      $rootScope.tasksSearch.count = tempCountValue;
     });
 
     $scope.closeArchive = function () {
@@ -152,7 +167,7 @@
     };
 
     $scope.archiveTextValue = function () {
-      return isNaN($scope.tasksSearch.value);
+      return isNaN($rootScope.tasksSearch.value);
     };
 
     $scope.isSelectedInstrumentsMenu = function(menuItem) {
@@ -266,7 +281,9 @@
 
     $scope.showSignDialog = function () {
       signDialog.signManuallySelectedFile(function (signedContent) {
-        console.log('Sign Result ' + JSON.stringify(signedContent));
+        console.log('PDF Content:' + signedContent.content);
+        console.log('Certificate:' + signedContent.certificate);
+        console.log('Sign:' + signedContent.signedContentHash);
       }, function () {
         console.log('Sign Dismissed');
       })
