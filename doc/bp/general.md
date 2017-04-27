@@ -251,7 +251,7 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення" type="select" default="0"></activiti:formProperty>
 ```
-В справочнике атрибутов можно использовать  формулы, которые могут опираться на значения переменных  в полях на стартовой таске.
+В справочнике атрибутов [SubjectOrganJoinAttribute.csv](#subjectorganjoinattribute) можно использовать  формулы, которые могут опираться на значения переменных  в полях на стартовой таске.
 	Пример:
 ```
 70;1080;sFilial;ЗАПОРІЗЬКА;
