@@ -39,14 +39,14 @@
         <activiti:formProperty id="nFilePersonalAccountBank" name="Виписка про відкриття особового рахунку з банку" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileInformationEvacuation" name="Довідка про евакуацію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="long" default="9" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="nDocument" name="количество документов" type="invisible" default="6"></activiti:formProperty>
-        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible" default="5_4"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП ; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="количество документов ; ;bVisible=false" type="string" default="6"></activiti:formProperty>
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі) ; ;bVisible=false" type="string" default="5_4"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="${markerService.loadFromFile('chernobyl/chaes_654_bill.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -211,10 +211,10 @@ execution.setVariable("dPassportDate",strDate)
           <activiti:value id="NO" name="Надані дані НЕ відповідають законодавству"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="В разі відмови в наданні послуги зазначте підставу для відмови (дані будуть надіслані громадянинові по електронній пошті)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/chernobyl/chaes_654_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDocument" name="количество документов" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/chernobyl/chaes_654_print.html] ; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="количество документов ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('chernobyl/chaes_654_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -340,10 +340,10 @@ execution.setVariable("dPassportDate",strDate)
           <activiti:value id="Not" name="Відмовити у видачі допомоги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Укажіть інформацію для громадянина(дані будуть надіслані по електронній пошті)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/chernobyl/chaes_654_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nDocument" name="количество документов" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/chernobyl/chaes_654_print.html] ; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDocument" name="количество документов ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('chernobyl/chaes_654_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

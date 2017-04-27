@@ -9,7 +9,8 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
         angular.forEach(formProps, function(prop) {
             if (prop.type === 'table') {
                 angular.forEach(prop.aRow, function (fields) {
-                    angular.forEach(fields.aField, function (item, key, obj) {
+                    if(fields && fields.aField){
+                      angular.forEach(fields.aField, function (item, key, obj) {
 
                         // добавляем примечания к полям, если они есть. проверка по разделителю ";"
                         var sFieldName = item.name || '';
@@ -18,53 +19,56 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
                         item.sFieldLabel = sFieldNotes;
                         sFieldNotes = null;
                         if (aNameParts.length > 1) {
-                            sFieldNotes = aNameParts[1].trim();
-                            if (sFieldNotes === '') {
-                                sFieldNotes = null;
-                            }
+                          sFieldNotes = aNameParts[1].trim();
+                          if (sFieldNotes === '') {
+                            sFieldNotes = null;
+                          }
                         }
                         item.sFieldNotes = sFieldNotes;
 
                         var isExecutorSelect = item.name.split(';')[2];
 
                         if (item.type === 'date') {
-                            obj[key].props = DatepickerFactory.prototype.createFactory();
+                          obj[key].props = DatepickerFactory.prototype.createFactory();
                         }else if(item.type === 'file' && factory !== null) {
-                            var temp = obj[key];
-                            obj[key] = new factory();
-                            for(var k in temp) obj[key][k]=temp[k];
+                          var temp = obj[key];
+                          obj[key] = new factory();
+                          for(var k in temp) obj[key][k]=temp[k];
                         }else if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
-                            var match;
-                            if (((match = item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/)))
-                                ||(item.type == 'select' && (match = item.id.match(/^s(Country)(_(\d+))?/))) || isExecutorSelect) {
-                                if (match && autocompletesDataFactory[match[1]] && !isExecutorSelect) {
-                                    item.type = 'select';
-                                    item.selectType = 'autocomplete';
-                                    item.autocompleteName = match[1];
-                                    if (match[2])
-                                        item.autocompleteName += match[2];
-                                    item.autocompleteData = autocompletesDataFactory[match[1]];
-                                } else if (!match && isExecutorSelect.indexOf('SubjectRole') > -1) {
-                                    var props = isExecutorSelect.split(','), role;
-                                    item.type = 'select';
-                                    item.selectType = 'autocomplete';
-                                    for(var i=0; i<props.length; i++) {
-                                        if(props[i].indexOf('sID_SubjectRole') > -1) {
-                                            role = props[i];
-                                            break;
-                                        }
-                                    }
-                                    var roleValue = role ? role.split('=')[1] : null;
-                                    if(roleValue && roleValue === 'Executor') item.autocompleteName = 'SubjectRole';
-                                    if(roleValue && roleValue === 'ExecutorDepart') item.autocompleteName = 'SubjectRoleDept';
-                                    item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
+                          var match;
+                          if (((match = item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/)))
+                            ||(item.type == 'select' && (match = item.id.match(/^s(Country)(_(\d+))?/))) || isExecutorSelect) {
+                            if (match && autocompletesDataFactory[match[1]] && !isExecutorSelect) {
+                              item.type = 'select';
+                              item.selectType = 'autocomplete';
+                              item.autocompleteName = match[1];
+                              if (match[2])
+                                item.autocompleteName += match[2];
+                              item.autocompleteData = autocompletesDataFactory[match[1]];
+                            } else if (!match && isExecutorSelect.indexOf('SubjectRole') > -1) {
+                              var props = isExecutorSelect.split(','), role;
+                              item.type = 'select';
+                              item.selectType = 'autocomplete';
+                              for(var i=0; i<props.length; i++) {
+                                if(props[i].indexOf('sID_SubjectRole') > -1) {
+                                  role = props[i];
+                                  break;
                                 }
+                              }
+                              var roleValue = role ? role.split('=')[1] : null;
+                              if(roleValue && roleValue === 'Executor') item.autocompleteName = 'SubjectRole';
+                              if(roleValue && roleValue === 'ExecutorDepart') item.autocompleteName = 'SubjectRoleDept';
+                              item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
                             }
+                          }
                         }
                         if (item.nWidth && item.nWidth.indexOf('%') === -1) {
-                            if(item.nWidth.indexOf('px') === -1) item.nWidth = item.nWidth + 'px';
+                          if(item.nWidth.indexOf('px') === -1) item.nWidth = item.nWidth + 'px';
                         }
-                    })
+                      })
+                    } else {
+                      console.warn('В таблице "' + prop.name.split(';')[0] + '" [id=' + prop.id + '] в массиве строк отсутствуют элементы');
+                    }
                 })
             }
         });

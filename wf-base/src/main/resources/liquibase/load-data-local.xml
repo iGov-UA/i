@@ -438,6 +438,7 @@
             <column name="sLaw" type="STRING"/>
             <column name="nOpenedLimit" type="NUMERIC"/>
             <column name="sSubjectOperatorName" type="STRING"/>
+            <column name="saKeyword" type="STRING"/>
         </loadData>
 
         <loadUpdateData primaryKey  = "nID"
@@ -564,8 +565,50 @@
             <column name="nID" type="NUMERIC"/>
             <column name="sName" type="STRING"/>
             <column name="sNote" type="STRING"/>
-        </loadUpdateData>              
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/RelationClass.csv" tableName="RelationClass" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sClass" type="STRING"/>
+        </loadUpdateData> 
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Relation.csv" tableName="Relation" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sID" type="STRING"/>
+            <column name="sName" type="STRING"/>
+            <column name="nID_RelationClass" type="NUMERIC"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ObjectGroup.csv" tableName="ObjectGroup" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Subject_Source" type="NUMERIC"/>
+            <column name="sID_Private_Source" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Relation_ObjectGroup.csv" tableName="Relation_ObjectGroup" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Relation" type="NUMERIC"/>
+            <column name="nID_ObjectGroup_Parent" type="NUMERIC"/>
+            <column name="nID_ObjectGroup_Child" type="NUMERIC"/>
+        </loadUpdateData>    
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/ObjectItem.csv" tableName="ObjectItem" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Subject_Source" type="NUMERIC"/>
+            <column name="sID_Private_Source" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+        
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Relation_ObjectItem.csv" tableName="Relation_ObjectItem" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Relation" type="NUMERIC"/>
+            <column name="nID_ObjectItem_Parent" type="NUMERIC"/>
+            <column name="nID_ObjectItem_Child" type="NUMERIC"/>
+        </loadUpdateData>
         
     </changeSet>
+    
+    
 
 </databaseChangeLog>

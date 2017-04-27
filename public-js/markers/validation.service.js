@@ -771,7 +771,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
         };
     	var minus = ("" + (1-2))[0];
     	var bValid = true;
-    	for (var i = 0; i <= modelValue.length; i++){
+    	for (var i = 0; i < modelValue.length; i++){
     	  if(bValid){
               var check = modelValue[i];
               if(check.match(/[0-9]/)){

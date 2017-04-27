@@ -34,6 +34,26 @@
           ]
         }
       })
+      .state('tasks.ecp', {
+        url: '/ecp',
+        access: {
+          requiresLogin: true
+        },
+        views: {
+          '@': {
+            templateUrl: 'app/tasks/edsView.html',
+            controller: 'edsViewCtrl'
+          }
+        },
+        resolve: {
+          unsignedDocsList: [
+            'tasks',
+            function (tasks) {
+              return tasks.getUnsignedDocsList();
+            }
+          ]
+        }
+      })
       .state('tasks.typeof', {
         url: '/:type',
         access: {
@@ -58,7 +78,15 @@
             'tasks',
             '$stateParams',
             function(tasks, $stateParams) {
-              return tasks.getTaskData({nID_Task:$stateParams.id}, true)
+              var params = {
+                nID_Task: $stateParams.id,
+                bIncludeGroups: true,
+                bIncludeStartForm: true,
+                bIncludeAttachments: true,
+                bIncludeProcessVariables: $stateParams.type === 'documents',
+                bIncludeMessages: true
+              };
+              return tasks.getTaskData(params, false)
             }
           ],
           oTask: [

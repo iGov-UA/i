@@ -62,7 +62,7 @@
         <activiti:formProperty id="nFileFamily" name="Довідка про склад сім'ї" type="file"></activiti:formProperty>
 
         
-        <activiti:formProperty id="bFlagForDrohobuch" name="Флаг Дрогобича" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="bFlagForDrohobuch" name="Флаг Дрогобича ; ;bVisible=false" type="string" default="false"></activiti:formProperty>
 		<activiti:formProperty id="markersDrohobuch" name="Маркер для Дрогобича" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_157_drohobuch.json')}"></activiti:formProperty>
 
         <activiti:formProperty id="nFileIncomeFamily" name="Завантажте довідки про доходи всіх членів сімї;за останні 6-ть місяців" type="file" required="true"></activiti:formProperty>
@@ -75,20 +75,20 @@
           <activiti:value id="offline" name="без ЕЦП (погоджуєтесь на особистий візит після перевірки правильності даних)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява, з накладеним ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для накладення ЭЦП" type="invisible" default="pattern/print/minsoc/min_soc_help_441_print_ECP.html"></activiti:formProperty>
-        <activiti:formProperty id="bFlagFullBP" name="Флаг полного процесса" type="invisible" default="true"></activiti:formProperty>
-        <activiti:formProperty id="bFlagECP" name="Флаг ЕЦП" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для накладення ЭЦП ; ;bVisible=false" type="string" default="pattern/print/minsoc/min_soc_help_441_print_ECP.html"></activiti:formProperty>
+        <activiti:formProperty id="bFlagFullBP" name="Флаг полного процесса ; ;bVisible=false" type="string" default="true"></activiti:formProperty>
+        <activiti:formProperty id="bFlagECP" name="Флаг ЕЦП ; ;bVisible=false" type="string" default="false"></activiti:formProperty>
  		<activiti:formProperty id="markersSocHelpECP" name="Маркер для Дрогобича" type="markers" default="${markerService.loadFromFile('soczah/soc_help_ECP.json')}"></activiti:formProperty>
 
 
-        <activiti:formProperty id="nArea" name="номер органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailCler1k" name="Пошта" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="номер органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailCler1k" name="Пошта ; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         
-        <activiti:formProperty id="cc_1_5" name="Допомога на дітей одиноким матерям" type="invisible" default="true"></activiti:formProperty>
+        <activiti:formProperty id="cc_1_5" name="Допомога на дітей одиноким матерям ; ;bVisible=false" type="string" default="true"></activiti:formProperty>
 
 		<activiti:formProperty id="markersStart" name="Маркер відповіді" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_157_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersAdressTransfer" name="Маркер адреса и выбора типа передачи помощи" type="markers" default="${markerService.loadFromFile('soczah/soc_help_adress_transfer.json')}"></activiti:formProperty>
@@ -139,8 +139,8 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="bFlagFullBP" name="Флаг полного процесса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bFlagECP" name="Флаг ЕЦП" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bFlagFullBP" name="Флаг полного процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bFlagECP" name="Флаг ЕЦП ; ;bVisible=false" type="string"></activiti:formProperty>
 		<activiti:formProperty id="markersUT1_2" name="Маркер UT1 2" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_157_user1_2.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="dDateVisit" name="Внесіть дату візиту громадянки для надання довідки про вагітність" type="date"></activiti:formProperty>
@@ -148,12 +148,12 @@
         <activiti:formProperty id="sRoom" name="Укажіть кабінет - куди прийти громадянці" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Будь ласка, укажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
        
-        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cc_1_5" name="Допомога на дітей одиноким матерям" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html] ; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_1_5" name="Допомога на дітей одиноким матерям ; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові ; ;bVisible=false" type="string"></activiti:formProperty>
 		<activiti:formProperty id="PrintForm_1" name="Принтформа PDF;File PDF;sPrintFormFileAsPDF=pattern/print/minsoc/min_soc_help_441_print_ECP.html" type="file" writable="false"></activiti:formProperty>		
 
 		<activiti:formProperty id="markersUT1" name="Маркер UT1" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soc_help_157_user.json')}"></activiti:formProperty>
@@ -201,8 +201,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFileDecision" name="Сканована копія рішення" type="file" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="cc_1_5" name="Допомога на дітей одиноким матерям" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html] ; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="cc_1_5" name="Допомога на дітей одиноким матерям ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
 

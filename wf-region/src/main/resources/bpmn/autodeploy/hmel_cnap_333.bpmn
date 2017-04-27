@@ -40,24 +40,24 @@
         <activiti:formProperty id="sDocAllAgree" name="Письмова згода всіх повнолітніх членів сім'ї, що проживають разом з особою, яка бажає взяти дитину під опіку; завантажте єдиним архівом" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInfo_2" name=" " type="label" default="&lt;a href=&quot;https://docs.google.com/uc?authuser=0&amp;id=0B6mOkUg9oq1zR2MxN2hEYUNETWM&amp;export=download&quot; target=&quot;_blank&quot;&gt;бланк заяви-згоди&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sInfo_3" name=" " type="label" default="Згідно законодавчо визначеної процедури буде проведено обстеження житлово-побутових умов, про дату та час перевірки Ви отримаєте окреме повідомлення на електронну пошту"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="район ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="remail" name="пошта району ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="якщо одружені" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sMarriageQuestion&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="якщо не є близьким родичем" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sDocLearning&quot;,&quot;sSocRecomendation&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sRelative&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no_2'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідного пакету документів" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -90,11 +90,11 @@
         <activiti:formProperty id="comment_3" name="Додаткові відомості щодо візиту (заповніть у разі необхідності)" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_5" name="Якщо назви якогось документу не вистачає у переліку в заяві - впишіть його назву у це поле" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_333_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_333_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_333_print.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -105,7 +105,7 @@
     </userTask>
     <userTask id="usertask2" name="прийняття рішення щодо постановки на облік" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sShapka494" name="шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapka494" name="шапка ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -138,10 +138,10 @@
         <activiti:formProperty id="sRegistNumber" name="У разі постановки на облік - укажіть обліковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови - внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію документа для відправки заявнику" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="перелік у принтформу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeCustodypf" name="форма влаштування дитини у принтформі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/khmelnitsky/hmel_cnap_333_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_333_print.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/khmelnitsky/hmel_cnap_333_print.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">

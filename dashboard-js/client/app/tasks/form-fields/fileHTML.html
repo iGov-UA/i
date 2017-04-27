@@ -1,64 +1,62 @@
-<div ng-hide="isTaskSuccessfullySubmitted()">
-	<div ng-if="item.type == 'fileHTML' && showField(item)" class="form-field" style="width: 95%;float: right;">
-	  <div class="row">
-	    <div class="col-sm-12">
-	      <label style="font-weight: normal;">{{sFieldLabel(item.name)}}
-	        <span ng-if="isRequired(item) && !inUnassigned() && item.writable" style="color: red">*</span>
-	      </label>
-	    </div>
-	  </div>
+<div ng-if="item.type == 'fileHTML' && showField(item)" class="form-field" style="width: 95%;float: right;">
+  <div class="row">
+    <div class="col-sm-12">
+      <label style="font-weight: normal;">{{sFieldLabel(item.name)}}
+        <span ng-if="isRequired(item) && !inUnassigned() && item.writable" style="color: red">*</span>
+      </label>
+    </div>
+  </div>
 
-	  <div class="row fileHTML">
-	    <div class="col-sm-12" style="padding-right: 0">
-	      <text-angular ta-toolbar="[['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'fontColor'],
-	                                 ['bold', 'italics', 'underline', 'ul', 'ol', 'insertLink'],
-	                                 ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent', 'clear']]"
-	                    ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()"
-	                    ng-model="item.value"
-	                    ng-readonly="isFormPropertyDisabled(item)"
-	                    name="{{item.id}}"
-	                    style="width:100%;"
-	                    ng-required="isRequired(item)"
-	                    ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
-	      </text-angular>
-	      <span style="white-space: pre-line"
-	            ng-if="showReadableField(item) || !isDocumentNotSigned()"
-	            name="{{item.id}}"
-	            ng-bind-html="viewTrustedHTMLContent(item.value)"
-	            ng-model="item.value">{{item.value}}
-	    </span>
+  <div class="row fileHTML">
+    <div class="col-sm-12" style="padding-right: 0">
+      <text-angular ta-toolbar="[['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'fontColor'],
+                                 ['bold', 'italics', 'underline', 'ul', 'ol', 'insertLink'],
+                                 ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent', 'clear']]"
+                    ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()"
+                    ng-model="item.valueVisible"
+                    ng-readonly="isFormPropertyDisabled(item)"
+                    name="{{item.id}}"
+                    style="width:100%;"
+                    ng-required="isRequired(item)"
+                    ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
+      </text-angular>
+      <span style="white-space: pre-line"
+            ng-if="showReadableField(item) || !isDocumentNotSigned()"
+            name="{{item.id}}"
+            ng-bind-html="viewTrustedHTMLContent(item.valueVisible)"
+            ng-model="item.valueVisible">{{item.valueVisible}}
+    </span>
 
-	      <span class="validation-message" ng-messages="isFormInvalid && form[item.id].$error">
-	      <span ng-message="required">Необхідно заповнити.</span>
-	            <span ng-message="pattern">Значення має бути числом.</span>
-	            <span ng-message="email">Помилка в email.</span>
-	            <span ng-message="tel">Помилка в номері телефону.</span>
-	            <span ng-message="autovin">Помилка у VIN-номері авто.</span>
-	            <span ng-message="string">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="long">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="double">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
-	            <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
-	            <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
-	            <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів, х-місяців, х-років.</span>
-	            <span ng-message="string">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="long">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="double">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="numberbetween">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="numberfractionalbetween">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="numbersaccounts">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="dateofbirth">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="CustomFormat">{{ form[item.id].lastErrorMessage }}</span>
-	            <span ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</span>
-	            <span ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</span>
-	            <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
-	            <span ng-message="FileSign">Підпис не валідний або відсутній</span>
-	            <span ng-message="documentdate">Дата може бути тільки формату ДД.ММ.PPPP.</span>
-	            <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
-	            <span ng-message="OrderValue">Такого номеру не існує</span>
-	      </span>
-	    </div>
-	  </div>
+      <span class="validation-message" ng-messages="isFormInvalid && form[item.id].$error">
+      <span ng-message="required">Необхідно заповнити.</span>
+            <span ng-message="pattern">Значення має бути числом.</span>
+            <span ng-message="email">Помилка в email.</span>
+            <span ng-message="tel">Помилка в номері телефону.</span>
+            <span ng-message="autovin">Помилка у VIN-номері авто.</span>
+            <span ng-message="string">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="long">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="double">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="textua">Текст може містити тількі українські літери або мінус чи пробіл.</span>
+            <span ng-message="textru">Текст може містити тількі російські літери або мінус чи пробіл.</span>
+            <span ng-message="dateformat">Дата може бути тільки формату DATE_FORMAT.</span>
+            <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів, х-місяців, х-років.</span>
+            <span ng-message="string">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="long">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="double">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="numberbetween">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="numberfractionalbetween">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="numbersaccounts">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="dateofbirth">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="CustomFormat">{{ form[item.id].lastErrorMessage }}</span>
+            <span ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</span>
+            <span ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</span>
+            <span ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</span>
+            <span ng-message="FileSign">Підпис не валідний або відсутній</span>
+            <span ng-message="documentdate">Дата може бути тільки формату ДД.ММ.PPPP.</span>
+            <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
+            <span ng-message="OrderValue">Такого номеру не існує</span>
+      </span>
+    </div>
+  </div>
 
-	</div>
 </div>

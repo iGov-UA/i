@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_686" name="Державна реєстрація змін до відомостей про фізичну особу – підприємця" isExecutable="true">
+    <documentation>
+		AGVersion: 2017.04.11
+		- 
+	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="markers_ext_01" name="extra_required_fields" type="markers" default="${markerService.loadFromFile('dnepr_cnap_686.json')}"></activiti:formProperty>
         <activiti:formProperty id="InfoStart" name="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує)." type="label" default="Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
 
-        <activiti:formProperty id="sVersion" name="Версия" type="invisible" default="011"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sVersion" name="Версія; ;bVisible=false" type="string" default="AGVersion: 2017.04.11"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -30,7 +34,7 @@
         <activiti:formProperty id="sVar3BankIdlastName" name="Попереднє прізвище" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar3BankIdfirstName" name="Попереднє ім'я" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar3BankIdmiddleName" name="Попереднє по батькові" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="Info_1_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="asSelectIzm_02" name="2. ІПН" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
@@ -38,7 +42,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="markers_Hide_01_02" name="показать строки если есть изменения №2" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_02&quot;:{&quot;aField_ID&quot;:[&quot;sVar2BankIdinn&quot;,&quot;fDoc_02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_02&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdinn" name="Новий ІПН" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fDoc_02" name="Копія нового ІПН" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="fDoc_02" name="Копія нового ІПН; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="Info_2_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="asSelectIzm_03" name="3. Паспортні дані;опція потрібна тільки тим хто не має ІПН" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
@@ -47,7 +51,7 @@
         <activiti:formProperty id="markers_Hide_01_03" name="показать строки если есть изменения №3" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_03&quot;:{&quot;aField_ID&quot;:[&quot;sVar2SerPass&quot;,&quot;sVar2NumPass&quot;,&quot;fDoc_03&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_03&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVar2SerPass" name="Нова серія паспорту" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVar2NumPass" name="Новий номер паспорту" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="Info_3_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="asSelectIzm_04" name="4. Громадянство" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
@@ -55,7 +59,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="markers_Hide_01_04" name="показать строки если есть изменения №4" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_04&quot;:{&quot;aField_ID&quot;:[&quot;sVar2BankIdAddressFactual_country&quot;,&quot;fDoc_04&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_04&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVar2BankIdAddressFactual_country" name="Нова країна громадянства" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fDoc_04" name="Копія паспорту (іншої країни)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="fDoc_04" name="Копія паспорту (іншої країни); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="Info_4_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="asSelectIzm_05" name="5. Місце проживання/місцезнаходження" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
@@ -147,7 +151,7 @@
         <activiti:formProperty id="sVarKvNum_0002_ADR01" name="Корпус" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarTypePom_0002_ADR01" name="Тип приміщення; квартира, кімната, кабінет або офіс тощо" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarPomNum_0002_ADR01" name="Номер приміщення" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fDoc_05" name="Копія паспорту (сторінка з новим місцем реєстрації)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="fDoc_05" name="Копія паспорту (сторінка з новим місцем реєстрації); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="Info_5_0" name="======================================" type="label" default="======================================"></activiti:formProperty>
         <activiti:formProperty id="asSelectIzm_06" name="6. Види економічної діяльності" type="enum" default="tf1702_2" required="true">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
@@ -336,7 +340,7 @@
         <activiti:formProperty id="markers_sIzm_06_Plus_1" name="поставити + для изменения" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_06_Plus_1&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_06_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_06&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sIzm_08_Plus_0" name="очистить + для изменения " type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_08_Plus_0&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_08_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_08&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_sIzm_08_Plus_1" name="поставити + для изменения" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_sIzm_08_Plus_1&quot;:{&quot;aField_ID&quot;:[&quot;sIzm_08_Plus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_08&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf1702_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true, bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/dnepr_cnap_686_print.html"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="invisible" default="Державна реєстрація змін до відомостей про фізичну особу – підприємця"></activiti:formProperty>
       </extensionElements>
@@ -487,6 +491,14 @@
           <activiti:value id="sNo" name="Ні - Заява не прийнята для обробки (надіслати листа про відмову)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
+
+        <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_02" name="Копія нового ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_04" name="Копія паспорту (іншої країни); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_05" name="Копія паспорту (сторінка з новим місцем реєстрації); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП;; bNew=true" type="file" writable="false"></activiti:formProperty>
+		
 <!--
         <activiti:formProperty id="asSelectIzm_01" name="1. Прізвище, та/або імені, та/або по батькові" type="enum" writable="false">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
@@ -508,6 +520,18 @@
     <scriptTask id="scripttask1" name="Выбор магазина Ликпей" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>          
       	  var sVarCNAP=execution.getVariable('user_last')
+          if (sVarCNAP=='ternopil_test')
+          	{
+          		execution.setVariable('sID_Merchant','i5516072613')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')
+				execution.setVariable('sVarBankOplata','ГУДКСУ У ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')
+				execution.setVariable('sVarWhoPayGetCode','37870848')
+				execution.setVariable('sVarWhoPayGet','ВАСИЛЬКІВСЬКЕ УК (ВАСИЛЬКІВСЬКОГО РАЙОНУ)')
+				execution.setVariable('sVarPayGetSchet','31419501700049')
+				execution.setVariable('sVarSumPay','160.00')
+          	}
           if (sVarCNAP=='agerman')
           	{
           		execution.setVariable('sID_Merchant','i5516072613')
@@ -868,7 +892,55 @@
 				execution.setVariable('sVarPayGetSchet','31419501700555')             
 				execution.setVariable('sVarSumPay','160.00')
 			}
-		</script>
+		if (sVarCNAP=='berezh_re')
+           {
+				execution.setVariable('sID_Merchant','i15580408250')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37737751')             
+				execution.setVariable('sVarWhoPayGet','УК у Бережан.р-ні/м.Бережани')             
+				execution.setVariable('sVarPayGetSchet','31410501700004')             
+				execution.setVariable('sVarSumPay','160.00')
+           }
+		if (sVarCNAP=='tern_rai_cnap2')
+           {
+				execution.setVariable('sID_Merchant','i84710593207')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','38038156')
+				execution.setVariable('sVarWhoPayGet','УК у Терноп. р-ні/ Тернопіл. р-н')             
+				execution.setVariable('sVarPayGetSchet','31417501700513')             
+				execution.setVariable('sVarSumPay','160.00')
+           }
+		if (sVarCNAP=='cnap_borsch_1')
+           {
+				execution.setVariable('sID_Merchant','i27018418461')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37971052')
+				execution.setVariable('sVarWhoPayGet','УК у Борщівському районі/Борщівський р-н')             
+				execution.setVariable('sVarPayGetSchet','31417501700030')             
+				execution.setVariable('sVarSumPay','160.00')
+           }
+		if (sVarCNAP=='krivorogT_jur')
+           {
+				execution.setVariable('sID_Merchant','i27442312556')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','УДКСУ у Металургійному районі м. Кривого Рога')
+				execution.setVariable('sVarBankMFO','805012')
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','38032510')             
+				execution.setVariable('sVarWhoPayGet','УДКСУ у Металургійному районі м. Кривого Рога')             
+				execution.setVariable('sVarPayGetSchet','31416501700020')             
+				execution.setVariable('sVarSumPay','160.00')
+           }
+	   </script>
     </scriptTask>
 
    <userTask id="usertask2_red" name="Надання платної послуги" activiti:assignee="${user_last}">
@@ -1010,7 +1082,7 @@
           <activiti:value id="yesDecisionFile" name="Так - є скан копії рішення про реєстрацію змін"></activiti:value>
           <activiti:value id="noDecisionFile" name="Ні - скан копії рішення про реєстрацію змін відсутній"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника;; bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="sVarPayDate" name="Введіть дату сплати за послугу" type="string" required="true"></activiti:formProperty>
@@ -1025,6 +1097,13 @@
         <activiti:formProperty id="sDescription" name="строка-описание платежа" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print_pay.html]" type="invisible" default="Квитанція про сплату за послугу" writable="false"></activiti:formProperty>
 
+        <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_02" name="Копія нового ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_04" name="Копія паспорту (іншої країни); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_05" name="Копія паспорту (сторінка з новим місцем реєстрації); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП;; bNew=true" type="file" writable="false"></activiti:formProperty>
+		
 <!--
         <activiti:formProperty id="asSelectIzm_01" name="1. Прізвище, та/або імені, та/або по батькові" type="enum" writable="false">
           <activiti:value id="tf1702_1" name="Так"></activiti:value>
@@ -1036,13 +1115,16 @@
 -->
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print_02.html]" type="invisible" default="Заява про реєстрацію змін - зміна ПІБ" writable="false"></activiti:formProperty>
-		
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed}</activiti:expression>
+
+<!--
+		  <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+            <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${fDoc_05},${fDoc_04},${fDoc_03},${fDoc_02},${fDoc_01},${form_signed_all}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      </extensionElements>
+-->
+
+		</extensionElements>
     </userTask>
     <userTask id="usertask4" name="Очікування в черзі" activiti:candidateGroups="jur_${sID_UA}_1497">
       <extensionElements>
@@ -1178,8 +1260,16 @@
         </activiti:formProperty>
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника:" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника;; bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print.html]" type="invisible" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_02" name="Копія нового ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_04" name="Копія паспорту (іншої країни); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_05" name="Копія паспорту (сторінка з новим місцем реєстрації); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП;; bNew=true" type="file" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
 <!--        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

@@ -20,7 +20,7 @@
                 <tr>
                   <td>
                   <span class="find-field-tooltip">
-                    <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value"
+                    <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value" class="searched-text"
                            ng-class="{'archive-error': tasksSearch.archive && archiveTextValue()}" placeholder="Пошук"
                            style="height: 22px"/>
                       <span class="find-field-tooltip-text">Для пошуку введіть номер звернення або текст</span>
@@ -28,6 +28,8 @@
                     <div>
                       <input type="checkbox" ng-model="tasksSearch.archive"><span class="small"> шукати в архіві</span>
                     </div>
+                    <!-- кнопка запуска поиска для автотестов -->
+                    <span ng-hide="true" ng-click="runSearchingProcess()" class="runner-searching-process"> </span>
                   </td>
                   <td>
                   <span class="label label-info"

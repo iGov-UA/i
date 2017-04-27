@@ -24,6 +24,7 @@ angular.module('dashboardJsApp')
         selfAssigned: 'selfAssigned',
         unassigned: 'unassigned',
         documents: 'documents',
+        ecp: 'ecp',
         finished: 'finished',
         tickets: 'tickets',
         all: 'all'
@@ -35,11 +36,13 @@ angular.module('dashboardJsApp')
        * @return {Promise}
        */
       list: function (filterType, params) {
-        return simpleHttpPromise({
-          method: 'GET',
-          url: '/api/tasks',
-          params: angular.merge({filterType: filterType}, params)
-        });
+        if(filterType !== 'ecp') {
+          return simpleHttpPromise({
+            method: 'GET',
+            url: '/api/tasks',
+            params: angular.merge({filterType: filterType}, params)
+          });
+        }
       },
       getEventMap: function () {
         var deferred = $q.defer();
@@ -217,7 +220,7 @@ angular.module('dashboardJsApp')
         // upload tables sync
         var syncTableUpload = function (i, table, defs) {
             if (i < table.length) {
-              self.uploadTable(table[i].table, table[i].taskID, table[i].tableId, table[i].desc, table[i].isNew).then(function(resp) {
+              self.uploadAttachment(table[i].table, table[i].taskID, table[i].tableId, table[i].desc, table[i].isNew).then(function(resp) {
                 defs[i].resolve();
                 ++i;
                 syncTableUpload(i, table, defs);
@@ -239,13 +242,11 @@ angular.module('dashboardJsApp')
             var isNotEqualsAttachments = function (table, num) {
                 var checkForNewService = table.name.split(';');
                 if (checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1 || table.type === 'fileHTML') {
-                  // tablePromises.push(self.uploadTable(table, task.processInstanceId, table.id, null, true));
                   def[num] = $q.defer();
                   tablePromises[num] = {table:table, taskID:task.processInstanceId, tableId:table.id, desc:null, isNew:true};
                   tablePromisesReal[num] = def[num].promise;
                 } else {
                   var tableName = table.name.split(';')[0];
-                  // tablePromises.push(self.uploadTable(table, taskId, null, tableName));
                   def[num] = $q.defer();
                   tablePromises[num] = {table:table, taskID:taskId, tableId:null, desc:tableName, isNew:false};
                   tablePromisesReal[num] = def[num].promise;
@@ -265,7 +266,6 @@ angular.module('dashboardJsApp')
               if(theSameAttachments.length !== 0) {
                 theSameAttachments.map(function (a) {
                   var description = a.description.split('[')[0];
-                  // tablePromises.push(self.uploadTable(table, taskId, a.id, description));
                   def[t] = $q.defer();
                   tablePromises[t] = {table:table, taskID:taskId, tableId:a.id, desc:description, isNew:false};
                   tablePromisesReal[t] = def[t].promise;
@@ -309,33 +309,37 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
-      uploadTable: function(files, taskId, attachmentID, description, isNewService) {
+      uploadAttachment: function(files, taskId, attachmentID, description, isNewService) {
         var deferred = $q.defer(),
-            tableId = files.id,
-            stringifyTable = files.type === 'table' ? JSON.stringify(files) : files.value,
+            ID = files.id,
+            stringifyContent,
             data = {},
             url,
             ext;
 
         if(files.type === 'table') {
+          stringifyContent = JSON.stringify(files);
           ext = '.json'
         } else if (files.type === 'fileHTML') {
+          stringifyContent = files.valueVisible;
           ext = '.html'
+        } else {
+          // when added new type, chose your extension and content
         }
 
         if(isNewService) {
           data = {
-            sFileNameAndExt: tableId + ext,
-            sContent: stringifyTable,
+            sFileNameAndExt: ID + ext,
+            sContent: stringifyContent,
             nID_Process: taskId,
             nID_Attach: attachmentID
           };
           url = '/api/tasks/' + taskId + '/setTaskAttachmentNew';
         } else {
           data = {
-            sDescription: description + '[table][id='+ tableId +']',
-            sFileName: tableId + ext,
-            sContent: stringifyTable,
+            sDescription: description + '[table][id='+ ID +']',
+            sFileName: ID + ext,
+            sContent: stringifyContent,
             nID_Attach: attachmentID
           };
           url = '/api/tasks/' + taskId + '/setTaskAttachment';
@@ -384,13 +388,13 @@ angular.module('dashboardJsApp')
                   var name = matchTableId[2];
                   if(name.toLowerCase() === table.id.toLowerCase()) {
                     var description = attachment.description.split('[')[0];
-                    promises.push(self.uploadTable(table, taskId, attachment.id, description));
+                    promises.push(self.uploadAttachment(table, taskId, attachment.id, description));
                   }
                 }
               });
             } else {
               var name = table.name.split(';')[0];
-              promises.push(self.uploadTable(table, taskId, null, name));
+              promises.push(self.uploadAttachment(table, taskId, null, name));
             }
           })
         }
@@ -839,6 +843,7 @@ angular.module('dashboardJsApp')
             bIncludeGroups: true,
             bIncludeStartForm: true,
             bIncludeAttachments: true,
+            bIncludeProcessVariables: true,
             bIncludeMessages: true
           });
         return simpleHttpPromise({
@@ -935,13 +940,13 @@ angular.module('dashboardJsApp')
           return properties;
         };
 
-        var tableFields = $filter('filter')(task.formProperties, function(prop){
+        var tableFields = $filter('filter')(task.aFormProperty, function(prop){
           return prop.type == 'table';
         });
 
         var syncTableUpload = function (i, table, defs) {
           if (i < table.length) {
-            self.uploadTable(table[i].table, table[i].taskID, table[i].tableId, table[i].desc, table[i].isNew)
+            self.uploadAttachment(table[i].table, table[i].taskID, table[i].tableId, table[i].desc, table[i].isNew)
               .then(function(resp) {
                 defs[i].resolve();
                 ++i;
@@ -966,12 +971,12 @@ angular.module('dashboardJsApp')
 
         $q.all(tablePromises).then(function () {
           var qs = {
-            properties : createProperties(task.formProperties)
+            aFormProperty : createProperties(task.aFormProperty)
           };
 
           simpleHttpPromise({
             method: 'POST',
-            params: {sID_BP: bpID},
+            params: {sID_BP: bpID, nID_Subject: 1, nID_Service: 1, nID_ServiceData: 1, sID_UA: 1}, // хардкод будем тянуть эти параметры позже с централа
             url: '/api/create-task/saveCreatedTask',
             data: qs
           }).then(function (result) {
@@ -1001,12 +1006,31 @@ angular.module('dashboardJsApp')
           })
         },
       delegateDocToUser : function (params) {
-        if(params)
+        if (params)
           return simpleHttpPromise({
             method: 'GET',
             url: '/api/documents/delegateDocument',
             params: params
           })
+      },
+      getUnsignedDocsList: function () {
+        var currentUser = Auth.getCurrentUser();
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/getDocumentSubmittedUnsigned',
+          params: {
+            sLogin: currentUser.id
+          }
+        })
+      },
+      removeDocumentSteps: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/removeDocumentSteps',
+          params: {
+            snID_Process_Activiti: nID_Process
+          }
+        })
       }
     }
   });
