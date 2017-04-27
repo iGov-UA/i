@@ -251,7 +251,7 @@ type="queueData" required="true"></activiti:formProperty>
 ```xml
 <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Відділення" type="select" default="0"></activiti:formProperty>
 ```
-В справочнике атрибутов можно использовать  формулы, которые могут опираться на значения переменных  в полях на стартовой таске.
+В справочнике атрибутов [SubjectOrganJoinAttribute.csv](#subjectorganjoinattribute) можно использовать  формулы, которые могут опираться на значения переменных  в полях на стартовой таске.
 	Пример:
 ```
 70;1080;sFilial;ЗАПОРІЗЬКА;
@@ -3107,10 +3107,10 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 
 [вернуться...](#delegateexpression)
 * #{MailTaskWithoutAttachment} - для отправки емейлов без  вложений
-   * ![5_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_1.JPG)
+   * ![5_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_4.jpg)
    * #{MailTaskWithAttachments} - для отправки емейлов c  вложениями
    * #{MailTaskWithAttachmentsAndSMS} - для отправки емейлов смс обязательно должно быть вложение, при отсутствии вложения в поле saAttachmentsForSend должен быть пробел " "
-   * ![5_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_2.JPG)
+   * ![5_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5_5.jpg)
    * #{ProcessCountTaskListener}
    * #{SendObject_Corezoid_New}
    * #{releaseTicketsOfQueue} - При создании сервистаски с таким параметром инициализируется отмена заявки и высвобождение слота  электронной очереди по инициативе сотрудника или системы 
@@ -3360,7 +3360,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 Использование тэга позволяет закрыть заявку и высвободить тэг электронной очереди.  
 Тэг можно использовать только в процессе с электронной очередью.
-  ![12_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_1.JPG) 
+  ![12_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/12_2.jpg) 
 ### Вариант №2. Использование системного тега [cancelTaskSimple]
 в емейл добавляем системный тэг **[cancelTaskSimple]**, который преобразуется в кнопку **вже неактуально, закрити заявку**. Можно использовать в  любых процессах.  
 На первом этапе  отмена заявки по этому тэгу не  освобождает слот электронной очереди.
@@ -3408,7 +3408,9 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 при этом файл справочник должен браться MVD_Department.csv  
 находящийся по пути: /patterns/dictonary/  
 
-**3) Для динамической работы со справочниками используем тэг  приоритетной подстановки**  
+**3) Для динамической работы со справочниками используем тэг приоритетной подстановки**   
+* Устаревшая схема работы, для работы с новой схемой используем [sID_Public_SubjectOrganJoin](#select)
+
 [Issue 865](https://github.com/e-government-ua/i/issues/865)  
 в виде value{[название переменной]}  
 где вместо "название переменной" должно быть название переменной, которую нужно будет взять из текущей юзертаски, при этом 
@@ -3463,6 +3465,8 @@ ${sNameOrgan}
 [pattern/mail/new_design/_common_footer.html]  
 ```  
 [pattern/mail/new_design/_common_feedback.html] - Обратная связь 
+[pattern/mail/new_design/_common_header_with_payment.html]  -  
+[pattern/mail/new_design/_common_footer_with_payment.html] - 
 
 ###### 16. Отправка СМС-оповещений
 ###### _smsnotifications
