@@ -862,6 +862,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 		String sJsonMongoReplace = StringUtils.replace(sJsonMongo, "{", "").replaceAll("}", "");
 		String sJsonMongoReplaceR = sJsonMongoReplace.replace("\"[", "").replace("]\"", "");
 	    String sBodyForMail = sBodySourceReplaceR.replaceAll(sJsonMongoReplaceR, sBodyFromMongoResult);
+	    
 	    LOG.info("sBodyForMail-->> : " +sBodyForMail);
 	    
 	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
