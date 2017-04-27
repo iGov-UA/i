@@ -1526,6 +1526,8 @@ public class DocumentStepService {
             boolean bSubmitedAll = true;
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : oFindedDocumentStep.getRights()) {
                 if (oDocumentStepSubjectRight != null) {
+                	Boolean bWrite = oDocumentStepSubjectRight.getbWrite();
+                	if(bWrite != null){
                     LOG.info("oDocumentStepSubjectRight: " + oDocumentStepSubjectRight.getsKey_GroupPostfix()
                             + " sDate: " + oDocumentStepSubjectRight.getsDate());
                     DateTime sDate = oDocumentStepSubjectRight.getsDate();
@@ -1539,10 +1541,13 @@ public class DocumentStepService {
                     } else {
                         countSubmited++;
                     }
+                	}
                 } else {
                     LOG.error("oDocumentStepSubjectRight is null");
                 }
+            
             }
+                
             mReturn.put("bSubmitedAll", bSubmitedAll);
             mReturn.put("nCountSubmited", countSubmited);
             mReturn.put("nCountNotSubmited", countNotSubmited);
@@ -1554,117 +1559,121 @@ public class DocumentStepService {
         }
     }
 
-    public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
-            throws JsonProcessingException, RecordNotFoundException, ParseException {
+	public List<DocumentSubmitedUnsignedVO> getDocumentSubmitedUnsigned(String sLogin)
+			throws JsonProcessingException, RecordNotFoundException, ParseException {
 
-        List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
+		List<DocumentSubmitedUnsignedVO> aResDocumentSubmitedUnsigned = new ArrayList<>();
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
-                sLogin);
-        LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
-        DocumentStepSubjectRight oFindedDocumentStepSubjectRight;
+		List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
+				sLogin);
+		LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
+		DocumentStepSubjectRight oFindedDocumentStepSubjectRight;
 
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+		for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
-            if (oDocumentStepSubjectRight != null) {
+			if (oDocumentStepSubjectRight != null) {
 
-                DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
-                LOG.info("sDateECP = ", oDocumentStepSubjectRight.getsDateECP());
-                DateTime sDate = oDocumentStepSubjectRight.getsDate();
-                LOG.info("sDate = ", oDocumentStepSubjectRight.getsDate());
+				DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+				LOG.info("sDateECP = ", oDocumentStepSubjectRight.getsDateECP());
+				DateTime sDate = oDocumentStepSubjectRight.getsDate();
+				LOG.info("sDate = ", oDocumentStepSubjectRight.getsDate());
 
-                long sDS = oDocumentStepSubjectRight.getsDate().getMillis();
-                String setsDateSubmit = convertMilliSecondsToFormattedDate(sDS);
+				long sDS = oDocumentStepSubjectRight.getsDate().getMillis();
+				String setsDateSubmit = convertMilliSecondsToFormattedDate(sDS);
 
-                Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
-                // проверяем, если даты ецп нет, но есть дата подписания - нашли
-                // нужный объект, который кладем в VO-обьект-обертку
-                if (bNeedECP != null && bNeedECP != false && sDateECP == null) {
-                    if (sDate != null) {
-                        oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
-                        LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
-                        // Достаем nID_Process_Activiti у найденного
-                        // oDocumentStepSubjectRight через DocumentStep
-                        String snID_Process_Activiti = oFindedDocumentStepSubjectRight.getDocumentStep()
-                                .getSnID_Process_Activiti();
-                        LOG.info("snID_Process of oFindedDocumentStepSubjectRight: {}", snID_Process_Activiti);
-                        // Получаем sID_Order через generalConfig
-                        long nID_Process = Long.valueOf(snID_Process_Activiti);
-                        int nID_Server = generalConfig.getSelfServerId();
-                        String sID_Order = generalConfig.getOrderId_ByProcess(nID_Server, nID_Process);
+				Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
+				// проверяем, если даты ецп нет, но есть дата подписания - нашли
+				// нужный объект, который кладем в VO-обьект-обертку
+				if (bNeedECP != null && bNeedECP != false && sDateECP == null) {
+					if (sDate != null) {
+						oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
+						LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
+						// Достаем nID_Process_Activiti у найденного
+						// oDocumentStepSubjectRight через DocumentStep
+						String snID_Process_Activiti = oFindedDocumentStepSubjectRight.getDocumentStep()
+								.getSnID_Process_Activiti();
+						LOG.info("snID_Process of oFindedDocumentStepSubjectRight: {}", snID_Process_Activiti);
+						// Получаем sID_Order через generalConfig
+						long nID_Process = Long.valueOf(snID_Process_Activiti);
+						int nID_Server = generalConfig.getSelfServerId();
+						String sID_Order = generalConfig.getOrderId_ByProcess(nID_Server, nID_Process);
 
-                        HistoricProcessInstance oHistoricProcessInstance
-                                = historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process_Activiti).singleResult();
+						HistoricProcessInstance oHistoricProcessInstance = historyService
+								.createHistoricProcessInstanceQuery().processInstanceId(snID_Process_Activiti)
+								.singleResult();
 
-                        if (oHistoricProcessInstance != null) {
-                            ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
-                                    .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
+						if (oHistoricProcessInstance != null) {
+							ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
+									.processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId())
+									.singleResult();
 
-                            if (oProcessDefinition != null) {
-                                String sProcessName = oProcessDefinition.getName();
+							if (oProcessDefinition != null) {
+								String sProcessName = oProcessDefinition.getName();
 
-                                // вытаскиваем дату создания процесса
-                                // Date sDateCreateProcess =
-                                // oProcessInstance.getStartTime();
-                                long sDCP = oHistoricProcessInstance.getStartTime().getTime();
-                                String sDateCreateProcess = convertMilliSecondsToFormattedDate(sDCP);
-                                LOG.info("sDateCreateProcess ", sDateCreateProcess);
-                                // вытаскиваем название бп
+								// вытаскиваем дату создания процесса
+								// Date sDateCreateProcess =
+								// oProcessInstance.getStartTime();
+								long sDCP = oHistoricProcessInstance.getStartTime().getTime();
+								String sDateCreateProcess = convertMilliSecondsToFormattedDate(sDCP);
+								LOG.info("sDateCreateProcess ", sDateCreateProcess);
+								// вытаскиваем название бп
 
-                                // String sNameBP = oProcessInstance.getName();
-                                // LOG.info("sNameBP {}", sNameBP);
-                                // вытаскиваем список активных тасок по процесу
-                                List<Task> aTask = oTaskService.createTaskQuery()
-                                        .processInstanceId(oHistoricProcessInstance.getId()).active().list();
-                                if (aTask.size() < 1 || aTask.get(0) == null) {
-                                    continue;
-                                }
-                                // берем первую
-                                Task oTaskCurr = aTask.get(0);
-                                LOG.info("oTaskCurr ={} ", oTaskCurr);
-                                // вытаскиваем дату создания таски
-                                long sDCUT = oTaskCurr.getCreateTime().getTime();
-                                String sDateCreateUserTask = convertMilliSecondsToFormattedDate(sDCUT);
-                                // Date sDateCreateUserTask =
-                                // oTaskCurr.getCreateTime();
-                                LOG.info("sDateCreateUserTask = ", oTaskCurr.getCreateTime());
-                                // и ее название
-                                String sUserTaskName = oTaskCurr.getName();
-                                // Создаем обьект=обертку, в который сетим
-                                // нужные
-                                // полученные поля
-                                DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
+								// String sNameBP = oProcessInstance.getName();
+								// LOG.info("sNameBP {}", sNameBP);
+								// вытаскиваем список активных тасок по процесу
+								List<Task> aTask = oTaskService.createTaskQuery()
+										.processInstanceId(oHistoricProcessInstance.getId()).active().list();
+								if (aTask.size() < 1 || aTask.get(0) == null) {
+									continue;
+								}
+								// берем первую
+								Task oTaskCurr = aTask.get(0);
+								LOG.info("oTaskCurr ={} ", oTaskCurr);
+								// вытаскиваем дату создания таски
+								long sDCUT = oTaskCurr.getCreateTime().getTime();
+								String sDateCreateUserTask = convertMilliSecondsToFormattedDate(sDCUT);
+								// Date sDateCreateUserTask =
+								// oTaskCurr.getCreateTime();
+								LOG.info("sDateCreateUserTask = ", oTaskCurr.getCreateTime());
+								// и ее название
+								String sUserTaskName = oTaskCurr.getName();
+								// Создаем обьект=обертку, в который сетим
+								// нужные
+								// полученные поля
+								DocumentSubmitedUnsignedVO oDocumentSubmitedUnsignedVO = new DocumentSubmitedUnsignedVO();
 
-                                oDocumentSubmitedUnsignedVO
-                                        .setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
-                                oDocumentSubmitedUnsignedVO.setsNameBP(sProcessName);
-                                oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
-                                oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
-                                oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
-                                oDocumentSubmitedUnsignedVO.setsDateSubmit(setsDateSubmit);
-                                oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
+								oDocumentSubmitedUnsignedVO
+										.setoDocumentStepSubjectRight(oFindedDocumentStepSubjectRight);
+								oDocumentSubmitedUnsignedVO.setsNameBP(sProcessName);
+								oDocumentSubmitedUnsignedVO.setsUserTaskName(sUserTaskName);
+								oDocumentSubmitedUnsignedVO.setsDateCreateProcess(sDateCreateProcess);
+								oDocumentSubmitedUnsignedVO.setsDateCreateUserTask(sDateCreateUserTask);
+								oDocumentSubmitedUnsignedVO.setsDateSubmit(setsDateSubmit);
+								oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
-                                aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
-                                LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
-                            } else {
-                                LOG.error(
-                                        String.format("oProcessDefinition [id = '%s']  is null", oHistoricProcessInstance.getProcessDefinitionId()));
+								aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
+								LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
+							} else {
+								LOG.error(String.format("oProcessDefinition [id = '%s']  is null",
+										oHistoricProcessInstance.getProcessDefinitionId()));
 
-                            }
-                        } else {
-                            LOG.error(
-                                    String.format("oHistoricProcessInstance [id = '%s']  is null", snID_Process_Activiti));
-                        }
+							}
+						} else {
+							LOG.error(String.format("oHistoricProcessInstance [id = '%s']  is null",
+									snID_Process_Activiti));
+						}
 
-                    }
+					}
 
-                } else {
-                    LOG.info("oFindedDocumentStepSubjectRight not found");
-                }
-            }
-        }
-        return aResDocumentSubmitedUnsigned;
-    }
+				} else {
+					LOG.info("oFindedDocumentStepSubjectRight not found");
+				}
+			}
+
+		}
+
+		return aResDocumentSubmitedUnsigned;
+	}
 
     public void removeDocumentSteps(String snID_Process_Activiti) {
         List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
