@@ -61,7 +61,6 @@ import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,6 +102,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     private static final String PATTERN_CURRENCY_ID = "sID_Currency%s";
     private static final String PATTERN_DESCRIPTION = "sDescription%s";
     private static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
+    private static final Pattern TAG_PATTERN_JSON_BRACKET = Pattern
+            .compile("\\{.*?\\}");
 
     @Autowired
     public HistoryService historyService;
@@ -176,15 +177,23 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String sTextReturn = sTextSource;
 
         sTextReturn = replaceTags_LIQPAY(sTextReturn, execution);
+        
+        LOG.info("replaceTags_LIQPAY=" + sTextReturn);
 
         sTextReturn = populatePatternWithContent(sTextReturn);
+        LOG.info("populatePatternWithContent=" + sTextReturn);
 
         sTextReturn = replaceTags_Enum(sTextReturn, execution);
+        
+        LOG.info("replaceTags_Enum=" + sTextReturn);
 
         sTextReturn = replaceTags_Catalog(sTextReturn, execution);
+        LOG.info("replaceTags_Catalog=" + sTextReturn);
 
         sTextReturn = new FileSystemDictonary()
                 .replaceMVSTagWithValue(sTextReturn);
+        
+        LOG.info("replaceMVSTagWithValue=" + sTextReturn);
 
         Long nID_Order = getProtectedNumber(Long.valueOf(execution
                 .getProcessInstanceId()));
@@ -799,13 +808,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public Mail Mail_BaseFromTask(DelegateExecution oExecution)
             throws Exception {
 
-        String sFromMail = getStringFromFieldExpression(from, oExecution);
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
-
-        //saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
 
         Mail oMail = context.getBean(Mail.class);
         
@@ -820,22 +826,55 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         return oMail;
     }
     
+    /**
+     * Метод, который отправляет емайлу texthtml из json-mongo
+     * @param oExecution
+     * @return
+     * @throws Exception
+     */
     public Mail sendToMailFromMongo(DelegateExecution oExecution)
             throws Exception {
 
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
-
+        String sBodySource = getStringFromFieldExpression(text, oExecution);
+        
+        LOG.info("sBodySource-->> : " +sBodySource);
         Mail oMail = context.getBean(Mail.class);
         
-        String sJsonHtml = loadFormPropertyFromTaskHTMLText(oExecution);
-        
-	    String sBodyFromMongo = getHtmlTextFromMongo(sJsonHtml); 
+        /**
+         * достаем json который приходит в тексте из шага в виде ключ значение из монги 
+         */
+        String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
+        LOG.info("sJsonMongo-->> : " +sJsonMongo);
+        /**
+         * достаем оригинальный текст html из mongo
+         */
+	    String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonMongo); 
+	    LOG.info("sBodyFromMongoResult-->> : " +sBodyFromMongoResult);
+	    
+	    /**
+	     * из полного текста с патернами, который в бп мы заменяем json на textHtml из монги
+	     */
+	    //убираем json скобки
+	    String sBodySourceReplace = StringUtils.replace(sBodySource, "{", "").replaceAll("}", "");
+	    String sBodySourceReplaceR = sBodySourceReplace.replace("[]", "").replace("[]", "");
+		String sJsonMongoReplace = StringUtils.replace(sJsonMongo, "{", "").replaceAll("}", "");
+		String sJsonMongoReplaceR = sJsonMongoReplace.replace("[]", "").replace("[]", "");
+		
+		//заменяем тело json на текст html
+	    String sBodyForMail = sBodySourceReplaceR.replaceAll(sJsonMongoReplaceR, sBodyFromMongoResult);
+	    
+	    LOG.info("sBodyForMail-->> : " +sBodyForMail);
+	    
+	    //анализируем тело
+	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
 	       
-           LOG.info("sBodyFromMongo in -: " +sBodyFromMongo);
+	    LOG.info("sBodyForMailResult-->> : " +sBodyForMailResult);
         
+	    //отправляем по емайлу
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
-                ._Body(sBodyFromMongo)._AuthUser(mailServerUsername)
+                ._Body(sBodyForMailResult)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
                 ._Port(Integer.valueOf(mailServerPort))
                 // ._SSL(true)
@@ -904,10 +943,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             }
         }
         
-        if(aFormPropertyReturnJsonForMongo.isEmpty()) {
+        if(!aFormPropertyReturnJsonForMongo.isEmpty()) {
         	return aFormPropertyReturnJsonForMongo.get(0);
         }
-		return "";
+		return "{\"\":\"\"}";
 	}
 
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)

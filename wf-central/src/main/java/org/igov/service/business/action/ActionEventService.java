@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEventDao;
@@ -31,6 +32,7 @@ import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
+import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.subject.SubjectMessageService;
@@ -77,7 +79,9 @@ public class ActionEventService {
     @Autowired
     @Qualifier("regionDao")
     private GenericEntityDao<Long, Region> regionDao;
-
+    
+    @Autowired
+    private ActionEventHistoryService oActionEventHistoryService;
 
 
     /*public void setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService) {
@@ -314,11 +318,14 @@ public class ActionEventService {
     }
 
     public void setHistoryEvent(HistoryEventType eventType,
-            Long nID_Subject, Map<String, String> mParamMessage, Long nID_HistoryEvent_Service, Long nID_Document, String sSubjectInfo) {
+            Long nID_Subject, Map<String, String> mParamMessage, Long nID_HistoryEvent_Service, Long nID_Document,
+            String sSubjectInfo, String eventMessage) {
         try {
             LOG.info("Method setHistoryEvent started");
-            String eventMessage = HistoryEventMessage.createJournalMessage(
+            if(eventMessage == null){
+                eventMessage = HistoryEventMessage.createJournalMessage(
                     eventType, mParamMessage);
+            }
             LOG.info("Creating journal message ended");
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
                     eventMessage, eventMessage, nID_HistoryEvent_Service, nID_Document, sSubjectInfo);
@@ -416,14 +423,25 @@ public class ActionEventService {
             nID_Subject = oHistoryEvent_Service.getnID_Subject();
         }
         LOG.info("checking conditions ended");
-        if (soData == null || "[]".equals(soData)) { //My journal. change status of task
+        
+        if ("TaskCancelByUser".equals(soData)){
+            
+            /*LOG.info("TASK_CANCELED was catched");
+            Map<String, String> mParamMessage = new HashMap<>();
+            LOG.info("SERVICE_STATE: " + sUserTaskName);
+            mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName == null ? oHistoryEvent_Service_StatusType.getsName_UA() : sUserTaskName);
+            mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
+            setHistoryEvent(HistoryEventType.TASK_CANCELED, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
+                    null, sSubjectInfo, "");*/
+        }
+        else if (soData == null || "[]".equals(soData)) { //My journal. change status of task
             LOG.info("soData is null or empty array: " + soData);
             Map<String, String> mParamMessage = new HashMap<>();
             LOG.info("SERVICE_STATE: " + sUserTaskName);
             mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName == null ? oHistoryEvent_Service_StatusType.getsName_UA() : sUserTaskName);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
             setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
-                    null, sSubjectInfo);
+                    null, sSubjectInfo, null);
         } else {
             LOG.info("soData is not null or empty array: " + soData);
             //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TODO: Move To Interceptor!!!
@@ -461,7 +479,7 @@ public class ActionEventService {
                 mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
                 mParamMessage.put(HistoryEventMessage.S_BODY, sBody == null ? "" : sBody);
               //  mParamMessage.put(HistoryEventMessage.TABLE_BODY, soTable);//TODO://soData - убрать после реализации задачи 1553
-                setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo);
+                setHistoryEvent(oHistoryEventType, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, sSubjectInfo, null);
                 SubjectMessage oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                         sID_Order), osBody.toString(), nID_Subject, "", "", soData, nID_SubjectMessageType, sSubjectInfo,bQuestion);
                 oSubjectMessage.setnID_HistoryEvent_Service(oHistoryEvent_Service.getId());
@@ -525,7 +543,7 @@ public class ActionEventService {
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
         mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName);
-        setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null);
+        setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null, null);
         return oHistoryEvent_Service;
     }
 

@@ -1,5 +1,3 @@
-
- 
 1. [Создание бизнес-процессов](#creatingbusinessprocesses)
 1. [Основные элементы Activiti Designer](#themain)
 2. [Типы параметров](#typesofparameters)
@@ -218,7 +216,7 @@
 
  ###### filehtml
  ### fileHTML   
- Используется для ввода текста, цифр, символов. С возможностью форматирования  шрифта, цвета текста, добавления ссылок гражданином в момент создания обращения  
+ Используется для ввода текста, цифр, символов. С возможностью форматирования  шрифта, цвета текста, добавления ссылок.
  [детальней...](#_filehtml)
 
 ###### textarea
@@ -432,7 +430,11 @@ type="queueData" required="true"></activiti:formProperty>
 [вернуться в начало](general.md)
 
 ### listener
+Пример № 1 (Основной) без использования  ${fileTaskInheritance}:    
+![6_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_8.jpg)
 
+Пример № 2 (Устаревший):    
+В данный момент устаревшая форма добавления файлов, необходимо использовать пример № 1 без ${fileTaskInheritance}
    * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
    * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
    
@@ -1090,8 +1092,12 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_184_print.html" type="file"></activiti:formProperty>
 ```
  ![14_21](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_21.JPG)
-а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}
-
+а потом подгружать к вложениям в письмо на сервис-таске соответствующую ${PrintForm_1}    
+При необходимости можем проименовать PDF файл отправленный клиенту с помощью следующей конструкции в юзертаске:
+ ```xml
+ <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/khmelnitsky/hmel_cnap_333_print.html,sFileName=Zayava_na_oblik,bNew=true" type="file" writable="false"></activiti:formProperty>     
+ ```
+ ![15_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_2.JPG)
 ###### usingvariablesinemailtemplates
 ### Использование переменных в шаблонах емейлов
 
@@ -1114,22 +1120,24 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 [детальней...](#_workingwithdatadirectoriesinemails)
 
 
+###### newemailtemplates
+### Oбновленные шаблоны емейлов
+Расположены : \wf-region\src\main\resources\pattern\mail\new_design  
+```
+[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+```
+[детальней...](#_newemailtemplates)
+
 ###### emailtemplates
 ### Шаблоны емейлов
+В данный момент устаревшие шаблоны е-майл, вместо них используем [Oбновленные шаблоны емейлов](#newemailtemplates)
 расположены : \wf-region\src\main\resources\pattern\mail    
 В сервис-таске прописываем тэги с учётом того что из шаблонов не подтягиваются значения переменных активити:  
 Тело письма с обращением к клиенту и опросом качества  в таком случае будет выглядеть как:  
 [pattern/mail/_common_header.html]
 
 [детальней...](#_emailtemplates)
-
-###### newemailtemplates
-### Oбновленные шаблоны емейлов
-```
-[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-```
-[детальней...](#_newemailtemplates)
 
 
 ###### sendingsmsnotifications
@@ -3408,16 +3416,6 @@ value != enum.
 
 [вернуться...](#emailtemplates)
 
-Используем до текста
-[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-Используем послде текста
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan},<br>
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
- 
 * ![14_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_0.JPG)
 кастомизированная подпись в письме с использованием  шаблонов  
 [pattern/mail/_common_signature_start.html]  
@@ -3430,22 +3428,28 @@ ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_employee_notify.html] - общий шаблон уведомлений для гос.служащего (новый) 
 [pattern/mail/_common_client_notify.html] - общий шаблон уведомления гражданина / отмены заявки,  в случае если заявка очень долго не берется в работу  
 
+
 ###### _newemailtemplates
 
 [вернуться...](#newemailtemplates)
 
-  ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)
-здесь мы пишем наш контент
-```
+  ![14_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/14_3.JPG)  
+
+  
+Пример использования новых шаблонов:  
+
+``` Используем до текста   
+[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]     
+
+Используем после текста           
 [pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
-```
-здесь мы можем добавить орган в подпись <br/>
-```
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-```
+[pattern/mail/new_design/_common_signature_start.html]  
+${sNameOrgan}    
+[pattern/mail/new_design/_common_signature_end.html]  
+[pattern/mail/new_design/_common_footer.html]  
+```  
+[pattern/mail/new_design/_common_feedback.html] - Обратная связь 
 
 ###### 16. Отправка СМС-оповещений
 ###### _smsnotifications
