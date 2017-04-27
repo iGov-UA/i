@@ -1274,28 +1274,37 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
+        LOG.info("HistoricTaskInstanceQuery---->>>>>>>>>: " + historicQuery.count());
         if (sTaskEndDateAt != null) {
             LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
             historicQuery.taskCompletedAfter(sTaskEndDateAt);
+            LOG.info("HistoricTaskInstanceQuery taskCompletedAfter---->>>>>>>>>: " + historicQuery.count());
         }
         if (sTaskEndDateTo != null) {
             LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
             historicQuery.taskCompletedBefore(sTaskEndDateTo);
+            LOG.info("HistoricTaskInstanceQuery taskCompletedBefore---->>>>>>>>>: " + historicQuery.count());
         }
         if (dateAt != null) {
             query = query.taskCreatedAfter(dBeginDate);
             historicQuery = historicQuery.taskCreatedAfter(dBeginDate);
+            LOG.info("HistoricTaskInstanceQuery taskCreatedAfter---->>>>>>>>>: " + historicQuery.count());
         }
         if (dateTo != null) {
             query = query.taskCreatedBefore(dEndDate);
             historicQuery = historicQuery.taskCreatedBefore(dEndDate);
+            LOG.info("HistoricTaskInstanceQuery taskCreatedBefore---->>>>>>>>>: " + historicQuery.count());
         }
         historicQuery.includeProcessVariables();
+        LOG.info("HistoricTaskInstanceQuery includeProcessVariables---->>>>>>>>>: " + historicQuery.count());
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
+            LOG.info("HistoricTaskInstanceQuery includeTaskLocalVariables---->>>>>>>>>: " + historicQuery.count());
         }
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
+        
+        LOG.info("HistoricTaskInstanceQuery foundHistoricResults listPage---->>>>>>>>>: " + foundHistoricResults);
 
         if ("*".equals(saFields)){
         	saFields = null;
@@ -1310,6 +1319,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!" + saFields);
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
+            LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!" + saFields);
         }
         List<Task> foundResults = new LinkedList<Task>();
         if (sTaskEndDateAt == null && sTaskEndDateTo == null) {
