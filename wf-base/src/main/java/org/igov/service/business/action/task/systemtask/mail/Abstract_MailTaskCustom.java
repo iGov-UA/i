@@ -861,14 +861,18 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	    String sBodySourceReplaceR = sBodySourceReplace.replace("[]", "").replace("[]", "");
 		String sJsonMongoReplace = StringUtils.replace(sJsonMongo, "{", "").replaceAll("}", "");
 		String sJsonMongoReplaceR = sJsonMongoReplace.replace("[]", "").replace("[]", "");
+		
+		//заменяем тело json на текст html
 	    String sBodyForMail = sBodySourceReplaceR.replaceAll(sJsonMongoReplaceR, sBodyFromMongoResult);
 	    
 	    LOG.info("sBodyForMail-->> : " +sBodyForMail);
 	    
+	    //анализируем тело
 	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
 	       
 	    LOG.info("sBodyForMailResult-->> : " +sBodyForMailResult);
         
+	    //отправляем по емайлу
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
                 ._Body(sBodyForMailResult)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
