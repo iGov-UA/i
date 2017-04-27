@@ -338,5 +338,46 @@
         <!--preconditions onFail="MARK_RAN"><not><sequenceExists/></not></preconditions-->
         <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="20000"/>
     </changeSet>
+
+
+    <changeSet id="Add missing custom tables" author="dpekach">
+        <createTable tableName="Custom Process">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sProcessInstanceId" type="varchar(255)"></column>
+            <column name="sBusinessKey" type="varchar(255)"></column>
+            <column name="sProcessDefinitionId" type="varchar(64)"></column>
+            <column name="nDuration" type="bigint"></column>
+            <column name="sStartUserId" type="varchar(255)"></column>
+            <column name="sStartActivityId" type="varchar(255)"></column>
+            <column name="sEndActivityId" type="varchar(255)"></column>
+            <column name="sSuperProcessInstanceId" type="varchar(64)"></column>
+            <column name="sDeleteReason" type="varchar(4000)"></column>
+            <column name="sTenantId" type="varchar(255)"></column>
+            <column name="sName" type="varchar(255)"></column>
+        </createTable>
+
+        <createTable tableName="Custom Process Task">
+            <column name="nID" type="bigint"></column>
+            <column name="sProcessDefinitionId" type="varchar(64)"></column>
+            <column name="sTaskDefinitionKey" type="varchar(255)"></column>
+            <column name="sProcessInstanceId" type="varchar(64)"></column>
+            <column name="sExecutionId" type="varchar(64)"></column>
+            <column name="sName" type="varchar(255)"></column>
+            <column name="sParentTaskId" type="varchar(64)"></column>
+            <column name="sDescription" type="varchar(4000)"></column>
+            <column name="sOwner" type="varchar(255)"></column>
+            <column name="sAssignee" type="varchar(255)"></column>
+            <column name="oClaimTime" type="datetime with time zone"></column>
+            <column name="nDuration" type="bigint"></column>
+            <column name="sDeleteReason" type="varchar(4000)"></column>
+            <column name="nPriority" type="integer"></column>
+            <column name="oDueDate" type="datetime with time zone"></column>
+            <column name="sFormKey" type="varchar(255)"></column>
+            <column name="sCategory" type="varchar(255)"></column>
+            <column name="sTenantId" type="varchar(255)"></column>
+        </createTable>
+    </changeSet>
     
 </databaseChangeLog>
