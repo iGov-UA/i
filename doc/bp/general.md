@@ -430,13 +430,14 @@ type="queueData" required="true"></activiti:formProperty>
 [вернуться в начало](general.md)
 
 ### listener
+* ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
 Пример № 1 (Основной) без использования  ${fileTaskInheritance}:    
 ![6_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/6_8.jpg)
 
 Пример № 2 (Устаревший):    
 В данный момент устаревшая форма добавления файлов, необходимо использовать пример № 1 без ${fileTaskInheritance}
-   * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
-   * ${fileTaskInheritance} - слушатель тянет по ид атача атач на юзертаску. Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
+  
+   * ${fileTaskInheritance} - устаревший слушатель тянет по ид атача атач на юзертаску (добавляется к ${fileTaskUploadListener}). Указывать на второй и последующих Юзертасках, перечисляя все id необходимых аттачей. 
    
    [детальней...](#_listener)
 
@@ -483,6 +484,8 @@ type="queueData" required="true"></activiti:formProperty>
 ###### assigngroupsandusers
 # Назначение групп и пользователей
 [вернуться в начало](general.md)
+
+В данный момент основной веткой для работы считается Дельта (test-delta). Пользователи и группы заведенные в этой ветки автоматически добавятся в другие ветки на следующий день. В случае необходимости сделать проливку групп и пользователей с Дельты на другие ветки в режиме он-лайн, необходимо перейти по ссылке https://ci-jenkins.tech.igov.org.ua/view/active/job/_sync_users/ нажать Build with Parameters 
 
 ###### addingauser
 ### Добавляем пользователя
@@ -1070,11 +1073,14 @@ digit3 - переменная, куда присвоится результат 
 # 15. Емайлы
 [вернуться в начало](general.md)
 
+###### automaticsendingmail
+### Автоматическая отправка почты 
 По умолчанию почта об уведомлении клиента об успешной отправке заявки c сайта iGov (https://igov.org.ua/)  автоматически рассылаться не будет. Для того, чтобы добавить отправку стандартной почты необходимо прописать ID  бизнес-процесса в следующий файл:
 i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessingInterceptor.java
-В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.
-![15_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_1.jpg)
+В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.  
+[детальней...](#_automaticsendingmail)
 
+### Сервистаска для почты
 Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
 `#{MailTaskWithoutAttachment}`  
 `#{MailTaskWithAttachments}`  
@@ -3328,6 +3334,13 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 
 ###### 15. Емайлы
+###### _automaticsendingmail
+
+[вернуться...](#automaticsendingmail)
+
+![15_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_1.jpg)
+
+
 ###### _usingmultipleelectronicqueues
 
 [вернуться...](#usingmultipleelectronicqueues)
