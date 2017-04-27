@@ -719,14 +719,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                             actionTaskService.getOriginalProcessInstanceId(Long.parseLong(nID_Order))).active().list();
                     boolean bProcessClosed = aTask == null || aTask.size() == 0;
                     String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                    LOG.info("sUserTaskName in close event is {}", sUserTaskName)
                     //for(String taskId : aTaskId){
                     LOG.info("taskId {}", aTaskId.get(aTaskId.size() - 1));
                     Map<String, String> mParam = new HashMap<>();
                     String sID_Order = generalConfig.getOrderId_ByOrder(generalConfig.getSelfServerId(), Long.parseLong(nID_Order));
                     LOG.info("sID_Order for cancel flowslot {}", sID_Order);
                     mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
-                    //oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 19L);
                     closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory,  aTaskId.get(aTaskId.size() - 1), null, true);
+                    oActionEventHistoryService.addHistoryEvent(sID_Order, "test", mParam, 19L);
                 }
                 sType = "Close";
                 if(aTaskId.isEmpty()){
