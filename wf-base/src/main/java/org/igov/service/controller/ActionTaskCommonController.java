@@ -1150,330 +1150,277 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         csvWriter.close();
     }
 
-    /**
-     * Download information about the tasks in csv format
-     *
-     * @param sID_BP business process name
-     * @param sID_State_BP task state id
-     * @param saFields field of the tasks to download. Separated by comma
-     * @param nASCI_Spliter splitter of the fields
-     * @param sID_Codepage encoding for the file
-     * @param sDateCreateFormat format for sDateCreate
-     * @param dateAt start date for the filter
-     * @param dateTo end date for the filter
-     * @param nRowStart start row for paging
-     * @param nRowsMax maximal amount of row for paging
-     * @param bIncludeHistory to include historic task instances. default value
-     * is true
-     * @param saFieldsCalc list of calculated fields
-     * @param saFieldSummary parap to specify aggregated fields
-     * @param httpResponse http responce wrapper
-     * @throws IOException in case of connection aborted with client
-     * <p/>
-     * example: https://test.region.igov.org.ua/wf/service/action/task/
-     * downloadTasksData ?sID_BP=kiev_mreo_1&sDateAt=2015-06-28&sDateTo
-     * =2015-08-01&nASCI_Spliter =59&sID_Codepage=UTF8&saFields=nID_Task
-     * ;bankIdPassport;bankIdlastName
-     * ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
-     */
-    @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
-            + "HTTP Context: https://server:port/wf/service/action/task/downloadTasksData\n\n\n"
-            + "Загрузка полей по задачам в виде файла.\n\n"
-            + "Поля по умолчанию, которые всегда включены в выборку:\n"
-            + "- nID_Task - \"id таски\"\n"
-            + "- sDateCreate - \"дата создания таски\" (в формате sDateCreateFormat)\n\n"
-            + "Особенности обработки полей:\n"
-            + "- Если тип поля enum, то брать не его ИД пункта в энуме а именно значение Если тип поля enum, и в значении присутствует знак \";\", то брать только то ту часть текста, которая находится справа от этого знака\n\n"
-            + "Пример: https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-08-01&saFields=${nID_Task};${sDateCreate};${area};;;0;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start};${date_stop};${place_living};${bankIdPassport};1;${phone};${email}&sID_Codepage=win1251&nASCI_Spliter=18&sDateCreateFormat=dd.mm.yyyy hh:MM:ss&sFileName=dohody.dat\n\n"
-            + "Пример ответа:\n"
-            + "\n```\n"
-            + "1410042;16.32.2015 10:07:17;АНД (пров. Універсальний, 12);;;0;БІЛЯВЦЕВ ВОЛОДИМИР ВОЛОДИМИРОВИЧ;4;мета;16/07/2015;17/07/2015;мокешрмшгкеу;АЕ432204 БАБУШКИНСКИМ РО ДГУ УМВД 26.09.1996;1;380102030405;mendeleev.ua@gmail.com\n"
-            + "995161;07.07.2015 05:07:27;;;;0;ДУБІЛЕТ ДМИТРО ОЛЕКСАНДРОВИЧ;4;для роботи;01/07/2015;07/07/2015;Дніпропетровська, Дніпропетровськ, вул. Донецьке шосе, 15/110;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЙНИ В ДНИПРОПЕТРОВСЬКИЙ ОБЛАСТИ 18.03.2002;1;;ukr_rybak@rambler.ru\n"
-            + "\n```\n"
-            + "Формат поля saFieldsCalc - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFields\n"
-            + "Пример запроса: https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldsCalc=%22nCount=(sID_UserTask==%27usertask1%27?1:0);nTest=(sAssignedLogin==%27kermit%27?1:0)%22\n\n"
-            + "Пример ответа (фрагмент):\n"
-            + "\n```\n"
-            + ";380970044803;ДМИТРО;;ОЛЕКСАНДРОВИЧ;;dd.MM.yyyy;Днепропетровск;;;3119325858;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002;0463;dd.MM.yyyy;;тест;;ДУБІЛЕТ;vidokgulich@gmail.com;1.0;1.0\n"
-            + "\n```\n"
-            + "Формат поля saFieldSummary - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFieldSummary\n"
-            + "Пример запроса: https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldSummary=email;nVisites=count()\n\n"
-            + "Пример ответа:\n"
-            + "\n```\n"
-            + "vidokgulich@gmail.com;2\n"
-            + "kermit;1\n"
-            + "rostislav.siryk@gmail.com;4\n"
-            + "rostislav.siryk+igov.org.ua@gmail.com;3\n"
-            + "\n```\n")
-    @RequestMapping(value = "/downloadTasksData", method = RequestMethod.GET)
-    @Transactional
-    public void downloadTasksData(
-            @ApiParam(value = "название бизнес-процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
-            @ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
-            @ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. "
-                    + "Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
-            @ApiParam(value = "ASCII код для разделителя", required = false) @RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
-            @ApiParam(value = "имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"", required = false) @RequestParam(value = "sFileName", required = false) String fileName,
-            @ApiParam(value = "кодировка исходящего файла, по умолчанию - win1251", required = false) @RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
-            @ApiParam(value = "форматирование даты создания таски, по умолчанию - yyyy-MM-dd HH:mm:ss", required = false) @RequestParam(value = "sDateCreateFormat", required = false, defaultValue = "yyyy-MM-dd HH:mm:ss") String sDateCreateFormat,
-            @ApiParam(value = "начальная дата создания таски, по умолчанию - вчера", required = false) @RequestParam(value = "sDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateAt,
-            @ApiParam(value = "конечная дата создания таски, по умолчанию - сегодня", required = false) @RequestParam(value = "sDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo,
-            @ApiParam(value = "начало выборки для пейджирования, по умолчанию - 0", required = false) @RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
-            @ApiParam(value = "размер выборки для пейджирования, по умолчанию - 1000", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
-            @ApiParam(value = "включить информацию по хисторик задачам, по умолчанию - true", required = false) @RequestParam(value = "bIncludeHistory", required = false, defaultValue = "true") Boolean bIncludeHistory,
-            @ApiParam(value = "добавить заголовок с названиями полей в выходной файл, по умолчанию - false", required = false) @RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
-            @ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
-            @ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
-            @ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
-            @ApiParam(value = "логин для вытаскивания фильтра", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
-            @ApiParam(value = "признак для получения фильтра", required = false) @RequestParam(value = "asField_Filter", required = false) String asField_Filter,
-            @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
-            @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
-            HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
-        LOG.info("!!!!!!!!!!!!!!begin");
-        LOG.info("1dateAt= " + dateAt);
-        LOG.info("2dateTo= " + dateTo);
-        LOG.info("3sTaskEndDateAt= " + sTaskEndDateAt);
-        LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
-//      'sID_State_BP': '',//'usertask1'
-//      'saFieldsCalc': '', // поля для калькуляций
-//      'saFieldSummary': '' // поля для агрегатов
+	/**
+	 * Download information about the tasks in csv format
+	 *
+	 * @param sID_BP
+	 *            business process name
+	 * @param sID_State_BP
+	 *            task state id
+	 * @param saFields
+	 *            field of the tasks to download. Separated by comma
+	 * @param nASCI_Spliter
+	 *            splitter of the fields
+	 * @param sID_Codepage
+	 *            encoding for the file
+	 * @param sDateCreateFormat
+	 *            format for sDateCreate
+	 * @param dateAt
+	 *            start date for the filter
+	 * @param dateTo
+	 *            end date for the filter
+	 * @param nRowStart
+	 *            start row for paging
+	 * @param nRowsMax
+	 *            maximal amount of row for paging
+	 * @param bIncludeHistory
+	 *            to include historic task instances. default value is true
+	 * @param saFieldsCalc
+	 *            list of calculated fields
+	 * @param saFieldSummary
+	 *            parap to specify aggregated fields
+	 * @param httpResponse
+	 *            http responce wrapper
+	 * @throws IOException
+	 *             in case of connection aborted with client
+	 *             <p/>
+	 *             example:
+	 *             https://test.region.igov.org.ua/wf/service/action/task/
+	 *             downloadTasksData
+	 *             ?sID_BP=kiev_mreo_1&sDateAt=2015-06-28&sDateTo
+	 *             =2015-08-01&nASCI_Spliter
+	 *             =59&sID_Codepage=UTF8&saFields=nID_Task
+	 *             ;bankIdPassport;bankIdlastName
+	 *             ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
+	 */
+	@ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
+			+ "HTTP Context: https://server:port/wf/service/action/task/downloadTasksData\n\n\n"
+			+ "Загрузка полей по задачам в виде файла.\n\n" + "Поля по умолчанию, которые всегда включены в выборку:\n"
+			+ "- nID_Task - \"id таски\"\n"
+			+ "- sDateCreate - \"дата создания таски\" (в формате sDateCreateFormat)\n\n"
+			+ "Особенности обработки полей:\n"
+			+ "- Если тип поля enum, то брать не его ИД пункта в энуме а именно значение Если тип поля enum, и в значении присутствует знак \";\", то брать только то ту часть текста, которая находится справа от этого знака\n\n"
+			+ "Пример: https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-08-01&saFields=${nID_Task};${sDateCreate};${area};;;0;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName};4;${aim};${date_start};${date_stop};${place_living};${bankIdPassport};1;${phone};${email}&sID_Codepage=win1251&nASCI_Spliter=18&sDateCreateFormat=dd.mm.yyyy hh:MM:ss&sFileName=dohody.dat\n\n"
+			+ "Пример ответа:\n" + "\n```\n"
+			+ "1410042;16.32.2015 10:07:17;АНД (пров. Універсальний, 12);;;0;БІЛЯВЦЕВ ВОЛОДИМИР ВОЛОДИМИРОВИЧ;4;мета;16/07/2015;17/07/2015;мокешрмшгкеу;АЕ432204 БАБУШКИНСКИМ РО ДГУ УМВД 26.09.1996;1;380102030405;mendeleev.ua@gmail.com\n"
+			+ "995161;07.07.2015 05:07:27;;;;0;ДУБІЛЕТ ДМИТРО ОЛЕКСАНДРОВИЧ;4;для роботи;01/07/2015;07/07/2015;Дніпропетровська, Дніпропетровськ, вул. Донецьке шосе, 15/110;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЙНИ В ДНИПРОПЕТРОВСЬКИЙ ОБЛАСТИ 18.03.2002;1;;ukr_rybak@rambler.ru\n"
+			+ "\n```\n"
+			+ "Формат поля saFieldsCalc - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFields\n"
+			+ "Пример запроса: https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldsCalc=%22nCount=(sID_UserTask==%27usertask1%27?1:0);nTest=(sAssignedLogin==%27kermit%27?1:0)%22\n\n"
+			+ "Пример ответа (фрагмент):\n" + "\n```\n"
+			+ ";380970044803;ДМИТРО;;ОЛЕКСАНДРОВИЧ;;dd.MM.yyyy;Днепропетровск;;;3119325858;АМ765369 ЖОВТНЕВИМ РВ ДМУ УМВС УКРАЇНИ В ДНІПРОПЕТРОВСЬКІЙ ОБЛАСТІ 18.03.2002;0463;dd.MM.yyyy;;тест;;ДУБІЛЕТ;vidokgulich@gmail.com;1.0;1.0\n"
+			+ "\n```\n"
+			+ "Формат поля saFieldSummary - смотри сервис https://github.com/e-government-ua/i/blob/test/docs/specification.md#16-Получение-статистики-по-задачам-в-рамках-бизнес-процесса и параметр saFieldSummary\n"
+			+ "Пример запроса: https://test.region.igov.org.ua/wf/service/action/task/downloadTasksData?&sID_BP=dnepr_spravka_o_doxodax&bHeader=true&sID_State_BP=usertask1&sDateAt=2015-06-01&sDateTo=2015-10-01&saFieldSummary=email;nVisites=count()\n\n"
+			+ "Пример ответа:\n" + "\n```\n" + "vidokgulich@gmail.com;2\n" + "kermit;1\n"
+			+ "rostislav.siryk@gmail.com;4\n" + "rostislav.siryk+igov.org.ua@gmail.com;3\n" + "\n```\n")
+	@RequestMapping(value = "/downloadTasksData", method = RequestMethod.GET)
+	@Transactional
+	public void downloadTasksData(
+			@ApiParam(value = "название бизнес-процесса", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
+			@ApiParam(value = "состояние задачи, по умолчанию исключается из фильтра Берется из поля taskDefinitionKey задачи", required = false) @RequestParam(value = "sID_State_BP", required = false) String sID_State_BP,
+			@ApiParam(value = "имена полей для выборкы разделенных через ';', чтобы добавить все поля можно использовать - '*' или не передевать параметр в запросе. "
+					+ "Поле также может содержать названия колонок. Например, saFields=Passport\\=${passport};{email}", required = false) @RequestParam(value = "saFields", required = false, defaultValue = "*") String saFields,
+			@ApiParam(value = "ASCII код для разделителя", required = false) @RequestParam(value = "nASCI_Spliter", required = false) String nASCI_Spliter,
+			@ApiParam(value = "имя исходящего файла, по умолчанию - data_BP-bpName_.txt\"", required = false) @RequestParam(value = "sFileName", required = false) String fileName,
+			@ApiParam(value = "кодировка исходящего файла, по умолчанию - win1251", required = false) @RequestParam(value = "sID_Codepage", required = false, defaultValue = "win1251") String sID_Codepage,
+			@ApiParam(value = "форматирование даты создания таски, по умолчанию - yyyy-MM-dd HH:mm:ss", required = false) @RequestParam(value = "sDateCreateFormat", required = false, defaultValue = "yyyy-MM-dd HH:mm:ss") String sDateCreateFormat,
+			@ApiParam(value = "начальная дата создания таски, по умолчанию - вчера", required = false) @RequestParam(value = "sDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateAt,
+			@ApiParam(value = "конечная дата создания таски, по умолчанию - сегодня", required = false) @RequestParam(value = "sDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date dateTo,
+			@ApiParam(value = "начало выборки для пейджирования, по умолчанию - 0", required = false) @RequestParam(value = "nRowStart", required = false, defaultValue = "0") Integer nRowStart,
+			@ApiParam(value = "размер выборки для пейджирования, по умолчанию - 1000", required = false) @RequestParam(value = "nRowsMax", required = false, defaultValue = "1000") Integer nRowsMax,
+			@ApiParam(value = "включить информацию по хисторик задачам, по умолчанию - true", required = false) @RequestParam(value = "bIncludeHistory", required = false, defaultValue = "true") Boolean bIncludeHistory,
+			@ApiParam(value = "добавить заголовок с названиями полей в выходной файл, по умолчанию - false", required = false) @RequestParam(value = "bHeader", required = false, defaultValue = "false") Boolean bHeader,
+			@ApiParam(value = "настраиваемые поля (название поля -- формула, issue 907", required = false) @RequestParam(value = "saFieldsCalc", required = false) String saFieldsCalc,
+			@ApiParam(value = "сведение полей, которое производится над выборкой (issue 916)", required = false) @RequestParam(value = "saFieldSummary", required = false) String saFieldSummary,
+			@ApiParam(value = "Email для отправки выбранных данных", required = false) @RequestParam(value = "sMailTo", required = false) String sMailTo,
+			@ApiParam(value = "логин для вытаскивания фильтра", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
+			@ApiParam(value = "признак для получения фильтра", required = false) @RequestParam(value = "asField_Filter", required = false) String asField_Filter,
+			@ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
+			@ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
+			HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
 
-        if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
-            sID_State_BP = null;
-        }
-        if ("".equalsIgnoreCase(saFieldsCalc) || "null".equalsIgnoreCase(saFieldsCalc)) {
-            saFieldsCalc = null;
-        }
-        if ("".equalsIgnoreCase(saFieldSummary) || "null".equalsIgnoreCase(saFieldSummary)) {
-            saFieldSummary = null;
-        }
+		if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
+			sID_State_BP = null;
+		}
+		if ("".equalsIgnoreCase(saFieldsCalc) || "null".equalsIgnoreCase(saFieldsCalc)) {
+			saFieldsCalc = null;
+		}
+		if ("".equalsIgnoreCase(saFieldSummary) || "null".equalsIgnoreCase(saFieldSummary)) {
+			saFieldSummary = null;
+		}
 
-        // 1. validation
-        if (StringUtils.isBlank(sID_BP)) {
-            LOG.error("Wrong name of business task - {}", sID_BP);
-            throw new ActivitiObjectNotFoundException(
-                    "Statistics for the business task '" + sID_BP
-                    + "' not found. Wrong BP name.", Task.class);
-        }
-        Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
-        LOG.info("dBeginDate: " + dBeginDate);
-        LOG.info("dateAt: " + dateAt);
-        Date dEndDate = oActionTaskService.getEndDate(dateTo);
-        LOG.info("dEndDate: " + dEndDate);
-        LOG.info("dateAt: " + dateAt);
-        String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
-        //LOG.info("4444separator " + separator);
-        //LOG.info("7777nASCI_Spliter " + nASCI_Spliter);
-        //LOG.info("6666separator " + separator.chars());
-        Charset charset = oActionTaskService.getCharset(sID_Codepage);
-        //LOG.info("5555charset " + charset);
-        // 2. query
-        TaskQuery query = taskService.createTaskQuery()
-                .processDefinitionKey(sID_BP);
-        //LOG.info("query is {}", ((JSONObject)query).toString());
-        HistoricTaskInstanceQuery historicQuery = historyService
-                .createHistoricTaskInstanceQuery()
-                .processDefinitionKey(sID_BP);
-        //LOG.info("historicQuery is {}",((JSONObject)historicQuery).toString() );
-        if (sTaskEndDateAt != null) {
-            LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
-            historicQuery.taskCompletedAfter(sTaskEndDateAt);
-            //LOG.info(" historicQuery {} with selecting tasks which were completed after sTaskEndDateAt {}",((JSONObject)historicQuery).toString(), sTaskEndDateAt);
-            
-        }
-        if (sTaskEndDateTo != null) {
-            LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
-            historicQuery.taskCompletedBefore(sTaskEndDateTo);
-            //LOG.info(" historicQuery {} with selecting tasks which were completed before sTaskEndDateTo {}",((JSONObject)historicQuery).toString(), sTaskEndDateTo);
-        }
-        if (dateAt != null) {
-            query = query.taskCreatedAfter(dBeginDate);
-            historicQuery = historicQuery.taskCreatedAfter(dBeginDate);
-        }
-        if (dateTo != null) {
-            query = query.taskCreatedBefore(dEndDate);
-            historicQuery = historicQuery.taskCreatedBefore(dEndDate);
-        }
-        historicQuery.includeProcessVariables();
-        if (sID_State_BP != null) {
-            historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
-        }
-        List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
+		// 1. validation
+		if (StringUtils.isBlank(sID_BP)) {
+			LOG.error("Wrong name of business task - {}", sID_BP);
+			throw new ActivitiObjectNotFoundException(
+					"Statistics for the business task '" + sID_BP + "' not found. Wrong BP name.", Task.class);
+		}
+		Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
 
-        if ("*".equals(saFields)){
-        	saFields = null;
-        	LOG.info("Resetting saFields to null in order to get all the fields values");
-        }
-        String header = oActionTaskService.formHeader(saFields, foundHistoricResults, saFieldsCalc);
-        String[] headers = header.split(";");
+		Date dEndDate = oActionTaskService.getEndDate(dateTo);
 
-        
-        saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
+		String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
 
-        LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!" + saFields);
-        if (sID_State_BP != null) {
-            query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
-        }
-        List<Task> foundResults = new LinkedList<Task>();
-        if (sTaskEndDateAt == null && sTaskEndDateTo == null) {
-            // we need to call runtime query only when non completed tasks are selected.
-            // if only completed tasks are selected - results of historic query will be used
-            foundResults = query.listPage(nRowStart, nRowsMax);
-        }
+		Charset charset = oActionTaskService.getCharset(sID_Codepage);
 
-        // 3. response
-        SimpleDateFormat sdfFileName = new SimpleDateFormat(
-                "yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
-        LOG.info("222sdfFileName: " + sdfFileName);
-        String sTaskDataFileName = fileName != null ? fileName : "data_BP-"
-                + sID_BP + "_"
-                + sdfFileName.format(Calendar.getInstance().getTime()) + ".txt";
+		// 2. query
+		TaskQuery query = taskService.createTaskQuery().processDefinitionKey(sID_BP);
 
-        SimpleDateFormat sDateCreateDF = new SimpleDateFormat(
-                sDateCreateFormat, Locale.ENGLISH);
+		HistoricTaskInstanceQuery historicQuery = historyService.createHistoricTaskInstanceQuery()
+				.processDefinitionKey(sID_BP);
 
-        LOG.debug("File name to return statistics : {}", sTaskDataFileName);
+		if (sTaskEndDateAt != null) {
+			LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
+			historicQuery.taskCompletedAfter(sTaskEndDateAt);
 
-        CSVWriter printWriter = null;
-        PipedInputStream pi = new PipedInputStream();
-        LOG.info("!!!!!!!!!!!!!sMailTo: " + sMailTo);
-        if (sMailTo != null) {
-            PipedOutputStream po = new PipedOutputStream(pi);
-            PrintWriter pw = new PrintWriter(po);
-            printWriter = new CSVWriter(pw, separator.charAt(0),
-                    CSVWriter.NO_QUOTE_CHARACTER);
-        } else {
-            httpResponse.setContentType("text/csv;charset=" + charset.name());
-            httpResponse.setHeader("Content-disposition", "attachment; filename="
-                    + sTaskDataFileName);
-            printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0),
-                    CSVWriter.NO_QUOTE_CHARACTER);
-        }
+		}
+		if (sTaskEndDateTo != null) {
+			LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
+			historicQuery.taskCompletedBefore(sTaskEndDateTo);
 
-        List<Map<String, Object>> csvLines = new LinkedList<>(); 
+		}
+		if (dateAt != null) {
+			query = query.taskCreatedAfter(dBeginDate);
+			historicQuery = historicQuery.taskCreatedAfter(dBeginDate);
 
-        if (bHeader && header != null && saFieldSummary == null) {
-            printWriter.writeNext(headers);
+		}
+		if (dateTo != null) {
+			query = query.taskCreatedBefore(dEndDate);
+			historicQuery = historicQuery.taskCreatedBefore(dEndDate);
 
-            LOG.info("headers" + headers);
-        }
-        
-        LOG.info("foundResults is {}", foundResults);
-        
-        LOG.info("asField_Filter is {}", asField_Filter);
-        LOG.info("sLogin is {}", sLogin);
-        
-        String FormulaFilter_Export = null;
-        
-        if(asField_Filter != null && asField_Filter.equals("[sFormulaFilter_Export]")){
-            FormulaFilter_Export = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
-            LOG.info("FormulaFilter_Export is {} ", FormulaFilter_Export);
-        }
-        
-        oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
-                csvLines, saFields, saFieldsCalc, headers, FormulaFilter_Export);
-        
-        if (Boolean.TRUE.equals(bIncludeHistory)) {
-            Set<String> tasksIdToExclude = new HashSet<>();
-            for (Task task : foundResults) {
-                tasksIdToExclude.add(task.getId());
-            }
+		}
+		//   historicQuery.includeProcessVariables();
 
-            oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate,
-                    foundHistoricResults, sDateCreateDF, csvLines, saFields,
-                    tasksIdToExclude, saFieldsCalc, headers, sID_State_BP, FormulaFilter_Export);
-        }
-        
-        LOG.info("result csvLines {}", csvLines);
-        
-        /*List<Map<String, Object>> filteredCSVLine = new ArrayList<>();
-        try{
-            if (asField_Filter != null){
-                ToolJS oToolJs = new ToolJS();
+		if (sID_State_BP != null) {
+			historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
+		}
+		List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
 
-                for(Map<String, Object> currCSVLine : csvLines){
-                    if((Boolean)(oToolJs.getObjectResultOfCondition(new HashMap<>(),currCSVLine, asField_Filter))){
-                        filteredCSVLine.add(currCSVLine);
-                    }
-                }
-            }
-        }catch (Exception ex){
-            LOG.info("Exception during formula calculation {}", ex);
-        }
-        
-        csvLines.clear();
-        csvLines.addAll(filteredCSVLine);*/
-                
-        LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
-        if (saFieldSummary != null) {
+		if ("*".equals(saFields)) {
+			saFields = null;
+			LOG.info("Resetting saFields to null in order to get all the fields values");
+		}
+		String header = oActionTaskService.formHeader(saFields, foundHistoricResults, saFieldsCalc);
+		String[] headers = header.split(";");
 
-            LOG.info(">>>saFieldsSummary={}", saFieldSummary);
-            try {
-                List<List<String>> stringResults = new ToolCellSum()
-                        .getFieldsSummary(csvLines, saFieldSummary);
-                for (int i = 0; i < stringResults.size(); i++) {
-                    if (i == 0 && !bHeader) {
-                        continue;
-                    }
-                    List<String> line = stringResults.get(i);
-                    printWriter.writeNext(line.toArray(new String[line.size()]));
-                    LOG.info("!!!!!!!!!!!!!!line" + line);
-                }
-            } catch (Exception e) {
-                List<String> errorList = new LinkedList<>();
-                errorList.add(e.getMessage());
-                errorList.add(e.getCause() != null ? e.getCause().getMessage()
-                        : "");
-                printWriter.writeNext(errorList.toArray(new String[errorList
-                        .size()]));
-                LOG.error("Error: {}", e.getMessage());
-                LOG.trace("FAIL:", e);
-            }
-            LOG.info(">>>>csv for saFieldSummary is complete.");
-        } else {
-            for (Map<String, Object> currLine : csvLines) {
-                String[] line = oActionTaskService.createStringArray(currLine, Arrays.asList(headers));
-                LOG.info("!!!!oActionTaskService.createStringArray_line " + line);
-                printWriter.writeNext(line);
-            }
-        }
+		saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
-        printWriter.close();
+		LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!" + saFields);
+		if (sID_State_BP != null) {
+			query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
+		}
+		List<Task> foundResults = new LinkedList<Task>();
+		if (sTaskEndDateAt == null && sTaskEndDateTo == null) {
+			  /**
+	          * we need to call runtime query only when non completed tasks are selected.
+	          * if only completed tasks are selected - results of historic query will be used
+	          */
+			foundResults = query.listPage(nRowStart, nRowsMax);
+		}
 
-        if (sMailTo != null) {
-            LOG.info("Sending email with tasks data to email {}", sMailTo);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
-            String sSubject = String.format("Выборка за: (%s)-(%s) для БП: %s ", sdf.format(dBeginDate), sdf.format(dEndDate), sID_BP);
-            String sFileExt = "text/csv";
-            DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
-            oMail._To(sMailTo);
-            oMail._Head(sSubject);
-            oMail._Body(sSubject);
-            oMail._Attach(oDataSource, sTaskDataFileName, "");
-            try {
-                oMail.send();
-            } catch (EmailException ex) {
-                LOG.error("Error occured while sending tasks data to email!!!", ex);
-                throw ex;
-            } finally {
-                pi.close();
-            }
+		// 3. response
+		SimpleDateFormat sdfFileName = new SimpleDateFormat("yyyy-MM-ddHH-mm-ss", Locale.ENGLISH);
+		String sTaskDataFileName = fileName != null ? fileName
+				: "data_BP-" + sID_BP + "_" + sdfFileName.format(Calendar.getInstance().getTime()) + ".txt";
 
-            /*if (!oMail.sendWithUniSender()) {
-                LOG.error("Error occured while sending tasks data to email!!!");
-                pi.close();
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Error occured while sending tasks data to email!!!");
-            } else {
-                pi.close();
-            }*/
-            httpResponse.setContentType("text/csv;charset=windows-1251");
-            httpResponse.getWriter().print("OK");
-        }
+		SimpleDateFormat sDateCreateDF = new SimpleDateFormat(sDateCreateFormat, Locale.ENGLISH);
 
-    }
+		LOG.debug("File name to return statistics : {}", sTaskDataFileName);
+
+		CSVWriter printWriter = null;
+		PipedInputStream pi = new PipedInputStream();
+		LOG.info("!!!!!!!!!!!!!sMailTo: " + sMailTo);
+		if (sMailTo != null) {
+			PipedOutputStream po = new PipedOutputStream(pi);
+			PrintWriter pw = new PrintWriter(po);
+			printWriter = new CSVWriter(pw, separator.charAt(0), CSVWriter.NO_QUOTE_CHARACTER);
+		} else {
+			httpResponse.setContentType("text/csv;charset=" + charset.name());
+			httpResponse.setHeader("Content-disposition", "attachment; filename=" + sTaskDataFileName);
+			printWriter = new CSVWriter(httpResponse.getWriter(), separator.charAt(0), CSVWriter.NO_QUOTE_CHARACTER);
+		}
+
+		List<Map<String, Object>> csvLines = new LinkedList<>();
+
+		if (bHeader && header != null && saFieldSummary == null) {
+			printWriter.writeNext(headers);
+		}
+
+		String FormulaFilter_Export = null;
+
+		if (asField_Filter != null && asField_Filter.equals("[sFormulaFilter_Export]")) {
+			FormulaFilter_Export = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
+		}
+
+		oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF, csvLines, saFields,
+				saFieldsCalc, headers, FormulaFilter_Export);
+
+		if (Boolean.TRUE.equals(bIncludeHistory)) {
+			Set<String> tasksIdToExclude = new HashSet<>();
+			for (Task task : foundResults) {
+				tasksIdToExclude.add(task.getId());
+			}
+
+			oActionTaskService.fillTheCSVMapHistoricTasks(sID_BP, dBeginDate, dEndDate, foundHistoricResults,
+					sDateCreateDF, csvLines, saFields, tasksIdToExclude, saFieldsCalc, headers, sID_State_BP,
+					FormulaFilter_Export);
+		}
+
+		if (saFieldSummary != null) {
+
+			try {
+				List<List<String>> stringResults = new ToolCellSum().getFieldsSummary(csvLines, saFieldSummary);
+				for (int i = 0; i < stringResults.size(); i++) {
+					if (i == 0 && !bHeader) {
+						continue;
+					}
+					List<String> line = stringResults.get(i);
+					printWriter.writeNext(line.toArray(new String[line.size()]));
+				}
+			} catch (Exception e) {
+				List<String> errorList = new LinkedList<>();
+				errorList.add(e.getMessage());
+				errorList.add(e.getCause() != null ? e.getCause().getMessage() : "");
+				printWriter.writeNext(errorList.toArray(new String[errorList.size()]));
+				LOG.error("Error: {}", e.getMessage());
+				LOG.trace("FAIL:", e);
+			}
+
+		} else {
+			for (Map<String, Object> currLine : csvLines) {
+				String[] line = oActionTaskService.createStringArray(currLine, Arrays.asList(headers));
+				printWriter.writeNext(line);
+			}
+		}
+
+		printWriter.close();
+
+		if (sMailTo != null) {
+			LOG.info("Sending email with tasks data to email {}", sMailTo);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd");
+			String sSubject = String.format("Выборка за: (%s)-(%s) для БП: %s ", sdf.format(dBeginDate),
+					sdf.format(dEndDate), sID_BP);
+			String sFileExt = "text/csv";
+			DataSource oDataSource = new ByteArrayDataSource(pi, sFileExt);
+			oMail._To(sMailTo);
+			oMail._Head(sSubject);
+			oMail._Body(sSubject);
+			oMail._Attach(oDataSource, sTaskDataFileName, "");
+			try {
+				oMail.send();
+			} catch (EmailException ex) {
+				LOG.error("Error occured while sending tasks data to email!!!", ex);
+				throw ex;
+			} finally {
+				pi.close();
+			}
+
+			httpResponse.setContentType("text/csv;charset=windows-1251");
+			httpResponse.getWriter().print("OK");
+		}
+
+	}
     
     
     

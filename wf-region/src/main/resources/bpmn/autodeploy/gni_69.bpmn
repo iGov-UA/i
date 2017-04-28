@@ -115,8 +115,7 @@
 			${sAddress}<br>
 			${sWorkTime}<br>
 			${sPhoneOrgan}
-			[pattern/mail/new_design/_common_content_end.html] 
-			[pattern/mail/new_design/_common_feedback.html]   	
+			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
@@ -161,11 +160,12 @@
           <activiti:value id="yet" name="платником єдиного податку вже отримано Витяг з реєстру платників єдиного податку, заява щодо внесення нових змін до Реєстру не надходила"></activiti:value>
           <activiti:value id="other_reason" name="інша причина"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_1" name="Внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
 
         <activiti:formProperty id="sAvtor" name="Автор звернення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresECP" name="адресс; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_user.json')}"></activiti:formProperty>
         
@@ -212,7 +212,7 @@
 				Ваше звернення було оброблено.<br>
 				На жаль, Вам відмовлено у наданні витягу з реєстру платників єдиного податку.<br/>
 				Підстава: enum{[asDecisionReject]}<br/>
-				<b>${comment_1}</b>
+				<b>${sComment1}</b>
 			</p>
 		    <p>
 		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/368/general">iGov.org.ua</a>

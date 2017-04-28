@@ -32,24 +32,25 @@
         <activiti:formProperty id="sWebsite" name="Веб-сторінка" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об'єкта експертизи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSphere" name="Сфера застосування та реалізації об'єкта експертизи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArtikul" name="Артикул об'єкта експертизи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDKPP" name="Код за ДКПП об'єкта експертизи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_12" name="Крд за ДКПП наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_13" name="Код за УКТЗЕД наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_14" name="Артиул наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=yes" type="enum" default="no">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
+         <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=yes" type="enum" default="no">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=yes" type="enum" default="no">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="нНі"></activiti:value>
         </activiti:formProperty>
+         <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sCountry_02" name="Країна походження об'єкта експертизи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocProducer" name="Виробник, розробник документів (його представник в Україні)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers_02" name="Линия реквизитов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sLocation&quot;],&quot;sValue&quot;:&quot;Реквізити виробника, розробника&quot;}}}"></activiti:formProperty>
@@ -106,7 +107,7 @@
         <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
-        <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи" type="enum" required="true">
+        <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" required="true">
           <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
           <activiti:value id="Paper" name="Паперова форма надається у Дерджпродспоживслужбі"></activiti:value>
           <activiti:value id="Mail" name="Паперова форма надсилається Укрпоштою"></activiti:value>
