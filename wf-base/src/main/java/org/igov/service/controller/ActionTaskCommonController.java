@@ -1294,8 +1294,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             historicQuery = historicQuery.taskCreatedBefore(dEndDate);
             LOG.info("HistoricTaskInstanceQuery taskCreatedBefore---->>>>>>>>>: " + historicQuery.count());
         }
-        historicQuery.includeProcessVariables();
-        LOG.info("HistoricTaskInstanceQuery includeProcessVariables---->>>>>>>>>: " + historicQuery.count());
+    /*    historicQuery.includeProcessVariables();
+        LOG.info("HistoricTaskInstanceQuery includeProcessVariables---->>>>>>>>>: " + historicQuery.count());*/
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
             LOG.info("HistoricTaskInstanceQuery includeTaskLocalVariables---->>>>>>>>>: " + historicQuery.count());
@@ -1303,13 +1303,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
         LOG.info("HistoricTaskInstanceQuery foundHistoricResults listPage---->>>>>>>>>: " + foundHistoricResults.size());
         
-        List<HistoricTaskInstance> foundHistoricResults2 = historicQuery.listPage(nRowStart, 5000);
-        LOG.info("HistoricTaskInstanceQuery foundHistoricResults2 listPage---->>>>>>>>>: " + foundHistoricResults2.size());
-        
-        
-        List<HistoricTaskInstance> foundHistoricResults1 = historicQuery.list();
-        LOG.info("HistoricTaskInstanceQuery foundHistoricResults1 listPage---->>>>>>>>>: " + foundHistoricResults1.size());
-        
+            
         
         if ("*".equals(saFields)){
         	saFields = null;
