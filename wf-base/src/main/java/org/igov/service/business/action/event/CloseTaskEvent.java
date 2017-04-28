@@ -223,7 +223,7 @@ public class CloseTaskEvent {
                           LOG.info("HistoryEvent_Service_StatusType is CLOSED ", status.toString()); 
                           
                         if(bCloseAnyWay){
-                            mParam.put("soData", "TaskCancelByUser");
+                            //mParam.put("soData", "TaskCancelByUser");
                         }  
                           
                     } else {
