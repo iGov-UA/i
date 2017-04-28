@@ -323,81 +323,61 @@ public class SubjectGroupTreeService {
      * Сервис для получения департамента по идентификатору группы.
      *
      * @param sID_Group_Activiti - идентификатор группы
-     * @return aSubjectGroupDepar - лист который содержит в себе SubjectGroup родительских департаментов
+     * @param sSubjectType - Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей
+     * @return aSubjectGroupParent - лист который содержит в себе SubjectGroup родительских департаментов
      *
      * @see SubjectGroup
      * @see SubjectGroupTree
      */
-    public List<SubjectGroup> getDeparByGroup_Activiti(final String sID_Group_Activiti) {
+    public List<SubjectGroup> getSubjectGroupsTreeUp(final String sID_Group_Activiti, final String sSubjectType) {
         
-        List<SubjectGroup> aSubjectGroupDepar = new ArrayList<>();
+        List<SubjectGroup> aSubjectGroupParent = new ArrayList<>();
 
+        //Все SubjectGroup'ы у которых один sID_Group_Activiti
         List<SubjectGroup> aSubjectGroup = new ArrayList<>();
+        
+        List<SubjectGroupTree> aSubjectGroupTree = new ArrayList<>();
+        
+        String SubjectTypeToFind;
+        
+        if (sSubjectType == null) {
+            
+            SubjectTypeToFind = getSubjectType(sID_Group_Activiti);
+        }
+        
+        SubjectTypeToFind = sSubjectType;
 
         //Получили все SubjectGroup, которые относятся к группе sID_Group_Activiti
         aSubjectGroup = SubjectGroupDao.findAllBy("sID_Group_Activiti", sID_Group_Activiti);
         LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroup.size() + ", " + aSubjectGroup.toString());
         
         for (SubjectGroup oSubjectGroup : aSubjectGroup) {
-             
-            List<SubjectGroup> aSubjectGroupParents = new ArrayList<>();
             
-            //Узнаем тип SubjectGroup'a, может быть Human или Organ
-            String sSubjectType = getSubjectType(sID_Group_Activiti);         
+            //ID для которого ищем департаменты, которым он подчиняется
+            Long nID = oSubjectGroup.getoSubject().getId();
             
-            //Получаем всех родителей в зависимости от sSubjectType
-            aSubjectGroupParents = getSubjectGroupParents(oSubjectGroup, sSubjectType);
-            
-            //Кладем всех родителей в результирующую мапу
-            aSubjectGroupDepar.addAll(aSubjectGroupParents);
- 
-            LOG.info("aSubjectGroupDepar: " + aSubjectGroupDepar.toString());
-            
-        }
-
-        return aSubjectGroupDepar;
-    }
-    
-    /**
-     * Позволяет получить родителя SubjectGroup и в зависимости от передаваемого sSubjectType можем получить
-     * департамент которому подчинен (Organ) или руководителя (Human)
-     * 
-     * @param oSubjectGroup - обьект для которого нужно найти родителя.
-     * @param sSubjectType - тип родителя, которого нужно найти
-     * @return aSubjectGroupParents - лист родителей
-     */
-    public List<SubjectGroup> getSubjectGroupParents(SubjectGroup oSubjectGroup, String sSubjectType) {
-        
-        List<SubjectGroup> aSubjectGroupParents = new ArrayList<>();
-        
-        List<SubjectGroupTree> aSubjectGroupTree = new ArrayList<>();
-        
-        //ID для которого ищем департаменты, которым он подчиняется
-        Long nID = oSubjectGroup.getoSubject().getId();
-        
-        //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
-        aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
-        
+            //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
+            aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
             LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroupTree.size() + ", " + aSubjectGroupTree.toString());
                         
             for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupTree) {
                                
                 SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
                 
-                //Если oSubjectGroup_Parent - организация, то добавляем ее в лист
-                if (getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()).equals(sSubjectType)) {
+                if (getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()).equals(SubjectTypeToFind)) {
                   
-                    aSubjectGroupParents.add(oSubjectGroup_Parent);
+                    aSubjectGroupParent.add(oSubjectGroup_Parent);
                 }
             }
+              
+            LOG.info("aSubjectGroupParent: " + aSubjectGroupParent.toString());
             
-            if (aSubjectGroupParents.isEmpty()) {
-                LOG.info("getSubjectGroupParents: Can't find a parent. Check SubjectGroupTree.csv");  
-            }
-        
-        return aSubjectGroupParents;
-    }
+        }
 
+        return aSubjectGroupParent;
+    }
+    
+    
 //------------------------------------------------------------------------------Дополнительные методы-----------------------------------------------------------------
     /**
      * Метод построения иерархии
