@@ -425,14 +425,13 @@ public class ActionEventService {
         LOG.info("checking conditions ended");
         
         if ("TaskCancelByUser".equals(soData)){
-            
-            LOG.info("TASK_CANCELED was catched");
+            LOG.info("soData is TaskCancelByUser: " + soData);
             Map<String, String> mParamMessage = new HashMap<>();
             LOG.info("SERVICE_STATE: " + sUserTaskName);
-            //mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName == null ? oHistoryEvent_Service_StatusType.getsName_UA() : sUserTaskName);
+            mParamMessage.put(HistoryEventMessage.SERVICE_STATE, sUserTaskName == null ? oHistoryEvent_Service_StatusType.getsName_UA() : sUserTaskName);
             mParamMessage.put(HistoryEventMessage.TASK_NUMBER, sID_Order);
-            setHistoryEvent(HistoryEventType.TASK_CANCELED, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
-                    null, sSubjectInfo, null);
+            setHistoryEvent(HistoryEventType.ACTIVITY_STATUS_NEW, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(),
+                    null, sSubjectInfo, HistoryEventType.TASK_CANCELED.getsTemplate());
         }
         else if (soData == null || "[]".equals(soData)) { //My journal. change status of task
             LOG.info("soData is null or empty array: " + soData);
