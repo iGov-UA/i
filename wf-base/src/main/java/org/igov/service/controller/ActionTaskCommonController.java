@@ -1290,7 +1290,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			historicQuery = historicQuery.taskCreatedBefore(dEndDate);
 
 		}
-		// historicQuery.includeProcessVariables();
+		//   historicQuery.includeProcessVariables();
 
 		if (sID_State_BP != null) {
 			historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
