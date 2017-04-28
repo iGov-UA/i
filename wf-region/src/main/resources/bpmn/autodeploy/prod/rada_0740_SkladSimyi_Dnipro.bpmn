@@ -13,12 +13,16 @@
           <activiti:value id="sChech" name="Чечелівський"></activiti:value>
           <activiti:value id="sShevch" name="Шевченковський"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="markerFiles" name="markerFiles" type="markers" default="${markerService.loadFromFile('form3/forma_3Dn_files.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="markerLabels" name="markerLabels" type="markers" default="${markerService.loadFromFile('form3/forma_3Dn_labels.json')}"></activiti:formProperty>
         <activiti:formProperty id="sLabeRayon" name=" ; ;labelType=warning" type="label" default="УВАГА! Ця послуга діє тільки для Самарського району, інші райони будуть поступово під'єднані протягом 2х найближчих місяців."></activiti:formProperty>
         <activiti:formProperty id="sLabeZIP" name=" ; ;labelType=info" type="label" default="Для замовлення послуги, буде необхідно завантажувати сканкопії документів, щоб завантажити кілька документів одним файлом скористайтесь ZIP архівом. Посилання - &lt;a href=&quot;https://docs.google.com/document/d/1vkTj7DlfjHj8TYylHZKpESU5cGQF5N0R4ck1EBScVdM/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;Як зробити ZIP архів&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sLabeNevidaemo" name=" ; ;labelType=danger" type="label" default="ПОПЕРЕДЖЕННЯ! Ви обрали район, який ще не підключений до порталу. Ви можете заповнити форму і отримати на електронну пошту заповнену заяву, яку треба буде роздрукувати, підписати і віднести до відділу видачі довідок.&lt;br&gt; Адреси відділів - &lt;a href=&quot;https://docs.google.com/document/d/1ucS5WC6YK2AWg2Yxmpmg8cVgSvoznV_vkLeXi_rjdww/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;Де отримати довідку&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sLabeNoFiles" name=" ; ;labelType=warning" type="label" default="УВАГА! Якщо ви хочете сформувати заповнений бланк заяви, система все одно буде вимагати завантаження сканкопій документів. Завантажуйте будь який файл!"></activiti:formProperty>
         <activiti:formProperty id="sLabeZayava" name=" ; ;labelType=info" type="label" default="Ви можете завантажити порожній бланк заяви, перейшовши за посиланням і заповнити його самостійно. &lt;br&gt;Посилання - &lt;a href=&quot;https://docs.google.com/document/d/1j9h2UgZwajLOTHaHs-qQL5GCoKIrndJlLlUaOEgzQgk/edit?usp=sharing &quot; target=&quot;_blank&quot;&gt;Форма заяви для самостійного заповнення&lt;/a&gt;"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
@@ -77,6 +81,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFile_NarSvid" name="Свідоцтва про народження;(сканкопії оригіналу, завантажте одним ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="ShowFields" type="markers" default="${markerService.loadFromFile('form3/forma_3Dn.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_4" name="Спосіб отримання довідки заявником" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання довідки заявником&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою (з оплатою доставки)"></activiti:value>
