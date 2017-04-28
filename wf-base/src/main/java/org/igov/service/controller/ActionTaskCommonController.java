@@ -1238,6 +1238,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			@ApiParam(value = "признак для получения фильтра", required = false) @RequestParam(value = "asField_Filter", required = false) String asField_Filter,
 			@ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
 			@ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
+			@ApiParam(value = "если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables,
 			HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
 
 		if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
@@ -1290,13 +1291,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 			historicQuery = historicQuery.taskCreatedBefore(dEndDate);
 
 		}
-		//   historicQuery.includeProcessVariables();
-
-		if (sID_State_BP != null) {
-			historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
+		
+		if (Boolean.TRUE.equals(bIncludeProcessVariables)) {
+		   historicQuery.includeProcessVariables();
+		   LOG.info("HistoricTaskInstanceQuery includeProcessVariables---->>>>>>>>>: " + historicQuery.count());
 		}
-		List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
-
+	         if (sID_State_BP != null) {
+	             historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
+	            LOG.info("HistoricTaskInstanceQuery includeTaskLocalVariables---->>>>>>>>>: " + historicQuery.count());
+	         }
+	       
+	        List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
+	        LOG.info("HistoricTaskInstanceQuery foundHistoricResults listPage---->>>>>>>>>: " + foundHistoricResults.size()); 
+	        
 		if ("*".equals(saFields)) {
 			saFields = null;
 			LOG.info("Resetting saFields to null in order to get all the fields values");
