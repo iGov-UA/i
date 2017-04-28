@@ -1303,6 +1303,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         List<HistoricTaskInstance> foundHistoricResults = historicQuery.listPage(nRowStart, nRowsMax);
         LOG.info("HistoricTaskInstanceQuery foundHistoricResults listPage---->>>>>>>>>: " + foundHistoricResults.size());
         
+        List<HistoricTaskInstance> foundHistoricResults2 = historicQuery.listPage(nRowStart, 5000);
+        LOG.info("HistoricTaskInstanceQuery foundHistoricResults2 listPage---->>>>>>>>>: " + foundHistoricResults2.size());
+        
+        
+        List<HistoricTaskInstance> foundHistoricResults1 = historicQuery.list();
+        LOG.info("HistoricTaskInstanceQuery foundHistoricResults1 listPage---->>>>>>>>>: " + foundHistoricResults1.size());
+        
+        
         if ("*".equals(saFields)){
         	saFields = null;
         	LOG.info("Resetting saFields to null in order to get all the fields values");
