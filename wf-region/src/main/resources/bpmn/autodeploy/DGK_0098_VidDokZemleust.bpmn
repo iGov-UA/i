@@ -9,15 +9,17 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім`я " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdressa" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAdresReg" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sGOorgform&quot;],&quot;sValue&quot;:&quot;Інформація про земельну ділянку&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sAdres" name="Адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresZem&quot;],&quot;sValue&quot;:&quot;Інформація про земельну ділянку&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sAdresZem" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер;(введіть в форматі ХХХХХХХХХХ:ХХХХ:ХХХ:ХХ)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPloscha" name="Площа (га)" type="double" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPriznZem" name="Цільове призначення земельної ділянки" type="string" required="true"></activiti:formProperty>
         
-        
+        <activiti:formProperty id="shapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -65,16 +67,24 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdres&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sAdres" name="Адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPloscha" name="Площа (га)" type="double" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdresReg" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresZem&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sAdresZem" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nKadastr_num" name="Кадастровий номер; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPloscha" name="Площа (га); ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sPriznZem" name="Цільове призначення земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати листи заявнику та в ЦНАП"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_54_GotEkspluat.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/DGK_98_VidDokZem.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
