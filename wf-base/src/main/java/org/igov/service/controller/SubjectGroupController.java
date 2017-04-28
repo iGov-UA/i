@@ -118,15 +118,14 @@ public class SubjectGroupController {
         return subjectRightBPService.getBPs_ForExport(sLogin);
     }
     
-    @ApiOperation(value = "Получение организаций для каждого юзера, который входит в заданную группу.")
-    @RequestMapping(value = "/getDeparByGroup_Activiti", method = RequestMethod.GET)
+    @ApiOperation(value = "Получение организационной иерархии вверх")
+    @RequestMapping(value = "/getSubjectGroupsTreeUp", method = RequestMethod.GET)
     @ResponseBody
-    public List<SubjectGroup> getDeparByGroup_Activiti(
-            @ApiParam(value = "Идентификатор группы", required = true)
-            @RequestParam(value = "sID_Group_Activiti", required = true) 
-            String sID_Group_Activiti) {
+    public List<SubjectGroup> getSubjectGroupsTreeUp(
+            @ApiParam(value = "Идентификатор группы", required = true) @RequestParam(value = "sID_Group_Activiti", required = true) String sID_Group_Activiti,
+            @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей", required = false) @RequestParam(value = "sSubjectType", required = false) String sSubjectType) {
         
-        return subjectGroupTreeService.getDeparByGroup_Activiti(sID_Group_Activiti);
+        return subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType);
        
     }
     
