@@ -1230,14 +1230,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "начальная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateAt", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateAt,
             @ApiParam(value = "конечная дата закрытия таски", required = false) @RequestParam(value = "sTaskEndDateTo", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date sTaskEndDateTo,
             HttpServletResponse httpResponse) throws IOException, CommonServiceException, EmailException {
-        LOG.info("!!!!!!!!!!!!!!begin");
-        LOG.info("1dateAt= " + dateAt);
-        LOG.info("2dateTo= " + dateTo);
-        LOG.info("3sTaskEndDateAt= " + sTaskEndDateAt);
-        LOG.info("4sTaskEndDateTo= " + sTaskEndDateTo);
-//      'sID_State_BP': '',//'usertask1'
-//      'saFieldsCalc': '', // поля для калькуляций
-//      'saFieldSummary': '' // поля для агрегатов
 
         if ("".equalsIgnoreCase(sID_State_BP) || "null".equalsIgnoreCase(sID_State_BP)) {
             sID_State_BP = null;
@@ -1257,69 +1249,52 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     + "' not found. Wrong BP name.", Task.class);
         }
         Date dBeginDate = oActionTaskService.getBeginDate(dateAt);
-        LOG.info("dBeginDate: " + dBeginDate);
-        LOG.info("dateAt: " + dateAt);
         Date dEndDate = oActionTaskService.getEndDate(dateTo);
-        LOG.info("dEndDate: " + dEndDate);
-        LOG.info("dateAt: " + dateAt);
         String separator = oActionTaskService.getSeparator(sID_BP, nASCI_Spliter);
-        //LOG.info("4444separator " + separator);
-        //LOG.info("7777nASCI_Spliter " + nASCI_Spliter);
-        //LOG.info("6666separator " + separator.chars());
         Charset charset = oActionTaskService.getCharset(sID_Codepage);
-        //LOG.info("5555charset " + charset);
         // 2. query
         TaskQuery query = taskService.createTaskQuery()
                 .processDefinitionKey(sID_BP);
         HistoricTaskInstanceQuery historicQuery = historyService
                 .createHistoricTaskInstanceQuery()
                 .processDefinitionKey(sID_BP);
-        LOG.info("HistoricTaskInstanceQuery---->>>>>>>>>: " + historicQuery.count());
         if (sTaskEndDateAt != null) {
             LOG.info("Selecting tasks which were completed after {}", sTaskEndDateAt);
             historicQuery.taskCompletedAfter(sTaskEndDateAt);
-            LOG.info("HistoricTaskInstanceQuery taskCompletedAfter---->>>>>>>>>: " + historicQuery.count());
         }
         if (sTaskEndDateTo != null) {
             LOG.info("Selecting tasks which were completed after {}", sTaskEndDateTo);
             historicQuery.taskCompletedBefore(sTaskEndDateTo);
-            LOG.info("HistoricTaskInstanceQuery taskCompletedBefore---->>>>>>>>>: " + historicQuery.count());
         }
         if (dateAt != null) {
             query = query.taskCreatedAfter(dBeginDate);
             historicQuery = historicQuery.taskCreatedAfter(dBeginDate);
-            LOG.info("HistoricTaskInstanceQuery taskCreatedAfter---->>>>>>>>>: " + historicQuery.count());
         }
         if (dateTo != null) {
             query = query.taskCreatedBefore(dEndDate);
             historicQuery = historicQuery.taskCreatedBefore(dEndDate);
-            LOG.info("HistoricTaskInstanceQuery taskCreatedBefore---->>>>>>>>>: " + historicQuery.count());
         }
-        historicQuery.includeProcessVariables();
-        LOG.info("HistoricTaskInstanceQuery includeProcessVariables---->>>>>>>>>: " + historicQuery.count());
+        
+       // historicQuery.includeProcessVariables(); - нам не нужно отсекать процессы без переменных
+        
         if (sID_State_BP != null) {
             historicQuery.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
-            LOG.info("HistoricTaskInstanceQuery includeTaskLocalVariables---->>>>>>>>>: " + historicQuery.count());
         }
         List<HistoricTaskInstance> foundHistoricResults = historicQuery
                 .listPage(nRowStart, nRowsMax);
         
-        LOG.info("HistoricTaskInstanceQuery foundHistoricResults listPage---->>>>>>>>>: " + foundHistoricResults);
-
         if ("*".equals(saFields)){
         	saFields = null;
         	LOG.info("Resetting saFields to null in order to get all the fields values");
         }
         String header = oActionTaskService.formHeader(saFields, foundHistoricResults, saFieldsCalc);
         String[] headers = header.split(";");
-
         
         saFields = oActionTaskService.processSaFields(saFields, foundHistoricResults);
 
         LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!" + saFields);
         if (sID_State_BP != null) {
             query = query.taskDefinitionKey(sID_State_BP).includeTaskLocalVariables();
-            LOG.info("!!!!!!!!!!!!!!!!!!!saFields!!!!!!!!!!!!!!!!!" + saFields);
         }
         List<Task> foundResults = new LinkedList<Task>();
         if (sTaskEndDateAt == null && sTaskEndDateTo == null) {
@@ -1362,19 +1337,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bHeader && header != null && saFieldSummary == null) {
             printWriter.writeNext(headers);
 
-            LOG.info("headers" + headers);
         }
-        
-        LOG.info("foundResults is {}", foundResults);
-        
-        LOG.info("asField_Filter is {}", asField_Filter);
-        LOG.info("sLogin is {}", sLogin);
         
         String FormulaFilter_Export = null;
         
         if(asField_Filter != null && asField_Filter.equals("[sFormulaFilter_Export]")){
             FormulaFilter_Export = subjectRightBPDao.getSubjectRightBP(sID_BP, sLogin).getsFormulaFilter_Export();
-            LOG.info("FormulaFilter_Export is {} ", FormulaFilter_Export);
         }
         
         oActionTaskService.fillTheCSVMap(sID_BP, dBeginDate, dEndDate, foundResults, sDateCreateDF,
@@ -1391,30 +1359,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     tasksIdToExclude, saFieldsCalc, headers, sID_State_BP, FormulaFilter_Export);
         }
         
-        LOG.info("result csvLines {}", csvLines);
-        
-        /*List<Map<String, Object>> filteredCSVLine = new ArrayList<>();
-        try{
-            if (asField_Filter != null){
-                ToolJS oToolJs = new ToolJS();
-
-                for(Map<String, Object> currCSVLine : csvLines){
-                    if((Boolean)(oToolJs.getObjectResultOfCondition(new HashMap<>(),currCSVLine, asField_Filter))){
-                        filteredCSVLine.add(currCSVLine);
-                    }
-                }
-            }
-        }catch (Exception ex){
-            LOG.info("Exception during formula calculation {}", ex);
-        }
-        
-        csvLines.clear();
-        csvLines.addAll(filteredCSVLine);*/
-                
         LOG.info("!!!!!!!!!!!!!!saFieldsSummary" + saFieldSummary);
         if (saFieldSummary != null) {
 
-            LOG.info(">>>saFieldsSummary={}", saFieldSummary);
             try {
                 List<List<String>> stringResults = new ToolCellSum()
                         .getFieldsSummary(csvLines, saFieldSummary);
@@ -1424,7 +1371,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     }
                     List<String> line = stringResults.get(i);
                     printWriter.writeNext(line.toArray(new String[line.size()]));
-                    LOG.info("!!!!!!!!!!!!!!line" + line);
                 }
             } catch (Exception e) {
                 List<String> errorList = new LinkedList<>();
@@ -1440,7 +1386,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } else {
             for (Map<String, Object> currLine : csvLines) {
                 String[] line = oActionTaskService.createStringArray(currLine, Arrays.asList(headers));
-                LOG.info("!!!!oActionTaskService.createStringArray_line" + line);
                 printWriter.writeNext(line);
             }
         }
@@ -1466,15 +1411,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 pi.close();
             }
 
-            /*if (!oMail.sendWithUniSender()) {
-                LOG.error("Error occured while sending tasks data to email!!!");
-                pi.close();
-                throw new CommonServiceException(
-                        ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Error occured while sending tasks data to email!!!");
-            } else {
-                pi.close();
-            }*/
             httpResponse.setContentType("text/csv;charset=windows-1251");
             httpResponse.getWriter().print("OK");
         }
