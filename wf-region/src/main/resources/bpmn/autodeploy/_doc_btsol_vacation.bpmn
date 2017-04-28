@@ -162,11 +162,41 @@ execution.setVariable('sNameVacation', oResultAuthorName.sLabel)
     <sequenceFlow id="flow108" sourceRef="scripttask18" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask19" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
+var oSwitchStep15 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_AssignTo')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_3')</script>
     </scriptTask>
-    <userTask id="usertask4" name="Ознакомление и.о."></userTask>
+    <userTask id="usertask4" name="Ознакомление и.о.">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ФИО заявителя; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameVacation" name="ФИО работника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTypeVacation" name="Тип отпуска" type="enum" writable="false">
+          <activiti:value id="sEnumVac_1" name="Ежегодный отпуск"></activiti:value>
+          <activiti:value id="sEnumVac_2" name="Кратковременный отпуск без сохранения зарплаты по инициативе работника"></activiti:value>
+          <activiti:value id="sEnumVac_3" name="Отпуск по уходу за ребенком до 3-х лет"></activiti:value>
+          <activiti:value id="sEnumVac_4" name="Отпуск по уходу за ребенком до 6-ти лет"></activiti:value>
+          <activiti:value id="sEnumVac_5" name="Освободить от работы в связи с призывом на военную службу по мобилизации на особый период, но не более одного года, с сохранением места работы, должности и среднего заработка на основании ч.3 ст.119 КЗоТ Украины"></activiti:value>
+          <activiti:value id="sEnumVac_6" name="Освободить от выполнения служебных обязанностей на время прохождения учебных (военных) сборов с сохранением должности и средней заработной платы"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateVacationBegin" name="Дата начала отпуска" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateVacationEnd" name="Дата конца отпуска" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_AssignTo" name="Исполнение обязанностей возложить на" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_AssignTo" name="sLogin_AssignTo; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT2" name="Резолюция" type="enum" writable="false">
+          <activiti:value id="sEnumSign" name="Завизировано"></activiti:value>
+          <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow109" sourceRef="scripttask19" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow110" sourceRef="usertask4" targetRef="scripttask17"></sequenceFlow>
   </process>
