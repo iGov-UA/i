@@ -3082,9 +3082,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
             @ApiParam(value = "nID_Subject", required = true) @RequestParam(value = "nID_Subject", required = true) Long nID_Subject,
-             @ApiParam(value = "nID_Service", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
+            @ApiParam(value = "nID_Service", required = true) @RequestParam(value = "nID_Service", required = true) Long nID_Service,
             @ApiParam(value = "nID_ServiceData", required = true) @RequestParam(value = "nID_ServiceData", required = true) Long nID_ServiceData,
-             @ApiParam(value = "sID_UA", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA,
+            @ApiParam(value = "sID_UA", required = true) @RequestParam(value = "sID_UA", required = true) String sID_UA,
             @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
     ) throws Exception {
 
@@ -3093,7 +3093,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //      nID_ServiceData: formData.nID_ServiceData,
 //      nID_Region: formData.nID_Region,
 //      sID_UA: formData.sID_UA
-        
+        LOG.info("sJsonBody in startProcess {}", sJsonBody);
         Map<String, Object> mParam = new HashMap<>();
         Map<String, Object> mJsonBody;
         try {
