@@ -340,7 +340,12 @@
     </changeSet>
 
 
-    <changeSet id="Add missing custom tables" author="dpekach" dbms="postgresql">
+    <changeSet id="Add missing custom tables" author="dpekach">
+        <sql dbms="postgresql">
+            DROP TABLE IF EXISTS "Custom Process";
+            DROP TABLE IF EXISTS "Custom Process Task";
+        </sql>
+
         <createTable tableName="Custom Process">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
