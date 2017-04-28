@@ -44,7 +44,7 @@ public class SubjectRightBPService {
             	aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
             }
             
-            List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group_Referent", asID_Group);
+            List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("asID_Group_Export", asID_Group);
             
 		if (aSubjectRightBP != null) {
 			for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) {
