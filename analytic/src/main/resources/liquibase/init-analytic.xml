@@ -345,38 +345,104 @@
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="sProcessInstanceId" type="varchar(255)"></column>
-            <column name="sBusinessKey" type="varchar(255)"></column>
-            <column name="sProcessDefinitionId" type="varchar(64)"></column>
-            <column name="nDuration" type="bigint"></column>
-            <column name="sStartUserId" type="varchar(255)"></column>
-            <column name="sStartActivityId" type="varchar(255)"></column>
-            <column name="sEndActivityId" type="varchar(255)"></column>
-            <column name="sSuperProcessInstanceId" type="varchar(64)"></column>
-            <column name="sDeleteReason" type="varchar(4000)"></column>
-            <column name="sTenantId" type="varchar(255)"></column>
-            <column name="sName" type="varchar(255)"></column>
+            <column name="nID_Process" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_CustomProcess_Process"
+                             referencedTableName="Process" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sProcessInstanceId" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sBusinessKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sProcessDefinitionId" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nDuration" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sStartUserId" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sStartActivityId" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sEndActivityId" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sSuperProcessInstanceId" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDeleteReason" type="varchar(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sTenantId" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createTable tableName="Custom Process Task">
-            <column name="nID" type="bigint"></column>
-            <column name="sProcessDefinitionId" type="varchar(64)"></column>
-            <column name="sTaskDefinitionKey" type="varchar(255)"></column>
-            <column name="sProcessInstanceId" type="varchar(64)"></column>
-            <column name="sExecutionId" type="varchar(64)"></column>
-            <column name="sName" type="varchar(255)"></column>
-            <column name="sParentTaskId" type="varchar(64)"></column>
-            <column name="sDescription" type="varchar(4000)"></column>
-            <column name="sOwner" type="varchar(255)"></column>
-            <column name="sAssignee" type="varchar(255)"></column>
-            <column name="oClaimTime" type="datetime with time zone"></column>
-            <column name="nDuration" type="bigint"></column>
-            <column name="sDeleteReason" type="varchar(4000)"></column>
-            <column name="nPriority" type="integer"></column>
-            <column name="oDueDate" type="datetime with time zone"></column>
-            <column name="sFormKey" type="varchar(255)"></column>
-            <column name="sCategory" type="varchar(255)"></column>
-            <column name="sTenantId" type="varchar(255)"></column>
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_ProcessTask" type="bigint">
+                <constraints nullable="false" foreignKeyName="FK_CustomProcessTask_ProcessTask"
+                             referencedTableName="ProcessTask" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+            <column name="sProcessDefinitionId" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sTaskDefinitionKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sProcessInstanceId" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sExecutionId" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sParentTaskId" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDescription" type="varchar(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sOwner" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sAssignee" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="oClaimTime" type="datetime with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nDuration" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sDeleteReason" type="varchar(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nPriority" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="oDueDate" type="datetime with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sFormKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sCategory" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sTenantId" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     
