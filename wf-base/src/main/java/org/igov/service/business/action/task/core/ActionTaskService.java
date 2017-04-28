@@ -529,7 +529,6 @@ public class ActionTaskService {
 
     public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern,
             Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP, String asField_Filter) {
-        LOG.info("!!!!!csvLines: " + csvLines);
         ToolJS oToolJs = new ToolJS();
         LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_begin---------------------------------------------------------->");
         if (CollectionUtils.isEmpty(foundResults)) {
