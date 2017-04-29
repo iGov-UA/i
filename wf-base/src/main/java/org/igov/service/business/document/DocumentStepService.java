@@ -158,14 +158,14 @@ public class DocumentStepService {
         long i = 1L;
         for (String sKey_Step : asKey_Step_ExcludeCommon) {
             String[] asKey_Step_Split = sKey_Step.split(":");
-            sKey_Step = asKey_Step_Split[0];
             if (asKey_Step_Split.length == 2) {
                 oDocumentStepType = oDocumentStepTypeDao.findByExpected("name", asKey_Step_Split[1]);
             }
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
             oDocumentStep.setnOrder(i++);
-            oDocumentStep.setsKey_Step(sKey_Step);
+            //sKey_Step = asKey_Step_Split[0];
+            oDocumentStep.setsKey_Step(asKey_Step_Split[0]);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
             oDocumentStep.setoDocumentStepType(oDocumentStepType);
             LOG.info("before add: snID_Process_Activiti is: {} sKey_Step is: {} rights size is: {}",
