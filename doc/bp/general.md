@@ -1005,7 +1005,7 @@ digit3 - переменная, куда присвоится результат 
 
 ###### usingmultipleelectronicqueues
 ### Использование в одном процессе несколько электронных очередей (для нескольких департаментов)
-* внутри процесса на стартовой таске объявляем переменную с типом [queueData](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-%D0%BF%D0%B0%D1%80%D0%B0%D0%BC%D0%B5%D1%82%D1%80%D0%BE%D0%B2#queuedata)
+* внутри процесса на стартовой таске объявляем переменную с типом [queueData](#queuedata)
 ```xml 
 <activiti:formProperty id="visitDate" name="Бажана дата візиту" type="queueData" required="true"></activiti:formProperty>
 ```
@@ -1082,7 +1082,7 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 [детальней...](#_automaticsendingmail)
 
 ### Сервистаска для почты
-Создаем сервис таску, для которой указываем [один из трех](https://github.com/e-government-ua/iBP/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-Listener-%D0%B8-delegateExpression#delegateexpression) delegateExpression:  
+Создаем сервис таску, для которой указываем один из трех delegateExpression:  
 `#{MailTaskWithoutAttachment}`  
 `#{MailTaskWithAttachments}`  
 `#{MailTaskWithAttachmentsAndSMS}`  
@@ -1714,7 +1714,7 @@ IDE NetBeans позволяет автоматизировать этот про
 ###### installeclipse
 ### Устанавливаем Eclipse
 [1. Качаем последнюю версию](
-http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/neon/2/eclipse-committers-neon-2-win32-x86_64.zip) 
+http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/neon/2/eclipse-committers-neon-2-win32-x86_64.zip)   
 2. копируем скачанный архив в нужную папку где он будет храниться  
 3. распаковываем архив 
 
