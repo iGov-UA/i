@@ -7,7 +7,7 @@
 1. [Назначение групп и пользователей](#assigngroupsandusers)
 1. [Математические действия с переменными и операторы условий](#mathematical)
 1. [Работа с датами и таймерами](#workingwithdatesandtimers)
-1. [Маркеры и Валидаторы](#markersandValidators)
+1. [Маркеры и Валидаторы](#markersandvalidators)
 1. [Принтформы](#printform)
 1. [ЭЦП](#digitalsignature)
 1. [Электронные очереди](#electronicqueues)
