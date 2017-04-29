@@ -163,7 +163,7 @@ public class DocumentStepService {
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
             oDocumentStep.setnOrder(i++);
-            oDocumentStep.setsKey_Step(sKey_Step);
+            oDocumentStep.setsKey_Step(asKey_Step_Split[0]);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
             oDocumentStep.setoDocumentStepType(oDocumentStepType);
             LOG.info("before add: snID_Process_Activiti is: {} sKey_Step is: {} rights size is: {}",
@@ -1382,8 +1382,7 @@ public class DocumentStepService {
             LOG.info("sPath={}", sPath);
             byte[] aByteDocument = getFileData_Pattern(sPath);
             if (aByteDocument != null && aByteDocument.length > 0) {
-                String soJSON = null;
-                soJSON = Tool.sData(aByteDocument);
+                String soJSON = soJSON = Tool.sData(aByteDocument);
                 LOG.info("soJSON={}", soJSON);
 
                 List<DocumentStep> aDocumentStep = setDocumentSteps(snID_Process_Activiti, soJSON);
