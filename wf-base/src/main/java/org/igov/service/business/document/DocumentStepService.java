@@ -148,13 +148,12 @@ public class DocumentStepService {
         // first of all we filter common step with name "_" and then just
         // convert each step from JSON to POJO
         List<String> asKey_Step = Arrays.asList(JSONObject.getNames(oJSON));
-        Set asKey_Step_Sort = new TreeSet(asKey_Step);
-        asKey_Step = new ArrayList(asKey_Step_Sort);
-        LOG.info("List of steps: {}", asKey_Step);
-
-        LOG.info("List of steps: {}", asKey_Step);
         List<String> asKey_Step_ExcludeCommon = asKey_Step.stream().filter(sKey_Step -> !"_".equals(sKey_Step))
                 .collect(Collectors.toList());
+        Set asKey_Step_Sort = new TreeSet(asKey_Step_ExcludeCommon);
+        asKey_Step_ExcludeCommon = new ArrayList(asKey_Step_Sort);
+        LOG.info("List of steps: {}", asKey_Step_ExcludeCommon);
+        
         long i = 1L;
         for (String sKey_Step : asKey_Step_ExcludeCommon) {
             String[] asKey_Step_Split = sKey_Step.split(":");
@@ -164,8 +163,7 @@ public class DocumentStepService {
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
             oDocumentStep.setnOrder(i++);
-            //sKey_Step = asKey_Step_Split[0];
-            oDocumentStep.setsKey_Step(asKey_Step_Split[0]);
+            oDocumentStep.setsKey_Step(sKey_Step);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
             oDocumentStep.setoDocumentStepType(oDocumentStepType);
             LOG.info("before add: snID_Process_Activiti is: {} sKey_Step is: {} rights size is: {}",
