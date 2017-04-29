@@ -157,7 +157,7 @@ public class DocumentStepService {
                 .collect(Collectors.toList());
         long i = 1L;
         for (String sKey_Step : asKey_Step_ExcludeCommon) {
-            String[] asKey_Step_Split = sKey_Step.split(";");
+            String[] asKey_Step_Split = sKey_Step.split(":");
             sKey_Step = asKey_Step_Split[0];
             if (asKey_Step_Split.length == 2) {
                 oDocumentStepType = oDocumentStepTypeDao.findByExpected("name", asKey_Step_Split[1]);
