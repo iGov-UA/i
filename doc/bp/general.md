@@ -537,10 +537,11 @@ digit3 - переменная, куда присвоится результат 
 
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
 
-[Маркеры группы motion](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-motion)  
-[Маркеры группы validate](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-validate)  
-[Маркеры группы attributes](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D1%8B-attributes)  
+[Маркеры группы motion](#motion)  
+[Маркеры группы validate](#validate)  
+[Маркеры группы attributes](#attributes)  
 
+###### motion
 ## Маркеры группы motion
 ###### showfieldsoncondition  
 ### ShowFieldsOnCondition 
@@ -695,7 +696,7 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_splittexthalf_1)
 
-
+###### validate
 ## Маркеры группы validate
 ###### customformat_1
 ### CustomFormat_1 
@@ -817,6 +818,7 @@ digit3 - переменная, куда присвоится результат 
   }
 }
 ```
+###### attributes
 ## Маркеры группы attributes
 ### Line
 для отрисовки линии (группирующей/отсекающей) одни поля от других
