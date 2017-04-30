@@ -15,10 +15,21 @@ public class Relation_ObjectGroup extends AbstractEntity{
     
     @JsonProperty(value = "oObjectGroup_Child")
     @ManyToOne(targetEntity = ObjectGroup.class)
-    @JoinColumn(name="nID_ObjectGroup_Child", nullable = false, updatable = false)
-    private ObjectGroup oObjectGroup;
+    @JoinColumn(name="nID_ObjectGroup_Child", nullable = true, updatable = false)
+    private ObjectGroup oObjectGroup_Child;
     
-    @JsonProperty(value = "nID_Relation")
+    @JsonProperty(value = "oRelation")
+    @ManyToOne(targetEntity = Relation.class)
+    @JoinColumn(name="nID_Relation", nullable = false, updatable = false)
+    private ObjectGroup oRelation;
+    
+    @JsonProperty(value = "oObjectGroup_Parent")
+    @ManyToOne(targetEntity = ObjectGroup.class)
+    @JoinColumn(name="nID_ObjectGroup_Parent", nullable = true, updatable = false)
+    private ObjectGroup oObjectGroup_Parent;
+    
+    
+    /*@JsonProperty(value = "nID_Relation")
     @Column(name = "nID_Relation", nullable = false)
     private Long nID_Relation;
     
@@ -26,19 +37,43 @@ public class Relation_ObjectGroup extends AbstractEntity{
     @Column(name = "nID_ObjectGroup_Parent", nullable = true)
     private Long nID_ObjectGroup_Parent;
     
-    /*@JsonProperty(value = "nID_ObjectGroup_Child")
+    @JsonProperty(value = "nID_ObjectGroup_Child")
     @Column(name = "nID_ObjectGroup_Child", nullable = false)
     private Long nID_ObjectGroup_Child;*/
 
+    public ObjectGroup getoObjectGroup_Child() {
+        return oObjectGroup_Child;
+    }
+
+    public ObjectGroup getoRelation() {
+        return oRelation;
+    }
+
+    public ObjectGroup getoObjectGroup_Parent() {
+        return oObjectGroup_Parent;
+    }
+
+    public void setoObjectGroup_Child(ObjectGroup oObjectGroup_Child) {
+        this.oObjectGroup_Child = oObjectGroup_Child;
+    }
+
+    public void setoRelation(ObjectGroup oRelation) {
+        this.oRelation = oRelation;
+    }
+
+    public void setoObjectGroup_Parent(ObjectGroup oObjectGroup_Parent) {
+        this.oObjectGroup_Parent = oObjectGroup_Parent;
+    }
+
     public void setoObjectGroup(ObjectGroup oObjectGroup) {
-        this.oObjectGroup = oObjectGroup;
+        this.oObjectGroup_Child = oObjectGroup;
     }
 
     public ObjectGroup getoObjectGroup() {
-        return oObjectGroup;
+        return oObjectGroup_Child;
     }
     
-    public Long getnID_Relation() {
+    /*public Long getnID_Relation() {
         return nID_Relation;
     }
 
@@ -46,9 +81,9 @@ public class Relation_ObjectGroup extends AbstractEntity{
         return nID_ObjectGroup_Parent;
     }
 
-    /*public Long getnID_ObjectGroup_Child() {
+    public Long getnID_ObjectGroup_Child() {
         return nID_ObjectGroup_Child;
-    }*/
+    }
 
     public void setnID_Relation(Long nID_Relation) {
         this.nID_Relation = nID_Relation;
@@ -58,7 +93,7 @@ public class Relation_ObjectGroup extends AbstractEntity{
         this.nID_ObjectGroup_Parent = nID_ObjectGroup_Parent;
     }
 
-    /*public void setnID_ObjectGroup_Child(Long nID_ObjectGroup_Child) {
+    public void setnID_ObjectGroup_Child(Long nID_ObjectGroup_Child) {
         this.nID_ObjectGroup_Child = nID_ObjectGroup_Child;
     }*/
 
