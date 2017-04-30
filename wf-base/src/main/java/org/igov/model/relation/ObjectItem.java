@@ -21,7 +21,7 @@ public class ObjectItem extends AbstractEntity{
     @JsonProperty(value = "oSubject_Source")
     @ManyToOne(targetEntity = Subject.class)
     @JoinColumn(name="nID_Subject_Source", nullable = true, updatable = false)
-    private ObjectGroup oSubject_Source;
+    private Subject oSubject_Source;
     
     @JsonProperty(value = "sID_Private_Source")
     @Column(name = "sID_Private_Source", length = 255, nullable = true)
@@ -31,11 +31,11 @@ public class ObjectItem extends AbstractEntity{
     @Column(name = "sName", length = 5000, nullable = false)
     private String sName;
 
-    public ObjectGroup getoSubject_Source() {
+    public Subject getoSubject_Source() {
         return oSubject_Source;
     }
 
-    public void setoSubject_Source(ObjectGroup oSubject_Source) {
+    public void setoSubject_Source(Subject oSubject_Source) {
         this.oSubject_Source = oSubject_Source;
     }
 

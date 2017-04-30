@@ -21,7 +21,7 @@ public class Relation_ObjectGroup extends AbstractEntity{
     @JsonProperty(value = "oRelation")
     @ManyToOne(targetEntity = Relation.class)
     @JoinColumn(name="nID_Relation", nullable = false, updatable = false)
-    private ObjectGroup oRelation;
+    private Relation oRelation;
     
     @JsonProperty(value = "oObjectGroup_Parent")
     @ManyToOne(targetEntity = ObjectGroup.class)
@@ -45,7 +45,7 @@ public class Relation_ObjectGroup extends AbstractEntity{
         return oObjectGroup_Child;
     }
 
-    public ObjectGroup getoRelation() {
+    public Relation getoRelation() {
         return oRelation;
     }
 
@@ -57,7 +57,7 @@ public class Relation_ObjectGroup extends AbstractEntity{
         this.oObjectGroup_Child = oObjectGroup_Child;
     }
 
-    public void setoRelation(ObjectGroup oRelation) {
+    public void setoRelation(Relation oRelation) {
         this.oRelation = oRelation;
     }
 

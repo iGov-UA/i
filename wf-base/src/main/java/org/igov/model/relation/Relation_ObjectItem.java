@@ -30,39 +30,39 @@ public class Relation_ObjectItem extends AbstractEntity{
     @JsonProperty(value = "oRelation")
     @ManyToOne(targetEntity = Relation.class)
     @JoinColumn(name="nID_Relation", nullable = false, updatable = false)
-    private ObjectGroup oRelation;
+    private Relation oRelation;
     
     @JsonProperty(value = "oObjectItem_Child")
     @ManyToOne(targetEntity = ObjectItem.class)
     @JoinColumn(name="nID_ObjectItem_Child", nullable = false, updatable = false)
-    private ObjectGroup oObjectItem_Child;
+    private ObjectItem oObjectItem_Child;
     
     @JsonProperty(value = "oObjectItem_Parent")
     @ManyToOne(targetEntity = ObjectItem.class)
     @JoinColumn(name="nID_ObjectItem_Parent", nullable = true, updatable = false)
-    private ObjectGroup oObjectItem_Parent;
+    private ObjectItem oObjectItem_Parent;
 
-    public void setoRelation(ObjectGroup oRelation) {
+    public void setoRelation(Relation oRelation) {
         this.oRelation = oRelation;
     }
 
-    public void setoObjectItem_Child(ObjectGroup oObjectItem_Child) {
+    public void setoObjectItem_Child(ObjectItem oObjectItem_Child) {
         this.oObjectItem_Child = oObjectItem_Child;
     }
 
-    public void setoObjectItem_Parent(ObjectGroup oObjectItem_Parent) {
+    public void setoObjectItem_Parent(ObjectItem oObjectItem_Parent) {
         this.oObjectItem_Parent = oObjectItem_Parent;
     }
     
-    public ObjectGroup getoRelation() {
+    public Relation getoRelation() {
         return oRelation;
     }
 
-    public ObjectGroup getoObjectItem_Child() {
+    public ObjectItem getoObjectItem_Child() {
         return oObjectItem_Child;
     }
 
-    public ObjectGroup getoObjectItem_Parent() {
+    public ObjectItem getoObjectItem_Parent() {
         return oObjectItem_Parent;
     }
     
