@@ -1176,6 +1176,7 @@ i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessin
 1. [Назначение даты исполнения](#assignmentexecutiondate)
 1. [Получение ИД БП](#obtainingbpid)  
 1. [Получение логина и ФИО основного исполнителя](#gettingloginandname)  
+1. [Получение имени департамента](#obtainingdepartmentname)
 
 
 
@@ -1410,6 +1411,15 @@ var sExecutor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProc
 execution.setVariable('sExecutor', sExecutor) 
 ```
 [детальней...](#_gettingloginandname)
+
+###### obtainingdepartmentname
+### Получение имени департамента
+
+var sNameDepart = " ";
+var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
+var obj1 = subjectGroupTreeService.getDeparByGroup_Activiti(sID_Group_Activiti);
+execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
+
 
 ###### configurationfiles
 # 18. Конфигурационные файлы
