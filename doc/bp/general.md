@@ -1414,12 +1414,12 @@ execution.setVariable('sExecutor', sExecutor)
 
 ###### obtainingdepartmentname
 ### Получение имени департамента
-
+```
 var sNameDepart = " ";
 var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
 var obj1 = subjectGroupTreeService.getDeparByGroup_Activiti(sID_Group_Activiti);
 execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
-
+```
 
 ###### configurationfiles
 # 18. Конфигурационные файлы
