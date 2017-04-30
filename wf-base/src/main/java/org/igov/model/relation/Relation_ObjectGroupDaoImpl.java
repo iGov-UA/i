@@ -25,10 +25,12 @@ public class Relation_ObjectGroupDaoImpl extends GenericEntityDao<Long, Relation
             criteria.add(Restrictions.like("oObjectGroup.sName", sFindChild, MatchMode.ANYWHERE));
         }*/
         if (nID_Relation != null) {
-            criteria.add(Restrictions.eq("nID_Relation", nID_Relation));
+            //criteria.add(Restrictions.eq("nID_Relation", nID_Relation));
+            criteria.add(Restrictions.eq("oRelation.id", nID_Relation));
         }
         if (nID_Parent != null) {
-            criteria.add(Restrictions.eq("nID_ObjectGroup_Parent", nID_Parent));
+            //criteria.add(Restrictions.eq("nID_ObjectGroup_Parent", nID_Parent));
+            criteria.add(Restrictions.eq("oObjectGroup_Parent.id", nID_Parent));
         }
         
         return criteria.list();
