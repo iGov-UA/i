@@ -2198,15 +2198,15 @@ https://alpha.test.region.igov.org.ua/wf/service/object/file/download_file_from_
 Для того чтоб услуга для граждан отобразилась на сайте и в результатах поиска, необходимо ее привязать хотя бы к одной жизненной ситуации.  
 Для этого необходимо заполнить несколько конфигурационных файлов:  
 
-1. [Service.csv](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service)  
+1. [Service.csv](#service)  
 Важно проследить, чтоб услуга имела nID_Subcategory, которая относится к гражданам  
 
-2. [ServiceTag.csv](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicetag)
+2. [ServiceTag.csv](#servicetag)
 В этом файле вносить изменения не нужно. Нужно найти подходящую жизненную ситуацию и взять ее nID.  
 Жизненная ситуация отличается от корневого тега по полю nID_ServiceTagType и имеет в этом поле номер "3".  
 Практически все корневые теги находятся вверху списка а жизненные ситуации - после 10 nID.  
 
-3. [ServiceTagLink.csv](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicetaglink)  
+3. [ServiceTagLink.csv](#servicetaglink)  
 В этом файле связываем услугу и жизненную ситуацию  
 nID_Service - ид услуги из файла Service.csv  
 nID_ServiceTag - ид жизненной ситуации из файла ServiceTag.csv  
