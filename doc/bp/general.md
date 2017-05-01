@@ -976,9 +976,9 @@ digit3 - переменная, куда присвоится результат 
 здесь могут быть созданы  различные департаменты для возможности использования нескольких потоков в одном процессе  
 
 **nID** - id департамента  
-**sName** - название департамента 
-
-[детальней...](#_subjectorgandepartment)
+**sName** - название департамента   
+**sGroup_Activiti** - id группы активити, созданной для этого департамента    
+**nID_SubjectOrgan** - id номер из файла [SubjectOrgan](#subjectorgan)    
 
 
 ###### flowlink
@@ -1581,7 +1581,7 @@ execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
 ### FlowSlot
 ### FlowSlotTicket_FlowSlot
 ### FlowSlotTicket
-### SubjectOrganDepartment
+### [SubjectOrganDepartment](#subjectorgandepartment)
 
 
 ###### workingwiththegithandrepository
@@ -3309,13 +3309,6 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 **nID_servicedata** - номер строки в [ServiceData](#servicedata) , для которой создается поток  
 **nID_subjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](#subjectorgandepartment)   
 **sID_BP** - id самого процесса  
-
-###### _subjectorgandepartment
-
-[вернуться...](#subjectorgandepartment)
-
-**sGroup_Activiti** - id группы активити, созданной для этого департамента  
-**nID_SubjectOrgan** - id номер из файла [SubjectOrgan](#subjectorgan)  
 
 ###### _flowlink
 
