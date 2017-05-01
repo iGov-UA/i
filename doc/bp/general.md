@@ -3300,15 +3300,14 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
   ![11_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/11_1.jpg)
 На юзертасках добавить стандартный набор листнеров для подгрузки файлов.  
 
-[валидатор файлов, на которые должен быть наложена ЕЦП](https://github.com/e-government-ua/iBP/wiki/%D0%9C%D0%B0%D1%80%D0%BA%D0%B5%D1%80%D1%8B-%D0%B8-%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80%D1%8B#filesign---%D0%92%D0%B0%D0%BB%D0%B8%D0%B4%D0%B0%D1%82%D0%BE%D1%80-%D0%95%D0%A6%D0%9F)
 
 ###### 13. Электронные очереди
 ###### _flow_servicedata
 
 [вернуться...](#flow_servicedata)
 
-**nID_servicedata** - номер строки в [ServiceData](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#servicedata) , для которой создается поток  
-**nID_subjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)   
+**nID_servicedata** - номер строки в [ServiceData](#servicedata) , для которой создается поток  
+**nID_subjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](#subjectorgandepartment)   
 **sID_BP** - id самого процесса  
 
 ###### _subjectorgandepartment
@@ -3316,14 +3315,14 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 [вернуться...](#subjectorgandepartment)
 
 **sGroup_Activiti** - id группы активити, созданной для этого департамента  
-**nID_SubjectOrgan** - id номер из файла [SubjectOrgan](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#subjectorgan)  
+**nID_SubjectOrgan** - id номер из файла [SubjectOrgan](#subjectorgan)  
 
 ###### _flowlink
 
 [вернуться...](#flowlink)
 
-**nID_Service** - ИД услуги из [Service](https://github.com/e-government-ua/iBP/wiki/%D0%9A%D0%BE%D0%BD%D1%84%D0%B8%D0%B3%D1%83%D1%80%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D1%84%D0%B0%D0%B9%D0%BB%D1%8B#service)  
-**nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv) 
+**nID_Service** - ИД услуги из [Service](#service)  
+**nID_SubjectOrganDepartment** - номер департамента, из файла [SubjectOrganDepartment](#subjectorgandepartment) 
 
 ###### _flowproperty
 
