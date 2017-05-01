@@ -72,6 +72,15 @@ public class ProcessSubject extends AbstractEntity {
     @Transient
     private List<ProcessSubject> aProcessSubj;
     
+    @JsonProperty(value = "sReportType")
+    @Column
+    private String sReportType;
+    
+    @JsonProperty(value = "oProcessSubjectTask")
+    @ManyToOne(targetEntity = ProcessSubjectTask.class)
+    @JoinColumn(name = "nID_ProcessSubjectTask")
+    private ProcessSubjectTask oProcessSubjectTask;
+    
     public List<ProcessSubject> getaProcessSubj() {
 	return aProcessSubj;
     }
@@ -154,6 +163,22 @@ public class ProcessSubject extends AbstractEntity {
         } else {
             return null;
         }
+    }
+
+    public String getsReportType() {
+        return sReportType;
+    }
+
+    public ProcessSubjectTask getoProcessSubjectTask() {
+        return oProcessSubjectTask;
+    }
+
+    public void setsReportType(String sReportType) {
+        this.sReportType = sReportType;
+    }
+
+    public void setoProcessSubjectTask(ProcessSubjectTask oProcessSubjectTask) {
+        this.oProcessSubjectTask = oProcessSubjectTask;
     }
 
     @Override
