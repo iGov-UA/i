@@ -1446,11 +1446,8 @@ execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
 ### ObjectCustoms
 ### ObjectEarthTarget
 ### ObjectPlace_UA
-### Place_
 ### Place
-### PlaceTree_
 ### PlaceTree
-### PlaceType_
 ### PlaceType
 ### Region
 ### Server
