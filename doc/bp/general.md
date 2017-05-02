@@ -3357,7 +3357,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 ```xml
 <activiti:formProperty id="nID_Department_visitDate" name="Департамент; ;bVisible=false" type="string"></activiti:formProperty>
 ```
-значение для переменной id="nID_Department_visitDate" берем из  файла [SubjectOrganDepartment](https://github.com/e-government-ua/iBP/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D1%8B%D0%B5-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8#subjectorgandepartmentcsv)
+значение для переменной id="nID_Department_visitDate" берем из  файла [SubjectOrganDepartment](#subjectorgandepartmentcsv)
 
 ###### _variant
 
@@ -3374,7 +3374,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 [вернуться...](#cancellationrequest)
 
-[Скрипт для получения даты/времени напоминания о выбранной дате из электронной очереди](https://github.com/e-government-ua/iBP/wiki/%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82%D1%8B#%D0%A1%D0%BA%D1%80%D0%B8%D0%BF%D1%82-%D0%B4%D0%BB%D1%8F-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B4%D0%B0%D1%82%D1%8B%D0%B2%D1%80%D0%B5%D0%BC%D0%B5%D0%BD%D0%B8-%D0%BD%D0%B0%D0%BF%D0%BE%D0%BC%D0%B8%D0%BD%D0%B0%D0%BD%D0%B8%D1%8F-%D0%BE-%D0%B2%D1%8B%D0%B1%D1%80%D0%B0%D0%BD%D0%BD%D0%BE%D0%B9-%D0%B4%D0%B0%D1%82%D0%B5-%D0%B8%D0%B7-%D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B9-%D0%BE%D1%87%D0%B5%D1%80%D0%B5%D0%B4%D0%B8)
+[Скрипт для получения даты/времени напоминания о выбранной дате из электронной очереди](#gettingdatetime)
 
 ###### _changetheorderofanelectronicqueue
 
@@ -3638,7 +3638,7 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 * Пример.
 * nID;nID_Service;nID_Place;nID_City;nID_Region;nID_ServiceType;oData;sURL;bHidden;nID_Subject_Operator;bTest;sNote;asAuth;nID_Server
-* 1;1;2;2;NULL;1;{};https://null.igov.org.ua;true;1;true;Перейдя на этот сайт Вы сможете получить услугу;BankID,EDS,KK;0
+* 1;1;2;2;NULL;1;{};https://igov.org.ua/ ;true;1;true; Перейдя на этот сайт Вы сможете получить услугу;BankID,EDS,KK;0
 * 1032;788;467;467;NULL;4;{"processDefinitionId":"znes_bud_393:1:1"};;false;1;true;;BankID,EDS;0
 * 038;1471;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
   ![17_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_0.JPG)
