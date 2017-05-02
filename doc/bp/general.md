@@ -3710,7 +3710,7 @@ C:\Program Files (x86)\Java\jdk1.8.0_111
 
 ###### _installeclipse
 
-[вернуться...](#installeclipse)
+[вернуться...](#installeclipse)   
 4. запускаем eclipse.exe  
 5. При первом запуске он спросит где хранить настройки Eclipce  
   ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNUJYaThZZnpLaTg)  
