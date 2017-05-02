@@ -791,7 +791,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         String snID_Process = String.valueOf(omResponseBody.get("id")); //разобраться чего получаем нал в некоторых случаях
         
         if(sRequestBody != null && sRequestBody.contains("sCancelInfo")){
-            runtimeService.setVariable(snID_Process, "sCancelInfo", String.format("Заявка актуальна");
+            runtimeService.setVariable(snID_Process, "sCancelInfo", String.format("Заявка актуальна"));
         }
         
         if (snID_Process != null && !"null".equalsIgnoreCase(snID_Process)) {
