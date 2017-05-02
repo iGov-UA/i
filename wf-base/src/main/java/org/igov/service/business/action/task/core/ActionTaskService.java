@@ -874,6 +874,10 @@ public class ActionTaskService {
         String res = currentRow;
         for (TaskReportField field : TaskReportField.values()) {
             if (res.contains(field.getPattern())) {
+            	LOG.info("Before!!!!!!!!!!res: " + res);
+                LOG.info("Before!!!!!!!!!!curTask: {}" + curTask);
+                LOG.info("Before!!!!!!!!!!sDateCreateDF: " + sDateCreateDF);
+                LOG.info("Before!!!!!!!!!!oGeneralConfig: {} " + oGeneralConfig);
                 res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);
                 LOG.info("!!!!!!!!!!res: " + res);
                 LOG.info("!!!!!!!!!!curTask: {}" + curTask);
