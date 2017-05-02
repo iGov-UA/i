@@ -350,10 +350,14 @@ public class ActionTaskService {
             }
         }
         DateFormat df_StartProcess = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        oRuntimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
+        String snID_Task = oTaskService.createTaskQuery().processInstanceId(nID_Process).active().singleResult().getId();
+        oTaskService.setVariable(snID_Task, CANCEL_INFO_FIELD, String.format(
                 "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
                 df_StartProcess.format(new Date()), sInfo == null ? "" : sInfo));
+        
+        /*oRuntimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
+                "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
+                df_StartProcess.format(new Date()), sInfo == null ? "" : sInfo));*/
     }
 
     private String addCalculatedFields(String saFieldsCalc, TaskInfo curTask, String currentRow) {
