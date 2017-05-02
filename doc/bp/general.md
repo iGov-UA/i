@@ -3357,7 +3357,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 ```xml
 <activiti:formProperty id="nID_Department_visitDate" name="Департамент; ;bVisible=false" type="string"></activiti:formProperty>
 ```
-значение для переменной id="nID_Department_visitDate" берем из  файла [SubjectOrganDepartment](#subjectorgandepartmentcsv)
+значение для переменной id="nID_Department_visitDate" берем из  файла [SubjectOrganDepartment](#subjectorgandepartment)
 
 ###### _variant
 
