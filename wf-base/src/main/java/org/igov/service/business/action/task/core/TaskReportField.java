@@ -80,27 +80,6 @@ public enum TaskReportField {
                 return currentRow.replace(this.getPattern(), " ");
             }
 		}
-    },
-     EMAIL("6", "${email}") {
-        @Override
-        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
-            if (curTask.getProcessVariables().get("email") != null) {
-                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("email").toString());
-            } else {
-                return currentRow.replace(this.getPattern(), " ");
-            }
-            
-        }
-
-		@Override
-		public String replaceValue(String currentRow,
-				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
-			if (curTask.getProcessVariables().get("email") != null) {
-                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("email").toString());
-            } else {
-                return currentRow.replace(this.getPattern(), " ");
-            }
-		}
     };
 
     private String id;
