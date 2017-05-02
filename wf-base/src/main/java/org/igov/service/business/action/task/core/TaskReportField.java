@@ -74,7 +74,11 @@ public enum TaskReportField {
 		@Override
 		public String replaceValue(String currentRow,
 				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
-			return currentRow.replace(this.getPattern(), curTask.getAssignee());
+			if (curTask.getAssignee() != null) {
+                return currentRow.replace(this.getPattern(), curTask.getAssignee());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
 		}
     };
 
