@@ -1146,7 +1146,7 @@ public class ActionTaskService {
                     "Unable to found business processes for sLogin=" + sLogin,
                     ProcessDefinition.class);
         }
-        LOG.debug("Selecting business processes for the user with login: {}", sLogin);
+        LOG.info("Selecting business processes for the user with login: {}", sLogin);
 
         List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
         List<ProcessDefinition> aProcessDefinition = oRepositoryService
@@ -1155,7 +1155,7 @@ public class ActionTaskService {
                 .latestVersion().list();
 
         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
-            LOG.debug("Found {} active process definitions", aProcessDefinition.size());
+            LOG.info("Found {} active process definitions", aProcessDefinition.size());
             List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
             if (aGroup != null && !aGroup.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
@@ -1163,14 +1163,14 @@ public class ActionTaskService {
                     sb.append(oGroup.getId());
                     sb.append(",");
                 }
-                LOG.debug("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
+                LOG.info("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
             }
 
             for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
 
                 String sID_BP = oProcessDefinition.getId();
 
-                LOG.debug("process definition id: sID_BP={}", oProcessDefinition.getId());
+                LOG.info("process definition id: sID_BP={}", oProcessDefinition.getId());
 
                 if (!bDocOnly || sID_BP.startsWith("_doc_")) {
                     Set<String> aCandidateCroupsToCheck = getGroupsOfProcessTask(oProcessDefinition);
