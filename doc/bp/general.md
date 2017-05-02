@@ -3145,7 +3145,7 @@ sContent::${sContent};;sAutorResolution::${sAutorResolution};;
 
 ###### 9. Работа с датами и таймерами
 ###### _usingtimers
-[вернуться...](#usingtimers) 
+[вернуться...](#usingtimers)    
 Для настройки эскалации или автопроброса процесса дальше на этап используем элемент **TimerBoundaryEvent** (крепится на юзертаску).  
 Обязательно изменить автоматически создаваемый ID этого элемента  “boundarytimer1 ”на  id="escalationTimer1"  
 
@@ -3266,7 +3266,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
   ![10_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/10_0.JPG)
       
 * При необходимости, сформированную принтформу можно отправить в письме как Attachment {PrintForm_1}
-* Динамически содержимое принтформы можно изменять маркерами: [issue #816](https://github.com/e-government-ua/i/issues/816)
+* Динамически содержимое принтформы можно изменять маркерами: [issue 816](https://github.com/e-government-ua/i/issues/816)
 
 ###### _display_hidefields
 
@@ -3782,9 +3782,9 @@ http://download.eclipse.org/technology/m2e/releases
   ![ecl1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/ecl1.JPG)
 
 ###### _addjsonandhtml
-[вернуться...](#addjsonandhtml)
+[вернуться...](#addjsonandhtml)  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_saWRQWTdOVGdTRW8)  
-![2](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sRWx6dEs0aDNJY0E)  
+![2](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sRWx6dEs0aDNJY0E)   
 3. приложения JSON дает возможность открыть окно для редактирования или валидации JSON  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sekgtZzdHWWo4b00)  
 а также можно настроить как будет форматироваться JSON  если нажать комбинацию ctrl + shift + F  
