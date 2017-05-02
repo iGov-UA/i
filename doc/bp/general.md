@@ -3741,7 +3741,7 @@ http://download.eclipse.org/technology/m2e/releases
 9. Затягиваем репозиторий  
 ![#f03c15](https://placehold.it/10/f03c15/000000?text=+) a) Кликаем во вкладке Package Explorer правой кнопкой мыши и выбираем импорт  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sTmlESEJBY3ZrdVE)  
-![#f03c15](https://placehold.it/10/f03c15/000000?text=+) b) И движемся по следующей цепочке  
+![#0000FF](https://placehold.it/10/f03c15/000000?text=+) b) И движемся по следующей цепочке  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sZG55QXRjUS0wMWc)  
 ![2](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sOXQxSzUwZTM2N2s)  
 ![#f03c15](https://placehold.it/10/f03c15/000000?text=+) c) Вставляем ссылку на нужный Гит  https://github.com/e-government-ua/i.git  
