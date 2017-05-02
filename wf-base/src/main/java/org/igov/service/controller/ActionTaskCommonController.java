@@ -1205,11 +1205,12 @@ public class ActionTaskCommonController {// extends ExecutionBaseResource
 		LOG.info(
 				"HistoricTaskInstanceQuery foundHistoricResults listPage---->>>>>>>>>: " + foundHistoricResults.size());
 
-		/*
-		 * if ("*".equals(saFields)) {	 saFields = null; LOG.
-		 * info("Resetting saFields to null in order to get all the fields values"
-		 * ); }
-		 */
+		
+		if ("*".equals(saFields)) {
+			saFields = null;
+			LOG.info("Resetting saFields to null in order to get all the fields values");
+		}
+		 
 		String header = oActionTaskService.formHeader(saFields, foundHistoricResults, saFieldsCalc);
 		String[] headers = header.split(";");
 
