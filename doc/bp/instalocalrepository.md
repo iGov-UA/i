@@ -1,4 +1,4 @@
-
+# Установка ActivitiDesigner, для редактирования бизнес процессов    
 **ОСНОВНАЯ ИНСТРУКЦИЯ РАЗВОРАЧИВАНИЯ ПРОЕКТА:**
 https://docs.google.com/document/d/1N3vPXv76R2gjjwr03bQ1buzec2fJJg1Uh5Gzg3EPEwI/edit
 
