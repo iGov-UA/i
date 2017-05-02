@@ -1600,7 +1600,7 @@ execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
 Очень упрощенная схема веток, с которыми работают бизнес-аналитики приведена на рисунке:  
 ![19_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/19_0.jpg)  
 Основная разработка и тестирование бизнес-процессов происходит в ветке test-delta.
-Как установить и зятнуть себе локально репозиторий описано [здесь](https://github.com/e-government-ua/i/wiki/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-ActivitiDesigner,-%D0%B4%D0%BB%D1%8F-%D1%80%D0%B5%D0%B4%D0%B0%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D0%B2). 
+Как установить и зятнуть себе локально репозиторий описано [здесь](https://github.com/e-government-ua/i/blob/test/doc/bp/instalocalrepository.md). 
 Програмисты ведут свою разработку в ветке test.  
 Когда появляется необходимость синхронизировать доработки программистов и бизнес-процессы - это осуществляется мержем через ветку test-version.
 ###### swithbranch
