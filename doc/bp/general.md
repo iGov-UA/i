@@ -57,7 +57,7 @@
  * написать "Як це працює" в формате html. Путь для размещения файла:\i\wf-central\src\main\resources\patterns\services\Info
 * добавить файл с принтформой в формате html. Путь для размещения файла: i\wf-region\src\main\resources\pattern\print. Желательно использовать папку по конкретному органу или направлению.
 * заполнить [Service](#service), [ServiceData](#servicedata), [SubjectOrganJoin](#subjectorganjoin), [SubjectOrgan](#subjectorgan)
-* Если необходимо добавить населенный пункт которого нет в списке - добавить его в сущности [Place](#place), [PlaceTree](B#placetree), [City](#city).
+* Если необходимо добавить населенный пункт которого нет в списке - добавить его в сущности [Place](#place), [PlaceTree](#placetree), [City](#city).
 * При необходимости - добавить [электронные очереди](#electronicqueues). 
 * Прописать [эскалации](#escalationrule).
 
