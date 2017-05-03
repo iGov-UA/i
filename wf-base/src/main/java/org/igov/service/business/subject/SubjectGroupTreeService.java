@@ -333,22 +333,17 @@ public class SubjectGroupTreeService {
         
         List<SubjectGroup> aSubjectGroupParent = new ArrayList<>();
 
-        //Все SubjectGroup'ы у которых один sID_Group_Activiti
-        List<SubjectGroup> aSubjectGroup = new ArrayList<>();
+        String sSubjectTypeToFind;
         
-        List<SubjectGroupTree> aSubjectGroupTree = new ArrayList<>();
+        sSubjectTypeToFind = sSubjectType;
         
-        String SubjectTypeToFind;
-        
-        if (sSubjectType == null) {
+        if (sSubjectTypeToFind == null) {
             
-            SubjectTypeToFind = getSubjectType(sID_Group_Activiti);
+            sSubjectTypeToFind = getSubjectType(sID_Group_Activiti);
         }
         
-        SubjectTypeToFind = sSubjectType;
-
         //Получили все SubjectGroup, которые относятся к группе sID_Group_Activiti
-        aSubjectGroup = SubjectGroupDao.findAllBy("sID_Group_Activiti", sID_Group_Activiti);
+        List<SubjectGroup> aSubjectGroup = SubjectGroupDao.findAllBy("sID_Group_Activiti", sID_Group_Activiti);
         LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroup.size() + ", " + aSubjectGroup.toString());
         
         for (SubjectGroup oSubjectGroup : aSubjectGroup) {
@@ -357,14 +352,14 @@ public class SubjectGroupTreeService {
             Long nID = oSubjectGroup.getoSubject().getId();
             
             //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
-            aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
+            List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
             LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroupTree.size() + ", " + aSubjectGroupTree.toString());
                         
             for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupTree) {
                                
                 SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
                 
-                if (getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()).equals(SubjectTypeToFind)) {
+                if (getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()).equals(sSubjectTypeToFind)) {
                   
                     aSubjectGroupParent.add(oSubjectGroup_Parent);
                 }
