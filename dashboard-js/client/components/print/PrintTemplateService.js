@@ -7,7 +7,9 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Fiel
   function findPrintTemplate (form, sCustomFieldID) {
     var s = ((sCustomFieldID!==null && sCustomFieldID !== undefined && sCustomFieldID!=='-') ? sCustomFieldID : 'sBody');
     var printTemplateResult = form.filter(function (item) {
-      return item.id === s;
+      var bPrintform = item.id === s || (item.name && item.name.indexOf('bPrintform=true') >= 0);
+      return bPrintform;
+      //return item.id === s;
     });
     var retval = printTemplateResult.length !== 0 ? printTemplateResult[0].name.replace(/\[pattern(.+)\].*/, '$1') : "";
     return retval;
@@ -126,7 +128,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Fiel
       if (markerExists){
           templates = form.filter(function (item) {
           var result = false;
-          if (item.id && item.id.indexOf('sBody') >= 0
+          //if (item.id && item.id.indexOf('sBody') >= 0
+          if (((item.id && item.id.indexOf('sBody') >= 0) || (item.name && item.name.indexOf('bPrintform=true') >= 0)) 
             && (!FieldMotionService.FieldMentioned.inShow(item.id)
             || (FieldMotionService.FieldMentioned.inShow(item.id)
             && FieldMotionService.isFieldVisible(item.id, form)))) {
@@ -145,7 +148,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Fiel
       } else {
           templates = form.filter(function (item) {
           var result = false;
-          if (item.id && item.id.indexOf('sBody') >= 0) {
+          //if (item.id && item.id.indexOf('sBody') >= 0) {
+          if ((item.id && item.id.indexOf('sBody') >= 0) || (item.name && item.name.indexOf('bPrintform=true') >= 0)) {
             result = true;
             // На дашборде при вытягивани для формы печати пути к патерну, из значения поля -
             // брать название для каждого элемента комбобокса #792
