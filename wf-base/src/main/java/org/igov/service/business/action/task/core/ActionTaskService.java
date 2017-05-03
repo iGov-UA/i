@@ -111,8 +111,6 @@ public class ActionTaskService {
     @Autowired
     private HistoryEventService oHistoryEventService;
     @Autowired
-    private Mail oMail;
-    @Autowired
     private RepositoryService oRepositoryService;
     @Autowired
     private FormService oFormService;
@@ -123,12 +121,11 @@ public class ActionTaskService {
     @Autowired
     private GeneralConfig oGeneralConfig;
     @Autowired
-    private FlowSlotTicketDao flowSlotTicketDao;
+    private FlowSlotTicketDao oFlowSlotTicketDao;
     @Autowired
-    private CachedInvocationBean cachedInvocationBean;
-
+    private CachedInvocationBean oCachedInvocationBean;
     @Autowired
-    SubjectRightBPService subjectRightBPService;
+    SubjectRightBPService oSubjectRightBPService;
 
     public static String parseEnumValue(String sEnumName) {
         LOG.info("(sEnumName={})", sEnumName);
@@ -344,7 +341,7 @@ public class ActionTaskService {
             }
             if (nID_FlowSlotTicket != null) {
                 LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
-                if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
+                if (!oFlowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
                     throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
                 }
             }
@@ -1294,7 +1291,7 @@ public class ActionTaskService {
             result.add(process);*/
         }
 
-        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
+        List<SubjectRightBPVO> aResSubjectRightBPVO = oSubjectRightBPService.getBPs_ForReferent(sLogin);
         LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
 
         if (aResSubjectRightBPVO != null) {
@@ -1733,7 +1730,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         boolean bOk = false;
         LOG.info("Deleting process snID_Process={}, sLogin={}, sReason={}", snID_Process, sLogin, sReason);
         try {
-            oRuntimeService.deleteProcessInstance(snID_Process, sReason);
+            oRuntimeService.deleteProcessInstance(snID_Process, sReason);           
         } catch (ActivitiObjectNotFoundException e) {
             LOG.info("Could not find process {} to delete: {}", snID_Process, e);
             throw new RecordNotFoundException();
@@ -2165,7 +2162,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             return tasks;
         }
         try {
-            tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+            tickets = oFlowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
         } catch (Exception e) {
             LOG.error("Error occured while getting tickets for tasks", e);
         }
@@ -2203,14 +2200,14 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         if (taskIds.isEmpty()) {
             return tasks;
         }
-        SerializableResponseEntity<ArrayList<FlowSlotTicket>> entities = cachedInvocationBean
+        SerializableResponseEntity<ArrayList<FlowSlotTicket>> entities = oCachedInvocationBean
                 .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<FlowSlotTicket>>>(
                         GET_ALL_TICKETS_CACHE, sLogin, bIncludeAlienTickets, sFilterStatus) {
                     @Override
                     public SerializableResponseEntity<ArrayList<FlowSlotTicket>> execute() {
                         LOG.info("Loading tickets from cache for user {}", sLogin);
 
-                        ArrayList<FlowSlotTicket> res = (ArrayList<FlowSlotTicket>) flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+                        ArrayList<FlowSlotTicket> res = (ArrayList<FlowSlotTicket>) oFlowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
 
                         return new SerializableResponseEntity<>(new ResponseEntity<>(res, null, HttpStatus.OK));
                     }
@@ -2300,7 +2297,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
 
     public List<TaskInfo> returnTasksFromCache(final String sLogin, final String sFilterStatus, final boolean bIncludeAlienAssignedTasks,
             final List<String> groupsIds, String soaFilterField) {
-        SerializableResponseEntity<ArrayList<TaskInfo>> entity = cachedInvocationBean
+        SerializableResponseEntity<ArrayList<TaskInfo>> entity = oCachedInvocationBean
                 .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<TaskInfo>>>(
                         GET_ALL_TASK_FOR_USER_CACHE, sLogin, sFilterStatus, bIncludeAlienAssignedTasks) {
                     @Override
@@ -2581,4 +2578,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         return CollectionUtils.isNotEmpty(aProcessInfoShortVO);
     }
 
+    public void deleteHistoricProcessInstance(String snID_Process_Activiti){
+        oHistoryService.deleteHistoricProcessInstance(snID_Process_Activiti);
+    }
 }
