@@ -84,8 +84,6 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
-import org.igov.util.ToolJS;
-//import com.google.common.base.Optional;
 
 /**
  * @author BW
@@ -398,6 +396,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть
      * поля его стартовой формы.
+     * @return 
      */
     @ApiOperation(value = "Получение полей стартовой формы по ID таски", notes = "##### Примеры:\n"
             + "http://test.region.igov.org.ua/wf/service/action/task/getStartFormData?nID_Task=5170256\n"
@@ -559,6 +558,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Attachment (без самого контента)
      * @param bIncludeMessages (опциональный) если задано значение true - в
      * отдельном элементе aMessage возвращается массив сообщений по задаче
+     * @param bIncludeProcessVariables
      *
      * @return сериализованный объект Map{String : Object}
      * <br>{
@@ -581,6 +581,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * <br> ... другие опциональные объекты: aGroup, aFieldStartForm,
      * aAttachment и aMessage
      * <br>}
+     * @throws org.igov.service.exception.CRCInvalidException
+     * @throws org.igov.service.exception.CommonServiceException
+     * @throws org.igov.service.exception.RecordNotFoundException
      */
     @ApiOperation(value = "Получение данных по таске", notes = "#####  ActionCommonTaskController: Сервис получения данных по таске #####\n\n"
             + "Request:\n\n"
@@ -772,7 +775,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         ProcessInstance pi;
         if (organ != null) {
-            Map<String, Object> variables = new HashMap<String, Object>();
+            Map<String, Object> variables = new HashMap<>();
             variables.put("organ", organ);
             pi = runtimeService.startProcessInstanceByKey(key, variables);
         } else {
@@ -855,11 +858,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      */
     @RequestMapping(value = "/setVariable", method = RequestMethod.POST, consumes = "text/plain")
     @ResponseBody
-    public String setVariableToProcessInstanceUsingPost(@RequestBody String allRequestParamsStr
-    //                @RequestParam(value = "processInstanceId", required = true) String snID_Process,
-    //            @RequestParam(value = "key", required = true) String sKey,
-    //            @RequestParam(value = "value", required = true) String sValue
-    ) {
+    public String setVariableToProcessInstanceUsingPost(@RequestBody String allRequestParamsStr) {
         String processInstanceId = null;
         String key = null;
         String value = null;
@@ -891,6 +890,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *
      * // * @param nID_Subject ID авторизированого субъекта (добавляется в
      * запрос автоматически после аутентификации пользователя)
+     * @return 
      */
     @ApiOperation(value = "Загрузка каталога сервисов из Activiti", notes = "#####  ActionCommonTaskController: Загрузка каталога сервисов из Activiti #####\n\n"
             + "Request:\n\n"
@@ -1157,6 +1157,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param sID_State_BP task state id
      * @param saFields field of the tasks to download. Separated by comma
      * @param nASCI_Spliter splitter of the fields
+     * @param fileName
      * @param sID_Codepage encoding for the file
      * @param sDateCreateFormat format for sDateCreate
      * @param dateAt start date for the filter
@@ -1165,9 +1166,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param nRowsMax maximal amount of row for paging
      * @param bIncludeHistory to include historic task instances. default value
      * is true
+     * @param bHeader
      * @param saFieldsCalc list of calculated fields
      * @param saFieldSummary parap to specify aggregated fields
+     * @param sMailTo
+     * @param sLogin
+     * @param asField_Filter
+     * @param sTaskEndDateAt
      * @param httpResponse http responce wrapper
+     * @param bIncludeProcessVariables
+     * @param sTaskEndDateTo
      * @throws IOException in case of connection aborted with client
      * <p/>
      * example: https://test.region.igov.org.ua/wf/service/action/task/
@@ -1175,6 +1183,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * =2015-08-01&nASCI_Spliter =59&sID_Codepage=UTF8&saFields=nID_Task
      * ;bankIdPassport;bankIdlastName
      * ;bankIdfirstName;bankIdmiddleName;1;sDateCreate
+     * @throws org.igov.service.exception.CommonServiceException
+     * @throws org.apache.commons.mail.EmailException
      */
     @ApiOperation(value = "Загрузка данных по задачам", notes = "#####  ActionCommonTaskController: Загрузка данных по задачам #####\n\n"
             + "HTTP Context: https://server:port/wf/service/action/task/downloadTasksData\n\n\n"
@@ -1604,18 +1614,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
     }
 
-    /*private void createSetTaskQuestionsMessage(String sID_Order, String sBody, String saData) throws Exception {
-     Map<String, String> params = new HashMap<>();
-     if (sBody != null && !sBody.isEmpty()) {
-     params.put("sBody", sBody);
-     }
-     params.put("sData", saData);
-     params.put("nID_SubjectMessageType", "" + 5L);
-     params.put("sID_Order", sID_Order);
-     LOG.info("try to save service message with params {}", params);
-     String jsonResponse = historyEventService.addServiceMessage(params);
-     LOG.info("(jsonResponse={})", jsonResponse);
-     }*/
     @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  ActionCommonTaskController: Вызов сервиса ответа по полям требующим уточнения #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n\n"
             + "- обновляет поля формы указанного процесса значениями, переданными в параметре saField Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable=\"false\"\n\n"
@@ -1645,19 +1643,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     void setTaskAnswer_Region(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
             @ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField
-    //, @ApiParam(value = "строка тела сообщения (опциональный параметр)", required = false) @RequestParam(value = "sBody", required = false) String sBody
     ) throws CommonServiceException {
 
         try {
-            //String processInstanceID = "" + nID_Order;
-            //String snID_Process = nID_Process+"";
+            
             JSONObject oFields = new JSONObject("{ soData:" + saField + "}");
             JSONArray aField = oFields.getJSONArray("soData");
             List<Task> aTask = taskService.createTaskQuery().processInstanceId(nID_Process + "").list();
 
-//            runtimeService.setVariable(processInstanceID, "sAnswer", sBody);
-//            LOG.info("Added variable sAnswer to the process {}", snID_Process);
-            //LOG.info("Found {} tasks by nID_Protected... ", aTask.size());
             for (Task oTask : aTask) {
                 //LOG.info("oTask: (getName()={},getDescription()={},getId()={})", oTask.getName(), oTask.getDescription(), oTask.getId());
                 TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
@@ -1667,14 +1660,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         mField.put(oFormProperty.getId(), oFormProperty.getValue());
                     }
                 }
-                /*
-                 sID: item.id,
-                 sName: item.name,
-                 sType: item.type,
-                 sValue: item.value,
-                 sValueNew: item.value,
-                 sNotify: $scope.clarifyFields[item.id].text
-                 */
+
                 for (int i = 0; i < aField.length(); i++) {
                     JSONObject oField = aField.getJSONObject(i);
                     String sID = (String) oField.get("sID");
@@ -1732,25 +1718,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process
     ) throws CommonServiceException {
         try {
-            /* issue #1131
-             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
-             Map<String, String> params = new HashMap<>();
-             params.put("sID_Order", sID_Order);
-             String soResponse = "";
-             String sURL = generalConfig.getSelfHostCentral() + "/wf/service/subject/message/getServiceMessages";
-             soResponse = httpRequester.getInside(sURL, params);
-             LOG.info("(soResponse={})", soResponse);
-             */
-            //public static ResponseEntity<String> toJsonResponse(Object res) {
-            //return toJsonResponse(HttpStatus.OK, soResponse);
-            //return soResponse; // issue #1131
-            /*String historyEventServiceJson = oActionTaskService.updateHistoryEvent_Service(
-             sID_Order,
-             saField,
-             sHead, sBody, sToken, "Запит на уточнення даних");
-             LOG.info("....ok! successfully update historyEvent_service! event= {}", historyEventServiceJson);*/
-            //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
-            //createSetTaskQuestionsMessage(sID_Order, sBody, saField);//issue 1042
             return oMessageService.gerOrderMessagesByProcessInstanceID(nID_Process); // issue #1131
         } catch (Exception oException) {
             LOG.error("Can't get: {}", oException.getMessage());
@@ -1925,7 +1892,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String soaFilterField) {
         JSONArray jsonArray = new JSONArray(soaFilterField);
 
-        Map<String, String> mapOfFieldsToSort = new HashMap<String, String>();
+        Map<String, String> mapOfFieldsToSort = new HashMap<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject elem = (JSONObject) jsonArray.get(i);
             if (elem.has("sID") && elem.has("sValue")) {
@@ -1936,7 +1903,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         LOG.info("Converted filter fields to the map {}", mapOfFieldsToSort);
 
-        List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+        List<Map<String, Object>> res = new LinkedList<>();
         for (Map<String, Object> taskData : tasks) {
             boolean toSkip = false;
             for (Map.Entry<String, String> currentFilter : mapOfFieldsToSort.entrySet()) {
@@ -1989,9 +1956,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     List<Map<String, Object>> getCountTask(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
             @ApiParam(value = "amFilter", required = true) @RequestParam(value = "amFilter") String amFilter) throws CommonServiceException {
-        List<Map<String, Object>> res = new LinkedList<Map<String, Object>>();
+        List<Map<String, Object>> res = new LinkedList<>();
 
-        List<String> groupsIds = new LinkedList<String>();
+        List<String> groupsIds = new LinkedList<>();
         List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
         if (groups != null && !groups.isEmpty()) {
@@ -2926,10 +2893,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "true") Boolean bDocOnly
     )
             throws IOException {
-
-        //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
-        //LOG.info("Result: {}", jsonRes);
-        return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly);
+         return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly);
     }
 
     @ApiOperation(value = "Получение списка полей бизнес процессов, к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка полей бизнес процессов к которым у пользователя есть доступ #####\n\n"
@@ -2953,9 +2917,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "true") Boolean bDocOnly
     )
             throws IOException {
-
-        //String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
-        //LOG.info("Result: {}", jsonRes);
         return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
     }
 
@@ -2968,38 +2929,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         LOG.info("SetDocument in ActionTaskCommonController started...");
         LOG.info("sLogin in setDocument is {}", sLogin);
-        /*if (sID_BP.startsWith("_doc_")||ConstantsInterceptor.DNEPR_MVK_291_COMMON_BP.contains(sID_BP)) {
-                Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, sID_BP, null);
-                LOG.info("SetDocument process count: " + count.intValue());
-        }*/
-        //return oDocumentStepService.getDocumentStepRights(sLogin, nID_Process+"");
         Map<String, Object> mParam = new HashMap<>();
         mParam.put("sLoginAuthor", sLogin);
-        //mParam.put("sLogin_LastSubmited", sLogin);
         ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
         Map<String, Object> mReturn = new HashMap<>();
-
-        /*HistoryEvent_Service oHistoryEvent_Service = actionEventHistoryService.addActionStatus_Central(
-                generalConfig.getOrderId_ByProcess(Long.parseLong(oProcessInstanceChild.getProcessInstanceId())), 
-                subjectAccountDao.findSubjectAccounts(null, sLogin, null, null).get(0).getnID_Subject(), 
-                HistoryEventType.getById(11L).getsName(), 
-                null,
-                null,
-                null,
-                null, 
-                null,
-                null, 
-                null, 
-                null, 
-                null, 
-                null, 
-                null, 
-                null, 
-                null, 
-                null, 
-                11L);
-
-        LOG.info("HistoryEvent_Service elem in setDocument: {}", oHistoryEvent_Service.toString());*/
         mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
         LOG.info("mReturn={}", mReturn);
 
