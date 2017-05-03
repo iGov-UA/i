@@ -789,6 +789,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
         String snID_Process = String.valueOf(omResponseBody.get("id")); //разобраться чего получаем нал в некоторых случаях
+        
+        if(sRequestBody != null && sRequestBody.contains("sCancelInfo")){
+            runtimeService.setVariable(snID_Process, "sCancelInfo", String.format("Заявка актуальна"));
+        }
+        
         if (snID_Process != null && !"null".equalsIgnoreCase(snID_Process)) {
             Long nID_Process = Long.valueOf(snID_Process);
             LOG.info("snID_Process please be here: " + snID_Process);

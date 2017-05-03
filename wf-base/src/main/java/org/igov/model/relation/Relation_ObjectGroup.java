@@ -13,15 +13,15 @@ import org.igov.model.core.AbstractEntity;
 @javax.persistence.Entity
 public class Relation_ObjectGroup extends AbstractEntity{
     
-    @JsonProperty(value = "oObjectGroup_Child")
-    @ManyToOne(targetEntity = ObjectGroup.class)
-    @JoinColumn(name="nID_ObjectGroup_Child", nullable = true, updatable = false)
-    private ObjectGroup oObjectGroup_Child;
-    
     @JsonProperty(value = "oRelation")
     @ManyToOne(targetEntity = Relation.class)
     @JoinColumn(name="nID_Relation", nullable = false, updatable = false)
     private Relation oRelation;
+    
+    @JsonProperty(value = "oObjectGroup_Child")
+    @ManyToOne(targetEntity = ObjectGroup.class)
+    @JoinColumn(name="nID_ObjectGroup_Child", nullable = true, updatable = false)
+    private ObjectGroup oObjectGroup_Child;
     
     @JsonProperty(value = "oObjectGroup_Parent")
     @ManyToOne(targetEntity = ObjectGroup.class)
