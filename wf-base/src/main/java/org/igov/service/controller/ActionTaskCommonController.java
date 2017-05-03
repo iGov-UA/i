@@ -3106,7 +3106,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //      nID_Region: formData.nID_Region,
 //      sID_UA: formData.sID_UA
         LOG.info("sJsonBody in startProcess (try to add UTF string) {}", new String(sJsonBody.getBytes(), "UTF-8"));
-        LOG.info("sJsonBody in startProcess {}", new String(sJsonBody.getBytes(), "UTF-8"));
+        LOG.info("sJsonBody in startProcess {}", sJsonBody);
+        
         Map<String, Object> mParam = new HashMap<>();
         Map<String, Object> mJsonBody;
         try {
