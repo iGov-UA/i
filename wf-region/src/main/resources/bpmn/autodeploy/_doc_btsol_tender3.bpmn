@@ -273,17 +273,39 @@
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" required="true">
+          <activiti:value id="sEnumCreateTask" name="Сформировать задание"></activiti:value>
           <activiti:value id="sEnumSign" name="Разрешаю"></activiti:value>
           <activiti:value id="sEnumRemark" name="Отказать"></activiti:value>
-          <activiti:value id="sEnumDelegate" name="Делегировать"></activiti:value>
           <activiti:value id="sEnumReply" name="Сформировать ответ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sName_DelegateUT4" name="кому делегировать; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_DelegateUT4" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTextTask" name="Текст задания" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Срок выполнения задания" type="date"></activiti:formProperty>
+        <activiti:formProperty id="asTypeReport" name="Тип отчета" type="enum">
+          <activiti:value id="sEnumReport" name="отчет"></activiti:value>
+          <activiti:value id="sEnumDoc" name="документ"></activiti:value>
+          <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTable5_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable5_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_Kontroler" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT4" name="Внесите комментарий" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers8" name="если делегировать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sName_DelegateUT4&quot;,&quot;sLogin_DelegateUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDelegate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="если задание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;asTypeReport&quot;,&quot;sDateExecution&quot;,&quot;sTextTask&quot;,&quot;sTable5_1&quot;,&quot;sName_Kontroler&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumCreateTask'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[_task_btsol]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable5_1}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sNameObject::${sNameObject};;oDateBegin::${oDateBegin};;oDateEnd::${oDateEnd};;asSupplyMaterials::${asSupplyMaterials};;asServicemMachines::${asServicemMachines};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -383,7 +405,7 @@ execution.setVariable('bSubmitedAll4', oCheckSubmitedAll4.bSubmitedAll.toString(
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumReply' }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow101" sourceRef="exclusivegateway11" targetRef="scripttask17">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign' || asActionDocUT4 == 'sEnumRemark'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign' || asActionDocUT4 == 'sEnumRemark'|| asActionDocUT4 == 'sEnumCreateTask'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask16" name="Step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -398,7 +420,67 @@ var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, '
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_5')</script>
     </scriptTask>
-    <userTask id="usertask4" name="User Task"></userTask>
+    <userTask id="usertask4" name="ознакомление с утвержденным документом">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum" writable="false">
+          <activiti:value id="Enum1" name="заказчика"></activiti:value>
+          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asServicemMachines" name="Услуги машин и механизмов" type="enum" writable="false">
+          <activiti:value id="Enum1" name="заказчика"></activiti:value>
+          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
+          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
+          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
+          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
+          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
+          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
+          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Текущие"></activiti:value>
+          <activiti:value id="Enum2" name="Инвестпрограмма"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
+          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
+          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
+          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
+          <activiti:value id="Enum5" name="Другое"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Требуется"></activiti:value>
+          <activiti:value id="Enum2" name="Не требуется"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asZonePersRespons" name="Зоны персональной ответственности в рамках заявки; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_DelegateUT4" name="Делегировано" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_DelegateUT4" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCommentUT4" name="Внесите комментарий" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow104" sourceRef="scripttask17" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow105" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
   </process>
