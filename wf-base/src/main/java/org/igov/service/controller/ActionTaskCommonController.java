@@ -3088,7 +3088,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     @ApiOperation(value = "/startProcess", notes = "##### Старт процесса#####\n\n")
-    @RequestMapping(value = "/startProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    //@RequestMapping(value = "/startProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @RequestMapping(value = "/startProcess", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     Map<String, Object> startProcess(@ApiParam(value = "sLogin", required = false) @RequestParam(value = "sLogin", required = false, defaultValue = "kermit") String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP,
