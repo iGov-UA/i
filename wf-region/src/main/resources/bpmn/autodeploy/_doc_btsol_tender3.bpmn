@@ -67,10 +67,7 @@
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asActionDocUT1" name="Дополнительные действия с документом" type="enum">
-          <activiti:value id="sEnumSighting" name="отправить за визами"></activiti:value>
-          <activiti:value id="sEnumEnd" name="удалить"></activiti:value>
-        </activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -139,12 +136,8 @@
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
-          <activiti:value id="sEnumDelegate" name="Делегировать"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sName_DelegateUT2" name="кому делегировать; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_DelegateUT2" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="если делегировать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sName_DelegateUT2&quot;,&quot;sLogin_DelegateUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDelegate'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -207,12 +200,8 @@
         <activiti:formProperty id="asActionDocUT3" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
           <activiti:value id="sEnumRemark" name="Возврат автору (все визы будут аннулированы)"></activiti:value>
-          <activiti:value id="sEnumDelegate" name="Делегировать"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sName_DelegateUT3" name="кому делегировать; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_DelegateUT3" name="Логін" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sCommentUT3" name="Внесите текст замечания" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="если делегировать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sName_DelegateUT3&quot;,&quot;sLogin_DelegateUT3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumDelegate'&quot;}}}"></activiti:formProperty>
+       <activiti:formProperty id="sCommentUT3" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
