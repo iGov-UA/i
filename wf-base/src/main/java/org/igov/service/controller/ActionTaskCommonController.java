@@ -2355,6 +2355,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param sLogin - Строка логин пользователя, меняющего пароль //@param
      * sPasswordOld - Строка старый пароль //@param sPasswordNew - Строка новый
      * пароль
+     * @param sPasswords
      * @return
      * @throws CommonServiceException
      * @throws RuntimeException
@@ -2634,21 +2635,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * Удаляет процес если он попадает по параметрам
      *
-     * @param pd
+     * @param processDefinition
      * @param sFieldType
      * @param sID_Field
      * @param sVersion
      */
-    private void removeBP(ProcessDefinition pd, String sFieldType, String sID_Field, String sVersion) {
+    private void removeBP(ProcessDefinition processDefinition, String sFieldType, String sID_Field, String sVersion) {
         if (sFieldType == null && sID_Field == null) {
             if (sVersion == null) {
-                repositoryService.deleteDeployment(pd.getDeploymentId());
-            } else if (pd.getVersion() == Integer.parseInt(sVersion)) {
-                repositoryService.deleteDeployment(pd.getDeploymentId());
+                repositoryService.deleteDeployment(processDefinition.getDeploymentId());
+            } else if (processDefinition.getVersion() == Integer.parseInt(sVersion)) {
+                repositoryService.deleteDeployment(processDefinition.getDeploymentId());
             }
         }
         try {
-            FormData formData = formService.getStartFormData(pd.getId());
+            FormData formData = formService.getStartFormData(processDefinition.getId());
             List<FormProperty> formProperties = formData.getFormProperties();
             for (FormProperty fp : formProperties) {
                 String idFp = fp.getId();
@@ -2656,32 +2657,32 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (sVersion == null) {
                     if (sFieldType != null && sID_Field != null) {
                         if (sFieldType.equalsIgnoreCase(type) && sID_Field.equalsIgnoreCase(idFp)) {
-                            repositoryService.deleteDeployment(pd.getDeploymentId());
+                            repositoryService.deleteDeployment(processDefinition.getDeploymentId());
                             break;
                         }
                     } else if (sFieldType == null && sID_Field != null) {
                         if (sID_Field.equalsIgnoreCase(idFp)) {
-                            repositoryService.deleteDeployment(pd.getDeploymentId());
+                            repositoryService.deleteDeployment(processDefinition.getDeploymentId());
                             break;
                         }
-                    } else if (sFieldType.equalsIgnoreCase(type)) {
-                        repositoryService.deleteDeployment(pd.getDeploymentId());
+                    } else if (sFieldType != null && sFieldType.equalsIgnoreCase(type)) {
+                        repositoryService.deleteDeployment(processDefinition.getDeploymentId());
                         break;
                     }
-                } else if (pd.getVersion() == Integer.parseInt(sVersion)) {
+                } else if (processDefinition.getVersion() == Integer.parseInt(sVersion)) {
                     if (sFieldType != null && sID_Field != null) {
                         if (sFieldType.equalsIgnoreCase(type) && sID_Field.equalsIgnoreCase(idFp)) {
-                            repositoryService.deleteDeployment(pd.getDeploymentId());
+                            repositoryService.deleteDeployment(processDefinition.getDeploymentId());
                             break;
                         }
                     } else if (sFieldType == null && sID_Field != null) {
                         if (sID_Field.equalsIgnoreCase(idFp)) {
-                            repositoryService.deleteDeployment(pd.getDeploymentId());
+                            repositoryService.deleteDeployment(processDefinition.getDeploymentId());
                             break;
                         }
                     } else if (sFieldType != null && sID_Field == null) {
                         if (sFieldType.equalsIgnoreCase(idFp)) {
-                            repositoryService.deleteDeployment(pd.getDeploymentId());
+                            repositoryService.deleteDeployment(processDefinition.getDeploymentId());
                             break;
                         }
                     }
@@ -2713,9 +2714,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     if (removeOldProcessQuery.getKey().startsWith("update") || removeOldProcessQuery.getKey().startsWith("delete_act_hi_procinst")) {
                         removeOldProcessQueryValue = removeOldProcessQuery.getValue().replaceFirst("%s", sID_Process_Def)
                                 .replaceFirst("%dateAt", sDateFinishAt).replaceFirst("%dateTo", sDateFinishTo);
-                        //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def);
-                        //removeOldProcessQueryValue = String.format(removeOldProcessQuery.getValue(), sID_Process_Def, sDateFinishAt, sDateFinishTo);
-                    } else {
+                        } else {
                         removeOldProcessQueryValue = removeOldProcessQuery.getValue();
                     }
                     result.put(removeOldProcessQueryValue, -1);
@@ -2741,6 +2740,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             deleteProccess.setLimitCountRowDeleted(nLimitCountRowDeleted);
         }
         deleteProccess.closeProcess(sID_Process_Def);
+    }
+    
+    @ApiOperation(value = "/deleteHistoricProcessInstance", notes = "##### Удалить закрытый процесс#####\n\n")
+    @RequestMapping(value = "/deleteHistoricProcessInstance", method = RequestMethod.GET)
+    public @ResponseBody
+    void deleteHistoricProcessInstance(@ApiParam(value = "ид бизнес-процесса", required = true) 
+    @RequestParam(value = "sID_Process_Activiti", required = true) String sID_Process_Activiti) {
+        oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
     }
 
     @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
