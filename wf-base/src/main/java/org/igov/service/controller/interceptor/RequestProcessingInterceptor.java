@@ -260,8 +260,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("--------------ALL REQUEST DOCUMENT PARAMS--------------");
                 sURL = oRequest.getRequestURL().toString();
                 LOG.info("protocolize sURL is: " + sURL);
-                /*LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                /*LOG.info("sRequestBody: {}", sRequestBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("sResponseBody: {}", sResponseBody);
                 LOG.info("-----------------------------------------------");
@@ -397,8 +397,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if (isUpdateTask(oRequest)) {
                 LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (PREPROCESSING)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
-                /*LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                /*LOG.info("sRequestBody: {}", sRequestBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("sResponseBody: {}", sResponseBody);
                 LOG.info("-----------------------------------------------");
@@ -410,8 +410,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                 LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
-                /*LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
+                LOG.info("-----------------------------------------------");
+                /*LOG.info("sRequestBody: {}", sRequestBody);
                 LOG.info("-----------------------------------------------");
                 LOG.info("sResponseBody: {}", sResponseBody);
                 LOG.info("-----------------------------------------------");
