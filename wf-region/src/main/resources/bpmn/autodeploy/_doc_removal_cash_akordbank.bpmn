@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_removal_cash_akordbank" name="перевезення (підкріплення) готівки" isExecutable="true">
+  <process id="_doc_removal_cash_akordbank" name="перевезення (вивіз) готівки" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (підкріплення) готівки"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="отримання ід процесу" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -33,8 +33,8 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sEncashment" name="служба інкасації (ФГС/ДПСЗ);" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate" name="дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ);" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Head_of_cash_desk]]></activiti:string>
@@ -70,14 +70,14 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="sAddress1" name="Номер та адреса відділення отримувача" type="string"></activiti:formProperty>
         <activiti:formProperty id="nInterestRate" name="Відсоткова ставка" type="long"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Додаткова інформація" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEncashment" name="служба інкасації (ФГС/ДПСЗ)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -128,14 +128,14 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sAddress1" name="Номер та адреса відділення отримувача" type="string"></activiti:formProperty>
         <activiti:formProperty id="nInterestRate" name="Відсоткова ставка" type="long"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Додаткова інформація" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEncashment" name="служба інкасації (ФГС/ДПСЗ)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
