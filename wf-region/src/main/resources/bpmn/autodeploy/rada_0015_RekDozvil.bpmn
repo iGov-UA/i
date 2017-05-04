@@ -135,6 +135,10 @@
         <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html,sFileName=Dozvil_na_rozmishennya_reklamy_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html,sFileName=Dozvil_na_rozmishennya_reklamy_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html,sFileName=Dodatok_Eskiz_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html,sFileName=Dodatok_Znimok_ta_Fotokartka_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
@@ -643,6 +647,10 @@
         <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html,sFileName=Dozvil_na_rozmishennya_reklamy_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html,sFileName=Dozvil_na_rozmishennya_reklamy_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html,sFileName=Dodatok_Eskiz_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html,sFileName=Dodatok_Znimok_ta_Fotokartka_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
@@ -1080,7 +1088,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				По вашому зверненню №[sID_Order] щодо ${sPosluga_nameZV} винесено відмову.<br />
+				По вашому зверненню №[sID_Order] на порталі iGov.org.ua щодо ${sPosluga_nameZV} винесено відмову.<br />
 				Коментар до рішення: ${sDecisionComment_Report_Total}<br />
 				Відповідь з причиною відмови в додатку.<br />
 				<br />
@@ -1130,16 +1138,27 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				По вашому зверненню №[sID_Order] щодо ${sPosluga_nameZV} винесено позитивне рішення.<br />
+				По вашому зверненню №[sID_Order] на порталі iGov.org.ua щодо ${sPosluga_nameZV} винесено позитивне рішення.<br />
 				Коментар до рішення: ${sDecisionComment_Report_Total}<br />
-				Додаткові файли наведено в додатку.<br />
 				<br />
-				${sNameOrgan} <br>
+				Для завершення отримання дозволу на розміщення зовнішньої реклами, будь ласка, роздрукуйте дві копії файлів, що наведено в додатках <br />
+				а) на одному листі (обов'язково з двох сторін) <br />
+				 - бланк Дозволу на розміщення зовнішньої реклами. <br />
+				 - погоджувальну частину Дозволу на розміщення зовнішньої реклами. <br />
+				б) на одному листі (обов'язково з двох сторін) <br />
+				 - бланк для ескізу (конструктивного рішення рекламного засобу). <br />
+				 - бланк для топогеодезичного знімку місцевості (М 1:500) та фотокартки місця після розташування на ньому рекламного засобу. <br />
+				<br />
+				Заповніть та підпишить (узгодити з відповідними органами) відповідні документи.
+				Після їх оформлення чекаємо на Вас (з оригіналами  документів) для первірки документів за адресою  <br />
 				${sAddress} <br>
-				${sWorkTime} <br>
+				${sWorkTime} <br>	
+				<br />				
+				${sNameOrgan} <br>
 				${sPhoneOrgan} <br>
 			</p>
 			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
                 ${sNameOrgan}, <br />
 			[pattern/mail/new_design/_common_signature_end.html]
@@ -1149,10 +1168,10 @@
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno pozitivne rishennya. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFile_Report_Total}"]]></activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_2},${PrintForm_3},${PrintForm_4},${nFile_Report_Total}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1263,10 +1282,35 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				По вашому зверненню №[sID_Order] щодо ${sPosluga_nameZV} винесено позитивне рішення.<br />
+				По вашому зверненню №[sID_Order] на порталі iGov.org.ua щодо ${sPosluga_nameZV} винесено позитивне рішення.<br />
 				Коментар до рішення: ${sDecisionComment_Report_Total}<br />
-				Додаткові файли наведено в додатку.<br />
 				<br />
+				Для завершення отримання дозволу на розміщення зовнішньої реклами, будь ласка, <br />
+				а) в строк до п'яти днів здійснити місячну оплату за тимчасове користування місцем розташування рекламного засобу у період встановлення пріоритету згідно калькуляції (наведено в додатку) <br />
+				<br>
+				б) отримати договор про тимчасове користування місцями розташування рекламних засобів у період встановлення пріоритету в ${sNameOrgan} <br /> 
+				${sWorkTime} <br>	
+				Заповнити його та підписати. <br>
+				<br>
+				в) в строк до п'яти днів надати до ${sNameOrgan} <br>
+				 - копію документа, що підтверджує внесення відповідної плати за тимчасове користування місцем розташування рекламного засобу у період встановлення пріоритету; <br /> 
+				 - оформлені у встановленому порядку два примірника договору про тимчасове користування місцями розташування рекламних засобів у період встановлення пріоритету.<br />
+				
+				Після оформлення договору роздрукуйте дві копії файлів, що наведено в додатках <br />
+				а) на одному листі (обов'язково з двох сторін) <br />
+				 - бланк Дозволу на розміщення зовнішньої реклами; <br />
+				 - погоджувальну частину Дозволу на розміщення зовнішньої реклами; <br />
+				б) на одному листі (обов'язково з двох сторін) <br />
+				 - бланк для ескізу (конструктивного рішення рекламного засобу); <br />
+				 - бланк для топогеодезичного знімку місцевості (М 1:500) та фотокартки місця після розташування на ньому рекламного засобу; <br />
+				Оформлені у встановленому порядку два примірника дозволу за визначеною формою з додатками необхідно надати до ${sNameOrgan} (в строк встановлення пріоритета на місце розташування рекламного засобу). 
+				<br />
+				<b>Зверніть увагу!</b><br />
+				1. ${sNameOrgan} резервує за Заявником місце розташування рекламного засобу на період встановлення пріоритету лише за умови підписання Договору про тимчасове користування місцямі розташування рекламних засобів у період встановлення пріоритету та першої оплати в строк до п'яти днів з дня прийняття керівникомрішення про встановлення пріоритету. <br />
+				2. Своєчасно і в повному обсязі вносить щомісячну плату згідно Договору.<br />
+				3. Строк встановлення пріоритета на місце розташування рекламного засобу - три місяця з дати прийняття керівником ${sNameOrgan} відповіного рішення. Строк може бути продовжено, але не більш як на 3 місяці (умови зазначено в Договорі). <br />
+				<br />
+				<br />			
 				${sNameOrgan} <br>
 				${sAddress} <br>
 				${sWorkTime} <br>
@@ -1285,7 +1329,7 @@
           <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFile_Report_Total}"]]></activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_2},${PrintForm_3},${PrintForm_4},${nFile_Report_Total}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
