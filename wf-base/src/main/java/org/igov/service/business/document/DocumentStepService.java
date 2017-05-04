@@ -185,8 +185,10 @@ public class DocumentStepService {
 
             LOG.info("oDocumentStep is before saving {}", oDocumentStep);
             LOG.info("oDocumentStep right is before saving {}", oDocumentStep.getRights());
-            oDocumentStep = oDocumentStepDao.saveOrUpdate(oDocumentStep);
+           // oDocumentStep = oDocumentStepDao.saveOrUpdate(oDocumentStep);
+            oDocumentStepDao.saveOrUpdate(oDocumentStep);
             aDocumentStep_Result.add(oDocumentStep);
+            LOG.info("oDocumentStep.getId() = " + oDocumentStep.getId());
         }
 
         LOG.info("Result list of steps: {}", aDocumentStep_Result);
