@@ -125,7 +125,17 @@ public class ObjectController {
             @ApiParam(value = "строка-ключ(опциональный, если другой уникальный-ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
             @ApiParam(value = "строка названия мерчанта на украинском", required = false) @RequestParam(value = "sMeasure_UA", required = false) String sMeasure_UA,
             HttpServletResponse response) throws CommonServiceException {
-       return objectCustomsService.setObjectCustoms(nID, sID_UA, sName_UA, sMeasure_UA, response);
+       try{
+           return objectCustomsService.setObjectCustoms(nID, sID_UA, sName_UA, sMeasure_UA, response);
+       }catch (Exception e) {
+           LOG.warn("Error: {}", e.getMessage());
+           LOG.trace("FAIL:", e);
+           response.setStatus(HttpStatus.FORBIDDEN.value());
+           response.setHeader("Reason", e.getMessage());
+
+           throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                   e.getMessage(), HttpStatus.FORBIDDEN);
+       }
     }
 
     @ApiOperation(value = "Удаление записи по уникальному значению nID или sID_UA", notes =

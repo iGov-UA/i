@@ -171,18 +171,9 @@ public class ObjectCustomsService {
                     HttpStatus.FORBIDDEN);
         }
 
-        try {
             ObjectCustoms pcode = this.objectCustomsDao.setObjectCustoms(args);
             result = JsonRestUtils.toJsonResponse(pcode);
-        } catch (Exception e) {
-            LOG.warn("Error: {}", e.getMessage());
-            LOG.trace("FAIL:", e);
-            response.setStatus(HttpStatus.FORBIDDEN.value());
-            response.setHeader("Reason", e.getMessage());
 
-            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    e.getMessage(), HttpStatus.FORBIDDEN);
-        }
         return result;
     }
 
