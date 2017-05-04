@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
  * Created by dpekach on 01.05.17.
  */
 public interface MigrationService {
-    void migrateOldRecords(boolean isTest);
+    void migrateOldRecords();
 }

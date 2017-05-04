@@ -3,6 +3,7 @@ package org.igov.service.migration;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.igov.analytic.model.config.Config;
 import org.igov.analytic.model.config.ConfigDao;
 import org.igov.analytic.model.process.*;
 import org.igov.analytic.model.process.Process;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,44 +56,52 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     /**
-     * @param isTest if this flag is set to true, only 1 record is migrated from act_hi_* to corresponding tables
+//     * @param isTest if this flag is set to true, only 1 record is migrated from act_hi_* to corresponding tables
      */
     @Override
-    public void migrateOldRecords(boolean isTest) {
+    public void migrateOldRecords() {
         historicProcessList =
-                historyService.createHistoricProcessInstanceQuery().finished().includeProcessVariables().orderByProcessInstanceId().asc().list();
-        synchronizeTables(historicProcessList);
-        populateBeans(historicProcessList);
+                historyService.createHistoricProcessInstanceQuery().finished().includeProcessVariables()
+                        .orderByProcessInstanceId().asc().list();
+        synchronizeTables(historicProcessList.get(0).getId());
+        getListWithPopulatedBeans(historicProcessList);
 
-
-        if(!isTest) {
-
-        }
-        else {
-
-        }
 
     }
 
-    private void synchronizeTables(List<HistoricProcessInstance> processList) {
-        String minimalInstanceId = processList.get(0).getId();
+    private void synchronizeTables(String minimalInstanceId) {
         if(configDao.exists(Long.valueOf(minimalInstanceId))) {
             historyService.deleteHistoricProcessInstance(minimalInstanceId);
         }
     }
 
-    private void populateBeans(List<HistoricProcessInstance> processList) {
-        for(HistoricProcessInstance process: processList) {
-            Process processToInsert = createProcessToInsert(process);
+    private List<Process> getListWithPopulatedBeans(List<HistoricProcessInstance> historicProcessList) {
+        List<Process> resultList = new ArrayList<>(historicProcessList.size());
 
-            String processInstanceId = process.getId();
-            HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).singleResult();
-            ProcessTask processTask = createProcessTaskToInsert(taskInstance, processToInsert);
+        for(HistoricProcessInstance historicProcess: historicProcessList) {
+            Process processForSave = createProcessToInsert(historicProcess);
+            resultList.add(processForSave);
+
+
+            String processInstanceId = historicProcess.getId();
+            HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery()
+                    .processInstanceId(processInstanceId).singleResult();
+            ProcessTask processTask = createProcessTaskToInsert(taskInstance, processForSave);
+
+            //???????
+            CustomProcess customProcess = createCustomProcessToInsert(historicProcess, processForSave);
+            //???????
             CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
 
-            String successfullyInsertedId = processDao.saveOrUpdate(processToInsert).getId().toString();
+            processDao.saveOrUpdate(processForSave);
+            Config config = new Config();
+            config.setsValue(processInstanceId);
+            configDao.saveOrUpdate(config);
+            historyService.deleteHistoricProcessInstance(processInstanceId);
         }
+        return resultList;
     }
+
     private SourceDB getSourceDBForIGov() {
         SourceDB sourceDB = new SourceDB();
         sourceDB.setName("iGov");
@@ -99,10 +110,12 @@ public class MigrationServiceImpl implements MigrationService {
 
     private Process createProcessToInsert(HistoricProcessInstance historicProcess) {
         Process process = new Process();
+
         process.setsID_(historicProcess.getBusinessKey());//спросить
         process.setoDateStart(new DateTime(historicProcess.getStartTime()));
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
+
 
         Map<String, Object> attributes = historicProcess.getProcessVariables();
         //TODO нужно просеттить атрибуты процесса
@@ -133,6 +146,7 @@ public class MigrationServiceImpl implements MigrationService {
     //TODO
     private CustomProcessTask createCustomProcessTaskToInsert(HistoricTaskInstance taskInstance, ProcessTask processTask) {
         CustomProcessTask customProcessTask = new CustomProcessTask();
+
         customProcessTask.setoProcessTask(processTask);
         customProcessTask.setnDuration(taskInstance.getDurationInMillis());
         customProcessTask.setnFormKey(taskInstance.getFormKey());
@@ -151,6 +165,7 @@ public class MigrationServiceImpl implements MigrationService {
         customProcessTask.setsProcessInstanceId(taskInstance.getProcessInstanceId());
         customProcessTask.setsTaskDefinitionKey(taskInstance.getTaskDefinitionKey());
         customProcessTask.setsTenantId(taskInstance.getTenantId());
+
         return customProcessTask;
     }
 
