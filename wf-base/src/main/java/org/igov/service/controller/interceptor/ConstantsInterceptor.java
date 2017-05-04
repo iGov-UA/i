@@ -25,11 +25,12 @@ public interface ConstantsInterceptor {
 	static final String SERVICE_ACTION_TASK_GET_LOGIN_B_PS = "/service/action/task/getLoginBPs";
 	static final String SERVICE_HISTORY_HISTORIC_TASK_INSTANCES = "/service/history/historic-task-instances";
 	static final String SERVICE_RUNTIME_TASKS = "/service/runtime/tasks";
-	static final String SERVICE_ACTION_FLOW_GET_FLOW_SLOTS_SERVICE_DATA = "/service/action/flow/getFlowSlots_ServiceData";
+	static final String SERVICE_ACTION_FLOW_GET_FLOW_SLOTS_SERVICE_DATA = "/service/action/flow/getFlowSlots";
 	static final String SERVICE_ACTION_TASK_GET_ORDER_MESSAGES_LOCAL = "/service/action/task/getOrderMessages_Local";
 	static final String SERVICE_ACTION_TASK_GET_START_FORM_DATA = "/service/action/task/getStartFormData";
 	static final String SERVICE_REPOSITORY_PROCESS_DEFINITIONS = "/service/repository/process-definitions";
 	static final String SERVICE_FORM_FORM_DATA = "/service/form/form-data";
+        static final String SERVICE_CANCELTASK = "/service/action/task/cancelTask";
 	static final String SERVICE_ACTION_ITEM_GET_SERVICES_TREE = "/service/action/item/getServicesTree";
 	static final String SERVICE_ACTION_ITEM_GET_SERVICE = "/service/action/item/getService";
 	static final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";

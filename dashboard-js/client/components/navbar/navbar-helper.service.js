@@ -5,8 +5,15 @@
     .module('dashboardJsApp')
     .factory('iGovNavbarHelper', iGovNavbarHelperFactory);
 
-  iGovNavbarHelperFactory.$inject = ['Auth', 'tasks', '$location', '$state'];
-  function iGovNavbarHelperFactory(Auth, tasks, $location, $state) {
+  iGovNavbarHelperFactory.$inject = ['Auth', 'tasks', '$location', '$rootScope'];
+  function iGovNavbarHelperFactory(Auth, tasks, $location, $rootScope) {
+    $rootScope.tasksSearch = {
+        value: null,
+        count: 0,
+        archive: false,
+        loading: false,
+        submited: false
+    };
     var service = {
       areInstrumentsVisible: false,
       auth: Auth,
@@ -18,13 +25,7 @@
       instrumentsMenus: [],
       isCountersLoaded: false,
       sPreviousTab: '',
-      tasksSearch: {
-        value: null,
-        count: 0,
-        archive: false,
-        loading: false,
-        submited: false
-      }
+      tasksSearch: $rootScope.tasksSearch
     };
 
     service.menus = [{
@@ -43,8 +44,14 @@
       title: 'Документи',
       type: tasks.filterTypes.documents,
       count: 0,
-      showCount: false,
+      showCount: true,
       tab: 'documents'
+    }, {
+      title: 'ЕЦП',
+      type: tasks.filterTypes.ecp,
+      count: 0,
+      showCount: false,
+      tab: 'ecp'
     }, {
       title: 'Мій розклад',
       type: tasks.filterTypes.tickets,

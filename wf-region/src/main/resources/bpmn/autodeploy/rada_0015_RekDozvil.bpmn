@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="rada_0015_RekDozvil" name="Дозвіл на розміщення зовнішньої реклами" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 23.04.2017 (реклама для Днепра)</documentation>
+    <documentation>Смоктій К.В. Последние правки: 01.05.2017 (реклама для Днепра)</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для розміщення зовнішньої реклами на фасадах будівель! &lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть робочий орган" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -21,23 +22,25 @@
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBankAccount" name="Банковські реквізити" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovirenist" name="Довіреність на представника; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний особистий (мобільний) номер телефону для зворотнього зв'язку" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOtherPhone" name="Додатковий контактний номер телефону" type="string"></activiti:formProperty>
         <activiti:formProperty id="chekMisPhone" name="Чи є у вас міський телефон?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір (максимум 5 років);вкажіть прописом" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл;наприклад сітілайт" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" required="true">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
-          <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
+          <activiti:value id="sEnamPrivat" name="Приватна/Колективна"></activiti:value>
+          <activiti:value id="sEnamGov" name="Державна"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFile_PravoVlasnist" name="Право власності на майно де буде розміщена реклама;завантажте сканкопію документа;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_PlaceFoto" name="Фото місця де буде розміщено рекламу;на ньому можливо схематично позначити розташування реклами;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PravoVlasnist" name="Правовстановлюючи документи на місце розташування рекламного засобу;завантажте сканкопію документа у разі подання заяви на місце, що належить до державної, приватної (колективної) власності;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PlaceFoto" name="Фото місця де буде розміщено рекламу;на ньому схематично позначити розташування реклами;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Eskiz" name="Еcкіз рекламної конструкції;завантажте креслення конструкції;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Active" name="Додатки до рішення Департамента по роботі з активами;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта виконавця" type="string"></activiti:formProperty>
@@ -56,12 +59,15 @@
         <activiti:formProperty id="sAddress" name="Адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Дозвіл на розміщення зовнішньої реклами"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="дозволу на розміщення зовнішньої реклами"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Встановлення пріоритету на місце розташування рекламного засобу для отримання дозволу на розміщення зовнішньої реклами"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="встановлення пріоритету на місце розташування рекламного засобу для отримання дозволу на розміщення зовнішньої реклами"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Дата подачі заявки; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу;bVisible=false" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNomerRegistration" name="Номер реєстрації заявки; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Active_user" name="Коментар співробітника Департаменту по роботі з активами до свого рішення; ;bVisible=false" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення; ;bVisible=false" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Опрацювання OpenData щодо юрособ" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/UrFiz_OpenData_DovFile.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація по Line" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_LinesST.json')}"></activiti:formProperty>
@@ -85,25 +91,33 @@
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankAccount" name="Банковські реквізити; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
-          <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
+          <activiti:value id="sEnamPrivat" name="Приватна/Колективна"></activiti:value>
+          <activiti:value id="sEnamGov" name="Державна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNomerRegistration" name="Номер реєстрації заявки" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Active_user" name="Коментар співробітника Департаменту по роботі з активами до свого рішення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_1" name="Рішення виконавця" type="enum" required="true">
           <activiti:value id="check" name="Потрібна додаткова перевірка Департаментом по роботі з активами"></activiti:value>
           <activiti:value id="accept_urist" name="Заява приймається до опрацювання, додатково перевірити юристом"></activiti:value>
           <activiti:value id="accept_director" name="Заява приймається до опрацювання (на розгляд начальнику)"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decide_Payment" name="Рішення щодо оплати у період встановлення пріоритету" type="enum" required="true">
+          <activiti:value id="free" name="БЕЗ ОПЛАТИ (послуга надається без оплати)"></activiti:value>
+          <activiti:value id="Pay" name="Оплачується користування місцем розташування РЗ у період пріоритету"></activiti:value>
+          <activiti:value id="Unknown" name="Потребує уточнення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар до рішення для громадянина (наприклад, пояснення чому звернення громадянина було відхилено АБО додаткові деталі, які будуть наділано в Email)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар до рішення для співробітників (коментар для службового користування і не надсилається громадянину)" type="textArea"></activiti:formProperty>
@@ -115,9 +129,19 @@
         <activiti:formProperty id="nFile_Eskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Active" name="Додатки до рішення Департамента по роботі з активами;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організаційну структуру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html] ; ;bVisible=false" type="string" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html] ; ;bVisible=false" type="string" default="Бланк Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html,sFileName=Dozvil_na_rozmishennya_reklamy_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html,sFileName=Dozvil_na_rozmishennya_reklamy_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html,sFileName=Dodatok_Eskiz_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html,sFileName=Dodatok_Znimok_ta_Fotokartka_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/UrFiz_OpenData_DovFile.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
@@ -142,16 +166,18 @@
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankAccount" name="Банковські реквізити; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
-          <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
+          <activiti:value id="sEnamPrivat" name="Приватна/Колективна"></activiti:value>
+          <activiti:value id="sEnamGov" name="Державна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
@@ -161,6 +187,11 @@
           <activiti:value id="accept_urist" name="Заява приймається до опрацювання, додатково перевірити юристом"></activiti:value>
           <activiti:value id="accept_director" name="Заява приймається до опрацювання (на розгляд начальнику)"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="decide_Payment" name="Рішення щодо оплати у період встановлення пріоритету" type="enum" writable="false">
+          <activiti:value id="free" name="БЕЗ ОПЛАТИ (послуга надається без оплати)"></activiti:value>
+          <activiti:value id="Pay" name="Оплачується користування місцем розташування РЗ у період пріоритету"></activiti:value>
+          <activiti:value id="Unknown" name="Потребує уточнення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Active_user" name="Коментар співробітника Департаменту по роботі з активами до свого рішення" type="textArea" required="true"></activiti:formProperty>
@@ -174,8 +205,15 @@
         <activiti:formProperty id="nFile_Eskiz" name="Ескіз рекламної конструкції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організаційну структуру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html] ; ;bVisible=false" type="string" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html] ; ;bVisible=false" type="string" default="Бланк Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
@@ -198,16 +236,18 @@
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankAccount" name="Банковські реквізити; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
-          <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
+          <activiti:value id="sEnamPrivat" name="Приватна/Колективна"></activiti:value>
+          <activiti:value id="sEnamGov" name="Державна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
@@ -218,12 +258,16 @@
           <activiti:value id="accept_director" name="Заява приймається до опрацювання (на розгляд начальнику)"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="decide_Payment" name="Рішення щодо оплати у період встановлення пріоритету" type="enum" writable="false">
+          <activiti:value id="free" name="БЕЗ ОПЛАТИ (послуга надається без оплати)"></activiti:value>
+          <activiti:value id="Pay" name="Оплачується користування місцем розташування РЗ у період пріоритету"></activiti:value>
+          <activiti:value id="Unknown" name="Потребує уточнення"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Active_user" name="Коментар співробітника Департаменту по роботі з активами до свого рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" required="true">
-          <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена"></activiti:value>
+          <activiti:value id="accept_director" name="Заява опрацьована"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення для громадянина (наприклад, пояснення чому звернення громадянина було відхилено)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення для співробітників (коментар для службового користування, не надсилається громадянину)" type="textArea"></activiti:formProperty>
@@ -235,8 +279,15 @@
         <activiti:formProperty id="nFile_Report_office" name="Додатки до рішення виконавця (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Active" name="Додатки до рішення Департамента по роботі з активами;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організаційну структуру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html] ; ;bVisible=false" type="string" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html] ; ;bVisible=false" type="string" default="Бланк Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="markers" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
@@ -259,17 +310,19 @@
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankAccount" name="Банковські реквізити; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovirenist" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
-          <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
+          <activiti:value id="sEnamPrivat" name="Приватна/Колективна"></activiti:value>
+          <activiti:value id="sEnamGov" name="Державна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
@@ -280,21 +333,23 @@
           <activiti:value id="accept_director" name="Заява приймається до опрацювання (на розгляд начальнику)"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="decide_Payment" name="Рішення щодо оплати у період встановлення пріоритету" type="enum" required="true">
+          <activiti:value id="free" name="БЕЗ ОПЛАТИ (послуга надається без оплати)"></activiti:value>
+          <activiti:value id="Pay" name="Оплачується користування місцем розташування РЗ у період пріоритету"></activiti:value>
+          <activiti:value id="Unknown" name="Потребує уточнення"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Active_user" name="Коментар співробітника Департаменту по роботі з активами до свого рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
-          <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена"></activiti:value>
+          <activiti:value id="accept_director" name="Заява опрацьована"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_23" name="Службова інформація (інспектор)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;decide_inspector&quot;],&quot;sValue&quot;:&quot;Службова інформація (інспектор)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_inspector" name="Рішення інспектора" type="enum" writable="false">
-          <activiti:value id="return_director" name="Заяву повернути на додатковий розгляд начальнику"></activiti:value>
-          <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
+          <activiti:value id="return_director" name="Заява опрацьована, повернути на розгляд начальнику"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_inspector_office" name="Коментар інспектора до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_director" name="Рішення керівника" type="enum" required="true">
@@ -311,8 +366,15 @@
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Active" name="Додатки до рішення Департамента по роботі з активами;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організаційну структуру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html] ; ;bVisible=false" type="string" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html] ; ;bVisible=false" type="string" default="Бланк Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -334,17 +396,19 @@
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankAccount" name="Банковські реквізити; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovirenist" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
-          <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
+          <activiti:value id="sEnamPrivat" name="Приватна/Колективна"></activiti:value>
+          <activiti:value id="sEnamGov" name="Державна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
@@ -355,13 +419,17 @@
           <activiti:value id="accept_director" name="Заява приймається до опрацювання (на розгляд начальнику)"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="decide_Payment" name="Рішення щодо оплати у період встановлення пріоритету" type="enum" writable="false">
+          <activiti:value id="free" name="БЕЗ ОПЛАТИ (послуга надається без оплати)"></activiti:value>
+          <activiti:value id="Pay" name="Оплачується користування місцем розташування РЗ у період пріоритету"></activiti:value>
+          <activiti:value id="Unknown" name="Потребує уточнення"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Active_user" name="Коментар співробітника Департаменту по роботі з активами до свого рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
-          <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена"></activiti:value>
+          <activiti:value id="accept_director" name="Заява опрацьована"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
@@ -373,9 +441,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Director_office" name="Коментар керівника до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_inspector" name="Рішення інспектора" type="enum" required="true">
-          <activiti:value id="return_director" name="Заяву повернути на додатковий розгляд начальнику"></activiti:value>
-          <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
+          <activiti:value id="return_director" name="Заява опрацьована, повернути на розгляд начальнику"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_inspector_office" name="Коментар інспектора до свого рішення (для співробітників)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file"></activiti:formProperty>
@@ -386,8 +452,15 @@
         <activiti:formProperty id="nFile_Report_Urist" name="Додатки до рішення юриста (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Active" name="Додатки до рішення Департамента по роботі з активами;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організаційну структуру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html] ; ;bVisible=false" type="string" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html] ; ;bVisible=false" type="string" default="Бланк Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -409,17 +482,19 @@
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankAccount" name="Банковські реквізити; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovirenist" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
-          <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
+          <activiti:value id="sEnamPrivat" name="Приватна/Колективна"></activiti:value>
+          <activiti:value id="sEnamGov" name="Державна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
@@ -430,21 +505,23 @@
           <activiti:value id="accept_director" name="Заява приймається до опрацювання (на розгляд начальнику)"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="decide_Payment" name="Рішення щодо оплати у період встановлення пріоритету" type="enum" writable="false">
+          <activiti:value id="free" name="БЕЗ ОПЛАТИ (послуга надається без оплати)"></activiti:value>
+          <activiti:value id="Pay" name="Оплачується користування місцем розташування РЗ у період пріоритету"></activiti:value>
+          <activiti:value id="Unknown" name="Потребує уточнення"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Active_user" name="Коментар співробітника Департаменту по роботі з активами до свого рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
-          <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена"></activiti:value>
+          <activiti:value id="accept_director" name="Заява опрацьована"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_23" name="Службова інформація (інспектор)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;decide_inspector&quot;],&quot;sValue&quot;:&quot;Службова інформація (інспектор)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_inspector" name="Рішення інспектора" type="enum" writable="false">
-          <activiti:value id="return_director" name="Заяву повернути на додатковий розгляд начальнику"></activiti:value>
-          <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
+          <activiti:value id="return_director" name="Заява опрацьована, повернути на розгляд начальнику"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_inspector_office" name="Коментар інспектора до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_24" name="Службова інформація (керівник)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;decide_director&quot;],&quot;sValue&quot;:&quot;Службова інформація (керівник)&quot;}}}"></activiti:formProperty>
@@ -467,8 +544,15 @@
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Active" name="Додатки до рішення Департамента по роботі з активами;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організаційну структуру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html] ; ;bVisible=false" type="string" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html] ; ;bVisible=false" type="string" default="Бланк Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -490,17 +574,19 @@
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankAccount" name="Банковські реквізити; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovirenist" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
-          <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
+          <activiti:value id="sEnamPrivat" name="Приватна/Колективна"></activiti:value>
+          <activiti:value id="sEnamGov" name="Державна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
@@ -511,21 +597,23 @@
           <activiti:value id="accept_director" name="Заява приймається до опрацювання (на розгляд начальнику)"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="decide_Payment" name="Рішення щодо оплати у період встановлення пріоритету" type="enum" writable="false">
+          <activiti:value id="free" name="БЕЗ ОПЛАТИ (послуга надається без оплати)"></activiti:value>
+          <activiti:value id="Pay" name="Оплачується користування місцем розташування РЗ у період пріоритету"></activiti:value>
+          <activiti:value id="Unknown" name="Потребує уточнення"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Active_user" name="Коментар співробітника Департаменту по роботі з активами до свого рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
-          <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена"></activiti:value>
+          <activiti:value id="accept_director" name="Заява опрацьована"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_23" name="Службова інформація (інспектор)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;decide_inspector&quot;],&quot;sValue&quot;:&quot;Службова інформація (інспектор)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_inspector" name="Рішення інспектора" type="enum" writable="false">
-          <activiti:value id="return_director" name="Заяву повернути на додатковий розгляд начальнику"></activiti:value>
-          <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
+          <activiti:value id="return_director" name="Заява опрацьована, повернути на розгляд начальнику"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_inspector_office" name="Коментар інспектора до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_24" name="Службова інформація (керівник)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;decide_director&quot;],&quot;sValue&quot;:&quot;Службова інформація (керівник)&quot;}}}"></activiti:formProperty>
@@ -535,6 +623,11 @@
           <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Director_office" name="Коментар керівника до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asAddCulture" name="Додати в погоджувальну частину Орган виконавчої влади, що реалізує державну політику у сфері охорони культурної спадщини" type="enum" required="true" default="no">
+          <activiti:value id="yes" name="Так, додати"></activiti:value>
+          <activiti:value id="no" name="Ні, додавати не треба"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="decide_report" name="Результат підготовки відповіді" type="enum" required="true">
           <activiti:value id="accept" name="Мотивована позитивна відповідь подготовлена"></activiti:value>
         </activiti:formProperty>
@@ -548,12 +641,22 @@
         <activiti:formProperty id="nFile_Report_Inspector" name="Додатки до рішення інспектора (документи, фотографії тощо);Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Active" name="Додатки до рішення Департамента по роботі з активами;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організаційну структуру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html] ; ;bVisible=false" type="string" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html] ; ;bVisible=false" type="string" default="Бланк Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html,sFileName=Dozvil_na_rozmishennya_reklamy_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html,sFileName=Dozvil_na_rozmishennya_reklamy_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html,sFileName=Dodatok_Eskiz_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html,sFileName=Dodatok_Znimok_ta_Fotokartka_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <userTask id="usertask7" name="[Етап IV] Візит громадянина (4-й крок)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask7" name="[Етап IV] Візит громадянина, перевірка оплати, передача договору (4-й крок)" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
@@ -571,17 +674,19 @@
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankAccount" name="Банковські реквізити; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovirenist" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний (особистий) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="lMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRekNazv" name="Назва об'єкта на який надається дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
-          <activiti:value id="sEnamPrivat" name="Приватна"></activiti:value>
+          <activiti:value id="sEnamPrivat" name="Приватна/Колективна"></activiti:value>
+          <activiti:value id="sEnamGov" name="Державна"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_21" name="Службова інформація (відповідальний виконавець)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sDateRegistration&quot;],&quot;sValue&quot;:&quot;Службова інформація (відповідальний виконавець)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації заявки" type="string" writable="false"></activiti:formProperty>
@@ -592,21 +697,23 @@
           <activiti:value id="accept_director" name="Заява приймається до опрацювання (на розгляд начальнику)"></activiti:value>
           <activiti:value id="reject" name="Заява відхилена"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="decide_Payment" name="Рішення щодо оплати у період встановлення пріоритету" type="enum" writable="false">
+          <activiti:value id="free" name="БЕЗ ОПЛАТИ (послуга надається без оплати)"></activiti:value>
+          <activiti:value id="Pay" name="Оплачується користування місцем розташування РЗ у період пріоритету"></activiti:value>
+          <activiti:value id="Unknown" name="Потребує уточнення"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_user" name="Коментар виконавця до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_office" name="Коментар виконавця до рішення (співробітнику)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Active_user" name="Коментар співробітника Департаменту по роботі з активами до свого рішення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_22" name="Службова інформація (юрист)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;decide_urist&quot;],&quot;sValue&quot;:&quot;Службова інформація (юрист)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_urist" name="Рішення юриста" type="enum" writable="false">
-          <activiti:value id="accept_director" name="Заява опрацьована, передається на розгляд начальнику"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена"></activiti:value>
+          <activiti:value id="accept_director" name="Заява опрацьована"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_user" name="Коментар юриста до рішення (громадянину)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_urist_office" name="Коментар юриста до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_23" name="Службова інформація (інспектор)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;decide_inspector&quot;],&quot;sValue&quot;:&quot;Службова інформація (інспектор)&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_inspector" name="Рішення інспектора" type="enum" writable="false">
-          <activiti:value id="return_director" name="Заяву повернути на додатковий розгляд начальнику"></activiti:value>
-          <activiti:value id="accept" name="Заява приймається, підготувати відповідь"></activiti:value>
-          <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
+          <activiti:value id="return_director" name="Заява опрацьована, повернути на розгляд начальнику"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_inspector_office" name="Коментар інспектора до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_24" name="Службова інформація (керівник)" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;decide_director&quot;],&quot;sValue&quot;:&quot;Службова інформація (керівник)&quot;}}}"></activiti:formProperty>
@@ -616,6 +723,10 @@
           <activiti:value id="reject" name="Заява відхилена, підготувати мотивовану відповідь"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_Director_office" name="Коментар керівника до свого рішення (для співробітників)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asAddCulture" name="Додати в погоджувальну частину Орган виконавчої влади, що реалізує державну політику у сфері охорони культурної спадщини" type="enum" writable="false">
+          <activiti:value id="yes" name="Так, додати"></activiti:value>
+          <activiti:value id="no" name="Ні, додавати не треба"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="decide_report" name="Результат підготовки відповіді" type="enum" writable="false">
           <activiti:value id="accept" name="Мотивована позитивна відповідь подготовлена"></activiti:value>
         </activiti:formProperty>
@@ -634,8 +745,15 @@
         <activiti:formProperty id="nFile_Report_Total" name="Відповідь громадянину;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Report_Active" name="Додатки до рішення Департамента по роботі з активами;Якщо файлів декілька, то завантажте одним файлом-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організаційну структуру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0015_RekDozvil_Zayava.html] ; ;bVisible=false" type="string" default="Заява про надання дозволу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str1.html] ; ;bVisible=false" type="string" default="Бланк Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str2.html] ; ;bVisible=false" type="string" default="Погоджувальна частина Дозвілу на розміщення зовнішньої реклами" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str3.html] ; ;bVisible=false" type="string" default="Бланк Ескізу конструктивного рішення рекламного засобу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0015_RekDozvil_Dozvil_Str4.html] ; ;bVisible=false" type="string" default="Бланк топогеодезичного знімку місцевості то фотокартки місця розташування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechnicalSpecifications" name="Характеристика (в тому числі технічна) рекламного засобу (для заповнення бланку Дозволу);вид, розміри, площа місця розташування рекламного засобу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka_dozvil_na_reklamu_184" name="На кого писати заяву; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddDoc" name="Перелік додаткових документів (для прінт-форми); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="markers for Print" type="markers" default="${markerService.loadFromFile('skv/Dnepr_Reklama/rada_0015_RekDozvil_print.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -671,7 +789,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
             	<p>
-					Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. <br /> 
+					Ваше звернення [sID_Order] успішно зареєстровано на порталі iGov.org.ua та буде розглянуто. <br /> 
 					Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.<br />
 					<br />
 					${sNameOrgan} <br />
@@ -715,7 +833,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
-					На жаль, змушені відмовити Вам у наданні послуги щодо ${sPosluga_nameZV} (звернення [sID_Order]).<br /> 
+					На жаль, змушені відмовити Вам у наданні послуги щодо ${sPosluga_nameZV} (звернення [sID_Order] на порталі iGov.org.ua).<br /> 
 					Коментар до рішення: ${sDecisionComment_user}<br />
 					Відповідь з причиною відмови в додатку.<br />
 					<br />
@@ -754,14 +872,15 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Перевірено звернення та прийнято в роботу на тему: ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression><![CDATA[Звернення прийнято в роботу на тему: ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
-					Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно перевірено і буде опрацьовано впродовж визначений Законом термін. <br>
-					Звернення отримало реєстраційний номер ${sNomerRegistration} від ${sDateRegistration}. <br>
+					Ваше звернення [sID_Order] на порталі iGov.org.ua щодо ${sPosluga_nameZV} отримало <br>
+					реєстраційний номер <b> ${sNomerRegistration} </b>  від <b> ${sDateRegistration} </b> <br>
+					і буде опрацьовано в визначений Законом термін (до 5 робочих днів).<br> <br>
 					Ви отримаєте додаткове повідомлення за результатами розгляду звернення. <br>
 					<br>
 					${sNameOrgan} <br>
@@ -787,10 +906,9 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow6" name="Перевірка ОК" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_1!='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_1=='accept_director'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="servicetask11"></sequenceFlow>
-    <sequenceFlow id="flow8" sourceRef="usertask2" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow12" sourceRef="usertask7" targetRef="exclusivegateway3"></sequenceFlow>
     <serviceTask id="servicetask8" name="Повідомлення громадянина про закриття заявки (не з'явився) + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -808,7 +926,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
-					На жаль, змушені повідомити Ваc про закриття заявки щодо ${sPosluga_nameZV} (звернення [sID_Order]).<br /> 
+					На жаль, змушені повідомити Ваc про закриття заявки щодо ${sPosluga_nameZV} (звернення [sID_Order] на порталі iGov.org.ua).<br /> 
 					Коментар до рішення: ${sDecisionComment_Rezult}<br />
 					<br />
 					${sNameOrgan} 	<br />
@@ -835,7 +953,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow13" name="не з'явився" sourceRef="exclusivegateway3" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_rezult=='accept_director'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_rezult=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask9" name="Фідбек" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -852,7 +970,14 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} опрацьовано. Дозвіл надано.
+				Ваше звернення [sID_Order] на порталі iGov.org.ua щодо ${sPosluga_nameZV} опрацьовано. <br />
+				Пріоритет на місце розташування рекламного засобу для отримання дозволу на розміщення зовнішньої реклами встановлено.<br />
+				Для завершення отримання дозволу на розміщення зовнішньої реклами зверніться, будь ласка, до центру надання адміністративних послуг з оригіналами наступних документів: <br />
+				1. Заповнений та підписаний бланк Дозволу на розміщення зовнішньої реклами. <br />
+				2. Заповнена та підписана (узгоджена з відповідними органами) Погоджувальна частина Дозволу на розміщення зовнішньої реклами. <br />
+				3. Ескіз (конструктивне рішення рекламного засобу). <br />
+				4. Топогеодезичний знімок місцевості (М 1:500) з прив'язкою місця розташування рекламного засобу. <br />
+				5. Фотокартка місця після розташування на ньому рекламного засобу. <br />
 				<br />
 				${sNameOrgan} 	<br />
 				${sAddress} 	<br />
@@ -870,7 +995,7 @@
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, dozvil nadano ta oformleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, dozvil nadano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -895,78 +1020,59 @@
       <script>
 	var src=execution.getVariable('date_today');
 	execution.setVariable('sDateRegistration', src);
+	
+	var per1 = ' '
+	var per2 = 0
+	var sStartTag =''		 
+	var sEndTag =''		 
+
+	if (execution.getVariable('nFile_PlaceFoto') != null &amp;&amp; execution.getVariable('nFile_PlaceFoto')!= ' ')
+	{
+		per2 = per2 + 1
+		per1 = per1 + sStartTag + per2.toString() + '. Фото місця розташування. &lt;br&gt;' + sEndTag 
+	}
+	if (execution.getVariable('nFile_Eskiz') != null  &amp;&amp; execution.getVariable('nFile_Eskiz')!= ' ')
+	{
+		per2 = per2 + 1
+		per1 = per1 + sStartTag + per2.toString() + '. Еcкіз рекламної конструкції. &lt;br&gt;' + sEndTag  
+	}
+	if (execution.getVariable('nFile_PravoVlasnist') != null  &amp;&amp; execution.getVariable('nFile_PravoVlasnist')!= ' ')
+	{
+		per2 = per2 + 1
+		per1 = per1 + sStartTag + per2.toString() + '. Правовстановлюючи документи на місце розташування рекламного засобу. &lt;br&gt;' + sEndTag  
+	}
+	if (execution.getVariable('nFile_Dovirenist') != null  &amp;&amp; execution.getVariable('nFile_Dovirenist')!= ' ')
+	{
+		per2 = per2 + 1
+		per1 = per1 + sStartTag + per2.toString() + '. Копія довіреності на представника. &lt;br&gt;' + sEndTag  
+	}
+
+	execution.setVariable('sAddDoc', per1) 
+	
+	  </script>
+    </scriptTask>
+    <scriptTask id="scripttask3" name="Script Task (JavaScript3, empty decide_1)" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+	execution.setVariable('decide_1','' );
+	if (execution.getVariable('decide_Payment') == 'Unknown')
+	{
+		execution.setVariable('decide_Payment','' );
+	}		
+	
+	  </script>
+    </scriptTask>
+    <scriptTask id="scripttask4" name="Script Task (JavaScript4, empty decide_director)" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+	execution.setVariable('decide_director','' );
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask2" targetRef="servicetask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow23" name="Перевірити юристом" sourceRef="exclusivegateway4" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_1=='accept_urist'}]]></conditionExpression>
-    </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow24" name="На розгляд начальнику" sourceRef="exclusivegateway4" targetRef="servicetask13">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_1=='accept_director'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow25" sourceRef="exclusivegateway5" targetRef="servicetask13">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_urist=='accept_director'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення громадянина про відхилення звернення юристом + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression><![CDATA[Відхилено звернення на тему: ${sPosluga_name}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-			[pattern/mail/new_design/_common_content_start.html]
-				<p>
-					На жаль, змушені відмовити Вам у наданні послуги щодо ${sPosluga_nameZV} (звернення [sID_Order]).<br /> 
-					Коментар до рішення: ${sDecisionComment_urist_user}<br />
-					Відповідь з причиною відмови в додатку.<br />
-					<br />
-					${sNameOrgan} 	<br />
-					${sAddress} 	<br />
-					${sWorkTime} 	<br />
-					${sPhoneOrgan} 	<br />
-				</p>
-			[pattern/mail/new_design/_common_content_end.html]
-			[pattern/mail/new_design/_common_feedback.html]   	 
-			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}, <br />
-            [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFile_Report_Urist}"]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow26" sourceRef="exclusivegateway5" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_urist=='reject'}]]></conditionExpression>
-    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
-    <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow27" sourceRef="usertask4" targetRef="exclusivegateway7"></sequenceFlow>
-    <sequenceFlow id="flow28" name="Переглянути начальнику результатів опрацювання" sourceRef="exclusivegateway7" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_inspector=='return_director'}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow29" name="Потрібно уточнення інспектором" sourceRef="exclusivegateway6" targetRef="servicetask12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_director=='accept_inspector'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="usertask3" targetRef="exclusivegateway6"></sequenceFlow>
-    <endEvent id="endevent5" name="End"></endEvent>
-    <sequenceFlow id="flow31" sourceRef="servicetask5" targetRef="endevent5"></sequenceFlow>
     <serviceTask id="servicetask7" name="Повідомлення громадянина про негативну відповідь + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -982,7 +1088,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				По вашому зверненню №[sID_Order] щодо ${sPosluga_nameZV} винесено відмову.<br />
+				По вашому зверненню №[sID_Order] на порталі iGov.org.ua щодо ${sPosluga_nameZV} винесено відмову.<br />
 				Коментар до рішення: ${sDecisionComment_Report_Total}<br />
 				Відповідь з причиною відмови в додатку.<br />
 				<br />
@@ -1017,7 +1123,7 @@
     <sequenceFlow id="flow34" name="Підготовка мотивованої негативної відповіді " sourceRef="exclusivegateway6" targetRef="usertask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_director=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Повідомлення громадянина про позитивну відповідь + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask6" name="Повідомлення громадянина про позитивну відповідь + СМС (Без оплати) + Фідбек" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -1032,16 +1138,27 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				По вашому зверненню №[sID_Order] щодо ${sPosluga_nameZV} винесено позитивне рішення.<br />
+				По вашому зверненню №[sID_Order] на порталі iGov.org.ua щодо ${sPosluga_nameZV} винесено позитивне рішення.<br />
 				Коментар до рішення: ${sDecisionComment_Report_Total}<br />
-				Додаткові файли наведено в додатку.<br />
 				<br />
-				${sNameOrgan} <br>
+				Для завершення отримання дозволу на розміщення зовнішньої реклами, будь ласка, роздрукуйте дві копії файлів, що наведено в додатках <br />
+				а) на одному листі (обов'язково з двох сторін) <br />
+				 - бланк Дозволу на розміщення зовнішньої реклами. <br />
+				 - погоджувальну частину Дозволу на розміщення зовнішньої реклами. <br />
+				б) на одному листі (обов'язково з двох сторін) <br />
+				 - бланк для ескізу (конструктивного рішення рекламного засобу). <br />
+				 - бланк для топогеодезичного знімку місцевості (М 1:500) та фотокартки місця після розташування на ньому рекламного засобу. <br />
+				<br />
+				Заповніть та підпишить (узгодити з відповідними органами) відповідні документи.
+				Після їх оформлення чекаємо на Вас (з оригіналами  документів) для первірки документів за адресою  <br />
 				${sAddress} <br>
-				${sWorkTime} <br>
+				${sWorkTime} <br>	
+				<br />				
+				${sNameOrgan} <br>
 				${sPhoneOrgan} <br>
 			</p>
 			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_feedback.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
                 ${sNameOrgan}, <br />
 			[pattern/mail/new_design/_common_signature_end.html]
@@ -1051,24 +1168,18 @@
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno pozitivne rishennya. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFile_Report_Total}"]]></activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_2},${PrintForm_3},${PrintForm_4},${nFile_Report_Total}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow35" name="Ок" sourceRef="exclusivegateway6" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_director=='accept_director'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="servicetask6"></sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="servicetask6" targetRef="usertask7"></sequenceFlow>
-    <sequenceFlow id="flow38" name="Підготовка мотивованої позитивної відповіді " sourceRef="exclusivegateway7" targetRef="usertask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_inspector=='accept'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow39" name="Підготовка мотивованої негативної відповіді " sourceRef="exclusivegateway7" targetRef="usertask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_inspector=='reject'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="usertask5" targetRef="exclusivegateway9"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="servicetask6" targetRef="endevent7"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask10">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -1089,7 +1200,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow42" sourceRef="servicetask11" targetRef="exclusivegateway4"></sequenceFlow>
     <serviceTask id="servicetask12" name="Повідомлення співробітника інспектора" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -1142,19 +1252,96 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow45" name="Перейти до опрацювання заяви" sourceRef="exclusivegateway8" targetRef="exclusivegateway1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_1!='check'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_1=='accept_director' || decide_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow46" name="Опрацювати спец. по активам" sourceRef="exclusivegateway8" targetRef="servicetask14">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_1=='check'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="servicetask14" targetRef="usertask8"></sequenceFlow>
     <sequenceFlow id="flow48" sourceRef="usertask8" targetRef="scripttask3"></sequenceFlow>
-    <scriptTask id="scripttask3" name="Script Task (JavaScript2)" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
-	execution.setVariable('decide_1','' );
-	  </script>
-    </scriptTask>
     <sequenceFlow id="flow49" sourceRef="scripttask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow50" sourceRef="servicetask11" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow51" name="Перевірити юристом" sourceRef="exclusivegateway8" targetRef="servicetask11">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_1=='accept_urist'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="servicetask4" targetRef="servicetask13"></sequenceFlow>
+    <sequenceFlow id="flow53" sourceRef="scripttask4" targetRef="usertask3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway9" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask15" name="Повідомлення громадянина про позитивну відповідь та необхідність підписання договору + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[По вашому зверненню винесено позитивне рішення: ${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				По вашому зверненню №[sID_Order] на порталі iGov.org.ua щодо ${sPosluga_nameZV} винесено позитивне рішення.<br />
+				Коментар до рішення: ${sDecisionComment_Report_Total}<br />
+				<br />
+				Для завершення отримання дозволу на розміщення зовнішньої реклами, будь ласка, <br />
+				а) в строк до п'яти днів здійснити місячну оплату за тимчасове користування місцем розташування рекламного засобу у період встановлення пріоритету згідно калькуляції (наведено в додатку) <br />
+				<br>
+				б) отримати договор про тимчасове користування місцями розташування рекламних засобів у період встановлення пріоритету в ${sNameOrgan} <br /> 
+				${sWorkTime} <br>	
+				Заповнити його та підписати. <br>
+				<br>
+				в) в строк до п'яти днів надати до ${sNameOrgan} <br>
+				 - копію документа, що підтверджує внесення відповідної плати за тимчасове користування місцем розташування рекламного засобу у період встановлення пріоритету; <br /> 
+				 - оформлені у встановленому порядку два примірника договору про тимчасове користування місцями розташування рекламних засобів у період встановлення пріоритету.<br />
+				
+				Після оформлення договору роздрукуйте дві копії файлів, що наведено в додатках <br />
+				а) на одному листі (обов'язково з двох сторін) <br />
+				 - бланк Дозволу на розміщення зовнішньої реклами; <br />
+				 - погоджувальну частину Дозволу на розміщення зовнішньої реклами; <br />
+				б) на одному листі (обов'язково з двох сторін) <br />
+				 - бланк для ескізу (конструктивного рішення рекламного засобу); <br />
+				 - бланк для топогеодезичного знімку місцевості (М 1:500) та фотокартки місця після розташування на ньому рекламного засобу; <br />
+				Оформлені у встановленому порядку два примірника дозволу за визначеною формою з додатками необхідно надати до ${sNameOrgan} (в строк встановлення пріоритета на місце розташування рекламного засобу). 
+				<br />
+				<b>Зверніть увагу!</b><br />
+				1. ${sNameOrgan} резервує за Заявником місце розташування рекламного засобу на період встановлення пріоритету лише за умови підписання Договору про тимчасове користування місцямі розташування рекламних засобів у період встановлення пріоритету та першої оплати в строк до п'яти днів з дня прийняття керівникомрішення про встановлення пріоритету. <br />
+				2. Своєчасно і в повному обсязі вносить щомісячну плату згідно Договору.<br />
+				3. Строк встановлення пріоритета на місце розташування рекламного засобу - три місяця з дати прийняття керівником ${sNameOrgan} відповіного рішення. Строк може бути продовжено, але не більш як на 3 місяці (умови зазначено в Договорі). <br />
+				<br />
+				<br />			
+				${sNameOrgan} <br>
+				${sAddress} <br>
+				${sWorkTime} <br>
+				${sPhoneOrgan} <br>
+			</p>
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+                ${sNameOrgan}, <br />
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${PrintForm_1},${PrintForm_2},${PrintForm_3},${PrintForm_4},${nFile_Report_Total}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow54" name="Без оплати" sourceRef="exclusivegateway9" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_Payment=='free'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow55" name="Платні послуги" sourceRef="exclusivegateway9" targetRef="servicetask15">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_Payment!='free'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow56" sourceRef="servicetask15" targetRef="usertask7"></sequenceFlow>
+    <endEvent id="endevent7" name="End"></endEvent>
+    <sequenceFlow id="flow57" sourceRef="usertask4" targetRef="scripttask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0015_RekDozvil">
     <bpmndi:BPMNPlane bpmnElement="rada_0015_RekDozvil" id="BPMNPlane_rada_0015_RekDozvil">
@@ -1168,22 +1355,22 @@
         <omgdc:Bounds height="80.0" width="241.0" x="618.0" y="351.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="80.0" width="168.0" x="431.0" y="721.0"></omgdc:Bounds>
+        <omgdc:Bounds height="80.0" width="222.0" x="204.0" y="341.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="71.0" width="168.0" x="431.0" y="1058.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="168.0" x="431.0" y="787.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="71.0" width="210.0" x="210.0" y="1268.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="210.0" x="116.0" y="990.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="84.0" width="168.0" x="641.0" y="1401.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="168.0" x="780.0" y="926.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="84.0" width="168.0" x="431.0" y="1401.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="168.0" x="431.0" y="957.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
-        <omgdc:Bounds height="83.0" width="155.0" x="437.0" y="1611.0"></omgdc:Bounds>
+        <omgdc:Bounds height="83.0" width="198.0" x="547.0" y="1300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="78.0" width="105.0" x="200.0" y="94.0"></omgdc:Bounds>
@@ -1195,25 +1382,25 @@
         <omgdc:Bounds height="40.0" width="40.0" x="494.0" y="491.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="81.0" width="201.0" x="190.0" y="471.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="201.0" x="214.0" y="550.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="81.0" width="195.0" x="641.0" y="471.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="195.0" x="637.0" y="550.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="494.0" y="1707.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="627.0" y="1430.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="75.0" width="161.0" x="290.0" y="1761.0"></omgdc:Bounds>
+        <omgdc:Bounds height="75.0" width="161.0" x="421.0" y="1486.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="88.0" width="116.0" x="580.0" y="1755.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="144.0" x="715.0" y="1488.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="497.0" y="1861.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="639.0" y="1610.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="273.0" y="579.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="297.0" y="660.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="88.0" width="116.0" x="60.0" y="90.0"></omgdc:Bounds>
@@ -1230,41 +1417,32 @@
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="71.0" width="105.0" x="200.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
-        <omgdc:Bounds height="40.0" width="40.0" x="494.0" y="648.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="71.0" width="133.0" x="665.0" y="94.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="494.0" y="820.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="101.0" width="147.0" x="267.0" y="790.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="58.0" width="210.0" x="116.0" y="1074.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
-        <omgdc:Bounds height="40.0" width="40.0" x="494.0" y="1145.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
-        <omgdc:Bounds height="40.0" width="40.0" x="294.0" y="1362.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="171.0" y="823.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="494.0" y="874.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="90.0" width="147.0" x="651.0" y="1508.0"></omgdc:Bounds>
+        <omgdc:Bounds height="90.0" width="147.0" x="790.0" y="1030.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
-        <omgdc:Bounds height="35.0" width="35.0" x="707.0" y="1631.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="846.0" y="1146.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="95.0" width="147.0" x="441.0" y="1501.0"></omgdc:Bounds>
+        <omgdc:Bounds height="95.0" width="191.0" x="280.0" y="1160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
-        <omgdc:Bounds height="71.0" width="187.0" x="421.0" y="561.0"></omgdc:Bounds>
+        <omgdc:Bounds height="60.0" width="209.0" x="210.0" y="252.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask12" id="BPMNShape_servicetask12">
-        <omgdc:Bounds height="62.0" width="211.0" x="209.0" y="1185.0"></omgdc:Bounds>
+        <omgdc:Bounds height="62.0" width="211.0" x="115.0" y="916.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
-        <omgdc:Bounds height="71.0" width="187.0" x="421.0" y="941.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="187.0" x="421.0" y="670.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
         <omgdc:Bounds height="40.0" width="40.0" x="494.0" y="200.0"></omgdc:Bounds>
@@ -1272,8 +1450,14 @@
       <bpmndi:BPMNShape bpmnElement="servicetask14" id="BPMNShape_servicetask14">
         <omgdc:Bounds height="71.0" width="241.0" x="618.0" y="251.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="71.0" width="105.0" x="672.0" y="94.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway9" id="BPMNShape_exclusivegateway9">
+        <omgdc:Bounds height="40.0" width="40.0" x="494.0" y="1091.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask15" id="BPMNShape_servicetask15">
+        <omgdc:Bounds height="95.0" width="202.0" x="547.0" y="1160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
+        <omgdc:Bounds height="35.0" width="35.0" x="358.0" y="1300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="35.0" y="133.0"></omgdi:waypoint>
@@ -1293,58 +1477,62 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="494.0" y="511.0"></omgdi:waypoint>
-        <omgdi:waypoint x="391.0" y="511.0"></omgdi:waypoint>
+        <omgdi:waypoint x="314.0" y="510.0"></omgdi:waypoint>
+        <omgdi:waypoint x="314.0" y="550.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="42.0" x="414.0" y="491.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="534.0" y="511.0"></omgdi:waypoint>
-        <omgdi:waypoint x="641.0" y="511.0"></omgdi:waypoint>
+        <omgdi:waypoint x="733.0" y="510.0"></omgdi:waypoint>
+        <omgdi:waypoint x="734.0" y="550.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="69.0" x="533.0" y="491.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="533.0" y="491.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="738.0" y="552.0"></omgdi:waypoint>
-        <omgdi:waypoint x="738.0" y="596.0"></omgdi:waypoint>
-        <omgdi:waypoint x="608.0" y="596.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="515.0" y="801.0"></omgdi:waypoint>
-        <omgdi:waypoint x="514.0" y="820.0"></omgdi:waypoint>
+        <omgdi:waypoint x="315.0" y="421.0"></omgdi:waypoint>
+        <omgdi:waypoint x="315.0" y="451.0"></omgdi:waypoint>
+        <omgdi:waypoint x="178.0" y="451.0"></omgdi:waypoint>
+        <omgdi:waypoint x="178.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="309.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="443.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="731.0" y="165.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="514.0" y="1694.0"></omgdi:waypoint>
-        <omgdi:waypoint x="514.0" y="1707.0"></omgdi:waypoint>
+        <omgdi:waypoint x="646.0" y="1383.0"></omgdi:waypoint>
+        <omgdi:waypoint x="647.0" y="1430.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="494.0" y="1727.0"></omgdi:waypoint>
-        <omgdi:waypoint x="371.0" y="1727.0"></omgdi:waypoint>
-        <omgdi:waypoint x="370.0" y="1761.0"></omgdi:waypoint>
+        <omgdi:waypoint x="627.0" y="1450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="501.0" y="1450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="501.0" y="1486.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="60.0" x="376.0" y="1707.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="509.0" y="1430.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="534.0" y="1727.0"></omgdi:waypoint>
-        <omgdi:waypoint x="640.0" y="1727.0"></omgdi:waypoint>
-        <omgdi:waypoint x="638.0" y="1755.0"></omgdi:waypoint>
+        <omgdi:waypoint x="667.0" y="1450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="1450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="1488.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="84.0" x="566.0" y="1707.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="84.0" x="699.0" y="1430.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="638.0" y="1843.0"></omgdi:waypoint>
-        <omgdi:waypoint x="514.0" y="1861.0"></omgdi:waypoint>
+        <omgdi:waypoint x="787.0" y="1559.0"></omgdi:waypoint>
+        <omgdi:waypoint x="656.0" y="1610.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="370.0" y="1836.0"></omgdi:waypoint>
-        <omgdi:waypoint x="514.0" y="1861.0"></omgdi:waypoint>
+        <omgdi:waypoint x="582.0" y="1523.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="1561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="656.0" y="1610.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="290.0" y="552.0"></omgdi:waypoint>
-        <omgdi:waypoint x="290.0" y="579.0"></omgdi:waypoint>
+        <omgdi:waypoint x="314.0" y="631.0"></omgdi:waypoint>
+        <omgdi:waypoint x="314.0" y="660.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="118.0" y="90.0"></omgdi:waypoint>
@@ -1358,127 +1546,66 @@
         <omgdi:waypoint x="252.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="252.0" y="94.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="514.0" y="688.0"></omgdi:waypoint>
-        <omgdi:waypoint x="515.0" y="721.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="444.0" y="677.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="534.0" y="668.0"></omgdi:waypoint>
-        <omgdi:waypoint x="656.0" y="667.0"></omgdi:waypoint>
-        <omgdi:waypoint x="656.0" y="975.0"></omgdi:waypoint>
-        <omgdi:waypoint x="608.0" y="976.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="557.0" y="629.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="514.0" y="860.0"></omgdi:waypoint>
-        <omgdi:waypoint x="514.0" y="941.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="494.0" y="840.0"></omgdi:waypoint>
-        <omgdi:waypoint x="414.0" y="840.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="315.0" y="1339.0"></omgdi:waypoint>
-        <omgdi:waypoint x="314.0" y="1362.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="294.0" y="1382.0"></omgdi:waypoint>
-        <omgdi:waypoint x="136.0" y="1382.0"></omgdi:waypoint>
-        <omgdi:waypoint x="136.0" y="1093.0"></omgdi:waypoint>
-        <omgdi:waypoint x="431.0" y="1093.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="80.0" width="100.0" x="171.0" y="1385.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="494.0" y="1165.0"></omgdi:waypoint>
-        <omgdi:waypoint x="313.0" y="1164.0"></omgdi:waypoint>
-        <omgdi:waypoint x="314.0" y="1185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="494.0" y="894.0"></omgdi:waypoint>
+        <omgdi:waypoint x="221.0" y="893.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="916.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="324.0" y="1116.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="324.0" y="845.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="515.0" y="1129.0"></omgdi:waypoint>
-        <omgdi:waypoint x="514.0" y="1145.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="267.0" y="840.0"></omgdi:waypoint>
-        <omgdi:waypoint x="206.0" y="840.0"></omgdi:waypoint>
+        <omgdi:waypoint x="515.0" y="858.0"></omgdi:waypoint>
+        <omgdi:waypoint x="514.0" y="874.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="725.0" y="1485.0"></omgdi:waypoint>
-        <omgdi:waypoint x="724.0" y="1508.0"></omgdi:waypoint>
+        <omgdi:waypoint x="864.0" y="1010.0"></omgdi:waypoint>
+        <omgdi:waypoint x="863.0" y="1030.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="724.0" y="1598.0"></omgdi:waypoint>
-        <omgdi:waypoint x="724.0" y="1631.0"></omgdi:waypoint>
+        <omgdi:waypoint x="863.0" y="1120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="863.0" y="1146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="534.0" y="1165.0"></omgdi:waypoint>
-        <omgdi:waypoint x="725.0" y="1164.0"></omgdi:waypoint>
-        <omgdi:waypoint x="725.0" y="1401.0"></omgdi:waypoint>
+        <omgdi:waypoint x="534.0" y="894.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="893.0"></omgdi:waypoint>
+        <omgdi:waypoint x="864.0" y="926.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="630.0" y="1099.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="630.0" y="828.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="514.0" y="1185.0"></omgdi:waypoint>
-        <omgdi:waypoint x="515.0" y="1401.0"></omgdi:waypoint>
+        <omgdi:waypoint x="514.0" y="914.0"></omgdi:waypoint>
+        <omgdi:waypoint x="515.0" y="957.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="13.0" x="523.0" y="1197.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="13.0" x="518.0" y="913.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="515.0" y="1485.0"></omgdi:waypoint>
-        <omgdi:waypoint x="514.0" y="1501.0"></omgdi:waypoint>
+        <omgdi:waypoint x="515.0" y="1041.0"></omgdi:waypoint>
+        <omgdi:waypoint x="514.0" y="1091.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="514.0" y="1596.0"></omgdi:waypoint>
-        <omgdi:waypoint x="514.0" y="1611.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="314.0" y="1402.0"></omgdi:waypoint>
-        <omgdi:waypoint x="313.0" y="1442.0"></omgdi:waypoint>
-        <omgdi:waypoint x="431.0" y="1443.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="325.0" y="1391.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="334.0" y="1382.0"></omgdi:waypoint>
-        <omgdi:waypoint x="679.0" y="1381.0"></omgdi:waypoint>
-        <omgdi:waypoint x="725.0" y="1401.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="422.0" y="1315.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
+        <omgdi:waypoint x="375.0" y="1255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="375.0" y="1300.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="75.0" y="181.0"></omgdi:waypoint>
         <omgdi:waypoint x="94.0" y="203.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="514.0" y="632.0"></omgdi:waypoint>
-        <omgdi:waypoint x="514.0" y="648.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="314.0" y="1247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="315.0" y="1268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="978.0"></omgdi:waypoint>
+        <omgdi:waypoint x="221.0" y="990.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="514.0" y="1012.0"></omgdi:waypoint>
-        <omgdi:waypoint x="515.0" y="1058.0"></omgdi:waypoint>
+        <omgdi:waypoint x="514.0" y="741.0"></omgdi:waypoint>
+        <omgdi:waypoint x="515.0" y="787.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="514.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="514.0" y="491.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="413.0" y="299.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="445.0" y="239.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
@@ -1486,7 +1613,7 @@
         <omgdi:waypoint x="738.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="738.0" y="251.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="558.0" y="171.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="558.0" y="200.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
@@ -1497,11 +1624,61 @@
         <omgdi:waypoint x="859.0" y="391.0"></omgdi:waypoint>
         <omgdi:waypoint x="908.0" y="388.0"></omgdi:waypoint>
         <omgdi:waypoint x="908.0" y="129.0"></omgdi:waypoint>
-        <omgdi:waypoint x="777.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="798.0" y="129.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="672.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="665.0" y="129.0"></omgdi:waypoint>
         <omgdi:waypoint x="574.0" y="129.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="314.0" y="312.0"></omgdi:waypoint>
+        <omgdi:waypoint x="315.0" y="341.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="494.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="314.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="314.0" y="252.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="48.0" width="100.0" x="356.0" y="200.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="734.0" y="631.0"></omgdi:waypoint>
+        <omgdi:waypoint x="734.0" y="705.0"></omgdi:waypoint>
+        <omgdi:waypoint x="608.0" y="705.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="221.0" y="1132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="1164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="1164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="1107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="899.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="822.0"></omgdi:waypoint>
+        <omgdi:waypoint x="431.0" y="822.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
+        <omgdi:waypoint x="494.0" y="1111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="375.0" y="1110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="375.0" y="1160.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="16.0" width="66.0" x="397.0" y="1092.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
+        <omgdi:waypoint x="534.0" y="1111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="647.0" y="1111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="648.0" y="1160.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="16.0" width="89.0" x="543.0" y="1091.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
+        <omgdi:waypoint x="648.0" y="1255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="646.0" y="1300.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
+        <omgdi:waypoint x="221.0" y="1061.0"></omgdi:waypoint>
+        <omgdi:waypoint x="221.0" y="1074.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

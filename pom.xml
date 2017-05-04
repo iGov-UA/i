@@ -18,8 +18,13 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <sRevisionVersion>1.0.0</sRevisionVersion>
+                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
+                <!--sRevisionVersionBase>1.1.1</sRevisionVersionBase-->
                 <sRevision>a</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
+                <!--sRevisionLibPostfixBase>-RELEASE</sRevisionLibPostfixBase-->
                 <sRevisionSubPath></sRevisionSubPath>
                 <!--igov.storage-static.version>1.0.0a-SNAPSHOT</igov.storage-static.version>
                 <igov.storage-temp.version>1.0.0a-SNAPSHOT</igov.storage-temp.version>
@@ -39,39 +44,44 @@
                 </property>
             </activation-->
             <properties>
+                <sRevisionVersion>1.0.0</sRevisionVersion>
+                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
                 <sRevision>b</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
                 <sRevisionSubPath>/beta</sRevisionSubPath>
-                <!--igov.storage-static.version>1.0.0b-SNAPSHOT</igov.storage-static.version>
-                <igov.storage-temp.version>1.0.0b-SNAPSHOT</igov.storage-temp.version>
-                <igov.wf-base.version>1.0.0b-SNAPSHOT</igov.wf-base.version>
-                <igov.wf-central.version>1.0.0b-SNAPSHOT</igov.wf-central.version>
-                <igov.wf-region.version>1.0.0b-SNAPSHOT</igov.wf-region.version>
-                <liquibase.custom.data.path>${liquibase.data.path}/beta</liquibase.custom.data.path>
-                <activiti.custom.data.path>${activiti.data.path}/beta</activiti.custom.data.path-->
             </properties>
         </profile>
         <profile>
             <id>delta</id>
             <properties>
+                <sRevisionVersion>1.0.0</sRevisionVersion>
+                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
                 <sRevision>d</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
                 <sRevisionSubPath>/delta</sRevisionSubPath>
             </properties>
         </profile>
         <profile>
             <id>omega</id>
             <properties>
+                <sRevisionVersion>1.0.0</sRevisionVersion>
+                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
                 <sRevision>o</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
                 <sRevisionSubPath>/prod</sRevisionSubPath>
             </properties>
         </profile>
         <profile>
             <id>release</id>
             <properties>
+                <sRevisionVersion>1.0.0</sRevisionVersion>
+                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
                 <sRevision></sRevision>
                 <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
+                <sRevisionLibPostfixBase>-RELEASE</sRevisionLibPostfixBase>
                 <sRevisionSubPath>/prod</sRevisionSubPath>
             </properties>
         </profile>
@@ -126,7 +136,7 @@
         <hibernate.version>4.3.10.Final-fixed</hibernate.version>
         <usertype.core.version>3.2.0.GA</usertype.core.version>
         <log4j.version>1.2.17</log4j.version>
-        <liquibase.version>3.3.3</liquibase.version>
+        <liquibase.version>3.5.3</liquibase.version>
         <java.object.merger.version.version>0.8.5.1</java.object.merger.version.version>
         <jboss.serialization.version>4.2.2.GA</jboss.serialization.version>
         <trove.version>1.0.2</trove.version>
@@ -137,15 +147,16 @@
         <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
         <buildNumber>${maven.build.timestamp}</buildNumber>
         
-        <igov.storage-static.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.storage-static.version>
-        <igov.storage-temp.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.storage-temp.version>
-        <igov.analytic.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.analytic.version>
-        <igov.wf-base.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-base.version>
-        <igov.wf-central.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-central.version>
-        <igov.wf-region.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.wf-region.version>
-        <igov.analytic.version>1.0.0${sRevision}${sRevisionLibPostfix}</igov.analytic.version>
+        <igov.storage-static.version>${sRevisionVersionBase}${sRevision}${sRevisionLibPostfixBase}</igov.storage-static.version>
+        <igov.storage-temp.version>${sRevisionVersionBase}${sRevision}${sRevisionLibPostfixBase}</igov.storage-temp.version>
+        <igov.analytic.version>${sRevisionVersionBase}${sRevision}${sRevisionLibPostfixBase}</igov.analytic.version>
+        <igov.wf-base.version>${sRevisionVersionBase}${sRevision}${sRevisionLibPostfixBase}</igov.wf-base.version>
+        <igov.wf-central.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.wf-central.version>
+        <igov.wf-region.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.wf-region.version>
+        <!--igov.analytic.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.analytic.version-->
         <liquibase.custom.data.path>${liquibase.data.path}${sRevisionSubPath}</liquibase.custom.data.path>
         <activiti.custom.data.path>${activiti.data.path}${sRevisionSubPath}</activiti.custom.data.path>
+        <igov.ibp.git>git@github.com:e-government-ua/iBP.git</igov.ibp.git>
     </properties>
 
     <distributionManagement>

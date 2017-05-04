@@ -74,7 +74,158 @@ public enum TaskReportField {
 		@Override
 		public String replaceValue(String currentRow,
 				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
-			return currentRow.replace(this.getPattern(), curTask.getAssignee());
+			if (curTask.getAssignee() != null) {
+                return currentRow.replace(this.getPattern(), curTask.getAssignee());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
+		}
+    },
+     EMAIL("6", "${email}") {
+        @Override
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+            if (curTask.getProcessVariables().get("email") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("email").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
+            
+        }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+			if (curTask.getProcessVariables().get("email") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("email").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
+		}
+    },
+     PHONE("7", "${phone}") {
+        @Override
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+            if (curTask.getProcessVariables().get("phone") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("phone").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
+            
+        }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+			if (curTask.getProcessVariables().get("phone") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("phone").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), "+380");
+            }
+		}
+    },
+     BANK_ID_INN("8", "${bankIdinn}") {
+        @Override
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+            if (curTask.getProcessVariables().get("bankIdinn") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("bankIdinn").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
+            
+        }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+			if (curTask.getProcessVariables().get("bankIdinn") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("bankIdinn").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), "");
+            }
+		}
+    },
+     CLIENT_FIO("9", "${sClientFIO}") {
+        @Override
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+            if (curTask.getProcessVariables().get("sClientFIO") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("sClientFIO").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
+            
+        }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+			if (curTask.getProcessVariables().get("sClientFIO") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("sClientFIO").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), "");
+            }
+		}
+    },
+     MID_NAME("10", "${bankIdmiddleName}") {
+        @Override
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+            if (curTask.getProcessVariables().get("bankIdmiddleName") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("bankIdmiddleName").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
+            
+        }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+			if (curTask.getProcessVariables().get("bankIdmiddleName") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("bankIdmiddleName").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), "");
+            }
+		}
+    },
+     FIRST_NAME("11", "${bankIdfirstName}") {
+        @Override
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+            if (curTask.getProcessVariables().get("bankIdfirstName") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("bankIdfirstName").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
+            
+        }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+			if (curTask.getProcessVariables().get("bankIdfirstName") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("bankIdfirstName").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), "");
+            }
+		}
+    },
+     LAST_NAME("12", "${bankIdlastName}") {
+        @Override
+        public String replaceValue(String currentRow, Task curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+            if (curTask.getProcessVariables().get("bankIdlastName") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("bankIdlastName").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), " ");
+            }
+            
+        }
+
+		@Override
+		public String replaceValue(String currentRow,
+				HistoricTaskInstance curTask, SimpleDateFormat sDateFormat, GeneralConfig oGeneralConfig) {
+			if (curTask.getProcessVariables().get("bankIdlastName") != null) {
+                return currentRow.replace(this.getPattern(), curTask.getProcessVariables().get("bankIdlastName").toString());
+            } else {
+                return currentRow.replace(this.getPattern(), "");
+            }
 		}
     };
 

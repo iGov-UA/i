@@ -25,7 +25,6 @@ import org.activiti.engine.task.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
-import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.action.task.core.ProcessDTOCover;
@@ -57,6 +56,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.script.ScriptException;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
@@ -64,10 +64,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+
 import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
 import org.igov.service.business.subject.SubjectRightBPVO;
+
 import static org.igov.util.Tool.sO;
+
+import org.json.simple.JSONValue;
 
 //import org.igov.service.business.access.BankIDConfig;
 /**
@@ -84,6 +88,12 @@ public class ActionTaskService {
     public static final String CANCEL_INFO_FIELD = "sCancelInfo";
     private static final int DEFAULT_REPORT_FIELD_SPLITTER = 59;
     private static final int MILLIS_IN_HOUR = 1000 * 60 * 60;
+
+    private static final String THE_STATUS_OF_TASK_IS_CLOSED = "Closed";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED = "OpenedUnassigned";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED = "OpenedAssigned";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED = "Opened";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -304,10 +314,8 @@ public class ActionTaskService {
             } else if (sLogin != null && !sLogin.isEmpty()) {
                 taskQuery.taskAssignee(sLogin);
             }
-        } else {
-            if (sLogin != null && !sLogin.isEmpty()) {
-                taskQuery.taskCandidateOrAssigned(sLogin);
-            }
+        } else if (sLogin != null && !sLogin.isEmpty()) {
+            taskQuery.taskCandidateOrAssigned(sLogin);
         }
         return taskQuery;
     }
@@ -520,9 +528,10 @@ public class ActionTaskService {
     }
 
     public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern,
-            Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP) {
-        LOG.info("!!!!!csvLines: " + csvLines);
+            Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP, String asField_Filter) {
+    	LOG.info("Method fillTheCSVMapHistoricTasks started...................................");
 
+    	ToolJS oToolJs = new ToolJS();
         LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_begin---------------------------------------------------------->");
         if (CollectionUtils.isEmpty(foundResults)) {
             LOG.info(String.format("No historic tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
@@ -540,11 +549,38 @@ public class ActionTaskService {
                 LOG.info("Skipping historic task {} from processing as it is already in the response", curTask.getId());
                 continue;
             }
+            
+            Map<String, FormProperty> enumProperties = new HashMap<String, FormProperty>();
+            StartFormData startFormData = oFormService.getStartFormData(curTask.getProcessDefinitionId());
+            LOG.info("Loaded start form data for the process {}", startFormData);
+            if (startFormData != null){
+            	for (FormProperty formProperty : startFormData.getFormProperties()){
+            		LOG.info("Checking property {} with the type {} ", formProperty.getId(), formProperty.getType().getName());
+            		String sType = formProperty.getType().getName();
+                    if ("enum".equalsIgnoreCase(sType)) {
+                    	enumProperties.put(formProperty.getId(), formProperty);
+                    }
+            	}
+            }
+            LOG.info("Enum properties of the process: " + enumProperties);
             String currentRow = pattern;
             Map<String, Object> variables = curTask.getProcessVariables();
             LOG.info("!!!!!!!!!!!!!!!variablessb= " + variables);
             LOG.info("Loaded historic variables for the task {}|{}", curTask.getId(), variables);
-            currentRow = replaceFormProperties(currentRow, variables);
+            try{
+                if (asField_Filter != null){
+                     Map<String, Object> variablesToFilter = new HashMap<>();
+                    variablesToFilter.putAll(curTask.getProcessVariables());
+                    variablesToFilter.putAll(curTask.getTaskLocalVariables());
+                    if(!(Boolean)(oToolJs.getObjectResultOfCondition(new HashMap<>(), variables, asField_Filter))){
+                        LOG.info("filtered Task Id in fillTheCSVMapHistoricTasks {curTask.getId()}", curTask.getId());
+                        continue;
+                    }
+                }
+            }catch(ScriptException | NoSuchMethodException ex){
+                LOG.info("Error during fillTheCSVMapHistoricTasks filtering {}", ex);    
+            }
+            currentRow = replaceFormProperties(currentRow, variables, enumProperties);
             if (saFieldsCalc != null) {
                 currentRow = addCalculatedFields(saFieldsCalc, curTask, currentRow);
             }
@@ -581,6 +617,7 @@ public class ActionTaskService {
             csvLines.add(currRow);
             LOG.info("csvLines= " + csvLines);
             LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_end---------------------------------------------------------->");
+            LOG.info("Method fillTheCSVMapHistoricTasks ended...................................");
         }
     }
 
@@ -618,20 +655,23 @@ public class ActionTaskService {
         return headersExtra;
     }
 
-    private String replaceFormProperties(String currentRow, Map<String, Object> data) {
+    private String replaceFormProperties(String currentRow, Map<String, Object> data, Map<String, FormProperty> enumProperties) {
         String res = currentRow;
         for (Map.Entry<String, Object> property : data.entrySet()) {
             LOG.info(String.format("Matching property %s:%s with fieldNames", property.getKey(), property.getValue()));
             //LOG.info("!!!!!!!!!!data: " + data);
             if (currentRow != null && res.contains("${" + property.getKey() + "}")) {
                 LOG.info(String.format("Found field with id %s in the pattern. Adding value to the result", "${" + property.getKey() + "}"));
-                if (property.getValue() != null) {
-                    String sValue = property.getValue().toString();
-                    LOG.info("(sValue={})", sValue);
-                    if (sValue != null) {
-                        LOG.info(String.format("Replacing field with the value %s", sValue));
-                        res = res.replace("${" + property.getKey() + "}", sValue);
-                    }
+                String sValue = null;
+                if (enumProperties.containsKey(property.getKey())){
+                	sValue = parseEnumProperty(enumProperties.get(property.getKey()), (String)property.getValue());
+                } else if (property.getValue() != null) {
+                    sValue = property.getValue().toString();
+                }
+                LOG.info("(sValue={})", sValue);
+                if (sValue != null) {
+                    LOG.info(String.format("Replacing field with the value %s", sValue));
+                    res = res.replace("${" + property.getKey() + "}", sValue);
                 }
             }
         }
@@ -834,8 +874,15 @@ public class ActionTaskService {
         String res = currentRow;
         for (TaskReportField field : TaskReportField.values()) {
             if (res.contains(field.getPattern())) {
+            	LOG.info("Before!!!!!!!!!!res: " + res);
+                LOG.info("Before!!!!!!!!!!curTask: {}" + curTask);
+                LOG.info("Before!!!!!!!!!!sDateCreateDF: " + sDateCreateDF);
+                LOG.info("Before!!!!!!!!!!oGeneralConfig: {} " + oGeneralConfig);
                 res = field.replaceValue(res, curTask, sDateCreateDF, oGeneralConfig);
                 LOG.info("!!!!!!!!!!res: " + res);
+                LOG.info("!!!!!!!!!!curTask: {}" + curTask);
+                LOG.info("!!!!!!!!!!sDateCreateDF: " + sDateCreateDF);
+                LOG.info("!!!!!!!!!!oGeneralConfig: {} " + oGeneralConfig);
             }
         }
         LOG.info("<--------------------------------replaceReportFields_end-------------------------------------------->");
@@ -962,7 +1009,9 @@ public class ActionTaskService {
     }
 
     public void fillTheCSVMap(String sID_BP, Date dateAt, Date dateTo, List<Task> aTaskFound, SimpleDateFormat sDateCreateDF,
-            List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] asHeader) {
+            List<Map<String, Object>> csvLines, String pattern, String saFieldsCalc, String[] asHeader, String asField_Filter) {
+    	
+    	LOG.info("Method fillTheCSVMap started...................................");
         if (CollectionUtils.isEmpty(aTaskFound)) {
 
             LOG.info(String.format("No tasks found for business process %s for date period %s - %s", sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
@@ -970,14 +1019,32 @@ public class ActionTaskService {
         }
         LOG.info(String.format("Found %s tasks for business process %s for date period %s - %s", aTaskFound.size(), sID_BP, DATE_TIME_FORMAT.format(dateAt), DATE_TIME_FORMAT.format(dateTo)));
         if (pattern != null) {
-            LOG.info("List of fields to retrieve: }{", pattern);
+            LOG.info("List of fields to retrieve: {}", pattern);
         } else {
             LOG.info("Will retreive all fields from tasks");
         }
+        
+        ToolJS oToolJs = new ToolJS();
         for (Task oTask : aTaskFound) {
+            
+            if (asField_Filter != null){
+                try{
+                    Map<String, Object> variablesToFilter = new HashMap<>();
+                    variablesToFilter.putAll(oTask.getProcessVariables());
+                    variablesToFilter.putAll(oTask.getTaskLocalVariables());
+                    if(!(Boolean)(oToolJs.getObjectResultOfCondition(new HashMap<>(), variablesToFilter, asField_Filter))){
+                        LOG.info("filtered Task Id in fillTheCSVMap {curTask.getId()}", oTask.getId());
+                        continue;
+                    }
+
+                }catch(ScriptException | NoSuchMethodException ex){
+                    LOG.info("Error during fillTheCSVMapHistoricTasks filtering {}", ex);    
+                }
+            }
             String sRow = pattern;
             LOG.trace("Process task - {}", oTask);
             TaskFormData oTaskFormData = oFormService.getTaskFormData(oTask.getId());
+            
             sRow = replaceFormProperties(sRow, oTaskFormData);
             LOG.info("!!!!!!!!!!!!!!!!!!!!!!fillTheCSVMap!_!sRows= " + sRow);
             if (saFieldsCalc != null) {
@@ -1001,16 +1068,20 @@ public class ActionTaskService {
                 }
             }
             csvLines.add(mCell);
+            LOG.info("Method fillTheCSVMap ended...................................");
         }
     }
 
     public String[] createStringArray(Map<String, Object> csvLine, List<String> headers) {
+    	LOG.info("Method createStringArray started................");
         List<String> result = new LinkedList<>();
         for (String header : headers) {
             Object value = csvLine.get(header);
             result.add(value == null ? "" : value.toString());
         }
+        LOG.info("Size of array = ", result.size());
         return result.toArray(new String[result.size()]);
+      
     }
 
     /**
@@ -1252,7 +1323,7 @@ public class ActionTaskService {
             result.add(process);*/
         }
 
-        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getSubjectRightBPs(sLogin);
+        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
         LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
 
         if (aResSubjectRightBPVO != null) {
@@ -1654,17 +1725,16 @@ public class ActionTaskService {
     }
 
     public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception {
-        boolean success = false;
-        String nID_Process = null;
-
+        boolean success;
+        String nID_Process;
+        
         nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
 
-        //String sID_Order,
         String sID_Order = oGeneralConfig.getOrderId_ByOrder(nID_Order);
 
-        HistoryEvent_Service_StatusType oHistoryEvent_Service_StatusType = HistoryEvent_Service_StatusType.REMOVED;
-        String sUserTaskName = oHistoryEvent_Service_StatusType.getsName_UA();
-        String sBody = sUserTaskName;
+        HistoryEvent_Service_StatusType oStatusType = HistoryEvent_Service_StatusType.REMOVED;
+        String statusType_Name = oStatusType.getsName_UA();
+        String sBody = statusType_Name;
         //        String sID_status = "Заявка была удалена";
         if (sLogin != null) {
             sBody += " (" + sLogin + ")";
@@ -1673,21 +1743,16 @@ public class ActionTaskService {
             sBody += ": " + sReason;
         }
         Map<String, String> mParam = new HashMap<>();
-        mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+        mParam.put("nID_StatusType", oStatusType.getnID() + "");
         mParam.put("sBody", sBody);
-        LOG.info("Deleting process {}: {}", nID_Process, sUserTaskName);
+        LOG.info("Deleting process {}: {}", nID_Process, statusType_Name);
+        oHistoryEventService.updateHistoryEvent(
+                sID_Order, statusType_Name, false, oStatusType, mParam);
         try {
             oRuntimeService.deleteProcessInstance(nID_Process, sReason);
         } catch (ActivitiObjectNotFoundException e) {
-            LOG.info("Could not find process {} to delete: {}", nID_Process, e);
-            throw new RecordNotFoundException();
+            LOG.error("Could not find process {} to delete: {}", nID_Process, e);
         }
-
-        oHistoryEventService.updateHistoryEvent(
-                //processInstanceID,
-                sID_Order,
-                sUserTaskName, false, oHistoryEvent_Service_StatusType.REMOVED, mParam);
-
         success = true;
         return success;
     }
@@ -1824,11 +1889,9 @@ public class ActionTaskService {
                         task = taskOpponent;
                         LOG.info(String.format("Set new result Task [id = '%s']", task));
                     }
-                } else {
-                    if (createDateTask.before(createDateTaskOpponent)) {
-                        task = taskOpponent;
-                        LOG.info(String.format("Set new result Task [id = '%s']", task));
-                    }
+                } else if (createDateTask.before(createDateTaskOpponent)) {
+                    task = taskOpponent;
+                    LOG.info(String.format("Set new result Task [id = '%s']", task));
                 }
             }
         }
@@ -2282,14 +2345,51 @@ public class ActionTaskService {
         return entity.getBody();
     }
 
+    public String getTypeOfTask(String sLogin, String sID_Task){
+        long count = 0;
+        try {
+            count = oTaskService.createTaskQuery().taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%").taskId(sID_Task).count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_DOCUMENTS;
+            }
+        } catch (Exception e) {
+            //
+        }
+        try {
+            count = oTaskService.createTaskQuery().taskCandidateUser(sLogin).taskId(sID_Task).count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED;
+            }
+        } catch (Exception e) {
+            //
+        }
+        try {
+            count = oTaskService.createTaskQuery().taskAssignee(sLogin).taskId(sID_Task).count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED;
+            }
+        } catch (Exception e) {
+            //
+        }
+        try {
+            count = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).taskId(sID_Task).finished().count();
+            if(count > 0){
+                return THE_STATUS_OF_TASK_IS_CLOSED;
+            }
+        } catch (Exception e) {
+            //
+        }
+        return "";
+    }
+
     public Object createQuery(String sLogin,
             boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
             List<String> groupsIds, String soaFilterField) {
 
         if (!StringUtils.isEmpty(soaFilterField)) {
         }
-        Object taskQuery = null;
-        if ("Closed".equalsIgnoreCase(sFilterStatus)) {
+        Object taskQuery;
+        if (THE_STATUS_OF_TASK_IS_CLOSED.equalsIgnoreCase(sFilterStatus)) {
             taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
             if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                 ((TaskInfoQuery) taskQuery).orderByTaskCreateTime();
@@ -2299,7 +2399,7 @@ public class ActionTaskService {
 
             if (!StringUtils.isEmpty(soaFilterField)) {
                 JSONArray oJSONArray = new JSONArray(soaFilterField);
-                Map<String, String> mFilterField = new HashMap<String, String>();
+                Map<String, String> mFilterField = new HashMap<>();
                 for (int i = 0; i < oJSONArray.length(); i++) {
                     JSONObject oJSON = (JSONObject) oJSONArray.get(i);
                     if (oJSON.has("sID") && oJSON.has("sValue")) {
@@ -2313,62 +2413,66 @@ public class ActionTaskService {
                 LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
             }
             ((TaskInfoQuery) taskQuery).asc();
-        } else {
-            if (bIncludeAlienAssignedTasks) {
-                StringBuilder groupIdsSB = new StringBuilder();
-                for (int i = 0; i < groupsIds.size(); i++) {
-                    groupIdsSB.append("'");
-                    groupIdsSB.append(groupsIds.get(i));
-                    groupIdsSB.append("'");
-                    if (i < groupsIds.size() - 1) {
-                        groupIdsSB.append(",");
-                    }
+        } else if (bIncludeAlienAssignedTasks) {
+            StringBuilder groupIdsSB = new StringBuilder();
+            for (int i = 0; i < groupsIds.size(); i++) {
+                groupIdsSB.append("'");
+                groupIdsSB.append(groupsIds.get(i));
+                groupIdsSB.append("'");
+                if (i < groupsIds.size() - 1) {
+                    groupIdsSB.append(",");
                 }
-
-                StringBuilder sql = new StringBuilder();
-                sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
-                sql.append(groupIdsSB.toString());
-                sql.append(") ");
-
-                if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
-                    sql.append(" order by task.CREATE_TIME_ asc");
-                } else {
-                    sql.append(" order by task.ID_ asc");
-                }
-                LOG.info("Query to execute {}", sql.toString());
-                taskQuery = oTaskService.createNativeTaskQuery().sql(sql.toString());
-            } else {
-                taskQuery = oTaskService.createTaskQuery();
-                if ("OpenedUnassigned".equalsIgnoreCase(sFilterStatus)) {
-                    ((TaskQuery) taskQuery).taskCandidateUser(sLogin);
-                } else if ("OpenedAssigned".equalsIgnoreCase(sFilterStatus)) {
-                    taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
-                } else if ("Opened".equalsIgnoreCase(sFilterStatus)) {
-                    taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
-                }
-                if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
-                    ((TaskQuery) taskQuery).orderByTaskCreateTime();
-                } else {
-                    ((TaskQuery) taskQuery).orderByTaskId();
-                }
-
-                if (!StringUtils.isEmpty(soaFilterField)) {
-                    JSONArray oJSONArray = new JSONArray(soaFilterField);
-                    Map<String, String> mFilterField = new HashMap<>();
-                    for (int i = 0; i < oJSONArray.length(); i++) {
-                        JSONObject oJSON = (JSONObject) oJSONArray.get(i);
-                        if (oJSON.has("sID") && oJSON.has("sValue")) {
-                            mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
-                            ((TaskQuery) taskQuery)
-                                    .processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
-                            LOG.info("{} json element doesn't have either sID or sValue fields", i);
-                        }
-                    }
-                    LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
-                }
-                ((TaskQuery) taskQuery).asc();
             }
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+            sql.append(groupIdsSB.toString());
+            sql.append(") ");
+
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                sql.append(" order by task.CREATE_TIME_ asc");
+            } else {
+                sql.append(" order by task.ID_ asc");
+            }
+            LOG.info("Query to execute {}", sql.toString());
+            taskQuery = oTaskService.createNativeTaskQuery().sql(sql.toString());
+        } else {
+            taskQuery = oTaskService.createTaskQuery();
+            long startTime = System.currentTimeMillis();
+            if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED.equalsIgnoreCase(sFilterStatus)) {
+                ((TaskQuery) taskQuery).taskCandidateUser(sLogin);
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED.equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
+            } else if (THE_STATUS_OF_TASK_IS_OPENED.equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
+                LOG.info("Opened JSONValue element in filter {}", JSONValue.toJSONString(taskQuery));
+            } else if (THE_STATUS_OF_TASK_IS_DOCUMENTS.equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
+            }
+            LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                ((TaskQuery) taskQuery).orderByTaskCreateTime();
+            } else {
+                ((TaskQuery) taskQuery).orderByTaskId();
+            }
+
+            if (!StringUtils.isEmpty(soaFilterField)) {
+                JSONArray oJSONArray = new JSONArray(soaFilterField);
+                Map<String, String> mFilterField = new HashMap<>();
+                for (int i = 0; i < oJSONArray.length(); i++) {
+                    JSONObject oJSON = (JSONObject) oJSONArray.get(i);
+                    if (oJSON.has("sID") && oJSON.has("sValue")) {
+                        mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        ((TaskQuery) taskQuery)
+                                .processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        LOG.info("{} json element doesn't have either sID or sValue fields", i);
+                    }
+                }
+                LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
+            }
+            ((TaskQuery) taskQuery).asc();
         }
+
         return taskQuery;
     }
 

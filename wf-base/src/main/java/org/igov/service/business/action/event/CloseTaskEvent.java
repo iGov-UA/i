@@ -9,12 +9,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.activiti.bpmn.model.ItemDefinition;
+import org.activiti.bpmn.model.MessageFlow;
 
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.repository.DiagramElement;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
@@ -45,6 +49,10 @@ public class CloseTaskEvent {
 	@Autowired
 	private FeedBackService feedBackService;
 
+        
+        @Autowired
+        protected RepositoryService repositoryService;
+        
 	@Autowired
 	GeneralConfig generalConfig;
 
@@ -67,13 +75,15 @@ public class CloseTaskEvent {
 
 	private final JSONParser oJSONParser = new JSONParser();
 
-	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snID_Task, JSONObject omRequestBody)
+	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snID_Task, JSONObject omRequestBody, boolean bCloseAnyWay)
 			throws ParseException {
             LOG.info("Method doWorkOnCloseTaskEvent started");
             
-             Map<String, String> mParam = new HashMap<>();
-             mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
-	 HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
+            Map<String, String> mParam = new HashMap<>();
+            
+            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
+            
+            HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
 
             String snID_Process = oHistoricTaskInstance.getProcessInstanceId();
@@ -108,12 +118,42 @@ public class CloseTaskEvent {
                 mParam.put("nTimeMinutes", snMinutesDurationProcess);
                 LOG.info("(sID_Order={},nMinutesDurationProcess={})", sID_Order, snMinutesDurationProcess);
                 List<Task> aTask = taskService.createTaskQuery().processInstanceId(snID_Process).list();
+                String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
                 LOG.info("11111sUserTaskName before : " + snID_Process);// new log не меняется статус
-                boolean bProcessClosed = (aTask == null || aTask.isEmpty());
+                
+                /*List<String> aUserType = repositoryService.getBpmnModel(sProcessName).getUserTaskFormTypes();
+                Map<String, ItemDefinition> mItemDefinition = repositoryService.getBpmnModel(sProcessName).getItemDefinitions();
+                Map<String, MessageFlow> mMessageFlow = repositoryService.getBpmnModel(sProcessName).getMessageFlows();
+                LOG.info("aUserType is: {}", aUserType);
+                LOG.info("mItemDefinition is: {}", mItemDefinition);
+                LOG.info("mMessageFlow is: {}", mMessageFlow);*/
+                
+                String oTaskDefinitionKey = oHistoricTaskInstance.getTaskDefinitionKey();
+                
+                LOG.info("oTaskDefinitionKey {}", oTaskDefinitionKey);
+                
+                Map<String, DiagramElement> mBpSchema = repositoryService.getProcessDiagramLayout(sProcessName).getElements();
+                
+                for(String key : mBpSchema.keySet()){
+                    DiagramElement oDiagramElement = mBpSchema.get(key);
+                    LOG.info("DiagramElement {}", oDiagramElement.getId());
+                    LOG.info("BpSchema key {}", oDiagramElement.getId());
+                }
+                
+                List<HistoricProcessInstance> aHistoricProcessInstance = 
+                        historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).finished().list();
+                
+                for(HistoricProcessInstance oHistoricProcessInstance : aHistoricProcessInstance){
+                    LOG.info("oHistoricProcessInstance.getId {}", oHistoricProcessInstance.getId());
+                    LOG.info("oHistoricProcessInstance.getProcessDefinitionId {}", oHistoricProcessInstance.getProcessDefinitionId());
+                }        
+                
+                //boolean bProcessClosed = (aTask == null || aTask.isEmpty());
+                boolean bProcessClosed = (aHistoricProcessInstance != null && !aHistoricProcessInstance.isEmpty());
                 
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 LOG.info("11111sUserTaskName: " + sUserTaskName);
-                String sProcessName = oHistoricTaskInstance.getProcessDefinitionId();
+                
                 LOG.info("sProcessName: " + sProcessName);
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
@@ -177,10 +217,14 @@ public class CloseTaskEvent {
                 if (bSaveHistory) {
                     // Cохранение нового события для задачи
                     HistoryEvent_Service_StatusType status;
-                    if (bProcessClosed) {
+                    if (bProcessClosed || bCloseAnyWay) {
                       
                         status = HistoryEvent_Service_StatusType.CLOSED;
                           LOG.info("HistoryEvent_Service_StatusType is CLOSED ", status.toString()); 
+                          
+                        if(bCloseAnyWay){
+                            mParam.put("soData", "TaskCancelByUser");
+                        }  
                           
                     } else {
                         status = HistoryEvent_Service_StatusType.OPENED;
@@ -190,10 +234,11 @@ public class CloseTaskEvent {
                     mParam.put("sUserTaskName", sUserTaskName);
                     try {
                         if (!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)) {
+                            
+                            LOG.info("mParam in CloseTaskEvent is {}", mParam);
+                            LOG.info("status in CloseTaskEvent is {}", status);
                             historyEventService.updateHistoryEvent(sID_Order, status, mParam);
                             
-                            
-                    
                     LOG.info(" historyEventService.updateHistoryEvent", sID_Order, status);    
                         }
                     } catch (Exception oException) {

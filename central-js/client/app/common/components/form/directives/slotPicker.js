@@ -61,6 +61,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       var nDiffDaysProperty = 'nDiffDays_' + scope.property.id;
       var nDiffDaysParam = scope.formData.params[nDiffDaysProperty];
 
+      var nDiffDaysForStartDateProperty = 'nDiffDaysForStartDate_' + scope.property.id;
+      var nDiffDaysForStartDateParam = scope.formData.params[nDiffDaysForStartDateProperty];
+
       function selectedSlot(newValue) {
         if (isQueueDataType.DMS) {
           if(newValue){
@@ -166,6 +169,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         if(bValid && nDiffDaysParam && nDiffDaysParam.value && scope.$parent.slotsCache.loadedList[slotId].nDiffDays){
           bValid = bValid && (""+nDiffDaysParam.value) === (""+scope.$parent.slotsCache.loadedList[slotId].nDiffDays);
         }
+        if(bValid && nDiffDaysForStartDateParam && nDiffDaysForStartDateParam.value && scope.$parent.slotsCache.loadedList[slotId].nDiffDaysForStartDate){
+           bValid = bValid && (""+nDiffDaysForStartDateParam.value) === (""+scope.$parent.slotsCache.loadedList[slotId].nDiffDaysForStartDate);
+        }
         return bValid;
       }
 
@@ -256,6 +262,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           if (nDiffDaysParam && parseInt(nDiffDaysParam.value) > 0) {
             data.nDiffDays = nDiffDaysParam.value;
           }
+          if (nDiffDaysForStartDateParam && parseInt(nDiffDaysForStartDateParam.value) > 0) {
+            data.nDiffDaysForStartDate = nDiffDaysForStartDateParam.value;
+          }
+           
 
           sURL = '/api/service/flow/' + scope.serviceData.nID;
         } else {
@@ -286,6 +296,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                       sID_Public_SubjectOrganJoin: response.config.params.sID_Public_SubjectOrganJoin,
                       nSlots: response.config.params.nSlots,
                       nDiffDays: response.config.params.nDiffDays,
+                      nDiffDaysForStartDate: response.config.params.nDiffDaysForStartDate,
                       sDepartmentField: departmentProperty
                     }
                   }
@@ -360,6 +371,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       if (angular.isDefined(nDiffDaysParam)) {
         scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue, oldValue) {
+          if (newValue == oldValue)
+            return;
+          resetData();
+          scope.loadList();
+        });
+      }
+
+      if (angular.isDefined(nDiffDaysForStartDateParam)) {
+        scope.$watch('formData.params.' + nDiffDaysForStartDateProperty + '.value', function (newValue, oldValue) {
           if (newValue == oldValue)
             return;
           resetData();

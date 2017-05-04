@@ -53,8 +53,11 @@ public class ActionFlowControllerScenario {
     @Test
     public void shouldSuccessfullyGetFlowSlotsAndSaveTicket() throws Exception {
 
-        String getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
-                param("nID_ServiceData", "1").param("nID_SubjectOrganDepartment", "1").param("nDays", "1000000")).
+        String getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots").
+                param("nID_ServiceData", "1").
+                param("nID_SubjectOrganDepartment", "1").
+                param("nDays", "1000000").
+                param("nDiffDays", "0")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -62,8 +65,11 @@ public class ActionFlowControllerScenario {
 
         Assert.assertFalse(days.getaDay().isEmpty());
 
-        getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
-                param("nID_Service", "1").param("nID_SubjectOrganDepartment", "1").param("nDays", "1000000")).
+        getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots").
+                param("nID_Service", "1").
+                param("nID_SubjectOrganDepartment", "1").
+                param("nDays", "1000000").
+                param("nDiffDays", "0")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -71,12 +77,13 @@ public class ActionFlowControllerScenario {
 
         Assert.assertFalse(days.getaDay().isEmpty());
 
-        getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
+        getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots").
                 param("nID_ServiceData", "1").
                 param("nID_SubjectOrganDepartment", "1").
                 param("nDays", "1000000").
                 param("nFreeDays", "1").
-                param("nSlots", "2")).
+                param("nSlots", "2").
+                param("nDiffDays", "0")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
@@ -110,12 +117,13 @@ public class ActionFlowControllerScenario {
         Long ticketId = response.getnID_Ticket();
         Assert.assertTrue(ticketId != null);
 
-        getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots_ServiceData").
+        getJsonData = mockMvc.perform(get("/action/flow/getFlowSlots").
                 param("nID_ServiceData", "1").
                 param("nID_SubjectOrganDepartment", "1").
                 param("sDate", sDateTime).
                 param("nDays", "1000000").
-                param("nSlots", "2")).
+                param("nSlots", "2").
+                param("nDiffDays", "0")).
                 andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
