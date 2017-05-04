@@ -187,6 +187,7 @@ public class ProcessSubject extends AbstractEntity {
                 + "id=" + getId()
                 + ", snID_Process_Activiti=" + snID_Process_Activiti
                 + ", processSubjectStatus=" + oProcessSubjectStatus
+                + ", oProcessSubjectTask=" + oProcessSubjectTask
                 + ", nOrder=" + nOrder
                 + ", sLogin=" + sLogin
                 + ", sDateEdit=" + sDateEdit
