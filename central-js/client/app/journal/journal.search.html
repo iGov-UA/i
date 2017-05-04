@@ -63,10 +63,16 @@
             <p  style="padding-bottom: 20px" ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
             <div ng-if="oOrderMessage.aSubjectMessageQuestionFields && oOrderMessage.aSubjectMessageQuestionFields.length > 0">
               <table class="QuestionFields">
-                <tr><td>Поле</td><td>Значення</td><td>Коментар</td></tr>
+                <tr>
+                  <td>Поле</td>
+                  <td>Значення</td>
+                  <td ng-if="oOrderMessage.oSubjectMessageType.nID == 4">Нове значення</td>
+                  <td>Коментар</td>
+                </tr>
                 <tr ng-repeat="field in oOrderMessage.aSubjectMessageQuestionFields">
                   <td>{{field.sName}}</td>
                   <td>{{field.sValue}}</td>
+                  <td ng-if="oOrderMessage.oSubjectMessageType.nID == 4">{{field.sValueNew}}</td>
                   <td>{{field.sNotify}}</td>
                 </tr>
               </table>
