@@ -3118,7 +3118,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 } else {
                     throw new IllegalArgumentException("Object doesn't contain 'taskId' parameter");
                 }
-
+                
+                if (mJsonBody.containsKey("aProcessSubjectTask")){
+                    LOG.info("The request to updateProcess contains aProcessSubjectTask key");
+                    Object oaProcessSubjectTask = mJsonBody.get("aProcessSubjectTask");
+                    oProcessSubjectTaskService.setProcessSubjectTaskList(oaProcessSubjectTask);
+                }
+                
                 if (mJsonBody.containsKey("properties")) {
                     LOG.info("Parsing properties: " + mJsonBody.get("properties"));
 
