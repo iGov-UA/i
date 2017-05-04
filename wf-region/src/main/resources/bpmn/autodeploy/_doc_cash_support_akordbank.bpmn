@@ -27,6 +27,8 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sAddress1" name="номер та адреса відділення отримувача" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nInterestRate" name="Відсоткова ставка" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Додаткова інформація" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Head_of_cash_desk]]></activiti:string>
@@ -122,6 +124,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
