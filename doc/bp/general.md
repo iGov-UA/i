@@ -1540,8 +1540,8 @@ execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
 **nID_SubjectOrgan** - номер подтягивать из файла [SubjectOrgan](#subjectorgan). Пример 225-ЦНАП, 212- местные органы    
 **sNameUa** - название административного органа на украинском языке    
 **sNameRu** - название административного органа на русском языке     
-**sID_Privat** - ИД  
-**sID_Public**  
+**sID_Privat** - здесь вносим название группы в которую мы добавляем пользователей в дашборде для работы с заявкой, при использовании атрибута sID_Public_SubjectOrganJoin.  
+**sID_Public** - здесь вносим название группы в которую мы добавляем пользователей в дашборде для работы с заявкой, при использовании атрибута sID_Public_SubjectOrganJoin.
 **sGeoLongitude**  
 **sGeoLatitude**  
 **nID_Region**  
