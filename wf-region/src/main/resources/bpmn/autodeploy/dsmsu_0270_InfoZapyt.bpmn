@@ -89,6 +89,11 @@
     <userTask id="usertask1" name="Розгляд документів" activiti:candidateGroups="dsmsu_ukr">
       <extensionElements>
         <activiti:formProperty id="sFIO" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObl" name="Область; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistr" name="Район; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNP" name="Населений пункт; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddr" name="Вулиця, будинок, квартира; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Місцезнаходження заявника" type="string" default="${sIndex}, ${sObl}, ${sDistr}, ${sNP}, ${sAddr}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -108,15 +113,14 @@
         <activiti:formProperty id="sPosada" name="Посада заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Коротка суть питання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nOther" name="Інші документи; декілька сторінок об'єднайте у один pdf файл або zip архів;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker2" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('dsmsu_0270_InfoZapyt.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="Видимість полів" type="markers" default="${markerService.loadFromFile('dsmsu_0270_InfoZapyt_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="asDecide" name="Рішення" type="enum" required="true">
           <activiti:value id="sAnswer" name="Надати відповідь на запитання (відповідь буде надіслана громадянину на ел. пошту)"></activiti:value>
           <activiti:value id="sReject" name="Відмова в обробці (обов'язково вкажіть причину в коментарі)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Vidpovid" name="Завантажте копію відповіді; якщо необхідно;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dsmsu_0270_InfoZapyt.html,bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dsmsu_0270_InfoZapyt.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dsmsu_0270_InfoZapyt.html,sFileName=InfoZapyt" type="file" writable="false"></activiti:formProperty>        <activiti:formProperty id="sBody1" name="[pattern/print/dsmsu_0270_InfoZapyt.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
