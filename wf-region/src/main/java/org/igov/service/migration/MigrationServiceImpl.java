@@ -16,18 +16,22 @@ import java.util.List;
 
 /**
  * Created by dpekach on 01.05.17.
- */
-
-/*
-Алгоритм действий:
-1) Достаем с помощью historyService.createHistoricProcessInstanceQuery().finished().list() оконченные процессы
-2) Проходим по каждому процессу; Создаем новый процесс Process & CustomProcess; сеттим в них необходиме атрибуты
-3) Достали айдишку процесса; по айдишке процесса находим таску; заполняем ProcessTask & CustomProcessTask;
-4) Сохраняем только Process;
-5) Помещаем proc_inst_id в ConfigDao, если успешно
-
-
-Непонятно: сортировка, application-context
+ *
+ * <p>Service is responsible for migrating outdated data from activiti historic tables to the next 4 analytic tables: Process,
+ * ProcessTask, CustomProcess, CustomProcessTask. Tables with prefix 'Custom' are consist of fields,
+ * that are present in act_hi_*, but are absent in corresponding 'Process' tables.
+ * Table 'Config' serves for backup aims: it stores the last successfully migrated process_instance_id, so that
+ * migration process shouldn't be started from the very beginning.</p>
+ *
+ *
+ *
+ * <p>Migration algorithm</p>:
+ * 0) Get last process_instance_id from 'Config' table: if process with such id is present in act_hi_procinst, delete it
+ * 1) Get ordered by process_instance_id list of historic processes from act_hi_procinst;
+ * 2) Fill Process/CustomProcess and ProcessTask/CustomProcessTask beans;
+ * 3) Save only Process bean with ProcessDao;
+ * 4) If populating analytic tables succeeds, then 'Config' table is updated with last process_instance_id
+ * 5) Corresponding record is deleted from act_hi_procinst & act_hi_taskinst (this option is disabled in development mode)
  */
 @Service
 public class MigrationServiceImpl implements MigrationService {
@@ -47,21 +51,30 @@ public class MigrationServiceImpl implements MigrationService {
     @PostConstruct
     private void init() {
         processList =
-                historyService.createHistoricProcessInstanceQuery().finished().includeProcessVariables().orderByProcessInstanceId().list();
+                historyService.createHistoricProcessInstanceQuery().finished().includeProcessVariables().orderByProcessInstanceId().asc().list();
     }
 
+    /**
+     * @param isTest if this flag is set to true, only 1 record is migrated from act_hi_* to corresponding tables
+     */
     @Override
-    public void migrateOldRecords() {
-        for(HistoricProcessInstance process: processList) {
-            Process processToInsert = createProcessToInsert(process);
+    public void migrateOldRecords(boolean isTest) {
+        if(!isTest) {
+            for(HistoricProcessInstance process: processList) {
+                Process processToInsert = createProcessToInsert(process);
 
-            String processInstanceId = process.getId();
-            HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).singleResult();
-            ProcessTask processTask = createProcessTaskToInsert(taskInstance);
-            CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
+                String processInstanceId = process.getId();
+                HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).singleResult();
+                ProcessTask processTask = createProcessTaskToInsert(taskInstance);
+                CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
 
-            String successfullyInsertedId = processDao.saveOrUpdate(processToInsert).getId().toString();
+                String successfullyInsertedId = processDao.saveOrUpdate(processToInsert).getId().toString();
+            }
         }
+        else {
+
+        }
+
     }
 
 
@@ -78,7 +91,7 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
 
-        //нужно просеттить атрибуты процесса
+        //TODO нужно просеттить атрибуты процесса
         return process;
     }
 
@@ -89,7 +102,7 @@ public class MigrationServiceImpl implements MigrationService {
         customProcess.setoProcess(process);
         customProcess.setsDeleteReason(historicProcess.getDeleteReason());
         customProcess.setsName(historicProcess.getName());
-        customProcess.setsEndActivityId(historicProcess.getEndActivityId());//спросить
+        customProcess.setsEndActivityId(historicProcess.getEndActivityId());//изменить
         customProcess.setsStartActivityId(historicProcess.getStartActivityId());
         customProcess.setsTenantId(historicProcess.getTenantId());
         customProcess.setsProcessDefinitionId(historicProcess.getProcessDefinitionId());
