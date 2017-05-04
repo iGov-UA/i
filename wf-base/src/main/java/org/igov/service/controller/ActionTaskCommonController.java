@@ -45,6 +45,7 @@ import org.igov.service.business.dfs.DfsService;
 import org.igov.service.business.dfs.DfsService_New;
 import org.igov.service.business.document.DocumentStepService;
 import org.igov.service.business.subject.message.MessageService;
+import org.igov.service.business.process.ProcessSubjectTaskService;
 import org.igov.service.exception.*;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.JSON.JsonRestUtils;
@@ -83,7 +84,6 @@ import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import org.igov.service.business.process.ProcessSubjectTaskService;
 import static org.igov.util.Tool.sO;
 
 /**
@@ -159,6 +159,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     @Autowired
     private ProcessSubjectTaskService oProcessSubjectTaskService;
+
     /**
      * Загрузка задач из Activiti:
      *
@@ -648,6 +649,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (nID_Task == null) {
             nID_Task = oActionTaskService.getTaskIDbyProcess(nID_Process, sID_Order, Boolean.FALSE);
         }
+        
         if (sLogin != null) {
             if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)) {
                 LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
@@ -656,6 +658,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 throw new AccessServiceException(AccessServiceException.Error.LOGIN_ERROR, "Access deny " + taskGroupIDs);
             }
         }
+        
+        if (nID_Process == null) {
+                nID_Process = Long.parseLong(oActionTaskService.getProcessInstanceIDByTaskID(nID_Task.toString()));
+            }
+        
         if (bIncludeGroups == null) {
             bIncludeGroups = Boolean.FALSE;
         }
@@ -705,11 +712,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Attach is not triggered!");
         }
         if (bIncludeMessages.equals(Boolean.TRUE)) {
-            if (nID_Process == null) {
-                nID_Process = Long.parseLong(
-                        oActionTaskService.getProcessInstanceIDByTaskID(nID_Task.toString())
-                );
-            }
             try {
                 response.put("aMessage", oMessageService.gerOrderMessagesByProcessInstanceID(nID_Process));
             } catch (Exception oException) {
@@ -719,7 +721,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
             }
         }
-        if (bIncludeProcessVariables.equals(Boolean.TRUE) && nID_Process != null) {
+        if (bIncludeProcessVariables.equals(Boolean.TRUE)) {
             Map<String, Object> mProcessVariable = null;
             try {
                 mProcessVariable = runtimeService.getVariables(Long.toString(nID_Process));
@@ -740,12 +742,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         response.put("sID_Status", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
         response.put("nID_Task", nID_Task);
         response.putAll(oActionTaskService.getTaskData(nID_Task));
-
+       
         String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
                 oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
         );
         response.put("sDateTimeCreate", sDateTimeCreate);
         response.put("sType", oActionTaskService.getTypeOfTask(sLogin, nID_Task.toString()));
+        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process)));
 
         return JsonRestUtils.toJsonResponse(response);
     }
@@ -3115,13 +3118,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 } else {
                     throw new IllegalArgumentException("Object doesn't contain 'taskId' parameter");
                 }
-                
-                if (mJsonBody.containsKey("aProcessSubjectTask")){
-                    LOG.info("The request to updateProcess contains aProcessSubjectTask key");
-                    Object oaProcessSubjectTask = mJsonBody.get("aProcessSubjectTask");
-                    oProcessSubjectTaskService.setProcessSubjectTaskList(oaProcessSubjectTask);
-                }
-                
+
                 if (mJsonBody.containsKey("properties")) {
                     LOG.info("Parsing properties: " + mJsonBody.get("properties"));
 
