@@ -3,6 +3,7 @@ package org.igov.service.migration;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.igov.analytic.model.config.ConfigDao;
 import org.igov.analytic.model.process.*;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
@@ -13,16 +14,16 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dpekach on 01.05.17.
  *
- * <p>Service is responsible for migrating outdated data from activiti historic tables to the next 4 analytic tables: Process,
- * ProcessTask, CustomProcess, CustomProcessTask. Tables with prefix 'Custom' are consist of fields,
+ * <p>Service is responsible for migrating outdated data from activiti historic tables to the next 4 analytic tables:
+ * Process, ProcessTask, CustomProcess, CustomProcessTask. Tables with prefix 'Custom' are consist of fields,
  * that are present in act_hi_*, but are absent in corresponding 'Process' tables.
  * Table 'Config' serves for backup aims: it stores the last successfully migrated process_instance_id, so that
  * migration process shouldn't be started from the very beginning.</p>
- *
  *
  *
  * <p>Migration algorithm</p>:
@@ -38,20 +39,17 @@ public class MigrationServiceImpl implements MigrationService {
 
     private final HistoryService historyService;
 
-    private List<HistoricProcessInstance> processList;
+    private List<HistoricProcessInstance> historicProcessList;
 
     private ProcessDao processDao;
 
+    private ConfigDao configDao;
+
     @Autowired
-    public MigrationServiceImpl(HistoryService historyService, ProcessDao processDao) {
+    public MigrationServiceImpl(HistoryService historyService, ProcessDao processDao, ConfigDao configDao) {
         this.historyService = historyService;
         this.processDao = processDao;
-    }
-
-    @PostConstruct
-    private void init() {
-        processList =
-                historyService.createHistoricProcessInstanceQuery().finished().includeProcessVariables().orderByProcessInstanceId().asc().list();
+        this.configDao = configDao;
     }
 
     /**
@@ -59,17 +57,14 @@ public class MigrationServiceImpl implements MigrationService {
      */
     @Override
     public void migrateOldRecords(boolean isTest) {
+        historicProcessList =
+                historyService.createHistoricProcessInstanceQuery().finished().includeProcessVariables().orderByProcessInstanceId().asc().list();
+        synchronizeTables(historicProcessList);
+        populateBeans(historicProcessList);
+
+
         if(!isTest) {
-            for(HistoricProcessInstance process: processList) {
-                Process processToInsert = createProcessToInsert(process);
 
-                String processInstanceId = process.getId();
-                HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).singleResult();
-                ProcessTask processTask = createProcessTaskToInsert(taskInstance);
-                CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
-
-                String successfullyInsertedId = processDao.saveOrUpdate(processToInsert).getId().toString();
-            }
         }
         else {
 
@@ -77,7 +72,25 @@ public class MigrationServiceImpl implements MigrationService {
 
     }
 
+    private void synchronizeTables(List<HistoricProcessInstance> processList) {
+        String minimalInstanceId = processList.get(0).getId();
+        if(configDao.exists(Long.valueOf(minimalInstanceId))) {
+            historyService.deleteHistoricProcessInstance(minimalInstanceId);
+        }
+    }
 
+    private void populateBeans(List<HistoricProcessInstance> processList) {
+        for(HistoricProcessInstance process: processList) {
+            Process processToInsert = createProcessToInsert(process);
+
+            String processInstanceId = process.getId();
+            HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(processInstanceId).singleResult();
+            ProcessTask processTask = createProcessTaskToInsert(taskInstance, processToInsert);
+            CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
+
+            String successfullyInsertedId = processDao.saveOrUpdate(processToInsert).getId().toString();
+        }
+    }
     private SourceDB getSourceDBForIGov() {
         SourceDB sourceDB = new SourceDB();
         sourceDB.setName("iGov");
@@ -91,6 +104,7 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
 
+        Map<String, Object> attributes = historicProcess.getProcessVariables();
         //TODO нужно просеттить атрибуты процесса
         return process;
     }
@@ -116,19 +130,47 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
 
+    //TODO
     private CustomProcessTask createCustomProcessTaskToInsert(HistoricTaskInstance taskInstance, ProcessTask processTask) {
         CustomProcessTask customProcessTask = new CustomProcessTask();
-
+        customProcessTask.setoProcessTask(processTask);
+        customProcessTask.setnDuration(taskInstance.getDurationInMillis());
+        customProcessTask.setnFormKey(taskInstance.getFormKey());
+        customProcessTask.setnPriority(taskInstance.getPriority());
+        customProcessTask.setoClaimTime(new DateTime(taskInstance.getClaimTime()));
+        customProcessTask.setoDueDate(new DateTime(taskInstance.getDueDate()));
+        customProcessTask.setsAssignee(taskInstance.getAssignee());
+        customProcessTask.setsCategory(taskInstance.getCategory());
+        customProcessTask.setsDeleteReason(taskInstance.getDeleteReason());
+        customProcessTask.setsDescription(taskInstance.getDescription());
+        customProcessTask.setsExecutionId(taskInstance.getExecutionId());
+        customProcessTask.setsName(taskInstance.getName());
+        customProcessTask.setsOwner(taskInstance.getOwner());
+        customProcessTask.setsParentTaskId(taskInstance.getParentTaskId());
+        customProcessTask.setsProcessDefinitionId(taskInstance.getProcessDefinitionId());
+        customProcessTask.setsProcessInstanceId(taskInstance.getProcessInstanceId());
+        customProcessTask.setsTaskDefinitionKey(taskInstance.getTaskDefinitionKey());
+        customProcessTask.setsTenantId(taskInstance.getTenantId());
         return customProcessTask;
     }
 
-    private ProcessTask createProcessTaskToInsert(HistoricTaskInstance taskInstance) {
+    private ProcessTask createProcessTaskToInsert(HistoricTaskInstance taskInstance, Process process) {
         ProcessTask processTask = new ProcessTask();
+        processTask.setoProcess(process);
+        processTask.setoDateStart(new DateTime(taskInstance.getStartTime()));
+        processTask.setoDateFinish(new DateTime(taskInstance.getEndTime()));
 
+
+        processTask.setsID_(null);//спросить
+        processTask.setaAccessGroup(null);//спросить
+        processTask.setaAccessUser(null);//спросить
+        processTask.setaAttribute(null);//спросить
         return processTask;
     }
+
+
     public List<HistoricProcessInstance> getTaskList() {
-        return processList;
+        return historicProcessList;
     }
 
 }

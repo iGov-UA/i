@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author olga
  */
-@Repository()
+@Repository
 public class ConfigDaoImpl extends GenericEntityDaoAnalytic<Long, Config> implements ConfigDao  {
     
     private static final Logger log = Logger.getLogger(ConfigDaoImpl.class);
