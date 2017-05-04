@@ -39,38 +39,38 @@ public class ObjectCustomsDaoImpl extends GenericEntityDao<Long, ObjectCustoms> 
        обновляет или вставляет новую запись в сущность
      */
     @Override
-    public ObjectCustoms setObjectCustoms(Map<String, String> args) {
+    public ObjectCustoms setObjectCustoms(Map<String, String> mParam) {
 
-        ObjectCustoms pcode;
+        ObjectCustoms oObjectCustoms;
 
         //если задан nID, то обновляем запись, если таковая найдена, иначе создаем новую запись
-        if (args.containsKey("nID")) {
-            pcode = findById(Long.valueOf(args.get("nID"))).orNull();
-            if (args.containsKey("sID_UA")) {
-                pcode.setsID_UA(args.get("sID_UA").trim());
+        if (mParam.containsKey("nID")) {
+            oObjectCustoms = findById(Long.valueOf(mParam.get("nID"))).orNull();
+            if (mParam.containsKey("sID_UA")) {
+                oObjectCustoms.setsID_UA(mParam.get("sID_UA").trim());
             }
-            if (args.containsKey("sName_UA")) {
-                pcode.setsName_UA(args.get("sName_UA").trim());
+            if (mParam.containsKey("sName_UA")) {
+                oObjectCustoms.setsName_UA(mParam.get("sName_UA").trim());
             }
-            if (args.containsKey("sMeasure_UA")) {
-                pcode.setsMeasure_UA(args.get("sMeasure_UA"));
+            if (mParam.containsKey("sMeasure_UA")) {
+                oObjectCustoms.setsMeasure_UA(mParam.get("sMeasure_UA"));
             }
         } else {
-            pcode = new ObjectCustoms();
-            pcode.setsID_UA(args.get("sID_UA").trim());
-            pcode.setsName_UA(args.get("sName_UA").trim());
-            pcode.setsMeasure_UA(args.get("sMeasure_UA"));
+            oObjectCustoms = new ObjectCustoms();
+            oObjectCustoms.setsID_UA(mParam.get("sID_UA").trim());
+            oObjectCustoms.setsName_UA(mParam.get("sName_UA").trim());
+            oObjectCustoms.setsMeasure_UA(mParam.get("sMeasure_UA"));
         }
 
-        this.saveOrUpdate(pcode);
-        LOG.info("ObjectCustoms {} is updated or set", pcode);
+        oObjectCustoms = saveOrUpdate(oObjectCustoms);
+        LOG.info("ObjectCustoms {} is updated or set", oObjectCustoms);
 
-        if (args.containsKey("nID")) {
-            pcode = this.findById(Long.valueOf(args.get("nID"))).orNull();
+        /*if (mParam.containsKey("nID")) {
+            oObjectCustoms = findById(Long.valueOf(mParam.get("nID"))).orNull();
         } else {
-            pcode = this.findBy("sID_UA", args.get("sID_UA")).orNull();
-        }
-        return pcode;
+            oObjectCustoms = findBy("sID_UA", mParam.get("sID_UA")).orNull();
+        }*/
+        return oObjectCustoms;
     }
 
     /*
