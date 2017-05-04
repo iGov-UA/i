@@ -83,6 +83,7 @@ import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.service.business.process.ProcessSubjectTaskService;
 import static org.igov.util.Tool.sO;
 
 /**
@@ -155,7 +156,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private DocumentStepService oDocumentStepService;
-
+    
+    @Autowired
+    private ProcessSubjectTaskService oProcessSubjectTaskService;
     /**
      * Загрузка задач из Activiti:
      *
@@ -3112,7 +3115,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 } else {
                     throw new IllegalArgumentException("Object doesn't contain 'taskId' parameter");
                 }
-
+                
+                if (mJsonBody.containsKey("aProcessSubjectTask")){
+                    LOG.info("The request to updateProcess contains aProcessSubjectTask key");
+                    Object oaProcessSubjectTask = mJsonBody.get("aProcessSubjectTask");
+                    oProcessSubjectTaskService.setProcessSubjectTaskList(oaProcessSubjectTask);
+                }
+                
                 if (mJsonBody.containsKey("properties")) {
                     LOG.info("Parsing properties: " + mJsonBody.get("properties"));
 
