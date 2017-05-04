@@ -475,7 +475,7 @@ public class ProcessSubjectService {
                     if (!mParamDocumentNew.isEmpty()) {
                         
                         addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
-                                    processSubject.getsLogin(), processSubject.getProcessSubjectStatus().getId());
+                                    processSubject.getsLogin(), processSubject.getoProcessSubjectStatus().getId());
                         
                         for (ProcessSubject oProcessSubject : aProcessSubject_Child) {
                             oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
@@ -501,7 +501,7 @@ public class ProcessSubjectService {
                             }
                             
                             addEditHistoryEvent(oProcessSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
-                                    processSubject.getsLogin(), oProcessSubject.getProcessSubjectStatus().getId());
+                                    processSubject.getsLogin(), oProcessSubject.getoProcessSubjectStatus().getId());
                             
                             oProcessSubject.setsDatePlan(datePlan);
                             processSubjectDao.saveOrUpdate(oProcessSubject);
@@ -703,7 +703,7 @@ public class ProcessSubjectService {
                         for (String sLogin : aProcessSubjectLoginToDelete) {
                             if (oProcessSubject.getsLogin().equals(sLogin)) {
 
-                                String sProcessSubjectStatus = oProcessSubject.getProcessSubjectStatus().getsID();
+                                String sProcessSubjectStatus = oProcessSubject.getoProcessSubjectStatus().getsID();
 
                                 if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
                                         || sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed"))) {
@@ -759,13 +759,13 @@ public class ProcessSubjectService {
 
 	    for (ProcessSubject oProcessSubject_Сhild : aProcessSubject_Child) {
   
-		String sProcessSubjectStatus = oProcessSubject_Сhild.getProcessSubjectStatus().getsID();
+		String sProcessSubjectStatus = oProcessSubject_Сhild.getoProcessSubjectStatus().getsID();
 		LOG.info("String sProcessSubjectStatus Сhild is....... = " + sProcessSubjectStatus);
 
 		if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
 			|| sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed")))	{
 
-		    oProcessSubject_Сhild.setProcessSubjectStatus(oProcessSubjectStatusUnactual);
+		    oProcessSubject_Сhild.setoProcessSubjectStatus(oProcessSubjectStatusUnactual);
 		    LOG.info("String sProcessSubjectStatus Сhild is   now....... = " + sProcessSubjectStatus);
 		    try {
 			oProcessSubject_Сhild.setsDateEdit(

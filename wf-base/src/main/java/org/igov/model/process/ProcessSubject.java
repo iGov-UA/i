@@ -36,7 +36,7 @@ public class ProcessSubject extends AbstractEntity {
     @JsonProperty(value = "oProcessSubjectStatus")
     @ManyToOne(targetEntity = ProcessSubjectStatus.class)
     @JoinColumn(name = "nID_ProcessSubjectStatus")
-    private ProcessSubjectStatus processSubjectStatus;
+    private ProcessSubjectStatus oProcessSubjectStatus;
 
     @JsonProperty(value = "nOrder")
     @Column
@@ -68,9 +68,9 @@ public class ProcessSubject extends AbstractEntity {
     @Transient
     private List<ProcessUser> aUser;
     
-    @JsonProperty(value = "aProcessSubjectChilds")
+    @JsonProperty(value = "aProcessSubjectChild")
     @Transient
-    private List<ProcessSubject> aProcessSubj;
+    private List<ProcessSubject> aProcessSubjectChild;
     
     @JsonProperty(value = "sReportType")
     @Column
@@ -81,12 +81,12 @@ public class ProcessSubject extends AbstractEntity {
     @JoinColumn(name = "nID_ProcessSubjectTask")
     private ProcessSubjectTask oProcessSubjectTask;
     
-    public List<ProcessSubject> getaProcessSubj() {
-	return aProcessSubj;
+    public List<ProcessSubject> getaProcessSubjectChild() {
+	return aProcessSubjectChild;
     }
 
-    public void setaProcessSubj(List<ProcessSubject> aProcessSubj) {
-	this.aProcessSubj = aProcessSubj;
+    public void setaProcessSubjectChild(List<ProcessSubject> aProcessSubjectChild) {
+	this.aProcessSubjectChild = aProcessSubjectChild;
     }
 
     public String getSnID_Process_Activiti() {
@@ -97,12 +97,12 @@ public class ProcessSubject extends AbstractEntity {
         this.snID_Process_Activiti = snID_Process_Activiti;
     }
 
-    public ProcessSubjectStatus getProcessSubjectStatus() {
-        return processSubjectStatus;
+    public ProcessSubjectStatus getoProcessSubjectStatus() {
+        return oProcessSubjectStatus;
     }
 
-    public void setProcessSubjectStatus(ProcessSubjectStatus processSubjectStatus) {
-        this.processSubjectStatus = processSubjectStatus;
+    public void setoProcessSubjectStatus(ProcessSubjectStatus oProcessSubjectStatus) {
+        this.oProcessSubjectStatus = oProcessSubjectStatus;
     }
 
     public Long getnOrder() {
@@ -158,7 +158,7 @@ public class ProcessSubject extends AbstractEntity {
     }
 
     public DateTime getsDateFact(DateTime sDateFact) {
-        if (getProcessSubjectStatus().getsID().equalsIgnoreCase("closed")) {
+        if (getoProcessSubjectStatus().getsID().equalsIgnoreCase("closed")) {
             return getsDateEdit();
         } else {
             return null;
@@ -186,7 +186,7 @@ public class ProcessSubject extends AbstractEntity {
         return "ProcessSubject{"
                 + "id=" + getId()
                 + ", snID_Process_Activiti=" + snID_Process_Activiti
-                + ", processSubjectStatus=" + processSubjectStatus
+                + ", processSubjectStatus=" + oProcessSubjectStatus
                 + ", nOrder=" + nOrder
                 + ", sLogin=" + sLogin
                 + ", sDateEdit=" + sDateEdit
