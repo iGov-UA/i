@@ -98,6 +98,7 @@ public class MigrationServiceImpl implements MigrationService {
         customProcess.setsStartUserId(historicProcess.getStartUserId());
         customProcess.setsBusinessKey(historicProcess.getBusinessKey());//спросить
 
+
         return customProcess;
     }
 
