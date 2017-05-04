@@ -32,7 +32,12 @@ public class ObjectCustomsService {
     private static final String[] ERROR_MESSAGE = new String[] {
             "it must be set at least one parameter to execute this service: sID_UA, sName_UA",
             "sID_UA does not meet required format (0101 or 0101 01 or 0101 01 01 or 0101 01 01 01)",
-            "length sName_UA is more than 2000" };
+            "length sName_UA is more than 2000",
+            "at least some parameters need to execute this service: nID, sID_UA, sName_UA",
+            "need sID_UA and sName_UA and sMeasure_UA if nID == null to insert new object",
+            "sMeasure_UA is not correct",
+            "nID is the only param, it is necessary else sID_UA or/and sName_UA or/and sMeasure_UA",
+            "at least one parameter need to execute this service: nID, sID_UA" };
     private static final String[] ERROR_MESSAGE_NO_RECORD = new String[] {
             "Record not found! No such Entity with sID_UA: ",
             "Record not found! No such Entity with sName_UA: " };
@@ -101,5 +106,124 @@ public class ObjectCustomsService {
                     e.getMessage(), HttpStatus.FORBIDDEN);
         }
         return result;
+    }
+
+    public ResponseEntity setObjectCustoms(Long nID, String sID_UA, String sName_UA, String sMeasure_UA,
+            HttpServletResponse response) throws CommonServiceException {
+
+        //выполняем проверку наличия аргументов
+        if (isArgsNull(nID, sID_UA, sName_UA, sMeasure_UA)) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", ERROR_MESSAGE[3]);
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, ERROR_MESSAGE[3],
+                    HttpStatus.FORBIDDEN);
+        }
+        //если nID не задан, то должны быть заданы другие параметры, чтобы вставить новую запись
+        if (nID == null && (sID_UA == null || sName_UA == null || sMeasure_UA == null)) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", ERROR_MESSAGE[4]);
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, ERROR_MESSAGE[4],
+                    HttpStatus.FORBIDDEN);
+        }
+
+        //если задан sID_UA, но его значение не совпадает с требуемым форматом (вида 0101 01 01 01)
+        if (sID_UA != null && !isMatchSID(sID_UA, sid_pattern1)) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", ERROR_MESSAGE[1]);
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, ERROR_MESSAGE[1],
+                    HttpStatus.FORBIDDEN);
+        }
+        //проверяем допустимую длину символов sName_UA
+        if (sName_UA != null && sName_UA.length() > 2000) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", ERROR_MESSAGE[2]);
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, ERROR_MESSAGE[2],
+                    HttpStatus.FORBIDDEN);
+        }
+
+        if (sMeasure_UA != null && !isMeasureCorrect(sMeasure_UA)) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", ERROR_MESSAGE[5]);
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, ERROR_MESSAGE[5],
+                    HttpStatus.FORBIDDEN);
+        }
+
+        ResponseEntity<String> result = null;
+        Map<String, String> args = new HashMap<String, String>();
+
+        //формируем переменные для setObjectCustoms
+        if (sID_UA != null) {
+            args.put("sID_UA", sID_UA);
+        }
+        if (sName_UA != null) {
+            args.put("sName_UA", sName_UA);
+        }
+        if (sMeasure_UA != null) {
+            args.put("sMeasure_UA", sMeasure_UA);
+        }
+        //если nID — единственный аргумент, то работу не продолжаем, так как для обновления записи нужны еще другие аргументы
+        if (nID != null && args.size() >= 1) {
+            args.put("nID", nID.toString());
+        } else if (args.size() == 0) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", ERROR_MESSAGE[6]);
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, ERROR_MESSAGE[6],
+                    HttpStatus.FORBIDDEN);
+        }
+
+        try {
+            ObjectCustoms pcode = this.objectCustomsDao.setObjectCustoms(args);
+            result = JsonRestUtils.toJsonResponse(pcode);
+        } catch (Exception e) {
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", e.getMessage());
+
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+        return result;
+    }
+
+    public void removeObjectCustoms(Long nID, String sID_UA, HttpServletResponse response)
+            throws CommonServiceException {
+
+        //проверяем наличие аргументов
+        if (isArgsNull(nID, sID_UA)) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", ERROR_MESSAGE[7]);
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, ERROR_MESSAGE[7],
+                    HttpStatus.FORBIDDEN);
+        }
+
+        //проверяем корректность sID_UA
+        if (sID_UA != null && !isMatchSID(sID_UA, sid_pattern1)) {
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", ERROR_MESSAGE[1]);
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, ERROR_MESSAGE[1],
+                    HttpStatus.FORBIDDEN);
+        }
+
+        Map<String, String> args = new HashMap<String, String>();
+
+        if (nID != null) {
+            args.put("nID", nID.toString());
+        }
+        if (sID_UA != null) {
+            args.put("sID_UA", sID_UA);
+        }
+
+        try {
+            this.objectCustomsDao.removeObjectCustoms(args);
+        } catch (Exception e) {
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", e.getMessage());
+
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage(),
+                    HttpStatus.FORBIDDEN);
+        }
     }
 }
