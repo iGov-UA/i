@@ -9,12 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.igov.model.core.NamedEntity;
 
 /**
- *
  * @author olga
  */
 @javax.persistence.Entity
-public class Config extends NamedEntity{
-    
+public class Config extends NamedEntity {
+
     @JsonProperty(value = "sValue")
     String sValue;
 
@@ -25,5 +24,5 @@ public class Config extends NamedEntity{
     public void setsValue(String sValue) {
         this.sValue = sValue;
     }
-    
+
 }

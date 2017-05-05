@@ -8,27 +8,27 @@ import org.igov.analytic.model.config.ConfigDao;
 import org.igov.analytic.model.process.*;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
+import org.igov.model.core.Entity;
+import org.igov.model.core.EntityDao;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by dpekach on 01.05.17.
- *
+ * <p>
  * <p>Service is responsible for migrating outdated data from activiti historic tables to the next 4 analytic tables:
  * Process, ProcessTask, CustomProcess, CustomProcessTask. Tables with prefix 'Custom' are consist of fields,
  * that are present in act_hi_*, but are absent in corresponding 'Process' tables.
- * Table 'Config' serves for backup aims: it stores the last successfully migrated process_instance_id, so that
+ * Table 'Config' serves for backup aims: it stores the last successfully migrated start_time_, so that
  * migration process shouldn't be started from the very beginning.</p>
- *
- *
+ * <p>
+ * <p>
  * <p>Migration algorithm</p>:
  * 0) Get last process_instance_id from 'Config' table: if process with such id is present in act_hi_procinst, delete it
  * 1) Get ordered by process_instance_id list of historic processes from act_hi_procinst;
@@ -36,9 +36,27 @@ import java.util.Map;
  * 3) Save only Process bean with ProcessDao;
  * 4) If populating analytic tables succeeds, then 'Config' table is updated with last process_instance_id
  * 5) Corresponding record is deleted from act_hi_procinst & act_hi_taskinst (this option is disabled in development mode)
+ * <p>
+ * Процессы не удаляются сразу
+ * Критерий запроса: startDateTime + 3 дня AND Не услуга автомобиля AND закрытый процесс
+ * Attribute & Attribute{*type*} это к соотношению CustomProcess & CustomProcessTask
+ * Attribute.equals(variables)==true
  */
 @Service
 public class MigrationServiceImpl implements MigrationService {
+
+    class AsyncUpdate implements Runnable {
+        private final DateTime startDateTimeFromProcess;
+
+        AsyncUpdate(DateTime startDateTimeFromProcess) {
+            this.startDateTimeFromProcess = startDateTimeFromProcess;
+        }
+
+        @Override
+        public void run() {
+            updateConfigTable(startDateTimeFromProcess);
+        }
+    }
 
     private final HistoryService historyService;
 
@@ -55,31 +73,81 @@ public class MigrationServiceImpl implements MigrationService {
         this.configDao = configDao;
     }
 
-    /**
-//     * @param isTest if this flag is set to true, only 1 record is migrated from act_hi_* to corresponding tables
-     */
     @Override
     public void migrateOldRecords() {
-        historicProcessList =
-                historyService.createHistoricProcessInstanceQuery().finished().includeProcessVariables()
-                        .orderByProcessInstanceId().asc().list();
-        synchronizeTables(historicProcessList.get(0).getId());
-        getListWithPopulatedBeans(historicProcessList);
-
-
+        historicProcessList = getHistoricProcessList();
+        historyService.createHistoricProcessInstanceQuery().finished().includeProcessVariables()
+                .orderByProcessInstanceId().asc().list();//createNativeSqlQuery
+        prepareAndSave(historicProcessList);
     }
 
-    private void synchronizeTables(String minimalInstanceId) {
-        if(configDao.exists(Long.valueOf(minimalInstanceId))) {
-            historyService.deleteHistoricProcessInstance(minimalInstanceId);
+    private List<HistoricProcessInstance> getHistoricProcessList() {
+        DateTime startTime = getStartTime();
+        String sqlSelect = composeSql(startTime);
+        return historyService.createNativeHistoricProcessInstanceQuery().sql(sqlSelect).list();
+    }
+
+    private DateTime getStartTime() {
+        DateTime startDateFromConfig = getStartDateFromConfig();
+        DateTime startDateFromProcess = getStartDateFromProcess();
+
+        DateTime startTime;
+        if (startDateFromConfig.isBefore(startDateFromProcess)) {
+            startTime = startDateFromProcess;
+            Thread asyncUpdate = new Thread(new AsyncUpdate(startDateFromProcess));
+            asyncUpdate.start();
+        } else {
+            startTime = startDateFromConfig;
         }
+        return startTime;
     }
 
-    private List<Process> getListWithPopulatedBeans(List<HistoricProcessInstance> historicProcessList) {
+    private void updateConfigTable(DateTime startDateFromProcess) {
+        Config config = new Config();
+        config.setsValue(startDateFromProcess.toString("yyyy-MM-dd HH:mm:ss.ffffff"));
+        configDao.saveOrUpdate(config);
+    }
+
+    private String composeSql(DateTime startTime) {
+        startTime = startTime.plusDays(3);
+        return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' "
+                + startTime.toString("yyyy-MM-dd HH:mm:ss.ffffff")
+                + "\' AND proc_def_id not like \'%common_mreo_2%\' AND end_time_ is not null";
+    }
+
+
+    //попробовать написать через дженерики
+    private DateTime getStartDateFromConfig() {
+        List<Config> configList = configDao.findAll();
+        List<DateTime> dateTimeList = new ArrayList<>(configList.size());
+        configList.forEach(config -> {
+            String dateTime = config.getsValue();
+            DateTime time = new DateTime(dateTime);//не уверен, нужно тесты написать
+            dateTimeList.add(time);
+        });
+
+        Collections.sort(dateTimeList);
+        return dateTimeList.get(dateTimeList.size() - 1);
+    }
+
+    //попробовать написать через дженерики
+    private DateTime getStartDateFromProcess() {
+        List<Process> processList = processDao.findAll();
+        List<DateTime> dateTimeList = new ArrayList<>(processList.size());
+        processList.forEach(process -> {
+            DateTime time = process.getoDateStart();
+            dateTimeList.add(time);
+        });
+
+        Collections.sort(dateTimeList);
+        return dateTimeList.get(dateTimeList.size() - 1);
+    }
+
+    private List<Process> prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
         List<Process> resultList = new ArrayList<>(historicProcessList.size());
 
-        for(HistoricProcessInstance historicProcess: historicProcessList) {
-            Process processForSave = createProcessToInsert(historicProcess);
+        for (HistoricProcessInstance historicProcess : historicProcessList) {
+            Process processForSave = createProcessForSave(historicProcess);
             resultList.add(processForSave);
 
 
@@ -97,7 +165,6 @@ public class MigrationServiceImpl implements MigrationService {
             Config config = new Config();
             config.setsValue(processInstanceId);
             configDao.saveOrUpdate(config);
-            historyService.deleteHistoricProcessInstance(processInstanceId);
         }
         return resultList;
     }
@@ -108,7 +175,7 @@ public class MigrationServiceImpl implements MigrationService {
         return sourceDB;
     }
 
-    private Process createProcessToInsert(HistoricProcessInstance historicProcess) {
+    private Process createProcessForSave(HistoricProcessInstance historicProcess) {
         Process process = new Process();
 
         process.setsID_(historicProcess.getBusinessKey());//спросить
@@ -116,9 +183,13 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
 
-
-        Map<String, Object> attributes = historicProcess.getProcessVariables();
         //TODO нужно просеттить атрибуты процесса
+        Map<String, Object> attributes = historicProcess.getProcessVariables();
+        for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+            if (entry.getValue().equals(new Object())) {
+                //узнать тип через рефлексию
+            }
+        }
         return process;
     }
 
@@ -143,7 +214,6 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
 
-    //TODO
     private CustomProcessTask createCustomProcessTaskToInsert(HistoricTaskInstance taskInstance, ProcessTask processTask) {
         CustomProcessTask customProcessTask = new CustomProcessTask();
 
@@ -174,7 +244,7 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setoProcess(process);
         processTask.setoDateStart(new DateTime(taskInstance.getStartTime()));
         processTask.setoDateFinish(new DateTime(taskInstance.getEndTime()));
-
+        Map<String, Object> attributes = taskInstance.getTaskLocalVariables();
 
         processTask.setsID_(null);//спросить
         processTask.setaAccessGroup(null);//спросить
