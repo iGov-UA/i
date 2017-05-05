@@ -170,6 +170,26 @@ angular.module('app').controller('PlaceController',
         '://' + $location.host() + ':'
         + $location.port()
         + stateForRedirect;
-    }
+    };
 
+    if($scope.service.saKeyword){
+      $scope.service.aKeywords = getKeywordsArray($scope.service.saKeyword);
+    }
+    function getKeywordsArray(str) {
+      var arr = str.split(",");
+      for(var keyInd = 0; keyInd < arr.length; keyInd++){
+        arr[keyInd] = $.trim(arr[keyInd]);
+        if(arr[keyInd].indexOf('#') === 0){
+          arr[keyInd] = toUpperCaseWithHash(arr[keyInd], 1);
+        } else {
+          arr[keyInd] = toUpperCaseWithHash(arr[keyInd], 0);
+        }
+      }
+      return arr;
+
+      function toUpperCaseWithHash(str, ind) {
+        return '#' + str.charAt(ind).toUpperCase() + str.slice(ind + 1);
+      }
+    }
+    
   });
