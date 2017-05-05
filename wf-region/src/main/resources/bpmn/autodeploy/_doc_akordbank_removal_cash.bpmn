@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_cash_support_akordbank" name="перевезення (підкріплення) готівки" isExecutable="true">
+  <process id="_doc_akordbank_removal_cash" name="перевезення (вивіз) готівки" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (підкріплення) готівки"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="отримання ід процесу" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -20,7 +20,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (підкріплення) готівки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума готівки" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="Валюта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Номер та адреса відділення відправника" type="string" required="true"></activiti:formProperty>
@@ -28,11 +28,13 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="nInterestRate" name="Відсоткова ставка" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" readable="false">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ);" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Head_of_cash_desk]]></activiti:string>
@@ -61,18 +63,20 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (підкріплення) готівки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума готівки" type="long"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="Валюта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Номер та адреса відділення відправника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress1" name="Номер та адреса відділення отримувача" type="string"></activiti:formProperty>
         <activiti:formProperty id="nInterestRate" name="Відсоткова ставка" type="long"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Додаткова інформація" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -117,18 +121,20 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (підкріплення) готівки" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума готівки" type="long"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="Валюта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Номер та адреса відділення відправника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress1" name="Номер та адреса відділення отримувача" type="string"></activiti:formProperty>
         <activiti:formProperty id="nInterestRate" name="Відсоткова ставка" type="long"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Додаткова інформація" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -166,8 +172,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <sequenceFlow id="flow14" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="scripttask4" targetRef="usertask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_cash_support_akordbank">
-    <bpmndi:BPMNPlane bpmnElement="_doc_cash_support_akordbank" id="BPMNPlane__doc_cash_support_akordbank">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_akordbank_removal_cash">
+    <bpmndi:BPMNPlane bpmnElement="_doc_akordbank_removal_cash" id="BPMNPlane__doc_akordbank_removal_cash">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -178,16 +184,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdc:Bounds height="81.0" width="105.0" x="241.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="91.0" width="105.0" x="402.0" y="21.0"></omgdc:Bounds>
+        <omgdc:Bounds height="91.0" width="105.0" x="403.0" y="15.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="91.0" width="105.0" x="558.0" y="21.0"></omgdc:Bounds>
+        <omgdc:Bounds height="91.0" width="105.0" x="559.0" y="15.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="721.0" y="47.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="721.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="101.0" width="131.0" x="809.0" y="22.0"></omgdc:Bounds>
+        <omgdc:Bounds height="101.0" width="131.0" x="809.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="81.0" width="125.0" x="471.0" y="170.0"></omgdc:Bounds>
@@ -213,24 +219,24 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdi:waypoint x="241.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="507.0" y="66.0"></omgdi:waypoint>
-        <omgdi:waypoint x="558.0" y="66.0"></omgdi:waypoint>
+        <omgdi:waypoint x="508.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="663.0" y="66.0"></omgdi:waypoint>
-        <omgdi:waypoint x="721.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="664.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="721.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="761.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="809.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="761.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="809.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="741.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="741.0" y="80.0"></omgdi:waypoint>
         <omgdi:waypoint x="741.0" y="210.0"></omgdi:waypoint>
         <omgdi:waypoint x="596.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="874.0" y="123.0"></omgdi:waypoint>
+        <omgdi:waypoint x="874.0" y="111.0"></omgdi:waypoint>
         <omgdi:waypoint x="874.0" y="146.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -252,7 +258,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="346.0" y="60.0"></omgdi:waypoint>
-        <omgdi:waypoint x="402.0" y="66.0"></omgdi:waypoint>
+        <omgdi:waypoint x="403.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="471.0" y="210.0"></omgdi:waypoint>
