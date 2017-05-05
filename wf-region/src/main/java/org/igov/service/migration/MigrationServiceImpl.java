@@ -3,20 +3,16 @@ package org.igov.service.migration;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.igov.analytic.model.attribute.*;
 import org.igov.analytic.model.config.Config;
 import org.igov.analytic.model.config.ConfigDao;
 import org.igov.analytic.model.process.*;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
-import org.igov.model.core.Entity;
-import org.igov.model.core.EntityDao;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
@@ -37,10 +33,7 @@ import java.util.*;
  * 4) If populating analytic tables succeeds, then 'Config' table is updated with last process_instance_id
  * 5) Corresponding record is deleted from act_hi_procinst & act_hi_taskinst (this option is disabled in development mode)
  * <p>
- * Процессы не удаляются сразу
- * Критерий запроса: startDateTime + 3 дня AND Не услуга автомобиля AND закрытый процесс
  * Attribute & Attribute{*type*} это к соотношению CustomProcess & CustomProcessTask
- * Attribute.equals(variables)==true
  */
 @Service
 public class MigrationServiceImpl implements MigrationService {
@@ -76,8 +69,6 @@ public class MigrationServiceImpl implements MigrationService {
     @Override
     public void migrateOldRecords() {
         historicProcessList = getHistoricProcessList();
-        historyService.createHistoricProcessInstanceQuery().finished().includeProcessVariables()
-                .orderByProcessInstanceId().asc().list();//createNativeSqlQuery
         prepareAndSave(historicProcessList);
     }
 
@@ -116,7 +107,7 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
 
-    //попробовать написать через дженерики
+    //TODO Refactor it(via generics)
     private DateTime getStartDateFromConfig() {
         List<Config> configList = configDao.findAll();
         List<DateTime> dateTimeList = new ArrayList<>(configList.size());
@@ -130,7 +121,7 @@ public class MigrationServiceImpl implements MigrationService {
         return dateTimeList.get(dateTimeList.size() - 1);
     }
 
-    //попробовать написать через дженерики
+    //TODO Refactor it(via generics)
     private DateTime getStartDateFromProcess() {
         List<Process> processList = processDao.findAll();
         List<DateTime> dateTimeList = new ArrayList<>(processList.size());
@@ -149,22 +140,17 @@ public class MigrationServiceImpl implements MigrationService {
         for (HistoricProcessInstance historicProcess : historicProcessList) {
             Process processForSave = createProcessForSave(historicProcess);
             resultList.add(processForSave);
-
-
             String processInstanceId = historicProcess.getId();
             HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery()
                     .processInstanceId(processInstanceId).singleResult();
             ProcessTask processTask = createProcessTaskToInsert(taskInstance, processForSave);
-
             //???????
             CustomProcess customProcess = createCustomProcessToInsert(historicProcess, processForSave);
             //???????
             CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
-
             processDao.saveOrUpdate(processForSave);
-            Config config = new Config();
-            config.setsValue(processInstanceId);
-            configDao.saveOrUpdate(config);
+            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
+            asyncUpdate.start();
         }
         return resultList;
     }
@@ -182,15 +168,90 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoDateStart(new DateTime(historicProcess.getStartTime()));
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
+        process.setaAttribute(createAttributesForProcess(historicProcess.getProcessVariables(), process, null));
 
-        //TODO нужно просеттить атрибуты процесса
-        Map<String, Object> attributes = historicProcess.getProcessVariables();
-        for (Map.Entry<String, Object> entry : attributes.entrySet()) {
-            if (entry.getValue().equals(new Object())) {
-                //узнать тип через рефлексию
+        return process;
+    }
+
+
+    //TODO Refactor it
+    private List<Attribute> createAttributesForProcess(Map<String, Object> attributes, Process process, ProcessTask processTask) {
+        if (processTask == null) {
+            List<Attribute> resultList = new ArrayList<>(attributes.size());
+            attributes.forEach((id, value) -> {
+                Attribute attribute = new Attribute();
+                attribute.setoProcess(process);
+                attribute.setName(id);
+                attribute.setoAttributeType(getAttributeType(value, attribute));
+                resultList.add(attribute);
+            });
+
+            return resultList;
+        }
+        if (process == null) {
+            List<Attribute> resultList = new ArrayList<>(attributes.size());
+            attributes.forEach((id, value) -> {
+                Attribute attribute = new Attribute();
+                attribute.setoProcessTask(processTask);
+                attribute.setName(id);
+                attribute.setoAttributeType(getAttributeType(value, attribute));
+                resultList.add(attribute);
+            });
+
+            return resultList;
+        }
+
+        return null;
+
+    }
+
+    private AttributeType getAttributeType(Object obj, Attribute attribute) {
+        AttributeType type = new AttributeType();
+        Class<?> clazz = obj.getClass();
+        if (clazz.getSimpleName().equalsIgnoreCase("string")) {
+            String string = (String) obj;
+            if (string.length() < 255) {
+                type.setName("StringShort");
+                Attribute_StringShort shortString = new Attribute_StringShort();
+                shortString.setsValue(string);
+                shortString.setoAttribute(attribute);
+            } else {
+                type.setName("StringLong");
+                Attribute_StringLong longString = new Attribute_StringLong();
+                longString.setsValue(string);
+                longString.setoAttribute(attribute);
             }
         }
-        return process;
+
+        if (clazz.getSimpleName().equalsIgnoreCase("integer")) {
+            type.setName("Integer");
+            Attribute_Integer integer = new Attribute_Integer();
+            integer.setnValue((Integer) obj);
+            integer.setoAttribute(attribute);
+        }
+        if (clazz.getSimpleName().equalsIgnoreCase("boolean")) {
+            type.setName("Boolean");
+            Attribute_Boolean boolean_attr = new Attribute_Boolean();
+            boolean_attr.setbValue((Boolean) obj);
+            boolean_attr.setoAttribute(attribute);
+        }
+        if (clazz.getSimpleName().equalsIgnoreCase("date")) {
+            type.setName("Integer");
+            Attribute_Date date_attr = new Attribute_Date();
+            date_attr.setoValue((DateTime) obj);
+            date_attr.setoAttribute(attribute);
+        }
+        if (clazz.getSimpleName().equalsIgnoreCase("float")) {
+            type.setName("Float");
+            Attribute_Float float_attr = new Attribute_Float();
+            float_attr.setnValue((Double) obj);
+            float_attr.setoAttribute(attribute);
+        }
+        if (clazz.getSimpleName().equalsIgnoreCase("file")) {
+
+        }
+
+        return type;
     }
 
     private CustomProcess createCustomProcessToInsert(HistoricProcessInstance historicProcess, Process process) {
@@ -200,7 +261,7 @@ public class MigrationServiceImpl implements MigrationService {
         customProcess.setoProcess(process);
         customProcess.setsDeleteReason(historicProcess.getDeleteReason());
         customProcess.setsName(historicProcess.getName());
-        customProcess.setsEndActivityId(historicProcess.getEndActivityId());//изменить
+        customProcess.setsEndActivityId(historicProcess.getEndActivityId());
         customProcess.setsStartActivityId(historicProcess.getStartActivityId());
         customProcess.setsTenantId(historicProcess.getTenantId());
         customProcess.setsProcessDefinitionId(historicProcess.getProcessDefinitionId());
@@ -208,7 +269,6 @@ public class MigrationServiceImpl implements MigrationService {
         customProcess.setsSuperProcessInstanceId(historicProcess.getSuperProcessInstanceId());
         customProcess.setsStartUserId(historicProcess.getStartUserId());
         customProcess.setsBusinessKey(historicProcess.getBusinessKey());//спросить
-
 
         return customProcess;
     }
@@ -249,7 +309,7 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setsID_(null);//спросить
         processTask.setaAccessGroup(null);//спросить
         processTask.setaAccessUser(null);//спросить
-        processTask.setaAttribute(null);//спросить
+        processTask.setaAttribute(createAttributesForProcess(attributes, null, processTask));
         return processTask;
     }
 
