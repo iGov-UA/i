@@ -1,4 +1,9 @@
 <div class="container" ng-class="{'sfs-container': service.subjectOperatorName === 'Державна фіскальна служба'}" ng-if="!spinner">
+    <div class="row container" ng-if="service.aKeywords && service.aKeywords.length > 0" style="margin-top: -35px">
+      <span ng-repeat="keyword in service.aKeywords" class="services-keyword">
+        {{keyword}}
+      </span>
+    </div>
     <div class="service-name">{{::service.sName}}</div>
     <div class="operator-name">{{::service.sSubjectOperatorName}}</div>
 
