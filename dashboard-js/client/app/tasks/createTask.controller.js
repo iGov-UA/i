@@ -9,14 +9,14 @@ angular.module('dashboardJsApp').controller('createTask',
       $scope.creatingTask = JSON.parse(localStorage.getItem('creating'));
     }
 
-    if ($scope.creatingTask.formProperties) {
+    if ($scope.creatingTask.aFormProperty) {
       $scope.isSuccessfullySubmitted = false;
       $scope.isInProcess = false;
     }
 
     $scope.isTaskSuccessfullySubmitted = function () {
-      if ($scope.creatingTask.formProperties) {
-        if ($scope.isSuccessfullySubmitted != undefined && $scope.isSuccessfullySubmitted)
+      if ($scope.creatingTask.aFormProperty) {
+        if ($scope.isSuccessfullySubmitted !== undefined && $scope.isSuccessfullySubmitted)
           return true;
       }
       return false;
@@ -31,15 +31,15 @@ angular.module('dashboardJsApp').controller('createTask',
     $scope.upload = function (files, propertyID) {
       $rootScope.switchProcessUploadingState();
       tasks.upload(files, null, propertyID, true).then(function (result) {
-        var filterResult = $scope.creatingTask.formProperties.filter(function (property) {
+        var filterResult = $scope.creatingTask.aFormProperty.filter(function (property) {
           return property.id === propertyID;
         });
 
         if(filterResult.length === 0) {
-          for(var j=0; j<$scope.creatingTask.formProperties.length; j++) {
-            if($scope.creatingTask.formProperties[j].type === 'table') {
-              for(var c=0; c<$scope.creatingTask.formProperties[j].aRow.length; c++) {
-                var row = $scope.creatingTask.formProperties[j].aRow[c];
+          for(var j=0; j<$scope.creatingTask.aFormProperty.length; j++) {
+            if($scope.creatingTask.aFormProperty[j].type === 'table') {
+              for(var c=0; c<$scope.creatingTask.aFormProperty[j].aRow.length; c++) {
+                var row = $scope.creatingTask.aFormProperty[j].aRow[c];
                 for(var i=0; i<row.aField.length; i++) {
                   if (row.aField[i].id === propertyID) {
                     filterResult.push(row.aField[i]);
@@ -77,8 +77,8 @@ angular.module('dashboardJsApp').controller('createTask',
     };
 
     $scope.unpopulatedFields = function () {
-      if ($scope.creatingTask.formProperties) {
-        var unpopulated = $scope.creatingTask.formProperties.filter(function (item) {
+      if ($scope.creatingTask.aFormProperty) {
+        var unpopulated = $scope.creatingTask.aFormProperty.filter(function (item) {
           return (item.value === undefined || item.value === null || item.value.trim() === "") && item.required;//&& item.type !== 'file'
         });
         return unpopulated;
@@ -95,7 +95,7 @@ angular.module('dashboardJsApp').controller('createTask',
       } else {
         $scope.isFormInvalid = false;
       }
-      if ($scope.creatingTask.formProperties) {
+      if ($scope.creatingTask.aFormProperty) {
         $scope.isSubmitted = true;
         var unpopulatedFields = $scope.unpopulatedFields();
         if (unpopulatedFields.length > 0) {
@@ -157,7 +157,7 @@ angular.module('dashboardJsApp').controller('createTask',
       $state.go('tasks.typeof', {type: currentTab});
     };
 
-    TableService.init($scope.creatingTask.formProperties);
+    TableService.init($scope.creatingTask.aFormProperty);
 
     function fixName(item) {
       var sFieldName = item.name || '';
@@ -208,7 +208,7 @@ angular.module('dashboardJsApp').controller('createTask',
       ValidationService.validateByMarkers(form, $scope.markers, true, null, true);
       if (!form.$invalid) {
         $scope.tableIsInvalid = false;
-        TableService.addRow(id, $scope.creatingTask.formProperties);
+        TableService.addRow(id, $scope.creatingTask.aFormProperty);
       } else {
         $scope.tableIsInvalid = true;
         $scope.invalidTableNum = index;
@@ -216,7 +216,7 @@ angular.module('dashboardJsApp').controller('createTask',
     };
 
     $scope.removeRow = function (index, form, id) {
-      TableService.removeRow($scope.creatingTask.formProperties, index, id);
+      TableService.removeRow($scope.creatingTask.aFormProperty, index, id);
       if (!form.$invalid) {
         $scope.tableIsInvalid = false;
       }

@@ -470,6 +470,7 @@ public class ActionItemController {
         preparedService.setLaw(oService.getLaw());
         preparedService.setOpenedLimit(oService.getOpenedLimit());
         preparedService.setOrder(oService.getOrder());
+        preparedService.setSaKeyword(oService.getSaKeyword());
 
         List<ServiceData> serviceDataFiltered = oService.getServiceDataFiltered(generalConfig.isSelfTest());
         preparedService.setSub(serviceDataFiltered != null ? serviceDataFiltered.size() : 0);

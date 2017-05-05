@@ -12,6 +12,7 @@
         <activiti:formProperty id="sReportCommon" name="sReportCommon" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sName_Executor" name="Виконавець" type="invisible" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepart" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
@@ -34,14 +35,15 @@
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="MJU_Dnipro_0"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Реєстраційний номер документа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" variable="unixdate" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" variable="sReportCommon"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Executor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" variable="sNameDepart" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_AutorResolution" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepart" name="Департамент" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
@@ -89,7 +91,6 @@ var sIncomingNumber=execution.getVariable('sIncomingNumber');
 number = number&lt;&lt;0
 var fullNumber=sIncomingNumber+"/"+number;
 execution.setVariable('sID_Custom_GovPublic', fullNumber);
-var unixdate= Math.round((new Date()).getTime())
 
 //2. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_doc_btsol_businessTrip" name="Приказ на офрмление командировки" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="Создание документа">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів" type="invisible" default="btsol_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів" type="invisible" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ на офрмление командировки" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCommentUT2" name="Замечание руководитель" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentUT4" name="Замечание бухгалтерия" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceCompilation" name="Место составления" type="string" default="49000, Украина, Днепропетровская обл., г Днепр"></activiti:formProperty>
+        <activiti:formProperty id="sAscertainingPart" name="Констатирующая часть" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Командировать; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_businessTrip.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Заказ гостиницы; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_businessTrip.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sOrderHotel" name="Распоряжение" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDestinations" name="Пункты назначения" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Страна" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCityTrip" name="Город(а)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBranchTrip" name="Филиал предприятия, организации и т.п." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRoute" name="Маршрут" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPurposeTrip" name="Цель командировки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_businessTrip_print.html]" type="invisible" default="Форма приказа" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_btsol]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask2" name="Согласование приказа про командировку">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentUT4" name="Замечание бухгалтерия" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceCompilation" name="Место составления" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAscertainingPart" name="Констатирующая часть" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Командировать; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Заказ гостиницы; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrderHotel" name="Распоряжение" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDestinations" name="Пункты назначения" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Страна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCityTrip" name="Город(а)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBranchTrip" name="Филиал предприятия, организации и т.п." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRoute" name="Маршрут" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPurposeTrip" name="Цель командировки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
+          <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
+          <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_businessTrip_print.html]" type="invisible" default="Форма приказа" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <scriptTask id="scripttask1" name="ProcessInstanceId" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="scripttask6"></sequenceFlow>
+    <scriptTask id="scripttask6" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
+var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_2')
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow72" name="замечание" sourceRef="exclusivegateway3" targetRef="scripttask16">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumRemark'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask16" name="Step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
+var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_1')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_1')</script>
+    </scriptTask>
+    <sequenceFlow id="flow103" sourceRef="scripttask16" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow104" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow105" sourceRef="exclusivegateway3" targetRef="scripttask18">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumSign'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask3" name="Ознакомление с приказом">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceCompilation" name="Место составления" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAscertainingPart" name="Констатирующая часть" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Командировать; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Заказ гостиницы; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrderHotel" name="Распоряжение" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDestinations" name="Пункты назначения" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Страна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCityTrip" name="Город(а)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBranchTrip" name="Филиал предприятия, организации и т.п." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRoute" name="Маршрут" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPurposeTrip" name="Цель командировки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT4" name="Бухгалтерия" type="enum" writable="false">
+          <activiti:value id="sEnumSign" name="Завизировано"></activiti:value>
+          <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCommentUT4" name="Замечания бухгалтерия" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT2" name="Руководитель" type="enum" writable="false">
+          <activiti:value id="sEnumSign" name="Завизировано"></activiti:value>
+          <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCommentUT2" name="Замечания руководитель" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_businessTrip_print.html]" type="invisible" default="Форма приказа" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow107" sourceRef="usertask3" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask4" name="Обработка (Департамент з управління персоналом)">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceCompilation" name="Место составления" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAscertainingPart" name="Констатирующая часть" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Командировать; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Заказ гостиницы; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrderHotel" name="Распоряжение" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDestinations" name="Пункты назначения" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCountry" name="Страна" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCityTrip" name="Город(а)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBranchTrip" name="Филиал предприятия, организации и т.п." type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRoute" name="Маршрут" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPurposeTrip" name="Цель командировки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asActionDocUT4" name="Действие с документом" type="enum" required="true">
+          <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
+          <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCommentUT4" name="Внесите текст замечания" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_businessTrip_print.html]" type="invisible" default="Форма приказа" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask18" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
+var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
+var sKey_GroupPostfix_New = 'btsol_hr'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_3')
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow109" sourceRef="scripttask18" targetRef="usertask4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow110" sourceRef="usertask4" targetRef="exclusivegateway4"></sequenceFlow>
+    <scriptTask id="scripttask19" name="Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
+var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_4')</script>
+    </scriptTask>
+    <sequenceFlow id="flow111" sourceRef="exclusivegateway4" targetRef="scripttask19">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow112" sourceRef="scripttask19" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow113" name="замечание" sourceRef="exclusivegateway4" targetRef="scripttask16">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumRemark'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_businessTrip">
+    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_businessTrip" id="BPMNPlane__doc_btsol_businessTrip">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="190.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="84.0" width="130.0" x="432.0" y="85.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="84.0" width="131.0" x="644.0" y="213.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="692.0" y="850.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="260.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
+        <omgdc:Bounds height="56.0" width="105.0" x="657.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="689.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask16" id="BPMNShape_scripttask16">
+        <omgdc:Bounds height="56.0" width="105.0" x="444.0" y="202.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="65.0" width="131.0" x="644.0" y="759.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="71.0" width="131.0" x="644.0" y="499.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask18" id="BPMNShape_scripttask18">
+        <omgdc:Bounds height="55.0" width="105.0" x="657.0" y="409.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="689.0" y="599.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask19" id="BPMNShape_scripttask19">
+        <omgdc:Bounds height="55.0" width="105.0" x="657.0" y="669.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="365.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="432.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="225.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
+        <omgdi:waypoint x="562.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="657.0" y="128.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
+        <omgdi:waypoint x="709.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="213.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="689.0" y="350.0"></omgdi:waypoint>
+        <omgdi:waypoint x="496.0" y="349.0"></omgdi:waypoint>
+        <omgdi:waypoint x="496.0" y="258.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="55.0" x="562.0" y="331.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
+        <omgdi:waypoint x="496.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="497.0" y="169.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow104" id="BPMNEdge_flow104">
+        <omgdi:waypoint x="709.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="330.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow105" id="BPMNEdge_flow105">
+        <omgdi:waypoint x="709.0" y="370.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="409.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow107" id="BPMNEdge_flow107">
+        <omgdi:waypoint x="709.0" y="824.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="850.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow109" id="BPMNEdge_flow109">
+        <omgdi:waypoint x="709.0" y="464.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="499.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow110" id="BPMNEdge_flow110">
+        <omgdi:waypoint x="709.0" y="570.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="599.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow111" id="BPMNEdge_flow111">
+        <omgdi:waypoint x="709.0" y="639.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="669.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow112" id="BPMNEdge_flow112">
+        <omgdi:waypoint x="709.0" y="724.0"></omgdi:waypoint>
+        <omgdi:waypoint x="709.0" y="759.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow113" id="BPMNEdge_flow113">
+        <omgdi:waypoint x="689.0" y="619.0"></omgdi:waypoint>
+        <omgdi:waypoint x="496.0" y="620.0"></omgdi:waypoint>
+        <omgdi:waypoint x="496.0" y="258.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="55.0" x="562.0" y="599.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
