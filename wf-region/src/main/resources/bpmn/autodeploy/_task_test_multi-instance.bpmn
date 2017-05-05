@@ -17,7 +17,7 @@
         <activiti:formProperty id="sLogin_Kontroler" name="Логін" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask3" name="Задание">
+    <userTask id="usertask3" name="Задание" activiti:candidateGroups="btsol">
       <extensionElements>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
@@ -70,6 +70,7 @@
         <activiti:formProperty id="markers13" name="Если доработать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sRemark&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Отправить исполнителю на доработку (отклонить отчет)'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersLoginByGroup('admin')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="parallelgateway1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask2" name="Исполнитель">
@@ -93,6 +94,7 @@
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersLoginByGroup('admin')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="parallelgateway1" targetRef="scripttask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
