@@ -27,6 +27,7 @@ public class ServiceTagService {
     private static final long FAKE_ROOT_TAG_ID  = 0;
     private static final String GET_SERVICE_TAG_TREE_CACHE_KEY = "ServiceTagService.getServiceTagTree";
     private static final String GET_TAG_ID_TO_SERVICES_CACHE_KEY = "ServiceTagService.getTagIdToServicesMap";
+    private static final String SERVICE_KEYWORDS_DELIMITER = ",";
 
     @Autowired
     private BaseEntityDao<Long> baseEntityDao;
@@ -168,7 +169,11 @@ public class ServiceTagService {
         }
 
         if (res && StringUtils.isNotBlank(sFind)) {
-            res = containsWithoutCase(service.getName(), sFind.toLowerCase());
+            res = containsWithoutCase(service.getName(), sFind);
+            if (!res && StringUtils.isNotBlank(service.getSaKeyword())) {
+                String[] keywords = service.getSaKeyword().split(SERVICE_KEYWORDS_DELIMITER);
+                res = Arrays.stream(keywords).anyMatch(keyword -> containsWithoutCase(keyword, sFind));
+            }
         }
         if (res && CollectionUtils.isNotEmpty(asID_Place_UA)) {
             Set<String> placesSet = new HashSet<>(asID_Place_UA);
