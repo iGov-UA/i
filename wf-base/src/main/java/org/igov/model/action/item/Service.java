@@ -55,6 +55,7 @@ public class Service extends org.igov.model.core.NamedEntity {
     @Column(name = "sSubjectOperatorName", nullable = false)
     private String sSubjectOperatorName;
 
+    @JsonProperty(value = "saKeyword")
     @Column(name = "saKeyword")
     private String saKeyword;
 
