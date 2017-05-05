@@ -247,8 +247,8 @@ public class ActionEventController implements ControllerConstants {
             throw new CommonServiceException(HttpStatus.BAD_REQUEST.toString(), "nID_StatusType is undefined");
         }
 
-        LOG.info("sBody = " + sBody);
-        LOG.info("soData = " + soData);
+        LOG.info("sBody= " + sBody);
+        LOG.info("soData= " + soData);
 
         return oActionEventService.updateActionStatus_Central(
                 sID_Order,

@@ -57,13 +57,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       var nSlotsKey = 'nSlots_' + scope.property.id;
       var nSlotsParam = scope.formData.params[nSlotsKey];
-
       var nDiffDaysProperty = 'nDiffDays_' + scope.property.id;
       var nDiffDaysParam = scope.formData.params[nDiffDaysProperty];
-
       var nDiffDaysForStartDateProperty = 'nDiffDaysForStartDate_' + scope.property.id;
       var nDiffDaysForStartDateParam = scope.formData.params[nDiffDaysForStartDateProperty];
-
       function selectedSlot(newValue) {
         if (isQueueDataType.DMS) {
           if(newValue){
@@ -170,7 +167,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           bValid = bValid && (""+nDiffDaysParam.value) === (""+scope.$parent.slotsCache.loadedList[slotId].nDiffDays);
         }
         if(bValid && nDiffDaysForStartDateParam && nDiffDaysForStartDateParam.value && scope.$parent.slotsCache.loadedList[slotId].nDiffDaysForStartDate){
-           bValid = bValid && (""+nDiffDaysForStartDateParam.value) === (""+scope.$parent.slotsCache.loadedList[slotId].nDiffDaysForStartDate);
+          bValid = bValid && (""+nDiffDaysForStartDateParam.value) === (""+scope.$parent.slotsCache.loadedList[slotId].nDiffDaysForStartDate);
         }
         return bValid;
       }
@@ -265,7 +262,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           if (nDiffDaysForStartDateParam && parseInt(nDiffDaysForStartDateParam.value) > 0) {
             data.nDiffDaysForStartDate = nDiffDaysForStartDateParam.value;
           }
-           
+          
+
 
           sURL = '/api/service/flow/' + scope.serviceData.nID;
         } else {
@@ -371,6 +369,14 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       if (angular.isDefined(nDiffDaysParam)) {
         scope.$watch('formData.params.' + nDiffDaysProperty + '.value', function (newValue, oldValue) {
+          if (newValue == oldValue)
+            return;
+          resetData();
+          scope.loadList();
+        });
+      }
+      if (angular.isDefined(nDiffDaysForStartDateParam)) {
+        scope.$watch('formData.params.' + nDiffDaysForStartDateProperty + '.value', function (newValue, oldValue) {
           if (newValue == oldValue)
             return;
           resetData();
