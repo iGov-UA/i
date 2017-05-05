@@ -179,17 +179,11 @@ angular.module('app').controller('PlaceController',
       var arr = str.split(",");
       for(var keyInd = 0; keyInd < arr.length; keyInd++){
         arr[keyInd] = $.trim(arr[keyInd]);
-        if(arr[keyInd].indexOf('#') === 0){
-          arr[keyInd] = toUpperCaseWithHash(arr[keyInd], 1);
-        } else {
-          arr[keyInd] = toUpperCaseWithHash(arr[keyInd], 0);
+        if(arr[keyInd].indexOf('#') !== 0){
+          arr[keyInd] = '#' + arr[keyInd];
         }
       }
       return arr;
-
-      function toUpperCaseWithHash(str, ind) {
-        return '#' + str.charAt(ind).toUpperCase() + str.slice(ind + 1);
-      }
     }
-    
+
   });
