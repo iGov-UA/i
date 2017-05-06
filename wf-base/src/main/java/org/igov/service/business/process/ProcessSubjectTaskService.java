@@ -3,9 +3,13 @@ package org.igov.service.business.process;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
@@ -52,6 +56,12 @@ public class ProcessSubjectTaskService {
     @Autowired
     private TaskService oTaskService;
     
+    @Autowired
+    private RuntimeService oRuntimeService;
+
+    @Autowired
+    private GeneralConfig oGeneralConfig;
+    
     /**
      * Получение списка ProcessSubjectTask
      * 
@@ -66,7 +76,8 @@ public class ProcessSubjectTaskService {
         return aListOfProcessSubjectTask;
     }
     
-    private List<ProcessSubject> setProcessSubjectList(JSONArray aJsonProcessSubject, Map<String, Object> mProcessSubjectTask) throws ParseException 
+    private List<ProcessSubject> setProcessSubjectList(JSONArray aJsonProcessSubject, 
+            Map<String, Object> mProcessSubjectTask, String sKeyRedis) throws ParseException 
     {
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
@@ -78,6 +89,17 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setsLogin((String) mProcessSubject.get("sLogin"));
             oProcessSubject.setsLoginRole((String) mProcessSubject.get("‘sLoginRole"));
             
+            Map<String, Object> mParamTask = new HashMap<>();
+            
+            if(((String) mProcessSubject.get("‘sLoginRole")).equals("Controller")){
+                mParamTask.put("sLoginController", mProcessSubject.get("sLogin"));
+            }
+            
+            mParamTask.put("sID_File_StorateTemp", sKeyRedis);
+            mParamTask.put("sID_Order_Document", oGeneralConfig.getOrderId_ByProcess((String)mProcessSubjectTask.get("snID_Process_Activiti_Root")));
+                    
+            ProcessInstance oProcessInstanceChild = oRuntimeService.startProcessInstanceByKey((String) mProcessSubject.get("sID_BP"), mParamTask);
+            oProcessSubject.setSnID_Process_Activiti(oProcessInstanceChild.getId());                                                                                   
             DateTime datePlan = null;
 
             if (mProcessSubject.get("sDatePlan") != null) {
@@ -87,6 +109,7 @@ public class ProcessSubjectTaskService {
 
             oProcessSubject.setsDatePlan(datePlan);
             aProcessSubject.add(oProcessSubject);
+        
         }
         
         return aProcessSubject;
@@ -120,9 +143,9 @@ public class ProcessSubjectTaskService {
                     oProcessSubjectTask.setSnID_Process_Activiti_Root((String)mProcessSubjectTask.get("snID_Process_Activiti_Root"));
                     oProcessSubjectTask.setsBody((String)mProcessSubjectTask.get("sBody"));
                     oProcessSubjectTask.setsHead((String)mProcessSubjectTask.get("sHead"));
-
+                    
                     List<ProcessSubject> aProcessSubject = 
-                            setProcessSubjectList(aJsonProcessSubject, mProcessSubjectTask);
+                            setProcessSubjectList(aJsonProcessSubject, mProcessSubjectTask, sKey);
                     oProcessSubjectTask.setaProcessSubject(aProcessSubject);
                     oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
                     
