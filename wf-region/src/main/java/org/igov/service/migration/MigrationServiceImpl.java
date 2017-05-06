@@ -9,8 +9,11 @@ import org.igov.analytic.model.config.ConfigDao;
 import org.igov.analytic.model.process.*;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
+import org.igov.model.core.Entity;
+import org.igov.model.core.EntityDao;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -79,8 +82,8 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private DateTime getStartTime() {
-        DateTime startDateFromConfig = getStartDateFromConfig();
-        DateTime startDateFromProcess = getStartDateFromProcess();
+        DateTime startDateFromConfig = getStartDate(Config.class);
+        DateTime startDateFromProcess = getStartDate(Process.class);
 
         DateTime startTime;
         if (startDateFromConfig.isBefore(startDateFromProcess)) {
@@ -106,32 +109,27 @@ public class MigrationServiceImpl implements MigrationService {
                 + "\' AND proc_def_id not like \'%common_mreo_2%\' AND end_time_ is not null";
     }
 
-
-    //TODO Refactor it(via generics)
-    private DateTime getStartDateFromConfig() {
-        List<Config> configList = configDao.findAll();
-        List<DateTime> dateTimeList = new ArrayList<>(configList.size());
-        configList.forEach(config -> {
-            String dateTime = config.getsValue();
-            DateTime time = new DateTime(dateTime);//не уверен, нужно тесты написать
+    @SuppressWarnings("unchecked")
+    private <T extends Entity<Long>> DateTime getStartDate(Class<T> clazz) {
+        EntityDao entityDao;
+        entityDao = clazz == Config.class ? configDao : processDao;
+        List<T> list =  entityDao.findAll();
+        List<DateTime> dateTimeList = new ArrayList<>(list.size());
+        list.forEach(entity -> {
+            DateTime time;
+            if(clazz==Config.class) {
+                Config config = (Config) entity;
+                String dateTime = config.getsValue();
+                time = new DateTime(dateTime);//не уверен, нужно тесты написать
+            }
+            else {
+                Process process = (Process) entity;
+                time = process.getoDateStart();
+            }
             dateTimeList.add(time);
         });
-
         Collections.sort(dateTimeList);
-        return dateTimeList.get(dateTimeList.size() - 1);
-    }
-
-    //TODO Refactor it(via generics)
-    private DateTime getStartDateFromProcess() {
-        List<Process> processList = processDao.findAll();
-        List<DateTime> dateTimeList = new ArrayList<>(processList.size());
-        processList.forEach(process -> {
-            DateTime time = process.getoDateStart();
-            dateTimeList.add(time);
-        });
-
-        Collections.sort(dateTimeList);
-        return dateTimeList.get(dateTimeList.size() - 1);
+        return dateTimeList.get(dateTimeList.size()-1);
     }
 
     private List<Process> prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
