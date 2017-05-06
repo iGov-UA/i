@@ -60,7 +60,7 @@ public class ProcessSubjectTaskService {
             Map<String, Object> mProcessSubject
                     = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);
             ProcessSubject oProcessSubject = new ProcessSubject();
-            oProcessSubject.setsTextType((String) mProcessSubjectTask.get("sReportType"));
+            oProcessSubject.setsTextType((String) mProcessSubjectTask.get("sTextType"));
             oProcessSubject.setsLogin((String) mProcessSubject.get("sLogin"));
 
             DateTime datePlan = null;
