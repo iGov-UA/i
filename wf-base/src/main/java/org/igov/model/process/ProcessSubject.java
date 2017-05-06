@@ -29,7 +29,7 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private String snID_Process_Activiti;
     
-    @JsonProperty(value = "sReport")
+    @JsonProperty(value = "sText")
     @Column
     private String sText;
     
@@ -79,7 +79,7 @@ public class ProcessSubject extends AbstractEntity {
     @Transient
     private List<ProcessSubject> aProcessSubjectChild;
     
-    @JsonProperty(value = "sReportType")
+    @JsonProperty(value = "sTextType")
     @Column
     private String sTextType;
     
