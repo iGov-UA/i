@@ -102,7 +102,7 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         ProcessSubject processSubject = findByProcessActiviti(snID_Process_Activiti);
         if (processSubject != null) {
             processSubject.setoProcessSubjectStatus(processSubjectStatus);
-            processSubject.setsReport(sReport);
+            processSubject.setsText(sReport);
             processSubject.setsDateEdit(new DateTime(new Date()));
             processSubject = saveOrUpdate(processSubject);
             LOG.info(String.format("ProcessSubjectStatus=%s to entity with snID_Process_Activiti=%s  and sReport=%s was added",

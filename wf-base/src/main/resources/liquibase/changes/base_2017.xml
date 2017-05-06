@@ -573,5 +573,21 @@
     <changeSet id="test" author="olga">
         
     </changeSet>
+    
+    <changeSet id="issue-1650-add-new-colums-and-rename-existed" author="Ivan Denysenko">
+        
+        <addColumn tableName="ProcessSubject">
+            <column name="sLoginRole" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDatePlanNew" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <renameColumn newColumnName="sText" oldColumnName="sReport" tableName="ProcessSubject"/>
+        <renameColumn newColumnName="sTextType" oldColumnName="sReportType" tableName="ProcessSubject"/>
+        
+    </changeSet>
         
 </databaseChangeLog>

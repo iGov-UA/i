@@ -31,7 +31,7 @@ public class ProcessSubject extends AbstractEntity {
     
     @JsonProperty(value = "sReport")
     @Column
-    private String sReport;
+    private String sText;
     
     @JsonProperty(value = "oProcessSubjectStatus")
     @ManyToOne(targetEntity = ProcessSubjectStatus.class)
@@ -64,6 +64,13 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private DateTime sDatePlan;
     
+    @JsonProperty(value = "sDatePlanNew")
+    @JsonSerialize(using = JsonDateTimeSerializer.class)
+    @JsonDeserialize(using = JsonDateTimeDeserializer.class)
+    @Type(type = DATETIME_TYPE)
+    @Column
+    private DateTime sDatePlanNew;
+    
     @JsonProperty(value = "aUser")
     @Transient
     private List<ProcessUser> aUser;
@@ -74,7 +81,11 @@ public class ProcessSubject extends AbstractEntity {
     
     @JsonProperty(value = "sReportType")
     @Column
-    private String sReportType;
+    private String sTextType;
+    
+    @JsonProperty(value = "sLoginRole")
+    @Column
+    private String sLoginRole;
     
     @JsonProperty(value = "oProcessSubjectTask")
     @ManyToOne(targetEntity = ProcessSubjectTask.class)
@@ -129,12 +140,12 @@ public class ProcessSubject extends AbstractEntity {
         this.sDateEdit = sDateEdit;
     }
     
-    public String getsReport() {
-        return sReport;
+    public String getsText() {
+        return sText;
     }
 
-    public void setsReport(String sReport) {
-        this.sReport = sReport;
+    public void setsText(String sText) {
+        this.sText = sText;
     }
 
     public DateTime getsDatePlan() {
@@ -165,33 +176,56 @@ public class ProcessSubject extends AbstractEntity {
         }
     }
 
-    public String getsReportType() {
-        return sReportType;
+    public String getsTextType() {
+        return sTextType;
     }
 
     public ProcessSubjectTask getoProcessSubjectTask() {
         return oProcessSubjectTask;
     }
 
-    public void setsReportType(String sReportType) {
-        this.sReportType = sReportType;
+    public void setsTextType(String sTextType) {
+        this.sTextType = sTextType;
     }
 
     public void setoProcessSubjectTask(ProcessSubjectTask oProcessSubjectTask) {
         this.oProcessSubjectTask = oProcessSubjectTask;
     }
 
-    @Override
-    public String toString() {
-        return "ProcessSubject{"
-                + "id=" + getId()
-                + ", snID_Process_Activiti=" + snID_Process_Activiti
-                + ", processSubjectStatus=" + oProcessSubjectStatus
-                + ", oProcessSubjectTask=" + oProcessSubjectTask
-                + ", nOrder=" + nOrder
-                + ", sLogin=" + sLogin
-                + ", sDateEdit=" + sDateEdit
-                + ", sDatePlan=" + sDatePlan + '}';
+    public DateTime getsDatePlanNew() {
+        return sDatePlanNew;
     }
 
+    public void setsDatePlanNew(DateTime sDatePlanNew) {
+        this.sDatePlanNew = sDatePlanNew;
+    }
+
+    public String getsLoginRole() {
+        return sLoginRole;
+    }
+
+    public void setsLoginRole(String sLoginRole) {
+        this.sLoginRole = sLoginRole;
+    }
+
+    @Override
+    public String toString() {
+        return "ProcessSubject{" + "id=" + getId()
+                + ", snID_Process_Activiti=" + snID_Process_Activiti
+                + ", sText=" + sText
+                + ", oProcessSubjectStatus=" + oProcessSubjectStatus
+                + ", nOrder=" + nOrder
+                + ", sLogin=" + sLogin
+                + ", sDateFact=" + sDateFact
+                + ", sDateEdit=" + sDateEdit
+                + ", sDatePlan=" + sDatePlan
+                + ", sDatePlanNew=" + sDatePlanNew
+                + ", aUser=" + aUser
+                + ", aProcessSubjectChild=" + aProcessSubjectChild
+                + ", sTextType=" + sTextType
+                + ", sLoginRole=" + sLoginRole
+                + ", oProcessSubjectTask=" + oProcessSubjectTask + '}';
+    }
+    
+        
 }
