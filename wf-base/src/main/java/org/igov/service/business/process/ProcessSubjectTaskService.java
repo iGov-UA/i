@@ -5,11 +5,15 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.activiti.engine.TaskService;
+import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
 
 import org.igov.model.process.ProcessSubjectTask;
 import org.igov.model.process.ProcessSubjectTaskDao;
+import org.igov.model.process.ProcessSubjectTree;
+import org.igov.model.process.ProcessSubjectTreeDao;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
@@ -39,6 +43,15 @@ public class ProcessSubjectTaskService {
     @Autowired
     private ProcessSubjectService oProcessSubjectService;
     
+    @Autowired
+    private ProcessSubjectTreeDao oProcessSubjectTreeDao;
+    
+    @Autowired
+    private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
+    
+    @Autowired
+    private TaskService oTaskService;
+    
     /**
      * Получение списка ProcessSubjectTask
      * 
@@ -59,10 +72,12 @@ public class ProcessSubjectTaskService {
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             Map<String, Object> mProcessSubject
                     = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);
+            
             ProcessSubject oProcessSubject = new ProcessSubject();
             oProcessSubject.setsTextType((String) mProcessSubjectTask.get("sReportType"));
             oProcessSubject.setsLogin((String) mProcessSubject.get("sLogin"));
-
+            oProcessSubject.setsLoginRole((String) mProcessSubject.get("‘sLoginRole"));
+            
             DateTime datePlan = null;
 
             if (mProcessSubject.get("sDatePlan") != null) {
@@ -77,16 +92,28 @@ public class ProcessSubjectTaskService {
         return aProcessSubject;
     }
     
-    public void setProcessSubjectTaskList(Object oaProcessSubjectTask){
+    private void saveProcessSubjectTree(ProcessSubject oProcessSubjectParent, ProcessSubject oProcessSubjectChild){
+        ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
+        oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
+        oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
+        oProcessSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
+    }
+    
+    public void setProcessSubjectTaskList(Object oaProcessSubjectTask, String snId_Task){
         
         try{
+            
             JSONArray aJsonProcessSubjectTask =  new JSONArray();
             aJsonProcessSubjectTask = (JSONArray) oaProcessSubjectTask;
-
+            
+            String sKey = oBytesDataInmemoryStorage.putBytes(aJsonProcessSubjectTask.toJSONString().getBytes());
+            oTaskService.setVariable(snId_Task, "sID_File_StorateTemp", sKey);
+            
             for(Object oJsonProcessSubjectTask :  aJsonProcessSubjectTask){
                 Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject((String)oJsonProcessSubjectTask, Map.class);
                 JSONArray aJsonProcessSubject =  (JSONArray) mProcessSubjectTask.get("aProcessSubject");
-
+                ProcessSubject oProcessSubjectParent = oProcessSubjectDao.findByProcessActivitiId((String)mProcessSubjectTask.get("snID_Process_Activiti_Root"));
+                
                 if(mProcessSubjectTask.get("ProcessSubjectTask") == null){
                     //this is a new process
                     ProcessSubjectTask oProcessSubjectTask = new ProcessSubjectTask();
@@ -99,11 +126,13 @@ public class ProcessSubjectTaskService {
                     oProcessSubjectTask.setaProcessSubject(aProcessSubject);
                     oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
                     
+                    for(ProcessSubject oProcessSubjectChild : aProcessSubject){
+                        saveProcessSubjectTree(oProcessSubjectParent, oProcessSubjectChild);
+                    }
+                
                 }else{
                     //this is a process edit
                 }
-
-                //oProcessSubjectTask.s
             }
         }
         catch (Exception ex){

@@ -3101,7 +3101,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/updateProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public @ResponseBody
     Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly,
-            @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
+            @ApiParam(value = "JSON-объект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
     ) throws Exception {
 
         Map<String, Object> mParam = new HashMap<>();
@@ -3122,7 +3122,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (mJsonBody.containsKey("aProcessSubjectTask")){
                     LOG.info("The request to updateProcess contains aProcessSubjectTask key");
                     Object oaProcessSubjectTask = mJsonBody.get("aProcessSubjectTask");
-                    oProcessSubjectTaskService.setProcessSubjectTaskList(oaProcessSubjectTask);
+                    oProcessSubjectTaskService.setProcessSubjectTaskList(oaProcessSubjectTask, taskId);
                 }
                 
                 if (mJsonBody.containsKey("properties")) {
