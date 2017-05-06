@@ -722,7 +722,7 @@ public class ProcessSubjectService {
         }
     }
 
-    private Date parseDate(String sDate) throws java.text.ParseException {
+    public Date parseDate(String sDate) throws java.text.ParseException {
         DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
         DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
         Date oDateReturn;

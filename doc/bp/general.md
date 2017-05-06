@@ -398,7 +398,6 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_Requestvariables)
 
-
 ###### generalrulesfornaming
 # 5. Общие правила при именовании
 [вернуться в начало](general.md)
@@ -2931,7 +2930,8 @@ Cделает текущее поле нередактируемым для по
 * **sSubjectOrganJoinTax** - select - Таможня
 * **sID_UA_SubjectOrganJoinTax** - Код таможни (заполнится автоматически после выбора в селекте sSubjectOrganJoinTax)
 * **sID_Place_UA** - string - В переменную передается КОАТУУ выбранного населенного пункта (поле Place)
-
+* **sObjectEarthTarget** - select - целевое назначение земель   
+* **sID_UA_ObjectEarthTarget** - string - код целевого назначение земель (заполнится автоматически после выбора в селекте sObjectEarthTarget )   
 ###### _requestvariables
 ### Переменные-запросы
 
