@@ -134,15 +134,22 @@ public class MigrationServiceImpl implements MigrationService {
             DateTime time;
             if (clazz == Config.class) {
                 Config config = (Config) entity;
+                LOG.info("Config: {}", config);
                 String dateTime = config.getsValue();
                 time = new DateTime(dateTime);//не уверен, нужно тесты написать
+                LOG.info("Time from config: {}", time);
             } else {
                 Process process = (Process) entity;
+                LOG.info("Process: {}", process);
                 time = process.getoDateStart();
+                LOG.info("Time from process: {}", time);
             }
             dateTimeList.add(time);
         });
+
+        LOG.info("Time list: {}", dateTimeList);
         Collections.sort(dateTimeList);
+        LOG.info("Sorted time list: {}", dateTimeList);
         return dateTimeList.get(dateTimeList.size() - 1);
     }
 

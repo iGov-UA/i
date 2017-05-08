@@ -25,4 +25,11 @@ public class Config extends NamedEntity {
         this.sValue = sValue;
     }
 
+
+    @Override
+    public String toString() {
+        return "Config{" +
+                "sValue='" + sValue + '\'' +
+                '}';
+    }
 }
