@@ -26,27 +26,27 @@
         <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nRegion" name="Регион" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="forma" name="Подстановка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sClerkPost" name="почта чиновника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="forma" name="Подстановка принтформы ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sClerkPost" name="почта чиновника ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="назва органу ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="mark" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_m&quot;:{&quot;aField_ID&quot;:[&quot;zapit&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;pidstavi&quot;},&quot;sCondition&quot;:&quot;[sReason]=='z2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Region" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_234.json')}"></activiti:formProperty>
-        <activiti:formProperty id="bFlag" name="Перемикач регіонів" type="invisible" default="easy"></activiti:formProperty>
+        <activiti:formProperty id="bFlag" name="Перемикач регіонів ; ; bVisible=false" type="string" default="easy"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -131,20 +131,20 @@
         <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення звернення" type="enum" required="true">
           <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
           <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html] ; ; bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -285,13 +285,13 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про видачу відомостей у формі викопіювання" type="enum" required="true">
           <activiti:value id="ok" name="Викопіювання надано"></activiti:value>
           <activiti:value id="bad" name="У видачі викопіювання відмовлено"></activiti:value>
@@ -300,7 +300,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="result" name="Додайте скановану копію витягу з Державного земельного кадастру, якщо заяву опрацьовано або скановану копію відмови, якщо ні" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html] ; ; bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -390,13 +390,13 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
         <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" required="true">
           <activiti:value id="ok" name="Викопіювання надано"></activiti:value>
           <activiti:value id="bad" name="У видачі викопіювання відмовлено"></activiti:value>
@@ -404,7 +404,7 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте скановану копію витягу з Державного земельного кадастру, якщо заяву опрацьовано або скановану копію відмови, якщо ні"  type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]" type="invisible" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html] ; ; bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -453,13 +453,13 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
         <activiti:formProperty id="zapit" name="Підстави для надання відповідної інформації з посиланням на норму закону, яка передбачає право відповідного органу державної влади або органу місцевого самоврядування запитувати таку інформацію; а також реквізити справи, у зв’язку з якою виникла потреба в отриманні інформації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landAddress" name="Місце розташування земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер;у форматі хххххххххх:хх:ххх:хххх" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="shapka" name="Шапка заяви" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе" type="invisible" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="shapka" name="Шапка заяви ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m1" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m2" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m3" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m4" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m5" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="m6" name="Информация про заявителя в принтформе ; ; bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про прийняття або відхилення заяви" type="enum" writable="false">
           <activiti:value id="ok" name="Викопіювання надано"></activiti:value>
           <activiti:value id="bad" name="У видачі викопіювання відмовлено"></activiti:value>
