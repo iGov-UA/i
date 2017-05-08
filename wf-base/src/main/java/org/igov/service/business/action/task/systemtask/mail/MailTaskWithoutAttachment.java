@@ -7,21 +7,19 @@ import org.springframework.stereotype.Component;
 import org.igov.io.mail.Mail;
 
 /**
- * @author BW
+ * @author Elena
+ * отправка тела без атачмента - html text
+ * 
  */
 @Component("MailTaskWithoutAttachment")
 public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     
     private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithoutAttachment.class);
 
-    //private Expression saAttachmentsForSend;
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         try {
-            LOG.info("MailTaskWithoutAttachment...");
             Mail oMail = sendToMailFromMongo(oExecution);
-            
-            LOG.info("MailTaskWithoutAttachment--->>>>>>>>>>>>>>>>>" + oMail.getBody());
             sendMailOfTask(oMail, oExecution);
             LOG.info("MailTaskWithoutAttachment ok!");
         } catch (Exception ex) {

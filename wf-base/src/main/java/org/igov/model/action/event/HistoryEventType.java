@@ -101,7 +101,7 @@ public enum HistoryEventType {
             "Документ перміщено до архіву"),
     TASK_CANCELED(19L,
             "TaskCanceled",
-            "Вы самосточтельно отменили заявку",
+            "Вы самосточтельно отменили заявку №" + HistoryEventMessage.TASK_NUMBER,
             "Ви самостійно скасували заявку");
     
 

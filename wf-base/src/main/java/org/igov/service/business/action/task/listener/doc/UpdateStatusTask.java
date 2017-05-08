@@ -46,7 +46,7 @@ public class UpdateStatusTask implements TaskListener {
         
         ProcessSubject oProcessSubject = processSubjectService.setProcessSubjectStatusAndReport(delegateTask.getExecutionId(), sID_ProcessSubjectStatus_Value, sReport_Value);
         
-        LOG.info("sReport after method work: " + oProcessSubject.getsReport());
+        LOG.info("sReport after method work: " + oProcessSubject.getsText());
     }
 
 }

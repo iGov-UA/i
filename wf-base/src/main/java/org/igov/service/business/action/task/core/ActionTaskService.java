@@ -111,8 +111,6 @@ public class ActionTaskService {
     @Autowired
     private HistoryEventService oHistoryEventService;
     @Autowired
-    private Mail oMail;
-    @Autowired
     private RepositoryService oRepositoryService;
     @Autowired
     private FormService oFormService;
@@ -123,12 +121,11 @@ public class ActionTaskService {
     @Autowired
     private GeneralConfig oGeneralConfig;
     @Autowired
-    private FlowSlotTicketDao flowSlotTicketDao;
+    private FlowSlotTicketDao oFlowSlotTicketDao;
     @Autowired
-    private CachedInvocationBean cachedInvocationBean;
-
+    private CachedInvocationBean oCachedInvocationBean;
     @Autowired
-    SubjectRightBPService subjectRightBPService;
+    SubjectRightBPService oSubjectRightBPService;
 
     public static String parseEnumValue(String sEnumName) {
         LOG.info("(sEnumName={})", sEnumName);
@@ -344,13 +341,17 @@ public class ActionTaskService {
             }
             if (nID_FlowSlotTicket != null) {
                 LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
-                if (!flowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
+                if (!oFlowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
                     throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
                 }
             }
         }
         DateFormat df_StartProcess = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
+        String snID_Task = oTaskService.createTaskQuery().processInstanceId(nID_Process).active().singleResult().getId();
+        /*oTaskService.setVariable(snID_Task, CANCEL_INFO_FIELD, String.format(
+                "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
+                df_StartProcess.format(new Date()), sInfo == null ? "" : sInfo));*/
+        
         oRuntimeService.setVariable(nID_Process, CANCEL_INFO_FIELD, String.format(
                 "[%s] \u0417\u0430\u044f\u0432\u043a\u0430 \u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430: %s",
                 df_StartProcess.format(new Date()), sInfo == null ? "" : sInfo));
@@ -529,7 +530,6 @@ public class ActionTaskService {
 
     public void fillTheCSVMapHistoricTasks(String sID_BP, Date dateAt, Date dateTo, List<HistoricTaskInstance> foundResults, SimpleDateFormat sDateCreateDF, List<Map<String, Object>> csvLines, String pattern,
             Set<String> tasksIdToExclude, String saFieldsCalc, String[] headers, String sID_State_BP, String asField_Filter) {
-        LOG.info("!!!!!csvLines: " + csvLines);
         ToolJS oToolJs = new ToolJS();
         LOG.info("<--------------------------------fillTheCSVMapHistoricTasks_begin---------------------------------------------------------->");
         if (CollectionUtils.isEmpty(foundResults)) {
@@ -1291,7 +1291,7 @@ public class ActionTaskService {
             result.add(process);*/
         }
 
-        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
+        List<SubjectRightBPVO> aResSubjectRightBPVO = oSubjectRightBPService.getBPs_ForReferent(sLogin);
         LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
 
         if (aResSubjectRightBPVO != null) {
@@ -1730,7 +1730,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         boolean bOk = false;
         LOG.info("Deleting process snID_Process={}, sLogin={}, sReason={}", snID_Process, sLogin, sReason);
         try {
-            oRuntimeService.deleteProcessInstance(snID_Process, sReason);
+            oRuntimeService.deleteProcessInstance(snID_Process, sReason);           
         } catch (ActivitiObjectNotFoundException e) {
             LOG.info("Could not find process {} to delete: {}", snID_Process, e);
             throw new RecordNotFoundException();
@@ -2162,7 +2162,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             return tasks;
         }
         try {
-            tickets = flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+            tickets = oFlowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
         } catch (Exception e) {
             LOG.error("Error occured while getting tickets for tasks", e);
         }
@@ -2200,14 +2200,14 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         if (taskIds.isEmpty()) {
             return tasks;
         }
-        SerializableResponseEntity<ArrayList<FlowSlotTicket>> entities = cachedInvocationBean
+        SerializableResponseEntity<ArrayList<FlowSlotTicket>> entities = oCachedInvocationBean
                 .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<FlowSlotTicket>>>(
                         GET_ALL_TICKETS_CACHE, sLogin, bIncludeAlienTickets, sFilterStatus) {
                     @Override
                     public SerializableResponseEntity<ArrayList<FlowSlotTicket>> execute() {
                         LOG.info("Loading tickets from cache for user {}", sLogin);
 
-                        ArrayList<FlowSlotTicket> res = (ArrayList<FlowSlotTicket>) flowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
+                        ArrayList<FlowSlotTicket> res = (ArrayList<FlowSlotTicket>) oFlowSlotTicketDao.findAllByInValues("nID_Task_Activiti", taskIds);
 
                         return new SerializableResponseEntity<>(new ResponseEntity<>(res, null, HttpStatus.OK));
                     }
@@ -2255,75 +2255,49 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     public void populateResultSortedByTasksOrder(boolean bFilterHasTicket,
             List<?> tasks, Map<String, FlowSlotTicket> mapOfTickets,
             List<Map<String, Object>> data) {
-        
-        Long point1Start = System.nanoTime();
-        
+
         LOG.info("populateResultSortedByTasksOrder. number of tasks:{} number of tickets:{} ", tasks.size(), mapOfTickets.size());
         for (int i = 0; i < tasks.size(); i++) {
             try {
                 TaskInfo task = (TaskInfo) tasks.get(i);
-                
-                Long point1SpecialStart = System.nanoTime();
-                
-                Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getProcessInstanceId()));
-                
-                Long point1SpecialEndt = System.nanoTime();
-                LOG.info("point1.2 special service time: " + String.format("%,12d", (point1SpecialEndt - point1SpecialStart)));
-                
+                Map<String, Object> taskInfo = populateTaskInfo(task, mapOfTickets.get(task.getProcessInstanceId()));             
                 data.add(taskInfo);
             } catch (Exception e) {
                 LOG.error("error: Error while populatiing task", e);
             }
         }
-        Long point1EndPoint2Start = System.nanoTime();
-        LOG.info("point1.2 service time: " + String.format("%,12d", (point1EndPoint2Start - point1Start)));
     }
 
     public void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
             Map<String, FlowSlotTicket> mapOfTickets, List<Map<String, Object>> data) {
         LOG.info("Sorting result by flow slot ticket create date. Number of tasks:{} number of tickets:{}", tasks.size(), mapOfTickets.size());
-        
-        Long point1Start = System.nanoTime();
-                
+
         List<FlowSlotTicket> tickets = new LinkedList<>();
         tickets.addAll(mapOfTickets.values());
         Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
         LOG.info("Sorted tickets by order create date");
-        
-        Long point1EndPoint2Start = System.nanoTime();
-        LOG.info("point1 service time: " + String.format("%,12d", (point1EndPoint2Start - point1Start)));
-        
+
         Map<String, TaskInfo> tasksMap = new HashMap<>();
         for (int i = 0; i < tasks.size(); i++) {
             TaskInfo task = (TaskInfo) tasks.get(i);
             tasksMap.put(((TaskInfo) tasks.get(i)).getProcessInstanceId(), task);
         }
         
-        Long point2EndPoint3Start = System.nanoTime();
-        LOG.info("point2 service time: " + String.format("%,12d", (point2EndPoint3Start - point1EndPoint2Start)));
-        
         for (int i = 0; i < tickets.size(); i++) {
             try {
                 FlowSlotTicket ticket = tickets.get(i);
                 TaskInfo task = tasksMap.get(ticket.getnID_Task_Activiti());
-                
-                Long point1SpecialStart = System.nanoTime();
                 Map<String, Object> taskInfo = populateTaskInfo(task, ticket);
-                Long point1SpecialEndt = System.nanoTime();
-                LOG.info("point1 special service time: " + String.format("%,12d", (point1SpecialEndt - point1SpecialStart)));
-
                 data.add(taskInfo);
             } catch (Exception e) {
                 LOG.error("error: ", e);
             }
         }
-        Long point3End = System.nanoTime();
-        LOG.info("point3 service time: " + String.format("%,12d", (point3End - point2EndPoint3Start)));
     }
 
     public List<TaskInfo> returnTasksFromCache(final String sLogin, final String sFilterStatus, final boolean bIncludeAlienAssignedTasks,
             final List<String> groupsIds, String soaFilterField) {
-        SerializableResponseEntity<ArrayList<TaskInfo>> entity = cachedInvocationBean
+        SerializableResponseEntity<ArrayList<TaskInfo>> entity = oCachedInvocationBean
                 .invokeUsingCache(new CachedInvocationBean.Callback<SerializableResponseEntity<ArrayList<TaskInfo>>>(
                         GET_ALL_TASK_FOR_USER_CACHE, sLogin, sFilterStatus, bIncludeAlienAssignedTasks) {
                     @Override
@@ -2474,12 +2448,10 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     }
 
     public Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket) {
-        
-        Long point1Start = System.nanoTime();
-        Long res5 = 0l;
-        
+
         String sPlace = "";
         
+        //Выполняем поиск sPlace только, если процесс начинается на system
         if (task.getProcessDefinitionId().startsWith("system")) {        
             HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
                     processInstanceId(task.getProcessInstanceId()).
@@ -2487,20 +2459,12 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
 
             sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
             LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
-            
-            Long missedPoint = System.nanoTime();
-            res5 = missedPoint - point1Start;
         }
-        
-        Long point1EndPoint2Start = System.nanoTime();
-        Long res1 = point1EndPoint2Start - point1Start;
-                
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        Map<String, Object> taskInfo = new HashMap<>();
         
-        Long point2EndPoint3Start = System.nanoTime();
-        Long res2 = point2EndPoint3Start - point1EndPoint2Start;
-                
+        Map<String, Object> taskInfo = new HashMap<>();
+
         taskInfo.put("id", task.getId());
         taskInfo.put("url", oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
         taskInfo.put("owner", task.getOwner());
@@ -2525,10 +2489,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
         taskInfo.put("processDefinitionUrl", oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
         taskInfo.put("variables", new LinkedList());
-        
-        Long point3EndPoint4Start = System.nanoTime();
-        Long res3 = point3EndPoint4Start - point2EndPoint3Start;
-        
+
         if (flowSlotTicket != null) {
             LOG.info("Populating flow slot ticket");
             DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
@@ -2539,10 +2500,6 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()) : null);
             taskInfo.put("flowSlotTicket", flowSlotTicketData);
         }
-        
-        Long point4End = System.nanoTime();
-        Long res4 = point4End - point3EndPoint4Start;
-        LOG.info("\n"+ "res1: " + res1 + "\n" + "res2: " + res2 + "\n" + "res3: " + res3 + "\n" + "res4: " + res4 + "\n" + "res5: " + res5);
         
         return taskInfo;
     }
@@ -2621,4 +2578,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         return CollectionUtils.isNotEmpty(aProcessInfoShortVO);
     }
 
+    public void deleteHistoricProcessInstance(String snID_Process_Activiti){
+        oHistoryService.deleteHistoricProcessInstance(snID_Process_Activiti);
+    }
 }

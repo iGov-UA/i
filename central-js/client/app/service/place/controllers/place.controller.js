@@ -170,6 +170,20 @@ angular.module('app').controller('PlaceController',
         '://' + $location.host() + ':'
         + $location.port()
         + stateForRedirect;
+    };
+
+    if($scope.service.saKeyword){
+      $scope.service.aKeywords = getKeywordsArray($scope.service.saKeyword);
+    }
+    function getKeywordsArray(str) {
+      var arr = str.split(",");
+      for(var keyInd = 0; keyInd < arr.length; keyInd++){
+        arr[keyInd] = $.trim(arr[keyInd]);
+        if(arr[keyInd].indexOf('#') !== 0){
+          arr[keyInd] = '#' + arr[keyInd];
+        }
+      }
+      return arr;
     }
 
   });

@@ -85,7 +85,7 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
     if (body.customer && Admin.isAdminInn(innToCheck)) {
       body.admin = {
         inn: innToCheck,
-        token: Admin.generateAdminToken()
+        token: Admin.generateAdminToken(innToCheck)
       };
       logger.info('user is recognized as admin', body.admin);
     }
