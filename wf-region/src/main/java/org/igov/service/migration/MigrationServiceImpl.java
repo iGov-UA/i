@@ -90,6 +90,7 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private DateTime getStartTime() {
+        LOG.info("Inside getStartTime()");
         DateTime startDateFromConfig = getStartDate(Config.class);
         DateTime startDateFromProcess = getStartDate(Process.class);
 
@@ -121,9 +122,13 @@ public class MigrationServiceImpl implements MigrationService {
 
     @SuppressWarnings("unchecked")
     private <T extends Entity<Long>> DateTime getStartDate(Class<T> clazz) {
+        LOG.info("Inside getStartDate(); current class: {}", clazz );
         EntityDao entityDao;
         entityDao = clazz == Config.class ? configDao : processDao;
+        LOG.info("After entityDao = clazz == Config.class ? configDao : processDao;");
+        LOG.info("Entity Dao: {}", entityDao.toString());
         List<T> list = entityDao.findAll();
+        LOG.info("list:{}", list);
         List<DateTime> dateTimeList = new ArrayList<>(list.size());
         list.forEach(entity -> {
             DateTime time;
