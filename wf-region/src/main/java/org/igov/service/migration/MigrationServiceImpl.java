@@ -12,8 +12,9 @@ import org.igov.analytic.model.source.SourceDB;
 import org.igov.model.core.Entity;
 import org.igov.model.core.EntityDao;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -62,6 +63,8 @@ public class MigrationServiceImpl implements MigrationService {
 
     private ConfigDao configDao;
 
+    private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
+
     @Autowired
     public MigrationServiceImpl(HistoryService historyService, ProcessDao processDao, ConfigDao configDao) {
         this.historyService = historyService;
@@ -71,13 +74,18 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Override
     public void migrateOldRecords() {
+        LOG.info("Start of migration process");
         historicProcessList = getHistoricProcessList();
         prepareAndSave(historicProcessList);
+        LOG.info("End of migration process");
     }
 
     private List<HistoricProcessInstance> getHistoricProcessList() {
+        LOG.info("Inside getHistoricProcessList()");
         DateTime startTime = getStartTime();
+        LOG.info("Start time is: {}", startTime);
         String sqlSelect = composeSql(startTime);
+        LOG.info("SQL statement is: {}", sqlSelect);
         return historyService.createNativeHistoricProcessInstanceQuery().sql(sqlSelect).list();
     }
 
@@ -113,23 +121,22 @@ public class MigrationServiceImpl implements MigrationService {
     private <T extends Entity<Long>> DateTime getStartDate(Class<T> clazz) {
         EntityDao entityDao;
         entityDao = clazz == Config.class ? configDao : processDao;
-        List<T> list =  entityDao.findAll();
+        List<T> list = entityDao.findAll();
         List<DateTime> dateTimeList = new ArrayList<>(list.size());
         list.forEach(entity -> {
             DateTime time;
-            if(clazz==Config.class) {
+            if (clazz == Config.class) {
                 Config config = (Config) entity;
                 String dateTime = config.getsValue();
                 time = new DateTime(dateTime);//не уверен, нужно тесты написать
-            }
-            else {
+            } else {
                 Process process = (Process) entity;
                 time = process.getoDateStart();
             }
             dateTimeList.add(time);
         });
         Collections.sort(dateTimeList);
-        return dateTimeList.get(dateTimeList.size()-1);
+        return dateTimeList.get(dateTimeList.size() - 1);
     }
 
     private List<Process> prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
@@ -171,38 +178,25 @@ public class MigrationServiceImpl implements MigrationService {
         return process;
     }
 
-
-    //TODO Refactor it
     private List<Attribute> createAttributesForProcess(Map<String, Object> attributes, Process process, ProcessTask processTask) {
-        if (processTask == null) {
-            List<Attribute> resultList = new ArrayList<>(attributes.size());
-            attributes.forEach((id, value) -> {
-                Attribute attribute = new Attribute();
+        List<Attribute> resultList = new ArrayList<>(attributes.size());
+        attributes.forEach((id, value) -> {
+            Attribute attribute = new Attribute();
+            if (process != null)
                 attribute.setoProcess(process);
-                attribute.setName(id);
-                attribute.setoAttributeType(getAttributeType(value, attribute));
-                resultList.add(attribute);
-            });
-
-            return resultList;
-        }
-        if (process == null) {
-            List<Attribute> resultList = new ArrayList<>(attributes.size());
-            attributes.forEach((id, value) -> {
-                Attribute attribute = new Attribute();
+            else
                 attribute.setoProcessTask(processTask);
-                attribute.setName(id);
-                attribute.setoAttributeType(getAttributeType(value, attribute));
-                resultList.add(attribute);
-            });
+            attribute.setName(id);
+            attribute.setoAttributeType(getAttributeType(value, attribute));
+            resultList.add(attribute);
+        });
 
-            return resultList;
-        }
-
-        return null;
+        return resultList;
 
     }
 
+
+    //TODO write generics for this method
     private AttributeType getAttributeType(Object obj, Attribute attribute) {
         AttributeType type = new AttributeType();
         Class<?> clazz = obj.getClass();
@@ -234,7 +228,7 @@ public class MigrationServiceImpl implements MigrationService {
             boolean_attr.setoAttribute(attribute);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("date")) {
-            type.setName("Integer");
+            type.setName("Date");
             Attribute_Date date_attr = new Attribute_Date();
             date_attr.setoValue((DateTime) obj);
             date_attr.setoAttribute(attribute);

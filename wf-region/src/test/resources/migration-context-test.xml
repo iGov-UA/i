@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <import resource="context-activiti.xml"/>
+    <!--<import resource="context-db-analytic.xml"/>-->
+    <context:component-scan base-package="org.igov.service.migration"/>
+    <context:component-scan base-package="org.igov.analytic"/>
+
+    <!-- ====================== Hibernate Configuration =========================== -->
+
+    <bean id="dataSourceAnalyticTest" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://test.db-all.igov.org.ua:5432/test-alpha-region-old"/>
+        <property name="username" value="activiti"/>
+        <property name="password" value="2xm53DhqB8VD"/>
+    </bean>
+
+    <bean id="sessionFactoryAnalytic" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceAnalyticTest"/>
+        <property name="packagesToScan">
+            <array>
+                <value>org.igov.analytic.model</value>
+                <value>org.igov.analytic.model.process</value>
+            </array>
+        </property>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</prop>
+                <!--<prop key="hibernate.globally_quoted_identifiers">${hibernate.analytic.globally_quoted_identifiers}</prop> -->
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <bean id="transactionManagerAnalytic"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactoryAnalytic"/>
+        <qualifier value="transactionManagerAnalytic"/>
+    </bean>
+
+
+    <!-- ===========================   TRANSACTIONS   ========================= -->
+
+    <tx:annotation-driven transaction-manager="transactionManagerAnalytic" />
+
+    <tx:advice id="txAdviceAnalytic" transaction-manager="transactionManagerAnalytic">
+        <tx:attributes>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+</beans>

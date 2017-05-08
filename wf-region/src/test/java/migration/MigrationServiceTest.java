@@ -15,8 +15,8 @@ import org.springframework.util.Assert;
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:context_test-region.xml")
-@Ignore
+@ContextConfiguration(locations = "classpath:migration-context-test.xml")
+
 public class MigrationServiceTest {
 
     @Autowired

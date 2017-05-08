@@ -192,7 +192,7 @@ public class ActionTaskService {
         }
         for (int i = 0; i < aField.length(); i++) {
             JSONObject oField = aField.getJSONObject(i);
-            Map<String, String> m = new HashMap();
+            Map<String, String> m = new HashMap<>();
 
             Object osID;
             if ((osID = oField.opt("sID")) == null) {
