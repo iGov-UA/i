@@ -96,8 +96,8 @@ public class MigrationServiceImpl implements MigrationService {
         DateTime startTime;
         if (startDateFromConfig.isBefore(startDateFromProcess)) {
             startTime = startDateFromProcess;
-            Thread asyncUpdate = new Thread(new AsyncUpdate(startDateFromProcess));
-            asyncUpdate.start();
+//            Thread asyncUpdate = new Thread(new AsyncUpdate(startDateFromProcess));
+//            asyncUpdate.start();
         } else {
             startTime = startDateFromConfig;
         }
@@ -111,7 +111,9 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private String composeSql(DateTime startTime) {
+        LOG.info("Current startTime: {}", startTime);
         startTime = startTime.plusDays(3);
+        LOG.info("StartTime after adding 3 days: {}", startTime);
         return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' "
                 + startTime.toString("yyyy-MM-dd HH:mm:ss.ffffff")
                 + "\' AND proc_def_id not like \'%common_mreo_2%\' AND end_time_ is not null";
@@ -154,8 +156,8 @@ public class MigrationServiceImpl implements MigrationService {
             //???????
             CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
             processDao.saveOrUpdate(processForSave);
-            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
-            asyncUpdate.start();
+//            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
+//            asyncUpdate.start();
         }
         return resultList;
     }
