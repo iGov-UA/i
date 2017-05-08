@@ -11,6 +11,8 @@
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; перший, другий тощо" type="long"></activiti:formProperty>
+         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Уведомление гражданина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -58,6 +60,8 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; перший, другий тощо" type="long"></activiti:formProperty>
+         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
