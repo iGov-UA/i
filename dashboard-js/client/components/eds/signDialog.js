@@ -143,8 +143,6 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
 
         return signService.signCMS($scope.contentData.content, !$scope.contentData.base64encoded)
           .then(function (signResult) {
-            console.log(JSON.stringify(signResult));
-
             var signedContentHash = signResult.sign;
             var certBase64 = signResult.certificate;
 

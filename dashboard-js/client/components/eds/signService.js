@@ -2,7 +2,6 @@
 
 angular.module('dashboardJsApp').service('signService', function ($q, $base64, cryptoPluginFactory) {
   var tspURL = "http://acsk.privatbank.ua/services/tsp/";//presume we have online mode and pass url to plugin
-  var isCertificateSavedInEDS = true;
   var sessionTimeout = 36000;
   var pluginVersion = '1.0.3';
   var plugin;
@@ -91,18 +90,6 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
     return d.promise;
   };
 
-  this.hashData = function (inputData) {
-    return executeIfPluginCreated(function () {
-      var d = $q.defer();
-      plugin.hashData(inputData, "", function (data) {
-        d.resolve(data.hashData);
-      }, function () {
-        d.reject({code: errorCodes.cantCreateHashFromData, msg: 'Помилка отримання хєшу с даних'});
-      });
-      return d.promise();
-    });
-  };
-
   this.selectFile = function () {
     return executeIfPluginCreated(function () {
       var d = $q.defer();
@@ -157,49 +144,9 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
     })
   };
 
-  this.signDataHash = function (hashData) {
-    return executeIfPluginCreated(function () {
-      var d = $q.defer();
-      plugin.signHash(hashData, "", function (data) {
-        writeOutput(data.hashData);
-      }, function () {
-        d.reject({code: errorCodes.cantCreateHashFromData, msg: 'Помилка підпису хєшу від даних'});
-      });
-      return d.promise;
-    });
-  };
-
-  this.signCMSHash = function (hashData) {
-    return executeIfPluginCreated(function () {
-      var d = $q.defer();
-      var dataBase64 = $base64.encode(hashData);
-      plugin.getCertificate(function (data) {
-        var certBase64 = data.certificate;
-        plugin.CMSSignHash(hashData,
-          "",
-          certBase64,
-          tspURL,
-          isCertificateSavedInEDS,
-          function (data) {
-            d.resolve({sign: data.sign, certificate: certBase64});
-          }, function () {
-            d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
-          });
-      }, function (result) {
-        if (result.code == 107 && result.source == "getCertificate") {
-          d.reject({code: errorCodes.noCertificateFromKey, msg: "Ключ немає сертифікату"});
-          //TODO implement here manual certificate search in 2 iteration
-        } else {
-          d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
-        }
-      });
-
-      return d.promise;
-    });
-  };
-
   this.signCMS = function (data, isForcedBase64Encoding) {
-    var isDataSavedInEDS = false;
+    var isDataSavedInEDS = true;
+    var isCertificateSavedInEDS = true;
 
     return executeIfPluginCreated(function () {
       var d = $q.defer();
