@@ -155,7 +155,8 @@ public class MigrationServiceImpl implements MigrationService {
             CustomProcess customProcess = createCustomProcessToInsert(historicProcess, processForSave);
             //???????
             CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
-            processDao.saveOrUpdate(processForSave);
+
+//            processDao.saveOrUpdate(processForSave);
 //            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
 //            asyncUpdate.start();
         }
