@@ -55,13 +55,13 @@
         <activiti:formProperty id="pension" name="довідка відповідного органу Пенсійного фонду України про відсутність заборгованості із сплати єдиного внеску" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="archive" name="довідка архівної установи про прийняття документів, які відповідно до закону підлягають довгостроковому зберіганню" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса адміністративного органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця" type="invisible" default="darja.grek@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса адміністративного органу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта посадовця ; ; bVisible=false" type="string" default="darja.grek@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо саморозпуск" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;decision_dissolution&quot;,&quot;svidotstvo&quot;,&quot;statute&quot;,&quot;info_0&quot;,&quot;objReestr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_0&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dissolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо реорганізація" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;info_3&quot;,&quot;decision_join&quot;,&quot;svidotstvo_1&quot;,&quot;statute_1&quot;,&quot;info_1&quot;,&quot;objReestr_1&quot;,&quot;changed&quot;,&quot;info_4&quot;,&quot;zgoda_join&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decision_0&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reorganization'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="якщо реорганізація у статуті" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;doc_change&quot;,&quot;protocol&quot;,&quot;info_2&quot;,&quot;objReestr_2&quot;,&quot;statute_2&quot;,&quot;info_4&quot;,&quot;zgoda_join&quot;,&quot;svidotstvo_2&quot;,&quot;statute_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;changed&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'statute'&quot;}}}"></activiti:formProperty>
@@ -101,8 +101,8 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_219_print.html]" type="invisible" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_219_print.html] ; ; bVisible=false" type="string" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
         <activiti:field name="aFieldInheritedAttachmentID">
         <activiti:expression>${bankId_scan_passport},${decision_dissolution},${svidotstvo},${statute},${objReestr},${decision_join},${svidotstvo_1},${statute_1},${objReestr_1},${doc_change},${protocol},${objReestr_2},${statute_2},${zgoda_join},${svidotstvo_2},${statute_3},${oplata_1},${oplata_2},${no_debts},${pension},${archive},${form_signed},${sDocConfidant}</activiti:expression>
@@ -143,8 +143,8 @@
         <activiti:formProperty id="comment_2" name="У разі відмови внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_219_print.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_219_print.html]" type="invisible" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву" type="invisible"></activiti:formProperty>  </extensionElements>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_219_print.html] ; ; bVisible=false" type="string" default="заява про зміни громадського об’єднання" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву ; ; bVisible=false" type="string"></activiti:formProperty>  </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
