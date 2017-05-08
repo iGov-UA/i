@@ -99,10 +99,10 @@
         <activiti:formProperty id="build" name="Висновок за результатами проведення спеціалізованого обстеження або випробування будівель, споруд і мереж на маршруті" type="file"></activiti:formProperty>
         <activiti:formProperty id="oplata_number" name="№ платіжного доручення (квитанції)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Платіжний документи (квитанція) про оплату вартості послуги; можна завантажити електронну квітанцію, сформовану в інтернет-банку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rNumber" name="номер району" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="район" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="remail" name="пошта району" type="invisible"></activiti:formProperty>
-         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rNumber" name="номер району ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="район ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="remail" name="пошта району ; ; bVisible=false" type="string"></activiti:formProperty>
+         <activiti:formProperty id="shapka" name="шапки принтформ ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;post_ur&quot;,&quot;phone_ur&quot;, &quot;edrpo&quot;,&quot;pib_ur&quot;,&quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="маркер якщо 2 водія" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;pib_driver_2&quot;,&quot;driver_license_number_2&quot;,&quot;driver_license_term_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;driver_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
@@ -137,7 +137,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="shapka" name="шапки принтформ ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -218,8 +218,8 @@
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_5" name="Якщо у переліку документів недостає якогось документу - внесіть його назву у це поле" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_228_2_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_228_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_228_2_print.html] ; ; bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_228_print.html] ; ; bVisible=false" type="string" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -246,7 +246,7 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="shapka" name="шапки принтформ" type="invisible"></activiti:formProperty>
+         <activiti:formProperty id="shapka" name="шапки принтформ ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
@@ -331,8 +331,8 @@
         <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="File label;File title;pattern/print/dnepr_cnap_228_4_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_228_print.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_228_4_print.html]" type="invisible" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_228_print.html]" type="invisible" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_228_4_print.html] ; ; bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_228_print.html] ; ; bVisible=false" type="string" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
       </extensionElements>
     </userTask>
