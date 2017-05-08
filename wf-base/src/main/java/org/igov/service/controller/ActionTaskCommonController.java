@@ -3122,7 +3122,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (mJsonBody.containsKey("aProcessSubjectTask")){
                     LOG.info("The request to updateProcess contains aProcessSubjectTask key");
                     Object oaProcessSubjectTask = mJsonBody.get("aProcessSubjectTask");
-                    oProcessSubjectTaskService.setProcessSubjectTaskList(oaProcessSubjectTask, taskId);
+                    oProcessSubjectTaskService.synctProcessSubjectTask(oaProcessSubjectTask, taskId);
                 }
                 
                 if (mJsonBody.containsKey("properties")) {
