@@ -37,7 +37,7 @@ branch = args.sysbranch
 if args.version == 'prod' or args.version == 'prod-backup':
    branch = 'master'
 
-subprocess.call("git clone %s -b %s --single-branch iSystem" % (args.sysrepo, branch), shell=True)
+subprocess.call("git clone %s -b %s --single-branch ./iSystem" % (args.sysrepo, branch), shell=True)
 subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
 subprocess.call("rm -rf iSystem", shell=True)
 subprocess.call("chmod +x scripts/*", shell=True)
