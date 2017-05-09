@@ -8,12 +8,14 @@ package org.igov.analytic.model.config;
 import org.apache.log4j.Logger;
 import org.igov.analytic.model.core.GenericEntityDaoAnalytic;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * @author olga
  */
+@Transactional("transactionManagerAnalytic")
 @Repository
 public class ConfigDaoImpl extends GenericEntityDaoAnalytic<Long, Config> implements ConfigDao {
 

@@ -8,6 +8,8 @@ package org.igov.analytic.model.process;
 import org.apache.log4j.Logger;
 import org.igov.analytic.model.core.GenericEntityDaoAnalytic;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -15,8 +17,8 @@ import java.util.List;
  *
  * @author olga
  */
-//@Transactional("transactionManagerAnalytic")
-@Repository()
+@Transactional("transactionManagerAnalytic")
+@Repository
 public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> implements ProcessDao {
 
     private static final Logger log = Logger.getLogger(ProcessDaoImpl.class);
