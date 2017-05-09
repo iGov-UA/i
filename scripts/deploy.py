@@ -20,7 +20,7 @@ parser.add_argument('-do', '--dockerOnly', help='Only build with docker', defaul
 parser.add_argument('-gc', '--gitCommit', help='Git commit', default='none')
 parser.add_argument('-bic', '--bBuildInContainer', help='Build in container', default='false')
 parser.add_argument('-sysr', '--sysrepo', help='Git System Repository', dest='sysrepo', default="git@iSystem.github.com:e-government-ua/iSystem.git")
-parser.add_argument('-sysb', '--sysbranch', help='Git System Repository branch', dest='branch', default="test")
+parser.add_argument('-sysb', '--sysbranch', help='Git System Repository branch', dest='sysbranch', default="test")
 
 args = parser.parse_args()
 
@@ -33,10 +33,11 @@ for arg in vars(args):
 if os.path.exists("iSystem"):
     subprocess.call("rm -rf iSystem", shell=True)
 
+branch = args.sysbranch
 if args.version == 'prod' or args.version == 'prod-backup':
    branch = 'master'
 
-subprocess.call("git clone %s -b %s --single-branch iSystem" % (sysrepo, branch), shell=True)
+subprocess.call("git clone %s -b %s --single-branch iSystem" % (args.sysrepo, branch), shell=True)
 subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
 subprocess.call("rm -rf iSystem", shell=True)
 subprocess.call("chmod +x scripts/*", shell=True)
