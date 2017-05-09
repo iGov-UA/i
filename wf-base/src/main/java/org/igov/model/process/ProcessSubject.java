@@ -208,6 +208,10 @@ public class ProcessSubject extends AbstractEntity {
         this.sLoginRole = sLoginRole;
     }
 
+    public void setsDateFact(DateTime sDateFact) {
+        this.sDateFact = sDateFact;
+    }
+   
     @Override
     public String toString() {
         return "ProcessSubject{" + "id=" + getId()
