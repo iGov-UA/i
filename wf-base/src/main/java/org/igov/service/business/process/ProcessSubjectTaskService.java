@@ -11,6 +11,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
 
@@ -27,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,6 +37,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
+@Component("processSubjectTaskService")
 public class ProcessSubjectTaskService {
     
     private static final Logger LOG = LoggerFactory.getLogger(ProcessSubjectTaskService.class);
@@ -126,16 +129,42 @@ public class ProcessSubjectTaskService {
         oProcessSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
     }*/
     
+    public List<String> getProcessSubjectLoginsWithoutTask(String snID_Process_Activiti, String sFilterLoginRole) throws RecordInmemoryException{
+        String sKeyRedis = (String)oRuntimeService.getVariable(snID_Process_Activiti, "sID_File_StorateTemp");
+        byte[] aByteTaskBody = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
+        List<String> aResultLogins = new ArrayList<>();
+        
+        if(aByteTaskBody != null){
+            Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject(new String(aByteTaskBody), Map.class);
+            JSONArray aJsonProcessSubject =  (JSONArray) mProcessSubjectTask.get("aProcessSubject");
+            
+            for (Object oJsonProcessSubject : aJsonProcessSubject) {
+                Map<String, Object> mProcessSubject
+                        = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);
+                
+                if(sFilterLoginRole != null && !sFilterLoginRole.equals(""))
+                {
+                    if(sFilterLoginRole.equals((String) mProcessSubject.get("‘sLoginRole"))){
+                        aResultLogins.add((String) mProcessSubject.get("sLogin"));
+                    }
+                }else{
+                    aResultLogins.add((String) mProcessSubject.get("sLogin"));
+                }
+            }
+        }
+        
+        return aResultLogins;
+    }
+    
     public void synctProcessSubjectTask(Object oaProcessSubjectTask, String snId_Task){
         try{
             
             JSONArray aJsonProcessSubjectTask =  new JSONArray();
             aJsonProcessSubjectTask = (JSONArray) oaProcessSubjectTask;
             
-            String sKey = oBytesDataInmemoryStorage.putBytes(aJsonProcessSubjectTask.toJSONString().getBytes());
             //oTaskService.setVariable(snId_Task, "sID_File_StorateTemp", sKey);
             LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", aJsonProcessSubjectTask.toJSONString());
-            LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
+            
             
             for(Object oJsonProcessSubjectTask :  aJsonProcessSubjectTask){
                 Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject((String)oJsonProcessSubjectTask, Map.class);
@@ -145,6 +174,9 @@ public class ProcessSubjectTaskService {
                 //ProcessSubject oProcessSubjectParent = oProcessSubjectDao.findByProcessActivitiId((String)mProcessSubjectTask.get("snID_Process_Activiti_Root"));
                 if(mProcessSubjectTask.get("ProcessSubjectTask") == null){
                     //this is a new process
+                    String sKey = oBytesDataInmemoryStorage.putBytes(((String)oJsonProcessSubjectTask).getBytes());
+                    LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
+
                     ProcessSubjectTask oProcessSubjectTask = new ProcessSubjectTask();
                     /// по snId_Task вытягиваем id процесса
                     oProcessSubjectTask.setSnID_Process_Activiti_Root((String)mProcessSubjectTask.get("snID_Process_Activiti_Root"));
