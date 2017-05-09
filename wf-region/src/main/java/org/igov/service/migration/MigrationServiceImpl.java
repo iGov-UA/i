@@ -139,45 +139,6 @@ public class MigrationServiceImpl implements MigrationService {
         }
     }
 
-    /*
-    @SuppressWarnings("unchecked")
-    private <T extends Entity<Long>> DateTime getStartDate(Class<T> clazz) {
-        LOG.info("Inside getStartDate(); current class: {}", clazz);
-
-        EntityDao entityDao;
-        entityDao = clazz == Config.class ? configDao : processDao;
-
-        LOG.info("After entityDao = clazz == Config.class ? configDao : processDao;");
-        LOG.info("Entity Dao: {}", entityDao.toString());
-
-        List<T> list = entityDao.findAll();
-
-        LOG.info("list:{}", list);
-
-        List<DateTime> dateTimeList = new ArrayList<>(list.size());
-        list.forEach(entity -> {
-            DateTime time;
-            if (clazz == Config.class) {
-                Config config = (Config) entity;
-                LOG.info("Config: {}", config.toString());
-                String dateTime = config.getsValue();
-                time = new DateTime(dateTime);//не уверен, нужно тесты написать
-                LOG.info("Time from config: {}", time);
-            } else {
-                Process process = (Process) entity;
-                LOG.info("Process: {}", process);
-                time = process.getoDateStart();
-                LOG.info("Time from process: {}", time);
-            }
-            dateTimeList.add(time);
-        });
-
-        LOG.info("Time list: {}", dateTimeList);
-        Collections.sort(dateTimeList);
-        LOG.info("Sorted time list: {}", dateTimeList);
-        return dateTimeList.get(dateTimeList.size() - 1);
-    }
-    */
     private List<Process> prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
         List<Process> resultList = new ArrayList<>(historicProcessList.size());
 

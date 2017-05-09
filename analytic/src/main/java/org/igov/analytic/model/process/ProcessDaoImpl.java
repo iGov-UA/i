@@ -31,7 +31,7 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
     public Process findLatestProcess() {
         log.info("Inside findLatestProcess()");
         List<Process> result = getSession().createSQLQuery("select * from \"Process\" ORDER BY \"oDateStart\" DESC LIMIT 1;\n")
-                .list();
+                .addEntity(Process.class).list();
         result.forEach(entry -> log.info("List of processes: current entry - " + entry.toString()));
         return  result.get(0);
     }
