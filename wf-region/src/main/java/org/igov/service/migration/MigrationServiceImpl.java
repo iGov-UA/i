@@ -119,7 +119,7 @@ public class MigrationServiceImpl implements MigrationService {
         LOG.info("StartTime after adding 3 days: {}", startTime);
         return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' "
                 + startTime.toString("yyyy-MM-dd HH:mm:ss")
-                + "\' AND proc_def_id not like \'%common_mreo_2%\' AND end_time_ is not null";
+                + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
     }
 
     private DateTime getStartDate(Class<?> clazz) {
