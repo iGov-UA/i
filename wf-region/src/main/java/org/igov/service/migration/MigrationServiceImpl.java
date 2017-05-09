@@ -122,7 +122,6 @@ public class MigrationServiceImpl implements MigrationService {
 
     @SuppressWarnings("unchecked")
     private <T extends Entity<Long>> DateTime getStartDate(Class<T> clazz) {
-        LOG.info("--------------------");
         LOG.info("Inside getStartDate(); current class: {}", clazz );
         EntityDao entityDao;
         entityDao = clazz == Config.class ? configDao : processDao;
