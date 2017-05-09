@@ -28,6 +28,7 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Process findLatestProcess() {
         log.info("Inside findLatestProcess()");
         List<Process> result = getSession().createSQLQuery("select * from \"Process\" ORDER BY \"oDateStart\" DESC LIMIT 1;\n")

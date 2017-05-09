@@ -76,6 +76,8 @@ public class MigrationServiceImpl implements MigrationService {
     public void migrateOldRecords() {
         LOG.info("Start of migration process");
         historicProcessList = getHistoricProcessList();
+        historicProcessList.forEach(historicProcessInstance ->
+                LOG.info("Current historic process instance: {}", historicProcessInstance));
         prepareAndSave(historicProcessList);
         LOG.info("End of migration process");
     }
@@ -116,7 +118,7 @@ public class MigrationServiceImpl implements MigrationService {
         startTime = startTime.plusDays(3);
         LOG.info("StartTime after adding 3 days: {}", startTime);
         return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' "
-                + startTime.toString("yyyy-MM-dd HH:mm:ss.ffffff")
+                + startTime.toString("yyyy-MM-dd HH:mm:ss")
                 + "\' AND proc_def_id not like \'%common_mreo_2%\' AND end_time_ is not null";
     }
 

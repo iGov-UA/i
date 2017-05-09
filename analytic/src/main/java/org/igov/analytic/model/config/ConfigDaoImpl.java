@@ -27,6 +27,7 @@ public class ConfigDaoImpl extends GenericEntityDaoAnalytic<Long, Config> implem
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public Config findLatestConfig() {
         log.info("Inside findLatestConfig()");
         List<Config> result = getSession().createSQLQuery("select * from \"Config\" ORDER BY \"sValue\" DESC LIMIT 1;")
