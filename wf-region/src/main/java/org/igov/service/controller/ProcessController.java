@@ -96,7 +96,7 @@ public class ProcessController {
     @RequestMapping(value = "/backup", method = RequestMethod.GET)
     public
     @ResponseBody
-    void backup() throws ParseException, Exception {
+    void backup() throws Exception {
         LOG.info("/backup!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         archiveService.archiveData();
         LOG.info("/backup ok!!!");

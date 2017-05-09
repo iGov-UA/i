@@ -109,7 +109,7 @@ public class MigrationServiceImpl implements MigrationService {
 
     private void updateConfigTable(DateTime startDateFromProcess) {
         Config config = new Config();
-        config.setsValue(startDateFromProcess.toString("yyyy-MM-dd HH:mm:ss.ffffff"));
+        config.setsValue(startDateFromProcess.toString("yyyy-MM-dd HH:mm:ss"));
         configDao.saveOrUpdate(config);
     }
 
@@ -142,12 +142,16 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private List<Process> prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
+        LOG.info("Inside prepareAndSave()");
+        LOG.info("Current historicProcessList size: {}", historicProcessList.size());
         List<Process> resultList = new ArrayList<>(historicProcessList.size());
-
         for (HistoricProcessInstance historicProcess : historicProcessList) {
+            LOG.info("Inside for (HistoricProcessInstance historicProcess : historicProcessList) {}");
             Process processForSave = createProcessForSave(historicProcess);
+            LOG.info("Process from historic process: {}", processForSave.toString());
             resultList.add(processForSave);
             String processInstanceId = historicProcess.getId();
+            LOG.info("");
             HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery()
                     .processInstanceId(processInstanceId).singleResult();
             ProcessTask processTask = createProcessTaskToInsert(taskInstance, processForSave);
