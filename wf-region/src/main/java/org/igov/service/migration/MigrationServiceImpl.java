@@ -134,7 +134,7 @@ public class MigrationServiceImpl implements MigrationService {
             DateTime time;
             if (clazz == Config.class) {
                 Config config = (Config) entity;
-                LOG.info("Config: {}", config);
+                LOG.info("Config: {}", config.toString());
                 String dateTime = config.getsValue();
                 time = new DateTime(dateTime);//не уверен, нужно тесты написать
                 LOG.info("Time from config: {}", time);
