@@ -293,6 +293,12 @@ public class FlowService implements ApplicationContextAware {
      * @return generated slots.
      */
     public List<FlowSlotVO> buildFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
+        
+        LOG.info("buildFlowSlots started");
+        LOG.info("nID_Flow_ServiceData {}", nID_Flow_ServiceData);
+        LOG.info("startDate {}", startDate);
+        LOG.info("buildFlowSlots {}", stopDate);
+        
         Flow flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
         
         List<FlowSlotVO> res = new ArrayList<>();
