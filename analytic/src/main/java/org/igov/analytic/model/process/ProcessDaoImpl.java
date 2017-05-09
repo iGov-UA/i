@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.igov.analytic.model.core.GenericEntityDaoAnalytic;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  *
  * @author olga
@@ -21,5 +23,14 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
 
     protected ProcessDaoImpl() {
         super(Process.class);
+    }
+
+    @Override
+    public Process findLatestProcess() {
+        log.info("Inside findLatestProcess()");
+        List<Process> result = getSession().createSQLQuery("select * from \"Process\" ORDER BY \"oDateStart\" DESC LIMIT 1;\n")
+                .list();
+        result.forEach(entry -> log.info("List of processes: current entry - " + entry.toString()));
+        return  result.get(0);
     }
 }

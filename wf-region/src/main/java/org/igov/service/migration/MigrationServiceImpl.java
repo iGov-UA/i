@@ -120,15 +120,40 @@ public class MigrationServiceImpl implements MigrationService {
                 + "\' AND proc_def_id not like \'%common_mreo_2%\' AND end_time_ is not null";
     }
 
+    private DateTime getStartDate(Class<?> clazz) {
+        LOG.info("Inside getStartDate(); current class: {}", clazz);
+        DateTime time;
+        if (clazz == Config.class) {
+            Config config = configDao.findLatestConfig();
+            LOG.info("Config: {}", config.toString());
+            String dateTime = config.getsValue();
+            time = new DateTime(dateTime);//не уверен, нужно тесты написать
+            LOG.info("Time from config: {}", time);
+            return time;
+        } else {
+            Process process = processDao.findLatestProcess();
+            LOG.info("Process: {}", process.toString());
+            time = process.getoDateStart();
+            LOG.info("Time from process: {}", time);
+            return time;
+        }
+    }
+
+    /*
     @SuppressWarnings("unchecked")
     private <T extends Entity<Long>> DateTime getStartDate(Class<T> clazz) {
-        LOG.info("Inside getStartDate(); current class: {}", clazz );
+        LOG.info("Inside getStartDate(); current class: {}", clazz);
+
         EntityDao entityDao;
         entityDao = clazz == Config.class ? configDao : processDao;
+
         LOG.info("After entityDao = clazz == Config.class ? configDao : processDao;");
         LOG.info("Entity Dao: {}", entityDao.toString());
+
         List<T> list = entityDao.findAll();
+
         LOG.info("list:{}", list);
+
         List<DateTime> dateTimeList = new ArrayList<>(list.size());
         list.forEach(entity -> {
             DateTime time;
@@ -152,7 +177,7 @@ public class MigrationServiceImpl implements MigrationService {
         LOG.info("Sorted time list: {}", dateTimeList);
         return dateTimeList.get(dateTimeList.size() - 1);
     }
-
+    */
     private List<Process> prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
         List<Process> resultList = new ArrayList<>(historicProcessList.size());
 
