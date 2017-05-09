@@ -3,33 +3,16 @@
   <process id="_task_test_multi-instance" name="_task_test_multi-instance" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextTask" name="Задание" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="Срок выполнения задания" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asTypeReport" name="Тип отчета" type="enum">
-          <activiti:value id="sEnumReport" name="отчет"></activiti:value>
-          <activiti:value id="sEnumDoc" name="документ"></activiti:value>
-          <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_Kontroler" name="Логін" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sTextTask" name="Просто текстовое поле" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask3" name="Задание" activiti:candidateGroups="btsol">
       <extensionElements>
-        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sTextTask" name="Задание" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Исполнители; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_Kontroler" name="Логін контролирующего" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTextTask" name="Просто текстовое поле" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:string><![CDATA[btsol]]></activiti:string>
@@ -50,7 +33,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sTextTask" name="Задание" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextTask" name="Просто текстовое поле (задание)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Kontroler" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус задания" type="enum" writable="false">
@@ -81,7 +64,7 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="Velta_Head"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина!" type="invisible" default="2"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sTextTask" name="Задание" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextTask" name="Просто текстовое поле (задание)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Исполнители; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_meeting.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;sReport&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
@@ -128,12 +111,9 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
     <sequenceFlow id="flow12" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask4" name="User Task helper" activiti:candidateGroups="btsol">
       <extensionElements>
-        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы" type="invisible" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sTextTask" name="Просто текстовое поле" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:string><![CDATA[btsol]]></activiti:string>
