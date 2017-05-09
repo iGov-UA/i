@@ -49,10 +49,9 @@ public class CloseTaskEvent {
 	@Autowired
 	private FeedBackService feedBackService;
 
-        
-        @Autowired
-        protected RepositoryService repositoryService;
-        
+	@Autowired
+	protected RepositoryService repositoryService;
+
 	@Autowired
 	GeneralConfig generalConfig;
 
@@ -78,11 +77,11 @@ public class CloseTaskEvent {
 	public void doWorkOnCloseTaskEvent(boolean bSaveHistory, String snID_Task, JSONObject omRequestBody, boolean bCloseAnyWay)
 			throws ParseException {
             LOG.info("Method doWorkOnCloseTaskEvent started");
-            
+
             Map<String, String> mParam = new HashMap<>();
-            
+
             mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CLOSED.getnID().toString());
-            
+
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery()
                     .taskId(snID_Task).singleResult();
 
@@ -127,33 +126,33 @@ public class CloseTaskEvent {
                 LOG.info("aUserType is: {}", aUserType);
                 LOG.info("mItemDefinition is: {}", mItemDefinition);
                 LOG.info("mMessageFlow is: {}", mMessageFlow);*/
-                
+
                 String oTaskDefinitionKey = oHistoricTaskInstance.getTaskDefinitionKey();
-                
+
                 LOG.info("oTaskDefinitionKey {}", oTaskDefinitionKey);
-                
+
                 Map<String, DiagramElement> mBpSchema = repositoryService.getProcessDiagramLayout(sProcessName).getElements();
-                
+
                 for(String key : mBpSchema.keySet()){
                     DiagramElement oDiagramElement = mBpSchema.get(key);
                     LOG.info("DiagramElement {}", oDiagramElement.getId());
                     LOG.info("BpSchema key {}", oDiagramElement.getId());
                 }
-                
-                List<HistoricProcessInstance> aHistoricProcessInstance = 
+
+                List<HistoricProcessInstance> aHistoricProcessInstance =
                         historyService.createHistoricProcessInstanceQuery().processInstanceId(snID_Process).finished().list();
-                
+
                 for(HistoricProcessInstance oHistoricProcessInstance : aHistoricProcessInstance){
                     LOG.info("oHistoricProcessInstance.getId {}", oHistoricProcessInstance.getId());
                     LOG.info("oHistoricProcessInstance.getProcessDefinitionId {}", oHistoricProcessInstance.getProcessDefinitionId());
-                }        
-                
+                }
+
                 //boolean bProcessClosed = (aTask == null || aTask.isEmpty());
                 boolean bProcessClosed = (aHistoricProcessInstance != null && !aHistoricProcessInstance.isEmpty());
-                
+
                 String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                 LOG.info("11111sUserTaskName: " + sUserTaskName);
-                
+
                 LOG.info("sProcessName: " + sProcessName);
                 try {
                     if (bProcessClosed && sProcessName.indexOf("system") != 0) {//issue 962
@@ -213,33 +212,33 @@ public class CloseTaskEvent {
                             .save();
                 }
 
-                // Сохраняем только после выполнения запроса afterCompletion 
+                // Сохраняем только после выполнения запроса afterCompletion
                 if (bSaveHistory) {
                     // Cохранение нового события для задачи
                     HistoryEvent_Service_StatusType status;
                     if (bProcessClosed || bCloseAnyWay) {
-                      
+
                         status = HistoryEvent_Service_StatusType.CLOSED;
-                          LOG.info("HistoryEvent_Service_StatusType is CLOSED ", status.toString()); 
-                          
+                          LOG.info("HistoryEvent_Service_StatusType is CLOSED ", status.toString());
+
                         if(bCloseAnyWay){
                             mParam.put("soData", "TaskCancelByUser");
-                        }  
-                          
+                        }
+
                     } else {
                         status = HistoryEvent_Service_StatusType.OPENED;
-                          LOG.info("HistoryEvent_Service_StatusType is OPENED ", status.toString()); 
+                          LOG.info("HistoryEvent_Service_StatusType is OPENED ", status.toString());
                     }
                     LOG.info("Saving closed task", status);
                     mParam.put("sUserTaskName", sUserTaskName);
                     try {
                         if (!(sProcessName.contains(BpServiceHandler.PROCESS_ESCALATION) && status == HistoryEvent_Service_StatusType.CLOSED)) {
-                            
+
                             LOG.info("mParam in CloseTaskEvent is {}", mParam);
                             LOG.info("status in CloseTaskEvent is {}", status);
                             historyEventService.updateHistoryEvent(sID_Order, status, mParam);
-                            
-                    LOG.info(" historyEventService.updateHistoryEvent", sID_Order, status);    
+
+                    LOG.info(" historyEventService.updateHistoryEvent", sID_Order, status);
                         }
                     } catch (Exception oException) {
                         new Log(oException, LOG)._Case("IC_SaveTaskHistoryEvent")._Status(Log.LogStatus.ERROR)
@@ -251,18 +250,18 @@ public class CloseTaskEvent {
 					try {
 						escalationHistoryService.updateStatus(nID_Process, bProcessClosed
 								? EscalationHistoryService.STATUS_CLOSED : EscalationHistoryService.STATUS_IN_WORK);
-                                                
-                                                
+
+
 					} catch (Exception oException) {
 						new Log(oException, LOG)// this.getClass()
 								._Case("IC_SaveEscalation")._Status(Log.LogStatus.ERROR)
 								._Head("Can't save status for escalation")._Param("nID_Process", nID_Process).save();
 					}
 					try {
-                                            
+
                                             if(omRequestBody != null){
 						saveCommentSystemEscalation(sID_Order, omRequestBody, oHistoricTaskInstance);
-                                            }                                    
+                                            }
                                             } catch (Exception oException) {
 						new Log(oException, LOG)._Case("IC_SaveCommentVolunteer")._Status(Log.LogStatus.ERROR)
 								._Head("Can't save volunteer's comment")._Param("nID_Process", nID_Process).save();
@@ -271,7 +270,7 @@ public class CloseTaskEvent {
                 }
                 LOG.info("Method doWorkOnCloseTaskEvent finished");
             }
-         
+
          }
 
 	public void closeEscalationProcessIfExists(String sID_Process) {
@@ -339,11 +338,11 @@ public class CloseTaskEvent {
 	/*
 	 * Сохранение комментария эскалации. Как определяется что это комментарий
 	 * эскалации:
-	 * 
+	 *
 	 * В historic-task-instances для этой заявки есть значение вида:
 	 * "processDefinitionId":"system_escalation:16:23595004" здесь ключевое
 	 * слово system_escalation
-	 * 
+	 *
 	 * Тело запроса имеет вид: { "taskId": "23737517", "properties": [ { "id":
 	 * "comment", // В теле запроса присутствует комментарий "value":
 	 * "zaqxsw2222" }, { "id": "nCountDays", "value": "1" } ] }

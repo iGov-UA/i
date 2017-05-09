@@ -461,7 +461,7 @@ public class GeneralConfig {
 
     public Integer getServerId(Integer nID_Server) {
         if (mServerReplace == null) {
-            mServerReplace = new HashMap();
+            mServerReplace = new HashMap<>();
             if (saServerReplace != null && !"".equals(saServerReplace.trim())) {
                 String saServerReplace_Trimed = saServerReplace.trim();
                 for (String sServerReplace : saServerReplace_Trimed.split("\\,")) {

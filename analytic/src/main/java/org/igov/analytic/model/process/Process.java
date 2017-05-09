@@ -45,14 +45,14 @@ public class Process extends AbstractEntity{
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
-    private DateTime    oDateStart ;
+    private DateTime oDateStart;
     
     @JsonProperty(value = "oDateFinish")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
-    private DateTime    oDateFinish ;
+    private DateTime oDateFinish;
     
     @JsonProperty(value = "sID_Data")
     @Column

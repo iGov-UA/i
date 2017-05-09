@@ -24,6 +24,7 @@ import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 import org.igov.service.ArchiveServiceImpl;
+import org.igov.service.migration.MigrationService;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -79,6 +80,17 @@ public class ProcessController {
 
     @Autowired
     HistoryService historyService;
+
+    @Autowired
+    private MigrationService migrationService;
+
+    @ApiOperation(value = "/migration", notes = "#### Migration - миграция закрытых данных с активной БД в аналитическую")
+    @RequestMapping(value = "/migration", method = RequestMethod.GET)
+    public void migrate() {
+        LOG.info("Inside /migration service");
+        migrationService.migrateOldRecords();
+    }
+
 
     @ApiOperation(value = "/backup", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/backup", method = RequestMethod.GET)
