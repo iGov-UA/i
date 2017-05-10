@@ -172,8 +172,8 @@ public class ProcessSubjectTaskService {
             //for(Object oJsonProcessSubjectTask :  aJsonProcessSubjectTask){
             for(Object oJsonProcessSubjectTask :  oaProcessSubjectTask){
                 Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject((String)oJsonProcessSubjectTask, Map.class);
-                JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
-                
+                //JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
+                JSONArray aJsonProcessSubject =  (JSONArray) ((JSONObject)oJsonProcessSubjectTask).get("aProcessSubject");
                 LOG.info("mProcessSubjectTask in synctProcessSubjectTask: {}", mProcessSubjectTask);
                 //ProcessSubject oProcessSubjectParent = oProcessSubjectDao.findByProcessActivitiId((String)mProcessSubjectTask.get("snID_Process_Activiti_Root"));
                 if(mProcessSubjectTask.get("ProcessSubjectTask") == null){
