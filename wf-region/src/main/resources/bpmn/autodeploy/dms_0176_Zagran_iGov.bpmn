@@ -63,6 +63,7 @@ def format_date_of_visit = dateFormat.format(date_of_visit)
 
 execution.setVariable('format_date_of_visit', format_date_of_visit)
 
+//отнимаем от нужной даты одни сутки в милисекундах 
 Date startDate = new Date(date_of_visit.getTime() - 1000*60*60*24)
 
 //форматируем под таймер дату, использовать букву "Т" и другой текст, не относяшийся к форматированию стоит помещать в одинарные кавычки
