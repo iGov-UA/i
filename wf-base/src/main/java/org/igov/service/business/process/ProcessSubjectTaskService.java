@@ -115,7 +115,7 @@ public class ProcessSubjectTaskService {
             LOG.info("oProcessSubject in setProcessSubjectList: {}", oProcessSubject);
             
             oDocumentStepService.cloneDocumentStepSubject((String)mProcessSubjectTask.get("snID_Process_Activiti_Root"), 
-                    (String)mProcessSubjectTask.get("sKey_Step_Document_To"), (String) mProcessSubject.get("sLogin"), "_", false);
+                    (String)mProcessSubjectTask.get("sKey_GroupPostfix"), (String) mProcessSubject.get("sLogin"), "_", false);
         }
         
         oProcessSubjectDao.saveOrUpdate(aProcessSubject);
