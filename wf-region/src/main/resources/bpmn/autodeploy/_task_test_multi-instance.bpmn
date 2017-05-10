@@ -55,7 +55,7 @@
       </extensionElements>
       <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${processSubjectTaskService.getProcessSubjectLoginsWithoutTask('admin', 'Controller')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </userTask>
-    <sequenceFlow id="flow2" sourceRef="parallelgateway1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="Исполнитель">
       <extensionElements>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute ; ; bVisible=false" type="string"></activiti:formProperty>
@@ -73,13 +73,12 @@
           <activiti:value id="executed" name="Виконано"></activiti:value>
           <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
           <activiti:value id="unactual" name="Неактуально"></activiti:value>
-          <activiti:value id="delegated" name="Делегування іншому виконавцю"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
       <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${processSubjectTaskService.getProcessSubjectLoginsWithoutTask('admin', 'Executor')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </userTask>
-    <sequenceFlow id="flow3" sourceRef="parallelgateway1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
@@ -87,7 +86,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'executed'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="scripttask2">
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'delegated'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -97,18 +96,6 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'notExecuted'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="parallelgateway1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2', 'step_2',true,'sLogin_isExecute')</script>
-    </scriptTask>
-    <sequenceFlow id="flow11" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask2" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable3', 'step_3', true, 'sLogin_Approver')</script>
-    </scriptTask>
-    <sequenceFlow id="flow12" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask4" name="User Task helper" activiti:candidateGroups="btsol">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
@@ -155,12 +142,6 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="744.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="461.0" y="140.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="461.0" y="310.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="55.0" width="105.0" x="101.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -171,12 +152,12 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="411.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="411.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="461.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="411.0" y="277.0"></omgdi:waypoint>
         <omgdi:waypoint x="410.0" y="337.0"></omgdi:waypoint>
-        <omgdi:waypoint x="461.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="696.0" y="167.0"></omgdi:waypoint>
@@ -195,8 +176,8 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="761.0" y="188.0"></omgdi:waypoint>
         <omgdi:waypoint x="760.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="513.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="513.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="643.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="643.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="851.0" y="257.0"></omgdi:waypoint>
@@ -209,14 +190,6 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="346.0" y="257.0"></omgdi:waypoint>
         <omgdi:waypoint x="391.0" y="257.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="566.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="591.0" y="167.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="566.0" y="337.0"></omgdi:waypoint>
-        <omgdi:waypoint x="591.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="206.0" y="257.0"></omgdi:waypoint>
