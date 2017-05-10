@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import java.util.List;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import org.igov.service.business.process.ProcessSubjectTaskService;
+import org.json.simple.parser.ParseException;
 
 @Controller
 @Api(tags = {"ProcessSubjectController — Иерархия процессов"})
@@ -30,6 +34,9 @@ public class ProcessSubjectController {
     
     @Autowired
     private ProcessSubjectTreeService processSubjectTreeService;
+    
+    @Autowired
+    ProcessSubjectTaskService oProcessSubjectTaskService;
 
     @ApiOperation(value = "Получение иерархии процессов", notes = "##### Пример:\n"
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/getProcessSubject?snID_Process_Activiti=MJU_Dnipro&nDeepLevel=1 \n")
@@ -154,5 +161,15 @@ public class ProcessSubjectController {
             LOG.error("FAIL: ", e);
         }
         return processSubjectResult;
+    }
+    
+    @ApiOperation(value = "Вернуть массив логинов которые еще не являются участниками здания (из джейсона в редисе)", notes = "##### Пример:\n"
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/getProcessSubjectLoginsWithoutTask?snID_Process_Activiti=33267773&sFilterLoginRole=Executor \n")
+    @RequestMapping(value = "/getProcessSubjectLoginsWithoutTask", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getProcessSubjectLoginsWithoutTask(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "фильтр ролей", required = false) @RequestParam(value = "sFilterLoginRole", required = false) String sFilterLoginRole) throws RecordInmemoryException, ParseException
+    {
+        return oProcessSubjectTaskService.getProcessSubjectLoginsWithoutTask(snID_Process_Activiti, sFilterLoginRole);
     }
 }

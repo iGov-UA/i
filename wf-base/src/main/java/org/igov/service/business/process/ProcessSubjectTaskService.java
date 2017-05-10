@@ -10,6 +10,7 @@ import java.util.Map;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
@@ -143,8 +144,15 @@ public class ProcessSubjectTaskService {
     public List<String> getProcessSubjectLoginsWithoutTask(String snID_Process_Activiti, String sFilterLoginRole) throws RecordInmemoryException, org.json.simple.parser.ParseException{
         String sKeyRedis = (String)oRuntimeService.getVariable(snID_Process_Activiti, "sID_File_StorateTemp");
         byte[] aByteTaskBody = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
+        List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
+        List<String> aUserAssignee = new ArrayList<>();
+        
+        for(Task oTask : aTaskActive){
+            aUserAssignee.add(oTask.getAssignee());
+        }
         
         JSONParser parser = new JSONParser();
+        
         List<String> aResultLogins = new ArrayList<>();
         
         if(aByteTaskBody != null){
@@ -155,13 +163,18 @@ public class ProcessSubjectTaskService {
                 Map<String, Object> mProcessSubject
                         = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);
                 
-                if(sFilterLoginRole != null && !sFilterLoginRole.equals(""))
+                String sLogin = (String) mProcessSubject.get("sLogin");
+                
+                if(!aUserAssignee.contains(sLogin))
                 {
-                    if(sFilterLoginRole.equals((String) mProcessSubject.get("‘sLoginRole"))){
-                        aResultLogins.add((String) mProcessSubject.get("sLogin"));
+                    if(sFilterLoginRole != null && !sFilterLoginRole.equals(""))
+                    {
+                        if(sFilterLoginRole.equals((String) mProcessSubject.get("‘sLoginRole"))){
+                            aResultLogins.add(sLogin);
+                        }
+                    }else{
+                        aResultLogins.add(sLogin);
                     }
-                }else{
-                    aResultLogins.add((String) mProcessSubject.get("sLogin"));
                 }
             }
         }
