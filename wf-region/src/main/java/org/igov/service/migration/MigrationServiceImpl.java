@@ -107,9 +107,10 @@ public class MigrationServiceImpl implements MigrationService {
 
     private String composeSql(DateTime startTime) {
         startTime = startTime.plusDays(3);
-        return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' "
-                + startTime.toString("yyyy-MM-dd HH:mm:ss")
-                + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
+        return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' 2016-07-23 00:00:00\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'22317510\'";
+//        return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' "
+//                + startTime.toString("yyyy-MM-dd HH:mm:ss")
+//                + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
     }
 
     private DateTime getStartDate(Class<?> clazz) {
@@ -153,8 +154,7 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
         process.setaAttribute(createAttributesForProcess(historicProcess.getProcessVariables(), process, null));
-        //String processInstanceId = historicProcess.getId();
-        String processInstanceId = "22317510";
+        String processInstanceId = historicProcess.getId();
         List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
                 .processInstanceId(processInstanceId).list();
         List<ProcessTask> processTaskList = new ArrayList<>(taskInstanceList.size());
