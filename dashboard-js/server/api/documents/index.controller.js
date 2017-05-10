@@ -24,7 +24,7 @@ exports.getDocumentStepRights = function (req, res) {
     nID_Process: req.query.nID_Process
   };
   activiti.get({
-    path: '/action/task/getDocumentStepRights',
+    path: '/common/document/getDocumentStepRights',
     query: query
   }, function (error, statusCode, result) {
     res.statusCode = statusCode;
@@ -34,7 +34,7 @@ exports.getDocumentStepRights = function (req, res) {
 
 exports.getDocumentStepLogins = function (req, res) {
   activiti.get({
-    path: '/action/task/getDocumentStepLogins',
+    path: '/common/document/getDocumentStepLogins',
     query: req.query
   }, function (error, statusCode, result) {
     res.statusCode = statusCode;
