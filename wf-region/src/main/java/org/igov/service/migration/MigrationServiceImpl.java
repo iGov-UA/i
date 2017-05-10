@@ -210,9 +210,9 @@ public class MigrationServiceImpl implements MigrationService {
             ProcessTask processTask = createProcessTaskToInsert(taskInstance, process);
             processTaskList.add(processTask);
             //???????
-            CustomProcess customProcess = createCustomProcessToInsert(historicProcess, process);
+            createCustomProcessToInsert(historicProcess, process);
             //???????
-            CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
+            createCustomProcessTaskToInsert(taskInstance, processTask);
         });
         return processTaskList;
     }
