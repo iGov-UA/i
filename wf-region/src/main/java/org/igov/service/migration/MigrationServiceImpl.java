@@ -152,14 +152,15 @@ public class MigrationServiceImpl implements MigrationService {
             resultList.add(processForSave);
             String processInstanceId = historicProcess.getId();
             LOG.info("");
-            HistoricTaskInstance taskInstance = historyService.createHistoricTaskInstanceQuery()
-                    .processInstanceId(processInstanceId).singleResult();
-            ProcessTask processTask = createProcessTaskToInsert(taskInstance, processForSave);
-            //???????
-            CustomProcess customProcess = createCustomProcessToInsert(historicProcess, processForSave);
-            //???????
-            CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
-
+            List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
+                    .processInstanceId(processInstanceId).list();
+            taskInstanceList.forEach(taskInstance -> {
+                ProcessTask processTask = createProcessTaskToInsert(taskInstance, processForSave);
+                //???????
+                CustomProcess customProcess = createCustomProcessToInsert(historicProcess, processForSave);
+                //???????
+                CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
+            });
 //            processDao.saveOrUpdate(processForSave);
 //            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
 //            asyncUpdate.start();
