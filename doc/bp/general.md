@@ -2149,8 +2149,8 @@ https://alpha.test.region.igov.org.ua/wf/service/action/task/getTaskData?sID_Ord
 https://alpha.test.region.igov.org.ua/wf/service/action/task/downloadTasksData?sID_BP=justice_0353_PervDopom&bHeader=true&sID_State_BP=usertask1&saFields=${nID_Task};${sDateCreate};${asDecide}&sDateAt=2017-01-01&sDateTo=2017-05-06&asField_Filter=[sFormulaFilter_Export]&sLogin=bvpd_dnipro2 
 ``` 
 Где:  
-asField_Filter=[sFormulaFilter_Export]  - остается неизменным, формула отбора прописывается в файле i\wf-base\src\main\resources\data\SubjectRightBP.csv, 
-пример:   
+**asField_Filter=[sFormulaFilter_Export]**  - остается неизменным, формула отбора прописывается в файле i\wf-base\src\main\resources\data\SubjectRightBP.csv,   
+  пример:    
 66;justice_0353_PervDopom;;;bvpd_dnipro1;(asDecide=='sReject'||asDecide=='sAnswer');NULL  
 **asID_Group_Export** - группа, которой предоставляется право выгрузки статистики.   
 **sFormulaFilter_Export** - условие отбора статистики.   
