@@ -174,11 +174,11 @@ public class ProcessSubjectTaskService {
                 //Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject(oJsonProcessSubjectTask, Map.class);
                 //JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
                 JSONArray aJsonProcessSubject =  (JSONArray) ((JSONObject)oJsonProcessSubjectTask).get("aProcessSubject");
-                LOG.info("mProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
+                LOG.info("oJsonProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
                 //ProcessSubject oProcessSubjectParent = oProcessSubjectDao.findByProcessActivitiId((String)mProcessSubjectTask.get("snID_Process_Activiti_Root"));
                 if(((JSONObject)oJsonProcessSubjectTask).get("ProcessSubjectTask") == null){
                     //this is a new process
-                    String sKey = oBytesDataInmemoryStorage.putBytes(((String)oJsonProcessSubjectTask).getBytes());
+                    String sKey = oBytesDataInmemoryStorage.putBytes(((JSONObject)oJsonProcessSubjectTask).toJSONString().getBytes());
                     LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
 
                     ProcessSubjectTask oProcessSubjectTask = new ProcessSubjectTask();
