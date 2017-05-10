@@ -21,9 +21,9 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява про прийнятя на роботу"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id групи" type="invisible" default="iGov_Departament_BA_New"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження" type="invisible" default="iGov_Grek"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id групи ; ; bVisible=false" type="string" default="iGov_Departament_BA_New"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ; bVisible=false" type="string" default="iGov_Grek"></activiti:formProperty>
         <activiti:formProperty id="sName_Employee_First" name="ПІБ найманого працівника; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Employee_First" name="логін" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" required="true"></activiti:formProperty>
@@ -74,7 +74,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sEmployee" name="ПІБ співробітника" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLogin" name="Логін співробітника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sParol" name="Пароль співробітника" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="логін найманого працівника" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="логін найманого працівника ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression>${sLoginAuthor}</activiti:expression>
