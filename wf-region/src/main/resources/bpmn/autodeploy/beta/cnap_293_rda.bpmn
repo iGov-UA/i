@@ -22,16 +22,16 @@
         <activiti:formProperty id="sDocName" name="Назва документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGoal10" name="Мета отримання документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="docDateFormat" name="Дата прийняття документа" type="invisible" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="docDateFormat" name="Дата прийняття документа ; ; bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNumRoom_293" name="номер комнати" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="docTyp" name="Тип очіківаного документу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва органу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumRoom_293" name="номер комнати ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="підпис в шапке ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="docTyp" name="Тип очіківаного документу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачі заявки ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="изм. назв." type="markers" default="${markerService.loadFromFile('mvk/cnap_293_nameDocTyp_rda.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -123,12 +123,12 @@
           <activiti:value id="bad" name="Заяву відхилено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="Шапка" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="Шапка ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачі заявки ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Настроювання прінт-форми" type="markers" default="${markerService.loadFromFile('mvk/cnap_293_print_rda.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_rda_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_rda_print.html] ; ; bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -245,12 +245,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте скановану копію довідки, якщо заяву опрацьовано або скановану копію відмови, якщо ні; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачі заявки" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="Шапка" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подачі заявки ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="Шапка ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Настроювання прінт-форми" type="markers" default="${markerService.loadFromFile('mvk/cnap_293_print_rda.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_rda_print.html]" type="invisible" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/cnap_293_rda_print.html] ; ; bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
