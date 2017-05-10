@@ -23,6 +23,7 @@ import org.igov.service.business.document.DocumentStepService;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,14 +130,16 @@ public class ProcessSubjectTaskService {
         oProcessSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
     }*/
     
-    public List<String> getProcessSubjectLoginsWithoutTask(String snID_Process_Activiti, String sFilterLoginRole) throws RecordInmemoryException{
+    public List<String> getProcessSubjectLoginsWithoutTask(String snID_Process_Activiti, String sFilterLoginRole) throws RecordInmemoryException, org.json.simple.parser.ParseException{
         String sKeyRedis = (String)oRuntimeService.getVariable(snID_Process_Activiti, "sID_File_StorateTemp");
         byte[] aByteTaskBody = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
+        
+        JSONParser parser = new JSONParser();
         List<String> aResultLogins = new ArrayList<>();
         
         if(aByteTaskBody != null){
             Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject(new String(aByteTaskBody), Map.class);
-            JSONArray aJsonProcessSubject =  (JSONArray) mProcessSubjectTask.get("aProcessSubject");
+            JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
             
             for (Object oJsonProcessSubject : aJsonProcessSubject) {
                 Map<String, Object> mProcessSubject
@@ -158,9 +161,9 @@ public class ProcessSubjectTaskService {
     
     public void synctProcessSubjectTask(Object oaProcessSubjectTask, String snId_Task){
         try{
-            
+            JSONParser parser = new JSONParser();
             JSONArray aJsonProcessSubjectTask =  new JSONArray();
-            aJsonProcessSubjectTask = (JSONArray) oaProcessSubjectTask;
+            aJsonProcessSubjectTask = (JSONArray) parser.parse((String)oaProcessSubjectTask);
             
             //oTaskService.setVariable(snId_Task, "sID_File_StorateTemp", sKey);
             LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", aJsonProcessSubjectTask.toJSONString());
@@ -168,7 +171,7 @@ public class ProcessSubjectTaskService {
             
             for(Object oJsonProcessSubjectTask :  aJsonProcessSubjectTask){
                 Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject((String)oJsonProcessSubjectTask, Map.class);
-                JSONArray aJsonProcessSubject =  (JSONArray) mProcessSubjectTask.get("aProcessSubject");
+                JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
                 
                 LOG.info("mProcessSubjectTask in synctProcessSubjectTask: {}", mProcessSubjectTask);
                 //ProcessSubject oProcessSubjectParent = oProcessSubjectDao.findByProcessActivitiId((String)mProcessSubjectTask.get("snID_Process_Activiti_Root"));
