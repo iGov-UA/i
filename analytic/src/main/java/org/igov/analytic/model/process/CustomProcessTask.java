@@ -19,7 +19,7 @@ public class CustomProcessTask extends AbstractEntity {
 
     @JsonProperty
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nID")
+    @JoinColumn(name = "nID_ProcessTask")
     private ProcessTask oProcessTask;
 
     @JsonProperty

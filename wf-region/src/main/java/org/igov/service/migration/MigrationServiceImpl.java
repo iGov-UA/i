@@ -10,6 +10,7 @@ import org.igov.analytic.model.config.ConfigDao;
 import org.igov.analytic.model.process.*;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
+import org.igov.analytic.model.source.SourceDBDao;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +63,9 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Autowired
     private ConfigDao configDao;
+
+    @Autowired
+    private SourceDBDao sourceDBDao;
 
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
 
@@ -197,9 +201,7 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private SourceDB getSourceDBForIGov() {
-        SourceDB sourceDB = new SourceDB();
-        sourceDB.setName("iGov");
-        return sourceDB;
+        return sourceDBDao.findByIdExpected(2L);
     }
 
     private List<ProcessTask> createProcessTaskList(String processId, Process process, HistoricProcessInstance historicProcess) {

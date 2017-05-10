@@ -13,7 +13,7 @@ public class CustomProcess extends AbstractEntity {
 
     @JsonProperty
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nID")
+    @JoinColumn(name = "nID_Process")
     private Process oProcess;
 
     @JsonProperty
