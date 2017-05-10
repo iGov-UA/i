@@ -54,20 +54,16 @@ public class MigrationServiceImpl implements MigrationService {
         }
     }
 
-    private final HistoryService historyService;
+    @Autowired
+    private HistoryService historyService;
 
+    @Autowired
     private ProcessDao processDao;
 
+    @Autowired
     private ConfigDao configDao;
 
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
-
-    @Autowired
-    public MigrationServiceImpl(HistoryService historyService, ProcessDao processDao, ConfigDao configDao) {
-        this.historyService = historyService;
-        this.processDao = processDao;
-        this.configDao = configDao;
-    }
 
     @Override
     public void migrateOldRecords() {
@@ -75,9 +71,7 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private List<HistoricProcessInstance> getHistoricProcessList() {
-        DateTime startTime = getStartTime();
-        String sqlSelect = composeSql(startTime);
-        return historyService.createNativeHistoricProcessInstanceQuery().sql(sqlSelect).list();
+        return historyService.createNativeHistoricProcessInstanceQuery().sql(composeSql(getStartTime())).list();
     }
 
     private DateTime getStartTime() {
@@ -95,6 +89,20 @@ public class MigrationServiceImpl implements MigrationService {
         return startTime;
     }
 
+    private DateTime getStartDate(Class<?> clazz) {
+        DateTime time;
+        if (clazz == Config.class) {
+            Config config = configDao.findLatestConfig();
+            String dateTime = config.getsValue();
+            time = new DateTime(dateTime);
+            return time;
+        } else {
+            Process process = processDao.findLatestProcess();
+            time = process.getoDateStart();
+            return time;
+        }
+    }
+
     private void updateConfigTable(DateTime startDateFromProcess) {
         Config config = new Config();
         config.setsValue(startDateFromProcess.toString("yyyy-MM-dd HH:mm:ss"));
@@ -102,25 +110,11 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private String composeSql(DateTime startTime) {
-        startTime = startTime.plusDays(3);
+        DateTime endTime = startTime.plusDays(3);
         return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' 2016-07-23 00:00:00\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'22317510\'";
-//        return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' "
+//        return "SELECT * from act_hi_procinst where start_time_ > TIMESTAMP \' "
 //                + startTime.toString("yyyy-MM-dd HH:mm:ss")
-//                + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
-    }
-
-    private DateTime getStartDate(Class<?> clazz) {
-        DateTime time;
-        if (clazz == Config.class) {
-            Config config = configDao.findLatestConfig();
-            String dateTime = config.getsValue();
-            time = new DateTime(dateTime);//не уверен, нужно тесты написать
-            return time;
-        } else {
-            Process process = processDao.findLatestProcess();
-            time = process.getoDateStart();
-            return time;
-        }
+//                + "\' AND start_time_ < TIMESTAMP \'" + endTime.toString("yyyy-MM-dd HH:mm:ss") + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
     }
 
     private void prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
