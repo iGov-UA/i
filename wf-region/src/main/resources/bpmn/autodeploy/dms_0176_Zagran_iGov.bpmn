@@ -64,18 +64,17 @@ def format_date_of_visit = dateFormat.format(date_of_visit)
 execution.setVariable('format_date_of_visit', format_date_of_visit)
 
 // отнимаем от нужной даты одни сутки в милисекундах 
-Date start_date = new Date(date_of_visit.getTime() - 1000*60*60*24)
+Date startDate = new Date(date_of_visit.getTime() - 1000*60*60*24)
 
 //форматируем под таймер дату 
-def timer_start_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locate)  
-String ​timer_start = timerStartFormat.format(start_date)
-execution.setVariable('sNotification_day', timer_start)
+def timerStartFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locate)  
+​def ​timerStart = timerStartFormat.format(startDate)
+execution.setVariable('sNotification_day', timerStart)
 
 //форматируем под таймер дату, время указываем жестко
-def timer_end_format = new SimpleDateFormat("yyyy-MM-dd", locate)  
-​String ​timer_end = timer_end_format.format(date_of_visit)
-execution.setVariable('sEndDay', timer_end)
-
+def timerEndFormat = new SimpleDateFormat("yyyy-MM-dd'T19:00:00'", locate)  
+​def ​timerEnd = timerEndFormat.format(date_of_visit)
+execution.setVariable('sEndDay', timerEnd)
 	  ]]></script>
 	 </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="parallelgateway3"></sequenceFlow>
