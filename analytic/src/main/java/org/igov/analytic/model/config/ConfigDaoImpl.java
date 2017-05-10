@@ -32,7 +32,6 @@ public class ConfigDaoImpl extends GenericEntityDaoAnalytic<Long, Config> implem
         log.info("Inside findLatestConfig()");
         List<Config> result = getSession().createSQLQuery("select * from \"Config\" ORDER BY \"sValue\" DESC LIMIT 1;")
                 .addEntity(Config.class).list();
-        result.forEach(entry -> log.info("List entry: " + entry.toString()));
         return result.get(0);
     }
 }
