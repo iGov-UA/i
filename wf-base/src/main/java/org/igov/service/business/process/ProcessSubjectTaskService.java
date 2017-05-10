@@ -157,8 +157,8 @@ public class ProcessSubjectTaskService {
         
         if(aByteTaskBody != null){
             Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject(new String(aByteTaskBody), Map.class);
-            JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
-            
+            //JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
+            JSONArray aJsonProcessSubject =  (JSONArray) ((JSONObject)parser.parse(new String(aByteTaskBody))).get("aProcessSubject");
             for (Object oJsonProcessSubject : aJsonProcessSubject) {
                 Map<String, Object> mProcessSubject
                         = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);
