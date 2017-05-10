@@ -85,15 +85,15 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
     lastError: undefined
   };
 
-  $scope.isManuallySelectedFile = function(){
+  $scope.isManuallySelectedFile = function () {
     return $scope._isManuallySelectedFile;
   };
 
-  $scope.fileChanged = function(element) {
-    $scope.$apply(function(scope) {
+  $scope.fileChanged = function (element) {
+    $scope.$apply(function (scope) {
       var selectedFile = element.files[0];
       var reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         var loadedContent = e.target.result.split("base64,")[1];
         var id = selectedFile.name;
         scope.contentData = {id: id, content: loadedContent, base64encoded: true};
@@ -140,24 +140,21 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
       $q.when(edsContext.selectedKey.needPassword && edsContext.selectedKey.password ?
         signService.selectKey(edsContext.selectedKey.key, edsContext.selectedKey.password)
         : true).then(function () {
-        var decodedContent = $scope.contentData.content;
-        if($scope.contentData.base64encoded){
-          decodedContent = $base64.decode(decodedContent);
-        }
-        var contentHash = md5.createHash(decodedContent);
-        return signService.sign(contentHash).then(function (signResult) {
-          console.log(JSON.stringify(signResult));
 
-          var signedContentHash = signResult.sign;
-          var certBase64 = signResult.certificate;
+        return signService.signCMS($scope.contentData.content, !$scope.contentData.base64encoded)
+          .then(function (signResult) {
+            console.log(JSON.stringify(signResult));
 
-          $modalInstance.close({
-            id: $scope.contentData.id,
-            content: $scope.contentData.content,
-            certificate: certBase64,
-            signedContentHash: signedContentHash
+            var signedContentHash = signResult.sign;
+            var certBase64 = signResult.certificate;
+
+            $modalInstance.close({
+              id: $scope.contentData.id,
+              content: $scope.contentData.content,
+              certificate: certBase64,
+              signedContentHash: signedContentHash
+            });
           });
-        });
       }).catch(catchLastError);
     } else {
       catchLastError({msg: 'Потрібно ввести пароль до ключа'});

@@ -92,19 +92,21 @@ public class SubjectMessage extends AbstractEntity {
     @JsonProperty(value = "sID_DataLink")
     private String sID_DataLink;
     
+    @JsonProperty(value = "aSubjectMessageQuestionFields")
     @OneToMany(targetEntity = SubjectMessageQuestionField.class, mappedBy = "subjectMessage")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<SubjectMessageQuestionField> subjectMessageQuestionFields;
+    private List<SubjectMessageQuestionField> aSubjectMessageQuestionFields;
 
-    public List<SubjectMessageQuestionField> getSubjectMessageQuestionField() {
-        return subjectMessageQuestionFields;
-    }
 
-    public void setSubjectMessageQuestionField(List<SubjectMessageQuestionField> subjectMessageQuestionField) {
-        this.subjectMessageQuestionFields = subjectMessageQuestionField;
-    }
+    public List<SubjectMessageQuestionField> getaSubjectMessageQuestionFields() {
+		return aSubjectMessageQuestionFields;
+	}
 
-    public String getHead() {
+	public void setaSubjectMessageQuestionFields(List<SubjectMessageQuestionField> aSubjectMessageQuestionFields) {
+		this.aSubjectMessageQuestionFields = aSubjectMessageQuestionFields;
+	}
+
+	public String getHead() {
         return head;
     }
 

@@ -104,7 +104,7 @@
     <serviceTask id="servicetask3" name="Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -113,28 +113,28 @@
           <activiti:string><![CDATA[Нове звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-            	&lt;p&gt;
-					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з результатом перевірки поданих даних.&lt;br&gt;  
-					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
-					${sPhoneOrgan}&lt;br&gt;
-					${sWorkTime}.&lt;br&gt; 
-			    &lt;/p&gt;
+            	<p>
+					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з результатом перевірки поданих даних.<br>  
+					Адреса ${sOrganType}: ${sAddress}.<br> 
+					${sPhoneOrgan}<br>
+					${sWorkTime}.<br> 
+			    </p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br&gt;
+				${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -142,7 +142,7 @@
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -151,7 +151,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -239,7 +239,7 @@
     <serviceTask id="servicetask5" name="Повідомлення громадянина про відхилення звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -248,34 +248,34 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					На жаль, Вам відмовлено у надані послуги [sID_Order].&lt;br&gt;
-					При необхідності реєстрації нового запиту щодо видачі довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-				&lt;/p&gt; 
-				&lt;p&gt;
-					Коментар працівника органу реєстрації:&lt;br&gt;
-					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
+				<p>
+					На жаль, Вам відмовлено у надані послуги [sID_Order].<br>
+					При необхідності реєстрації нового запиту щодо видачі довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+				</p> 
+				<p>
+					Коментар працівника органу реєстрації:<br>
+					<b><i>${sDecisionComment}</i></b>
+				</p>
+				<p>
 					При виникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				&lt;/p&gt;
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan},&lt;br/&gt;
+                ${sNameOrgan},<br/>
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -289,7 +289,7 @@
     <serviceTask id="servicetask6" name="Повідомлення громадянина про призначення візиту + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -298,55 +298,55 @@
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) опрацювали Ваше звернення [sID_Order] та виготовили довідку про реєстрацію місця проживання/перебування особи. &lt;br&gt;
-					Чекаємо на Вас у зручний для Вас час.  &lt;br&gt;
-					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
-					${sWorkTime}&lt;br&gt;
+				<p>
+					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) опрацювали Ваше звернення [sID_Order] та виготовили довідку про реєстрацію місця проживання/перебування особи. <br>
+					Чекаємо на Вас у зручний для Вас час.  <br>
+					Адреса ${sOrganType}: ${sAddress}.<br> 
+					${sWorkTime}<br>
 
-					Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:&lt;br&gt;
-					&lt;ul&gt;
-						&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89} в робочий час.&lt;/li&gt;
-						&lt;li&gt;Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи.&lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання або перебування особи:&lt;/b&gt;&lt;br&gt;
-					&lt;ul&gt;
-						&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
-						&lt;li&gt;оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;&lt;/li&gt;
-						&lt;li&gt;оригінал та копію картки реєстрації особи або будинкової книги;&lt;/li&gt;
-						&lt;li&gt;за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.&lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					Коментар працівника органу реєстрації:&lt;br&gt;
-					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
+					Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:<br>
+					<ul>
+						<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89} в робочий час.</li>
+						<li>Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи.</li>
+					</ul>
+				</p>
+				<p>
+					<b>Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання або перебування особи:</b><br>
+					<ul>
+						<li>оригінал та копію паспорта громадянина України;</li>
+						<li>оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;</li>
+						<li>оригінал та копію картки реєстрації особи або будинкової книги;</li>
+						<li>за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.</li>
+					</ul>
+				</p>
+				<p>
+					Коментар працівника органу реєстрації:<br>
+					<b><i>${sDecisionComment}</i></b>
+				</p>
+				<p>
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				&lt;/p&gt;
-				&lt;p&gt;
-                	Після отримання послуги "Видача довідки про реєстрацію місця проживання/перебування особи", будь ласка, оцініть якість надання цієї послуги за допомогою форми, що наведена нижче.&lt;br&gt;
+				</p>
+				<p>
+                	Після отримання послуги "Видача довідки про реєстрацію місця проживання/перебування особи", будь ласка, оцініть якість надання цієї послуги за допомогою форми, що наведена нижче.<br>
                     Дякуємо.
-				&lt;/p&gt;
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br&gt;
+				${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, dovodka vigotovlena, оchikuemo na Vash vizyt. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, dovodka vigotovlena, оchikuemo na Vash vizyt. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -357,7 +357,7 @@
     <serviceTask id="servicetask10" name="Повідомлення громадянина про призначення візиту Днепр + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -366,62 +366,62 @@
           <activiti:string><![CDATA[Призначено зустріч у відділенні, звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) опрацювали Ваше звернення [sID_Order] та виготовили довідку про реєстрацію місця проживання/перебування особи. &lt;br&gt;
-					Чекаємо на Вас у зручний для Вас час.  &lt;br&gt;
-					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
-					${sWorkTime}&lt;br&gt;
+				<p>
+					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) опрацювали Ваше звернення [sID_Order] та виготовили довідку про реєстрацію місця проживання/перебування особи. <br>
+					Чекаємо на Вас у зручний для Вас час.  <br>
+					Адреса ${sOrganType}: ${sAddress}.<br> 
+					${sWorkTime}<br>
 
-					Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:&lt;br&gt;
-					&lt;ul&gt;
-						&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89} в робочий час. &lt;/li&gt;
-						&lt;li&gt;Роздрукувати та підписати одну з заяв, що знаходиться у додатках до цього листа &lt;/li&gt; 
-						&lt;ul&gt;
-							&lt;li&gt;Заява про видачу довідки &lt;/li&gt;
+					Для того щоб отримати довідку про реєстрацію місця проживання/перебування особи необхідно:<br>
+					<ul>
+						<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89} в робочий час. </li>
+						<li>Роздрукувати та підписати одну з заяв, що знаходиться у додатках до цього листа </li> 
+						<ul>
+							<li>Заява про видачу довідки </li>
 						або							 
-							&lt;li&gt;Заява про видачу довідки (від довіреної особи) &lt;/li&gt; 
-						&lt;/ul&gt;
-						&lt;li&gt;Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи. &lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання або перебування особи: &lt;/b&gt;&lt;br&gt;
-					&lt;ul&gt;
-						&lt;li&gt;заяву про видачу довідки про реєстрацію місця проживання/перебування особи, що знаходиться у додатках до листа (розрукуйте на одному аркуші); &lt;/li&gt;
-						&lt;li&gt;оригінал та копію паспорта громадянина України;&lt;/li&gt;
-						&lt;li&gt;оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;&lt;/li&gt;
-						&lt;li&gt;оригінал та копію картки реєстрації особи або будинкової книги;&lt;/li&gt;
-						&lt;li&gt;за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.&lt;/li&gt;
-					&lt;/ul&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
-					Коментар працівника органу реєстрації:&lt;br&gt;
-					&lt;b&gt;&lt;i&gt;${sDecisionComment}&lt;/i&gt;&lt;/b&gt;
-				&lt;/p&gt;
-				&lt;p&gt;
+							<li>Заява про видачу довідки (від довіреної особи) </li> 
+						</ul>
+						<li>Підписати необхідні документи та отримати довідку про реєстрацію місця проживання або перебування особи. </li>
+					</ul>
+				</p>
+				<p>
+					<b>Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання або перебування особи: </b><br>
+					<ul>
+						<li>заяву про видачу довідки про реєстрацію місця проживання/перебування особи, що знаходиться у додатках до листа (розрукуйте на одному аркуші); </li>
+						<li>оригінал та копію паспорта громадянина України;</li>
+						<li>оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;</li>
+						<li>оригінал та копію картки реєстрації особи або будинкової книги;</li>
+						<li>за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.</li>
+					</ul>
+				</p>
+				<p>
+					Коментар працівника органу реєстрації:<br>
+					<b><i>${sDecisionComment}</i></b>
+				</p>
+				<p>
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
-				&lt;/p&gt;
-				&lt;p&gt;
-                	Після отримання послуги "Видача довідки про реєстрацію місця проживання/перебування особи", будь ласка, оцініть якість надання цієї послуги за допомогою форми, що наведена нижче.&lt;br&gt;
+				</p>
+				<p>
+                	Після отримання послуги "Видача довідки про реєстрацію місця проживання/перебування особи", будь ласка, оцініть якість надання цієї послуги за допомогою форми, що наведена нижче.<br>
                     Дякуємо.
-				&lt;/p&gt;
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br&gt;
+				${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, dovodka vigotovlena, оchikuemo na Vash vizyt. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, dovodka vigotovlena, оchikuemo na Vash vizyt. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -505,7 +505,7 @@
     <serviceTask id="servicetask11" name="Повідомлення громадянина про формування довідки + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -514,29 +514,29 @@
           <activiti:string><![CDATA[Опрацювання звернення на тему: почалося формування довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) почали формувати довідку про реєстрацію місця проживання/перебування згідно Вашого звернення [sID_Order]. &lt;br&gt;
-					Час формування Вашої довідки може зайняти до 10 каледарних днів. Після виготовлення довідки про реєстрацію місця проживання/перебування Вам надішлють email з запрошенням прийти до ${sOrganType}. &lt;br&gt; 
-					Адреса ${sOrganType}: ${sAddress}.&lt;br&gt; 
-					${sPhoneOrgan}&lt;br&gt;
-					${sWorkTime}&lt;br&gt;
-			    &lt;/p&gt;
+				<p>
+					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) почали формувати довідку про реєстрацію місця проживання/перебування згідно Вашого звернення [sID_Order]. <br>
+					Час формування Вашої довідки може зайняти до 10 каледарних днів. Після виготовлення довідки про реєстрацію місця проживання/перебування Вам надішлють email з запрошенням прийти до ${sOrganType}. <br> 
+					Адреса ${sOrganType}: ${sAddress}.<br> 
+					${sPhoneOrgan}<br>
+					${sWorkTime}<br>
+			    </p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br&gt;
+				${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Po Vashomu zvernennyu [sID_Order] pochalosya formuvannya dovidky, chekayte povidomlennya pro vyhotovlennya. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Po Vashomu zvernennyu [sID_Order] pochalosya formuvannya dovidky, chekayte povidomlennya pro vyhotovlennya. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

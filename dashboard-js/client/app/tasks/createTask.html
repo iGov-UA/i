@@ -10,7 +10,7 @@
   }
 </style>
 
-<div class="tasks-form-view" ng-if="creatingTask.formProperties">
+<div class="tasks-form-view" ng-if="creatingTask.aFormProperty">
   <div class="creating-task-title">
     <h3>Створення задачi</h3>
   </div>
@@ -18,7 +18,7 @@
   <div>
     <form name="form" style="padding-bottom: 70px">
 
-      <div ng-repeat="item in creatingTask.formProperties track by item.id" class="task-form-property row">
+      <div ng-repeat="item in creatingTask.aFormProperty track by item.id" class="task-form-property row">
 
         <div ng-if="['string', 'long', 'double'].indexOf(item.type) > -1" class="row form-field">
           <div class="col-sm-12">

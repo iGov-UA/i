@@ -196,7 +196,7 @@ public class ProcessSubjectTreeService {
             //получаем по ключу лист детей и устанавливаем 
             List<ProcessSubject> aChildResultByKey = hierarchyProcessSubject.get(processSubject.getId());
             if (aChildResultByKey != null && !aChildResultByKey.isEmpty()) {
-                processSubject.setaProcessSubj(aChildResultByKey);
+                processSubject.setaProcessSubjectChild(aChildResultByKey);
             }
         }
 		return aChildResult;

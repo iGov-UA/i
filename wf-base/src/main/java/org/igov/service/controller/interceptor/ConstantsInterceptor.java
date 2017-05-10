@@ -35,7 +35,7 @@ public interface ConstantsInterceptor {
 	static final String SERVICE_ACTION_ITEM_GET_SERVICE = "/service/action/item/getService";
 	static final String URI_SYNC_CONTACTS = "/wf/service/subject/syncContacts";
 	static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|_doc_justice_171|_doc_justice_172|_doc_justice_173|_doc_justice_11|_doc_justice_12|_doc_justice_13|_doc_justice_14|_doc_justice_15|_doc_justice_16";
-	static final String asID_BP_SkipSendMail = "dnepr_mvk_291_common";
+	static final String asID_BP_SendMail = "dnepr_mvk_291_common";
 	static final Pattern TAG_PATTERN_PREFIX = Pattern.compile("runtime/tasks/[0-9]+$");
 	static final Pattern SREQUESTBODY_PATTERN = Pattern.compile("\"assignee\":\"[а-яА-Яa-z_A-z0-9]+\"");
 }

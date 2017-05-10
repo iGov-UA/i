@@ -55,6 +55,10 @@ public class Service extends org.igov.model.core.NamedEntity {
     @Column(name = "sSubjectOperatorName", nullable = false)
     private String sSubjectOperatorName;
 
+    @JsonProperty(value = "saKeyword")
+    @Column(name = "saKeyword")
+    private String saKeyword;
+
     @Transient
     private int sub = 0;
 
@@ -193,6 +197,12 @@ public class Service extends org.igov.model.core.NamedEntity {
     public void setOpenedLimit(Integer nOpenedLimit) {
         this.nOpenedLimit = nOpenedLimit;
     }
-    
-    
+
+    public String getSaKeyword() {
+        return saKeyword;
+    }
+
+    public void setSaKeyword(String saKeyword) {
+        this.saKeyword = saKeyword;
+    }
 }

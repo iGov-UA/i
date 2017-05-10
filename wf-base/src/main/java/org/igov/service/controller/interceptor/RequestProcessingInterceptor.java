@@ -358,6 +358,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
 
             /*if (isUpdateProcess(oRequest)){
+
             	LOG.info("--------------ALL PARAMS IN UPDATE PROCESS(REGION)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
                 LOG.info("-----------------------------------------------");
@@ -426,8 +427,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         LOG.info("sTaskId is: {}", sTaskId);
                         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
                         String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+
                         LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
+
                         if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+
                             LOG.info("Close document is started...");
                             Map<String, String> mParam = new HashMap<>();
                             String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
@@ -547,6 +551,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
                         boolean bProcessClosed = aTask == null || aTask.size() == 0;
                         String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+
                         Map<String, String> mParam = new HashMap<>();
                         String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
@@ -566,6 +571,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
                         boolean bProcessClosed = aTask == null || aTask.size() == 0;
                         String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+
                         Map<String, String> mParam = new HashMap<>();
                         String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
