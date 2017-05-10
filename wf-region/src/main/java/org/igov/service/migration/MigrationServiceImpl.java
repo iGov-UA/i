@@ -240,7 +240,11 @@ public class MigrationServiceImpl implements MigrationService {
 
     private Map<String, Object> populateAttributes(List<HistoricVariableInstance> variables) {
         Map<String, Object> resultMap = new HashMap<>(variables.size());
-        variables.forEach(entity -> resultMap.put(entity.getVariableName(), entity.getValue()));
+
+        variables.forEach(entity -> {
+            if (entity.getValue() != null)
+                resultMap.put(entity.getVariableName(), entity.getValue());
+        });
         return resultMap;
     }
 
