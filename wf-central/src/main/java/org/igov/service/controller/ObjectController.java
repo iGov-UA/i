@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -125,17 +126,19 @@ public class ObjectController {
             @ApiParam(value = "строка-ключ(опциональный, если другой уникальный-ключ задан и по нему найдена запись)", required = false) @RequestParam(value = "sName_UA", required = false) String sName_UA,
             @ApiParam(value = "строка названия мерчанта на украинском", required = false) @RequestParam(value = "sMeasure_UA", required = false) String sMeasure_UA,
             HttpServletResponse response) throws CommonServiceException {
-       try{
-           return objectCustomsService.setObjectCustoms(nID, sID_UA, sName_UA, sMeasure_UA, response);
-       }catch (Exception e) {
-           LOG.warn("Error: {}", e.getMessage());
-           LOG.trace("FAIL:", e);
-           response.setStatus(HttpStatus.FORBIDDEN.value());
-           response.setHeader("Reason", e.getMessage());
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = objectCustomsService.setObjectCustoms(nID, sID_UA, sName_UA, sMeasure_UA, response);
+        }catch (UnexpectedRollbackException e) {
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", "Duplicate of object " + e.getMessage());
 
-           throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                   e.getMessage(), HttpStatus.FORBIDDEN);
-       }
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
+                    e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+        return responseEntity;
     }
 
     @ApiOperation(value = "Удаление записи по уникальному значению nID или sID_UA", notes =

@@ -93,8 +93,8 @@ public class ObjectCustomsService {
                     reason = ERROR_MESSAGE_NO_RECORD[1] + sName_UA;
                 }
                 response.setHeader("Reason", reason);
-                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        reason, HttpStatus.NO_CONTENT);
+                throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, reason,
+                        HttpStatus.NO_CONTENT);
             }
             result = JsonRestUtils.toJsonResponse(pcode_list);
         } catch (RuntimeException e) {
@@ -102,8 +102,8 @@ public class ObjectCustomsService {
             LOG.trace("FAIL:", e);
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.setHeader("Reason", e.getMessage());
-            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE,
-                    e.getMessage(), HttpStatus.FORBIDDEN);
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage(),
+                    HttpStatus.FORBIDDEN);
         }
         return result;
     }
@@ -171,9 +171,18 @@ public class ObjectCustomsService {
                     HttpStatus.FORBIDDEN);
         }
 
+        try {
             ObjectCustoms pcode = this.objectCustomsDao.setObjectCustoms(args);
             result = JsonRestUtils.toJsonResponse(pcode);
+        } catch (Exception e) {
+            LOG.warn("Error: {}", e.getMessage());
+            LOG.trace("FAIL:", e);
+            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setHeader("Reason", e.getMessage());
 
+            throw new CommonServiceException(ExceptionCommonController.BUSINESS_ERROR_CODE, e.getMessage(),
+                    HttpStatus.FORBIDDEN);
+        }
         return result;
     }
 
