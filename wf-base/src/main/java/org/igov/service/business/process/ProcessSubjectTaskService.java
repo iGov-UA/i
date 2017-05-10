@@ -159,17 +159,18 @@ public class ProcessSubjectTaskService {
             Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject(new String(aByteTaskBody), Map.class);
             //JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
             JSONArray aJsonProcessSubject =  (JSONArray) ((JSONObject)parser.parse(new String(aByteTaskBody))).get("aProcessSubject");
+            LOG.info("aJsonProcessSubject in getProcessSubjectLoginsWithoutTask: {}", aJsonProcessSubject.toJSONString());
             for (Object oJsonProcessSubject : aJsonProcessSubject) {
-                Map<String, Object> mProcessSubject
-                        = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);
+                /*Map<String, Object> mProcessSubject
+                        = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);*/
                 
-                String sLogin = (String) mProcessSubject.get("sLogin");
+                String sLogin = (String)((JSONObject)oJsonProcessSubject).get("sLogin");
                 
                 if(!aUserAssignee.contains(sLogin))
                 {
                     if(sFilterLoginRole != null && !sFilterLoginRole.equals(""))
                     {
-                        if(sFilterLoginRole.equals((String) mProcessSubject.get("‘sLoginRole"))){
+                        if(sFilterLoginRole.equals((String) ((JSONObject)oJsonProcessSubject).get("‘sLoginRole"))){
                             aResultLogins.add(sLogin);
                         }
                     }else{
