@@ -154,10 +154,13 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoDateStart(new DateTime(historicProcess.getStartTime()));
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
-        process.setaAttribute(createAttributesForProcess(historicProcess.getProcessVariables(), process, null));
+
         String processInstanceId = historicProcess.getId();
         List<HistoricVariableInstance> variableInstanceList = historyService.
                 createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).orderByVariableName().asc().list();
+        Map<String, Object> attributes = new HashMap<>(variableInstanceList.size());
+        variableInstanceList.forEach(entity -> attributes.put(entity.getVariableName(), entity.getValue()));
+        process.setaAttribute(createAttributesForProcess(attributes, process, null));
         List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
                 .processInstanceId(processInstanceId).list();
         List<ProcessTask> processTaskList = new ArrayList<>(taskInstanceList.size());
@@ -292,11 +295,15 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setoProcess(process);
         processTask.setoDateStart(new DateTime(taskInstance.getStartTime()));
         processTask.setoDateFinish(new DateTime(taskInstance.getEndTime()));
-        Map<String, Object> attributes = taskInstance.getTaskLocalVariables();
 
         processTask.setsID_(null);//спросить
         processTask.setaAccessGroup(null);//спросить
         processTask.setaAccessUser(null);//спросить
+        String taskInstanceId = taskInstance.getId();
+        List<HistoricVariableInstance> variableInstances = historyService.
+                createHistoricVariableInstanceQuery().taskId(taskInstanceId).orderByVariableName().asc().list();
+        Map<String, Object> attributes = new HashMap<>(variableInstances.size());
+        variableInstances.forEach(entity -> attributes.put(entity.getVariableName(), entity.getValue()));
         processTask.setaAttribute(createAttributesForProcess(attributes, null, processTask));
         return processTask;
     }
