@@ -23,6 +23,7 @@ import org.igov.service.business.document.DocumentStepService;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import org.slf4j.Logger;
@@ -159,17 +160,17 @@ public class ProcessSubjectTaskService {
         return aResultLogins;
     }
     
-    public void synctProcessSubjectTask(Object oaProcessSubjectTask, String snId_Task){
+    public void synctProcessSubjectTask(JSONArray oaProcessSubjectTask, String snId_Task){
         try{
             JSONParser parser = new JSONParser();
-            JSONArray aJsonProcessSubjectTask =  new JSONArray();
-            aJsonProcessSubjectTask = (JSONArray) parser.parse((String)oaProcessSubjectTask);
+            /*JSONArray aJsonProcessSubjectTask =  new JSONArray();
+            aJsonProcessSubjectTask = (JSONArray) oaProcessSubjectTask.get("");*/
             
             //oTaskService.setVariable(snId_Task, "sID_File_StorateTemp", sKey);
-            LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", aJsonProcessSubjectTask.toJSONString());
+            LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", oaProcessSubjectTask.toJSONString());
             
-            
-            for(Object oJsonProcessSubjectTask :  aJsonProcessSubjectTask){
+            //for(Object oJsonProcessSubjectTask :  aJsonProcessSubjectTask){
+            for(Object oJsonProcessSubjectTask :  oaProcessSubjectTask){
                 Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject((String)oJsonProcessSubjectTask, Map.class);
                 JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
                 

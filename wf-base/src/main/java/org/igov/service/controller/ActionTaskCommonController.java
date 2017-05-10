@@ -3098,10 +3098,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     throw new IllegalArgumentException("Object doesn't contain 'taskId' parameter");
                 }
                 
-                if (mJsonBody.containsKey("aProcessSubjectTask")){
+                if (mJsonBody.containsKey("aProcessSubjectTask"))
+                {
+                    JSONParser parser = new JSONParser();
                     LOG.info("The request to updateProcess contains aProcessSubjectTask key");
-                    Object oaProcessSubjectTask = mJsonBody.get("aProcessSubjectTask");
-                    oProcessSubjectTaskService.synctProcessSubjectTask(oaProcessSubjectTask, taskId);
+                    
+                    /*org.json.simple.JSONObject oaProcessSubjectTask 
+                            = (org.json.simple.JSONObject)mJsonBody.get("aProcessSubjectTask");*/
+                    oProcessSubjectTaskService.synctProcessSubjectTask((org.json.simple.JSONArray)((org.json.simple.JSONObject)
+                            parser.parse(sJsonBody)).get("aProcessSubjectTask"), taskId);
                 }
                 
                 if (mJsonBody.containsKey("properties")) {
