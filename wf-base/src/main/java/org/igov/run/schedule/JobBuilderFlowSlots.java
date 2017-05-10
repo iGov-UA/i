@@ -1,19 +1,12 @@
 package org.igov.run.schedule;
 
-import static java.lang.Math.toIntExact;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.igov.service.business.flow.FlowService;
-
 import java.util.Date;
-import java.util.List;
-import org.igov.model.flow.FlowServiceDataDao;
-import org.igov.model.flow.Flow;
-import org.igov.service.business.flow.slot.FlowSlotVO;
-import org.joda.time.DateTime;
 
 /**
  * Autogeneration flow slots. This job invokes method buildFlowSlots by crone.
@@ -47,14 +40,10 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     public static final int DAYS_IN_MONTH = 30;
     public static final int WORK_DAYS_NEEDED = 20;
     public static final int DAYS_IN_HALF_YEAR = 180;
-    private static final String SUFFIX_AUTO = "auto";
 
     private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlots.class);
     @Autowired
     private FlowService oFlowService;
-
-    @Autowired
-    private FlowServiceDataDao flowServiceDataDao;
 
     //Maxline: TODO исправить потом на получение flowServiceData с признаком auto в названии
     //private static final long[] A_TESTS_ID_FLOW_SERVICE_DATA = {1L, 12L};
@@ -63,58 +52,8 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
         LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
         oFlowService.buildFlowSlots();
+        LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={} end!!!",
+                new Date(), context.getTrigger().getName());
         
     } 
- /*@Deprecated
-    private void checkAndBuildFlowSlots_old(Flow_ServiceData flow, DateTime oDateStart) {
-        //Maxline: TODO добавить исключения
-        Long nID_Flow_ServiceData = flow.getId();
-        Long nID_ServiceData = flow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
-        
-        Long nID_SubjectOrganDepartment = flow.getnID_SubjectOrganDepartment();
-        LOG.info(" nID_Flow_ServiceData = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}",
-                nID_Flow_ServiceData, nID_ServiceData, nID_SubjectOrganDepartment);
-        
-        int nStartDay = 0;
-        DateTime dateStart;// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
-        DateTime dateEnd;
-        
-        while (!isEnoughFreeDays(nID_ServiceData, nID_SubjectOrganDepartment, oDateStart)
-                && nStartDay < DAYS_IN_HALF_YEAR) {
-            dateStart = oDateStart.plusDays(nStartDay);
-            LOG.info("dateStart: "+dateStart);
-            dateEnd = oDateStart.plusDays((int) (nStartDay + DAYS_IN_HALF_YEAR));
-            LOG.info("dateStart = {}, dateEnd = {}", dateStart, dateEnd);
-            
-            List<FlowSlotVO> resFlowSlotVO = oFlowService.buildFlowSlots(nID_Flow_ServiceData,
-                    dateStart, dateEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
-            LOG.info(" resFlowSlotVO.size() = {}", resFlowSlotVO.size());
-            
-            nStartDay += DAYS_IN_MONTH;
-        }
-        
-        boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
-        LOG.info(" bEnoughFreeDays = {}", bEnoughFreeDays);
-    }*/
-
- /*private boolean isEnoughFreeDays(Long nID_ServiceData, Long nID_SubjectOrganDepartment, DateTime oDateStart) {
-        boolean bAll = false; //Получаем только свободные дни
-        int nFreeWorkDaysFact;
-        Long nID_Service = null; 
-        String sID_BP = null; 
-
-        DateTime oDateEnd = oDateStart.plusDays(DAYS_IN_HALF_YEAR);
-        LOG.info(" oDateEnd = {}", oDateEnd);
-
-        Days res = oFlowService.getFlowSlots(nID_Service, nID_ServiceData, sID_BP, nID_SubjectOrganDepartment,
-                oDateStart, oDateEnd, bAll, WORK_DAYS_NEEDED, 1); //WORK_DAYS_NEEDED
-        LOG.info(" Days = {}", res);
-
-        nFreeWorkDaysFact = res.getaDay().size();
-        LOG.info(" nFreeWorkDaysFact = {}, WORK_DAYS_NEEDED = {}", nFreeWorkDaysFact, WORK_DAYS_NEEDED);
-        for (Day day : res.getaDay()) {
-            LOG.info(" Day = {}, isbHasFree = {}", day.getsDate(), day.isbHasFree());
-        }
-        return nFreeWorkDaysFact >= WORK_DAYS_NEEDED;
-    }*/
 }

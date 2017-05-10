@@ -2141,6 +2141,24 @@ https://alpha.test.region.igov.org.ua/wf/service/action/task/getTaskData?sID_Ord
 ```
 [детальнее...](#_downloadmaximumdate)
 
+###### downloadwithgroup   
+### Выгрузить максимум данных по заявке, с условием, настраиваемым под разные группы пользователей (метод GET)     
+Пример запроса:   
+
+```
+https://alpha.test.region.igov.org.ua/wf/service/action/task/downloadTasksData?sID_BP=justice_0353_PervDopom&bHeader=true&sID_State_BP=usertask1&saFields=${nID_Task};${sDateCreate};${asDecide}&sDateAt=2017-01-01&sDateTo=2017-05-06&asField_Filter=[sFormulaFilter_Export]&sLogin=bvpd_dnipro2 
+``` 
+Где:  
+**asField_Filter=[sFormulaFilter_Export]**  - остается неизменным, формула отбора прописывается в файле i\wf-base\src\main\resources\data\SubjectRightBP.csv,   
+  пример:    
+66;justice_0353_PervDopom;;;bvpd_dnipro1;(asDecide=='sReject'||asDecide=='sAnswer');NULL  
+**asID_Group_Export** - группа, которой предоставляется право выгрузки статистики.   
+**sFormulaFilter_Export** - условие отбора статистики.   
+**sLogin=bvpd_dnipro2**  - логин пользователя, принадлежащего к выбранной группе.   
+**saFields** - здесь прописываются поля, которые должны быть выгружены в статистику в формате ${ID поля}.   
+если будет необходимо выгрузить статистику прямо в файл, в конце можно дописать параметр   
+**sFileName=[желаемое_имя_файла].csv**     
+
 ### выгрузка закрытых заявок за определенный период** (метод GET)   
 можно исключать некоторые номера услуг  
 ```
