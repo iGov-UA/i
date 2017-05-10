@@ -157,7 +157,7 @@ public class MigrationServiceImpl implements MigrationService {
         process.setaAttribute(createAttributesForProcess(historicProcess.getProcessVariables(), process, null));
         String processInstanceId = historicProcess.getId();
         List<HistoricVariableInstance> variableInstanceList = historyService.
-                createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).orderByVariableName().list();
+                createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).orderByVariableName().asc().list();
         List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
                 .processInstanceId(processInstanceId).list();
         List<ProcessTask> processTaskList = new ArrayList<>(taskInstanceList.size());
