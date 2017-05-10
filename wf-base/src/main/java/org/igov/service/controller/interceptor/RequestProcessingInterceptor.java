@@ -737,6 +737,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             } else if (isUpdateTask(oRequest)) {
                 sType = "Update";
                 LOG.info("saveUpdatedTaskInfo block started");
+                LOG.info("oRequest URL: {}", oRequest.getRequestURL().toString());
+                LOG.info("oRequest mRequestParam: {}", mRequestParam);
                 saveUpdatedTaskInfo(sResponseBody, mRequestParam);
                 LOG.info("saveUpdatedTaskInfo block finished");
             }

@@ -503,71 +503,14 @@
         }
       } // */
 
-/*
-      function ChangeParagrath() {
-        //подчеркиваем
-        if("[cc_1_1]" == "true"){ setStyleCell('spanCategory1_1'); }
-        if("[cc_1_2]" == "true"){ setStyleCell('spanCategory1_2'); }
-        if("[cc_1_3]" == "true"){ setStyleCell('spanCategory1_3'); }
-        if("[cc_1_4]" == "true"){ setStyleCell('spanCategory1_4'); }
-        if("[cc_1_5]" == "true"){ setStyleCell('spanCategory1_5'); }
-        if("[cc_1_6]" == "true"){ setStyleCell('spanCategory1_6'); }
-        if("[cc_2]" == "true"){ setStyleCell('spanCategory2'); }
-        if("[cc_3_1]" == "true"){ setStyleCell('spanCategory3_1'); }
-        if("[cc_3_2]" == "true"){ setStyleCell('spanCategory3_2'); }
-        if("[cc_3_3]" == "true"){ setStyleCell('spanCategory3_3'); }
-        if("[cc_3_4]" == "true"){ setStyleCell('spanCategory3_4'); }
-        if("[cc_3_5]" == "true"){ setStyleCell('spanCategory3_5'); }
-        if("[cc_3_6]" == "true"){ setStyleCell('spanCategory3_6'); }
-        if("[cc_3_7]" == "true"){ setStyleCell('spanCategory3_7'); }
-        if("[cc_3_8]" == "true"){ setStyleCell('spanCategory3_8'); }
-        if("[cc_3_9]" == "true"){ setStyleCell('spanCategory3_9'); }
-        if("[cc_4_1]" == "true"){ setStyleCell('spanCategory4_1'); }
-        if("[cc_4_2]" == "true"){ setStyleCell('spanCategory4_2'); }
-        if("[cc_4_3]" == "true"){ setStyleCell('spanCategory4_3'); }
-        if("[cc_4_4]" == "true"){ setStyleCell('spanCategory4_4'); }
-        if("[cc_4_5]" == "true"){ setStyleCell('spanCategory4_5'); }
-        if("[cc_4_6]" == "true"){ setStyleCell('spanCategory4_6'); }
-        if("[cc_4_7]" == "true"){ setStyleCell('spanCategory4_7'); }
-        if("[cc_4_8]" == "true"){ setStyleCell('spanCategory4_8'); }
-        if("[cc_4_9]" == "true"){ setStyleCell('spanCategory4_9'); }
-        if("[cc_5_1]" == "true"){ setStyleCell('spanCategory5_1'); }
-        if("[cc_5_2]" == "true"){ setStyleCell('spanCategory5_2'); }
-        if("[cc_5_3]" == "true"){ setStyleCell('spanCategory5_3'); }
-        if("[cc_5_4]" == "true"){ setStyleCell('spanCategory5_4'); }
-        if("[cc_5_5]" == "true"){ setStyleCell('spanCategory5_5'); }
-        if("[cc_5_6]" == "true"){ setStyleCell('spanCategory5_6'); }
-        if("[cc_5_7]" == "true"){ setStyleCell('spanCategory5_7'); }
-        if("[cc_5_8]" == "true"){ setStyleCell('spanCategory5_8'); }
-        if("[cc_6]" == "true"){ setStyleCell('spanCategory6'); }
-        if("[cc_7]" == "true"){ setStyleCell('spanCategory7'); }
-        if("[cc_8]" == "true"){ setStyleCell('spanCategory8'); }
-        if("[cc_9]" == "true"){ setStyleCell('spanCategory9'); }
-        if("[cc_10]" == "true"){ setStyleCell('spanCategory10'); }
-        if("[cc_11]" == "true"){ setStyleCell('spanCategory11'); }
-        if("[cc_12]" == "true"){ setStyleCell('spanCategory12'); }
-        if("[cc_13]" == "true"){ setStyleCell('spanCategory13'); }
-        if("[cc_14]" == "true"){ setStyleCell('spanCategory14'); }
-        if("[cc_15]" == "true"){ setStyleCell('spanCategory15'); }
-        if("[cc_16]" == "true"){ setStyleCell('spanCategory16'); }
-        if("[cc_17]" == "true"){ setStyleCell('spanCategory17'); }
-      }      // */
 
-      function setStyleCell(id) {
-          var sp = document.getElementById(id);
-          sp.innerHTML = "&#10004;";
-          sp.className = "check_box_text ta-c";
-          sp.previousElementSibling.className += ' u';
-      }
+
 
       function isNumeric(n) {
     	  return !isNaN(parseFloat(n)) && isFinite(n);
       }
 
-      function NumberDocument(){
-    	  document.getElementById('spanDocument').innerHTML = isNumeric(nDocument)?nDocument:"&nbsp;&nbsp;&nbsp;";
-    	  document.getElementById('spanPage').innerHTML = isNumeric(nPage)?nPage:"&nbsp;&nbsp;&nbsp;";
-      }
+
 
       function ShowElements(sCondition) {
         for(var i=1; i < arguments.length; i++) {
@@ -992,34 +935,7 @@
         </div>
     </div>
     <script>
-        /*
-        ChangeParagrath();
-        NumberDocument();
 
-        ShowElements(asNumberApplication == "первинне" || asNumberApplication == "Первинне", "spanFirst");
-        ShowElements(asNumberApplication == "повторне звернення" || asNumberApplication == "Повторне", "spanSecond");
-
-        switch (asTransferType) {
-            case "через національного оператора поштового зв'язку":
-                ShowElementsOnTrue(true, "spanTransferPost", "spanTransferPostVal", "spanTransferHouseNotVal", "spanTransferBankNotVal");
-                ShowElementsOnTrue(false, "spanTransferBank", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal");
-                break;
-            case "на рахунок у банку":
-                ShowElementsOnTrue(true, "spanTransferBank", "spanTransferBankVal", "spanTransferHouseNotVal");
-                ShowElementsOnTrue(false, "spanTransferHouse", "spanTransferPost", "spanTransferPostVal", "spanTransferHouseVal", "spanTransferBankNotVal");
-                break;
-            case "на рахунок установи (закладу), де інвалід з дитинства(дитина-інвалід) перебуває на повному державному утриманні":
-                ShowElementsOnTrue(true, "spanTransferHouse", "spanTransferHouseVal", "spanTransferBankNotVal");
-                ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouseNotVal");
-                break;
-            default:
-                ShowElementsOnTrue(true, "spanTransferBankNotVal", "spanTransferHouseNotVal");
-                ShowElementsOnTrue(false, "spanTransferBank", "spanTransferPost", "spanTransferPostVal", "spanTransferBankVal", "spanTransferHouse", "spanTransferHouseVal");
-                break;
-        }
-        
-        ParsePassport();
-        //*/
     </script>
 </body>
 </html>

@@ -244,6 +244,13 @@ type="queueData" required="true"></activiti:formProperty>
 ### markers
 Маркеры и позволяют работать с уже существующими полями и расширяют их возможности.
 
+### invisible
+Невидимый тип данных. Используется, как правило для записи технических полей, которые нужны в процессе, но заявителю или чиновнику не должны быть показаны.
+```xml
+<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="invisible"></activiti:formProperty>
+```
+
+[детальней...](#_invisible)
 
 ### select
 Тип данных, который формирует динамические выпадающие списки (в зависимости от параметров).
@@ -2133,6 +2140,24 @@ https://alpha.test.region.igov.org.ua/wf/service/action/task/delete-process?nID_
 https://alpha.test.region.igov.org.ua/wf/service/action/task/getTaskData?sID_Order=0-219200017&bIncludeStartForm=true&bIncludeGroups=true
 ```
 [детальнее...](#_downloadmaximumdate)
+
+###### downloadwithgroup   
+### Выгрузить максимум данных по заявке, с условием, настраиваемым под разные группы пользователей (метод GET)     
+Пример запроса:   
+
+```
+https://alpha.test.region.igov.org.ua/wf/service/action/task/downloadTasksData?sID_BP=justice_0353_PervDopom&bHeader=true&sID_State_BP=usertask1&saFields=${nID_Task};${sDateCreate};${asDecide}&sDateAt=2017-01-01&sDateTo=2017-05-06&asField_Filter=[sFormulaFilter_Export]&sLogin=bvpd_dnipro2 
+``` 
+Где:  
+**asField_Filter=[sFormulaFilter_Export]**  - остается неизменным, формула отбора прописывается в файле i\wf-base\src\main\resources\data\SubjectRightBP.csv,   
+  пример:    
+66;justice_0353_PervDopom;;;bvpd_dnipro1;(asDecide=='sReject'||asDecide=='sAnswer');NULL  
+**asID_Group_Export** - группа, которой предоставляется право выгрузки статистики.   
+**sFormulaFilter_Export** - условие отбора статистики.   
+**sLogin=bvpd_dnipro2**  - логин пользователя, принадлежащего к выбранной группе.   
+**saFields** - здесь прописываются поля, которые должны быть выгружены в статистику в формате ${ID поля}.   
+если будет необходимо выгрузить статистику прямо в файл, в конце можно дописать параметр   
+**sFileName=[желаемое_имя_файла].csv**     
 
 ### выгрузка закрытых заявок за определенный период** (метод GET)   
 можно исключать некоторые номера услуг  
