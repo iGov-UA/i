@@ -153,8 +153,8 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
         process.setaAttribute(createAttributesForProcess(historicProcess.getProcessVariables(), process, null));
-        String processInstanceId = historicProcess.getId();
-
+        //String processInstanceId = historicProcess.getId();
+        String processInstanceId = "22317510";
         List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
                 .processInstanceId(processInstanceId).list();
         List<ProcessTask> processTaskList = new ArrayList<>(taskInstanceList.size());
