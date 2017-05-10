@@ -90,14 +90,14 @@ public class ProcessSubjectTaskService {
     {
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
-            Map<String, Object> mProcessSubject
-                    = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);
+            /*Map<String, Object> mProcessSubject
+                    = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);*/
             
-            LOG.info("mProcessSubject in setProcessSubjectList: {}", mProcessSubject);
+            LOG.info("mProcessSubject in setProcessSubjectList: {}", ((JSONObject)oJsonProcessSubject).toJSONString());
             ProcessSubject oProcessSubject = new ProcessSubject();
             oProcessSubject.setsTextType((String) ((JSONObject)oJsonProcessSubjectTask).get("sTextType"));
-            oProcessSubject.setsLogin((String) mProcessSubject.get("sLogin"));
-            oProcessSubject.setsLoginRole((String) mProcessSubject.get("‘sLoginRole"));
+            oProcessSubject.setsLogin((String) ((JSONObject)oJsonProcessSubject).get("sLogin"));
+            oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("‘sLoginRole"));
             oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
             
             /*if(((String) mProcessSubject.get("‘sLoginRole")).equals("Controller")){
@@ -107,9 +107,9 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setSnID_Process_Activiti(snID_Process_Activiti);                                                                                   
             DateTime datePlan = null;
 
-            if (mProcessSubject.get("sDatePlan") != null) {
+            if (((JSONObject)oJsonProcessSubject).get("sDatePlan") != null) {
                 datePlan = new DateTime(oProcessSubjectService.parseDate(
-                        (String) mProcessSubject.get("sDatePlan")));
+                        (String) ((JSONObject)oJsonProcessSubject).get("sDatePlan")));
             }
 
             oProcessSubject.setsDatePlan(datePlan);
@@ -193,7 +193,7 @@ public class ProcessSubjectTaskService {
                     
                     mParamTask.put("sID_File_StorateTemp", sKey); 
                     mParamTask.put("sID_Order_Document", oGeneralConfig.
-                    getOrderId_ByProcess((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));
+                                getOrderId_ByProcess((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));
             
                     ProcessInstance oProcessInstance = oRuntimeService.startProcessInstanceByKey((String) ((JSONObject)oJsonProcessSubjectTask).get("sID_BP"), mParamTask); 
                     
