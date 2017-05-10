@@ -31,18 +31,42 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний особистий (мобільний) номер телефону для зворотнього зв'язку" type="string" default="+380" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_2" name="Інформація про зміни" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sPidstava_zmin&quot;],&quot;sValue&quot;:&quot;Інформація про зміни&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про зміни" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Dogov&quot;],&quot;sValue&quot;:&quot;Інформація про зміни&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNum_Dogov" name="Номер договору" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_Dogov" name="Дата договору" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на орендованій землі" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dPlosh" name="Площа орендованої ділянки" type="double" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sZem_Adress" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sPidstava_zmin" name="Причина змін до договору" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="tZminu" name="Які зміни внести;(вкажіть текст договору який треба змінити, потім вкажіть текст якій треба внести в договір)" type="textArea" required="true"></activiti:formProperty>
         
         
         
-        <activiti:formProperty id="markersLine_3" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;nFile_Dogovir&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovir" name="Договір оренди землі;(якщо файлів кілька завантажте ZIP архівом) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="chekDopDog" name="Чи є додаткові угоди до договору оренди?;позначте галочкою - якщо так, натисніть двічі на квадратик - якщо ні;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DopDog" name="Додаткові угоди до договору оренди; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="chekBud" name="Чи здійснюється будівництво на орендованій ділянці?;позначте галочкою - якщо так, натисніть двічі на квадратик - якщо ні;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLabeDGK" name=" ; ;labelType=info" type="label" default="Витяг з кадастру про ділянку і витяг про нормативну грошову оцінку ви можете отримати перейшовши за. &lt;br&gt;Посилання - &lt;a href=&quot;http://map.land.gov.ua/kadastrova-karta &quot; target=&quot;_blank&quot;&gt;посиланням на кадастрову карту&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DGK_Vutiag" name="Витяг з Державного земельного кадастру про ділянку; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabeBud" name=" ; ;labelType=info" type="label" default="У разі здійснення дудівництва додайте витяг про нормативну грошову оцінку ділянки на період будівництва"></activiti:formProperty>
+        <activiti:formProperty id="nFile_NormGroshOcin" name="Витяг про нормативну грошову оцінку ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DozvilBud" name="Дозвільні документи на будівництво; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markerFiles" name="markers" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/Zem1481Files.json')}"></activiti:formProperty>
         
-    
-    
-    
-    
+        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_zem" name="Пошта ДЗК; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
