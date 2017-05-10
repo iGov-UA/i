@@ -3,9 +3,8 @@
   <process id="subsidiesUkraine_ECP" name="Отримання субсидії на оплату житлово-комунальних послуг (з використанням ЕЦП)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info1" name=" " type="label" default="Якщо раніше Ви вже подавали заяву про призначення субсидії, і Ви бажаєте дізнатись її розмір, або отримати результат автоматичного сезонного перерахунку - заповніть будь ласка звернення про &lt;a href=&quot;https://igov.org.ua/service/21/general&quot; target=&quot;_blank&quot;&gt;Отримання інформації про призначення субсидії&lt;/a&gt;&lt;br&gt;&lt;br&gt;Нова Заява і Декларація подається лише у випадку первинного звернення або зміни складу зареєстрованих у житловому приміщенні осіб, їх соц.статусу, переліку послуг ЖКГ або їх виконавців, купівлі товарів або оплати послуг вартістю більше 50 тис грн."></activiti:formProperty>
-        <activiti:formProperty id="info2" name=" " type="label" default="Для отримання &lt;b&gt;рішення щодо призначення cубсидії &lt;/b&gt;Вам буде необхідно підписати заяву Електронно-цифровим підписом.&lt;br&gt;&lt;br&gt;&lt;b&gt;У разі відсутності ЕЦП на заяві, Вам буде необхідно відвідати УПСЗН після первинної перевірки &lt;/b&gt; даних і особисто підписати Заяву і Декларацію для подальшого розгляду.&lt;br&gt;&lt;br&gt;Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
-        <activiti:formProperty id="markersStyle_1" name="Маркер стилю" type="markers" default="${markerService.loadFromFile('soczah/upszn_format_label.json')}"></activiti:formProperty>
+        <activiti:formProperty id="info1" name=" ; ;labelType=info" type="label" default="Якщо раніше Ви вже подавали заяву про призначення субсидії, і Ви бажаєте дізнатись її розмір, або отримати результат автоматичного сезонного перерахунку - заповніть будь ласка звернення про &lt;a href=&quot;https://igov.org.ua/service/21/general&quot; target=&quot;_blank&quot;&gt;Отримання інформації про призначення субсидії&lt;/a&gt;&lt;br&gt;&lt;br&gt;Нова Заява і Декларація подається лише у випадку первинного звернення або зміни складу зареєстрованих у житловому приміщенні осіб, їх соц.статусу, переліку послуг ЖКГ або їх виконавців, купівлі товарів або оплати послуг вартістю більше 50 тис грн."></activiti:formProperty>
+        <activiti:formProperty id="info2" name=" ; ;labelType=info" type="label" default="Для отримання &lt;b&gt;рішення щодо призначення cубсидії &lt;/b&gt;Вам буде необхідно підписати заяву Електронно-цифровим підписом.&lt;br&gt;&lt;br&gt;&lt;b&gt;У разі відсутності ЕЦП на заяві, Вам буде необхідно відвідати УПСЗН після первинної перевірки &lt;/b&gt; даних і особисто підписати Заяву і Декларацію для подальшого розгляду.&lt;br&gt;&lt;br&gt;Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
@@ -99,8 +98,8 @@
         <activiti:formProperty id="floors" name="Кількість поверхів; тільки цифри" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="total_place" name="Загальна площа (кв. м.);якщо площа - не ціле число, використовуйте роздільник крапку (наприклад, 52.34)." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="warming_place" name="Опалювальна площа (кв. м.);якщо площа - не ціле число, використовуйте роздільник крапку (наприклад, 52.34)." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_from" name="Період, за який Ви заповнюєте декларацію, з; за замовчуванням обраний попередній рік, але якщо субсидія для відшкодування витрат на оплату житлово-комунальних послуг призначається у I кварталі року, середньомісячний сукупний дохід визначається за перші три квартали попереднього року, в інших випадках - за попередній календарний рік" type="invisible" default="01/01/2016" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_to" name="Період, за який Ви заповнюєте декларацію, по; за замовчуванням обраний попередній рік, але якщо субсидія для відшкодування витрат на оплату житлово-комунальних послуг призначається у I кварталі року, середньомісячний сукупний дохід визначається за перші три квартали попереднього року, в інших випадках - за попередній календарний рік" type="invisible" default="31/12/2016" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_from" name="Період, за який Ви заповнюєте декларацію, з; за замовчуванням обраний попередній рік, але якщо субсидія для відшкодування витрат на оплату житлово-комунальних послуг призначається у I кварталі року, середньомісячний сукупний дохід визначається за перші три квартали попереднього року, в інших випадках - за попередній календарний рік;bVisible=false" type="string" default="01/01/2016" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_to" name="Період, за який Ви заповнюєте декларацію, по; за замовчуванням обраний попередній рік, але якщо субсидія для відшкодування витрат на оплату житлово-комунальних послуг призначається у I кварталі року, середньомісячний сукупний дохід визначається за перші три квартали попереднього року, в інших випадках - за попередній календарний рік;bVisible=false" type="string" default="31/12/2016" required="true"></activiti:formProperty>
         <activiti:formProperty id="income0" name="Ваш вид доходу; наприклад: заробітна плата, стипендія, пенсія, соціальна допомога, доходи від підприємницької діяльності, здача майна в оренду, продаж майна та немайнових прав, грошове забезпечення, інше або безробітний(а). Якщо Ви маєте декілька видів доходу, перерахуйте їх через кому." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="org0" name="Назва організації, де Ви отримуєте дохід (або назва органу, який його виплачує);якщо Ви отримуєте дохід в декількох місцях, перерахуйте їх через кому, відповідно до видів доходу, які Ви зазначили вище. Увага! При отриманні доходу з пенсійного фонду, зазначте районну приналежність відділення пенсійного фонду." type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="declaration0" name="Довідка про доходи (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file"></activiti:formProperty>
@@ -168,14 +167,14 @@
           <activiti:value id="ecp_no" name="без ЕЦП (погоджуєтесь на особистий візит після перевірки правильності даних)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП" type="invisible" default="pattern/print/UPSZN/subsidy_ecp.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/UPSZN/subsidy_ecp.html"></activiti:formProperty>
         <activiti:formProperty id="marker349" name="имущество свыше 50000 грн" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_187&quot;:{&quot;aField_ID&quot;:[&quot;bankIdbirthDay&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Графік роботи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="nArea" name="Графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="Графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask9" name="Повідомлення службовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -197,7 +196,7 @@
     <userTask id="usertask1" name="Первинна обробка даних" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="label1" name="На цьому етапі Ви можете ознайомитись з відомостями, наданими громадянином при заповненні заяви, роздрукувати документи (за потреби), та прийняти рішення щодо подальшої обробки заяви, або відмови громадянину (через відсутність усіх необхідних відомостей для надання адміністративної послуги або через наявність в особовій справі неправильно оформлених  довідок  тощо)" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва району ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
           <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення субсидії)"></activiti:value>
           <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
@@ -348,10 +347,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/UPSZN/subsidy_zayava_1.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/UPSZN/subsidy_declaration_2.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ScanPassport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rent" name="Договір найму (оренди) житла; за наявності ;bNew=true" type="file"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rent" name="Договір найму (оренди) житла; за наявності ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="declaration0" name="Довідка про доходи (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="declaration1" name="Довідка про доходи 1 (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="declaration2" name="Довідка про доходи 2 (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -360,7 +359,6 @@
         <activiti:formProperty id="declaration5" name="Довідка про доходи 5 (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="Лист про обробку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -446,7 +444,7 @@ ${sNameOrgan}<br/>
     <userTask id="usertask2_yellow" name="Рішення про призначення субсидії" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="label2" name="На цьому етапі необхідно вказати, яке рішення прийнято по заяві громадянина, та завантажити відповідний документ для відправки його громадянину електронною поштою" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва району ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ECP" name="Звернення подане:" type="enum" writable="false">
           <activiti:value id="ecp_yes" name="з ЕЦП (для отримання повної послуги про призначення субсидії)"></activiti:value>
           <activiti:value id="ecp_no" name="без ЕЦП (громадянин погоджується на особистий візит після перевірки правильності даних)"></activiti:value>
@@ -597,10 +595,10 @@ ${sNameOrgan}<br/>
           <activiti:value id="attr5" name="субсидія потребує розгляду комісії"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decision" name="Рішення про надання субсидії" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html]" type="invisible" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ScanPassport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="rent" name="Договір найму (оренди) житла; за наявності ;bNew=true" type="file"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rent" name="Договір найму (оренди) житла; за наявності ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="declaration0" name="Довідка про доходи (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="declaration1" name="Довідка про доходи 1 (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="declaration2" name="Довідка про доходи 2 (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -608,7 +606,7 @@ ${sNameOrgan}<br/>
         <activiti:formProperty id="declaration4" name="Довідка про доходи 4 (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="declaration5" name="Довідка про доходи 5 (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-     </extensionElements>   
+      </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask1">
@@ -758,6 +756,7 @@ ${sNameOrgan}<br/>
 ${sAddress}<br />
 ${sWorkTime}<br />
 ${sPhoneOrgan}</p>
+ <p>Відповіді на часті питання за <a href="https://goo.gl/tFCFG0" target="_blank"> посиланням</a></p>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br/>
