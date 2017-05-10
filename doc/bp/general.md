@@ -398,7 +398,6 @@ type="queueData" required="true"></activiti:formProperty>
 
 [детальней...](#_Requestvariables)
 
-
 ###### generalrulesfornaming
 # 5. Общие правила при именовании
 [вернуться в начало](general.md)
@@ -2813,7 +2812,7 @@ name= "Имя;[description];[флаги]". Имя переменной/поля 
 ```
 
 ### **writable=false**  
-Cделает текущее поле нередактируемым для пользователя интерфейса, при этом на уровне процесса поле остается редактируемым.
+Cделает текущее поле нередактируемым для пользователя интерфейса, при этом на уровне процесса поле остается редактируемым, с возможностью внести замечание в дашборде по отдельному полю отмеченному данным флагов.
 ```xml
 <activiti:formProperty id="sPlaceBirthChild9" name="Місце народження дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
 ```
@@ -2931,7 +2930,8 @@ Cделает текущее поле нередактируемым для по
 * **sSubjectOrganJoinTax** - select - Таможня
 * **sID_UA_SubjectOrganJoinTax** - Код таможни (заполнится автоматически после выбора в селекте sSubjectOrganJoinTax)
 * **sID_Place_UA** - string - В переменную передается КОАТУУ выбранного населенного пункта (поле Place)
-
+* **sObjectEarthTarget** - select - целевое назначение земель   
+* **sID_UA_ObjectEarthTarget** - string - код целевого назначение земель (заполнится автоматически после выбора в селекте sObjectEarthTarget )   
 ###### _requestvariables
 ### Переменные-запросы
 
