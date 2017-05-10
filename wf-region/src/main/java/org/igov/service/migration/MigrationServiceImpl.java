@@ -131,20 +131,17 @@ public class MigrationServiceImpl implements MigrationService {
 
     private Process createProcessForSave(HistoricProcessInstance historicProcess) {
         Process process = new Process();
-
-        process.setsID_(historicProcess.getBusinessKey());//спросить
+        process.setsID_(historicProcess.getId());
         process.setoDateStart(new DateTime(historicProcess.getStartTime()));
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
         process.setaAttribute(createAttributes(historicProcess.getId(), process, null));
         process.setaProcessTask(createProcessTaskList(historicProcess.getId(), process, historicProcess));
-
         return process;
     }
 
     private CustomProcess createCustomProcessToInsert(HistoricProcessInstance historicProcess, Process process) {
         CustomProcess customProcess = new CustomProcess();
-
         customProcess.setnDuration(historicProcess.getDurationInMillis());
         customProcess.setoProcess(process);
         customProcess.setsDeleteReason(historicProcess.getDeleteReason());
@@ -157,7 +154,6 @@ public class MigrationServiceImpl implements MigrationService {
         customProcess.setsSuperProcessInstanceId(historicProcess.getSuperProcessInstanceId());
         customProcess.setsStartUserId(historicProcess.getStartUserId());
         customProcess.setsBusinessKey(historicProcess.getBusinessKey());//спросить
-
         return customProcess;
     }
 
@@ -167,7 +163,7 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setoDateStart(new DateTime(taskInstance.getStartTime()));
         processTask.setoDateFinish(new DateTime(taskInstance.getEndTime()));
 
-        processTask.setsID_(null);//спросить
+        processTask.setsID_(taskInstance.getId());
         processTask.setaAccessGroup(null);//спросить
         processTask.setaAccessUser(null);//спросить
 
