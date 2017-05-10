@@ -55,26 +55,25 @@ String strDate = execution.getVariable('date_of_visit')
 //парсим строку по ранее указанному шаблону для преобразования в дату
 Date date_of_visit = dateStartFormat.parse(strDate)
 
-// настраиваем нужный формат даты и используем заданную локаль
+//настраиваем нужный формат даты и используем заданную локаль
 def dateFormat = new SimpleDateFormat("dd MMMM yyyy, HH:mm", locate)
 
-// форматируем дату под указанный формат
+//форматируем дату под указанный формат
 def format_date_of_visit = dateFormat.format(date_of_visit)
 
 execution.setVariable('format_date_of_visit', format_date_of_visit)
 
-// отнимаем от нужной даты одни сутки в милисекундах 
 Date startDate = new Date(date_of_visit.getTime() - 1000*60*60*24)
 
-//форматируем под таймер дату 
-def timerStartFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locate)  
-​def ​timerStart = timerStartFormat.format(startDate)
-execution.setVariable('sNotification_day', timerStart)
+//форматируем под таймер дату, использовать букву "Т" и другой текст, не относяшийся к форматированию стоит помещать в одинарные кавычки
+def timerStartFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locate)
+def formatTimerStart = timerStartFormat.format(startDate)
+execution.setVariable('sNotification_day', formatTimerStart)
 
-//форматируем под таймер дату, время указываем жестко
-def timerEndFormat = new SimpleDateFormat("yyyy-MM-dd'T19:00:00'", locate)  
-​def ​timerEnd = timerEndFormat.format(date_of_visit)
-execution.setVariable('sEndDay', timerEnd)
+//форматируем под таймер дату, время указываем жестко 
+def timerEndFormat = new SimpleDateFormat("yyyy-MM-dd'T19:00:00'", locate)
+def formatTimerEnd = timerStartFormat.format(date_of_visit)
+execution.setVariable('sEndDay', formatTimerEnd)
 	  ]]></script>
 	 </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask2" targetRef="parallelgateway3"></sequenceFlow>
@@ -249,9 +248,6 @@ ${sNameOrgan},<br>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto"></activiti:formProperty>
-        
-        <activiti:formProperty id="aComment" name="Результат обробки" type="textArea" default="timer - ${sNotification_day}  timerEnd- ${sEndDay}  date_of_visit - ${date_of_visit}  format_date_of_visit -  ${format_date_of_visit} "></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
