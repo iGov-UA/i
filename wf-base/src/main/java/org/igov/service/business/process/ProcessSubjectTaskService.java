@@ -3,6 +3,7 @@ package org.igov.service.business.process;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,8 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
+import org.igov.model.process.ProcessSubjectStatus;
+import org.igov.model.process.ProcessSubjectStatusDao;
 
 import org.igov.model.process.ProcessSubjectTask;
 import org.igov.model.process.ProcessSubjectTaskDao;
@@ -71,6 +74,9 @@ public class ProcessSubjectTaskService {
     @Autowired
     private DocumentStepService oDocumentStepService;
     
+    @Autowired
+    private ProcessSubjectStatusDao oProcessSubjectStatusDao;
+    
     /**
      * Получение списка ProcessSubjectTask
      * 
@@ -88,6 +94,7 @@ public class ProcessSubjectTaskService {
     private List<ProcessSubject> setProcessSubjectList(JSONArray aJsonProcessSubject, 
             JSONObject oJsonProcessSubjectTask, ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti) throws ParseException, Exception 
     {
+        ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(1L);
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             /*Map<String, Object> mProcessSubject
@@ -99,7 +106,9 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setsLogin((String) ((JSONObject)oJsonProcessSubject).get("sLogin"));
             oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("‘sLoginRole"));
             oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
-            
+            oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
+            oProcessSubject.setsDateEdit(new DateTime(new Date()));
+            oProcessSubject.setnOrder(0L);
             /*if(((String) mProcessSubject.get("‘sLoginRole")).equals("Controller")){
                 mParamTask.put("sLoginController", mProcessSubject.get("sLogin")); //только в бд!!!
             }*/
