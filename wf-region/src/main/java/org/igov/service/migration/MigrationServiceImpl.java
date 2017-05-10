@@ -3,6 +3,7 @@ package org.igov.service.migration;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.igov.analytic.model.attribute.*;
 import org.igov.analytic.model.config.Config;
 import org.igov.analytic.model.config.ConfigDao;
@@ -155,6 +156,8 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoSourceDB(getSourceDBForIGov());
         process.setaAttribute(createAttributesForProcess(historicProcess.getProcessVariables(), process, null));
         String processInstanceId = historicProcess.getId();
+        List<HistoricVariableInstance> variableInstanceList = historyService.
+                createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).orderByVariableName().list();
         List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
                 .processInstanceId(processInstanceId).list();
         List<ProcessTask> processTaskList = new ArrayList<>(taskInstanceList.size());
