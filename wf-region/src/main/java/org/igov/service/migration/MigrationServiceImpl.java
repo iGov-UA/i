@@ -74,25 +74,17 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Override
     public void migrateOldRecords() {
-        LOG.info("Start of migration process");
         historicProcessList = getHistoricProcessList();
-        historicProcessList.forEach(historicProcessInstance ->
-                LOG.info("Current historic process instance: {}", historicProcessInstance));
         prepareAndSave(historicProcessList);
-        LOG.info("End of migration process");
     }
 
     private List<HistoricProcessInstance> getHistoricProcessList() {
-        LOG.info("Inside getHistoricProcessList()");
         DateTime startTime = getStartTime();
-        LOG.info("Start time is: {}", startTime);
         String sqlSelect = composeSql(startTime);
-        LOG.info("SQL statement is: {}", sqlSelect);
         return historyService.createNativeHistoricProcessInstanceQuery().sql(sqlSelect).list();
     }
 
     private DateTime getStartTime() {
-        LOG.info("Inside getStartTime()");
         DateTime startDateFromConfig = getStartDate(Config.class);
         DateTime startDateFromProcess = getStartDate(Process.class);
 
@@ -114,53 +106,32 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private String composeSql(DateTime startTime) {
-        LOG.info("Current startTime: {}", startTime);
         startTime = startTime.plusDays(3);
-        LOG.info("StartTime after adding 3 days: {}", startTime);
         return "SELECT * from act_hi_procinst where start_time_ < TIMESTAMP \' "
                 + startTime.toString("yyyy-MM-dd HH:mm:ss")
                 + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
     }
 
     private DateTime getStartDate(Class<?> clazz) {
-        LOG.info("Inside getStartDate(); current class: {}", clazz);
         DateTime time;
         if (clazz == Config.class) {
             Config config = configDao.findLatestConfig();
-            LOG.info("Config: {}", config.toString());
             String dateTime = config.getsValue();
             time = new DateTime(dateTime);//не уверен, нужно тесты написать
-            LOG.info("Time from config: {}", time);
             return time;
         } else {
             Process process = processDao.findLatestProcess();
-            LOG.info("Process: {}", process.toString());
             time = process.getoDateStart();
-            LOG.info("Time from process: {}", time);
             return time;
         }
     }
 
     private List<Process> prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
-        LOG.info("Inside prepareAndSave()");
-        LOG.info("Current historicProcessList size: {}", historicProcessList.size());
         List<Process> resultList = new ArrayList<>(historicProcessList.size());
         for (HistoricProcessInstance historicProcess : historicProcessList) {
-            LOG.info("Inside for (HistoricProcessInstance historicProcess : historicProcessList) {}");
             Process processForSave = createProcessForSave(historicProcess);
-            LOG.info("Process from historic process: {}", processForSave.toString());
             resultList.add(processForSave);
-            String processInstanceId = historicProcess.getId();
-            LOG.info("");
-            List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
-                    .processInstanceId(processInstanceId).list();
-            taskInstanceList.forEach(taskInstance -> {
-                ProcessTask processTask = createProcessTaskToInsert(taskInstance, processForSave);
-                //???????
-                CustomProcess customProcess = createCustomProcessToInsert(historicProcess, processForSave);
-                //???????
-                CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
-            });
+
 //            processDao.saveOrUpdate(processForSave);
 //            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
 //            asyncUpdate.start();
@@ -182,6 +153,16 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
         process.setaAttribute(createAttributesForProcess(historicProcess.getProcessVariables(), process, null));
+        String processInstanceId = historicProcess.getId();
+        List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
+                .processInstanceId(processInstanceId).list();
+        taskInstanceList.forEach(taskInstance -> {
+            ProcessTask processTask = createProcessTaskToInsert(taskInstance, process);
+            //???????
+            CustomProcess customProcess = createCustomProcessToInsert(historicProcess, process);
+            //???????
+            CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
+        });
 
         return process;
     }
