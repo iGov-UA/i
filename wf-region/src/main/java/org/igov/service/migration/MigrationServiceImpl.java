@@ -154,16 +154,20 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoSourceDB(getSourceDBForIGov());
         process.setaAttribute(createAttributesForProcess(historicProcess.getProcessVariables(), process, null));
         String processInstanceId = historicProcess.getId();
+
         List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
                 .processInstanceId(processInstanceId).list();
+        List<ProcessTask> processTaskList = new ArrayList<>(taskInstanceList.size());
         taskInstanceList.forEach(taskInstance -> {
             ProcessTask processTask = createProcessTaskToInsert(taskInstance, process);
+            processTaskList.add(processTask);
             //???????
             CustomProcess customProcess = createCustomProcessToInsert(historicProcess, process);
             //???????
             CustomProcessTask customProcessTask = createCustomProcessTaskToInsert(taskInstance, processTask);
         });
 
+        process.setaProcessTask(processTaskList);
         return process;
     }
 
