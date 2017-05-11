@@ -2941,8 +2941,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("sLogin in setDocument is {}", sLogin);
             
             Map<String, Object> mParam = new HashMap<>();
-            
             mParam.put("sLoginAuthor", sLogin);
+            LOG.info("/setDocument: mParam={}", mParam);
             
             ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
             LOG.info("oProcessInstanceChild={}", oProcessInstanceChild);
@@ -2950,7 +2950,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
             LOG.info("mReturn={}", mReturn);
             
-        } catch (ActivitiObjectNotFoundException e) {
+        } catch (IllegalArgumentException e) {
             
             LOG.error("Error : /setDocument {}", e);
             
