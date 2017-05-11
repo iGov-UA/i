@@ -96,11 +96,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public Expression subject;
     public Expression text;
 
-    protected Expression sID_Merchant;
-    protected Expression sSum;
-    protected Expression sID_Currency;
-    protected Expression sLanguage;
-    protected Expression sDescription;
+    //protected Expression sID_Merchant;
+    //protected Expression sSum;
+    //protected Expression sID_Currency;
+    //protected Expression sLanguage;
+    //protected Expression sDescription;
     protected Expression nID_Subject;
     
     @Autowired
@@ -349,6 +349,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     .getVariable(pattern_description).toString() : execution
                     .getVariable(String.format(PATTERN_DESCRIPTION, ""))
                     .toString();
+                  
+            String pattern_expired_period_hour = String.format(PATTERN_EXPIRED_PERIOD_HOUR, prefix);
+            Integer nExpired_Period_Hour = execution.getVariable(pattern_expired_period_hour) != null ? (Integer)execution
+                    .getVariable(pattern_expired_period_hour) : null;
 
             String sID_Order = "TaskActiviti_" + execution.getId().trim()
                     + prefix;
@@ -365,7 +369,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant,
                     sSum, oID_Currency, sLanguage, sDescription, sID_Order,
                     sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
-                    nID_Subject, bTest);
+                    nID_Subject, bTest, nExpired_Period_Hour);
             matcher.appendReplacement(outputTextBuffer, htmlButton);
         }
         return matcher.appendTail(outputTextBuffer).toString();
