@@ -186,5 +186,22 @@ public class Attribute extends NamedEntity {
   		this.oAttributeName = oAttributeName;
   	}
 
-
+    @Override
+    public String toString() {
+        return "Attribute{" +
+                "sID_='" + sID_ + '\'' +
+                ", oAttributeType=" + oAttributeType +
+                ", oAttributeName=" + oAttributeName +
+                ", oAttributeTypeCustom=" + oAttributeTypeCustom +
+                ", oProcess=" + oProcess +
+                ", oProcessTask=" + oProcessTask +
+                ", oAttribute_Boolean=" + oAttribute_Boolean +
+                ", oAttribute_Date=" + oAttribute_Date +
+                ", oAttribute_Float=" + oAttribute_Float +
+                ", oAttribute_Integer=" + oAttribute_Integer +
+                ", oAttribute_StringShort=" + oAttribute_StringShort +
+                ", oAttribute_StringLong=" + oAttribute_StringLong +
+                ", oAttribute_File=" + oAttribute_File +
+                '}';
+    }
 }

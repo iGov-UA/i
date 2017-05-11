@@ -22,6 +22,7 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -158,8 +159,8 @@ public class Process extends AbstractEntity{
                 ", oDateStart=" + oDateStart +
                 ", oDateFinish=" + oDateFinish +
                 ", sID_Data='" + sID_Data + '\'' +
-                ", aAttribute=" + aAttribute +
-                ", aProcessTask=" + aProcessTask +
+                ", aAttribute=" + Arrays.toString(aAttribute.toArray()) +
+                ", aProcessTask=" + Arrays.toString(aProcessTask.toArray()) +
                 ", aAccessGroup=" + aAccessGroup +
                 ", aAccessUser=" + aAccessUser +
                 '}';
