@@ -2945,6 +2945,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             mParam.put("sLoginAuthor", sLogin);
             
             ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+            LOG.info("oProcessInstanceChild={}", oProcessInstanceChild);
             
             mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
             LOG.info("mReturn={}", mReturn);
