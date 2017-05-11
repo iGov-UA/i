@@ -177,8 +177,8 @@ public class ProcessSubjectTaskService {
                 
                 String sLogin = (String)((JSONObject)oJsonProcessSubject).get("sLogin");
                 
-                if(!aUserAssignee.contains(sLogin))
-                {
+                //if(!aUserAssignee.contains(sLogin))
+                //{
                     if(sFilterLoginRole != null && !sFilterLoginRole.equals(""))
                     {
                         if(sFilterLoginRole.equals((String) ((JSONObject)oJsonProcessSubject).get("‘sLoginRole"))){
@@ -187,7 +187,7 @@ public class ProcessSubjectTaskService {
                     }else{
                         aResultLogins.add(sLogin);
                     }
-                }
+                //}
             }
         }
         LOG.info("aResultLogins in setProcessSubjectList {}", aResultLogins);
