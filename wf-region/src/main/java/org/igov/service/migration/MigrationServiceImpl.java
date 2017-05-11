@@ -262,7 +262,6 @@ public class MigrationServiceImpl implements MigrationService {
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
             if (string.length() < 255) {
-//                type = attributeTypeDao.findBy("sName", "StringShort").get();
                 type = attributeTypeDao.findById(3L).get();
                 Attribute_StringShort shortString = new Attribute_StringShort();
                 shortString.setsValue(string);
@@ -276,8 +275,9 @@ public class MigrationServiceImpl implements MigrationService {
                 attribute.setoAttribute_StringLong(longString);
             }
         }
-
-        if (clazz.getSimpleName().equalsIgnoreCase("integer")) {
+        //УЗНАТЬ У ОЛИ!!!!!!!
+        if (clazz.getSimpleName().equalsIgnoreCase("integer") ||
+                clazz.getSimpleName().equalsIgnoreCase("long")) {
             type = attributeTypeDao.findById(1L).get();
             Attribute_Integer integer = new Attribute_Integer();
             integer.setnValue((Integer) obj);
