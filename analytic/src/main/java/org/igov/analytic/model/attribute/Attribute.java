@@ -193,8 +193,6 @@ public class Attribute extends NamedEntity {
                 ", oAttributeType=" + oAttributeType +
                 ", oAttributeName=" + oAttributeName +
                 ", oAttributeTypeCustom=" + oAttributeTypeCustom +
-                ", oProcess=" + oProcess +
-                ", oProcessTask=" + oProcessTask +
                 ", oAttribute_Boolean=" + oAttribute_Boolean +
                 ", oAttribute_Date=" + oAttribute_Date +
                 ", oAttribute_Float=" + oAttribute_Float +
