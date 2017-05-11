@@ -37,10 +37,10 @@ public class RelationService {
        List<Relation_VO> aRelation_VO = new ArrayList<>();
                
         Relation oRelation = oRelationDao.findByExpected("sID", sID_Relation);
-        Long nID_RelationClass = oRelation.getnID_RelationClass();
+        //Long nID_RelationClass = oRelation.getnID_RelationClass();
         
-        if(oRelationClassDao.findByExpected("id", nID_RelationClass).getsClass().equals("ObjectGroup")){
-            
+        //if(oRelationClassDao.findByExpected("id", nID_RelationClass).getsClass().equals("ObjectGroup")){
+        if(oRelation.getoRelationClass().getsClass().equals("ObjectGroup")){  
             List<Relation_ObjectGroup> aRelation_ObjectGroup = new ArrayList<>();
             
             aRelation_ObjectGroup.addAll(oRelation_ObjectGroupDao.getRelation_ObjectGroups(oRelation.getId(), nID_Parent));

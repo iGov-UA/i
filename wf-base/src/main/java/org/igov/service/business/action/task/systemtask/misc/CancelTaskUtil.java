@@ -21,8 +21,8 @@ public class CancelTaskUtil {
             .append(TAG_action)
             .append("\" ")
             .append("accept-charset=\"utf-8\">")
-            .append("Ви можете скасувати свою заявку, вказавши причину в цьому полі: <br/>\n")
-            .append("<input type=\"text\" name=\"sInfo\"/><br/>\n")
+            /*.append("Ви можете скасувати свою заявку, вказавши причину в цьому полі: <br/>\n")
+            .append("<input type=\"text\" name=\"sInfo\"/><br/>\n")*/
                     //.append("<input type=\"hidden\" name=\"nID_Protected\" value=\"")
                     //.append(TAG_nID_Protected + "\"/><br/>\n")
             .append("<input type=\"submit\" name=\"submit\" ")

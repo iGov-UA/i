@@ -141,11 +141,12 @@ angular.module('journal').controller('JournalSearchController', function (
         MessagesService.getServiceMessages(sID_Order, sToken).then(function (oResponse) {
           if (ErrorsFactory.bSuccessResponse(oResponse)) {
             if (bExist(oResponse.messages)) {
-              $scope.aOrderMessages = oResponse.messages;
+              var aMessages = oResponse.messages;
+              $scope.aOrderMessages = [];
               if (events) {
-                $scope.aOrderMessages = $scope.aOrderMessages.concat(events);
+                aMessages = aMessages.concat(events);
               }
-              angular.forEach($scope.aOrderMessages, function (oOrderMessage, nIndex) {
+              angular.forEach(aMessages, function (oOrderMessage, nIndex) {
                 oOrderMessage.sDate = moment(oOrderMessage.sDate).toDate();
                   if (oOrderMessage.sData) {
                     try {
@@ -179,6 +180,9 @@ angular.module('journal').controller('JournalSearchController', function (
                         asParam: ['oData.soData: ' + oResponse.soData]
                       });
                     }
+                  }
+                  if((oOrderMessage.sMessage && !oOrderMessage.sMessage.match(/По заявці №[0-9-]+ дана відповідь громадянином:\W*\n*%tableBody%/)) || !oOrderMessage.sMessage){
+                    $scope.aOrderMessages.push(oOrderMessage);
                   }
               });
             } else {
@@ -268,6 +272,23 @@ angular.module('journal').controller('JournalSearchController', function (
                 sBody: 'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!',
                 sError: sError,
                 asParam: ['oData.saField: ' + $scope.aOrderMessages[0].aData]
+              });
+            }
+          }
+          if ($scope.aOrderMessages[0].aSubjectMessageQuestionFields) {
+            try {
+              angular.forEach($scope.aOrderMessages[0].aSubjectMessageQuestionFields, function (oField) {
+                if (oField.sType === "date") {
+                  oField.sValueNew = oField.oFactory.value ? oField.oFactory.get() : oField.sValueNew;//.value
+                  oField.oFactory = null;
+                }
+              });
+              oData.saField = JSON.stringify($scope.aOrderMessages[0].aSubjectMessageQuestionFields);
+            } catch (sError) {
+              ErrorsFactory.addFail({
+                sBody: 'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!',
+                sError: sError,
+                asParam: ['oData.saField: ' + $scope.aOrderMessages[0].aSubjectMessageQuestionFields]
               });
             }
           }

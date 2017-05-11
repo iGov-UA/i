@@ -27,13 +27,13 @@
         <activiti:formProperty id="nFile2" name="Викопіювання з кадастрової карти (плану)" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile3" name="Письмова згода землекористувача (землевласника) у разі ії вилучення (викуп) земельної ділянки" type="file"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка для прінтформи ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('cnap_417.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -114,8 +114,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_417_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка для прінтформи ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_417_print.html] ; ; bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/cnap_417_print.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;,&quot;docUr_pf&quot;,&quot;povidUr_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceSubject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'||[sCond]=='Юридична особа'&quot;},&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;,&quot;docFiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceSubject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'||[sCond]=='Фізична особа'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -152,8 +152,8 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка для прінтформи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern\print\novopskov\novopscov__417_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка для прінтформи ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern\print\novopskov\novopscov__417_print.html] ; ; bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;pattern\print\novopskov\novopscov__417_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceSubject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'||[sCond]=='Юридична особа'&quot;},&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceSubject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'||[sCond]=='Фізична особа'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>

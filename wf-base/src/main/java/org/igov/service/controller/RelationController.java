@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.igov.model.action.vo.Relation_VO;
 import org.igov.service.business.relation.RelationService;
@@ -30,6 +31,8 @@ public class RelationController {
     @Autowired
     RelationService oRelationService;
     
+    @ApiOperation(value = "Обработка Relation", notes = "##### Пример:\n"
+            + "https://alpha.test.region.igov.org.ua/wf/service/relation/getRelations?sID_Relation=1&sFindChild=gro \n")
     @RequestMapping(value = "/getRelations", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody

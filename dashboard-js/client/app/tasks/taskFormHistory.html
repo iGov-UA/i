@@ -8,6 +8,16 @@
     </div>
 
     <div ng-if="oMessage.osData.length > 1" ng-bind-html="oMessage.sBody"></div>
+    <div ng-if="item.aSubjectMessageQuestionFields && item.aSubjectMessageQuestionFields.length > 0">
+      <table class="QuestionFields">
+        <tr><td>Поле</td><td>Значення</td><td>Коментар</td></tr>
+        <tr ng-repeat="field in item.aSubjectMessageQuestionFields">
+          <td>{{field.sName}}</td>
+          <td>{{field.sValue}}</td>
+          <td>{{field.sNotify}}</td>
+        </tr>
+      </table>
+    </div>
 
     <div ng-if="oMessage.osData.length <= 1">
       <span ng-if="!oMessage.osData[0].sValueNew">{{oMessage.osData[0].sGeneralComment}}</span>

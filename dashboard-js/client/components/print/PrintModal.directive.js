@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboardJsApp').directive('printModal', ['$window', function ($window) {
+angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog', function ($window, signDialog) {
   return {
     restrict: 'E',
     link: function (scope, element, attrs, ngModel) {
@@ -22,6 +22,17 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', function ($
         popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + printContents + '</html>');
         popupWin.document.close();
         scope.hideModal();
+      };
+      scope.signWithEDS = function () {
+        //TODO call pdf creation here from html
+        var elementToPrint = element[0].getElementsByClassName('ng-modal-dialog-content')[0];
+        var printContents = elementToPrint.innerHTML;
+
+        signDialog.signManuallySelectedFile(function (signedContent) {
+          console.log('PDF Content:' + signedContent.content);
+        }, function () {
+          console.log('Sign Dismissed');
+        })
       }
     },
     templateUrl: 'components/print/PrintModal.html',

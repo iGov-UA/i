@@ -537,4 +537,57 @@
         <modifyDataType tableName="SubjectMessageQuestionField" columnName="sValueNew" newDataType="varchar(255)" />
         <modifyDataType tableName="SubjectMessageQuestionField" columnName="sNotify" newDataType="varchar(255)" />
     </changeSet>
+    
+    <changeSet id="issue-1650-add-new-entity-and-colums" author="Kovylin Yegor">
+        
+        <createTable tableName="ProcessSubjectTask">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sHead" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sBody" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="snID_Process_Activiti_Root" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <addColumn tableName="ProcessSubject">
+            <column name="sReportType" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_ProcessSubjectTask" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <addForeignKeyConstraint constraintName="FK_ProcessSubject_ProcessSubjectTask" referencedTableName="ProcessSubjectTask"
+                                 baseColumnNames="nID_ProcessSubjectTask" baseTableName="ProcessSubject" 
+                                 referencedColumnNames="nID"/>
+    
+    </changeSet>
+    
+    <changeSet id="test" author="olga">
+        
+    </changeSet>
+    
+    <changeSet id="issue-1650-add-new-colums-and-rename-existed" author="Ivan Denysenko">
+        
+        <addColumn tableName="ProcessSubject">
+            <column name="sLoginRole" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="sDatePlanNew" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        
+        <renameColumn newColumnName="sText" oldColumnName="sReport" tableName="ProcessSubject"/>
+        <renameColumn newColumnName="sTextType" oldColumnName="sReportType" tableName="ProcessSubject"/>
+        
+    </changeSet>
+        
 </databaseChangeLog>

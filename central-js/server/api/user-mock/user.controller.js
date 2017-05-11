@@ -20,7 +20,7 @@ var finishRequest = function (req, res, err, result, userService) {
     if (Admin.isAdminInn(customer.inn)) {
       admin = {
         inn: customer.inn,
-        token: Admin.generateAdminToken()
+        token: Admin.generateAdminToken(customer.inn)
       };
     }
     res.send({

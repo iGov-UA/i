@@ -45,24 +45,94 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asFilia" name="Філія" type="enum" required="true">
-          <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
-          <activiti:value id="sEnumFilia2" name="Філія №2"></activiti:value>
+        
+        <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина виникнення вакансії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFilia" name="Відділ" type="enum" required="true">
+          <activiti:value id="sEnumFilia1" name="Відділ №1"></activiti:value>
+          <activiti:value id="sEnumFilia2" name="Відділ №2"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDepartment" name="Організаційна одиниця" type="enum" required="true">
-          <activiti:value id="sEnumDepartment1" name="Організаційна одиниця №1"></activiti:value>
-          <activiti:value id="sEnumDepartment2" name="Організаційна одиниця №2"></activiti:value>
+        <activiti:formProperty id="asDepartment" name="Департамент" type="enum" required="true">
+          <activiti:value id="sEnumDepartment1" name="Департамент №1"></activiti:value>
+          <activiti:value id="sEnumDepartment2" name="Департамент №2"></activiti:value>
+        </activiti:formProperty><activiti:formProperty id="sVacancy" name="Вакантна посада" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubordination" name="Кому підпорядковується (тут будет селект из дерева)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Ким керує (кількість, посади, ПІБ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sExpDuration" name="Досвід роботи: тривалість" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sExpPost" name="Досвід роботи: посада" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sExpActivity" name="Досвід роботи: напрям діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCompetence" name="Необхідні професійні навички, вміння, знання" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sEducationMain" name="Основна освіта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEducationExtra" name="Додаткова освіта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Володіння іноземними мовами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_concord_hr.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_concord_hr.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sPersonal" name="Особисті якості та характеристики, необходні для ефективного виконання функціональних обов’язків" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAge" name="Вік" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
+          <activiti:value id="sEnumMale" name="Чоловік"></activiti:value>
+          <activiti:value id="sEnumFemale" name="Жінка"></activiti:value>
+          <activiti:value id="sEnumBoth" name="Чоловік або жінка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEmployee" name="Табельний номер і прізвище" type="enum" required="true">
-          <activiti:value id="sEnumEmployee1" name="№00001 Іванов Іван Іванович"></activiti:value>
-          <activiti:value id="sEnumEmployee2" name="№0002 Петров Петро Петрович"></activiti:value>
+        <activiti:formProperty id="sFamily" name="Сімейний стан, діти" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asCar" name="Наявність авто; ;sID_CheckboxTrue=sEnumCarYes" type="enum" default="sEnumCarNo">
+          <activiti:value id="sEnumCarNo" name="відсутнє"></activiti:value>
+          <activiti:value id="sEnumCarYes" name="є авто"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText" name="Текст ініціативного листа" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="asDocCreate" name="Документ" type="enum" default="sEnumCreateAccept">
-          <activiti:value id="sEnumCreateAccept" name="створити"></activiti:value>
-          <activiti:value id="sEnumCreateDeny" name="відмінити"></activiti:value>
+        <activiti:formProperty id="asLicense" name="Наявність водійського посвідчення; ;sID_CheckboxTrue=sEnumLicYes" type="enum" default="sEnumLicNo">
+          <activiti:value id="sEnumLicNo" name="відсутнє"></activiti:value>
+          <activiti:value id="sEnumLicYes" name="є посвідчення"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sExpExtra" name="Додаткові бажані навички, досвід" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Вакантна позиція" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Вакантна позиція&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTasks" name="Основні задачі" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sFunctions" name="Основні функціональні обов'язки" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sResults" name="Очікувані результати в випробувальний період" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період (тут будет селект из дерева)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace" name="Робоче місце" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSalary" name="Заробітна плата: оклад (ставка, грн)" type="string" default="Нижня: , Середня: , Вища: ."></activiti:formProperty>
+        <activiti:formProperty id="sBonus" name="Змінна складова (грн або %, періодичність виплати)" type="string" default="Премії: , Бонуси: "></activiti:formProperty>
+        <activiti:formProperty id="asRefundMobile" name="Компенсація мобільного зв'язку; ;sID_CheckboxTrue=sEnumRefundMobileYes" type="enum" default="sEnumRefundMobileNo">
+          <activiti:value id="sEnumRefundMobileNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefundMobile" name="Компенсація мобільного зв'язку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asRefundGas" name="Компенсація бензину; ;sID_CheckboxTrue=sEnumRefundGasYes" type="enum" default="sEnumRefundGasNo">
+          <activiti:value id="sEnumRefundGasNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefundGas" name="Компенсація бензину" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asRefundDeprec" name="Компенсація амортизації авто; ;sID_CheckboxTrue=sEnumRefundDeprecYes" type="enum" default="sEnumRefundDeprecNo">
+          <activiti:value id="sEnumRefundDeprecNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefundDeprec" name="Компенсація амортизації авто" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asRefundOther" name="Компенсація інше; ;sID_CheckboxTrue=sEnumRefundOtherYes" type="enum" default="sEnumRefundOtherNo">
+          <activiti:value id="sEnumRefundOtherNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefundOther" name="Компенсація інше" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTestTerm" name="Тривалість випробувального терміну" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTestSalary" name="Зарплата на час випробувального терміну" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sJobTime" name="Робочий час" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLunchTime" name="Перерва на обід" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOffTime" name="Вихідні дні" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTripTime" name="Процент відряджень (по відношенню до робочого часу)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFind" name="Способи пошуку кандидатів" type="enum">
+          <activiti:value id="sEnumFindNo" name="відкритий"></activiti:value>
+          <activiti:value id="sEnumFindYes" name="закритий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sFindMoney" name="Бюджет на пошук" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFindPlace" name="Масштаб пошуку" type="string" default="Місто: , Регіон: , Країна: ."></activiti:formProperty>
+        <activiti:formProperty id="sFindCompany" name="Компанії, в яких може працювати кандидат (назва та сфера діяльності)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNotCompany" name="Компанії, з яких не бажано брати кандидатів. Чому?" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Author]]></activiti:string>
