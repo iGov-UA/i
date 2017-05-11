@@ -47,7 +47,7 @@
         <activiti:formProperty id="markers2" name="Аліменти не сплачуються" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;: [&quot;scsvid&quot;, &quot;reg_reb&quot;, &quot;reg_oder&quot;, &quot;rish_sudu&quot;, &quot;dov_vikon&quot;, &quot;rozmir_alim&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;: &quot;choice_file_downloads&quot;, &quot;sClient_1&quot;: &quot;choice_visit&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'case_1' &amp;&amp; [sClient_1] == 'visit_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Знаходиться у місцях позбавлення волі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;: [&quot;scsvid&quot;, &quot;reg_reb&quot;, &quot;reg_oder&quot;, &quot;dov_provad&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;: &quot;choice_file_downloads&quot;, &quot;sClient_1&quot;: &quot;choice_visit&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'case_2' &amp;&amp; [sClient_1] == 'visit_1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Місце проживання не встановлено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;: [&quot;scsvid&quot;, &quot;reg_reb&quot;, &quot;reg_oder&quot;, &quot;dov_ovs&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;: &quot;choice_file_downloads&quot;, &quot;sClient_1&quot;: &quot;choice_visit&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'case_3' &amp;&amp; [sClient_1] == 'visit_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="номер району ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер Деснянський район" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='desn'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -90,8 +90,8 @@
           <activiti:value id="attr5_doc_bad" name="Дані надані не в повному обсязі - направити громадянину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_soczah_139_zayava.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_soczah_139_zayava1.html]" type="invisible" default="Форма заяви продовження" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_soczah_139_zayava.html] ; ; bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_soczah_139_zayava1.html] ; ; bVisible=false" type="string" default="Форма заяви продовження" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

@@ -78,7 +78,7 @@
         <activiti:formProperty id="bank_okpo" name="ЄДРПОУ банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="long"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер Вашого рахунку/картки в банку; заповнюється у разі вибору такого варіанта перерахування коштів" type="long"></activiti:formProperty>
         <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами рахунку;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="sBody" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="sBody ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="вибір варіанту отримання грошей" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;post_office&quot;],&quot;asID_Field&quot;: {&quot;sTransfer&quot;: &quot;transfer_type&quot;},&quot;sCondition&quot;: &quot;[sTransfer] == 'attr1_post'&quot;},&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;bank_name&quot;,&quot;bank_mfo&quot;,&quot;bank_okpo&quot;,&quot;bank_account&quot;,&quot;bankticket&quot;],&quot;asID_Field&quot;: {&quot;sTransfer&quot;: &quot;transfer_type&quot;},&quot;sCondition&quot;: &quot;[sTransfer] == 'attr2_bank'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -166,7 +166,7 @@
           <activiti:value id="attr1_ok" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="attr2_bad" name="Дані заповнені неправильно, повідомити громадянина (обов'язково впишіть коментар вище)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_socialhelp_kids_zayava.html]" type="invisible" default="${sBody}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_socialhelp_kids_zayava.html] ; ; bVisible=false" type="string" default="${sBody}" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -219,7 +219,7 @@
           <activiti:value id="attr2_bad" name="Рішення отримане, в допомозі відмовлено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="document" name="Сканована копія рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_socialhelp_kids_zayava.html]" type="invisible" default="${sBody}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_socialhelp_kids_zayava.html] ; ; bVisible=false" type="string" default="${sBody}" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression>${bankticket},${bankId_scan_passport},${inn_scan},${birthdocument_scan}</activiti:expression>

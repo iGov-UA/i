@@ -36,7 +36,7 @@
         <activiti:formProperty id="dekl_doh" name="Заповнена декларація" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="dov_zem" name="Завантажте довідку про наявність та розмір земельної частки (паю)" type="file"></activiti:formProperty>
         <activiti:formProperty id="notice" name="Зверніть увагу" type="label" default="Я усвідомлюю, що наведені мною відомості про доходи та майно, що вплинули або могли вплинути на прийняте рішення щодо надання соціальної допомоги, компенсацій та пільг, будуть перевірені згідно з чинним законодавством України."></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="номер району ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="маркер вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="маркер земельної частки (паю)" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;dov_zem&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dov_zem_pai&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер Деснянський район" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='desn'&quot;}}}"></activiti:formProperty>
@@ -72,7 +72,7 @@
           <activiti:value id="attr3_doc_bad" name="Дані надані не в повному обсязі - направити громадянину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_soczah_154_zayava.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_soczah_154_zayava.html] ; ; bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">

@@ -30,7 +30,7 @@
         <activiti:formProperty id="file3" name="Довідка органу державної виконавчої служби про розмір аліментів" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file4" name="Довідка з місця навчання про розмір стипендії;якщо особа з числа дітей-сиріт та дітей, позбавлених батьківського піклування, віком від 18 до 23 років або до закінчення відповідних навчальних закладів навчається за денною формою у вищих навчальних закладах I-IV рівня акредитації та професійно-технічних навчальних закладах, подаються довідки про розмір стипендії та про те, що вона не перебуває на повному державному утриманні" type="file"></activiti:formProperty>
         <activiti:formProperty id="file5" name="Копія виписки із акта огляду медико-соціальної експертної комісії або медичного висновку лікарсько-консультативної комісії лікувально-профілактичного закладу про дитину-інваліда, виданих в установленому МОЗ порядку;(якщо дитина є дитиною-інвалідом)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="номер району ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;post_office&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'post'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bank_name&quot;,&quot;mfo&quot;,&quot;edrpou&quot;,&quot;bank_account&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;transfer_type&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'bank'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер Деснянський район" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='desn'&quot;}}}"></activiti:formProperty>
               </extensionElements>
@@ -64,7 +64,7 @@
           <activiti:value id="attr5_bad" name="Дані надані не в повному обсязі - направити громадянину повідомлення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decision_comment1" name="Якщо ви відмовляєте замовнику, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_soc_help_147_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dnepr_soc_help_147_print.html] ; ; bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
