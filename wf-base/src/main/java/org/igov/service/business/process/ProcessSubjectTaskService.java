@@ -96,7 +96,11 @@ public class ProcessSubjectTaskService {
             JSONObject oJsonProcessSubjectTask, ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti) throws ParseException, Exception 
     {
         ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(1L);
+        
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
+        
+        Long nOrder = 0L;
+        
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             /*Map<String, Object> mProcessSubject
                     = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);*/
@@ -109,7 +113,10 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
-            oProcessSubject.setnOrder(0L);
+            oProcessSubject.setnOrder(nOrder);
+            
+            nOrder = nOrder + 1L;
+            
             /*if(((String) mProcessSubject.get("‘sLoginRole")).equals("Controller")){
                 mParamTask.put("sLoginController", mProcessSubject.get("sLogin")); //только в бд!!!
             }*/
@@ -131,6 +138,7 @@ public class ProcessSubjectTaskService {
         }
         
         oProcessSubjectDao.saveOrUpdate(aProcessSubject);
+        LOG.info("aProcessSubject in setProcessSubjectList {}", aProcessSubject);
         return aProcessSubject;
     }
     
