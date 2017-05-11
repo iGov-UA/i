@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 
 /**
@@ -78,33 +77,32 @@ public class MigrationServiceImpl implements MigrationService {
         return historyService.createNativeHistoricProcessInstanceQuery().sql(composeSql(getStartTime())).list();
     }
 
-    private DateTime getStartTime() {
-        DateTime startDateFromConfig = getStartDate(Config.class);
-        DateTime startDateFromProcess = getStartDate(Process.class);
-
-        DateTime startTime;
-        if (startDateFromConfig.isBefore(startDateFromProcess)) {
-            startTime = startDateFromProcess;
-//            Thread asyncUpdate = new Thread(new AsyncUpdate(startDateFromProcess));
+//    private DateTime getStartTime() {
+//        DateTime startDateFromConfig = getStartDate(Config.class);
+//        DateTime startDateFromProcess = getStartDate(Process.class);
+//
+//        DateTime startTime;
+//        if (startDateFromConfig.isBefore(startDateFromProcess)) {
+//            startTime = startDateFromProcess;
+//          Thread asyncUpdate = new Thread(new AsyncUpdate(startDateFromProcess));
 //            asyncUpdate.start();
-        } else {
-            startTime = startDateFromConfig;
-        }
-        return startTime;
-    }
+//        } else {
+//            startTime = startDateFromConfig;
+//        }
+//        return startTime;
+//    }
 
-    private DateTime getStartDate(Class<?> clazz) {
-        DateTime time;
-        if (clazz == Config.class) {
-            Config config = configDao.findLatestConfig();
-            String dateTime = config.getsValue();
-            time = new DateTime(dateTime);
-            return time;
-        } else {
-            Process process = processDao.findLatestProcess();
-            time = process.getoDateStart();
-            return time;
-        }
+    private DateTime getStartTime() {
+        LOG.info("Inside getStartTime()");
+        Config config = configDao.findLatestConfig();
+        String dateTime = config.getsValue();
+        LOG.info("Start date from Config: {}", dateTime);
+        DateTime time = new DateTime(dateTime);
+        HistoricProcessInstance processInstance =
+                historyService.createHistoricProcessInstanceQuery().finishedAfter(time.toDate())
+                        .orderByProcessInstanceStartTime().asc().listPage(0, 1).get(0);
+        LOG.info("Start date from act_hi_procinst: {}", processInstance.getStartTime());
+        return new DateTime(processInstance.getStartTime());
     }
 
     private void updateConfigTable(DateTime startDateFromProcess) {
@@ -126,7 +124,7 @@ public class MigrationServiceImpl implements MigrationService {
         for (HistoricProcessInstance historicProcess : historicProcessList) {
             Process processForSave = createProcessForSave(historicProcess);
             LOG.info("Current processForSave object: {}", processForSave);
-            processDao.saveOrUpdate(processForSave);
+//            processDao.saveOrUpdate(processForSave);
 //            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
 //            asyncUpdate.start();
         }

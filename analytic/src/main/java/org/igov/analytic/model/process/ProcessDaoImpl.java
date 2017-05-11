@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- *
  * @author olga
  */
 @Transactional("transactionManagerAnalytic")
@@ -33,6 +32,6 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
         log.info("Inside findLatestProcess()");
         List<Process> result = getSession().createSQLQuery("select * from \"Process\" ORDER BY \"oDateStart\" DESC LIMIT 1;\n")
                 .addEntity(Process.class).list();
-        return  result.get(0);
+        return result.get(0);
     }
 }
