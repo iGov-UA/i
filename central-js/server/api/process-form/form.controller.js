@@ -494,7 +494,10 @@ module.exports.signFormMultipleCallback = function (req, res) {
       "U":"U","V":"V","W":"W","X":"X","Y":"Y","Z":"Z"};
 
     return word.split('').map(function (char) {
-      return a[char] || char;
+      if(char in a) 
+        return a[char];
+      else
+        return char;      
     }).join("");
   }
 
