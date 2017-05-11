@@ -391,6 +391,44 @@ public class FlowService implements ApplicationContextAware {
             LOG.info("-----");
         }
         
+                if (!aoDateRange_Exclude.isEmpty()) {
+            List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
+            List<FlowSlot> flowSlotsToDelete = new ArrayList<>();
+            
+            for (FlowSlot oFlowSlot : aFlowSlot) {
+                
+                Boolean bBusy = false;
+                
+                for (FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()) {
+                    bBusy = bBusy || FlowSlotVO.bBusy(oFlowSlotTicket);
+                }
+                
+                for (ExcludeDateRange oExcludeRange : aoDateRange_Exclude) {
+                    if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())
+                            && oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))
+                            || oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())
+                            || oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo())) && (!bBusy)) {
+                        LOG.info("oFlowSlot to delete id:" + oFlowSlot.getId());
+                        LOG.info("oFlowSlot to delete name:" + oFlowSlot.getName());
+                        LOG.info("oFlowSlot to delete date:" + oFlowSlot.getsDate());
+                        flowSlotsToDelete.add(oFlowSlot);
+                        
+                    }
+                    
+                    if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())
+                            && oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))
+                            || oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())
+                            || oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo())) && (bBusy)) {
+                        LOG.info("oFlowSlot to delete when it busy:" + oFlowSlot.getsDate());
+                    }
+                }
+            }
+            
+            if (!flowSlotsToDelete.isEmpty()) {
+                flowSlotDao.delete(flowSlotsToDelete);
+            }
+        }
+        
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
             if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
                 Class<FlowPropertyHandler> flowPropertyHandlerClass = getFlowPropertyHandlerClass(flowProperty);
@@ -435,40 +473,7 @@ public class FlowService implements ApplicationContextAware {
             }
         }
         
-        if (!aoDateRange_Exclude.isEmpty()) {
-            List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
-            List<FlowSlot> flowSlotsToDelete = new ArrayList<>();
-            
-            for (FlowSlot oFlowSlot : aFlowSlot) {
-                
-                Boolean bBusy = false;
-                
-                for (FlowSlotTicket oFlowSlotTicket : oFlowSlot.getFlowSlotTickets()) {
-                    bBusy = bBusy || FlowSlotVO.bBusy(oFlowSlotTicket);
-                }
-                
-                for (ExcludeDateRange oExcludeRange : aoDateRange_Exclude) {
-                    if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())
-                            && oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))
-                            || oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())
-                            || oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo())) && (!bBusy)) {
-                        LOG.info("oFlowSlot to delete date:" + oFlowSlot.getsDate());
-                        flowSlotsToDelete.add(oFlowSlot);
-                    }
-                    
-                    if (((oFlowSlot.getsDate().isAfter(oExcludeRange.getsDateTimeAt())
-                            && oFlowSlot.getsDate().isBefore(oExcludeRange.getsDateTimeTo()))
-                            || oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeAt())
-                            || oFlowSlot.getsDate().equals(oExcludeRange.getsDateTimeTo())) && (bBusy)) {
-                        LOG.info("oFlowSlot to delete when it busy:" + oFlowSlot.getsDate());
-                    }
-                }
-            }
-            
-            if (!flowSlotsToDelete.isEmpty()) {
-                flowSlotDao.delete(flowSlotsToDelete);
-            }
-        }
+        
         
         return res;
     }
