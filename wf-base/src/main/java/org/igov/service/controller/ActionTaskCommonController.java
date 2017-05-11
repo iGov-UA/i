@@ -2931,7 +2931,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
-    ) {
+    ) throws Exception {
         
         Map<String, Object> mReturn = new HashMap<>();
         
@@ -2941,17 +2941,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("sLogin in setDocument is {}", sLogin);
             
             Map<String, Object> mParam = new HashMap<>();
-            
             mParam.put("sLoginAuthor", sLogin);
             
             ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
             
             mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
-            LOG.info("mReturn={}", mReturn);
             
         } catch (Exception e) {
             
             LOG.error("Error : /setDocument {}", e);
+            
+            throw new RuntimeException(e);
         }
         
 
