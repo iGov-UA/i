@@ -73,7 +73,7 @@
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_MJU]]></activiti:string>
@@ -134,13 +134,13 @@
             <activiti:string><![CDATA[_task_justice]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
-            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+            <activiti:expression>${processDefinitionId}</activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sLogin_AutorResolution::${sLogin_AutorResolution};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sName_AutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:expression>
+            <activiti:string><![CDATA[sDoc1::${sDoc1};;sDateRegistration::${sDateRegistration};;sDateDoc::${sDateDoc};;sLogin_AutorResolution::${sLogin_AutorResolution};;sDateExecution::${sDateExecution};;sContent::${sContent};;sAutorResolution::${sName_AutorResolution};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sApplicant::${sApplicant};;nCountAttach::${nCountAttach};;sNote::${sNote};;asUrgently::${asUrgently};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}]]></activiti:string>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -270,7 +270,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
           <activiti:field name="snID_Process_Activiti">
-            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+            <activiti:expression>${processInstanceId}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_ProcessSubjectStatus">
             <activiti:string><![CDATA[unactual]]></activiti:string>
@@ -424,7 +424,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
         <omgdc:Bounds height="84.0" width="130.0" x="406.0" y="89.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="84.0" width="131.0" x="746.0" y="199.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="131.0" x="746.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
         <omgdc:Bounds height="84.0" width="131.0" x="576.0" y="308.0"></omgdc:Bounds>
@@ -512,7 +512,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
         <omgdi:waypoint x="626.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="746.0" y="241.0"></omgdi:waypoint>
+        <omgdi:waypoint x="746.0" y="252.0"></omgdi:waypoint>
         <omgdi:waypoint x="708.0" y="239.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
@@ -533,7 +533,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
         <omgdi:waypoint x="811.0" y="173.0"></omgdi:waypoint>
-        <omgdi:waypoint x="811.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="811.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
         <omgdi:waypoint x="576.0" y="469.0"></omgdi:waypoint>
