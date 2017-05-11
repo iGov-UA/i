@@ -145,6 +145,7 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoSourceDB(getSourceDBForIGov());
         process.setaAttribute(createAttributes(historicProcess.getId(), process, null));
         process.setaProcessTask(createProcessTaskList(historicProcess.getId(), process, historicProcess));
+        process.setsID_Data("some test data");
         return process;
     }
 
