@@ -260,13 +260,14 @@ public class MigrationServiceImpl implements MigrationService {
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
             if (string.length() < 255) {
-                type = attributeTypeDao.findBy("sName", "StringShort").get();
+//                type = attributeTypeDao.findBy("sName", "StringShort").get();
+                type = attributeTypeDao.findById(3L).get();
                 Attribute_StringShort shortString = new Attribute_StringShort();
                 shortString.setsValue(string);
                 shortString.setoAttribute(attribute);
                 attribute.setoAttribute_StringShort(shortString);
             } else {
-                type = attributeTypeDao.findBy("sName", "StringLong").get();
+                type = attributeTypeDao.findById(4L).get();
                 Attribute_StringLong longString = new Attribute_StringLong();
                 longString.setsValue(string);
                 longString.setoAttribute(attribute);
@@ -275,28 +276,28 @@ public class MigrationServiceImpl implements MigrationService {
         }
 
         if (clazz.getSimpleName().equalsIgnoreCase("integer")) {
-            type = attributeTypeDao.findBy("sName", "Integer").get();
+            type = attributeTypeDao.findById(1L).get();
             Attribute_Integer integer = new Attribute_Integer();
             integer.setnValue((Integer) obj);
             integer.setoAttribute(attribute);
             attribute.setoAttribute_Integer(integer);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("boolean")) {
-            type = attributeTypeDao.findBy("sName", "Boolean").get();
+            type = attributeTypeDao.findById(5L).get();
             Attribute_Boolean boolean_attr = new Attribute_Boolean();
             boolean_attr.setbValue((Boolean) obj);
             boolean_attr.setoAttribute(attribute);
             attribute.setoAttribute_Boolean(boolean_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("date")) {
-            type = attributeTypeDao.findBy("sName", "Date").get();
+            type = attributeTypeDao.findById(6L).get();
             Attribute_Date date_attr = new Attribute_Date();
             date_attr.setoValue(new DateTime(obj));
             date_attr.setoAttribute(attribute);
             attribute.setoAttribute_Date(date_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("float")) {
-            type = attributeTypeDao.findBy("sName", "Float").get();
+            type = attributeTypeDao.findById(2L).get();
             Attribute_Float float_attr = new Attribute_Float();
             float_attr.setnValue((Double) obj);
             float_attr.setoAttribute(attribute);
