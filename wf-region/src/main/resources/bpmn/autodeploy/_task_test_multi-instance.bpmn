@@ -119,13 +119,12 @@
     <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'notExecuted'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="parallelgateway1"></sequenceFlow>
     <scriptTask id="scripttask1" name="ID Process" scriptFormat="javascript" activiti:autoStoreVariables="false">
-    <script>// получение ID текущего процесса
+      <script>// получение ID текущего процесса
     var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
-    <sequenceFlow id="flow11" sourceRef="scripttask1" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="scripttask1" targetRef="parallelgateway1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__task_test_multi-instance">
     <bpmndi:BPMNPlane bpmnElement="_task_test_multi-instance" id="BPMNPlane__task_test_multi-instance">
@@ -133,7 +132,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="241.0" y="230.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="250.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="391.0" y="237.0"></omgdc:Bounds>
@@ -201,13 +200,9 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <omgdi:waypoint x="761.0" y="148.0"></omgdi:waypoint>
         <omgdi:waypoint x="761.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="346.0" y="257.0"></omgdi:waypoint>
-        <omgdi:waypoint x="391.0" y="257.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="225.0" y="257.0"></omgdi:waypoint>
-        <omgdi:waypoint x="241.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="391.0" y="257.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
