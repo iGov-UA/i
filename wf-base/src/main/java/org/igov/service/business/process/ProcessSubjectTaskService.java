@@ -138,7 +138,7 @@ public class ProcessSubjectTaskService {
         }
         
         oProcessSubjectDao.saveOrUpdate(aProcessSubject);
-        LOG.info("aProcessSubject in setProcessSubjectList {}", aProcessSubject);
+        
         return aProcessSubject;
     }
     
@@ -190,7 +190,7 @@ public class ProcessSubjectTaskService {
                 }
             }
         }
-        
+        LOG.info("aResultLogins in setProcessSubjectList {}", aResultLogins);
         return aResultLogins;
     }
     
