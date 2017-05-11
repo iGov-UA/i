@@ -142,6 +142,7 @@ public class ProcessSubjectTaskService {
     }*/
     
     public List<String> getProcessSubjectLoginsWithoutTask(String snID_Process_Activiti, String sFilterLoginRole) throws RecordInmemoryException, org.json.simple.parser.ParseException{
+        LOG.info("getProcessSubjectLoginsWithoutTask started...");
         String sKeyRedis = (String)oRuntimeService.getVariable(snID_Process_Activiti, "sID_File_StorateTemp");
         byte[] aByteTaskBody = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
