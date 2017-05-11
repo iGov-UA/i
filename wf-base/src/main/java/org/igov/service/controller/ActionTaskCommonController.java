@@ -2941,8 +2941,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("sLogin in setDocument is {}", sLogin);
             
             Map<String, Object> mParam = new HashMap<>();
-            
             mParam.put("sLoginAuthor", sLogin);
+            LOG.info("mParam={}", mParam);
             
             ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
             LOG.info("oProcessInstanceChild={}", oProcessInstanceChild);
