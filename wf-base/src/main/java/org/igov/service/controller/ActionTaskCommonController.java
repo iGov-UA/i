@@ -2951,7 +2951,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             
             LOG.error("Error : /setDocument {}", oException);
             
-            throw new RuntimeException(oException);
+            throw new RuntimeException(oException.getMessage());
         }
         
 
