@@ -64,7 +64,7 @@
         <activiti:formProperty id="markers7" name="Маркери якщо ліквідували підприємство" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;doc_liquidation&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;woman&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'liquidation'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Маркери якщо жінка є фопом" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;doc_fop&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;woman&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fop'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="Маркери якщо жінка зареєстрована у центрі зайнятості" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;doc_unemployed&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;woman&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'unemployed'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="rName" name="номер району" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="rName" name="номер району ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers30" name="маркер Деснянський район" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;rName&quot;], &quot;asID_Field_sValue&quot;:[&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason]=='desn'&quot;}}}"></activiti:formProperty>
            </extensionElements>
     </startEvent>
@@ -118,7 +118,7 @@
         <activiti:formProperty id="date_visit" name="Внесіть дату та час візиту громадянки для надання довідки про вагітність" type="string"></activiti:formProperty>
         <activiti:formProperty id="room" name="укажіть кабінет - куди прийти громадянці" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_soc_help_165_print.html]" type="invisible" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_soc_help_165_print.html] ; ; bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
