@@ -2942,19 +2942,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             
             Map<String, Object> mParam = new HashMap<>();
             mParam.put("sLoginAuthor", sLogin);
-            LOG.info("/setDocument: mParam={}", mParam);
             
             ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
-            LOG.info("oProcessInstanceChild={}", oProcessInstanceChild);
             
             mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
-            LOG.info("mReturn={}", mReturn);
             
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             
             LOG.error("Error : /setDocument {}", e);
             
-            throw new Exception("Не удалось создать ProcessInstance с таким sLogin=" + sLogin + " и sID_BP={}" + sID_BP);
+            throw new RuntimeException("Test: " + e);
         }
         
 
