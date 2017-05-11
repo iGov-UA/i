@@ -124,7 +124,7 @@ public class MigrationServiceImpl implements MigrationService {
         for (HistoricProcessInstance historicProcess : historicProcessList) {
             Process processForSave = createProcessForSave(historicProcess);
             LOG.info("Current processForSave object: {}", processForSave.toString());
-//            processDao.saveOrUpdate(processForSave);
+            processDao.saveOrUpdate(processForSave);//within transaction with Config table
 //            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
 //            asyncUpdate.start();
         }
@@ -220,9 +220,9 @@ public class MigrationServiceImpl implements MigrationService {
 
     private List<Attribute> createAttributes(String instanceId, Process process, ProcessTask processTask) {
         List<HistoricVariableInstance> variableInstanceList = process != null ? historyService.
-                createHistoricVariableInstanceQuery().processInstanceId(instanceId).orderByVariableName().asc().list() :
+                createHistoricVariableInstanceQuery().processInstanceId(instanceId).list() :
                 historyService.
-                        createHistoricVariableInstanceQuery().taskId(instanceId).orderByVariableName().asc().list();
+                        createHistoricVariableInstanceQuery().taskId(instanceId).list();
 
         Map<String, Object> attributes = populateAttributes(variableInstanceList);
         List<Attribute> resultList = new ArrayList<>(attributes.size());
@@ -261,11 +261,13 @@ public class MigrationServiceImpl implements MigrationService {
                 Attribute_StringShort shortString = new Attribute_StringShort();
                 shortString.setsValue(string);
                 shortString.setoAttribute(attribute);
+                attribute.setoAttribute_StringShort(shortString);
             } else {
                 type.setName("StringLong");
                 Attribute_StringLong longString = new Attribute_StringLong();
                 longString.setsValue(string);
                 longString.setoAttribute(attribute);
+                attribute.setoAttribute_StringLong(longString);
             }
         }
 
@@ -274,24 +276,28 @@ public class MigrationServiceImpl implements MigrationService {
             Attribute_Integer integer = new Attribute_Integer();
             integer.setnValue((Integer) obj);
             integer.setoAttribute(attribute);
+            attribute.setoAttribute_Integer(integer);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("boolean")) {
             type.setName("Boolean");
             Attribute_Boolean boolean_attr = new Attribute_Boolean();
             boolean_attr.setbValue((Boolean) obj);
             boolean_attr.setoAttribute(attribute);
+            attribute.setoAttribute_Boolean(boolean_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("date")) {
             type.setName("Date");
             Attribute_Date date_attr = new Attribute_Date();
             date_attr.setoValue(new DateTime(obj));
             date_attr.setoAttribute(attribute);
+            attribute.setoAttribute_Date(date_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("float")) {
             type.setName("Float");
             Attribute_Float float_attr = new Attribute_Float();
             float_attr.setnValue((Double) obj);
             float_attr.setoAttribute(attribute);
+            attribute.setoAttribute_Float(float_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("file")) {
 
