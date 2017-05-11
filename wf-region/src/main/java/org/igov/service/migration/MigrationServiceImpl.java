@@ -123,7 +123,7 @@ public class MigrationServiceImpl implements MigrationService {
         LOG.info("Inside prepareAndSave()");
         for (HistoricProcessInstance historicProcess : historicProcessList) {
             Process processForSave = createProcessForSave(historicProcess);
-            LOG.info("Current processForSave object: {}", processForSave);
+            LOG.info("Current processForSave object: {}", processForSave.toString());
 //            processDao.saveOrUpdate(processForSave);
 //            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
 //            asyncUpdate.start();
@@ -281,7 +281,7 @@ public class MigrationServiceImpl implements MigrationService {
         if (clazz.getSimpleName().equalsIgnoreCase("date")) {
             type.setName("Date");
             Attribute_Date date_attr = new Attribute_Date();
-            date_attr.setoValue((DateTime) obj);
+            date_attr.setoValue(new DateTime(obj));
             date_attr.setoAttribute(attribute);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("float")) {
