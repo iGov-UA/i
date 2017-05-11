@@ -126,7 +126,7 @@ public class Liqpay {
         params.put("public_key", sPublicKey);
         if (nExpired_Period_Hour != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
-            Date oExriredDate = org.igov.service.business.util.Date.diff(null, nExpired_Period_Hour, Calendar.HOUR);
+            Date oExriredDate = org.igov.service.business.util.Date.diff(null, nExpired_Period_Hour, Calendar.MINUTE);
             LOG.info("oExriredDate: " + oExriredDate);
             params.put("expired_date", sdf.format(oExriredDate));
         }
