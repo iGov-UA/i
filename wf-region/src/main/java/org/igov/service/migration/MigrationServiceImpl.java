@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 
 /**
@@ -275,9 +276,8 @@ public class MigrationServiceImpl implements MigrationService {
                 attribute.setoAttribute_StringLong(longString);
             }
         }
-        //УЗНАТЬ У ОЛИ!!!!!!!
-        if (clazz.getSimpleName().equalsIgnoreCase("integer") ||
-                clazz.getSimpleName().equalsIgnoreCase("long")) {
+
+        if (clazz.getSimpleName().equalsIgnoreCase("integer")) {
             type = attributeTypeDao.findById(1L).get();
             Attribute_Integer integer = new Attribute_Integer();
             integer.setnValue((Integer) obj);
@@ -304,6 +304,13 @@ public class MigrationServiceImpl implements MigrationService {
             float_attr.setnValue((Double) obj);
             float_attr.setoAttribute(attribute);
             attribute.setoAttribute_Float(float_attr);
+        }
+        if (clazz.getSimpleName().equalsIgnoreCase("long")) {
+            type = attributeTypeDao.findById(8L).get();
+            Attribute_Long long_attr = new Attribute_Long();
+            long_attr.setnValue((Long) obj);
+            long_attr.setoAttribute(attribute);
+            attribute.setoAttribute_Long(long_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("file")) {
 

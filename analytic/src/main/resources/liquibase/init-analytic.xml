@@ -450,5 +450,24 @@
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="Create Attribute_Long table" author="dpekach">
+        <sql dbms="postgresql">
+            DROP TABLE IF EXISTS "Attribute_Long";
+        </sql>
+
+        <createTable tableName="Attribute_Long">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nValue" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="nID_Attribute" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_AttributeLong_Attribute"
+                             referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
     
 </databaseChangeLog>
