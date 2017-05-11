@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
-
 import org.activiti.engine.*;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
