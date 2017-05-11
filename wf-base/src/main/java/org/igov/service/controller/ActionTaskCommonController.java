@@ -2931,7 +2931,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
-    ) {
+    ) throws Exception {
         
         Map<String, Object> mReturn = new HashMap<>();
         
@@ -2945,13 +2945,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             mParam.put("sLoginAuthor", sLogin);
             
             ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+            LOG.info("oProcessInstanceChild={}", oProcessInstanceChild);
             
             mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
             LOG.info("mReturn={}", mReturn);
             
-        } catch (Exception e) {
+        } catch (ActivitiObjectNotFoundException e) {
             
             LOG.error("Error : /setDocument {}", e);
+            
+            throw new Exception("Не удалось создать ProcessInstance с таким sLogin=" + sLogin + " и sID_BP={}" + sID_BP);
         }
         
 
