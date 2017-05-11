@@ -2947,11 +2947,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             
             mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
             
-        } catch (Exception e) {
+        } catch (IllegalArgumentException oException) {
             
-            LOG.error("Error : /setDocument {}", e);
+            LOG.error("Error : /setDocument {}", oException);
             
-            throw new RuntimeException(e);
+            throw new RuntimeException(oException);
         }
         
 
