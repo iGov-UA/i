@@ -66,6 +66,9 @@ public class MigrationServiceImpl implements MigrationService {
     @Autowired
     private SourceDBDao sourceDBDao;
 
+    @Autowired
+    private AttributeTypeDao attributeTypeDao;
+
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
 
     @Override
@@ -252,18 +255,18 @@ public class MigrationServiceImpl implements MigrationService {
 
     //TODO write generics for this method
     private AttributeType getAttributeType(Object obj, Attribute attribute) {
-        AttributeType type = new AttributeType();
+        AttributeType type = null;
         Class<?> clazz = obj.getClass();
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
             if (string.length() < 255) {
-                type.setName("StringShort");
+                type = attributeTypeDao.findBy("sName", "StringShort").get();
                 Attribute_StringShort shortString = new Attribute_StringShort();
                 shortString.setsValue(string);
                 shortString.setoAttribute(attribute);
                 attribute.setoAttribute_StringShort(shortString);
             } else {
-                type.setName("StringLong");
+                type = attributeTypeDao.findBy("sName", "StringLong").get();
                 Attribute_StringLong longString = new Attribute_StringLong();
                 longString.setsValue(string);
                 longString.setoAttribute(attribute);
@@ -272,28 +275,28 @@ public class MigrationServiceImpl implements MigrationService {
         }
 
         if (clazz.getSimpleName().equalsIgnoreCase("integer")) {
-            type.setName("Integer");
+            type = attributeTypeDao.findBy("sName", "Integer").get();
             Attribute_Integer integer = new Attribute_Integer();
             integer.setnValue((Integer) obj);
             integer.setoAttribute(attribute);
             attribute.setoAttribute_Integer(integer);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("boolean")) {
-            type.setName("Boolean");
+            type = attributeTypeDao.findBy("sName", "Boolean").get();
             Attribute_Boolean boolean_attr = new Attribute_Boolean();
             boolean_attr.setbValue((Boolean) obj);
             boolean_attr.setoAttribute(attribute);
             attribute.setoAttribute_Boolean(boolean_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("date")) {
-            type.setName("Date");
+            type = attributeTypeDao.findBy("sName", "Date").get();
             Attribute_Date date_attr = new Attribute_Date();
             date_attr.setoValue(new DateTime(obj));
             date_attr.setoAttribute(attribute);
             attribute.setoAttribute_Date(date_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("float")) {
-            type.setName("Float");
+            type = attributeTypeDao.findBy("sName", "Float").get();
             Attribute_Float float_attr = new Attribute_Float();
             float_attr.setnValue((Double) obj);
             float_attr.setoAttribute(attribute);
