@@ -12,9 +12,9 @@ angular.module('dashboardJsApp')
       });
     }
 
-    function signContent(contentDataOrLoader, resultCallback, dismissCallback, errorCallback) {
+    function signContent(contentDataOrLoader, resultCallback, dismissCallback, errorCallback, modalClass) {
       var modalScope = $rootScope.$new();
-      var signModal = openModal(modalScope);
+      var signModal = openModal(modalScope, modalClass);
 
       $q.when(contentDataOrLoader).then(function (contentData) {
         modalScope.contentData = contentData;
@@ -40,7 +40,7 @@ angular.module('dashboardJsApp')
 
     return {
       /**
-       * pass contentData = { id : "id of data", content : "real data content"}
+       * pass contentData = { id : "id of data", content : "real data content", base64encoded: "true/false"}
        * or pass promise that will return contentData object
        *
        * resultCallback will return :

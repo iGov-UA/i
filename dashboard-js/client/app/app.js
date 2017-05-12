@@ -27,7 +27,8 @@ angular.module('dashboardJsApp', [
   'cryptoPlugin',
   'textAngular',
   'angularSpectrumColorpicker'
-]).config(function($urlRouterProvider, $locationProvider) {
+]).config(function($urlRouterProvider, $locationProvider, $compileProvider) {
+  $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
   $urlRouterProvider
     .otherwise('/');
   $locationProvider.html5Mode(true);

@@ -952,6 +952,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
         String bankIdFirstName = JsonRequestDataResolver.getBankIdFirstName(omRequestBody);
         String bankIdLastName = JsonRequestDataResolver.getBankIdLastName(omRequestBody);
+        
+        
+        int nID_Server = generalConfig.getSelfServerId();  
+        LOG.info("nID_Server in sendMailTo in interceptor is ", nID_Server );
+       
         //dnepr_mvk_291_common
 
         if (sMailTo != null) {
@@ -960,7 +965,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("Send notification mail... (sMailTo={})", sMailTo);
                 oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
             } else {
-                LOG.info("SKIP Send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
+                LOG.info("SKIP send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
             }
         }
 
