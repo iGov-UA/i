@@ -805,9 +805,10 @@ public class ProcessSubjectService {
      * @param snID_Task_Activiti - ид таски
      * @param sLogin - логин того, кто вызвал сервис
      * @param sText - если приходит, то изменяем
+     * @param sDatePlaneNew - планируемая дата выполнения
      * @return processSubject - процесс, который был изменен
      */
-    public ProcessSubject setProcessSubjectStatus(String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLogin, String sText) {
+    public ProcessSubject setProcessSubjectStatus(String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLogin, String sText, DateTime sDatePlaneNew) {
                 
         String snID_Process_Activiti = oActionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
         
@@ -829,29 +830,40 @@ public class ProcessSubjectService {
                 oProcessSubject.setsText(sText);
             }
         
-            if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") || sID_ProcessSubjectStatus.equals("unactual")) {
+            if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
+                || sID_ProcessSubjectStatus.equals("unactual") && sLoginRole.equals("Executor")) {
   
                 oProcessSubject.setsDateFact(dtCurrentDate);
                 
-            } else if (sID_ProcessSubjectStatus.equals("requestTransfered")) {
+            } else if (sID_ProcessSubjectStatus.equals("requestTransfered") && sLoginRole.equals("Executor")) {
                 
+                oProcessSubject.setsDatePlanNew(sDatePlaneNew);
                 
-                
-            } else if (sID_ProcessSubjectStatus.equals("transfered")) {
+            } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRole.equals("Controller")) {
             
+                oProcessSubject.setsDatePlan(sDatePlaneNew);
+                oProcessSubject.setsDatePlanNew(null);
+                //статус у исполнителя меняем на transfered
+            
+            } else if (sID_ProcessSubjectStatus.equals("rejected") && sLoginRole.equals("Controller")) {
                 
+                oProcessSubject.setsDateFact(null);
+                oProcessSubject.setsText(null);
+                //проставить статус rejected в записи исполнителя
             
-            } else if (sID_ProcessSubjectStatus.equals("rejected")) {
+            } else if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
+                || sID_ProcessSubjectStatus.equals("unactual") && sLoginRole.equals("Controller")) {
             
+                //Так же необходимо закрыть со статусом unactual по цепочке все делегированные задачи, если они не были отработаны исполнителями.
                 
-            
             }
             
             processSubjectDao.saveOrUpdate(oProcessSubject);
             
         } else {
         
-            LOG.info("setProcessSubjectStatus: sLogin= " + sLogin + " can not modify the process oProcessSubject= " + oProcessSubject);
+            LOG.info("setProcessSubjectStatus: sLogin= " + sLogin + "has not enough rights to modify the process oProcessSubject.Id= " + oProcessSubject.getId());
+            throw new IllegalArgumentException("sLogin= " + sLogin + "has not enough rights to modify the process oProcessSubject.Id= " + oProcessSubject.getId());
         }
         
         return oProcessSubject;

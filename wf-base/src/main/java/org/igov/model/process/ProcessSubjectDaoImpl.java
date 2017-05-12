@@ -142,16 +142,26 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
         return findBy("snID_Process_Activiti", snID_Process_Activiti).orNull();
     }
     
-     @Override
+    @Override
     public ProcessSubject findByProcessActivitiIdAndLogin(String snID_Process_Activiti, String sLogin) {
-	//проверить на null
-        Criteria criteria = getSession().createCriteria(ProcessSubject.class);
+	
+        ProcessSubject oProcessSubject = null;
         
-        criteria.add(Restrictions.eq("snID_Process_Activiti", snID_Process_Activiti));
-        criteria.add(Restrictions.eq("sLogin", sLogin));
-                
-        ProcessSubject oProcessSubject = (ProcessSubject) criteria.uniqueResult();
-        LOG.info("findByProcessActivitiIdAndLogin: oProcessSubject={} ", oProcessSubject);
+        if (snID_Process_Activiti != null && sLogin != null) {
+            
+            Criteria criteria = getSession().createCriteria(ProcessSubject.class);
+
+            criteria.add(Restrictions.eq("snID_Process_Activiti", snID_Process_Activiti));
+            criteria.add(Restrictions.eq("sLogin", sLogin));
+
+            oProcessSubject = (ProcessSubject) criteria.uniqueResult();
+            LOG.info("findByProcessActivitiIdAndLogin: oProcessSubject={} ", oProcessSubject);
+            
+        } else {
+        
+            LOG.info("findByProcessActivitiIdAndLogin: пустые аргументы snID_Process_Activiti={} и sLogin={}", snID_Process_Activiti, sLogin);
+            
+        }
         
         return oProcessSubject;
     }

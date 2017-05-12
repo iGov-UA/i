@@ -193,6 +193,6 @@ public class ProcessSubjectController {
                 @ApiParam(value = "JSON-объект с данными", required = true) @RequestBody Map<String, Object> mJsonBody
     ) {
 
-        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLogin, sText);
+        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLogin, sText, sDatePlaneNew);
     }*/
 }
