@@ -37,7 +37,7 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
     @Override
     public void saveWithConfigBackup(Process process) {
         Session session = getSession();
-        session.beginTransaction();
+        session.getTransaction().begin();
         saveOrUpdate(process);
         configDao.saveOrUpdate(createBackupConfig(process.getoDateStart()));
         session.getTransaction().commit();
