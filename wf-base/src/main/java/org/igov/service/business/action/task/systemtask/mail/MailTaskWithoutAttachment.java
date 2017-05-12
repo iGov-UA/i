@@ -19,7 +19,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
     	String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
-    	if(sJsonMongo!=null){
+    	if(sJsonMongo!=null && !sJsonMongo.isEmpty()){
         try {
         	Mail oMail = sendToMailFromMongo(oExecution);
             sendMailOfTask(oMail, oExecution);

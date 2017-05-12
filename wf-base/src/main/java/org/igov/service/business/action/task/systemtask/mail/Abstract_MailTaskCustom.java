@@ -736,12 +736,24 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
      */
 	public String getHtmlTextFromMongo(String sJsonHtml) throws IOException, ParseException, RecordInmemoryException,
 			ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
+		String sBodyFromMongo = null;
 		JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
-	       InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
-	    		   sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
-                   .getInputStream();
+		LOG.info("sJsonHtmlInFormatMongoooooooo " + sJsonHtmlInFormatMongo);
+		
+		String sKey = sJsonHtmlInFormatMongo.getString("sKey");
+		LOG.info("sJsonHtmlInFormatMongoooooooo sKey " + sKey);
+		String sID_StorageType = sJsonHtmlInFormatMongo.getString("sID_StorageType");
+		LOG.info("sJsonHtmlInFormatMongoooooooo sID_StorageType " + sID_StorageType);
+		
+		if(sKey!=null && !sKey.isEmpty()) {
+			 InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+					 sKey, sID_StorageType)
+	                   .getInputStream();
 
-	       String sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+			 return sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+		}
+		
+	      
 		return sBodyFromMongo;
 	}
 
