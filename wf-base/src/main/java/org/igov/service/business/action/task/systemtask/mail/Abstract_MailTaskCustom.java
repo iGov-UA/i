@@ -743,11 +743,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 			 InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
 		    		   sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
 	                   .getInputStream();
-
+			 LOG.info("sBodyFromMongo in getHtmlTextFromMongo >>>>>>>>>>>>", sBodyFromMongo);
 			 return sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+			 
 		}
 		
-	      
+		LOG.info("sBodyFromMongo in getHtmlTextFromMongo without HtmlText >>>>>>>>>>>>", sBodyFromMongo);
 		return sBodyFromMongo;
 	}
 
