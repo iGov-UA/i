@@ -28,6 +28,7 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.util.json.JSONException;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.task.Task;
 import org.apache.commons.io.IOUtils;
@@ -738,17 +739,19 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 			ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
 		String sBodyFromMongo = null;
 		JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
-		
-		if(sJsonHtmlInFormatMongo.equals("{\"\":\"\"}")) {
+		LOG.info("sJsonHtmlInFormatMongo " + sJsonHtmlInFormatMongo);
+		try{
 			 InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
 		    		   sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
 	                   .getInputStream();
 
-			 return sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+			 sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+		}catch(JSONException e){
+			return null;
 		}
+			 return sBodyFromMongo;
 		
 	      
-		return sBodyFromMongo;
 	}
 
     
