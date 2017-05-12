@@ -145,8 +145,9 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoDateFinish(new DateTime(historicProcess.getEndTime()));
         process.setoSourceDB(getSourceDBForIGov());
         process.setaAttribute(createAttributes(historicProcess.getId(), process, null));
-        process.setaProcessTask(createProcessTaskList(historicProcess.getId(), process, historicProcess));
+        process.setaProcessTask(createProcessTaskList(historicProcess.getId(), process));
         process.setsID_Data("sID_Data Process");
+        process.setCustomProcess(createCustomProcessToInsert(historicProcess, process));
         return process;
     }
 
@@ -176,6 +177,7 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setaAccessGroup(null);//спросить
         processTask.setaAccessUser(null);//спросить
         processTask.setaAttribute(createAttributes(taskInstance.getId(), null, processTask));
+        processTask.setCustomProcessTask(createCustomProcessTaskToInsert(taskInstance, processTask));
         return processTask;
     }
 
@@ -208,17 +210,13 @@ public class MigrationServiceImpl implements MigrationService {
         return sourceDBDao.findByIdExpected(2L);
     }
 
-    private List<ProcessTask> createProcessTaskList(String processId, Process process, HistoricProcessInstance historicProcess) {
+    private List<ProcessTask> createProcessTaskList(String processId, Process process) {
         List<HistoricTaskInstance> taskInstanceList = historyService.createHistoricTaskInstanceQuery()
                 .processInstanceId(processId).list();
         List<ProcessTask> processTaskList = new ArrayList<>(taskInstanceList.size());
         taskInstanceList.forEach(taskInstance -> {
             ProcessTask processTask = createProcessTaskToInsert(taskInstance, process);
             processTaskList.add(processTask);
-            //???????
-            createCustomProcessToInsert(historicProcess, process);
-            //???????
-            createCustomProcessTaskToInsert(taskInstance, processTask);
         });
         return processTaskList;
     }

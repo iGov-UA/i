@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.apache.ibatis.annotations.One;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
@@ -73,6 +74,9 @@ public class ProcessTask extends AbstractEntity{
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<AccessUser> aAccessUser = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "oProcessTask", cascade = CascadeType.ALL)
+    private CustomProcessTask customProcessTask;
 
     public String getsID_() {
         return sID_;
@@ -137,5 +141,12 @@ public class ProcessTask extends AbstractEntity{
     public void setaAccessUser(List<AccessUser> aAccessUser) {
         this.aAccessUser = aAccessUser;
     }
-    
+
+    public CustomProcessTask getCustomProcessTask() {
+        return customProcessTask;
+    }
+
+    public void setCustomProcessTask(CustomProcessTask customProcessTask) {
+        this.customProcessTask = customProcessTask;
+    }
 }
