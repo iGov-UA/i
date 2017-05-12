@@ -952,6 +952,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
         String bankIdFirstName = JsonRequestDataResolver.getBankIdFirstName(omRequestBody);
         String bankIdLastName = JsonRequestDataResolver.getBankIdLastName(omRequestBody);
+        
+        String sURL0 = generalConfig.getKey_UniSender_Mail();
+        LOG.info("Key_UniSender_Mail in sendMailTo in interceptor is ", sURL0 );
+        String sURL1 =  generalConfig.getSelfHost();
+        LOG.info("sURL1 in sendMailTo in interceptor is ", sURL1 );
+        String sURL2 =  generalConfig.getSelfHostCentral();
+        LOG.info("sURL2 in sendMailTo in interceptor is ", sURL2 );
+        String sMailClerk = JsonRequestDataResolver.getsMailClerk(omRequestBody);
+        LOG.info("sMailClerk in sendMailTo in interceptor is ", sMailClerk );
         //dnepr_mvk_291_common
 
         if (sMailTo != null) {
