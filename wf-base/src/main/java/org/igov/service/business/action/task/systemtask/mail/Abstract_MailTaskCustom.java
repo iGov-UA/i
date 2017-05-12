@@ -684,9 +684,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
          * достаем json который приходит в тексте из шага в виде ключ значение из монги 
          */
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
+        LOG.info("sJsonMongo is ",sJsonMongo);
         /**
          * достаем оригинальный текст html из mongo
          */
+        //if(!sJsonMongo.equals("")||sJsonMongo!=null){
 	    String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonMongo); 
 	    
 	    /**
@@ -710,9 +712,15 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
                 ._Port(Integer.valueOf(mailServerPort))
                 ._SSL(bSSL)._TLS(bTLS);
+        
+        
+        
 
         return oMail;
-    }
+        }
+        
+        
+    
 
     
     /**
