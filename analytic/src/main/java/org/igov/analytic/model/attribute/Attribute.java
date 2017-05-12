@@ -56,36 +56,36 @@ public class Attribute extends NamedEntity {
     private ProcessTask oProcessTask;
 
     @JsonProperty(value = "oAttribute_Boolean")
-    @OneToOne(mappedBy = "oAttribute")
-    Attribute_Boolean oAttribute_Boolean;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Boolean oAttribute_Boolean;
 
     @JsonProperty(value = "oAttribute_Date")
-    @OneToOne(mappedBy = "oAttribute")
-    Attribute_Date oAttribute_Date;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Date oAttribute_Date;
 
     @JsonProperty(value = "oAttribute_Float")
-    @OneToOne(mappedBy = "oAttribute")
-    Attribute_Float oAttribute_Float;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Float oAttribute_Float;
 
     @JsonProperty(value = "oAttribute_Integer")
-    @OneToOne(mappedBy = "oAttribute")
-    Attribute_Integer oAttribute_Integer;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Integer oAttribute_Integer;
 
     @JsonProperty(value = "oAttribute_StringShort")
-    @OneToOne(mappedBy = "oAttribute")
-    Attribute_StringShort oAttribute_StringShort;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_StringShort oAttribute_StringShort;
 
     @JsonProperty(value = "oAttribute_StringLong")
-    @OneToOne(mappedBy = "oAttribute")
-    Attribute_StringLong oAttribute_StringLong;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_StringLong oAttribute_StringLong;
 
     @JsonProperty(value = "oAttribute_File")
-    @OneToOne(mappedBy = "oAttribute")
-    Attribute_File oAttribute_File;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_File oAttribute_File;
 
     @JsonProperty
-    @OneToOne(mappedBy = "oAttribute")
-    Attribute_Long oAttribute_Long;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Long oAttribute_Long;
 
 
     public String getsID_() {
