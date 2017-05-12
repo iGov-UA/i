@@ -153,18 +153,18 @@ public class MigrationServiceImpl implements MigrationService {
 
     private CustomProcess createCustomProcessToInsert(HistoricProcessInstance historicProcess, Process process) {
         CustomProcess customProcess = new CustomProcess();
-        customProcess.setnDuration(historicProcess.getDurationInMillis());
+        customProcess.setnDuration(historicProcess.getDurationInMillis() != null ? historicProcess.getDurationInMillis() : 1L);
         customProcess.setoProcess(process);
-        customProcess.setsDeleteReason(historicProcess.getDeleteReason());
-        customProcess.setsName(historicProcess.getName());
-        customProcess.setsEndActivityId(historicProcess.getEndActivityId());
-        customProcess.setsStartActivityId(historicProcess.getStartActivityId());
-        customProcess.setsTenantId(historicProcess.getTenantId());
-        customProcess.setsProcessDefinitionId(historicProcess.getProcessDefinitionId());
-        customProcess.setsProcessInstanceId(historicProcess.getId());
-        customProcess.setsSuperProcessInstanceId(historicProcess.getSuperProcessInstanceId());
-        customProcess.setsStartUserId(historicProcess.getStartUserId());
-        customProcess.setsBusinessKey(historicProcess.getBusinessKey());//спросить
+        customProcess.setsDeleteReason(historicProcess.getDeleteReason() != null ? historicProcess.getDeleteReason() : "historicProcess.getDeleteReason()");
+        customProcess.setsName(historicProcess.getName() != null ? historicProcess.getName() : "historicProcess.getName()");
+        customProcess.setsEndActivityId(historicProcess.getEndActivityId() != null ? historicProcess.getEndActivityId() : "historicProcess.getEndActivityId()");
+        customProcess.setsStartActivityId(historicProcess.getStartActivityId() != null ? historicProcess.getStartActivityId() : "historicProcess.getStartActivityId()");
+        customProcess.setsTenantId(historicProcess.getTenantId() != null ? historicProcess.getTenantId() : "historicProcess.getTenantId()");
+        customProcess.setsProcessDefinitionId(historicProcess.getProcessDefinitionId() != null ? historicProcess.getProcessDefinitionId() : "historicProcess.getProcessDefinitionId()");
+        customProcess.setsProcessInstanceId(historicProcess.getId() != null ? historicProcess.getId() : "historicProcess.getId()");
+        customProcess.setsSuperProcessInstanceId(historicProcess.getSuperProcessInstanceId() != null ? historicProcess.getSuperProcessInstanceId() : "historicProcess.getSuperProcessInstanceId()");
+        customProcess.setsStartUserId(historicProcess.getStartUserId() != null ? historicProcess.getStartUserId() : "historicProcess.getStartUserId()");
+        customProcess.setsBusinessKey(historicProcess.getBusinessKey() != null ? historicProcess.getBusinessKey() : "historicProcess.getBusinessKey()");
         return customProcess;
     }
 
@@ -185,23 +185,23 @@ public class MigrationServiceImpl implements MigrationService {
         CustomProcessTask customProcessTask = new CustomProcessTask();
 
         customProcessTask.setoProcessTask(processTask);
-        customProcessTask.setnDuration(taskInstance.getDurationInMillis());
-        customProcessTask.setsFormKey(taskInstance.getFormKey());
-        customProcessTask.setnPriority(taskInstance.getPriority());
+        customProcessTask.setnDuration(taskInstance.getDurationInMillis() != null ? taskInstance.getDurationInMillis() : 1L);
+        customProcessTask.setsFormKey(taskInstance.getFormKey() != null ? taskInstance.getFormKey() : "sFormKey");
+        customProcessTask.setnPriority(taskInstance.getPriority() != 0 ? taskInstance.getPriority() : 1);
         customProcessTask.setoClaimTime(new DateTime(taskInstance.getClaimTime()));
         customProcessTask.setoDueDate(new DateTime(taskInstance.getDueDate()));
-        customProcessTask.setsAssignee(taskInstance.getAssignee());
-        customProcessTask.setsCategory(taskInstance.getCategory());
-        customProcessTask.setsDeleteReason(taskInstance.getDeleteReason());
-        customProcessTask.setsDescription(taskInstance.getDescription());
-        customProcessTask.setsExecutionId(taskInstance.getExecutionId());
-        customProcessTask.setsName(taskInstance.getName());
-        customProcessTask.setsOwner(taskInstance.getOwner());
-        customProcessTask.setsParentTaskId(taskInstance.getParentTaskId());
-        customProcessTask.setsProcessDefinitionId(taskInstance.getProcessDefinitionId());
-        customProcessTask.setsProcessInstanceId(taskInstance.getProcessInstanceId());
-        customProcessTask.setsTaskDefinitionKey(taskInstance.getTaskDefinitionKey());
-        customProcessTask.setsTenantId(taskInstance.getTenantId());
+        customProcessTask.setsAssignee(taskInstance.getAssignee() != null ? taskInstance.getAssignee() : "sAssignee");
+        customProcessTask.setsCategory(taskInstance.getCategory() != null ? taskInstance.getCategory() : "sCategory");
+        customProcessTask.setsDeleteReason(taskInstance.getDeleteReason() != null ? taskInstance.getDeleteReason() : "sDeleteReason");
+        customProcessTask.setsDescription(taskInstance.getDescription() != null ? taskInstance.getDescription() : "sDescription");
+        customProcessTask.setsExecutionId(taskInstance.getExecutionId() != null ? taskInstance.getExecutionId() : "sExecutionId");
+        customProcessTask.setsName(taskInstance.getName() != null ? taskInstance.getName() : "sName");
+        customProcessTask.setsOwner(taskInstance.getOwner() != null ? taskInstance.getOwner() : "sOwner");
+        customProcessTask.setsParentTaskId(taskInstance.getParentTaskId() != null ? taskInstance.getParentTaskId() : "sParentTaskId");
+        customProcessTask.setsProcessDefinitionId(taskInstance.getProcessDefinitionId() != null ? taskInstance.getProcessDefinitionId() : "sProcessDefinitionId");
+        customProcessTask.setsProcessInstanceId(taskInstance.getProcessInstanceId() != null ? taskInstance.getProcessInstanceId() : "sProcessInstanceId");
+        customProcessTask.setsTaskDefinitionKey(taskInstance.getTaskDefinitionKey() != null ? taskInstance.getTaskDefinitionKey() : "sTaskDefinitionKey");
+        customProcessTask.setsTenantId(taskInstance.getTenantId() != null ? taskInstance.getTenantId() : "sTenantId");
 
         return customProcessTask;
     }
