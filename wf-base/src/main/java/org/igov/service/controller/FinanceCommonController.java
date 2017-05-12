@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.io.BufferedReader;
-import java.net.URLDecoder;
 import java.util.Map;
 import org.apache.commons.codec.binary.Base64;
 import org.igov.io.GeneralConfig;
@@ -250,26 +249,15 @@ public class FinanceCommonController {
     public
     @ResponseBody
     Map<String, String> getRedirectPaymentLiqpay(
-            //@ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam String sID_Order,
         @ApiParam(value = "Строка-ИД Мерчанта", required = true) @RequestParam(value = "sID_Merchant", required = true) String sID_Merchant,
         @ApiParam(value = "Сумма (разделитель копеек - точка)", required = false) @RequestParam(value = "sSum", required = false) String sSum,
         @ApiParam(value = "Строка-ИД заявки-платежа", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
         @ApiParam(value = "Описание платежа", required = false) @RequestParam(value = "sDescription", required = false) String sDescription,
         @ApiParam(value = "ИД валюты (3 символа)", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency,
-        //@ApiParam(value = "", required = true) @RequestParam Language oLanguage,
-        //@ApiParam(value = "", required = true) @RequestParam String sID_Order,
         @ApiParam(value = "", required = false) @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
         @ApiParam(value = "", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess,
-        @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam Long nID_Subject
-        //@ApiParam(value = "", required = true) @RequestParam boolean bTest
-            
-            /*@ApiParam(value = "Строка-ИД заявки", required = true) @RequestParam String sID_Order,
-	    @ApiParam(value = "Строка-ИД платежной системы", required = true) @RequestParam String sID_PaymentSystem,
-	    @ApiParam(value = "Строка со вспомогательными данными", required = true) @RequestParam String sData,
-	    @ApiParam(value = "Cтрока-префикс платежа (если их несколько в рамках заявки)", required = false) @RequestParam(value = "sPrefix", required = false) String sPrefix,
-	    @ApiParam(value = "Строка-ИД транзакции", required = true) @RequestParam String sID_Transaction,
-	    @ApiParam(value = "Строка-статуса платежа", required = true) @RequestParam String sStatus_Payment*/
-
+        @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam Long nID_Subject,
+        @ApiParam(value = "количество часов актуальности платежа", required = false) @RequestParam Integer sExpired_Period_Hour
     ) throws Exception {
 
         if (sSum != null) {
@@ -277,12 +265,6 @@ public class FinanceCommonController {
         }else{
             sSum="0";
         }
-        /*if(sURL_CallbackStatusNew==null){
-            sURL_CallbackStatusNew="";
-        }
-        if(sURL_CallbackPaySuccess==null){
-            sURL_CallbackPaySuccess="";
-        }*/
         if(sDescription==null){
             sDescription="";
         }
@@ -295,7 +277,7 @@ public class FinanceCommonController {
         Map<String, String> mReturn = oLiqPuy.getPayDataRequest(sID_Merchant, sSum,  
             oID_Currency, oLanguage, sDescription,
             sID_Order, sURL_CallbackStatusNew,
-            sURL_CallbackPaySuccess, nID_Subject, bTest);
+            sURL_CallbackPaySuccess, nID_Subject, bTest, sExpired_Period_Hour);
         
         return mReturn;
     }

@@ -1,40 +1,65 @@
 {
 	"motion" : {
-		"ShowFieldsOnCondition_u1" : {
-			"aField_ID" : ["edrpou", "sNameUr", "sAddressFactualUr"], 
+		"ShowFieldsOnCondition_u1_1" : {
+			"aField_ID" : ["sID_SubjectOrgan_OKPO_01", "sFullName_SubjectOrgan_01", "sLocation_SubjectOrgan_01", "sCEOName_SubjectOrgan_01"], 
 			"asID_Field" : {
-				"sClient" : "subekt"
+				"sClient" : "asSubekt"
 			}, 
-			"sCondition" : "[sClient] == 'представник юридичної особи'"
+			"sCondition" : "[sClient] == 'представник юридичної особи' || [sClient] == 'ur'"
 		}, 
-		"ShowFieldsOnCondition_u2" : {
-			"aField_ID" : ["bankIdlastName", "bankIdfirstName", "bankIdmiddleName", "bankIdPassport", "bankIdinn"], 
+		"ShowFieldsOnCondition_u1_2" : {
+			"aField_ID" : ["clFIO", "bankIdPassport", "bankIdinn", "bankIdinn", "sAddressFactual"], 
 			"asID_Field" : {
-				"sClient" : "subekt"
+				"sClient" : "asSubekt"
 			}, 
-			"sCondition" : "[sClient] == 'фізична особа-підприємець'"
+			"sCondition" : "[sClient] == 'фізична особа-підприємець' || [sClient] == 'fiz'"
 		}, 
-		"ShowFieldsOnCondition_u3" : {
-			"aField_ID" : ["decision_reject"], 
+		"ShowFieldsOnCondition_u1_3" : {
+			"aField_ID" : ["asDecisionReject"], 
 			"asID_Field" : {
-				"sClient" : "decision_1"
+				"sClient" : "asDecision1"
 			}, 
 			"sCondition" : "[sClient] == 'reject'"
-		}, 
-		"ShowFieldsOnCondition_u4" : {
-			"aField_ID" : ["comment_1"], 
+		},  
+		"RequiredFieldsOnCondition_u1_1" : {
+			"aField_ID" : ["asDecisionReject"], 
 			"asID_Field" : {
-				"sClient" : "decision_1", 
-				"sClient_2" : "decision_reject"
+				"sClient" : "asDecision1"
+			}, 
+			"sCondition" : "[sClient] == 'reject'"
+		},
+		"ShowFieldsOnCondition_u1_4" : {
+			"aField_ID" : ["sComment1"], 
+			"asID_Field" : {
+				"sClient" : "asDecision1", 
+				"sClient_2" : "asDecisionReject"
 			}, 
 			"sCondition" : "[sClient] == 'reject' && [sClient_2] == 'other_reason' "
-		}, 
+		},
+		"RequiredFieldsOnCondition_u1_2" : {
+			"aField_ID" : ["sComment1"], 
+			"asID_Field" : {
+				"sClient" : "asDecision1", 
+				"sClient_2" : "asDecisionReject"
+			}, 
+			"sCondition" : "[sClient] == 'reject' && [sClient_2] == 'other_reason' "
+		},
 		"ShowFieldsOnCondition_uinv01" : {
 			"aField_ID" : ["markersUser1", "sID_Public_SubjectOrganJoin", "sAvtor", "sInn", "sAdresECP"], 
 			"asID_Field" : {
 				
 			}, 
 			"sCondition" : "false"
+		}
+	}, 
+	"attributes" : {
+		"Line_01" : {
+			"aElement_ID" : ["sID_SubjectOrgan_OKPO_01"], 
+			"sValue" : "Дані про юридичну особу"
+		}, 
+		"Line_02" : {
+			"aElement_ID" : ["clFIO"], 
+			"sValue" : "Дані про фізичну особу"
 		}
 	}
 }

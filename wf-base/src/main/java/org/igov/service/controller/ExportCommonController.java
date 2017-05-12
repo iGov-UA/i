@@ -7,7 +7,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import org.igov.io.fs.FileSystemData;
 
-import org.igov.service.business.export.AgroholdingService;
+import org.igov.service.business.export.IC_Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class ExportCommonController {
     private static final Logger LOG = LoggerFactory.getLogger(ExportCommonController.class);
 
     @Autowired
-    AgroholdingService agroholdingService;
+    IC_Service o1C_Service;
 
     @ApiOperation(value = "/agroholding/transferDocumentVacation", notes = "##### Экспорт документа о отпуске в агрофирму. Примеры:\n"
             + "https://alpha.test.igov.org.ua/wf/service/export/agroholding/transferDocumentVacation")
@@ -35,7 +35,7 @@ public class ExportCommonController {
         String filePath = FileSystemData.SUB_PATH_XML + "agroholding/";
         File oFile = FileSystemData.getFile(filePath, "documentVacation.xml");
         String documentVacation = Files.toString(oFile, Charset.defaultCharset());
-        String result = agroholdingService.transferDocument(documentVacation, "/Document_ОтпускаОрганизаций");
+        String result = o1C_Service.transferDocument(documentVacation, "/Document_ОтпускаОрганизаций");
         LOG.info("transferDocumentVacation result = " + result);
         return result;
     }
