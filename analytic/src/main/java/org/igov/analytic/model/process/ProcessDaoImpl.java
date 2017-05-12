@@ -43,6 +43,8 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
     private Config createBackupConfig(DateTime startDateTime) {
         Config config = new Config();
         config.setsValue(startDateTime.toString("yyyy-MM-dd HH:mm:ss"));
+        config.setName("Last successfully migrated process start_time_");
         return config;
+
     }
 }
