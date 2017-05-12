@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class CustomProcessTask extends AbstractEntity {
 
     @JsonProperty
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "nID_ProcessTask")
     private ProcessTask oProcessTask;
 

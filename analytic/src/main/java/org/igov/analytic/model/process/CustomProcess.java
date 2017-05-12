@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class CustomProcess extends AbstractEntity {
 
     @JsonProperty
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
 
