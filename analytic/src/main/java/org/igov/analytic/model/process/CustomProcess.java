@@ -7,11 +7,13 @@ import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by dpekach on 26.12.16.
  */
 @Entity
+@Table(name = "Custom Process")
 public class CustomProcess extends AbstractEntity {
 
     @JsonProperty
