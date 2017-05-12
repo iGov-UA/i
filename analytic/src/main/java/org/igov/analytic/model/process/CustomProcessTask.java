@@ -91,7 +91,7 @@ public class CustomProcessTask extends AbstractEntity {
 
     @JsonProperty
     @Column
-    private String nFormKey;
+    private String sFormKey;
 
     @JsonProperty
     @Column
@@ -222,12 +222,12 @@ public class CustomProcessTask extends AbstractEntity {
         this.oDueDate = oDueDate;
     }
 
-    public String getnFormKey() {
-        return nFormKey;
+    public String getsFormKey() {
+        return sFormKey;
     }
 
-    public void setnFormKey(String nFormKey) {
-        this.nFormKey = nFormKey;
+    public void setsFormKey(String sFormKey) {
+        this.sFormKey = sFormKey;
     }
 
     public String getsCategory() {
@@ -264,7 +264,7 @@ public class CustomProcessTask extends AbstractEntity {
                 ", sDeleteReason='" + sDeleteReason + '\'' +
                 ", nPriority=" + nPriority +
                 ", oDueDate=" + oDueDate +
-                ", nFormKey='" + nFormKey + '\'' +
+                ", nFormKey='" + sFormKey + '\'' +
                 ", sCategory='" + sCategory + '\'' +
                 ", sTenantId='" + sTenantId + '\'' +
                 '}';

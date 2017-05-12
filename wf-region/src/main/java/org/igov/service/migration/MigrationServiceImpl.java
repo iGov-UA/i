@@ -186,7 +186,7 @@ public class MigrationServiceImpl implements MigrationService {
 
         customProcessTask.setoProcessTask(processTask);
         customProcessTask.setnDuration(taskInstance.getDurationInMillis());
-        customProcessTask.setnFormKey(taskInstance.getFormKey());
+        customProcessTask.setsFormKey(taskInstance.getFormKey());
         customProcessTask.setnPriority(taskInstance.getPriority());
         customProcessTask.setoClaimTime(new DateTime(taskInstance.getClaimTime()));
         customProcessTask.setoDueDate(new DateTime(taskInstance.getDueDate()));
