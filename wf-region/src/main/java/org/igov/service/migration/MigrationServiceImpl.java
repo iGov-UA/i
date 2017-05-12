@@ -132,10 +132,6 @@ public class MigrationServiceImpl implements MigrationService {
 //            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
 //            asyncUpdate.start();
         }
-
-        LOG.info("After prepareAndSave()");
-        Process processFromDb = processDao.findById(20001L).get();
-        LOG.info("Process from DB: {}", processFromDb);
     }
 
     private Process createProcessForSave(HistoricProcessInstance historicProcess) {
