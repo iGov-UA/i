@@ -739,7 +739,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 		String sBodyFromMongo = null;
 		JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
 		
-		if(!sJsonHtmlInFormatMongo.equals("{\"\":\"\"}")) {
+		if(sJsonHtmlInFormatMongo.equals("{\"\":\"\"}")) {
 			 InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
 		    		   sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
 	                   .getInputStream();
