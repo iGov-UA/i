@@ -18,13 +18,24 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
+    	String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
+    	if(sJsonMongo!=null){
         try {
-            Mail oMail = sendToMailFromMongo(oExecution);
+        	Mail oMail = sendToMailFromMongo(oExecution);
             sendMailOfTask(oMail, oExecution);
             LOG.info("MailTaskWithoutAttachment ok!");
         } catch (Exception ex) {
             LOG.error("MailTaskWithoutAttachment: ", ex);
         }
+    	} else{
+    		try {
+            	Mail oMail = Mail_BaseFromTask(oExecution);
+                sendMailOfTask(oMail, oExecution);
+                LOG.info("MailTaskWithoutAttachment ok!");
+            } catch (Exception ex) {
+                LOG.error("MailTaskWithoutAttachment: ", ex);
+            }
+    	}
     }
     
 }

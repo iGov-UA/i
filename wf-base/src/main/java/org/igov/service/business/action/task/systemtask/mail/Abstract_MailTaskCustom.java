@@ -684,7 +684,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
          * достаем json который приходит в тексте из шага в виде ключ значение из монги 
          */
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
-        LOG.info("sJsonMongo is ",sJsonMongo);
+        LOG.info("sJsonMongo is ", sJsonMongo);
         /**
          * достаем оригинальный текст html из mongo
          */
