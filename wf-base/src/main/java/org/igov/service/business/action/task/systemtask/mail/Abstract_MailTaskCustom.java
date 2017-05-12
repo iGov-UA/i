@@ -739,7 +739,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 			ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
 		String sBodyFromMongo = null;
 		JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
-		LOG.info("sJsonHtmlInFormatMongo " + sJsonHtmlInFormatMongo);
+		LOG.info("sJsonHtmlInFormatMongo: {}", sJsonHtmlInFormatMongo);
 		try{
 			 InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
 		    		   sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
@@ -747,6 +747,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
 			 sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
 		}catch(JSONException e){
+			LOG.error("JSONException: {}",e.getMessage());
 			return null;
 		}
 			 return sBodyFromMongo;
