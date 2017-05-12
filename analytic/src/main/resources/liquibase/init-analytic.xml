@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    
+
     <changeSet id="Init tables" author="olga" runOnChange="false">
 
         <sql splitStatements="true" dbms="postgresql">
@@ -51,7 +51,7 @@
 
 
         <createSequence incrementBy="1" sequenceName="hibernate_sequence_analytic" startValue="20000"/>
-        
+
         <!-- ####################################################################################################### -->
         <createTable tableName="AttributeType">
             <column name="nID" type="bigint">
@@ -61,7 +61,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="AttributeTypeCustom">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -70,7 +70,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="SourceDB">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -79,7 +79,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="AccessGroup">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -88,7 +88,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="AccessUser">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -96,8 +96,8 @@
             <column name="sID" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-        </createTable>  
-        
+        </createTable>
+
         <createTable tableName="Process">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -119,7 +119,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="ProcessTask">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -138,7 +138,7 @@
                              referencedTableName="Process" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="AccessGroup_ProcessTask">
 
             <column name="nID_ProcessTask" type="bigint">
@@ -150,11 +150,11 @@
                              referencedTableName="AccessGroup" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
-        
+
         <addPrimaryKey constraintName="PK_AccessGroup_ProcessTask"
-                             columnNames="nID_AccessGroup, nID_ProcessTask"
-                             tableName="AccessGroup_ProcessTask"/>
-        
+                       columnNames="nID_AccessGroup, nID_ProcessTask"
+                       tableName="AccessGroup_ProcessTask"/>
+
         <createTable tableName="AccessUser_ProcessTask">
 
             <column name="nID_ProcessTask" type="bigint">
@@ -166,11 +166,11 @@
                              referencedTableName="AccessUser" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
-        
+
         <addPrimaryKey constraintName="PK_AccessUser_ProcessTask"
-                             columnNames="nID_AccessUser, nID_ProcessTask"
-                             tableName="AccessUser_ProcessTask"/>
-        
+                       columnNames="nID_AccessUser, nID_ProcessTask"
+                       tableName="AccessUser_ProcessTask"/>
+
         <createTable tableName="Attribute">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -195,10 +195,11 @@
             </column>
             <column name="nID_AttributeTypeCustom" type="bigint">
                 <constraints nullable="true" foreignKeyName="FK_Attribute_AttributeTypeCustom"
-                             referencedTableName="AttributeTypeCustom" referencedColumnNames="nID" deleteCascade="true"/>
+                             referencedTableName="AttributeTypeCustom" referencedColumnNames="nID"
+                             deleteCascade="true"/>
             </column>
-        </createTable>  
-        
+        </createTable>
+
         <createTable tableName="Attribute_Integer">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -211,7 +212,7 @@
                              referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="Attribute_Float">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -224,8 +225,8 @@
                              referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
-        
-        <createTable tableName="Attribute_StringShort"> 
+
+        <createTable tableName="Attribute_StringShort">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -237,7 +238,7 @@
                              referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="Attribute_StringLong">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -250,7 +251,7 @@
                              referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="Attribute_Boolean">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -263,7 +264,7 @@
                              referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="Attribute_Date">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -276,7 +277,7 @@
                              referencedTableName="Attribute" referencedColumnNames="nID" deleteCascade="true"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="Attribute_File">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -298,7 +299,7 @@
                 <constraints nullable="true"/>
             </column>
         </createTable>
-        
+
         <createTable tableName="Config">
             <column name="nID" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
@@ -310,11 +311,11 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    
+
     </changeSet>
-    
+
     <changeSet id="Add auto increment for H2" author="olga" dbms="h2">
-        
+
         <addAutoIncrement tableName="Attribute" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="Attribute_Integer" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="Attribute_Float" columnName="nID" startWith="2000" columnDataType="bigint"/>
@@ -331,9 +332,9 @@
         <addAutoIncrement tableName="ProcessTask" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="Attribute_File" columnName="nID" startWith="2000" columnDataType="bigint"/>
         <addAutoIncrement tableName="Config" columnName="nID" startWith="2000" columnDataType="bigint"/>
-        
+
     </changeSet>
-    
+
     <changeSet id="Create sequence" author="olga" runOnChange="false" failOnError="false">
         <!--preconditions onFail="MARK_RAN"><not><sequenceExists/></not></preconditions-->
         <createSequence incrementBy="1" sequenceName="hibernate_sequence" startValue="20000"/>
@@ -469,5 +470,36 @@
             </column>
         </createTable>
     </changeSet>
-    
+
+
+    <changeSet id="Drop NotNull Constraints in Custom tables" author="dpekach">
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sProcessDefinitionId"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sTaskDefinitionKey"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sProcessInstanceId"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sExecutionId"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sName"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sParentTaskId"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sDescription"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sOwner"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sAssignee"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="oClaimTime"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="nDuration"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sDeleteReason"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="nPriority"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="oDueDate"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sFormKey"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sCategory"/>
+        <dropNotNullConstraint tableName="Custom Process Task" columnName="sTenantId"/>
+
+        <dropNotNullConstraint tableName="Custom Process" columnName="sBusinessKey"/>
+        <dropNotNullConstraint tableName="Custom Process" columnName="nDuration"/>
+        <dropNotNullConstraint tableName="Custom Process" columnName="sStartUserId"/>
+        <dropNotNullConstraint tableName="Custom Process" columnName="sStartActivityId"/>
+        <dropNotNullConstraint tableName="Custom Process" columnName="sEndActivityId"/>
+        <dropNotNullConstraint tableName="Custom Process" columnName="sSuperProcessInstanceId"/>
+        <dropNotNullConstraint tableName="Custom Process" columnName="sDeleteReason"/>
+        <dropNotNullConstraint tableName="Custom Process" columnName="sTenantId"/>
+        <dropNotNullConstraint tableName="Custom Process" columnName="sName"/>
+    </changeSet>
+
 </databaseChangeLog>
