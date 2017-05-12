@@ -14,6 +14,7 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
       scope.hideModal = function () {
         scope.printModalState.show = false;
         scope.convertDisabledEnumFiedsToReadonlySimpleText();
+        scope.signedContent = null;
       };
 
       scope.printContent = function () {
@@ -27,26 +28,29 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
       };
 
       scope.signWithEDS = function () {
-        //TODO call pdf creation here from html
         var elementToPrint = element[0].getElementsByClassName('ng-modal-dialog-content')[0];
-        var printContents = elementToPrint.innerHTML;
+        var printContents = '<html><head><meta charset="utf-8"></head><body>' + elementToPrint.innerHTML + '</body></html>';
 
-        signDialog.signContent(generationService
+        generationService
           .generatePDFFromHTML(printContents)
           .then(function (pdfContent) {
-            return {id: "", content: pdfContent.base64, base64encoded : true};
-          }), function (signedContent) {
-          scope.signedContent = {
-            signedContentName :"download"
-          };
-          var blob = new Blob([ $base64.decode(signedContent.content) ], { type : 'application/pdf' });
-          scope.signedContent.signedContentURL = (window.URL || window.webkitURL).createObjectURL( blob );
-        }, function () {
-          console.log('Sign Dismissed');
-         //todo dissmiss sign
-        }, function (error) {
-          //todo react on error during sign
-        }, 'ng-on-top-of-modal-dialog modal-info');
+            var toSign = {id: "", content: pdfContent.base64, base64encoded: true};
+            signDialog.signContent(toSign,
+              function (signedContent) {
+                scope.signedContent = {
+                  signedContentName: "document" + new Date().getMilliseconds()
+                };
+                console.log('SIGN!!! \n' + signedContent.sign);
+                var decodedSignedPDF = $base64.decode(signedContent.sign);
+                var blob = new Blob([decodedSignedPDF], {type: 'application/pdf'});
+                scope.signedContent.signedContentURL = (window.URL || window.webkitURL).createObjectURL(blob);
+              }, function () {
+                console.log('Sign Dismissed');
+                //todo dissmiss sign
+              }, function (error) {
+                //todo react on error during sign
+              }, 'ng-on-top-of-modal-dialog modal-info');
+          });
       }
     },
     templateUrl: 'components/print/PrintModal.html',
