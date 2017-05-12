@@ -42,19 +42,6 @@ import java.util.*;
 @Service
 public class MigrationServiceImpl implements MigrationService {
 
-    class AsyncUpdate implements Runnable {
-        private final DateTime startDateTimeFromProcess;
-
-        AsyncUpdate(DateTime startDateTimeFromProcess) {
-            this.startDateTimeFromProcess = startDateTimeFromProcess;
-        }
-
-        @Override
-        public void run() {
-            updateConfigTable(startDateTimeFromProcess);
-        }
-    }
-
     @Autowired
     private HistoryService historyService;
 
@@ -81,38 +68,14 @@ public class MigrationServiceImpl implements MigrationService {
         return historyService.createNativeHistoricProcessInstanceQuery().sql(composeSql(getStartTime())).list();
     }
 
-//    private DateTime getStartTime() {
-//        DateTime startDateFromConfig = getStartDate(Config.class);
-//        DateTime startDateFromProcess = getStartDate(Process.class);
-//
-//        DateTime startTime;
-//        if (startDateFromConfig.isBefore(startDateFromProcess)) {
-//            startTime = startDateFromProcess;
-//          Thread asyncUpdate = new Thread(new AsyncUpdate(startDateFromProcess));
-//            asyncUpdate.start();
-//        } else {
-//            startTime = startDateFromConfig;
-//        }
-//        return startTime;
-//    }
-
     private DateTime getStartTime() {
-        LOG.info("Inside getStartTime()");
         Config config = configDao.findLatestConfig();
         String dateTime = config.getsValue();
-        LOG.info("Start date from Config: {}", dateTime);
         DateTime time = new DateTime(dateTime);
         HistoricProcessInstance processInstance =
                 historyService.createHistoricProcessInstanceQuery().finishedAfter(time.toDate())
                         .orderByProcessInstanceStartTime().asc().listPage(0, 1).get(0);
-        LOG.info("Start date from act_hi_procinst: {}", processInstance.getStartTime());
         return new DateTime(processInstance.getStartTime());
-    }
-
-    private void updateConfigTable(DateTime startDateFromProcess) {
-        Config config = new Config();
-        config.setsValue(startDateFromProcess.toString("yyyy-MM-dd HH:mm:ss"));
-        configDao.saveOrUpdate(config);
     }
 
     private String composeSql(DateTime startTime) {
@@ -124,13 +87,9 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private void prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
-        LOG.info("Inside prepareAndSave()");
         for (HistoricProcessInstance historicProcess : historicProcessList) {
             Process processForSave = createProcessForSave(historicProcess);
-            LOG.info("Current processForSave object: {}", processForSave.toString());
             processDao.saveWithConfigBackup(processForSave);
-//            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
-//            asyncUpdate.start();
         }
     }
 
@@ -248,7 +207,6 @@ public class MigrationServiceImpl implements MigrationService {
         });
         return resultMap;
     }
-
 
     //TODO write generics for this method
     private AttributeType getAttributeType(Object obj, Attribute attribute) {
