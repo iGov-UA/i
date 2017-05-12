@@ -60,11 +60,11 @@ public class SetTasks implements TaskListener {
 
         String soData_Value = "";
 
-        try {
+        //try {
             soData_Value = (this.soData != null) ? getStringFromFieldExpression(this.soData, delegateTask.getExecution()) : "";
-        } catch (Exception ex) {
+        /*} catch (Exception ex) {
             LOG.error("soData: ", ex);
-        }
+        }*/
 
         LOG.info("SetTasks start with soData..." + soData_Value);
 

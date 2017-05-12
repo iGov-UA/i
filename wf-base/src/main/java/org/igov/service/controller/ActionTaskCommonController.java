@@ -2932,15 +2932,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
-
-        LOG.info("SetDocument in ActionTaskCommonController started...");
-        LOG.info("sLogin in setDocument is {}", sLogin);
-        Map<String, Object> mParam = new HashMap<>();
-        mParam.put("sLoginAuthor", sLogin);
-        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+        
         Map<String, Object> mReturn = new HashMap<>();
-        mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
-        LOG.info("mReturn={}", mReturn);
+        
+        try {
+         
+            LOG.info("SetDocument in ActionTaskCommonController started...");
+            LOG.info("sLogin in setDocument is {}", sLogin);
+            
+            Map<String, Object> mParam = new HashMap<>();
+            mParam.put("sLoginAuthor", sLogin);
+            
+            ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+            
+            mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+            
+        } catch (IllegalArgumentException oException) {
+            
+            LOG.error("Error : /setDocument {}", oException);
+            
+            throw new RuntimeException(oException.getMessage());
+        }
+        
 
         return mReturn;
     }
