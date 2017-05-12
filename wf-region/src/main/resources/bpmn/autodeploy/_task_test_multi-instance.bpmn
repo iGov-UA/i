@@ -75,7 +75,7 @@
         <activiti:formProperty id="markers13" name="Если доработать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sRemark&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Отправить исполнителю на доработку (отклонить отчет)'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
-      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${processSubjectTaskService.getProcessSubjectLoginsWithoutTask(execution.getProcessInstanceId(), 'Controller')}" activiti:elementVariable="${sLogin}"></multiInstanceLoopCharacteristics>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${processSubjectTaskService.getProcessSubjectLoginsWithoutTask(execution.getProcessInstanceId(), 'Controller')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="Исполнитель" activiti:candidateUsers="${sLogin}">
