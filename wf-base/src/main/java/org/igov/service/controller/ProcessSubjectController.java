@@ -5,22 +5,29 @@ import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectResultTree;
 import org.igov.service.business.process.ProcessSubjectService;
 import org.igov.service.business.process.ProcessSubjectTreeService;
+import org.igov.service.business.process.ProcessSubjectTaskService;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
 import java.util.List;
-import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.service.business.process.ProcessSubjectTaskService;
+import java.util.Map;
+
 import org.json.simple.parser.ParseException;
+
 
 @Controller
 @Api(tags = {"ProcessSubjectController — Иерархия процессов"})
@@ -176,13 +183,15 @@ public class ProcessSubjectController {
     /*
     @ApiOperation(value = "Задать статус процесса ", notes = "##### Пример:\n" 
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectStatus?nID_ProcessSubjectStatus=1&snID_Task_Activiti=33042597&sLogin=justice_common \n")
-    @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.POST)
+    @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody
     public ProcessSubject setProcessSubjectStatus(
                 @ApiParam(value = "ид процесса", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
                 @ApiParam(value = "ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
                 @ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-                @ApiParam(value = "sText", required = false) @RequestParam(value = "sText", required = false) String sText) {
+                @ApiParam(value = "sText", required = false) @RequestParam(value = "sText", required = false) String sText,
+                @ApiParam(value = "JSON-объект с данными", required = true) @RequestBody Map<String, Object> mJsonBody
+    ) {
 
         return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLogin, sText);
     }*/
