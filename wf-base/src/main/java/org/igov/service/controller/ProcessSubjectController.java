@@ -172,4 +172,18 @@ public class ProcessSubjectController {
     {
         return oProcessSubjectTaskService.getProcessSubjectLoginsWithoutTask(snID_Process_Activiti, sFilterLoginRole);
     }
+    
+    /*
+    @ApiOperation(value = "Задать статус процесса ", notes = "##### Пример:\n" 
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectStatus?nID_ProcessSubjectStatus=1&snID_Task_Activiti=33042597&sLogin=justice_common \n")
+    @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public ProcessSubject setProcessSubjectStatus(
+                @ApiParam(value = "ид процесса", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
+                @ApiParam(value = "ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
+                @ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
+                @ApiParam(value = "sText", required = false) @RequestParam(value = "sText", required = false) String sText) {
+
+        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLogin, sText);
+    }*/
 }

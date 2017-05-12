@@ -36,6 +36,8 @@ import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessSubjectTreeDao;
 import org.igov.model.process.ProcessUser;
 import org.igov.service.conf.AttachmetService;
+import org.igov.service.business.action.event.ActionEventHistoryService;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -49,7 +51,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import org.igov.io.GeneralConfig;
-import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -91,6 +92,9 @@ public class ProcessSubjectService {
     
     @Autowired
     private AttachmetService oAttachmetService;
+    
+    @Autowired
+    private ActionTaskService oActionTaskService;
 
     public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel, String sFind) {
 
@@ -793,4 +797,63 @@ public class ProcessSubjectService {
 	}
     }
     
+    /**
+     * Изменение статуса процесса
+     * https://github.com/e-government-ua/i/issues/1660
+     * 
+     * @param sID_ProcessSubjectStatus - статус на который нужно изменить
+     * @param snID_Task_Activiti - ид таски
+     * @param sLogin - логин того, кто вызвал сервис
+     * @param sText - если приходит, то изменяем
+     * @return processSubject - процесс, который был изменен
+     */
+    public ProcessSubject setProcessSubjectStatus(String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLogin, String sText) {
+                
+        String snID_Process_Activiti = oActionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
+        
+        ProcessSubject oProcessSubject = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLogin);
+                  
+        String sLoginRole = oProcessSubject.getsLoginRole();
+        
+        if (sLoginRole.equals("Executor") || sLoginRole.equals("Controller")) {
+            
+            ProcessSubjectStatus oProcessSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
+            
+            DateTime dtCurrentDate = new DateTime();
+             
+            oProcessSubject.setsDateEdit(dtCurrentDate);
+            oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
+            
+            if (sText != null) {          
+                
+                oProcessSubject.setsText(sText);
+            }
+        
+            if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") || sID_ProcessSubjectStatus.equals("unactual")) {
+  
+                oProcessSubject.setsDateFact(dtCurrentDate);
+                
+            } else if (sID_ProcessSubjectStatus.equals("requestTransfered")) {
+                
+                
+                
+            } else if (sID_ProcessSubjectStatus.equals("transfered")) {
+            
+                
+            
+            } else if (sID_ProcessSubjectStatus.equals("rejected")) {
+            
+                
+            
+            }
+            
+            processSubjectDao.saveOrUpdate(oProcessSubject);
+            
+        } else {
+        
+            LOG.info("setProcessSubjectStatus: sLogin= " + sLogin + " can not modify the process oProcessSubject= " + oProcessSubject);
+        }
+        
+        return oProcessSubject;
+    }
 }
