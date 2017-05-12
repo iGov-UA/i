@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog', function ($window, signDialog) {
+angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog', 'generationService', '$base64', function ($window, signDialog, generationService, $base64) {
   return {
     restrict: 'E',
     link: function (scope, element, attrs, ngModel) {
+      scope.signedContent = null;
       scope.dialogStyle = {};
       if (attrs.width)
         scope.dialogStyle.width = attrs.width;
@@ -14,6 +15,7 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
         scope.printModalState.show = false;
         scope.convertDisabledEnumFiedsToReadonlySimpleText();
       };
+
       scope.printContent = function () {
         var elementToPrint = element[0].getElementsByClassName('ng-modal-dialog-content')[0];
         var printContents = elementToPrint.innerHTML;
@@ -23,16 +25,28 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
         popupWin.document.close();
         scope.hideModal();
       };
+
       scope.signWithEDS = function () {
         //TODO call pdf creation here from html
         var elementToPrint = element[0].getElementsByClassName('ng-modal-dialog-content')[0];
         var printContents = elementToPrint.innerHTML;
 
-        signDialog.signManuallySelectedFile(function (signedContent) {
-          console.log('PDF Content:' + signedContent.content);
+        signDialog.signContent(generationService
+          .generatePDFFromHTML(printContents)
+          .then(function (pdfContent) {
+            return {id: "", content: pdfContent.base64, base64encoded : true};
+          }), function (signedContent) {
+          scope.signedContent = {
+            signedContentName :"download"
+          };
+          var blob = new Blob([ $base64.decode(signedContent.content) ], { type : 'application/pdf' });
+          scope.signedContent.signedContentURL = (window.URL || window.webkitURL).createObjectURL( blob );
         }, function () {
           console.log('Sign Dismissed');
-        })
+         //todo dissmiss sign
+        }, function (error) {
+          //todo react on error during sign
+        }, 'ng-on-top-of-modal-dialog modal-info');
       }
     },
     templateUrl: 'components/print/PrintModal.html',
