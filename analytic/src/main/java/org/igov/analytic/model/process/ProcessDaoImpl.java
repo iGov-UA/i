@@ -6,7 +6,12 @@
 package org.igov.analytic.model.process;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.igov.analytic.model.config.Config;
+import org.igov.analytic.model.config.ConfigDao;
 import org.igov.analytic.model.core.GenericEntityDaoAnalytic;
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +31,22 @@ public class ProcessDaoImpl extends GenericEntityDaoAnalytic<Long, Process> impl
         super(Process.class);
     }
 
+    @Autowired
+    ConfigDao configDao;
+
     @Override
-    @SuppressWarnings("unchecked")
-    public Process findLatestProcess() {
-        log.info("Inside findLatestProcess()");
-        List<Process> result = getSession().createSQLQuery("select * from \"Process\" ORDER BY \"oDateStart\" DESC LIMIT 1;\n")
-                .addEntity(Process.class).list();
-        return result.get(0);
+    public void saveWithConfigBackup(Process process) {
+        Session session = getSession();
+        session.beginTransaction();
+        saveOrUpdate(process);
+        configDao.saveOrUpdate(createBackupConfig(process.getoDateStart()));
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    private Config createBackupConfig(DateTime startDateTime) {
+        Config config = new Config();
+        config.setsValue(startDateTime.toString("yyyy-MM-dd HH:mm:ss"));
+        return config;
     }
 }

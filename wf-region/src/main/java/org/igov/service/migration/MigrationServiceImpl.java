@@ -128,7 +128,7 @@ public class MigrationServiceImpl implements MigrationService {
         for (HistoricProcessInstance historicProcess : historicProcessList) {
             Process processForSave = createProcessForSave(historicProcess);
             LOG.info("Current processForSave object: {}", processForSave.toString());
-            processDao.saveOrUpdate(processForSave);//within transaction with Config table
+            processDao.saveWithConfigBackup(processForSave);
 //            Thread asyncUpdate = new Thread(new AsyncUpdate(processForSave.getoDateStart()));
 //            asyncUpdate.start();
         }
