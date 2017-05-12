@@ -1,5 +1,9 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.activiti.engine.delegate.DelegateExecution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +23,7 @@ public class MailTaskWithoutAttachmentBase extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         try {
+        	
             Mail oMail = Mail_BaseFromTask(oExecution);
             sendMailOfTask(oMail, oExecution);
             LOG.info("MailTaskWithoutAttachment ok!");

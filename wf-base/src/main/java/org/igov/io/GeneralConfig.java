@@ -210,11 +210,11 @@ public class GeneralConfig {
     @Value("${general.Export.Agroholding.Auth.sPassword}")
     private String sPassword_Auth_Agroholding;
     
-    @Value("${general.1C.sURL}")
+    @Value("${general.s1c.sURL}")
     private String sURL_1C;
-    @Value("${general.1C.Auth.sLogin}")
+    @Value("${general.s1c.Auth.sLogin}")
     private String sLogin_Auth_1C;
-    @Value("${general.1C.Auth.sPassword}")
+    @Value("${general.s1c.Auth.sPassword}")
     private String sPassword_Auth_1C;
 
     public String getObjectSubPlace_Auth_sLogin() {

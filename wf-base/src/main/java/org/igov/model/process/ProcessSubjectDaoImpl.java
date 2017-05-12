@@ -1,7 +1,9 @@
 package org.igov.model.process;
 
 import java.util.Date;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.criterion.Restrictions;
 import org.igov.model.core.GenericEntityDao;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -138,5 +140,29 @@ public class ProcessSubjectDaoImpl extends GenericEntityDao<Long, ProcessSubject
     @Override
     public ProcessSubject findByProcessActivitiId(String snID_Process_Activiti){
         return findBy("snID_Process_Activiti", snID_Process_Activiti).orNull();
+    }
+    
+    @Override
+    public ProcessSubject findByProcessActivitiIdAndLogin(String snID_Process_Activiti, String sLogin) {
+	
+        ProcessSubject oProcessSubject = null;
+        
+        if (snID_Process_Activiti != null && sLogin != null) {
+            
+            Criteria criteria = getSession().createCriteria(ProcessSubject.class);
+
+            criteria.add(Restrictions.eq("snID_Process_Activiti", snID_Process_Activiti));
+            criteria.add(Restrictions.eq("sLogin", sLogin));
+
+            oProcessSubject = (ProcessSubject) criteria.uniqueResult();
+            LOG.info("findByProcessActivitiIdAndLogin: oProcessSubject={} ", oProcessSubject);
+            
+        } else {
+        
+            LOG.info("findByProcessActivitiIdAndLogin: пустые аргументы snID_Process_Activiti={} и sLogin={}", snID_Process_Activiti, sLogin);
+            
+        }
+        
+        return oProcessSubject;
     }
 }

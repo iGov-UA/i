@@ -28,6 +28,7 @@ import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.util.json.JSONException;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.task.Task;
 import org.apache.commons.io.IOUtils;
@@ -684,9 +685,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
          * достаем json который приходит в тексте из шага в виде ключ значение из монги 
          */
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
+        LOG.info("sJsonMongo is ", sJsonMongo);
         /**
          * достаем оригинальный текст html из mongo
          */
+        //if(!sJsonMongo.equals("")||sJsonMongo!=null){
 	    String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonMongo); 
 	    
 	    /**
@@ -710,9 +713,15 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
                 ._Port(Integer.valueOf(mailServerPort))
                 ._SSL(bSSL)._TLS(bTLS);
+        
+        
+        
 
         return oMail;
-    }
+        }
+        
+        
+    
 
     
     /**
@@ -728,13 +737,22 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
      */
 	public String getHtmlTextFromMongo(String sJsonHtml) throws IOException, ParseException, RecordInmemoryException,
 			ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
+		String sBodyFromMongo = null;
 		JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
-	       InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
-	    		   sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
-                   .getInputStream();
+		LOG.info("sJsonHtmlInFormatMongo: {}", sJsonHtmlInFormatMongo);
+		try{
+			 InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+		    		   sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
+	                   .getInputStream();
 
-	       String sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
-		return sBodyFromMongo;
+			 sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+		}catch(JSONException e){
+			LOG.error("JSONException: {}",e.getMessage());
+			return null;
+		}
+			 return sBodyFromMongo;
+		
+	      
 	}
 
     

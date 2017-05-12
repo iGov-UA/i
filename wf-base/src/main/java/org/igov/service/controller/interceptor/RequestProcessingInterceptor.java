@@ -953,14 +953,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         String bankIdFirstName = JsonRequestDataResolver.getBankIdFirstName(omRequestBody);
         String bankIdLastName = JsonRequestDataResolver.getBankIdLastName(omRequestBody);
         
-        String sURL0 = generalConfig.getKey_UniSender_Mail();
-        LOG.info("Key_UniSender_Mail in sendMailTo in interceptor is ", sURL0 );
-        String sURL1 =  generalConfig.getSelfHost();
-        LOG.info("sURL1 in sendMailTo in interceptor is ", sURL1 );
-        String sURL2 =  generalConfig.getSelfHostCentral();
-        LOG.info("sURL2 in sendMailTo in interceptor is ", sURL2 );
-        String sMailClerk = JsonRequestDataResolver.getsMailClerk(omRequestBody);
-        LOG.info("sMailClerk in sendMailTo in interceptor is ", sMailClerk );
+        
+        int nID_Server = generalConfig.getSelfServerId();  
+        LOG.info("nID_Server in sendMailTo in interceptor is ", nID_Server );
+       
         //dnepr_mvk_291_common
 
         if (sMailTo != null) {
@@ -969,7 +965,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("Send notification mail... (sMailTo={})", sMailTo);
                 oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
             } else {
-                LOG.info("SKIP Send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
+                LOG.info("SKIP send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
             }
         }
 
