@@ -1,9 +1,12 @@
 package org.igov.analytic.model.process;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.AbstractEntity;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
 /**
  * Created by dpekach on 26.12.16.
@@ -12,8 +15,9 @@ import javax.persistence.*;
 public class CustomProcess extends AbstractEntity {
 
     @JsonProperty
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nID_Process")
+    @Cascade(CascadeType.ALL)
     private Process oProcess;
 
     @JsonProperty

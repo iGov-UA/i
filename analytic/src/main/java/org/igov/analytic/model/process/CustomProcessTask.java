@@ -3,13 +3,15 @@ package org.igov.analytic.model.process;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateDeserializer;
 import org.igov.util.JSON.JsonDateSerializer;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 
 /**
  * Created by dpekach on 26.12.16.
@@ -18,8 +20,9 @@ import javax.persistence.*;
 public class CustomProcessTask extends AbstractEntity {
 
     @JsonProperty
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nID_ProcessTask")
+    @Cascade(value = CascadeType.ALL)
     private ProcessTask oProcessTask;
 
     @JsonProperty
