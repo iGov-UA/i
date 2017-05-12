@@ -2,7 +2,6 @@ package org.igov.service.business.action.task.systemtask.mail;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.util.ToolLuna.getProtectedNumber;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -20,7 +19,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
-
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
@@ -95,12 +93,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public Expression to;
     public Expression subject;
     public Expression text;
-
-    protected Expression sID_Merchant;
-    protected Expression sSum;
-    protected Expression sID_Currency;
-    protected Expression sLanguage;
-    protected Expression sDescription;
     protected Expression nID_Subject;
     
     @Autowired
@@ -349,6 +341,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     .getVariable(pattern_description).toString() : execution
                     .getVariable(String.format(PATTERN_DESCRIPTION, ""))
                     .toString();
+                  
+            String pattern_expired_period_hour = String.format(PATTERN_EXPIRED_PERIOD_HOUR, prefix);
+            Integer nExpired_Period_Hour = execution.getVariable(pattern_expired_period_hour) != null 
+                    ? ((Long)execution.getVariable(pattern_expired_period_hour)).intValue() : null;
 
             String sID_Order = "TaskActiviti_" + execution.getId().trim()
                     + prefix;
@@ -365,7 +361,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant,
                     sSum, oID_Currency, sLanguage, sDescription, sID_Order,
                     sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
-                    nID_Subject, bTest);
+                    nID_Subject, bTest, nExpired_Period_Hour);
             matcher.appendReplacement(outputTextBuffer, htmlButton);
         }
         return matcher.appendTail(outputTextBuffer).toString();

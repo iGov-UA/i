@@ -72,21 +72,6 @@ public class SetTasks implements TaskListener {
 
         mParam.put("sTaskProcessDefinition", sTaskProcessDefinition_Value);
         mParam.put("sID_Attachment", sID_Attachment_Value);
-//        mParam.put("sContent", sContent_Value);
-//        mParam.put("sAutorResolution", sAutorResolution_Value);
-//        mParam.put("sName_SubjectRole", sName_SubjectRole_Value);
-//        mParam.put("sDateExecution", sDateExecution_Value);
-//        mParam.put("sTypeDoc", sTypeDoc_Value);
-//        mParam.put("sID_Order_GovPublic", sID_Order_GovPublic_Value);
-//        mParam.put("sDateRegistration", sDateRegistration_Value);
-//        mParam.put("sDateDoc", sDateDoc_Value);
-//        mParam.put("sApplicant", sApplicant_Value);
-//        mParam.put("nCountAttach", snCountAttach_Value);
-//        mParam.put("sNote", sNote_Value);
-//        mParam.put("asUrgently", sAsUrgently_Value);
-//        mParam.put("asTypeResolution", sAsTypeResolution_Value);
-//        mParam.put("sTextResolution", sTextResolution_Value);
-//        mParam.put("sDoc1", sDoc1_Value);
         mParam.put("processDefinitionId", sProcessDefinitionId_Value);
         mParam.put("soData", soData_Value);
         mParam.putAll(Tool.parseData(soData_Value));

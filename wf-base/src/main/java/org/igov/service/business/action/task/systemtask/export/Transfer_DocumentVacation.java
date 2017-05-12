@@ -14,7 +14,6 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.igov.io.fs.FileSystemData;
-import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import org.igov.service.business.export.IC_Service;
 import org.igov.service.business.subject.SubjectService;

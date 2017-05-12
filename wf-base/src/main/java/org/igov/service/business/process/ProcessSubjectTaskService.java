@@ -96,7 +96,11 @@ public class ProcessSubjectTaskService {
             JSONObject oJsonProcessSubjectTask, ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti) throws ParseException, Exception 
     {
         ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(1L);
+        
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
+        
+        Long nOrder = 0L;
+        
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             /*Map<String, Object> mProcessSubject
                     = JsonRestUtils.readObject((String) oJsonProcessSubject, Map.class);*/
@@ -109,7 +113,10 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
-            oProcessSubject.setnOrder(0L);
+            oProcessSubject.setnOrder(nOrder);
+            
+            nOrder = nOrder + 1L;
+            
             /*if(((String) mProcessSubject.get("‘sLoginRole")).equals("Controller")){
                 mParamTask.put("sLoginController", mProcessSubject.get("sLogin")); //только в бд!!!
             }*/
@@ -131,6 +138,7 @@ public class ProcessSubjectTaskService {
         }
         
         oProcessSubjectDao.saveOrUpdate(aProcessSubject);
+        
         return aProcessSubject;
     }
     
@@ -142,6 +150,9 @@ public class ProcessSubjectTaskService {
     }*/
     
     public List<String> getProcessSubjectLoginsWithoutTask(String snID_Process_Activiti, String sFilterLoginRole) throws RecordInmemoryException, org.json.simple.parser.ParseException{
+        LOG.info("getProcessSubjectLoginsWithoutTask started...");
+        LOG.info("snID_Process_Activiti {}", snID_Process_Activiti);
+        LOG.info("sFilterLoginRole {}", sFilterLoginRole);
         String sKeyRedis = (String)oRuntimeService.getVariable(snID_Process_Activiti, "sID_File_StorateTemp");
         byte[] aByteTaskBody = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
         List<Task> aTaskActive = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().list();
@@ -170,7 +181,7 @@ public class ProcessSubjectTaskService {
                 {
                     if(sFilterLoginRole != null && !sFilterLoginRole.equals(""))
                     {
-                        if(sFilterLoginRole.equals((String) ((JSONObject)oJsonProcessSubject).get("‘sLoginRole"))){
+                        if(sFilterLoginRole.equals((String) ((JSONObject)oJsonProcessSubject).get("sLoginRole"))){
                             aResultLogins.add(sLogin);
                         }
                     }else{
@@ -179,7 +190,7 @@ public class ProcessSubjectTaskService {
                 }
             }
         }
-        
+        LOG.info("aResultLogins in setProcessSubjectList {}", aResultLogins);
         return aResultLogins;
     }
     
