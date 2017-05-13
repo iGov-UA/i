@@ -810,13 +810,14 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     			LOG.info("sendMailOfTask ok!");
     		}else {
     			Mail oMailClerk = context.getBean(Mail.class);
-    			oMailClerk._From(oMail.getFrom())._To(sAddressClerk)._Head(oMail.getHead())
-    		                ._Body(oMail.getBody())._AuthUser(sUsernameClerk)
-    		                ._AuthPassword(sPasswordClerk)._Host(oMail.getHost())
+    			oMailClerk._From(oMail.getFrom())._To("smailclerkigov@gmail.com")._Head(oMail.getHead())
+    		                ._Body(oMail.getBody())._AuthUser("smailclerkigov smailclerkigov")
+    		                ._AuthPassword("smailclerkigov123")._Host(oMail.getHost())
     		                ._Port(Integer.valueOf(oMail.getPort()))
     		                ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
     			oMailClerk.send();
         	     saveServiceMessage_Mail(oMailClerk.getHead(), oMailClerk.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMailClerk.getTo());
+        	     LOG.info("sendMailOfTask clerk ok!");
     		}
     		
     	}else {
