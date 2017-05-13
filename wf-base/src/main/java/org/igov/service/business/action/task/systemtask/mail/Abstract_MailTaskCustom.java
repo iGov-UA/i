@@ -89,6 +89,13 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     private boolean bSSL;
     @Value("${general.Mail.bUseTLS}")
     private boolean bTLS;
+    
+    @Value("${general.Mail.sAddressClerk}")
+    public String sAddressClerk;
+    @Value("${general.Mail.sUsernameClerk}")
+    public String sUsernameClerk;
+    @Value("${general.Mail.sPasswordClerk}")
+    public String sPasswordClerk;
 
     public Expression from;
     public Expression to;
@@ -795,31 +802,27 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)
             throws Exception {
     	//если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
-    	if(generalConfig.isSelfTest()) {
+    	if(!generalConfig.isSelfTest()) {
     		LOG.info("generalConfig.isSelfTest()! " + generalConfig.isSelfTest());
     		if(oMail.getBody()!=null && !oMail.getBody().contains("Шановний колего!")) {
-    			LOG.info("Шановний колего - not");
     			oMail.send();
        	     	saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
     			LOG.info("sendMailOfTask ok!");
     		}else {
-    			LOG.info("Шановний колего - oMailClerk!");
     			Mail oMailClerk = context.getBean(Mail.class);
-    			oMailClerk._From(oMail.getFrom())._To("smailclerkigov@gmail.com")._Head(oMail.getHead())
-    		                ._Body(oMail.getBody())._AuthUser("smailclerkigov smailclerkigov")
-    		                ._AuthPassword("smailclerkigov123")._Host(oMail.getHost())
+    			oMailClerk._From(oMail.getFrom())._To(sAddressClerk)._Head(oMail.getHead())
+    		                ._Body(oMail.getBody())._AuthUser(sUsernameClerk)
+    		                ._AuthPassword(sPasswordClerk)._Host(oMail.getHost())
     		                ._Port(Integer.valueOf(oMail.getPort()))
     		                ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
-    			LOG.info("oMailClerk!" + oMailClerk.getTo() + "--"+oMailClerk.getFrom());
     			oMailClerk.send();
         	     saveServiceMessage_Mail(oMailClerk.getHead(), oMailClerk.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMailClerk.getTo());
     		}
     		
     	}else {
-    		LOG.info("not generalConfig.isSelfTest()! " + generalConfig.isSelfTest());
     		 oMail.send();
     	     saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
-    	     LOG.info("saveServiceMessage_Mail ok!");
+    	     LOG.info("sendMailOfTask ok!");
     	}
        
     }
