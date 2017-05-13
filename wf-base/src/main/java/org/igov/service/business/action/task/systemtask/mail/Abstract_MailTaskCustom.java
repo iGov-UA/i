@@ -796,24 +796,30 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             throws Exception {
     	//если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
     	if(generalConfig.isSelfTest()) {
+    		LOG.info("generalConfig.isSelfTest()! " + generalConfig.isSelfTest());
     		if(oMail.getBody()!=null && !oMail.getBody().contains("Шановний колего!")) {
+    			LOG.info("Шановний колего - not");
     			oMail.send();
        	     	saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
-    			LOG.info("MailTaskWithoutAttachment ok!");
+    			LOG.info("sendMailOfTask ok!");
     		}else {
+    			LOG.info("Шановний колего - oMailClerk!");
     			Mail oMailClerk = context.getBean(Mail.class);
     			oMailClerk._From(oMail.getFrom())._To("smailclerkigov@gmail.com")._Head(oMail.getHead())
-    		                ._Body(oMail.getBody())._AuthUser(oMail.getAuthUser())
-    		                ._AuthPassword(oMail.getAuthPassword())._Host(oMail.getHost())
+    		                ._Body(oMail.getBody())._AuthUser("smailclerkigov smailclerkigov")
+    		                ._AuthPassword("smailclerkigov123")._Host(oMail.getHost())
     		                ._Port(Integer.valueOf(oMail.getPort()))
     		                ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
+    			LOG.info("oMailClerk!" + oMailClerk.getTo() + "--"+oMailClerk.getFrom());
     			oMailClerk.send();
         	     saveServiceMessage_Mail(oMailClerk.getHead(), oMailClerk.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMailClerk.getTo());
     		}
     		
     	}else {
+    		LOG.info("not generalConfig.isSelfTest()! " + generalConfig.isSelfTest());
     		 oMail.send();
     	     saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
+    	     LOG.info("saveServiceMessage_Mail ok!");
     	}
        
     }
