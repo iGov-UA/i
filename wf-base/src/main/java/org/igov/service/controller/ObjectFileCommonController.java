@@ -1110,6 +1110,26 @@ public class ObjectFileCommonController {
 
         return oAttachmentCover.apply(attachment);
     }
+
+    @ApiOperation(value = "/setFilePdfForEncoding", notes
+            = "##### загрузка файла-PDF-документа для дальнейшей обработки")
+    @RequestMapping(value = "/setFilePdfForEncoding", method = RequestMethod.POST, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    String getEncodedFile(
+            @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
+            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+    ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException {
+
+        if (file != null) {
+            byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
+            return attachmetService.createAttachment("", "", sFileNameAndExt, false, "Redis",
+                    "application/pdf", new ArrayList<>(), aContent, true);
+        } else {
+            return "data is null";
+        }
+
+    }
    
 
 }
