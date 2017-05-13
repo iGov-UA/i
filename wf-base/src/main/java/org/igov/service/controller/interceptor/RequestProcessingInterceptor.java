@@ -954,7 +954,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         //dnepr_mvk_291_common
 
         if (sMailTo != null) {
-        	 LOG.info("asID_BP_SendMail "+ asID_BP_SendMail);
+        	 LOG.info("asID_BP_SendMail "+ Arrays.asList(asID_BP_SendMail));
         	 LOG.info("oProcessDefinition.getKey() "+ oProcessDefinition.getKey());
         	 if (Arrays.asList(asID_BP_SendMail).contains(oProcessDefinition.getKey())) {
                 ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
