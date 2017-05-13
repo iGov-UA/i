@@ -218,13 +218,13 @@ public class GeneralConfig {
     private String sPassword_Auth_1C;
     
     @Value("${general.Mail.sAddressClerk}")
-    public String sAddrClerk;
+    private String sAddrClerk;
     
     @Value("${general.Mail.sUsernameClerk}")
-    public String sUsnameClerk;
+    private String sUsnameClerk;
     
     @Value("${general.Mail.sPasswordClerk}")
-    public String sPassClerk;
+    private String sPassClerk;
     
     
     public String getsAddrClerk() {

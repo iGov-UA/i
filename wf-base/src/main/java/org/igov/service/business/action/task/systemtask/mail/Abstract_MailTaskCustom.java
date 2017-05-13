@@ -2,6 +2,7 @@ package org.igov.service.business.action.task.systemtask.mail;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.util.ToolLuna.getProtectedNumber;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -19,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
+
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
