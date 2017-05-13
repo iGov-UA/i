@@ -299,7 +299,7 @@ public class DocumentStepService {
 
                 Boolean bWrite = (Boolean) oGroup.opt("bWrite");
                 if (bWrite == null) {
-                    throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite.");
+                    throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite. Probably your json is wrong");
                 }
                 oDocumentStepSubjectRight.setbWrite(bWrite);
 

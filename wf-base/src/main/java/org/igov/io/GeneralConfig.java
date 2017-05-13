@@ -216,8 +216,30 @@ public class GeneralConfig {
     private String sLogin_Auth_1C;
     @Value("${general.s1c.Auth.sPassword}")
     private String sPassword_Auth_1C;
+    
+    @Value("${general.Mail.sAddressClerk}")
+    public String sAddrClerk;
+    
+    @Value("${general.Mail.sUsernameClerk}")
+    public String sUsnameClerk;
+    
+    @Value("${general.Mail.sPasswordClerk}")
+    public String sPassClerk;
+    
+    
+    public String getsAddrClerk() {
+		return sAddrClerk;
+	}
 
-    public String getObjectSubPlace_Auth_sLogin() {
+	public String getsUsnameClerk() {
+		return sUsnameClerk;
+	}
+
+	public String getsPassClerk() {
+		return sPassClerk;
+	}
+
+	public String getObjectSubPlace_Auth_sLogin() {
         return sObjectSubPlace_Auth_sLogin;
     }
 
