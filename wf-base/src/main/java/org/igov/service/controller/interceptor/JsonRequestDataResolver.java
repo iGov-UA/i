@@ -40,7 +40,7 @@ public final class JsonRequestDataResolver {
         return getProperties(requestJson).get("phone");
     }
     public static String getBankIdFirstName(JSONObject requestJson) throws ParseException {
-    	String firstName = "Шановний ";
+    	String firstName = "Шановний заявник";
     	if(Objects.nonNull(getProperties(requestJson).get("bankIdfirstName"))){
     		return getProperties(requestJson).get("bankIdfirstName");
     	}else if (Objects.nonNull(getProperties(requestJson).get("sPersonFirstName"))){
@@ -51,7 +51,7 @@ public final class JsonRequestDataResolver {
     }
 
     public static String getBankIdLastName(JSONObject requestJson) throws ParseException {
-    	String lastName = "Шановний ";
+    	String lastName = "";
     	if(Objects.nonNull(getProperties(requestJson).get("bankIdlastName"))){
     		return getProperties(requestJson).get("bankIdlastName");
     	}else if (Objects.nonNull(getProperties(requestJson).get("sPersonLastName"))){
