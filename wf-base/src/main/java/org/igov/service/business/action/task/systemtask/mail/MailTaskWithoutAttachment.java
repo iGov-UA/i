@@ -1,10 +1,10 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
 import org.activiti.engine.delegate.DelegateExecution;
+import org.igov.io.mail.Mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.igov.io.mail.Mail;
 
 /**
  * @author Elena
@@ -13,7 +13,7 @@ import org.igov.io.mail.Mail;
  */
 @Component("MailTaskWithoutAttachment")
 public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
-    
+	
     private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithoutAttachment.class);
 
     @Override

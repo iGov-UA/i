@@ -209,8 +209,37 @@ public class GeneralConfig {
     private String sLogin_Auth_Agroholding;
     @Value("${general.Export.Agroholding.Auth.sPassword}")
     private String sPassword_Auth_Agroholding;
+    
+    @Value("${general.s1c.sURL}")
+    private String sURL_1C;
+    @Value("${general.s1c.Auth.sLogin}")
+    private String sLogin_Auth_1C;
+    @Value("${general.s1c.Auth.sPassword}")
+    private String sPassword_Auth_1C;
+    
+    @Value("${general.Mail.sAddressClerk}")
+    public String sAddrClerk;
+    
+    @Value("${general.Mail.sUsernameClerk}")
+    public String sUsnameClerk;
+    
+    @Value("${general.Mail.sPasswordClerk}")
+    public String sPassClerk;
+    
+    
+    public String getsAddrClerk() {
+		return sAddrClerk;
+	}
 
-    public String getObjectSubPlace_Auth_sLogin() {
+	public String getsUsnameClerk() {
+		return sUsnameClerk;
+	}
+
+	public String getsPassClerk() {
+		return sPassClerk;
+	}
+
+	public String getObjectSubPlace_Auth_sLogin() {
         return sObjectSubPlace_Auth_sLogin;
     }
 
@@ -670,6 +699,18 @@ public class GeneralConfig {
 
     public String getsPassword_Auth_Agroholding() {
         return sPassword_Auth_Agroholding;
+    }
+
+    public String getsURL_1C() {
+        return sURL_1C;
+    }
+
+    public String getsLogin_Auth_1C() {
+        return sLogin_Auth_1C;
+    }
+
+    public String getsPassword_Auth_1C() {
+        return sPassword_Auth_1C;
     }
 
 }

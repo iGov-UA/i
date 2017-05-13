@@ -384,15 +384,6 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         });
       }
 
-      if (angular.isDefined(nDiffDaysForStartDateParam)) {
-        scope.$watch('formData.params.' + nDiffDaysForStartDateProperty + '.value', function (newValue, oldValue) {
-          if (newValue == oldValue)
-            return;
-          resetData();
-          scope.loadList();
-        });
-      }
-
       scope.$watch('formData.params.' + nID_ServiceCustomPrivate_ID + '.value', function (newValue, oldValue) {
         if (newValue == oldValue)
           return;

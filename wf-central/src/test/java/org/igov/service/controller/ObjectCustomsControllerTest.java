@@ -438,8 +438,8 @@ public class ObjectCustomsControllerTest
         MockHttpServletResponse mockresponse_duplicate = this.getResponse(SET_OBJECTCUSTOMS, this.params_duplicate);
         String reason_error = mockresponse_duplicate.getHeader("Reason");
         Assert.assertNotNull(reason_error);
-        
-           
+
+
         //update with new unique data
       
        this.HttpStatus = HTTP_OK;
