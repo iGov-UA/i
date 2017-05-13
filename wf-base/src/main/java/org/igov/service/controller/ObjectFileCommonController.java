@@ -932,7 +932,7 @@ public class ObjectFileCommonController {
             return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
                     sContentType, aAttribute, file.getBytes(), true);
         } else if (file != null && "Redis".equals(sID_StorageType)) {
-            byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
+            byte[] aContent = getBytes(file);
             return attachmetService.createAttachment(nID_Process, sID_Field, sFileNameAndExt, bSigned, sID_StorageType,
                     sContentType, aAttribute, aContent, true);
         } else {
@@ -1112,12 +1112,12 @@ public class ObjectFileCommonController {
         return oAttachmentCover.apply(attachment);
     }
 
-    @ApiOperation(value = "/getBase64EncodedFile", notes
+    @ApiOperation(value = "/getJsonBase64EncodedFiles", notes
             = "##### загрузка файла-PDF-документа для дальнейшей обработки")
-    @RequestMapping(value = "/getBase64EncodedFile", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/getJsonBase64EncodedFiles", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
-    String getEncodedFile(
+    String getJsonBase64EncodedFiles(
             @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
     ) throws IOException, CRCInvalidException, RecordNotFoundException,
             FileServiceIOException {
@@ -1130,9 +1130,7 @@ public class ObjectFileCommonController {
 
             byte[] upload = oBytesDataInmemoryStorage.getBytes(key);
             */
-            byte[] upload = AbstractModelTask
-                    .multipartFileToByteArray(file, file.getOriginalFilename())
-                    .toByteArray();
+            byte[] upload = getBytes(file);
 
             Map<java.lang.String, Object> response = new HashMap<>();
             response.put("Base64", Base64.getEncoder().encode(upload));
@@ -1147,6 +1145,55 @@ public class ObjectFileCommonController {
         }
 
     }
-   
+
+    @ApiOperation(value = "/getBase64EncodedFile", notes
+            = "##### загрузка файла-PDF-документа для дальнейшей обработки")
+    @RequestMapping(value = "/getBase64EncodedFile", method = RequestMethod.POST, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    byte[] getBase64EncodedFile(
+            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+    ) throws IOException, CRCInvalidException, RecordNotFoundException,
+            FileServiceIOException {
+
+        try {
+            byte[] upload = getBytes(file);
+
+            return Base64.getEncoder().encode(upload);
+        } catch (IOException e) {
+            LOG.warn(e.getMessage(), e);
+            throw new FileServiceIOException(
+                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
+        }
+
+    }
+
+    @ApiOperation(value = "/getBase64MimeEncodedFile", notes
+            = "##### загрузка файла-PDF-документа для дальнейшей обработки")
+    @RequestMapping(value = "/getBase64MimeEncodedFile", method = RequestMethod.POST, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    byte[] getBase64MimeEncodedFile(
+            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+    ) throws IOException, CRCInvalidException, RecordNotFoundException,
+            FileServiceIOException {
+
+        try {
+            byte[] upload = getBytes(file);
+
+            return Base64.getMimeEncoder().encode(upload);
+        } catch (IOException e) {
+            LOG.warn(e.getMessage(), e);
+            throw new FileServiceIOException(
+                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
+        }
+
+    }
+
+    private byte[] getBytes(MultipartFile file) throws IOException {
+        return AbstractModelTask
+                        .multipartFileToByteArray(file, file.getOriginalFilename())
+                        .toByteArray();
+    }
 
 }
