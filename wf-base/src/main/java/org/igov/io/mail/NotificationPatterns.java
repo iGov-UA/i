@@ -70,7 +70,7 @@ public class NotificationPatterns {
             if (bankIdFirstName == null || bankIdFirstName.equalsIgnoreCase("null")) {
                 sHead = String.format("Вітаємо, Ваша заявка %s прийнята!", sID_Order);
             } else {
-               // bankIdFirstName = makeStringAsName(bankIdFirstName);
+                bankIdFirstName = makeStringAsName(bankIdFirstName);
                 sHead = String.format("Вітаємо, %s, Ваша заявка %s прийнята!", bankIdFirstName, sID_Order);
             }
 
