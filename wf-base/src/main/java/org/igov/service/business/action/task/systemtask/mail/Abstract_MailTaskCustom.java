@@ -816,6 +816,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     		                ._Port(Integer.valueOf(oMail.getPort()))
     		                ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
     			 LOG.info("sendMailOfTask clerk! "+oMailClerk.getTo() + "---" + oMailClerk.getAuthUser());
+    			 LOG.info("sendMailOfTask clerk prop! "+sAddressClerk+"--"+sUsernameClerk);
     			oMailClerk.send();
         	     saveServiceMessage_Mail(oMailClerk.getHead(), oMailClerk.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMailClerk.getTo());
         	     LOG.info("sendMailOfTask clerk ok!");
