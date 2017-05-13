@@ -951,16 +951,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         int nID_Server = generalConfig.getSelfServerId();  
         LOG.info("nID_Server in sendMailTo in interceptor is ", nID_Server );
        
-        //dnepr_mvk_291_common
-
         if (sMailTo != null) {
-        	 LOG.info("asID_BP_SendMail "+ Arrays.asList(asID_BP_SendMail));
-        	 LOG.info("oProcessDefinition.getKey() "+ oProcessDefinition.getKey());
         	 if (Arrays.asList(asID_BP_SendMail).contains(oProcessDefinition.getKey())) {
                 ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
-                LOG.info("Send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
-                LOG.info("bankIdFirstName: {}, bankIdLastName: {} ", bankIdFirstName, bankIdLastName);
+                LOG.info("Before send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
                 oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
+                LOG.info("Send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
             } else {
                 LOG.info("SKIP send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
             }
