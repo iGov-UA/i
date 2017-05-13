@@ -1123,11 +1123,16 @@ public class ObjectFileCommonController {
             FileServiceIOException {
 
         try {
+            /*
             String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
                     .multipartFileToByteArray(file, file.getOriginalFilename())
                     .toByteArray());
 
             byte[] upload = oBytesDataInmemoryStorage.getBytes(key);
+            */
+            byte[] upload = AbstractModelTask
+                    .multipartFileToByteArray(file, file.getOriginalFilename())
+                    .toByteArray();
 
             Map<java.lang.String, Object> response = new HashMap<>();
             response.put("Base64", Base64.getEncoder().encode(upload));
@@ -1135,7 +1140,7 @@ public class ObjectFileCommonController {
             response.put("Decoded", upload);
 
             return JsonRestUtils.toJson(response);
-        } catch (RecordInmemoryException | IOException e) {
+        } catch (/*RecordInmemoryException |*/ IOException e) {
             LOG.warn(e.getMessage(), e);
             throw new FileServiceIOException(
                     FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
