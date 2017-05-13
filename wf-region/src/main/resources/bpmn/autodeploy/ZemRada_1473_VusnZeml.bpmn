@@ -53,7 +53,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.</activiti:expression>
@@ -125,8 +125,8 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="fZemProj" name="Проект землеустрою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="accept" name="Успіх! Заява оформлена вірно"></activiti:value>
-          <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
+          <activiti:value id="accept" name="Заява оформлена вірно"></activiti:value>
+          <activiti:value id="reject" name="Выдмова. Заява оформлена НЕ вірно"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         
@@ -241,10 +241,7 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="commentVidm" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/Dash_Vidnova.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="fileVidpov" name="Відповідь; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        
-        
       </extensionElements>  
     </userTask>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
