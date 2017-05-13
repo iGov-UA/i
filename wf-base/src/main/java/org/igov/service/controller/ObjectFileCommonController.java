@@ -32,6 +32,7 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
 import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.VariableMultipartFile;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
@@ -1111,23 +1112,33 @@ public class ObjectFileCommonController {
         return oAttachmentCover.apply(attachment);
     }
 
-    @ApiOperation(value = "/setFilePdfForEncoding", notes
+    @ApiOperation(value = "/getBase64EncodedFile", notes
             = "##### загрузка файла-PDF-документа для дальнейшей обработки")
-    @RequestMapping(value = "/setFilePdfForEncoding", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/getBase64EncodedFile", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
     String getEncodedFile(
-            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process,
-            @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
-    ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException {
+    ) throws IOException, CRCInvalidException, RecordNotFoundException,
+            FileServiceIOException {
 
-        if (file != null) {
-            byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
-            return attachmetService.createAttachment(nID_Process, "", sFileNameAndExt, false, "Redis",
-                    "application/pdf", new ArrayList<>(), aContent, true);
-        } else {
-            return "data is null";
+        try {
+            String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
+                    .multipartFileToByteArray(file, file.getOriginalFilename())
+                    .toByteArray());
+
+            byte[] upload = oBytesDataInmemoryStorage.getBytes(key);
+
+            Map<java.lang.String, Object> response = new HashMap<>();
+            response.put("Base64", Base64.getEncoder().encode(upload));
+            response.put("Base64Mime", Base64.getMimeEncoder().encode(upload));
+            response.put("Decoded", upload);
+
+            return JsonRestUtils.toJson(response);
+        } catch (RecordInmemoryException | IOException e) {
+            LOG.warn(e.getMessage(), e);
+            throw new FileServiceIOException(
+                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
         }
 
     }
