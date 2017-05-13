@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * User: goodg_000 
@@ -39,11 +40,24 @@ public final class JsonRequestDataResolver {
         return getProperties(requestJson).get("phone");
     }
     public static String getBankIdFirstName(JSONObject requestJson) throws ParseException {
-        return getProperties(requestJson).get("bankIdfirstName");
+    	String firstName = "Шановний ";
+    	if(Objects.nonNull(getProperties(requestJson).get("bankIdfirstName"))){
+    		return getProperties(requestJson).get("bankIdfirstName");
+    	}else if (Objects.nonNull(getProperties(requestJson).get("sPersonFirstName"))){
+    		return getProperties(requestJson).get("sPersonFirstName");
+    	}
+    	
+        return firstName;
     }
 
     public static String getBankIdLastName(JSONObject requestJson) throws ParseException {
-        return getProperties(requestJson).get("bankIdlastName");
+    	String lastName = "заявник!";
+    	if(Objects.nonNull(getProperties(requestJson).get("bankIdlastName"))){
+    		return getProperties(requestJson).get("bankIdlastName");
+    	}else if (Objects.nonNull(getProperties(requestJson).get("sPersonLastName"))){
+    		return getProperties(requestJson).get("sPersonLastName");
+    	}
+        return lastName;
     }
     public static String getsMailClerk (JSONObject requestJson) throws ParseException {
     	return getProperties(requestJson).get("sMailClerk");
