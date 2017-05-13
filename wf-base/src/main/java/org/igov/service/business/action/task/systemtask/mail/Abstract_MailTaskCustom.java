@@ -667,7 +667,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     }
     
     /**
-     * Метод, который отправляет емайлу texthtml из json-mongo
+     * Метод, который отправляет емайл с полем типа texthtml из json-mongo
      * @param oExecution
      * @return
      * @throws Exception
@@ -690,38 +690,32 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
          * достаем оригинальный текст html из mongo
          */
         //if(!sJsonMongo.equals("")||sJsonMongo!=null){
-	    String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonMongo); 
-	    
-	    /**
-	     * из полного текста с патернами, который в бп мы заменяем json на textHtml из монги
-	     */
-	    //убираем json скобки
-	    String sBodySourceReplace = StringUtils.replace(sBodySource, "{", "").replaceAll("}", "");
-	    String sBodySourceReplaceR = sBodySourceReplace.replace("[]", "").replace("[]", "");
-		String sJsonMongoReplace = StringUtils.replace(sJsonMongo, "{", "").replaceAll("}", "");
-		String sJsonMongoReplaceR = sJsonMongoReplace.replace("[]", "").replace("[]", "");
-		
-		//заменяем тело json на текст html
-	    String sBodyForMail = sBodySourceReplaceR.replaceAll(sJsonMongoReplaceR, sBodyFromMongoResult);
-	    
-	    //анализируем тело
-	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
-	       
-	    //отправляем по емайлу
+        String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonMongo); 
+        
+        /**
+         * из полного текста с патернами, который в бп мы заменяем json на textHtml из монги
+         */
+        //убираем json скобки
+        String sBodySourceReplace = StringUtils.replace(sBodySource, "{", "").replaceAll("}", "");
+        String sBodySourceReplaceR = sBodySourceReplace.replace("[]", "").replace("[]", "");
+        String sJsonMongoReplace = StringUtils.replace(sJsonMongo, "{", "").replaceAll("}", "");
+        String sJsonMongoReplaceR = sJsonMongoReplace.replace("[]", "").replace("[]", "");
+        
+        //заменяем тело json на текст html
+        String sBodyForMail = sBodySourceReplaceR.replaceAll(sJsonMongoReplaceR, sBodyFromMongoResult);
+        
+        //анализируем тело
+        String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
+           
+        //отправляем по емайлу
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
                 ._Body(sBodyForMailResult)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
                 ._Port(Integer.valueOf(mailServerPort))
                 ._SSL(bSSL)._TLS(bTLS);
         
-        
-        
-
         return oMail;
         }
-        
-        
-    
 
     
     /**
@@ -735,34 +729,34 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
      * @throws CRCInvalidException
      * @throws RecordNotFoundException
      */
-	public String getHtmlTextFromMongo(String sJsonHtml) throws IOException, ParseException, RecordInmemoryException,
-			ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
-		String sBodyFromMongo = null;
-		JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
-		LOG.info("sJsonHtmlInFormatMongo: {}", sJsonHtmlInFormatMongo);
-		try{
-			 InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
-		    		   sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
-	                   .getInputStream();
+    public String getHtmlTextFromMongo(String sJsonHtml) throws IOException, ParseException, RecordInmemoryException,
+            ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
+        String sBodyFromMongo = null;
+        JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
+        LOG.info("sJsonHtmlInFormatMongo: {}", sJsonHtmlInFormatMongo);
+        try{
+             InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+                       sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
+                       .getInputStream();
 
-			 sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
-		}catch(JSONException e){
-			LOG.error("JSONException: {}",e.getMessage());
-			return null;
-		}
-			 return sBodyFromMongo;
-		
-	      
-	}
-
+             sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+        }catch(JSONException e){
+            LOG.error("JSONException: {}",e.getMessage());
+            return null;
+        }
+             return sBodyFromMongo;
+        
+          
+    }
     
-    /**
+
+	/**
      * Метод для получения json содержащий sKey - sID_StorageType записи в монго текста письма
      * @param oExecution
      * @return
      */
-	public String loadFormPropertyFromTaskHTMLText(DelegateExecution oExecution) {
-		List<String> previousUserTaskId = getPreviousTaskId(oExecution);
+    public String loadFormPropertyFromTaskHTMLText(DelegateExecution oExecution) {
+        List<String> previousUserTaskId = getPreviousTaskId(oExecution);
         List<String> aFormPropertyReturnJsonForMongo = new ArrayList<>();
         for (String sID_UserTaskPrevious : previousUserTaskId) {
             try {
@@ -773,9 +767,9 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 }
                 if (oFormData != null && oFormData.getFormProperties() != null) {
                     for (FormProperty oFormProperty : oFormData.getFormProperties()) {
-                    	if(oFormProperty.getValue()!=null && "fileHTML".equals(oFormProperty.getType().getName())) {
-                  		aFormPropertyReturnJsonForMongo.add(oFormProperty.getValue());
-                  	}
+                        if(oFormProperty.getValue()!=null && "fileHTML".equals(oFormProperty.getType().getName())) {
+                        aFormPropertyReturnJsonForMongo.add(oFormProperty.getValue());
+                    }
                     }
                 }
             } catch (Exception e) {
@@ -787,10 +781,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         }
         
         if(!aFormPropertyReturnJsonForMongo.isEmpty()) {
-        	return aFormPropertyReturnJsonForMongo.get(0);
+            return aFormPropertyReturnJsonForMongo.get(0);
         }
-		return "{\"\":\"\"}";
-	}
+        return "{\"\":\"\"}";
+    }
+    
 
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)
             throws Exception {

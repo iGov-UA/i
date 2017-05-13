@@ -18,25 +18,28 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-    	
-	    	Mail oMail = null;
-	    	String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
-	    	String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonMongo); 
-	    	if(sBodyFromMongoResult!=null){
-		        try {
-		        	oMail = sendToMailFromMongo(oExecution);
-		        } catch (Exception ex) {
-		            LOG.error("MailTaskWithoutAttachment: ", ex);
-		        }
-	    	} else{
-	    		try {
-	            	oMail = Mail_BaseFromTask(oExecution);
-	            } catch (Exception ex) {
-	                LOG.error("MailTaskWithoutAttachment: ", ex);
-	            }
-	    	}
-	    	sendMailOfTask(oMail, oExecution);
-			LOG.info("MailTaskWithoutAttachment ok!");
+        
+        Mail oMail = null;
+        String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
+        LOG.info("sJsonMongo: {}", sJsonMongo);
+        String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonMongo); 
+        LOG.info("sBodyFromMongoResult: {}", sBodyFromMongoResult);
+        if(sBodyFromMongoResult!=null){
+            try {
+                oMail = sendToMailFromMongo(oExecution);
+            } catch (Exception ex) {
+                LOG.error("MailTaskWithoutAttachment: ", ex);
+            }
+        } else{
+            try {
+                oMail = Mail_BaseFromTask(oExecution);
+            } catch (Exception ex) {
+                LOG.error("MailTaskWithoutAttachment: ", ex);
+            }
+        }
+        
+         sendMailOfTask(oMail, oExecution);
+         LOG.info("MailTaskWithoutAttachment ok!");
     }
     
 }

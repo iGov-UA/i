@@ -154,7 +154,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Autowired
     private Mail oMail;
 
-   
+    @Autowired
+    private DocumentStepService oDocumentStepService;
+    
     @Autowired
     private ProcessSubjectTaskService oProcessSubjectTaskService;
 
@@ -2757,7 +2759,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return asID_Attach_Dfs;
     }
 
-   
+    @ApiOperation(value = "/getDocumentStepRights", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @RequestMapping(value = "/getDocumentStepRights", method = RequestMethod.GET)
+    public @ResponseBody
+    Map<String, Object> getDocumentStepRights(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
+            @ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {
+
+        long startTime = System.nanoTime();
+        Map<String, Object> res = oDocumentStepService.getDocumentStepRights(sLogin, nID_Process + "");
+        long stopTime = System.nanoTime();
+        LOG.info("getDocumentStepRights total time execution is: " + String.format("%,12d", (stopTime - startTime)));
+        return res;
+    }
+
+    @ApiOperation(value = "/getDocumentStepLogins", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @RequestMapping(value = "/getDocumentStepLogins", method = RequestMethod.GET)
+    public @ResponseBody
+    //Map<String,Object> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
+    List<Map<String, Object>> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true)
+            @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
+        return oDocumentStepService.getDocumentStepLogins(String.valueOf(nID_Process));
+    }
+
     //save curretn values to Form
     @ApiOperation(value = "saveForm", notes = "saveForm")
     @RequestMapping(value = "/saveForm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -2900,8 +2923,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly
     )
             throws IOException {
-    	LOG.info("getBusinessProcessesFields. sLogin: {} bDocOnly: {}", sLogin, bDocOnly);
-    	
+        LOG.info("getBusinessProcessesFields. sLogin: {} bDocOnly: {}", sLogin, bDocOnly);
+
         return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
     }
 
@@ -2911,15 +2934,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
-
-        LOG.info("SetDocument in ActionTaskCommonController started...");
-        LOG.info("sLogin in setDocument is {}", sLogin);
-        Map<String, Object> mParam = new HashMap<>();
-        mParam.put("sLoginAuthor", sLogin);
-        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+        
         Map<String, Object> mReturn = new HashMap<>();
-        mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
-        LOG.info("mReturn={}", mReturn);
+        
+        try {
+         
+            LOG.info("SetDocument in ActionTaskCommonController started...");
+            LOG.info("sLogin in setDocument is {}", sLogin);
+            
+            Map<String, Object> mParam = new HashMap<>();
+            mParam.put("sLoginAuthor", sLogin);
+            
+            ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+            
+            mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+            
+        } catch (IllegalArgumentException oException) {
+            
+            LOG.error("Error : /setDocument {}", oException);
+            
+            throw new RuntimeException(oException.getMessage());
+        }
+        
 
         return mReturn;
     }
@@ -3080,11 +3116,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/updateProcess", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     public @ResponseBody
     Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly,
-            @ApiParam(value = "JSON-объект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
+            @ApiParam(value = "JSON-щбъект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
     ) throws Exception {
-        LOG.info("updateProcess started...");
-        LOG.info("sJsonBody {}", sJsonBody);
-        
+
         Map<String, Object> mParam = new HashMap<>();
         Map<String, Object> mReturn = new HashMap<>();
         Map<String, Object> mJsonBody;

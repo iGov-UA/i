@@ -25,6 +25,9 @@ import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepDao;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightDao;
+import org.igov.service.business.action.task.core.AbstractModelTask;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.util.CustomRegexPattern;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -43,7 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Service
-public class AttachmetService implements CustomRegexPattern {
+public class AttachmetService implements CustomRegexPattern{
 
     @Autowired
     protected TaskService oTaskService;
@@ -345,7 +348,6 @@ public class AttachmetService implements CustomRegexPattern {
         }
         return "";
     }
-
 
     public static String transliterateAll(String message) {
         StringBuilder builder = new StringBuilder();
