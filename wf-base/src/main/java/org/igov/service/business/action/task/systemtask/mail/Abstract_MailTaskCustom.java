@@ -90,15 +90,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     @Value("${general.Mail.bUseTLS}")
     private boolean bTLS;
     
-    @Value("${general.Mail.sAddressClerk}")
-    public String sAddrClerk;
-    
-    @Value("${general.Mail.sUsernameClerk}")
-    public String sUsnameClerk;
-    
-    @Value("${general.Mail.sPasswordClerk}")
-    public String sPassClerk;
-
     public Expression from;
     public Expression to;
     public Expression subject;
@@ -818,7 +809,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     		                ._Port(Integer.valueOf(oMail.getPort()))
     		                ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
     			 LOG.info("sendMailOfTask clerk! "+oMailClerk.getTo() + "---" + oMailClerk.getAuthUser());
-    			 LOG.info("sendMailOfTask clerk prop! "+sAddrClerk+"--"+sUsnameClerk);
+    			 LOG.info("sendMailOfTask clerk prop! "+generalConfig.getsAddrClerk()+"--"+generalConfig.getsUsnameClerk());
     			oMailClerk.send();
         	     saveServiceMessage_Mail(oMailClerk.getHead(), oMailClerk.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMailClerk.getTo());
         	     LOG.info("sendMailOfTask clerk ok!");
