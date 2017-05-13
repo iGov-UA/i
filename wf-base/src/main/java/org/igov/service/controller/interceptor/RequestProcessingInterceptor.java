@@ -959,6 +959,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         	 if (Arrays.asList(asID_BP_SendMail).contains(oProcessDefinition.getKey())) {
                 ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
                 LOG.info("Send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
+                LOG.info("bankIdFirstName: {}, bankIdLastName: {} ", bankIdFirstName, bankIdLastName);
                 oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
             } else {
                 LOG.info("SKIP send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
