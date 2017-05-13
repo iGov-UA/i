@@ -904,7 +904,7 @@ public class ObjectFileCommonController {
     @Transactional
     public @ResponseBody
     String setProcessAttach(
-            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process,
             @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
             @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
             @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
@@ -1117,13 +1117,14 @@ public class ObjectFileCommonController {
     @Transactional
     public @ResponseBody
     String getEncodedFile(
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process,
             @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
             @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
     ) throws JsonProcessingException, IOException, CRCInvalidException, RecordNotFoundException {
 
         if (file != null) {
             byte[] aContent = AbstractModelTask.multipartFileToByteArray(file, file.getOriginalFilename()).toByteArray();
-            return attachmetService.createAttachment("", "", sFileNameAndExt, false, "Redis",
+            return attachmetService.createAttachment(nID_Process, "", sFileNameAndExt, false, "Redis",
                     "application/pdf", new ArrayList<>(), aContent, true);
         } else {
             return "data is null";
