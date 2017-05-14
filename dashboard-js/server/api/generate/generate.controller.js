@@ -83,17 +83,12 @@ exports.convertToPDFBase64MimeThroughJava = function (req, res) {
 exports.getBase64DecodedFileThroughJava = function (req, res) {
   activiti.uploadStream({
     path: 'object/file/getBase64DecodedFile',
-    stream: data.content,
+    stream: req.body.sContent,
     isMime: req.params.isMime,
     headers: {
-      'Content-Type': data.contentType
+      'Content-Type': "text/html"
     }
   }, function (error, statusCode, result) {
-    if(error){
-      res.send(error);
-    } else {
-      res.type('application/pdf');
-      result.stream.pipe(res);
-    }
+    error ? res.send(error) : res.send(result);
   });
 };
