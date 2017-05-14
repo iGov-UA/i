@@ -1147,12 +1147,12 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "/getBase64EncodedFile", notes
-            = "##### загрузка файла-PDF-документа для дальнейшей обработки")
+            = "##### кодирования файла в Base64")
     @RequestMapping(value = "/getBase64EncodedFile", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
     byte[] getBase64EncodedFile(
-            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "MultipartFile для кодирования в Base64", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
     ) throws IOException, CRCInvalidException, RecordNotFoundException,
             FileServiceIOException {
 
@@ -1169,12 +1169,12 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "/getBase64MimeEncodedFile", notes
-            = "##### загрузка файла-PDF-документа для дальнейшей обработки")
+            = "##### кодирования файла в Base64 MIME")
     @RequestMapping(value = "/getBase64MimeEncodedFile", method = RequestMethod.POST, produces = "application/json")
     @Transactional
     public @ResponseBody
     byte[] getBase64MimeEncodedFile(
-            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "MultipartFile для кодирования в Base64 MIME", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
     ) throws IOException, CRCInvalidException, RecordNotFoundException,
             FileServiceIOException {
 
@@ -1182,6 +1182,31 @@ public class ObjectFileCommonController {
             byte[] upload = getBytes(file);
 
             return Base64.getMimeEncoder().encode(upload);
+        } catch (IOException e) {
+            LOG.warn(e.getMessage(), e);
+            throw new FileServiceIOException(
+                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
+        }
+
+    }
+
+    @ApiOperation(value = "/getBase64DecodedFile", notes
+            = "##### декодирование файла из Base64")
+    @RequestMapping(value = "/getBase64DecodedFile", method = RequestMethod.POST, produces = "application/pdf")
+    @Transactional
+    public @ResponseBody
+    byte[] getBase64DecodedFile(
+            @ApiParam(value = "использовать MIME декодер", required = false) @RequestParam(value = "isMime", required = false, defaultValue = "false") boolean isMime,
+            @ApiParam(value = "MultipartFile для декодирования из Base64", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+    ) throws IOException, CRCInvalidException, RecordNotFoundException,
+            FileServiceIOException {
+
+        try {
+            if(isMime){
+                return Base64.getMimeDecoder().decode(getBytes(file));
+            } else {
+                return Base64.getDecoder().decode(getBytes(file));
+            }
         } catch (IOException e) {
             LOG.warn(e.getMessage(), e);
             throw new FileServiceIOException(

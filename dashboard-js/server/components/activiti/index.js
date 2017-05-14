@@ -170,10 +170,17 @@ exports.post = function (options, onResult, data, json) {
  */
 exports.uploadStream = function (options, onResult) {
   var formData = {
-    nID_Process: options.nID_Process,
-    file: options.stream,
-    sFileNameAndExt: options.sFileNameAndExt.replace(new RegExp(/[*|\\:"<>?/]/g), "")
+    file: options.stream
   };
+  if(options.nID_Process){
+    formData.nID_Process = options.nID_Process;
+  }
+  if(options.sFileNameAndExt){
+    formData.sFileNameAndExt = options.sFileNameAndExt.replace(new RegExp(/[*|\\:"<>?/]/g), "");
+  }
+  if(options.sID_StorageType){
+    formData.sID_StorageType = options.sID_StorageType;
+  }
   if(options.sID_Field){
     formData.sID_Field = options.sID_Field;
   }
@@ -182,6 +189,9 @@ exports.uploadStream = function (options, onResult) {
   }
   if(options.sKey_Step){
     formData.sKey_Step = options.sKey_Step;
+  }
+  if(options.isMime){
+    formData.isMime = options.isMime;
   }
   var content = {
     url: getRequestURL(options),
