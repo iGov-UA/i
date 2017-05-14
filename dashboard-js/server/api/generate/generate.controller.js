@@ -31,3 +31,69 @@ exports.convertToPDFBase64 = function (req, res) {
     }
   })
 };
+
+var async = require('async');
+var activiti = require('../../components/activiti');
+
+exports.convertToPDFBase64ThroughJava = function (req, res) {
+  async.waterfall([
+    function (callback) {
+
+      pdfComponent.convertHTMLToPDFStream(req.body.htmlContent, function (err, pdf) {
+        callback(err, {content: pdf.stream, contentType: 'application/pdf'});
+      });
+    },
+    function (data, callback) {
+      activiti.uploadStream({
+        path: 'object/file/getBase64EncodedFile',
+        stream: data.content,
+        headers: {
+          'Content-Type': data.contentType
+        }
+      }, function (error, statusCode, result) {
+        error ? res.send(error) : res.status(statusCode).json(result);
+      });
+    }
+  ]);
+};
+
+
+exports.convertToPDFBase64MimeThroughJava = function (req, res) {
+  async.waterfall([
+    function (callback) {
+
+      pdfComponent.convertHTMLToPDFStream(req.body.htmlContent, function (err, pdf) {
+        callback(err, {content: pdf.stream, contentType: 'application/pdf'});
+      });
+    },
+    function (data, callback) {
+      activiti.uploadStream({
+        path: 'object/file/getBase64MimeEncodedFile',
+        stream: data.content,
+        headers: {
+          'Content-Type': data.contentType
+        }
+      }, function (error, statusCode, result) {
+        error ? res.send(error) : res.status(statusCode).json(result);
+      });
+    }
+  ]);
+};
+
+exports.getBase64DecodedFileThroughJava = function (req, res) {
+  activiti.uploadStream({
+    path: 'object/file/getBase64DecodedFile',
+    stream: data.content,
+    isMime: req.params.isMime,
+    headers: {
+      'Content-Type': data.contentType
+    }
+  }, function (error, statusCode, result) {
+    if(error){
+      res.send(error);
+    } else {
+      res.type('application/pdf');
+      result.stream.pipe(res);
+    }
+  });
+};

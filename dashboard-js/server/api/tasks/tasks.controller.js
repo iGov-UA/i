@@ -511,6 +511,7 @@ exports.upload_content_as_attachment = function (req, res) {
             stream: data.content,
             sFileNameAndExt: req.body.sFileNameAndExt,
             sID_Field: req.body.sID_Field,
+            sID_StorageType: req.body.sID_StorageType,
             headers: {
               'Content-Type': data.contentType + ';charset=utf-8'
             }
