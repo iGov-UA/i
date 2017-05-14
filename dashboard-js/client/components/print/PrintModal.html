@@ -12,6 +12,9 @@
       <a ng-if="signedContent" download="{{ signedContent.signedContentName }}.pdf" ng-href="{{ signedContent.signedContentURL }}" class='btn btn-igov'>Скачати документ</a>
     </div>
     <div class='ng-modal-dialog-print-button'>
+      <button ng-if="!signedContent && showSignAndUploadButton() && isPrintFormNeverUploaded" ng-click='signAndUpload(printFormLinkedToFileField)' class='btn btn-igov'>Підписати та надіслати</button>
+    </div>
+    <div class='ng-modal-dialog-print-button'>
       <button ng-click='printContent()' class='btn btn-igov'>Роздрукувати</button>
     </div>
   </div>

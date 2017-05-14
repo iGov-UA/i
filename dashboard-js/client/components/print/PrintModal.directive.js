@@ -27,6 +27,55 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
         scope.hideModal();
       };
 
+      scope.printFormLinkedToFileField = undefined;
+      scope.isPrintFormNeverUploaded = true;
+      scope.showSignAndUploadButton = function () {
+        var aFileFields = scope.taskForm.filter(function (field) {
+          return field.type === 'file' && field.options.hasOwnProperty('sID_Field_Printfotm_ForECP');
+        });
+        for(var j = 0; j < aFileFields.length; j++){
+          for(var i = 0; i < scope.taskForm.length; i++){
+            if(aFileFields[j].options['sID_Field_Printfotm_ForECP'] === scope.taskForm[i].id){
+              scope.printFormLinkedToFileField = aFileFields[j].id;
+              if(aFileFields[j].value && aFileFields[j].value.length > 0){
+                scope.isPrintFormNeverUploaded = false;
+              }
+              return true
+            }
+          }
+        }
+        return false;
+      };
+
+
+      scope.signAndUpload = function (propertyId) {
+        var elementToPrint = element[0].getElementsByClassName('ng-modal-dialog-content')[0];
+        var printContents = '<html><head><meta charset="utf-8"></head><body>' + elementToPrint.innerHTML + '</body></html>';
+
+        generationService
+          .generatePDFFromHTML(printContents)
+          .then(function (pdfContent) {
+            var toSign = {id: "", content: pdfContent.base64, base64encoded: true};
+            signDialog.signContent(toSign,
+              function (signedContent) {
+                scope.signedContent = {
+                  signedContentName: "document" + new Date().getMilliseconds()
+                };
+                //console.log('SIGN!!! \n' + signedContent.sign);
+                var decodedSignedPDF = $base64.decode(signedContent.sign);
+                var blob = new Blob([decodedSignedPDF], {type: 'application/pdf'});
+                scope.upload(blob, propertyId);
+                scope.isPrintFormNeverUploaded = false
+              }, function () {
+                console.log('Sign Dismissed');
+                //todo dissmiss sign
+              }, function (error) {
+                //todo react on error during sign
+              }, 'ng-on-top-of-modal-dialog modal-info');
+          });
+      };
+
+
       scope.signWithEDS = function () {
         var elementToPrint = element[0].getElementsByClassName('ng-modal-dialog-content')[0];
         var printContents = '<html><head><meta charset="utf-8"></head><body>' + elementToPrint.innerHTML + '</body></html>';
