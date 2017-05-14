@@ -2897,12 +2897,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     List<Map<String, String>> getBusinessProcessesFields(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly
-    )
-            throws IOException {
-    	LOG.info("getBusinessProcessesFields. sLogin: {} bDocOnly: {}", sLogin, bDocOnly);
+            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
+            @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value="sProcessDefinitionId", required = false) String sProcessDefinitionId
+    ) throws IOException {
+        
+    	LOG.info("getBusinessProcessesFields. sLogin: {} bDocOnly: {} sProcessDefinitionId: {}", sLogin, bDocOnly, sProcessDefinitionId);
     	
-        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
+        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
     }
 
     @ApiOperation(value = "/setDocument", notes = "##### Создание документа (позже будет заменен на универсальній сервис /setProcess)#####\n\n")

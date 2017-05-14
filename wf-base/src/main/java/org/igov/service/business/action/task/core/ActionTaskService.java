@@ -1092,12 +1092,30 @@ public class ActionTaskService {
 
         return amPropertyBP;
     }
-
-    public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly) {
-
-        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
-                sLogin, bDocOnly);
-
+    /**
+     * Получение списка полей бизнес процессов, к которым у пользователя есть доступ
+     * 
+     * @param sLogin - Логин пользователя
+     * @param bDocOnly - Выводить только список БП документов
+     * @param sProcessDefinitionId - Ид БП, если передается возвращаются поля только этого процесса
+     * @return  Лист полей, согласно запросу
+     */
+    public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
+        
+        List<ProcessDefinition> aProcessDefinition_Return = new ArrayList<>();
+        
+        if (sProcessDefinitionId != null) {
+            
+            ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(sProcessDefinitionId);
+            
+            aProcessDefinition_Return.add(oProcessDefinition);
+            
+        } else {
+        
+            aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(sLogin, bDocOnly);
+        
+        }
+        
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
             StartFormData formData = oFormService.getStartFormData(oProcessDefinition.getId());
@@ -1194,7 +1212,7 @@ public class ActionTaskService {
         }
         return aProcessDefinition_Return;
     }
-
+    
     /**
      * Получение списка бизнес процессов к которым у пользователя есть доступ
      *
