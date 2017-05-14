@@ -12,12 +12,11 @@ angular.module('dashboardJsApp')
       });
     }
 
-    function signContent(contentDataOrLoader, resultCallback, dismissCallback, errorCallback) {
-      var modalScope = $rootScope.$new();
-      var signModal = openModal(modalScope);
-
+    function signContent(contentDataOrLoader, resultCallback, dismissCallback, errorCallback, modalClass) {
       $q.when(contentDataOrLoader).then(function (contentData) {
+        var modalScope = $rootScope.$new();
         modalScope.contentData = contentData;
+        var signModal = openModal(modalScope, modalClass);
         signModal.result.then(function (signedContent) {
           resultCallback(signedContent);
         }, function () {
@@ -40,14 +39,15 @@ angular.module('dashboardJsApp')
 
     return {
       /**
-       * pass contentData = { id : "id of data", content : "real data content"}
+       * pass contentData = { id : "id of data", content : "real data content", base64encoded: "true/false"}
        * or pass promise that will return contentData object
        *
        * resultCallback will return :
        * {
        *    id : contentData.id,
        *    content: contentData.content,
-       *    signedContentHash : signedContentHash
+       *    certificate: certificate in base64
+       *    sign : sign in base64 (CMS sign result that can be saved as pdf)
        *  }
        */
       signContent: signContent,
@@ -143,14 +143,14 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
 
         return signService.signCMS($scope.contentData.content, !$scope.contentData.base64encoded)
           .then(function (signResult) {
-            var signedContentHash = signResult.sign;
+            var sign = signResult.sign;
             var certBase64 = signResult.certificate;
 
             $modalInstance.close({
               id: $scope.contentData.id,
               content: $scope.contentData.content,
               certificate: certBase64,
-              signedContentHash: signedContentHash
+              sign: sign
             });
           });
       }).catch(catchLastError);

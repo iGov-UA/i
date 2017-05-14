@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component("DocumentInit_iDoc")
-public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener {
+public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener  {
 
     private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
 
@@ -55,6 +55,7 @@ public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener
         } catch (Exception oException) {
             LOG.error("DocumentInit_iDoc: ", oException);
             java.util.logging.Logger.getLogger(DocumentInit_iDoc.class.getName()).log(Level.SEVERE, null, oException);
+            throw new IllegalArgumentException(oException);
         }
     }
 

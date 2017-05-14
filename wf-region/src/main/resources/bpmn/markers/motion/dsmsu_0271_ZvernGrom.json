@@ -1,0 +1,60 @@
+{	
+
+	"motion":
+	{
+		"RequiredFieldsOnCondition_1":
+		{
+			"aField_ID":["sComment"],
+			"asID_Field":
+			{
+				"sFunc":"asDecide"
+			},
+			"sCondition":"[sFunc]=='sReject'"
+		},
+		"RequiredFieldsOnCondition_2":
+		{
+			"aField_ID":["nOther"],
+			"asID_Field":
+			{
+				"sFunc1":"sTypeZvern"
+			},
+			"sCondition":"[sFunc1]=='Skarg'"
+		},
+		"RequiredFieldsOnCondition_3":
+		{
+			"aField_ID":["Vidpovid","sComment"],
+			"asID_Field":
+			{
+				"sFunc2":"sWayGet"
+			},
+			"sCondition":"[sFunc2]=='mail'||[sFunc2]=='Електронною поштою'"
+		},
+		"ShowElementsOnTrue_3":
+		{
+			"aElement_ID": ["post"],
+			"asID_Field":
+			{
+				"sClient": "sWayGet" 
+			},
+			"sCondition":"[sClient]=='post'||[sClient]=='Поштою'" 
+		},
+		"ShowElementsOnTrue_4":
+		{
+			"aElement_ID": ["mail"],
+			"asID_Field":
+			{
+				"sClient1": "sWayGet" 
+			},
+			"sCondition":"[sClient1]=='mail'||[sClient1]=='Електронною поштою'||[sClient1]=='osob'||[sClient1]=='Особисто'" 
+		}	
+	},
+	"validate": 
+	{
+    	"CustomFormat_1": 
+    	{
+      		"aField_ID": ["sIndex"],
+      		"sFormat": "#####",
+      		"sMessage": "Невірний формат індексу, введіть індекс у форматі #####" 
+   		}
+  	}
+}

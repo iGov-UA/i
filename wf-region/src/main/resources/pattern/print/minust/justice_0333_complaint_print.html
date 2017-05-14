@@ -121,17 +121,41 @@
 		<div class="no_line_field w450 ta-l"><i><b>СКАРЖНИК: [bankIdlastName] [bankIdfirstName] [bankIdmiddleName]</b></i><span></span></div><br>
 		<div class="no_line_field w350 ta-l">[bankIdAddressFactual]<span></span></div><br>
 		<div class="no_line_field w350 ta-l">e-mail: [email]<span></span></div><br>
-			
-			
-			
-			</div><br />
+            </div><br>
 	    <div class="line_col ta-c m-t-25"><b>СКАРГА</b><br></div>
 	        <div class="ta-c"><b>на [asRealtyTop] від [sDateDecisionKnown] № [sNumberDecision] [asSubjectCategory]</b></div><br><br>
 
 
 	       	<div class="ta-l">[sEssence]</div>
-			<div class="line_col ta-c m-t-25"><b>ПРОШУ:</b><br></div>
-			<div class="ta-l">[sConditions]</div>
+		<br>
+		<div class="ta-l">[sConditions]</div>
+            <div class="line_col ta-c m-t-25"><b>ПРОШУ:</b></div>
+
+                        <ul>
+                            <li id="sanction_1">Скасувати рішення про державну реєстрацію прав</li>
+                            <li id="sanction_2">Скасувати реєстраційну дію</li>
+                            <li id="sanction_3">Скасувати рішення про відмову в державній реєстрації прав та проведення державної реєстрації прав</li>
+                            <li id="sanction_4">Провести державну реєстрацію</li>
+                            <li id="sanction_5">Виправити помилки, допущених державним реєстратором</li>
+                            <li id="sanction_6">Тимчасово заблокувати доступ державного реєстратора до Державного реєстру прав строком на [nTimeLock_6]</li>
+                            <li id="sanction_7">Тимчасове заблокувати доступ державного реєстратора до Єдиного державного реєстру строком на [nTimeLock_7]</li>
+                            <li id="sanction_8">Анулювати доступ державного реєстратора до Державного реєстру прав</li>
+                            <li id="sanction_9">Анулювати доступ державного реєстратора до Єдиного державного реєстру</li>
+                            <li id="sanction_10">Скасувати акредитацію суб’єкта державної реєстрації</li>
+                            <li id="sanction_11">Направити до Вищої кваліфікаційної комісії нотаріату при Міністерстві юстиції України подання щодо анулювання свідоцтва про право на зайняття нотаріальною діяльністю</li>
+                        </ul>
+			<script type="text/javascript">
+				var bSanction = ["[bSanction_1]","[bSanction_2]","[bSanction_3]","[bSanction_4]","[bSanction_5]","[bSanction_6]","[bSanction_7]","[bSanction_8]","[bSanction_9]", "[bSanction_10]","[bSanction_11]"];
+
+				for (var i = 0; i <= 10; i++) {
+					if(bSanction[i] == 'yes'){
+						document.getElementById("sanction_" + (i+1)).style.display = 'list-item';
+					} else {
+						document.getElementById("sanction_" + (i+1)).style.display = 'none';
+					}
+			}
+			</script>
+
 			
 			<div class="date_subm m-t-45">
 			<div class="inv">[sDateTimeCreateProcess]<span>(дата подання скарги)</span></div>

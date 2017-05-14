@@ -2897,10 +2897,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     List<Map<String, String>> getBusinessProcessesFields(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "true") Boolean bDocOnly
-    )
-            throws IOException {
-        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
+            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
+            @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value="sProcessDefinitionId", required = false) String sProcessDefinitionId
+    ) throws IOException {
+        
+    	LOG.info("getBusinessProcessesFields. sLogin: {} bDocOnly: {} sProcessDefinitionId: {}", sLogin, bDocOnly, sProcessDefinitionId);
+    	
+        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
     }
 
     @ApiOperation(value = "/setDocument", notes = "##### Создание документа (позже будет заменен на универсальній сервис /setProcess)#####\n\n")
@@ -2909,15 +2912,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     Map<String, Object> setDocument(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
             @ApiParam(value = "sID_BP", required = true) @RequestParam(value = "sID_BP", required = true) String sID_BP
     ) throws Exception {
-
-        LOG.info("SetDocument in ActionTaskCommonController started...");
-        LOG.info("sLogin in setDocument is {}", sLogin);
-        Map<String, Object> mParam = new HashMap<>();
-        mParam.put("sLoginAuthor", sLogin);
-        ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+        
         Map<String, Object> mReturn = new HashMap<>();
-        mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
-        LOG.info("mReturn={}", mReturn);
+        
+        try {
+         
+            LOG.info("SetDocument in ActionTaskCommonController started...");
+            LOG.info("sLogin in setDocument is {}", sLogin);
+            
+            Map<String, Object> mParam = new HashMap<>();
+            mParam.put("sLoginAuthor", sLogin);
+            
+            ProcessInstance oProcessInstanceChild = runtimeService.startProcessInstanceByKey(sID_BP, mParam);
+            
+            mReturn.put("snID_Process", oProcessInstanceChild.getProcessInstanceId());
+            
+        } catch (IllegalArgumentException oException) {
+            
+            LOG.error("Error : /setDocument {}", oException);
+            
+            throw new RuntimeException(oException.getMessage());
+        }
+        
 
         return mReturn;
     }

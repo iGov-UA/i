@@ -33,8 +33,7 @@ public class IC_Service {
         String sURL = generalConfig.getsURL_1C() + URL_Ending;
         LOG.info("sURL: " + sURL);
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
-        String result = "none";
-        result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=feed;charset=utf-8");
+        String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=feed;charset=utf-8");
         LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
         return result;
     }
