@@ -4,12 +4,15 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Pay_MasterPass_1" name="MasterPass" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="1-й этап обработки" activiti:candidateGroups="Court_Of_Cassation">
       <extensionElements>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountry" name="Страна" type="string"></activiti:formProperty>      
+       	<activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Pay_MasterPass_1" name="MasterPass" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sBody_1" name="[pattern/print/_test_sandbox_print.html] ; ;bVisible=false" type="string" default="тестовая принтформа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/_test_sandbox_print.html" type="file" writable="false"></activiti:formProperty>
@@ -28,12 +31,13 @@
           <activiti:string><![CDATA[_test_sandbox]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-Файл в приложении
-[pattern/mail/_common_signature_start.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+	        <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+				Файл в приложении
+				[pattern/mail/_common_signature_start.html]
+				[pattern/mail/_common_signature_end.html]
+				[pattern/mail/_common_feedback.html]
+				[pattern/mail/_common_footer.html]]]>				
+			</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>

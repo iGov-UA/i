@@ -329,7 +329,7 @@ public class ActionFlowController {
 	        + "\n```\n")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Поля в ответе:\n "
             + "-поле \"nID_Ticket\" - ID созданной/измененной сущности FlowSlotTicket.\n")})
-    @RequestMapping(value = "/setFlowSlot_ServiceData", method = RequestMethod.POST)
+    @RequestMapping(value = { "/setFlowSlot_ServiceData", "/setFlowSlot" }, method = RequestMethod.POST)
     public
     @ResponseBody
     ResponseEntity saveFlowSlotTicket(@ApiParam(value = "ИД сущности FlowSlot", required = true) @RequestParam(value = "nID_FlowSlot") Long nID_FlowSlot,

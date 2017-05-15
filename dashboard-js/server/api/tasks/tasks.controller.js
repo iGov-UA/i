@@ -11,6 +11,7 @@ var tasksService = require('./tasks.service');
 var environment = require('../../config/environment');
 var request = require('request');
 var pdfConversion = require('phantom-html-to-pdf')();
+var Buffer = require('buffer').Buffer;
 
 /*
  var nodeLocalStorage = require('node-localstorage').LocalStorage;
@@ -96,7 +97,7 @@ exports.index = function (req, res) {
   //var user = JSON.parse(localStorage.getItem('user'));
   var query = {};
   //https://test.igov.org.ua/wf/service/runtime/tasks?size=20
-  if(req.query.soaFilterField) {
+  if (req.query.soaFilterField) {
     query.soaFilterField = req.query.soaFilterField;
   }
   query.nSize = 50;
@@ -130,7 +131,7 @@ exports.index = function (req, res) {
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
       query.size = query.nSize;
- 	    query.start = query.nStart;
+      query.start = query.nStart;
       query.taskInvolvedUser = user.id;
       query.finished = true;
     } else if (req.query.filterType === 'documents') {
@@ -308,12 +309,12 @@ exports.getAttachmentContent = function (req, res) {
 exports.getAttachmentFile = function (req, res) {
   var qs = {};
 
-  if(req.params.typeOrAttachID === 'Mongo') {
+  if (req.params.typeOrAttachID === 'Mongo') {
     qs = {
       'sKey': req.params.keyOrProcessID,
       'sID_StorageType': req.params.typeOrAttachID
     };
-    if(req.params.sFileName){
+    if (req.params.sFileName) {
       qs['sFileName'] = req.params.sFileName;
     }
   } else {
@@ -375,7 +376,7 @@ exports.getTask = function (req, res) {
   //activiti.put(options, function (error, statusCode, result) {
   activiti.get(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
-    if(typeof(result) === 'number'){
+    if (typeof(result) === 'number') {
       result = '' + result;
     }
     res.send(result);
@@ -449,9 +450,25 @@ exports.getPatternFile = function (req, res) {
 };
 
 exports.signAndUpload = function (req, res) {
-  var encodedContent = req.body.content;
-  var contentSign = req.body.sign;
-  //TODO decode content and activitiUpload
+  var user = JSON.parse(req.cookies.user);
+  var contentAndSignContainer = req.body.sign;
+  var params = {
+    qs: {
+      nID_Process: req.body.taskId,
+      sFileNameAndExt: req.body.sFileNameAndExt,
+      sID_Field: req.body.sID_Field,
+      sKey_Step: req.body.sKey_Step,
+      sLogin: user.id
+    },
+    headers: {
+      'Content-Type': 'application/pdf;charset=utf-8'
+    }
+  };
+  var content = {buffer: new Buffer(new Buffer(contentAndSignContainer, 'base64').toString('binary'), 'binary')};
+
+  activitiUpload.uploadContent('object/file/setDocumentImage', params, content, function (error, response, body) {
+    error ? res.send(error) : res.status(response.statusCode).json(result);
+  });
 };
 
 /**
@@ -459,7 +476,7 @@ exports.signAndUpload = function (req, res) {
  * added pdf conversion if file name is sPrintFormFileAsPDF
  */
 exports.upload_content_as_attachment = function (req, res) {
-  if(req.body.sOutputFileType === 'pdf') {
+  if (req.body.sOutputFileType === 'pdf') {
     async.waterfall([
       function (callback) {
         var options = {
@@ -473,11 +490,11 @@ exports.upload_content_as_attachment = function (req, res) {
           settings: {
             javascriptEnabled: true
           },
-           format: {
+          format: {
             quality: 100
           }
         };
-        if(req.body.isSendAsDocument){
+        if (req.body.isSendAsDocument) {
           req.body.url = "setDocumentImage";
         } else {
           req.body.url = 'setProcessAttach';
@@ -501,7 +518,7 @@ exports.upload_content_as_attachment = function (req, res) {
             pdfConversion.kill();
             error ? res.send(error) : res.status(statusCode).json(result);
           });
-        } else if(req.body.url === "setDocumentImage"){
+        } else if (req.body.url === "setDocumentImage") {
           var user = JSON.parse(req.cookies.user);
           activiti.uploadStream({
             path: 'object/file/' + req.body.url,
@@ -549,9 +566,9 @@ exports.setTaskQuestions = function (req, res) {
   };
 
   var data = {
-    saField : req.body.saField,
-    soParams : req.body.soParams,
-    sBody : req.body.sBody
+    saField: req.body.saField,
+    soParams: req.body.soParams,
+    sBody: req.body.sBody
   };
 
   activiti.post({
@@ -566,18 +583,18 @@ exports.setTaskQuestions = function (req, res) {
 };
 
 // отправка комментария от чиновника, сервис работает на централе, поэтому с env конфигов берем урл.
-exports.postServiceMessage = function(req, res){
+exports.postServiceMessage = function (req, res) {
   var oData = req.body;
   var oDateNew = {
     'sID_Order': environment.activiti.nID_Server + '-' + oData.nID_Process,
     'sBody': oData.sBody,
-    'nID_SubjectMessageType' : 9,
+    'nID_SubjectMessageType': 9,
     'sMail': oData.sMail,
     'soParams': oData.soParams
   };
   var central = environment.activiti_central;
   var sURL = central.prot + '://' + central.host + ':' + central.port + '/' + central.rest + '/subject/message/setServiceMessage';
-  var callback = function(error, response, body) {
+  var callback = function (error, response, body) {
     res.send(body);
     res.end();
   };
@@ -796,7 +813,7 @@ exports.setTaskAttachmentNew = function (req, res) {
     sID_Field: req.body.nID_Attach
   };
 
-  if(req.body.nID_Process) {
+  if (req.body.nID_Process) {
     query['nID_Process'] = req.body.nID_Process;
   }
 
@@ -805,9 +822,9 @@ exports.setTaskAttachmentNew = function (req, res) {
     query: query,
     headers: {
       'Content-Type': 'text/html;charset=utf-8'
-      }
+    }
   }, function (error, statusCode, result) {
-      error ? res.send(error) : res.status(statusCode).json(result);
+    error ? res.send(error) : res.status(statusCode).json(result);
   }, req.body.sContent, false);
 
 };
@@ -815,17 +832,17 @@ exports.setTaskAttachmentNew = function (req, res) {
 
 exports.checkAttachmentSignNew = function (req, res) {
   var properties = {
-    sKey : req.query.sKey,
-    sID_StorageType : req.query.sID_StorageType || null,
-    sID_Process : req.query.sID_Process || null,
-    sID_Field : req.query.sID_Field || null,
-    sFileNameAndExt : req.query.sFileNameAndExt || null
+    sKey: req.query.sKey,
+    sID_StorageType: req.query.sID_StorageType || null,
+    sID_Process: req.query.sID_Process || null,
+    sID_Field: req.query.sID_Field || null,
+    sFileNameAndExt: req.query.sFileNameAndExt || null
   };
 
-  for(var key in properties) {
-   if(!properties[key]) {
-     delete properties[key];
-   }
+  for (var key in properties) {
+    if (!properties[key]) {
+      delete properties[key];
+    }
   }
 
   var options = {

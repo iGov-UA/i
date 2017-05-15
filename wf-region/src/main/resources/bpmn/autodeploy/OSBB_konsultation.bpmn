@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="OSBB_konsultation" name="ОСББ - надання консультації ініціативним групам і новоствореним ОСББ" isExecutable="true">
+  <process id="OSBB_konsultation" name="ОСББ - надання консультації з питань створення ОСББ і з питання отимання документів від попереднього управителя" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sText1" name="Зверніть увагу!" type="label" default="Консультація надається лиш з питання створення ОСББ та з питання отримання документації від попереднього балансоутримувача"></activiti:formProperty>
@@ -24,15 +24,15 @@
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="tKommentGrom" name="Коротко опишіть суть звернення;(Якщо необхідно, додайте нижче сканкопії документів)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocZvernenia" name="Додаток до звернення;(якщо файлів кілька завантажте ZIP aрхівом)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk_Konsalt" name="Пошта органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса установи; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Часи роботи; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMyPhone" name="Телефон контролю; ;bVisible=false" type="string" default="+380993527640"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Надання консультації ініціативним групам і створеним ОСББ"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="надання консультації ініціативним групам і створеним ОСББ"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_Konsalt" name="Пошта органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса установи ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка заяви ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMyPhone" name="Телефон контролю ; ;bVisible=false" type="string" default="+380993527640"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги ; ;bVisible=false" type="string" default="Надання консультації ініціативним групам і створеним ОСББ"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ ; ;bVisible=false" type="string" default="надання консультації ініціативним групам і створеним ОСББ"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -83,7 +83,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk_Konsalt}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
@@ -94,7 +94,7 @@ ${sNameOrgan}.&lt;br /&gt;
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask8" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="OSBB_test">
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="Kons_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="asZayavnik" name="Інформація про заявника" type="enum" writable="false">
           <activiti:value id="sEnamInitiativ" name="Член ініціативної групи"></activiti:value>

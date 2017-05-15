@@ -24,7 +24,7 @@ exports.getDocumentStepRights = function (req, res) {
     nID_Process: req.query.nID_Process
   };
   activiti.get({
-    path: '/action/task/getDocumentStepRights',
+    path: '/common/document/getDocumentStepRights',
     query: query
   }, function (error, statusCode, result) {
     res.statusCode = statusCode;
@@ -34,7 +34,7 @@ exports.getDocumentStepRights = function (req, res) {
 
 exports.getDocumentStepLogins = function (req, res) {
   activiti.get({
-    path: '/action/task/getDocumentStepLogins',
+    path: '/common/document/getDocumentStepLogins',
     query: req.query
   }, function (error, statusCode, result) {
     res.statusCode = statusCode;
@@ -111,6 +111,19 @@ exports.delegateDocument = function (req, res) {
 exports.getDocumentSubmittedUnsigned = function (req, res) {
   activiti.get({
     path: 'common/document/getDocumentSubmitedUnsigned',
+    query: req.query
+  }, function (error, statusCode, result) {
+    if(!error) {
+      res.statusCode = statusCode;
+      res.send(result)
+    }
+  })
+};
+
+
+exports.removeDocumentSteps = function (req, res) {
+  activiti.get({
+    path: 'common/document/removeDocumentSteps',
     query: req.query
   }, function (error, statusCode, result) {
     if(!error) {

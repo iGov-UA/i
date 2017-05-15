@@ -69,8 +69,7 @@ public class ActionFlowControllerScenario {
                 param("nID_Service", "1").
                 param("nID_SubjectOrganDepartment", "1").
                 param("nDays", "1000000").
-                param("nDiffDays", "0")).
-                andExpect(status().isOk()).
+                param("nDiffDays", "0")).andExpect(status().isOk()).
                 andExpect(content().contentType(APPLICATION_JSON_CHARSET_UTF_8)).
                 andReturn().getResponse().getContentAsString();
         days = JsonRestUtils.readObject(getJsonData, Days.class);

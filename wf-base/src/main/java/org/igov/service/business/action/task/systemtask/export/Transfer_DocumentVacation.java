@@ -14,9 +14,8 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.igov.io.fs.FileSystemData;
-import org.igov.model.subject.SubjectAccountDao;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
-import org.igov.service.business.export.AgroholdingService;
+import org.igov.service.business.export.IC_Service;
 import org.igov.service.business.subject.SubjectService;
 import static org.igov.service.business.util.Date.getDateDiff;
 import static org.igov.util.Tool.parseData;
@@ -36,7 +35,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom implement
     private final static Logger LOG = LoggerFactory.getLogger(Transfer_DocumentVacation.class);
 
     @Autowired
-    AgroholdingService agroholdingService;
+    IC_Service o1C_Service;
 
     private Expression sID_Pattern;
 
@@ -50,6 +49,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom implement
     @Autowired
     private SubjectService oSubjectService;
 
+    //http://koatuu.test.igov.org.ua/test1c/odata/standard.odata/Document_%D0%9E%D1%82%D0%BF%D1%83%D1%81%D0%BA%D0%B0%D0%9E%D1%80%D0%B3%D0%B0%D0%BD%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B9
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
@@ -91,7 +91,7 @@ public class Transfer_DocumentVacation extends Abstract_MailTaskCustom implement
         }
         LOG.info("Transfer_DocumentVacation documentVacation after: " + documentVacation);
 
-        String result = agroholdingService.transferDocument(documentVacation, "/Document_ОтпускаОрганизаций");
+        String result = o1C_Service.transferDocument(documentVacation, "/Document_ОтпускаОрганизаций");
         LOG.info("Transfer_DocumentVacation result: " + result);
     }
 

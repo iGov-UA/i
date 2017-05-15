@@ -843,6 +843,7 @@ angular.module('dashboardJsApp')
             bIncludeGroups: true,
             bIncludeStartForm: true,
             bIncludeAttachments: true,
+            bIncludeProcessVariables: true,
             bIncludeMessages: true
           });
         return simpleHttpPromise({
@@ -939,7 +940,7 @@ angular.module('dashboardJsApp')
           return properties;
         };
 
-        var tableFields = $filter('filter')(task.formProperties, function(prop){
+        var tableFields = $filter('filter')(task.aFormProperty, function(prop){
           return prop.type == 'table';
         });
 
@@ -970,12 +971,12 @@ angular.module('dashboardJsApp')
 
         $q.all(tablePromises).then(function () {
           var qs = {
-            properties : createProperties(task.formProperties)
+            aFormProperty : createProperties(task.aFormProperty)
           };
 
           simpleHttpPromise({
             method: 'POST',
-            params: {sID_BP: bpID},
+            params: {sID_BP: bpID, nID_Subject: 1, nID_Service: 1, nID_ServiceData: 1, sID_UA: 1}, // хардкод будем тянуть эти параметры позже с централа
             url: '/api/create-task/saveCreatedTask',
             data: qs
           }).then(function (result) {
@@ -1019,6 +1020,15 @@ angular.module('dashboardJsApp')
           url: '/api/documents/getDocumentSubmittedUnsigned',
           params: {
             sLogin: currentUser.id
+          }
+        })
+      },
+      removeDocumentSteps: function (nID_Process) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/documents/removeDocumentSteps',
+          params: {
+            snID_Process_Activiti: nID_Process
           }
         })
       }

@@ -18,7 +18,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Створення заявки оператором КЦ степ1">
       <extensionElements>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заява на відділення про бажання клієнта скористатися послугами банку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" required="true"></activiti:formProperty>
@@ -30,7 +30,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
             <activiti:string><![CDATA[_default_Operator_KC]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -52,7 +52,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask2" name="Обробка заяви співробітником">
       <extensionElements>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="id процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заява на відділення про бажання клієнта скористатися послугами банку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
@@ -63,6 +63,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="agreed" name="Продукт оформлений"></activiti:value>
           <activiti:value id="refused" name="клієнт відмовився"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
@@ -70,32 +71,38 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <serviceTask id="servicetask1" name="Продукт оформлено" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression>pavlenkojulia2202@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Результат роботи з ${sName_client}]]></activiti:expression>
+          <activiti:expression>Результат роботи з ${sName_client}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Продукт оформлено]]></activiti:expression>
+          <activiti:expression>Продукт оформлено</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:string><![CDATA[+380961335385]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression>продукт оформлено</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name="клієнт відмовився" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression>pavlenkojulia2202@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Результат роботи з ${sName_client}]]></activiti:expression>
+          <activiti:expression>Результат роботи з ${sName_client}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Клієнт відмовився]]></activiti:expression>
+          <activiti:expression>Клієнт відмовився</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>

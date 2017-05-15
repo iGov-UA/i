@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.igov.model.action.vo.Relation_VO;
 import org.igov.service.business.relation.RelationService;
@@ -30,13 +31,16 @@ public class RelationController {
     @Autowired
     RelationService oRelationService;
     
+    @ApiOperation(value = "Обработка Relation", notes = "##### Пример:\n"
+            + "https://alpha.test.region.igov.org.ua/wf/service/relation/getRelations?sID_Relation=1&sFindChild=gro \n")
     @RequestMapping(value = "/getRelations", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
-    List<Relation_VO> getRelations(@RequestParam(value = "sID_Relation", required = true) String sID_Relation,
-                                     @RequestParam(value = "nID_Parent", required = false) Long nID_Parent) throws Exception
+    List<Relation_VO> getRelations (@RequestParam(value = "sID_Relation", required = true) String sID_Relation,
+                                    @RequestParam(value = "sFindChild", required = false) String sFindChild,
+                                    @RequestParam(value = "nID_Parent", required = false) Long nID_Parent) throws Exception
     {
         LOG.info("getRelations started");
-        return oRelationService.getRelations(sID_Relation, nID_Parent);
+        return oRelationService.getRelations(sID_Relation, nID_Parent, sFindChild);
     }
 }
