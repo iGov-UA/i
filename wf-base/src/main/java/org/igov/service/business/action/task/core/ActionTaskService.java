@@ -1106,8 +1106,9 @@ public class ActionTaskService {
         
         if (sProcessDefinitionId != null) {
             
+            LOG.info("getBusinessProcessesFieldsOfLogin: sProcessDefinitionId = {}", sProcessDefinitionId);
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(sProcessDefinitionId);
-            
+            LOG.info("getBusinessProcessesFieldsOfLogin: oProcessDefinition={}", oProcessDefinition);
             aProcessDefinition_Return.add(oProcessDefinition);
             
         } else {
