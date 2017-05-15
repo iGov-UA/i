@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="bti_request_1" name="Запит інформації про власність згідно матеріалів інвентаризаційної справи" isExecutable="true">
-    <documentation>#КОЛЯ_НЕ_ТРОГАЙ_ПРОЦЕСС!!!</documentation>
+    <documentation></documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -13,7 +13,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sRequestGoal" name="Зазначте яку додаткову інформацію Ви бажаєте отримати" type="textArea" default="-"></activiti:formProperty>
         <activiti:formProperty id="saQuestion3" name="Стосовно якої кількості адрес буде створено запит стандартного типу?" type="enum">
-          <activiti:value id="type1" name="Одна адреса (315 грн, для теста  сумма 0.01 грн)"></activiti:value>
+          <activiti:value id="type1" name="Одна адреса (315 грн)"></activiti:value>
           <activiti:value id="type2" name="Дві адреси (495 грн)"></activiti:value>
           <activiti:value id="type3" name="Три адреси (675 грн)"></activiti:value>
           <activiti:value id="type4" name="Чотири адреси (855 грн)"></activiti:value>
@@ -43,18 +43,18 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default="Очікує сплати"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="назначение платежа; поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа з ПДВ + комиссия 1.8%;  поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sSumPDV" name="сумма ПДВ;  поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sSumWithPDV" name="сумма платежа З ПДВ;  поле відображено для тестування сплати" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="назначение платежа; поле відображено для тестування сплати;bVisible=false" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа з ПДВ + комиссия 1.8%;  поле відображено для тестування сплати;bVisible=false" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати;bVisible=false" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSumPDV" name="сумма ПДВ;  поле відображено для тестування сплати;bVisible=false" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSumWithPDV" name="сумма платежа З ПДВ;  поле відображено для тестування сплати;bVisible=false" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта ; ;bVisible=false" type="string" default="i90213635286"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Запит з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/bti/bti_request_1_1.html"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+38" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail  Ви отримаєте результат обробки Вашого запиту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="infoMessage2" name=" ; ;labelType=info" type="label" default="Для пiдтвердження Ваших повноважень, скористайтесь Вашим ЕЦП нотаріуса для підпісання цього запиту"></activiti:formProperty>
-        <activiti:formProperty id="infoMessage4" name=" ; ;labelType=info" type="label" default="Після замовлення послуги, Ви отримаєте електроного листа для сплати  вартості послуги онлайн. Сума до сплати враховує також комісію карткових систем 1.8%. Сплачуючи вартість послуги, Ви надаєте свою згоду з актом виконаних робіт, що буде створено після надання послуги."></activiti:formProperty>
+        <activiti:formProperty id="infoMessage4" name=" ; ;labelType=info" type="label" default="Після замовлення послуги, Ви отримаєте електронного листа для сплати  вартості послуги онлайн. Сума до сплати враховує також комісію карткових систем 1.8%. Сплачуючи вартість послуги, Ви надаєте свою згоду з актом виконаних робіт, що буде створено після надання послуги."></activiti:formProperty>
         <activiti:formProperty id="marker1" name="form fields show-hide" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="set sSum" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2_1" name="set sSum" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_2_2.json')}"></activiti:formProperty>
@@ -62,8 +62,8 @@
         <activiti:formProperty id="marker4" name="set printform content (jur)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker5" name="set required fields" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTime" name="sTime;  ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sLimit" name="sLimit - количество циклов ожидания оплаты;   field for test ; bVisible=false" type="string" default="48"></activiti:formProperty>
-        <activiti:formProperty id="sStatus" name="sStatus;   field for test;bVisible=false" type="string" default="false"></activiti:formProperty>
+        <activiti:formProperty id="sLimit" name="sLimit ; ;bVisible=false" type="string" default="720"></activiti:formProperty>
+        <activiti:formProperty id="sStatus" name="sStatus;  ;bVisible=false" type="string" default="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -160,14 +160,15 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sJurAddress" name="Юридична адреса автора запиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhisAddress" name="Адреса реєстрації автора запиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sDescription" name="назначение платежа;буде заповнено автоматічно після сплати;writable=false, bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа;буде заповнено автоматічно після сплати;writable=false, bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
         <activiti:formProperty id="sSumPDV" name="сумма ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
         <activiti:formProperty id="sSumWithPDV" name="сумма платежа З ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Файл Запиту з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html] ; ; bVisible=false" type="string" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html]; ;bVisible=false" type="string" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker4" name="set printform content (jur)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="result" name="Запит складено  без помилок?" type="enum">
           <activiti:value id="accept" name="Помилкі відсутні. Надіслати ліст для сплати вартості послуги"></activiti:value>
@@ -268,8 +269,8 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sJurAddress" name="Юридична адреса автора запиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhisAddress" name="Адреса реєстрації автора запиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="назначение платежа; поле відображено для тестування сплати ; bVisible=false " type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа;  поле відображено для тестування сплати ;  bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="назначение платежа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа;  ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
         <activiti:formProperty id="sSumPDV" name="сумма ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
         <activiti:formProperty id="sSumWithPDV" name="сумма платежа З ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
@@ -277,8 +278,8 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form2_signed" name="Додайте файл відповіді з накладеним ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар до видповіді на запит" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html] ; ; bVisible=false" type="string" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/bti/bti_request_1_3.html] ; ; bVisible=false" type="string" default="Акт виконаних робіт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html]; ;bVisible=false" type="string" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/bti/bti_request_1_3.html]; ;bVisible=false" type="string" default="Акт виконаних робіт" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker4" name="set printform content (jur)" type="markers" default="${markerService.loadFromFile('bti/bti_request_1_4.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
