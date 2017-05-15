@@ -63,8 +63,12 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
                 };
                 //console.log('SIGN!!! \n' + signedContent.sign);
                 var decodedSignedPDF = $base64.decode(signedContent.sign);
-                var blob = new Blob([decodedSignedPDF], {type: 'application/pdf'});
-                scope.upload(blob, propertyId);
+                //var blob = new Blob([decodedSignedPDF], {type: 'application/pdf'});
+                var aFiles = [];
+                var file = new File([decodedSignedPDF], propertyId + ".pdf", {type: "application/pdf"});
+                //file.webkitRelativePath = (window.URL || window.webkitURL).createObjectURL(file);
+                aFiles.push(file);
+                scope.upload(aFiles, propertyId);
                 scope.isPrintFormNeverUploaded = false
               }, function () {
                 console.log('Sign Dismissed');
