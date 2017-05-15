@@ -151,7 +151,7 @@ public class MigrationServiceImpl implements MigrationService {
     private List<AccessGroup> getAccessGroup(HistoricTaskInstance taskInstance) {
         ProcessDefinition definition = repositoryService.createNativeProcessDefinitionQuery().sql("SELECT process_definition.* FROM " +
                 "act_re_procdef process_definition JOIN act_hi_procinst process_instance on process_instance.proc_def_id_" +
-                "=process_definition.id_ AND process_instance.proc_inst_id_ = " + taskInstance.getProcessInstanceId()).singleResult();
+                "=process_definition.id_ AND process_instance.proc_inst_id_ = \'" + taskInstance.getProcessInstanceId() + "\';").singleResult();
         BpmnModel model = repositoryService.getBpmnModel(definition.getId());
         for (FlowElement oFlowElement : model.getMainProcess().getFlowElements()) {
             if (oFlowElement instanceof UserTask) {
