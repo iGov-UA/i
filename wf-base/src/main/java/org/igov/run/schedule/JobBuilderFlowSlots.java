@@ -49,11 +49,16 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     //private static final long[] A_TESTS_ID_FLOW_SERVICE_DATA = {1L, 12L};
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
-                new Date(), context.getTrigger().getName());
-        oFlowService.buildFlowSlots();
-        LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={} end!!!",
-                new Date(), context.getTrigger().getName());
         
+        try{
+            LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
+                    new Date(), context.getTrigger().getName());
+            oFlowService.buildFlowSlots();
+            LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={} end!!!",
+                    new Date(), context.getTrigger().getName());
+        }
+        catch(Exception ex){
+            LOG.info("JobBuilderFlowSlots throws an error: {}", ex);
+        }
     } 
 }
