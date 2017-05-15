@@ -1197,14 +1197,21 @@ public class ObjectFileCommonController {
     public @ResponseBody
     byte[] getBase64DecodedFile(
             @ApiParam(value = "использовать MIME декодер", required = false) @RequestParam(value = "isMime", required = false, defaultValue = "false") boolean isMime,
-            @ApiParam(value = "MultipartFile для декодирования из Base64", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @ApiParam(value = "MultipartFile для декодирования из Base64", required = true) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
+            @RequestBody byte[] byteArray
     ) throws IOException, CRCInvalidException, RecordNotFoundException,
             FileServiceIOException {
 
         try {
             if(isMime){
+                if(byteArray.length > 0){
+                    return Base64.getMimeDecoder().decode(byteArray);
+                }
                 return Base64.getMimeDecoder().decode(getBytes(file));
             } else {
+                if(byteArray.length > 0){
+                    return Base64.getDecoder().decode(byteArray);
+                }
                 return Base64.getDecoder().decode(getBytes(file));
             }
         } catch (IOException e) {

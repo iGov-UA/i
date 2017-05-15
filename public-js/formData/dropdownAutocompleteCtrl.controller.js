@@ -169,9 +169,9 @@ angular.module('autocompleteService')
                 });
                 function setParams(field, key, rowKey, fieldKey) {
                     if (field.id.indexOf('sID_Group_Activiti') === 0) {
-                        queryParams.params['sID_Group_Activiti'] = field.value;
+                        queryParams.params[field.id] = field.value;
                     } else if (field.id.indexOf('nDeepLevel') === 0) {
-                        queryParams.params['nDeepLevel'] = field.value;
+                        queryParams.params[field.id] = field.value;
                     } else {
                         queryParams.params[field.id] = field.value;
                     }

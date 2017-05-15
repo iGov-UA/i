@@ -2,26 +2,26 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="_test_sID_Pay_MasterPass" name="Тестування поля sID_Pay_MasterPass для роботи з  платіжною системою MasterCard" isExecutable="true">
     <documentation>
-		AGVersion: 2017.05.11
+		AGVersion: 2017.05.15
 	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Pay_MasterPass_1" name="sID_Pay_MasterPass_1" type="string"></activiti:formProperty>
-		<activiti:formProperty id="invoice" name="Сума платежу, у копійках" type="string" default="100"></activiti:formProperty>
-		<activiti:formProperty id="pmt_info" name="Інформація до платежу, у форматі JSON, за що сплачено" type="string" default="Інформація_до_платежу_за_що_сплачено"></activiti:formProperty>
-		<activiti:formProperty id="pmt_desc" name="Призначення платежу, у форматі текст до 100 знаків" type="string" default="Призначення_платежу_у_форматі_текст_до_100_знаків"></activiti:formProperty>
+        <activiti:formProperty id="sID_Pay_MasterPass" name="sID_Pay_MasterPass" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum_MasterPass" name="Сума платежу, у копійках" type="string" default="100"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=False" type="textArea" default="{&quot;phone&quot;:&quot;Контактний телефон&quot;, &quot;email&quot;:&quot;Електронна адреса&quot;, &quot;sSum_MasterPass&quot;:&quot;Сума платежу&quot;}"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків" type="string" default="Призначення_платежу_у_форматі_текст_до_100_знаків"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Pay_MasterPass_1" name="sID_Pay_MasterPass_1" type="string"></activiti:formProperty>
-		<activiti:formProperty id="invoice" name="Сума платежу, у копійках; ;bVisible=False" type="string"></activiti:formProperty>
-		<activiti:formProperty id="pmt_info" name="Інформація до платежу, у форматі JSON; ;bVisible=False" type="string"></activiti:formProperty>
-		<activiti:formProperty id="pmt_desc" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=False" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Pay_MasterPass" name="sID_Pay_MasterPass" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sSum_MasterPass" name="Сума платежу, у копійках; ;bVisible=False" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=False" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=False" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
