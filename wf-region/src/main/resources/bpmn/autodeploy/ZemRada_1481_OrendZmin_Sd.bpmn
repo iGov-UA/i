@@ -73,6 +73,7 @@
         <activiti:formProperty id="nFile_DozvilBud" name="Дозвільні документи на будівництво; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerFiles" name="markers" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/Zem1481Files.json')}"></activiti:formProperty>
         
+        <activiti:formProperty id="sShapka" name="назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_zem" name="Пошта ДЗК; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -216,7 +217,8 @@ ${sPhoneOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Відмова. Заява оформлена НЕ вірно"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_0056_GotEkspluatBP.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/ZemRada_1481_OrendZmin.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markerPrint" name="markers" type="markers" default="${markerService.loadFromFile('AK/PrintM_4_FoUoFopUop.json')}"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
