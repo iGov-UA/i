@@ -1,9 +1,12 @@
 package org.igov.service.migration;
 
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.igov.analytic.model.access.AccessGroup;
 import org.igov.analytic.model.attribute.*;
 import org.igov.analytic.model.config.Config;
 import org.igov.analytic.model.config.ConfigDao;
@@ -57,6 +60,11 @@ public class MigrationServiceImpl implements MigrationService {
     @Autowired
     private AttributeTypeDao attributeTypeDao;
 
+    @Autowired
+    private RepositoryService repositoryService;
+
+
+
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
 
     @Override
@@ -103,6 +111,8 @@ public class MigrationServiceImpl implements MigrationService {
         process.setaProcessTask(createProcessTaskList(historicProcess.getId(), process));
         process.setsID_Data("sID_Data Process");
         process.setCustomProcess(createCustomProcessToInsert(historicProcess, process));
+        process.setaAccessGroup(null);
+        process.setaAccessUser(null);
         return process;
     }
 
@@ -134,6 +144,13 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setaAttribute(createAttributes(taskInstance.getId(), null, processTask));
         processTask.setCustomProcessTask(createCustomProcessTaskToInsert(taskInstance, processTask));
         return processTask;
+    }
+
+    private List<AccessGroup> getAccessGroup(HistoricTaskInstance taskInstance) {
+        ProcessDefinition definition = repositoryService.createNativeProcessDefinitionQuery().sql("SELECT process_definition.* FROM " +
+                "act_re_procdef process_definition JOIN act_hi_procinst process_instance on process_instance.proc_def_id_" +
+                "=process_definition.proc_def_id_ AND process_instance.proc_inst_id_ = " + taskInstance.getId()).singleResult();
+        return null;
     }
 
     private CustomProcessTask createCustomProcessTaskToInsert(HistoricTaskInstance taskInstance, ProcessTask processTask) {
@@ -182,7 +199,7 @@ public class MigrationServiceImpl implements MigrationService {
                 historyService.
                         createHistoricVariableInstanceQuery().taskId(instanceId).list();
 
-        Map<String, Object> attributes = populateAttributes(variableInstanceList);
+        Map<String, Object> attributes = convertToAttributesMap(variableInstanceList);
         List<Attribute> resultList = new ArrayList<>(attributes.size());
         attributes.forEach((id, value) -> {
             Attribute attribute = new Attribute();
@@ -198,7 +215,7 @@ public class MigrationServiceImpl implements MigrationService {
         return resultList;
     }
 
-    private Map<String, Object> populateAttributes(List<HistoricVariableInstance> variables) {
+    private Map<String, Object> convertToAttributesMap(List<HistoricVariableInstance> variables) {
         Map<String, Object> resultMap = new HashMap<>(variables.size());
 
         variables.forEach(entity -> {

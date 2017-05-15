@@ -1276,7 +1276,7 @@ public class ActionTaskService {
             }
         }
 
-        List<ProcessInfoShortVO> aProcessInfoShortVO = new LinkedList();
+        List<ProcessInfoShortVO> aProcessInfoShortVO = new LinkedList<>();
 
         for (ProcessDefinition processDef : aProcessDefinition_Return) {
             ProcessInfoShortVO oProcessInfoShortVO = new ProcessInfoShortVO();
