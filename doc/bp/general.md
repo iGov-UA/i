@@ -1083,9 +1083,8 @@ digit3 - переменная, куда присвоится результат 
 ###### automaticsendingmail
 ### Автоматическая отправка почты 
 По умолчанию почта об уведомлении клиента об успешной отправке заявки c сайта iGov (https://igov.org.ua/)  автоматически рассылаться не будет. Для того, чтобы добавить отправку стандартной почты необходимо прописать ID  бизнес-процесса в следующий файл:
-i\wf-base\src\main\java\org\igov\service\controller\interceptor\RequestProcessingInterceptor.java
-В файле RequestProcessingInterceptor.java находим переменную asID_BP_SendMail и добавляем в нее необходимый ID.  
-[детальней...](#_automaticsendingmail)
+ \wf-base\src\main\resources\sendMail.properties
+
 
 ### Сервистаска для почты
 Создаем сервис таску, для которой указываем один из трех delegateExpression:  
@@ -3365,7 +3364,7 @@ default="${markerService.loadFromFile('folder_name/testmarkers.json')}"
 
 [вернуться...](#automaticsendingmail)
 
-![15_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/15_1.jpg)
+
 
 
 ###### _usingmultipleelectronicqueues
