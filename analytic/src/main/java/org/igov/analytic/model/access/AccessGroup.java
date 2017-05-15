@@ -8,9 +8,12 @@ package org.igov.analytic.model.access;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 
+import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
 
@@ -18,7 +21,7 @@ import org.igov.model.core.AbstractEntity;
  *
  * @author olga
  */
-@javax.persistence.Entity
+@Entity
 public class AccessGroup extends AbstractEntity {
 
     @JsonProperty(value = "sID")
@@ -30,14 +33,14 @@ public class AccessGroup extends AbstractEntity {
     @JoinTable(name = "AccessGroup_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessGroup"),
             inverseJoinColumns = @JoinColumn(name = "nID_ProcessTask"))
-    private List<ProcessTask> aProcessTask = new ArrayList<>();
+    private Set<ProcessTask> aProcessTask = new HashSet<>();
     
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class, cascade = CascadeType.ALL)
     @JoinTable(name = "AccessGroup_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessGroup"),
             inverseJoinColumns = @JoinColumn(name = "nID_Process"))
-    private List<org.igov.analytic.model.process.Process> aProcess = new ArrayList<>();
+    private Set<org.igov.analytic.model.process.Process> aProcess = new HashSet<>();
 
     public String getsID() {
         return sID;
@@ -47,20 +50,19 @@ public class AccessGroup extends AbstractEntity {
         this.sID = sID;
     }
 
-    public List<ProcessTask> getaProcessTask() {
+    public Set<ProcessTask> getaProcessTask() {
         return aProcessTask;
     }
 
-    public void setaProcessTask(List<ProcessTask> aProcessTask) {
+    public void setaProcessTask(Set<ProcessTask> aProcessTask) {
         this.aProcessTask = aProcessTask;
     }
 
-    public List<org.igov.analytic.model.process.Process> getaProcess() {
+    public Set<Process> getaProcess() {
         return aProcess;
     }
 
-    public void setaProcess(List<org.igov.analytic.model.process.Process> aProcess) {
+    public void setaProcess(Set<Process> aProcess) {
         this.aProcess = aProcess;
     }
-
 }

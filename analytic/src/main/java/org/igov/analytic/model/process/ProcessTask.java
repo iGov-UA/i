@@ -23,7 +23,9 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -67,12 +69,12 @@ public class ProcessTask extends AbstractEntity{
     @JsonProperty(value = "aAccessGroup")
     @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcessTask")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<AccessGroup> aAccessGroup = new ArrayList<>();
+    private Set<AccessGroup> aAccessGroup = new HashSet<>();
     
     @JsonProperty(value = "aAccessUser")
     @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcessTask")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<AccessUser> aAccessUser = new ArrayList<>();
+    private Set<AccessUser> aAccessUser = new HashSet<>();
 
     @JsonIgnore
     @OneToOne(mappedBy = "oProcessTask", cascade = CascadeType.ALL)
@@ -126,19 +128,19 @@ public class ProcessTask extends AbstractEntity{
         this.aAttribute = aAttribute;
     }
 
-    public List<AccessGroup> getaAccessGroup() {
+    public Set<AccessGroup> getaAccessGroup() {
         return aAccessGroup;
     }
 
-    public void setaAccessGroup(List<AccessGroup> aAccessGroup) {
+    public void setaAccessGroup(Set<AccessGroup> aAccessGroup) {
         this.aAccessGroup = aAccessGroup;
     }
 
-    public List<AccessUser> getaAccessUser() {
+    public Set<AccessUser> getaAccessUser() {
         return aAccessUser;
     }
 
-    public void setaAccessUser(List<AccessUser> aAccessUser) {
+    public void setaAccessUser(Set<AccessUser> aAccessUser) {
         this.aAccessUser = aAccessUser;
     }
 

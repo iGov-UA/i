@@ -5,10 +5,11 @@
  */
 package org.igov.analytic.model.access;
 
+import org.igov.model.core.AbstractEntity;
+
 /**
- *
  * @author olga
  */
-public class AccessUser_ProcessTask {
-    
+public class AccessUser_ProcessTask extends AbstractEntity {
+
 }
