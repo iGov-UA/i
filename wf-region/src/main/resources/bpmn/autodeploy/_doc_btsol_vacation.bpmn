@@ -13,7 +13,7 @@
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_ActivitiBoss" name="id группы ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_1" name="id группы нач. департамента" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ; bVisible=false" type="string"></activiti:formProperty>
@@ -32,7 +32,7 @@
         <activiti:formProperty id="sDateVacationEnd" name="Дата конца отпуска" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sName_AssignTo" name="Исполнение обязанностей возложить на; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_ActivitiBoss,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sName_AssignTo" name="Исполнение обязанностей возложить на; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti_1,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_AssignTo" name="sLogin_AssignTo; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
@@ -162,7 +162,7 @@ execution.setVariable('sNameVacation', oResultAuthorName.sLabel)
 // группа нач. департамента
 var sLoginAuthor = execution.getVariable('sLoginAuthor')
 var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor,'Human')
-execution.setVariable('sID_Group_ActivitiBoss', obj1[0].sID_Group_Activiti)
+execution.setVariable('sID_Group_Activiti_1', obj1[0].sID_Group_Activiti)
 </script>
     </scriptTask>
     <sequenceFlow id="flow108" sourceRef="scripttask18" targetRef="usertask1"></sequenceFlow>
