@@ -81,7 +81,7 @@ public class MigrationServiceImpl implements MigrationService {
     private DateTime getStartTime() {
         Config config = configDao.findLatestConfig();
         String dateTime = config.getsValue();
-        DateTime time = new DateTime(dateTime);
+        DateTime time = DateTime.parse(dateTime);
         HistoricProcessInstance processInstance =
                 historyService.createHistoricProcessInstanceQuery().finishedAfter(time.toDate())
                         .orderByProcessInstanceStartTime().asc().listPage(0, 1).get(0);
@@ -157,7 +157,7 @@ public class MigrationServiceImpl implements MigrationService {
         for (FlowElement oFlowElement : model.getMainProcess().getFlowElements()) {
             if (oFlowElement instanceof UserTask) {
                 UserTask oUserTask = (UserTask) oFlowElement;
-                if (oUserTask.getId().equals(taskInstance.getId())) {
+                if (oUserTask.getId().equals(taskInstance.getTaskDefinitionKey())) {
                     resultList.addAll(convertToAccessGroupList(oUserTask.getCandidateGroups(), processTask, process));
                 }
 
