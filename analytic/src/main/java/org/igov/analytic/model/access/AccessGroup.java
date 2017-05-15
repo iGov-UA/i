@@ -9,11 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
 
@@ -29,14 +26,14 @@ public class AccessGroup extends AbstractEntity {
     private String sID;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class, cascade = CascadeType.ALL)
     @JoinTable(name = "AccessGroup_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessGroup"),
             inverseJoinColumns = @JoinColumn(name = "nID_ProcessTask"))
     private List<ProcessTask> aProcessTask = new ArrayList<>();
     
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class, cascade = CascadeType.ALL)
     @JoinTable(name = "AccessGroup_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessGroup"),
             inverseJoinColumns = @JoinColumn(name = "nID_Process"))

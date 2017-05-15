@@ -81,7 +81,7 @@ public class MigrationServiceImpl implements MigrationService {
     private DateTime getStartTime() {
         Config config = configDao.findLatestConfig();
         String dateTime = config.getsValue();
-        DateTime time = DateTime.parse(dateTime);
+        DateTime time = DateTime.parse(dateTime);//date parsing doesn't work properly
         HistoricProcessInstance processInstance =
                 historyService.createHistoricProcessInstanceQuery().finishedAfter(time.toDate())
                         .orderByProcessInstanceStartTime().asc().listPage(0, 1).get(0);
@@ -148,6 +148,7 @@ public class MigrationServiceImpl implements MigrationService {
         return processTask;
     }
 
+    //TODO rewrite this algo
     private List<AccessGroup> getAccessGroup(HistoricTaskInstance taskInstance, ProcessTask processTask, Process process) {
         List<AccessGroup> resultList = new LinkedList<>();
         ProcessDefinition definition = repositoryService.createNativeProcessDefinitionQuery().sql("SELECT process_definition.* FROM " +
