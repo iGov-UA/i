@@ -1,5 +1,8 @@
 package org.igov.service.migration;
 
+import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.history.HistoricProcessInstance;
@@ -62,7 +65,6 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Autowired
     private RepositoryService repositoryService;
-
 
 
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
@@ -149,7 +151,14 @@ public class MigrationServiceImpl implements MigrationService {
     private List<AccessGroup> getAccessGroup(HistoricTaskInstance taskInstance) {
         ProcessDefinition definition = repositoryService.createNativeProcessDefinitionQuery().sql("SELECT process_definition.* FROM " +
                 "act_re_procdef process_definition JOIN act_hi_procinst process_instance on process_instance.proc_def_id_" +
-                "=process_definition.proc_def_id_ AND process_instance.proc_inst_id_ = " + taskInstance.getId()).singleResult();
+                "=process_definition.id_ AND process_instance.proc_inst_id_ = " + taskInstance.getProcessInstanceId()).singleResult();
+        BpmnModel model = repositoryService.getBpmnModel(definition.getId());
+        for (FlowElement oFlowElement : model.getMainProcess().getFlowElements()) {
+            if (oFlowElement instanceof UserTask) {
+                UserTask oUserTask = (UserTask) oFlowElement;
+                List<String> asID_CandidateGroup = oUserTask.getCandidateGroups();
+            }
+        }
         return null;
     }
 
