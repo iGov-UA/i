@@ -1,52 +1,40 @@
 package org.igov.service.conf;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.base.Charsets;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
+import static org.igov.util.Tool.sTextTranslit;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import org.activiti.engine.ActivitiObjectNotFoundException;
+
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.RuntimeService;
-
 import org.activiti.engine.TaskService;
-import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.identity.Group;
-import org.activiti.engine.task.Attachment;
-import org.activiti.engine.task.Task;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
-import org.igov.io.db.kv.temp.model.ByteArrayMultipartFile;
 import org.igov.model.action.vo.TaskAttachVO;
 import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepDao;
-import org.igov.model.document.DocumentStepDaoImpl;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.util.CustomRegexPattern;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.RecordNotFoundException;
-import static org.igov.util.Tool.sTextTranslit;
-import org.json.simple.JSONObject;
+import org.igov.util.VariableMultipartFile;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.DateTime;
-import org.igov.util.VariableMultipartFile;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
@@ -55,8 +43,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 @Service
-public class AttachmetService {
+public class AttachmetService implements CustomRegexPattern{
 
     @Autowired
     protected TaskService oTaskService;
@@ -77,9 +67,6 @@ public class AttachmetService {
     private DocumentStepSubjectRightDao documentStepSubjectRightDao;
 
     @Autowired
-    private ActionTaskService oActionTaskService;
-
-    @Autowired
     private IdentityService identityService;
 
     private final Logger LOG = LoggerFactory.getLogger(AttachmetService.class);
@@ -93,17 +80,6 @@ public class AttachmetService {
 
         sFileNameAndExt = (sFileNameAndExt != null) ? transliterateAll(getFileName(sFileNameAndExt.replace(" ", "_")))
                 + "." + getFileExtention(sTextTranslit(sFileNameAndExt)) : sFileNameAndExt;
-
-        LOG.info(" ----------- " + dtf.format(new Date()) + " ----------- ");
-        LOG.info("createAttachment nID_Process: " + nID_Process);
-        LOG.info("createAttachment sID_Field: " + sID_Field);
-        LOG.info("createAttachment sFileNameAndExt: " + sFileNameAndExt);
-        LOG.info("createAttachment bSigned: " + bSigned);
-        LOG.info("createAttachment sID_StorageType: " + sID_StorageType);
-        LOG.info("createAttachment sContentType: " + sContentType);
-        LOG.info("createAttachment saAttribute_JSON size: " + saAttribute_JSON.size());
-        LOG.info("createAttachment aContent: " + new String(aContent));
-        LOG.info("----------------------------------------------------");
 
         TaskAttachVO oTaskAttachVO = new TaskAttachVO();
 
@@ -140,11 +116,6 @@ public class AttachmetService {
 
         if (nID_Process != null && sID_Field != null && bSetVariable == true) {
 
-            //String taskId = Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true));
-            //LOG.info("UserTask id is:" + taskId);
-            //LOG.info("UserTask sID_Field is:" + sID_Field);
-            //LOG.info("UserTask sID_Field_Value is:" + sID_Field_Value);
-            //oTaskService.setVariable(taskId, sID_Field, sID_Field_Value);
             oRuntimeService.setVariable(nID_Process, sID_Field, sID_Field_Value);
         }
 
@@ -203,7 +174,6 @@ public class AttachmetService {
                     }
                     else{
                         break;
-                        //throw new RuntimeException("There are few target groups in the DocumentStep set");
                     }
                 }
                 
@@ -238,7 +208,6 @@ public class AttachmetService {
     }
 
     public MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType)
-            //    byte[] getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType) 
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
         MultipartFile oMultipartFile = null;
 
@@ -251,7 +220,6 @@ public class AttachmetService {
         if (nID_Process != null && sID_Field != null) {
 
             Map<String, Object> variables = oRuntimeService.getVariables(nID_Process);
-            //Map<String, Object> variables = oTaskService.getVariables(Long.toString(oActionTaskService.getTaskIDbyProcess(Long.parseLong(nID_Process), null, true)));
             SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             LOG.info("getAttachment started in " + dtf.format(new Date()));
             LOG.info("VariableMap: " + variables);
@@ -381,21 +349,6 @@ public class AttachmetService {
         return "";
     }
 
-    private static final char[] CYR_ABC = {' ', '_', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Б', 'Э', 'Ю', 'Я', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-    private static final String[] LAT_ABC = {" ", "_", "a", "b", "v", "g", "d", "e", "e", "zh", "z", "i", "y", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u", "f", "h", "ts", "ch", "sh", "sch", "", "i", "", "e", "ju", "ja", "A", "B", "V", "G", "D", "E", "E", "Zh", "Z", "I", "Y", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "F", "H", "Ts", "Ch", "Sh", "Sch", "", "I", "", "E", "Ju", "Ja", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-
-    /*public static String transliterate(String message)
-    {
-        StringBuilder builder = new StringBuilder();
-        
-        for (int i = 0; i < message.length(); i++) {
-            for(int x = 0; x < CYR_ABC.length; x++ )
-                if (message.charAt(i) == CYR_ABC[x]) {
-                    builder.append(LAT_ABC[x]);
-                }
-        }
-        return builder.toString();
-    }*/
     public static String transliterateAll(String message) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < message.length(); i++) {

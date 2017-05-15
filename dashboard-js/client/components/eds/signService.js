@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('dashboardJsApp').service('signService', function ($q, $base64, cryptoPluginFactory) {
+  var tspURL = "http://acsk.privatbank.ua/services/tsp/";//presume we have online mode and pass url to plugin
   var sessionTimeout = 36000;
   var pluginVersion = '1.0.3';
   var plugin;
@@ -8,6 +9,7 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
   var errorCodes = {
     noPluginFound: 'noPluginFound',
     incorrectVersionCode: 'incorrectVersionCode',
+    cantCreateHashFromData: 'cantCreateHashFromData',
     noFileSelected: 'noFileSelected',
     noInstalledPlugin: 'noInstalledPlugin',
     noExtensionInstalled: 'noExtensionInstalled',
@@ -41,14 +43,20 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
   function pluginError(defer) {
     return function (error) {
       if (error.code == 0) {
-        defer.reject({code: errorCodes.noFileSelected, msg: 'Для використання ЕЦП, Вам необхідно встановити плагін для браузеру'});
+        defer.reject({
+          code: errorCodes.noFileSelected,
+          msg: 'Для використання ЕЦП, Вам необхідно встановити плагін для браузеру'
+        });
       } else if (error.code == -1) {
         defer.reject({
           code: errorCodes.noExtensionInstalled,
           msg: 'Для роботи з крипто плагіном необхідно встановити розширення для браузера'
         });
       } else {
-        defer.reject({code: errorCodes.noSessionCreated, msg: 'Не вдалося вiдкрити сесію (Помилка ' + error.code + ')'});
+        defer.reject({
+          code: errorCodes.noSessionCreated,
+          msg: 'Не вдалося вiдкрити сесію (Помилка ' + error.code + ')'
+        });
       }
     }
   }
@@ -86,7 +94,7 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
     return executeIfPluginCreated(function () {
       var d = $q.defer();
       plugin.selectFile("", "*", "Выберите файл с ключами ЭЦП", function (file) {
-        if (file != null) {
+        if (file) {
           d.resolve(file);
         } else {
           d.reject({code: errorCodes.noFileSelected, msg: 'Треба обрати файл'});
@@ -136,16 +144,21 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
     })
   };
 
-  this.sign = function (hash) {
+  this.signCMS = function (data, isForcedBase64Encoding) {
+    var isDataSavedInEDS = true;
+    var isCertificateSavedInEDS = true;
+
     return executeIfPluginCreated(function () {
       var d = $q.defer();
-
-      var hashBase64 = $base64.encode(hash);
+      var dataBase64 = isForcedBase64Encoding ? $base64.encode(data) : data;
       plugin.getCertificate(function (data) {
         var certBase64 = data.certificate;
-        plugin.CMSSign(hashBase64,
+        plugin.CMSSign(dataBase64,
           "",
           certBase64,
+          tspURL,
+          isDataSavedInEDS,
+          isCertificateSavedInEDS,
           function (data) {
             d.resolve({sign: data.sign, certificate: certBase64});
           }, function () {
@@ -154,7 +167,7 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
       }, function (result) {
         if (result.code == 107 && result.source == "getCertificate") {
           d.reject({code: errorCodes.noCertificateFromKey, msg: "Ключ немає сертифікату"});
-          //TODO implement here manual certificate search in iteration 2
+          //TODO implement here manual certificate search in 2 iteration
         } else {
           d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
         }

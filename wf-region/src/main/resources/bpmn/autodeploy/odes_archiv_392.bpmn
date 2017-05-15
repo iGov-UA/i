@@ -3,6 +3,7 @@
   <process id="odes_archiv_392" name="Заява про підтвердження фактів народження, шлюбу, розірвання шлюбу, смерті" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -20,6 +21,7 @@
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім’я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDate1" name="Дата народження; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата (рік) реєстрації (або дата події); формат ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceRegistration" name="Місце реєстрації події; Для дорадянського періоду: назва церкви, волость, повіт, губернія. Для радянського періоду: район, область" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCoustForDocument" name="Укажіть будь ласка причину для чого вам потрібен документ" type="string" required="true"></activiti:formProperty>
@@ -27,8 +29,8 @@
         <activiti:formProperty id="sPosition" name="Должность" type="string" default="Директору Державного архіву Одеської області" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameDirector" name="Прізвище директора архіву; ;bVisible=false" type="string" default="Левчуку В.В."></activiti:formProperty>
         <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень від громадських організацій;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="color" name="test; ; labelType='info'" type="label" default="test color 1"></activiti:formProperty>
+        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень від громадських організацій;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="color" name="test; ; labelType=success" type="label" default="test color 1"></activiti:formProperty>
         <activiti:formProperty id="color2" name="test 1; ;labelType=info" type="label" default="test2 color"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -98,7 +100,7 @@
     <sequenceFlow id="flow1" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Форма прийняття рішення" activiti:candidateGroups="arciv_odesObl">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" readable="false" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище; ; writable=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім’я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації (за паспортом)" type="string" writable="false"></activiti:formProperty>
@@ -111,12 +113,14 @@
           <activiti:value id="sEnumBreakMarried" name="розірвання шлюбу"></activiti:value>
           <activiti:value id="sEnumDead" name="смерть"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище; ; writable=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім’я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nVukidTable" name="Викиди яких забруднюючих речовин планується здійснювати" type="table" default="${markerService.loadFromFile('test_folder/ecotest_1565_Zabrud_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDate1" name="Дата народження; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата (рік) реєстрації (або дата події)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceRegistration" name="Місце реєстрації (події)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceRegistration" name="Місце реєстрації (події)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCoustForDocument" name="Документ необхідний для" type="string"></activiti:formProperty>
         <activiti:formProperty id="workerDecision" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Сповістити громадянина про можливість отримання довідки"></activiti:value>
           <activiti:value id="decline" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>

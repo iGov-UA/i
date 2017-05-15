@@ -19,10 +19,10 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="формування СЗ степ1">
       <extensionElements>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" required="true">
           <activiti:value id="sForma_SZ1" name="Тариф РКО"></activiti:value>
           <activiti:value id="sForma_ZS2" name="Тариф по прийому платежів"></activiti:value>
@@ -58,10 +58,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask2" name="Начальник відділення - погодження або повернення степ2">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string"></activiti:formProperty>
@@ -79,10 +79,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <userTask id="usertask3" name="зНУ РО степ3">
       <extensionElements>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
@@ -151,10 +151,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <userTask id="usertask4" name="ДД РБ">
       <extensionElements>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
@@ -167,9 +167,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sName_ResponsiblePerson" name="Відповідальна особа зміни тарифу; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_ResponsiblePerson" name="Логін відповідальної особи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="ід групи" type="invisible" default="AkordBank_TK"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_ResponsiblePerson" name="Логін відповідальної особи ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="ід групи ; ; bVisible=false" type="string" default="AkordBank_TK"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -195,10 +195,10 @@ execution.setVariable('nCountSubmiteLimit', (parseInt(nCountSubmitePlan , 10)/2)
     </scriptTask>
     <userTask id="usertask5" name="члены ТК">
       <extensionElements>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="СЗ про погодження тарифів" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOperation" name="Операція" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTarif" name="Тариф" type="string" writable="false"></activiti:formProperty>
@@ -211,12 +211,12 @@ execution.setVariable('nCountSubmiteLimit', (parseInt(nCountSubmitePlan , 10)/2)
           <activiti:value id="reject" name="відмовити"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sName_ResponsiblePerson" name="Відповідальна особа зміни тарифу; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_ResponsiblePerson" name="Логін відповідальної особи" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="ід групи " type="invisible" default="AkordBank_TK"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="nCountAccept" name="Кількість голосів за" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="nCountReject" name="Кількість голосів проти" type="invisible" default="0"></activiti:formProperty>
-        <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт" type="invisible" default="4"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_ResponsiblePerson" name="Логін відповідальної особи ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="ід групи  ; ; bVisible=false" type="string" default="AkordBank_TK"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nCountAccept" name="Кількість голосів за ; ; bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nCountReject" name="Кількість голосів проти ; ; bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nCountSubmiteLimit" name="Ліміт ; ; bVisible=false" type="string" default="4"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -333,8 +333,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <userTask id="usertask6" name="протокол щодо зміни тарифу ТК">
       <extensionElements>
         <activiti:formProperty id="sOrder" name="тип документу" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" writable="false">
           <activiti:value id="sForma_SZ1" name="Тариф РКО"></activiti:value>
           <activiti:value id="sForma_ZS2" name="Тариф по прийому платежів"></activiti:value>
@@ -355,8 +355,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <userTask id="usertask7" name="розпорядження щодо зміни тарифу">
       <extensionElements>
         <activiti:formProperty id="sOrder" name="Тип документу" type="fileHTML" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" writable="false">
           <activiti:value id="sForma_SZ1" name="Тариф РКО"></activiti:value>
           <activiti:value id="sForma_ZS2" name="Тариф по прийому платежів"></activiti:value>
@@ -446,7 +446,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
         <omgdc:Bounds height="65.0" width="105.0" x="457.0" y="21.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="82.0" width="105.0" x="657.0" y="16.0"></omgdc:Bounds>
+        <omgdc:Bounds height="82.0" width="105.0" x="657.0" y="13.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="81.0" width="105.0" x="871.0" y="13.0"></omgdc:Bounds>
@@ -482,7 +482,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="591.0" y="248.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
-        <omgdc:Bounds height="40.0" width="40.0" x="230.0" y="248.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="230.0" y="247.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
         <omgdc:Bounds height="86.0" width="105.0" x="871.0" y="417.0"></omgdc:Bounds>
@@ -512,7 +512,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="36.0" y="540.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
-        <omgdc:Bounds height="63.0" width="105.0" x="1.0" y="233.0"></omgdc:Bounds>
+        <omgdc:Bounds height="63.0" width="105.0" x="1.0" y="236.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
         <omgdc:Bounds height="40.0" width="40.0" x="33.0" y="368.0"></omgdc:Bounds>
@@ -536,10 +536,10 @@ execution.setVariable('nCountReject', nCountReject)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="562.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="657.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="657.0" y="54.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="762.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="762.0" y="54.0"></omgdi:waypoint>
         <omgdi:waypoint x="871.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
@@ -579,11 +579,11 @@ execution.setVariable('nCountReject', nCountReject)</script>
         <omgdi:waypoint x="631.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="230.0" y="268.0"></omgdi:waypoint>
-        <omgdi:waypoint x="106.0" y="264.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="250.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="247.0"></omgdi:waypoint>
         <omgdi:waypoint x="251.0" y="173.0"></omgdi:waypoint>
         <omgdi:waypoint x="306.0" y="173.0"></omgdi:waypoint>
         <omgdi:waypoint x="377.0" y="173.0"></omgdi:waypoint>
@@ -640,7 +640,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
         <omgdi:waypoint x="471.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="106.0" y="264.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="267.0"></omgdi:waypoint>
         <omgdi:waypoint x="53.0" y="307.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
@@ -667,7 +667,7 @@ execution.setVariable('nCountReject', nCountReject)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
         <omgdi:waypoint x="297.0" y="268.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="268.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
         <omgdi:waypoint x="1281.0" y="389.0"></omgdi:waypoint>

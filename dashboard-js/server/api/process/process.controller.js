@@ -57,3 +57,31 @@ exports.getLoginBPs = function (req, res) {
     });
   }
 };
+
+exports.getBPs_ForExport = function (req, res) {
+  var user = JSON.parse(req.cookies.user), path;
+
+  path = 'subject/group/getBPs_ForExport';
+
+  var query = {
+    'sLogin' : user.id
+  };
+  var options = {
+    path: path,
+    query: query
+  };
+  var cacheKey = JSON.stringify(options);
+  var cachedValue = cache.get(cacheKey);
+  if (cachedValue) {
+    res.json(cachedValue);
+  } else {
+    activiti.get(options, function (error, statusCode, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        cache.set(cacheKey, result, 86400);
+        res.json(result);
+      }
+    });
+  }
+};

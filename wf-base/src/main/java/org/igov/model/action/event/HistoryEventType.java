@@ -98,7 +98,12 @@ public enum HistoryEventType {
     CLOSE_DOCUMENT(18L,
             "DocumentClosed",
             "Процесс дошел до конца и закрылся",
-            "Документ перміщено до архіву");
+            "Документ перміщено до архіву"),
+    TASK_CANCELED(19L,
+            "TaskCanceled",
+            "Вы самосточтельно отменили заявку №" + HistoryEventMessage.TASK_NUMBER,
+            "Ви самостійно скасували заявку");
+    
 
     private Long nID;
     private String sID;

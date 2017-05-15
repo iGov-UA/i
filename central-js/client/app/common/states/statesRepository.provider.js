@@ -12,6 +12,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       ,"asOrgan": []
       ,"bSearch": true
       ,"anID_CatalogCategoryShowAll": []
+      ,"nID_Place_Profile": 0
     },
     "kyiv": {
       "header": "kyiv.header.html",
@@ -20,6 +21,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       ,"asOrgan": []
       ,"bSearch": true
       ,"anID_CatalogCategoryShowAll": []
+      ,"nID_Place_Profile": 2
     },
     "kharkiv": {
       "header": "kharkiv.header.html",
@@ -28,6 +30,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       ,"asOrgan": []
       ,"bSearch": true
       ,"anID_CatalogCategoryShowAll": []
+      ,"nID_Place_Profile": 0
     },
     "mvd": {
       "header": "mvd.header.html",
@@ -36,6 +39,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       ,"asOrgan": []
       ,"bSearch": true
       ,"anID_CatalogCategoryShowAll": []
+      ,"nID_Place_Profile": 0
     },
     "alpha_mvd": {
       "header": "mvd.header.html",
@@ -44,6 +48,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       ,"asOrgan": []
       ,"bSearch": true
       ,"anID_CatalogCategoryShowAll": []
+      ,"nID_Place_Profile": 0
     },
     "dfs": {
       "header": "dfs.header.html",
@@ -52,6 +57,7 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
       ,"asOrgan": ['Державна фіскальна служба']
       ,"bSearch": false
       ,"anID_CatalogCategoryShowAll": [1]
+      ,"nID_Place_Profile": 0
     }
   };
 
@@ -131,6 +137,10 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
     return this.mode === 'dfs';
   };
 
+  var getID_Place_Profile = function (mode) {
+    return modes[mode] && modes[mode].nID_Place_Profile ? modes[mode].nID_Place_Profile : 0;
+  };
+
   var getHeader = function (mode) {
     var hdr;
     if (!!modes[mode]) {
@@ -181,6 +191,10 @@ angular.module('appBoilerPlate').provider('statesRepository', function StatesRep
   var StatesRepository = function (mode, domain) {
     this.mode = mode;
     this.domain = domain;
+  };
+
+  StatesRepository.prototype.getID_Place_Profile = function () {
+    return getID_Place_Profile(this.mode);
   };
 
   StatesRepository.prototype.getIDPlaces = function () {

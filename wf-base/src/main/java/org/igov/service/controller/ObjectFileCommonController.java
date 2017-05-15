@@ -918,7 +918,7 @@ public class ObjectFileCommonController {
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
         LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
-        LOG.info("setAttachment file: " + file);
+        //LOG.info("setAttachment file: " + file);
         LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
         LOG.info("setAttachment sID_Field: " + sID_Field);
         LOG.info("setAttachment sContentType: " + sContentType);
@@ -967,7 +967,7 @@ public class ObjectFileCommonController {
         LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
         LOG.info("setAttachment sID_Field: " + sID_Field);
         LOG.info("setAttachment sContentType: " + sContentType);
-        LOG.info("setAttachment sData: " + sData);
+        //LOG.info("setAttachment sData: " + sData);
 
         if (aAttribute == null) {
             aAttribute = new ArrayList<>();
@@ -1024,7 +1024,7 @@ public class ObjectFileCommonController {
         LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
         LOG.info("setAttachment sID_Field: " + sID_Field);
         LOG.info("setAttachment sContentType: " + sContentType);
-        LOG.info("setAttachment sData: " + sData);
+        //LOG.info("setAttachment sData: " + sData);
         LOG.info("setAttachment sLogin: " + sLogin);
         LOG.info("setAttachment sKey_Step: " + sKey_Step);
 

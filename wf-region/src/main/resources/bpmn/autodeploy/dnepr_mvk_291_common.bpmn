@@ -32,7 +32,7 @@
           <activiti:value id="sEnumSamar" name="Самарський"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sZipCode" name="Поштовий індекс" type="string" default="49000"></activiti:formProperty>
-        <activiti:formProperty id="sCity" name="Населенний пункт" type="string" default="Дніпро"></activiti:formProperty>
+        <activiti:formProperty id="sCity" name="Населенний пункт" type="string" default="м. Дніпро"></activiti:formProperty>
         <activiti:formProperty id="sRename" name="Зверніть увагу" type="label" default="У зв'язку з переіменуванням вулиць, під час введення нової адреси звірте назву за &lt;a href=&quot;https://docs.google.com/spreadsheets/d/16j-w5pN0erlhdmTg5xl0bs9Gob1W0U3ivjIhy0BTHsU/edit?pli=1#gid=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса проживання заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressProbl" name="Адреса за якої виникло питання" type="string"></activiti:formProperty>
@@ -505,9 +505,9 @@
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sChannelApp" name="Канал звернення ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" required="true">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
@@ -523,23 +523,23 @@
           <activiti:value id="sEnumStatusRGA2" name="НА ДООПРАЦЮВАННІ"></activiti:value>
           <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bOrganization" name="Юридична особа ; ;bVisible=false" type="string" default="false"></activiti:formProperty>
+        <activiti:formProperty id="bOrganization" name="Юридична особа" type="invisible" default="false"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bReferent" name="Referent ; ;bVisible=false" type="string" default="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCompanyName" name="Повна назва юридичної особи ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
-        <activiti:formProperty id="sID_EDRPOU" name="Код ЄДРПОУ ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
-        <activiti:formProperty id="sBossFirstLastName" name="Имя, отчество должностного лица ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
-        <activiti:formProperty id="sDateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
+        <activiti:formProperty id="bReferent" name="Referent" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sCompanyName" name="Повна назва юридичної особи" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sID_EDRPOU" name="Код ЄДРПОУ" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstLastName" name="Имя, отчество должностного лица" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sDateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="hideShowFields5" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="hideShowFields6" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common6.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerEmail" name="Отправка email ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerEmail" name="Отправка email" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask4"></sequenceFlow>
@@ -549,34 +549,34 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;Ваше звернення зареєстровано Дніпропетровською міською радою від ${sDateAppeal} № ${sID_Order_GovPublic}.&lt;br&gt;&lt;br&gt;
-Суть Вашого звернення:&lt;br&gt;
-&lt;i&gt;${sReason}&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-Телефони для довідок:&lt;br&gt;
-+380 56 732 12 12&lt;br&gt;
-‎+390 95 732 12 12&lt;br&gt;
-‎+380 96 732 12 12&lt;br&gt;
-‎+380 73 732 12 12&lt;br&gt;
+<p>Ваше звернення зареєстровано Дніпропетровською міською радою від ${sDateAppeal} № ${sID_Order_GovPublic}.<br><br>
+Суть Вашого звернення:<br>
+<i>${sReason}</i><br><br>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+Телефони для довідок:<br>
++380 56 732 12 12<br>
+‎+390 95 732 12 12<br>
+‎+380 96 732 12 12<br>
+‎+380 73 732 12 12<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br&gt;
+Дніпропетровська міська рада,<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <userTask id="usertask1" name="Обробка звернення бек-офіс (оператор)" activiti:candidateGroups="dmr_${asStatusSuper}">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення ; ;bVisible=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -1085,9 +1085,9 @@
           <activiti:value id="sEnumStatusRGA3" name="КОНТРОЛЬ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
-        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней) ; ;bVisible=false" type="string" default="10"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible" default="10"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" required="true">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
@@ -1100,14 +1100,14 @@
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sChannelApp" name="Канал звернення ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerStatus" name="Статус відповіді колл-центра" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEnumTop" name="Енам подтематика ; ;bVisible=false" type="string" default="В РАЗРАБОТКЕ"></activiti:formProperty>
-        <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible" default="В РАЗРАБОТКЕ"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asSelectionDepartment" name="Оберіть департамент (управління) куди направляється оригінал документу" type="enum">
           <activiti:value id="sEnumDep1" name=" "></activiti:value>
           <activiti:value id="sEnumDep2" name="Департамент економіки, фінансів та міського бюджету"></activiti:value>
@@ -1143,14 +1143,14 @@
           <activiti:value id="sEnumSendInCallCenter" name="Відправити для вихідного дзвінка"></activiti:value>
           <activiti:value id="sEnumClose" name="Дзвінок здійснений заявнику. Питання вирішено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html] ; ;bVisible=false" type="string" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1163,28 +1163,28 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;Ваше звернення до Дніпропетровської міської ради - опрацьовано.&lt;/p&gt;
-&lt;p&gt;Відповідь:&lt;br&gt;
-&lt;i&gt;${sDocument_Body_UkrDoc}&lt;/i&gt;
-&lt;/p&gt;
-&lt;p&gt;Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.&lt;/p&gt;
+<p>Ваше звернення до Дніпропетровської міської ради - опрацьовано.</p>
+<p>Відповідь:<br>
+<i>${sDocument_Body_UkrDoc}</i>
+</p>
+<p>Якщо Ви бажаєте зберегти копію відповіді у письмовому вигляді, Вам необхідно роздрукувати електронний документ прикріплений до листа.</p>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br&gt;
+Дніпропетровська міська рада,<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1715,113 +1715,113 @@
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
-        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sEnumTop" name="Енам подтематика ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChannelApp" name="Канал звернення ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту) ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepartment" name="Назва управлиння (департаменту)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sID_Document_UkrDoc" name="Number UkrDoc" type="string"></activiti:formProperty>
         <activiti:formProperty id="sStatusName_UkrDoc" name="Status UkrDoc" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHead_Document_UkrDoc" name="Заголовок UkrDoc" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sDocument_Body_UkrDoc" name="Тело ответа UkrDoc" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="nID_DocumentTemplate_UkrDoc" name="Шаблон ответного документа" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bOrganization" name="Юридична особа ; ;bVisible=false" type="string" default="false"></activiti:formProperty>
-        <activiti:formProperty id="sCompanyName" name="Повна назва юридичної особи ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
-        <activiti:formProperty id="sID_EDRPOU" name="Код ЄДРПОУ ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
-        <activiti:formProperty id="sBossFirstLastName" name="Имя, отчество должностного лица ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
-        <activiti:formProperty id="sDateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
-        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР ; ;bVisible=false" type="string" default="__"></activiti:formProperty>
+        <activiti:formProperty id="bOrganization" name="Юридична особа" type="invisible" default="false"></activiti:formProperty>
+        <activiti:formProperty id="sCompanyName" name="Повна назва юридичної особи" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sID_EDRPOU" name="Код ЄДРПОУ" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sBossFirstLastName" name="Имя, отчество должностного лица" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sDateDocIncoming" name="Дата виходу документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="invisible" default="__"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAnswerEmail" name="Отправка email ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAnswerEmail" name="Отправка email" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
-            <activiti:expression>EO180277SMV</activiti:expression>
+            <activiti:expression><![CDATA[PA210891BVS1]]></activiti:expression>
           </activiti:field>
           <activiti:field name="nID_Pattern">
-            <activiti:expression>10677</activiti:expression>
+            <activiti:expression><![CDATA[10677]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sHead">
             <activiti:string><![CDATA[Нове звернення громадян.]]></activiti:string>
           </activiti:field>
           <activiti:field name="sBody">
-            <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
- &lt;head lang="ru"&gt;
-     &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
-&lt;/head&gt;
-    &lt;body&gt;
-        &lt;p&gt;&lt;b&gt;${sNameDepartment}&lt;/b&gt;&lt;/p&gt;
-        &lt;p &gt;${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;Який (яка) мешкає (зареєстровано) за адресою:&lt;/b&gt;&lt;/p&gt;
-        &lt;p&gt;${sAdress}&lt;/p&gt;
-        &lt;p&gt;телефон: ${sPhone}&lt;/p&gt;
-        &lt;p&gt;&lt;b&gt;Зверення&lt;/b&gt;&lt;/p&gt;
-        Суть звернення: ${sReason}.&lt;br&gt;
-        Додаткова інформація: ${sAdditionalInformation}.&lt;br&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+            <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+ <head lang="ru">
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+    <body>
+        <p><b>${sNameDepartment}</b></p>
+        <p >${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</p>
+        <p><b>Який (яка) мешкає (зареєстровано) за адресою:</b></p>
+        <p>${sAdress}</p>
+        <p>телефон: ${sPhone}</p>
+        <p><b>Зверення</b></p>
+        Суть звернення: ${sReason}.<br>
+        Додаткова інформація: ${sAdditionalInformation}.<br>
+</body>
+</html>]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Order_GovPublic">
-            <activiti:expression>${sID_Order_GovPublic}</activiti:expression>
+            <activiti:expression><![CDATA[${sID_Order_GovPublic}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="bOrganization">
-            <activiti:expression>${bOrganization}</activiti:expression>
+            <activiti:expression><![CDATA[${bOrganization}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sCompanyName">
-            <activiti:expression>${sCompanyName}</activiti:expression>
+            <activiti:expression><![CDATA[${sCompanyName}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_EDRPOU">
-            <activiti:expression>${sID_EDRPOU}</activiti:expression>
+            <activiti:expression><![CDATA[${sID_EDRPOU}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sBossFirstLastName">
-            <activiti:expression>${sBossFirstLastName}</activiti:expression>
+            <activiti:expression><![CDATA[${sBossFirstLastName}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateDocIncoming">
-            <activiti:expression>${sDateDocIncoming}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateDocIncoming}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sNumberDocIncoming">
-            <activiti:expression>${sNumberDocIncoming}</activiti:expression>
+            <activiti:expression><![CDATA[${sNumberDocIncoming}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sSourceChannel">
-            <activiti:expression>${sChannelApp}</activiti:expression>
+            <activiti:expression><![CDATA[${sChannelApp}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Document">
-            <activiti:expression>${sID_Document_UkrDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sID_Document_UkrDoc}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="bankIdlastName">
-            <activiti:expression>${bankIdlastName}</activiti:expression>
+            <activiti:expression><![CDATA[${bankIdlastName}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="bankIdfirstName">
-            <activiti:expression>${bankIdfirstName}</activiti:expression>
+            <activiti:expression><![CDATA[${bankIdfirstName}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="bankIdmiddleName">
-            <activiti:expression>${bankIdmiddleName}</activiti:expression>
+            <activiti:expression><![CDATA[${bankIdmiddleName}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDepartNameFull">
-            <activiti:expression>${sNameDepartment}</activiti:expression>
+            <activiti:expression><![CDATA[${sNameDepartment}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sSex">
-            <activiti:expression>${asSex}</activiti:expression>
+            <activiti:expression><![CDATA[${asSex}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sAddress">
-            <activiti:expression>${sAdress}</activiti:expression>
+            <activiti:expression><![CDATA[${sAdress}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sDateAppeal">
-            <activiti:expression>${sDateAppeal}</activiti:expression>
+            <activiti:expression><![CDATA[${sDateAppeal}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sZipCode">
-            <activiti:expression>${sZipCode}</activiti:expression>
+            <activiti:expression><![CDATA[${sZipCode}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sCity">
-            <activiti:expression>${sCity}</activiti:expression>
+            <activiti:expression><![CDATA[${sCity}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="#{GetDocument_UkrDoc}">
           <activiti:field name="sID_Document">
-            <activiti:expression>${sID_Document_UkrDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${sID_Document_UkrDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1832,33 +1832,33 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;
-Ваше звернення до Дніпропетровської міської ради - опрацьовано.&lt;br&gt;&lt;br&gt;
-Рішення міської ради: ${sDocument_Body_UkrDoc}&lt;br&gt;
-Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
-&lt;/p&gt;
-Телефони для довідок:&lt;br&gt;
-+380 56 732 12 12&lt;br&gt;
-‎+390 95 732 12 12&lt;br&gt;
-‎+380 96 732 12 12&lt;br&gt;
-‎+380 73 732 12 12&lt;br&gt;
+<p>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.<br><br>
+Рішення міської ради: ${sDocument_Body_UkrDoc}<br>
+Номер документа: ${sID_Document_UkrDoc}<br>
+</p>
+Телефони для довідок:<br>
++380 56 732 12 12<br>
+‎+390 95 732 12 12<br>
+‎+380 96 732 12 12<br>
+‎+380 73 732 12 12<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br&gt;
+Дніпропетровська міська рада,<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_UkrDoc}</activiti:expression>
+          <activiti:expression><![CDATA[${anID_Attach_UkrDoc}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -2395,11 +2395,11 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sChannelApp" name="Канал звернення ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней) ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEnumTop" name="Енам подтематика ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sEnumTop" name="Енам подтематика" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="textArea"></activiti:formProperty>
@@ -2413,7 +2413,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${anID_Attach_UkrDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${anID_Attach_UkrDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -2425,7 +2425,7 @@ execution.setVariable('sAnswerEmail', res)</script>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask4" name="Обробка звернення супервайзером" activiti:candidateGroups="dmr_supervisor">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення ; ;bVisible=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="invisible" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -2935,9 +2935,9 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDateReglament" name="Кількість днів для вирішення питання (згідно регламенту)" type="long"></activiti:formProperty>
-        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней) ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDaysRemain" name="Ориентировочный срок ответа на обращение (дней)" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
@@ -2950,9 +2950,9 @@ execution.setVariable('sAnswerEmail', res)</script>
           <activiti:value id="sEnumAppeal4" name="Фронт-офіс"></activiti:value>
           <activiti:value id="sEnumAppeal5" name="Портал"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sChannelApp" name="Канал звернення ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChannelApp" name="Канал звернення" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sChannelAppRGA" name="Канал звернення ОДА" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sStatusAppRGA" name="Статус звернення ОДА" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sDocument_Body_UkrDoc" name="Відповідь на звернення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asSelectionDepartment" name="Оберіть департамент (управління) куди направляється оригінал документу" type="enum">
           <activiti:value id="sEnumDep1" name=" "></activiti:value>
@@ -3015,7 +3015,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3621,7 +3621,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sPerformer" name="Виконавець" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumberTownCouncil" name="Реєстраційний номер;(держстандарт В-1-12453/1)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLoginUkrDoc" name="Логін працівника міськради" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asAnswerChannel" name="Канал відповіді" type="enum" writable="false">
           <activiti:value id="sEnumAnsw1" name="Письмова відповідь"></activiti:value>
           <activiti:value id="sEnumAnsw2" name="Відповідь колл-центр"></activiti:value>
@@ -3663,10 +3663,10 @@ execution.setVariable('sNameDepartment', per2)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html] ; ;bVisible=false" type="string" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]" type="invisible" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${anID_Attach_UkrDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${anID_Attach_UkrDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -3757,25 +3757,25 @@ execution.setVariable('sStatusAppRGA', per3)</script>
           <activiti:string><![CDATA[zvernennya1@dmr.dp.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>На звернення ${sRegistrationNumberRGA} від ${sDateAppeal} (${sChannelAppRGA}) ${sStatusAppRGA}</activiti:expression>
+          <activiti:expression><![CDATA[На звернення ${sRegistrationNumberRGA} від ${sDateAppeal} (${sChannelAppRGA}) ${sStatusAppRGA}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Відповідь на звернення № ${sRegistrationNumberRGA}&lt;br&gt;&lt;br&gt;
-Рішення міської ради: ${sDocument_Body_UkrDoc}&lt;br&gt;&lt;br&gt;
-Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
-&lt;/p&gt;
-Гарного дня!&lt;br&gt;
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+<p>
+Відповідь на звернення № ${sRegistrationNumberRGA}<br><br>
+Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
+Номер документа: ${sID_Document_UkrDoc}<br>
+</p>
+Гарного дня!<br>
+<br />
 [pattern/mail/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br&gt;
+Дніпропетровська міська рада,<br>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_UkrDoc}</activiti:expression>
+          <activiti:expression><![CDATA[${anID_Attach_UkrDoc}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -3804,34 +3804,34 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;
-Ваше звернення до Дніпропетровської міської ради - опрацьовано.&lt;br&gt;&lt;br&gt;
-Рішення міської ради: ${sDocument_Body_UkrDoc}&lt;br&gt;&lt;br&gt;
-Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
+<p>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.<br><br>
+Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
+Номер документа: ${sID_Document_UkrDoc}<br>
 Друкована відповідь Вам буде надіслана за адресою: ${sAdress}
-&lt;/p&gt;
-Телефони для довідок:&lt;br&gt;
-+380 56 732 12 12&lt;br&gt;
-‎+390 95 732 12 12&lt;br&gt;
-‎+380 96 732 12 12&lt;br&gt;
-‎+380 73 732 12 12&lt;br&gt;
+</p>
+Телефони для довідок:<br>
++380 56 732 12 12<br>
+‎+390 95 732 12 12<br>
+‎+380 96 732 12 12<br>
+‎+380 73 732 12 12<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br&gt;
+Дніпропетровська міська рада,<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_UkrDoc}</activiti:expression>
+          <activiti:expression><![CDATA[${anID_Attach_UkrDoc}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -3841,34 +3841,34 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Дніпропетровської міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;
-Ваше звернення до Дніпропетровської міської ради - опрацьовано.&lt;br&gt;&lt;br&gt;
-Рішення міської ради: ${sDocument_Body_UkrDoc}&lt;br&gt;&lt;br&gt;
-Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
+<p>
+Ваше звернення до Дніпропетровської міської ради - опрацьовано.<br><br>
+Рішення міської ради: ${sDocument_Body_UkrDoc}<br><br>
+Номер документа: ${sID_Document_UkrDoc}<br>
 Відповідь Ви отримаєте в телефоному режимі на номер ${sPhone}
-&lt;/p&gt;
-Телефони для довідок:&lt;br&gt;
-+380 56 732 12 12&lt;br&gt;
-‎+390 95 732 12 12&lt;br&gt;
-‎+380 96 732 12 12&lt;br&gt;
-‎+380 73 732 12 12&lt;br&gt;
+</p>
+Телефони для довідок:<br>
++380 56 732 12 12<br>
+‎+390 95 732 12 12<br>
+‎+380 96 732 12 12<br>
+‎+380 73 732 12 12<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-Дніпропетровська міська рада,&lt;br&gt;
+Дніпропетровська міська рада,<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${anID_Attach_UkrDoc}</activiti:expression>
+          <activiti:expression><![CDATA[${anID_Attach_UkrDoc}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -3884,20 +3884,20 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
           <activiti:string><![CDATA[ОШИБКА dnepr_mvk_291_common]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Ответ УкрДока с ошибкой.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-&lt;p&gt;
-Номер звернення ДМР: ${sID_Order_GovPublic}&lt;br&gt;
-Шаблон ответного документа: ${nID_DocumentTemplate_UkrDoc}&lt;br&gt;
-Статус УкрДок: ${sStatusName_UkrDoc}&lt;br&gt;
-Номер документа: ${sID_Document_UkrDoc}&lt;br&gt;
-&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Ответ УкрДока с ошибкой.</b><br><br>
+<p>
+Номер звернення ДМР: ${sID_Order_GovPublic}<br>
+Шаблон ответного документа: ${nID_DocumentTemplate_UkrDoc}<br>
+Статус УкрДок: ${sStatusName_UkrDoc}<br>
+Номер документа: ${sID_Document_UkrDoc}<br>
+</p>
 
-&lt;br&gt;
+<br>
 [pattern/mail/_common_signature_start.html]
-&lt;br&gt;
+<br>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -3948,10 +3948,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="836.0" y="69.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="174.0" x="971.0" y="761.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="174.0" x="969.0" y="674.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="57.0" width="169.0" x="767.0" y="855.0"></omgdc:Bounds>
+        <omgdc:Bounds height="57.0" width="169.0" x="767.0" y="851.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="1683.0" y="130.0"></omgdc:Bounds>
@@ -3972,10 +3972,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="2111.0" y="641.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="173.0" x="765.0" y="595.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="173.0" x="765.0" y="591.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="831.0" y="685.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="831.0" y="681.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
         <omgdc:Bounds height="35.0" width="35.0" x="1261.0" y="344.0"></omgdc:Bounds>
@@ -3987,10 +3987,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="1504.0" y="1200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="55.0" width="177.0" x="762.0" y="761.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="177.0" x="762.0" y="757.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="170.0" x="766.0" y="961.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="170.0" x="766.0" y="957.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask9" id="BPMNShape_usertask9">
         <omgdc:Bounds height="55.0" width="185.0" x="1800.0" y="237.0"></omgdc:Bounds>
@@ -4047,15 +4047,16 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="1851.0" y="860.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask14" id="BPMNShape_servicetask14">
-        <omgdc:Bounds height="55.0" width="169.0" x="766.0" y="503.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="169.0" x="766.0" y="504.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="853.0" y="104.0"></omgdi:waypoint>
         <omgdi:waypoint x="853.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="971.0" y="788.0"></omgdi:waypoint>
-        <omgdi:waypoint x="939.0" y="788.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1056.0" y="729.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1056.0" y="784.0"></omgdi:waypoint>
+        <omgdi:waypoint x="939.0" y="784.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="1683.0" y="150.0"></omgdi:waypoint>
@@ -4097,20 +4098,20 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="1504.0" y="1220.0"></omgdi:waypoint>
         <omgdi:waypoint x="680.0" y="1219.0"></omgdi:waypoint>
-        <omgdi:waypoint x="680.0" y="787.0"></omgdi:waypoint>
-        <omgdi:waypoint x="762.0" y="788.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="784.0"></omgdi:waypoint>
+        <omgdi:waypoint x="762.0" y="784.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="955.0" y="1190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="851.0" y="912.0"></omgdi:waypoint>
-        <omgdi:waypoint x="851.0" y="961.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="908.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="957.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="851.0" y="1016.0"></omgdi:waypoint>
-        <omgdi:waypoint x="850.0" y="1055.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1160.0" y="1055.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="1012.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="1045.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1160.0" y="1045.0"></omgdi:waypoint>
         <omgdi:waypoint x="1160.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="1700.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="1703.0" y="130.0"></omgdi:waypoint>
@@ -4136,8 +4137,8 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
-        <omgdi:waypoint x="851.0" y="650.0"></omgdi:waypoint>
-        <omgdi:waypoint x="851.0" y="685.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="646.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="681.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="853.0" y="285.0"></omgdi:waypoint>
@@ -4210,24 +4211,23 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
         <omgdi:waypoint x="852.0" y="469.0"></omgdi:waypoint>
-        <omgdi:waypoint x="850.0" y="503.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="504.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow96" id="BPMNEdge_flow96">
         <omgdi:waypoint x="2461.0" y="470.0"></omgdi:waypoint>
         <omgdi:waypoint x="2522.0" y="470.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow97" id="BPMNEdge_flow97">
-        <omgdi:waypoint x="850.0" y="816.0"></omgdi:waypoint>
-        <omgdi:waypoint x="851.0" y="855.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="812.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="851.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow98" id="BPMNEdge_flow98">
-        <omgdi:waypoint x="871.0" y="705.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1057.0" y="705.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1058.0" y="761.0"></omgdi:waypoint>
+        <omgdi:waypoint x="871.0" y="701.0"></omgdi:waypoint>
+        <omgdi:waypoint x="969.0" y="701.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow99" id="BPMNEdge_flow99">
-        <omgdi:waypoint x="851.0" y="725.0"></omgdi:waypoint>
-        <omgdi:waypoint x="850.0" y="761.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="721.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="757.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
         <omgdi:waypoint x="1524.0" y="1240.0"></omgdi:waypoint>
@@ -4267,8 +4267,8 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1620.0" y="1122.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow108" id="BPMNEdge_flow108">
-        <omgdi:waypoint x="850.0" y="558.0"></omgdi:waypoint>
-        <omgdi:waypoint x="851.0" y="595.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="559.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="591.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
