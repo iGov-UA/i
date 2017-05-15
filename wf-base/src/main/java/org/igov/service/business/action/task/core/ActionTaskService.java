@@ -1076,10 +1076,10 @@ public class ActionTaskService {
      * @param bDocOnly Выводить только список БП документов
      * @return
      */
-    public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly) {
+    public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
 
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
-                sLogin, bDocOnly);
+                sLogin, bDocOnly, sProcessDefinitionId);
 
         List<Map<String, String>> amPropertyBP = new LinkedList<>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
@@ -1102,7 +1102,7 @@ public class ActionTaskService {
      */
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
-        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(sLogin, bDocOnly);
+        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
                
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
@@ -1141,8 +1141,8 @@ public class ActionTaskService {
         return res;
     }
 
-    private List<ProcessDefinition> getBusinessProcessesObjectsOfLogin(
-            String sLogin, Boolean bDocOnly) {
+    private List<ProcessDefinition> getBusinessProcessesObjectsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
+        
         if (sLogin == null || sLogin.isEmpty()) {
             LOG.error("Unable to found business processes for sLogin=" + sLogin);
             throw new ActivitiObjectNotFoundException(
@@ -1156,8 +1156,24 @@ public class ActionTaskService {
                 .createProcessDefinitionQuery()
                 .active()
                 .latestVersion().list();
-
-        if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
+        
+        if (sProcessDefinitionId != null) {
+            
+            for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
+            
+                String sID_BP = oProcessDefinition.getId();
+                LOG.info("getBusinessProcessesObjectsOfLogin: sID_BP = {}", sID_BP);
+                
+                if (sID_BP.startsWith(sProcessDefinitionId)) {
+                
+                    aProcessDefinition_Return.add(oProcessDefinition);
+                
+                }
+                
+            }
+            
+        } else if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
+            
             LOG.debug("Found {} active process definitions", aProcessDefinition.size());
             List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
             if (aGroup != null && !aGroup.isEmpty()) {
@@ -1198,6 +1214,8 @@ public class ActionTaskService {
         } else {
             LOG.info("Have not found active process definitions.");
         }
+        
+        LOG.info("getBusinessProcessesObjectsOfLogin: aProcessDefinition_Return = {}", aProcessDefinition_Return);
         return aProcessDefinition_Return;
     }
     
