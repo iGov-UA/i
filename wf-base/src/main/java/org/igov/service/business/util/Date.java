@@ -6,6 +6,7 @@
 package org.igov.service.business.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.slf4j.Logger;
@@ -53,5 +54,15 @@ public class Date {
     public static String getToday(String sFormat) {
         SimpleDateFormat sdf = new SimpleDateFormat(sFormat);
         return sdf.format(new java.util.Date());
+    }
+
+    public static java.util.Date diff(java.util.Date oDate, int nCountNew, int nCalendarType) {
+        Calendar oCalendar = Calendar.getInstance();
+        if (oDate == null) {
+            oDate = new java.util.Date();
+        }
+        oCalendar.setTime(oDate);
+        oCalendar.add(nCalendarType, nCountNew);
+        return oCalendar.getTime();
     }
 }

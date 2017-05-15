@@ -1681,7 +1681,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     }
 
     public Map<String, Object> getProcessVariableValue(String nProcessID, String variableName) throws RecordNotFoundException {
-        Map<String, Object> res = new HashMap<String, Object>();
+        Map<String, Object> res = new HashMap<>();
 
         HistoricVariableInstance historicVariableInstance = oHistoryService.createHistoricVariableInstanceQuery().processInstanceId(nProcessID).variableName(variableName).singleResult();
 

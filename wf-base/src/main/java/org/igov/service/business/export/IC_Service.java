@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
  * @author olga
  */
 @Service
-public class AgroholdingService {
+public class IC_Service {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AgroholdingService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(IC_Service.class);
 
     @Autowired
     HttpRequester httpRequester;
@@ -28,13 +28,12 @@ public class AgroholdingService {
     GeneralConfig generalConfig;
     
     public String transferDocument(String documentVacation, String URL_Ending) throws Exception {
-        httpRequester.setsLogin(generalConfig.getsLogin_Auth_Agroholding());
-        httpRequester.setsPassword(generalConfig.getsPassword_Auth_Agroholding());
-        String sURL = generalConfig.getsURL_Agroholding() + URL_Ending;
+        httpRequester.setsLogin(generalConfig.getsLogin_Auth_1C());
+        httpRequester.setsPassword(generalConfig.getsPassword_Auth_1C());
+        String sURL = generalConfig.getsURL_1C() + URL_Ending;
         LOG.info("sURL: " + sURL);
         //http://spirit.mriya.ua:2011/trainingbase/odata/standard.odata/Document_ОтпускаОрганизаций
-        String result = "none";
-        result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=feed;charset=utf-8");
+        String result = httpRequester.postInside(sURL, null, documentVacation, "application/atom+xml;type=feed;charset=utf-8");
         LOG.info("nResponseCode: " + httpRequester.getnResponseCode() + " result: " + result);
         return result;
     }

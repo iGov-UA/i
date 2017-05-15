@@ -19,4 +19,6 @@ public interface ProcessSubjectDao extends EntityDao<Long, ProcessSubject>{
     ProcessSubject setProcessSubjectStatusAndReport(String snID_Process_Activiti, ProcessSubjectStatus processSubjectStatus, String sReport);
     
     ProcessSubject findByProcessActivitiId(String snID_Process_Activiti);
+    
+    ProcessSubject findByProcessActivitiIdAndLogin(String snID_Process_Activiti, String sLogin);
 }

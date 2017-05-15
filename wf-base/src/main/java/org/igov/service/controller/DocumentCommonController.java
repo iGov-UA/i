@@ -39,6 +39,9 @@ public class DocumentCommonController {
     
     @Autowired
     private DeleteProccess deleteProccess;
+    
+    @Autowired
+    private DocumentStepService oDocumentStepService;
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentCommonController.class);
 
@@ -219,5 +222,27 @@ public class DocumentCommonController {
             return "aDocumentSubmitedUnsignedVO is null";*/
              return aDocumentSubmitedUnsignedVO;
     }
+    @ApiOperation(value = "/getDocumentStepRights", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @RequestMapping(value = "/getDocumentStepRights", method = RequestMethod.GET)
+    public @ResponseBody
+    Map<String, Object> getDocumentStepRights(@ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin", required = true) String sLogin, //String
+            @ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {
+
+        long startTime = System.nanoTime();
+        Map<String, Object> res = oDocumentStepService.getDocumentStepRights(sLogin, nID_Process + "");
+        long stopTime = System.nanoTime();
+        LOG.info("getDocumentStepRights total time execution is: " + String.format("%,12d", (stopTime - startTime)));
+        return res;
+    }
+
+    @ApiOperation(value = "/getDocumentStepLogins", notes = "##### Получение списка прав у логина по документу#####\n\n")
+    @RequestMapping(value = "/getDocumentStepLogins", method = RequestMethod.GET)
+    public @ResponseBody
+    //Map<String,Object> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true) @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
+    List<Map<String, Object>> getDocumentStepLogins(@ApiParam(value = "nID_Process", required = true)
+            @RequestParam(value = "nID_Process", required = true) String nID_Process) throws Exception {//String
+        return oDocumentStepService.getDocumentStepLogins(String.valueOf(nID_Process));
+    }
+
 
 }
