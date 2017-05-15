@@ -141,14 +141,15 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setoDateStart(new DateTime(taskInstance.getStartTime()));
         processTask.setoDateFinish(new DateTime(taskInstance.getEndTime()));
         processTask.setsID_(taskInstance.getId());
-        processTask.setaAccessGroup(getAccessGroup(taskInstance));//спросить
+        processTask.setaAccessGroup(getAccessGroup(taskInstance, processTask, process));//спросить
         processTask.setaAccessUser(null);//спросить
         processTask.setaAttribute(createAttributes(taskInstance.getId(), null, processTask));
         processTask.setCustomProcessTask(createCustomProcessTaskToInsert(taskInstance, processTask));
         return processTask;
     }
 
-    private List<AccessGroup> getAccessGroup(HistoricTaskInstance taskInstance) {
+    private List<AccessGroup> getAccessGroup(HistoricTaskInstance taskInstance, ProcessTask processTask, Process process) {
+        List<AccessGroup> resultList = new LinkedList<>();
         ProcessDefinition definition = repositoryService.createNativeProcessDefinitionQuery().sql("SELECT process_definition.* FROM " +
                 "act_re_procdef process_definition JOIN act_hi_procinst process_instance on process_instance.proc_def_id_" +
                 "=process_definition.id_ AND process_instance.proc_inst_id_ = \'" + taskInstance.getProcessInstanceId() + "\';").singleResult();
@@ -156,10 +157,29 @@ public class MigrationServiceImpl implements MigrationService {
         for (FlowElement oFlowElement : model.getMainProcess().getFlowElements()) {
             if (oFlowElement instanceof UserTask) {
                 UserTask oUserTask = (UserTask) oFlowElement;
-                List<String> asID_CandidateGroup = oUserTask.getCandidateGroups();
+                if (oUserTask.getId().equals(taskInstance.getId())) {
+                    resultList.addAll(convertToAccessGroupList(oUserTask.getCandidateGroups(), processTask, process));
+                }
+
             }
         }
-        return null;
+        return resultList;
+    }
+
+    private List<AccessGroup> convertToAccessGroupList(List<String> groupsList, ProcessTask processTask, Process process) {
+        List<AccessGroup> resultList = new LinkedList<>();
+        groupsList.forEach(group -> {
+            AccessGroup accessGroup = new AccessGroup();
+            List<Process> processList = new LinkedList<>();
+            List<ProcessTask> processTaskList = new LinkedList<>();
+            processTaskList.add(processTask);
+            processList.add(process);
+            accessGroup.setaProcess(processList);
+            accessGroup.setaProcessTask(processTaskList);
+            accessGroup.setsID(group);
+            resultList.add(accessGroup);
+            });
+        return resultList;
     }
 
     private CustomProcessTask createCustomProcessTaskToInsert(HistoricTaskInstance taskInstance, ProcessTask processTask) {
