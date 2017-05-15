@@ -39,9 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author olga
@@ -226,10 +224,10 @@ public class ProcessController {
         processTask.setoDateStart(new DateTime());
         processTask.setoDateFinish(new DateTime());
         processTask.setsID_("test");
-        List<AccessGroup> accessGroups = new ArrayList();
+        Set<AccessGroup> accessGroups = new HashSet<>();
         accessGroups.add(accessGroup);
         processTask.setaAccessGroup(accessGroups);
-        List<AccessUser> accessUsers = new ArrayList();
+        Set<AccessUser> accessUsers = new HashSet<>();
         accessUsers.add(accessUser);
         processTask.setaAccessUser(accessUsers);
         //------------------------------
