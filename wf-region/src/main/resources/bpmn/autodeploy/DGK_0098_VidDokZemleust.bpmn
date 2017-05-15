@@ -9,7 +9,9 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім`я " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="ІПН (сканкопія); ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdresReg" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
@@ -21,6 +23,7 @@
         
         <activiti:formProperty id="sObjectEarthTarget" name="Цільове призначення земельної ділянки;(щоб швидше знайти потрібний вам варіант, введіть в поле кілька літер або слово)" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_ObjectEarthTarget" name="Код класифікації видів цільового призначення;(код підтягнеться автоматично після вибору цільового призначення зі списку вище)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZemVlasn" name="Документ про власність на землю;(державний акт на земельну ділянку) ;bNew=true" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="shapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -38,7 +41,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.</activiti:expression>
@@ -90,6 +93,9 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sAdresReg" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="ІПН (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresZem&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdresZem" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nKadastr_num" name="Кадастровий номер; ;writable=false" type="string"></activiti:formProperty>
@@ -97,14 +103,17 @@ ${sNameOrgan}&lt;br /&gt;
         
         <activiti:formProperty id="sObjectEarthTarget" name="Цільове призначення земельної ділянки" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_ObjectEarthTarget" name="Код класифікації видів цільового призначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZemVlasn" name="Документ про власність на землю; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно."></activiti:value>
           <activiti:value id="reject" name="Відмова. Заява оформлена НЕ вірно."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        
         <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/DGK_98_VidDokZem.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -195,17 +204,24 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="sAdresReg" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="ІПН (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_2" name="Інформація про земельну ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresZem&quot;],&quot;sValue&quot;:&quot;Інформація про громадську організацію&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdresZem" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nKadastr_num" name="Кадастровий номер; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPloscha" name="Площа (га); ;writable=false" type="double"></activiti:formProperty>
+        
+        <activiti:formProperty id="sObjectEarthTarget" name="Цільове призначення земельної ділянки" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectEarthTarget" name="Код класифікації видів цільового призначення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZemVlasn" name="Документ про власність на землю; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="asDecideDGK" name="Рішення відділу Держгеокадастру" type="enum" required="true">
           <activiti:value id="sEnamAccept" name="Звернення задоволено"></activiti:value>
           <activiti:value id="sEnamReject" name="Винесено відмову по заяві"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="tCommentDGK" name="Якщо заявнику відмовлено у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Vidpovid" name="Довіреність на представника; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Vidpovid" name="Відповідь ДержГеоКадастра; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="MarkersDash2" name="Region" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/DGK_Dash2_rish.json')}"></activiti:formProperty>
         
       </extensionElements>
