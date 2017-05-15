@@ -139,7 +139,7 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setoDateStart(new DateTime(taskInstance.getStartTime()));
         processTask.setoDateFinish(new DateTime(taskInstance.getEndTime()));
         processTask.setsID_(taskInstance.getId());
-        processTask.setaAccessGroup(null);//спросить
+        processTask.setaAccessGroup(getAccessGroup(taskInstance));//спросить
         processTask.setaAccessUser(null);//спросить
         processTask.setaAttribute(createAttributes(taskInstance.getId(), null, processTask));
         processTask.setCustomProcessTask(createCustomProcessTaskToInsert(taskInstance, processTask));
