@@ -2116,7 +2116,7 @@ Tests in error:
   testAlphaProcesses(org.activiti.test.bp.ActivitiProcessesTest): Errors while parsing:(..)
   testProdProcesses(org.activiti.test.bp.ActivitiProcessesTest): couldn't create db schema: create table ACT_HI_PROCINST ( (..)
 ```
-**решение**: на одной из сервистасок не хватает параметера delegateExpression
+**решение**: Не создается Activiti Diagram. Синтаксические ошибки, необходимо проверить в валидаторе ошибок  XML-файлов. Пример: не закрыты кавычки, тэги, скобки в коде( ">" or "/>) не указан type и т.д
 
 
 ###### usefulinquiries
