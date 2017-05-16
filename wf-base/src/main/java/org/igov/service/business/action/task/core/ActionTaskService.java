@@ -1104,7 +1104,8 @@ public class ActionTaskService {
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
-               
+        LOG.info("getBusinessProcessesFieldsOfLogin: aProcessDefinition_Return={} for login={}", aProcessDefinition_Return);
+        
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
             StartFormData formData = oFormService.getStartFormData(oProcessDefinition.getId());
@@ -1118,6 +1119,8 @@ public class ActionTaskService {
             }
 
             Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
+            LOG.info("getBusinessProcessesFieldsOfLogin: Collection<FlowElement> elements = {} for oProcessDefinition = {}", elements, oProcessDefinition.getId());
+            
             for (FlowElement flowElement : elements) {
                 if (flowElement instanceof UserTask) {
                     LOG.debug("Processing user task with ID {} name {} ", flowElement.getId(), flowElement.getName());
@@ -1158,17 +1161,19 @@ public class ActionTaskService {
                 .active()
                 .latestVersion().list();
 
+        LOG.info("getBusinessProcessesObjectsOfLogin: all active processes aProcessDefinition = {}", aProcessDefinition);
         
-         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
+        if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
              
-              List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+            List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+            
             if (aGroup != null && !aGroup.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 for (Group oGroup : aGroup) {
                     sb.append(oGroup.getId());
                     sb.append(",");
                 }
-                LOG.debug("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
+                LOG.info("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
             }
             
             LOG.debug("Found {} active process definitions", aProcessDefinition.size());
@@ -1183,7 +1188,7 @@ public class ActionTaskService {
                     Set<String> aCandidateCroupsToCheck = getGroupsOfProcessTask(oProcessDefinition);
 
                     loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
-
+                    LOG.info("aCandidateCroupsToCheck = {}", aCandidateCroupsToCheck);
                     for (Group oGroup : aGroup) {
                         for (String sProcessGroupMask : aCandidateCroupsToCheck) {//asProcessGroupMask
                             if (sProcessGroupMask.contains("${")) {

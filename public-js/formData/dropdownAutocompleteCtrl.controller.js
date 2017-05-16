@@ -169,9 +169,9 @@ angular.module('autocompleteService')
                 });
                 function setParams(field, key, rowKey, fieldKey) {
                     if (field.id.indexOf('sID_Group_Activiti') === 0) {
-                        queryParams.params[field.id] = field.value;
+                        queryParams.params['sID_Group_Activiti'] = field.value;
                     } else if (field.id.indexOf('nDeepLevel') === 0) {
-                        queryParams.params[field.id] = field.value;
+                        queryParams.params['nDeepLevel'] = field.value;
                     } else {
                         queryParams.params[field.id] = field.value;
                     }
@@ -192,9 +192,9 @@ angular.module('autocompleteService')
                 queryParams.params[queryKey] = queryValue
             }
             $scope.requestMoreItems([]).then(function (items) {
-                // $timeout(function () {
-                //   $scope.$select.items = items;
-                // }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
+                $timeout(function () {
+                  $scope.$select.items = items;
+                }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
                 var filtered = null;
                 if(queryValue && isNaN(queryValue)){
                    filtered = items.filter(function(i){
