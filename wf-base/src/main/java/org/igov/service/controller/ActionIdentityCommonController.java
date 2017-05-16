@@ -289,7 +289,7 @@ public class ActionIdentityCommonController {
     }
     
     @ApiOperation(value = "Получение списка email юзеров по ИД группы", notes = "##### Пример:\n"
-            + "https://alpha.test.region.igov.org.ua/wf/service/users/getUsersEmailByGroup?sID_Group=MJU_Dnipro \n")
+            + "https://alpha.test.region.igov.org.ua/wf/service/action/identity/getUsersEmailByGroup?sID_Group=GrekD \n")
     @RequestMapping(value = "/getUsersEmailByGroup", method = RequestMethod.GET)
     @ResponseBody
     public List<String> getUsersEmailByGroup(@ApiParam(value = "ИД группы", required = true) @RequestParam(value = "sID_Group", required = true) String sID_Group){
@@ -301,7 +301,7 @@ public class ActionIdentityCommonController {
     
     
     @ApiOperation(value = "Получение списка email юзеров которые были выбраны в таблице", notes = "##### Пример:\n"
-            + "https://alpha.test.region.igov.org.ua/wf/service/users/getUsersEmailFromTable?snID_Process_Activiti=MJU_Dnipro \n")
+            + "https://alpha.test.region.igov.org.ua/wf/service/action/identity/getUsersEmailFromTable?snID_Process_Activiti=1&sID_Table=sTableViewed&sID_FieldTable=sEmail \n")
     @RequestMapping(value = "/getUsersEmailFromTable", method = RequestMethod.GET)
     @ResponseBody
     public List<String> getUsersEmailFromTable(

@@ -108,7 +108,7 @@ public class UsersService {
 
             String sValue = (String) runtimeService.getVariable(snID_Process_Activiti, sID_Table);
 
-            if (sValue.startsWith("{")) {// TABLE
+            if (sValue!=null&&sValue.startsWith("{")) {// TABLE
                 JSONParser parser = new JSONParser();
 
                 org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(sValue);
