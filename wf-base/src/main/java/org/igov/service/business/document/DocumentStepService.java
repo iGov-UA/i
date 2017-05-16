@@ -800,7 +800,7 @@ public class DocumentStepService {
                 false, null);
     }
 
-    public List<DocumentStepSubjectRight> syncDocumentSubmitersByField(String snID_Process_Activiti,
+    public List<DocumentStepSubjectRight> syncDocumentSubmitedsByField(String snID_Process_Activiti,
             String sKey_Group_Default, String sID_Field, String sKey_Step, boolean bReClone) throws Exception {
 
         LOG.info("started...");
