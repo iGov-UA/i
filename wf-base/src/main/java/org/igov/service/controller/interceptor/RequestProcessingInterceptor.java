@@ -74,6 +74,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     private boolean bFinish = false;
     private static final String FORM_FORM_DATA = "/form/form-data";
+    private static final String START_PROCESS = "/startProcess";
     private static final String DOCUMENT_SERVICE = "/action/task/setDocument";
     private static final String RUNTIME_TASKS = "/runtime/tasks";
     private static final String POST = "POST";
@@ -1027,7 +1028,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
         return (bFinish && sResponseBody != null && !"".equals(sResponseBody))
-                && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                //&& oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                ||
+                oRequest.getRequestURL().toString().indexOf(START_PROCESS) > 0
+                )
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim());
     }
 
