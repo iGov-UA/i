@@ -29,16 +29,10 @@ public class AccessUser extends AbstractEntity{
     
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class)
-    @JoinTable(name = "AccessUser_ProcessTask",
-            joinColumns = @JoinColumn(name = "nID_AccessUser"),
-            inverseJoinColumns = @JoinColumn(name = "nID_ProcessTask"))
     private Set<ProcessTask> aProcessTask = new HashSet<>();
     
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class)
-    @JoinTable(name = "AccessUser_ProcessTask",
-            joinColumns = @JoinColumn(name = "nID_AccessUser"),
-            inverseJoinColumns = @JoinColumn(name = "nID_Process"))
     private Set<Process> aProcess = new HashSet<>();
 
     public String getsID() {
