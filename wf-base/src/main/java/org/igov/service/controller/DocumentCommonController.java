@@ -89,10 +89,10 @@ public class DocumentCommonController {
     }
     
     @ApiOperation(value = "Синхронизация сабмитеров на степе по полю ")
-    @RequestMapping(value = "/syncDocumentSubmitersByField", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/syncDocumentSubmitedsByField", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     //@Transactional
     public @ResponseBody
-    String syncDocumentSubmitersByField(
+    String syncDocumentSubmitedsByField(
             @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
             @ApiParam(value = "группа - эталон/дэфолтная", required = true) @RequestParam(required = true, value = "sKeyGroup_Default") String sKey_Group_Default,
             @ApiParam(value = "строка-ИД поля, в рамках значения/ний которого(логинов) пройдет синхронизация", required = true) @RequestParam(required = true, value = "sID_Field") String sID_Field,
@@ -106,8 +106,8 @@ public class DocumentCommonController {
         LOG.info("sKey_Step: {}", sKey_Step);
         LOG.info("bReClone: {}", bReClone);
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = documentStepService.syncDocumentSubmitersByField(snID_Process_Activiti, sKey_Group_Default, sID_Field, sKey_Step, bReClone);
-        //List<DocumentStepSubjectRight> aDocumentStepSubjectRight = documentStepService.syncDocumentSubmitersByField(snID_Process_Activiti, sID_Field, sKey_Group_Default, sID_Step);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = documentStepService.syncDocumentSubmitedsByField(snID_Process_Activiti, sKey_Group_Default, sID_Field, sKey_Step, bReClone);
+        //List<DocumentStepSubjectRight> aDocumentStepSubjectRight = documentStepService.syncDocumentSubmitedsByField(snID_Process_Activiti, sID_Field, sKey_Group_Default, sID_Step);
         
         LOG.info("oDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
         
