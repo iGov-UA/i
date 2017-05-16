@@ -1,8 +1,9 @@
 package org.igov.service.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.Group;
@@ -17,13 +18,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 
 @Controller
 @Api(tags = { "ActionIdentityCommonController" })
@@ -283,6 +286,32 @@ public class ActionIdentityCommonController {
             identityService.deleteMembership(sLogin, sID_Group);
             log.info("Membership for user "+sLogin+" in group "+sID_Group+" removed");
         }
+    }
+    
+    @ApiOperation(value = "Получение списка email юзеров по ИД группы", notes = "##### Пример:\n"
+            + "https://alpha.test.region.igov.org.ua/wf/service/action/identity/getUsersEmailByGroup?sID_Group=GrekD \n")
+    @RequestMapping(value = "/getUsersEmailByGroup", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getUsersEmailByGroup(@ApiParam(value = "ИД группы", required = true) @RequestParam(value = "sID_Group", required = true) String sID_Group){
+    	
+    	List<String> usersByGroup = usersService.getUsersEmailByGroup(sID_Group);
+		return usersByGroup;
+    	
+    }
+    
+    
+    @ApiOperation(value = "Получение списка email юзеров которые были выбраны в таблице", notes = "##### Пример:\n"
+            + "https://alpha.test.region.igov.org.ua/wf/service/action/identity/getUsersEmailFromTable?snID_Process_Activiti=1&sID_Table=sTableViewed&sID_FieldTable=sEmail \n")
+    @RequestMapping(value = "/getUsersEmailFromTable", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getUsersEmailFromTable(
+    		@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
+    		@ApiParam(value = "ид таблицы (переменная из БП)", required = true) @RequestParam(value = "sID_Table", required = true) String sID_Table,
+    		@ApiParam(value = "ид столбца таблицы (с какого столбца вытянуть емайлы)", required = true) @RequestParam(value = "sID_FieldTable", required = true) String sID_FieldTable) throws Exception{
+    	
+    	List<String> usersEmailFromTable = usersService.getUsersEmailFromTable(snID_Process_Activiti,sID_Table,sID_FieldTable);
+		return usersEmailFromTable;
+    	
     }
 
 }
