@@ -22,7 +22,8 @@ public final class JsonRequestDataResolver {
 
         Map<String, String> res = new HashMap<>();
 
-        JSONArray jsonArray = (JSONArray) requestJson.get("properties");
+        //JSONArray jsonArray = (JSONArray) requestJson.get("properties");
+        JSONArray jsonArray = (JSONArray) (requestJson.containsKey("properties") ? requestJson.get("properties") : requestJson.get("aFormProperty"));
         for (int i = 0; i < jsonArray.size(); ++i) {
             JSONObject property = (JSONObject) jsonArray.get(i);
             res.put(String.valueOf(property.get("id")), String.valueOf(property.get("value"))); //
