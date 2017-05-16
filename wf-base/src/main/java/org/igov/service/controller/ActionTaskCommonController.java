@@ -2731,21 +2731,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("deleteHistoricProcessInstance started...");
         try{
             String sID_Process_Activiti = String.valueOf(ToolLuna.getValidatedOriginalNumber(Long.parseLong(nID_Order)));
-            //String sID_Order = generalConfig.getOrderId_ByOrder(Long.parseLong(nID_Order));
             LOG.info("sID_Process_Activiti in deleteHistoricProcessInstance {}", sID_Process_Activiti);
             
-            
-
-            runtimeService.deleteProcessInstance(sID_Process_Activiti, "deleted");
-            
-            //historyService.deleteHistoricProcessInstance(sID_Process_Activiti);
-            
+            if(runtimeService.createProcessInstanceQuery().processInstanceId(sID_Process_Activiti)
+                    .active().singleResult() != null){
+                runtimeService.deleteProcessInstance(sID_Process_Activiti, "deleted");
+            }
             HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(sID_Process_Activiti).singleResult();
             LOG.info("oHistoricProcessInstance id {}", oHistoricProcessInstance.getId());
+            
             historyService.deleteHistoricProcessInstance(oHistoricProcessInstance.getId());
             
-            //oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
         }
         catch (Exception ex){
             LOG.info("Error during order deliting: {}", ex);
