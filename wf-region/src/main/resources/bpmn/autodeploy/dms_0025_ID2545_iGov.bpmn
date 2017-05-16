@@ -70,35 +70,7 @@ execution.setVariable('sNotification_day', formatTimerStart)
 //форматируем под таймер дату, время указываем жестко 
 def timerEndFormat = new SimpleDateFormat("yyyy-MM-dd'T19:00:00'", locate)
 def formatTimerEnd = timerStartFormat.format(date_of_visit)
-execution.setVariable('sEndDay', formatTimerEnd)
-var seconds='00'
-var delta=1
-var day1=day
-var month1=month
-if (day!='01')
-    {
-        day1=+day-delta
-    }
-else
-    {
-        if ((month!='01')&amp;&amp;(month!='03'))
-          {
-              month1=+month-1
-              day1=30
-          }
-        else
-          {
-            if (month=='03')
-            {
-              month1='02'
-              day1='28'
-            }            
-          }
-     }
-var timer=year+'-'+month1+'-'+day1+'T'+hour+':'+minutes+':'+seconds
-execution.setVariable('sNotification_day', timer)
-var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
-execution.setVariable('sEndDay', timerEnd)</script>
+execution.setVariable('sEndDay', formatTimerEnd)</script>
     </scriptTask>
     <sequenceFlow id="flow28" sourceRef="scripttask1" targetRef="parallelgateway1"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
