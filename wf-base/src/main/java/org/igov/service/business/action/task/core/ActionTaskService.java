@@ -1104,7 +1104,7 @@ public class ActionTaskService {
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
-        LOG.info("getBusinessProcessesFieldsOfLogin: aProcessDefinition_Return = {}", aProcessDefinition_Return);
+        LOG.info("getBusinessProcessesFieldsOfLogin: aProcessDefinition_Return={} for login={}", aProcessDefinition_Return);
         
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
