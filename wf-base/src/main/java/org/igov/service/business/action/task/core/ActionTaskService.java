@@ -1074,6 +1074,7 @@ public class ActionTaskService {
      *
      * @param sLogin - Логин пользователя
      * @param bDocOnly Выводить только список БП документов
+     * @param sProcessDefinitionId - выводить только из этого процесса
      * @return
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
@@ -1156,26 +1157,11 @@ public class ActionTaskService {
                 .createProcessDefinitionQuery()
                 .active()
                 .latestVersion().list();
+
         
-        if (sProcessDefinitionId != null) {
-            
-            for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
-            
-                String sID_BP = oProcessDefinition.getId();
-                LOG.info("getBusinessProcessesObjectsOfLogin: sID_BP = {}", sID_BP);
-                
-                if (sID_BP.startsWith(sProcessDefinitionId)) {
-                
-                    aProcessDefinition_Return.add(oProcessDefinition);
-                
-                }
-                
-            }
-            
-        } else if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
-            
-            LOG.debug("Found {} active process definitions", aProcessDefinition.size());
-            List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
+             
+              List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
             if (aGroup != null && !aGroup.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 for (Group oGroup : aGroup) {
@@ -1184,6 +1170,8 @@ public class ActionTaskService {
                 }
                 LOG.debug("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
             }
+            
+            LOG.debug("Found {} active process definitions", aProcessDefinition.size());
 
             for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
 

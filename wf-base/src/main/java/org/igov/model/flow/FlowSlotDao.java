@@ -73,4 +73,7 @@ public interface FlowSlotDao extends EntityDao<Long, FlowSlot> {
      * and next (<b>countOfSlots</b> - 1) slots.
      */
     List<FlowSlot> findFlowSlotsChain(Long nID_FlowSlot, int countOfSlots);
+    
+    @Override
+    void delete(FlowSlot entity);
 }
