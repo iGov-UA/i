@@ -10,6 +10,7 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.igov.analytic.model.access.AccessGroup;
+import org.igov.analytic.model.access.AccessUser;
 import org.igov.analytic.model.attribute.*;
 import org.igov.analytic.model.config.Config;
 import org.igov.analytic.model.config.ConfigDao;
@@ -142,10 +143,44 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setoDateFinish(new DateTime(taskInstance.getEndTime()));
         processTask.setsID_(taskInstance.getId());
         processTask.setaAccessGroup(getAccessGroup(taskInstance, processTask, process));
-        processTask.setaAccessUser(null);//спросить
+        processTask.setaAccessUser(getAccessUser(taskInstance, processTask, process));
         processTask.setaAttribute(createAttributes(taskInstance.getId(), null, processTask));
         processTask.setCustomProcessTask(createCustomProcessTaskToInsert(taskInstance, processTask));
         return processTask;
+    }
+
+    //TODO rewrite
+    private Set<AccessUser> getAccessUser(HistoricTaskInstance taskInstance, ProcessTask processTask, Process process) {
+        Set<AccessUser> resultSet = new HashSet<>();
+        ProcessDefinition definition = repositoryService.createNativeProcessDefinitionQuery().sql("SELECT process_definition.* FROM " +
+                "act_re_procdef process_definition JOIN act_hi_procinst process_instance on process_instance.proc_def_id_" +
+                "=process_definition.id_ AND process_instance.proc_inst_id_ = \'" + taskInstance.getProcessInstanceId() + "\';").singleResult();
+        BpmnModel model = repositoryService.getBpmnModel(definition.getId());
+        for (FlowElement oFlowElement : model.getMainProcess().getFlowElements()) {
+            if (oFlowElement instanceof UserTask) {
+                UserTask oUserTask = (UserTask) oFlowElement;
+                if (oUserTask.getId().equals(taskInstance.getTaskDefinitionKey())) {
+                    resultSet.addAll(convertToAccessUserSet(oUserTask.getCandidateUsers(), processTask, process));
+                }
+            }
+        }
+        return resultSet;
+    }
+
+    private Set<AccessUser> convertToAccessUserSet(List<String> userList, ProcessTask processTask, Process process) {
+        Set<AccessUser> resultSet = new HashSet<>();
+        userList.forEach(group -> {
+            AccessUser accessUser = new AccessUser();
+            Set<Process> processes = new HashSet<>();
+            processes.add(process);
+            accessUser.setaProcess(processes);
+            Set<ProcessTask> processTasks = new HashSet<>();
+            processTasks.add(processTask);
+            accessUser.setaProcessTask(processTasks);
+            accessUser.setsID(group);
+            resultSet.add(accessUser);
+        });
+        return resultSet;
     }
 
     //TODO rewrite this algo
@@ -159,14 +194,14 @@ public class MigrationServiceImpl implements MigrationService {
             if (oFlowElement instanceof UserTask) {
                 UserTask oUserTask = (UserTask) oFlowElement;
                 if (oUserTask.getId().equals(taskInstance.getTaskDefinitionKey())) {
-                    resultSet.addAll(convertToAccessGroupList(oUserTask.getCandidateGroups(), processTask, process));
+                    resultSet.addAll(convertToAccessGroupSet(oUserTask.getCandidateGroups(), processTask, process));
                 }
             }
         }
         return resultSet;
     }
 
-    private Set<AccessGroup> convertToAccessGroupList(List<String> groupsList, ProcessTask processTask, Process process) {
+    private Set<AccessGroup> convertToAccessGroupSet(List<String> groupsList, ProcessTask processTask, Process process) {
         Set<AccessGroup> resultSet = new HashSet<>();
         groupsList.forEach(group -> {
             AccessGroup accessGroup = new AccessGroup();
