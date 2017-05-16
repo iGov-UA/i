@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_akordbank_removal_cash" name="перевезення (вивіз) готівки" isExecutable="true">
+  <process id="_doc_akordbank_support_cash" name="перевезення (підкріплення) готівки" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
@@ -18,7 +18,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Створення заяви ініціатором  Степ1">
       <extensionElements>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума готівки" type="long" required="true"></activiti:formProperty>
@@ -34,7 +34,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ);" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Head_of_cash_desk]]></activiti:string>
@@ -61,7 +61,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <userTask id="usertask2" name="Нач.відділення. Погодження або повернення">
       <extensionElements>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума готівки" type="long"></activiti:formProperty>
@@ -119,7 +119,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     </sequenceFlow>
     <userTask id="usertask3" name="Управління грош обігу. Повернення або погодження">
       <extensionElements>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума готівки" type="long"></activiti:formProperty>
@@ -175,8 +175,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <sequenceFlow id="flow14" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="scripttask4" targetRef="usertask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_akordbank_removal_cash">
-    <bpmndi:BPMNPlane bpmnElement="_doc_akordbank_removal_cash" id="BPMNPlane__doc_akordbank_removal_cash">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_akordbank_support_cash">
+    <bpmndi:BPMNPlane bpmnElement="_doc_akordbank_support_cash" id="BPMNPlane__doc_akordbank_support_cash">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="43.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

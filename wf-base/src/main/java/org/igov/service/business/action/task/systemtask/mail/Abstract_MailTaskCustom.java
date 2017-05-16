@@ -68,6 +68,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
+
 public abstract class Abstract_MailTaskCustom extends AbstractModelTask implements JavaDelegate, CustomRegexPattern {
 
     static final transient Logger LOG = LoggerFactory
@@ -798,12 +800,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     			LOG.info("sendMailOfTask ok!");
     		}else {
     			Mail oMailClerk = context.getBean(Mail.class);
-    			oMailClerk._From(oMail.getFrom())._To("smailclerkigov@gmail.com")._Head(oMail.getHead())
-    		                ._Body(oMail.getBody())._AuthUser("smailclerkigov smailclerkigov")
-    		                ._AuthPassword("smailclerkigov123")._Host(oMail.getHost())
+    			oMailClerk._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(oMail.getHead())
+    		                ._Body(oMail.getBody())._AuthUser(generalConfig.getsUsnameClerk())
+    		                ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
     		                ._Port(Integer.valueOf(oMail.getPort()))
     		                ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
-    			 LOG.info("sendMailOfTask clerk! "+oMailClerk.getTo() + "---" + oMailClerk.getAuthUser());
     			 LOG.info("sendMailOfTask clerk prop! "+generalConfig.getsAddrClerk()+"--"+generalConfig.getsUsnameClerk());
     			oMailClerk.send();
         	     saveServiceMessage_Mail(oMailClerk.getHead(), oMailClerk.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMailClerk.getTo());
