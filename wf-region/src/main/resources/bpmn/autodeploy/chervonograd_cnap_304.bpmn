@@ -3,6 +3,7 @@
   <process id="chervonograd_cnap_304" name="Бронювання житлових приміщень" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -59,7 +60,7 @@
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Адресат ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -162,7 +163,21 @@
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Адресат; ;bVisible=false" type="string"></activiti:formProperty>
+        
+         <activiti:formProperty id="file1" name="Довідка про склад сім'ї та реєстрацію; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Охоронне свідоцтво про продовження терміну бронювання; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Трудова угода між заявником та роботодавцем; ;bNew=true" type="file" required="true"></activiti:formProperty>
+   
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-ої особи;(або свідоцтво про народження);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-ої особи;(або свідоцтво про народження) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-ої особи;(або свідоцтво про народження);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-ої особи;(або свідоцтво про народження) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-ої особи;(або свідоцтво про народження) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-ої особи;(або свідоцтво про народження);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-ої особи;(або свідоцтво про народження) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
        
       </extensionElements>
@@ -267,11 +282,20 @@
         <activiti:formProperty id="certificate" name="Сканкопія свідоцтва або відповіді про відмову" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_304_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${bankId_scan_passport},${scanPassportOwner2},${scanPassportOwner3},${scanPassportOwner4},${scanPassportOwner5},${scanPassportOwner6},${scanPassportOwner7},${scanPassportOwner8}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
+       <activiti:formProperty id="file1" name="Довідка про склад сім'ї та реєстрацію; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Охоронне свідоцтво про продовження терміну бронювання; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Трудова угода між заявником та роботодавцем; ;bNew=true" type="file" required="true"></activiti:formProperty>
+   
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-ої особи;(або свідоцтво про народження);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-ої особи;(або свідоцтво про народження) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-ої особи;(або свідоцтво про народження);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-ої особи;(або свідоцтво про народження) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-ої особи;(або свідоцтво про народження) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-ої особи;(або свідоцтво про народження);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-ої особи;(або свідоцтво про народження) ;bNew=true" type="file" required="true"></activiti:formProperty>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
