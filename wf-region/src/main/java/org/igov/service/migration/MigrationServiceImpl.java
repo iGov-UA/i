@@ -141,7 +141,7 @@ public class MigrationServiceImpl implements MigrationService {
         processTask.setoDateStart(new DateTime(taskInstance.getStartTime()));
         processTask.setoDateFinish(new DateTime(taskInstance.getEndTime()));
         processTask.setsID_(taskInstance.getId());
-        processTask.setaAccessGroup(getAccessGroup(taskInstance, processTask, process));//спросить
+        processTask.setaAccessGroup(getAccessGroup(taskInstance, processTask, process));
         processTask.setaAccessUser(null);//спросить
         processTask.setaAttribute(createAttributes(taskInstance.getId(), null, processTask));
         processTask.setCustomProcessTask(createCustomProcessTaskToInsert(taskInstance, processTask));
@@ -170,12 +170,8 @@ public class MigrationServiceImpl implements MigrationService {
         Set<AccessGroup> resultSet = new HashSet<>();
         groupsList.forEach(group -> {
             AccessGroup accessGroup = new AccessGroup();
-            Set<Process> processList = new HashSet<>();
-            Set<ProcessTask> processTaskList = new HashSet<>();
-            processTaskList.add(processTask);
-            processList.add(process);
-            accessGroup.setaProcess(processList);
-            accessGroup.setaProcessTask(processTaskList);
+            accessGroup.addaProcess(process);
+            accessGroup.addaProcessTask(processTask);
             accessGroup.setsID(group);
             resultSet.add(accessGroup);
             });

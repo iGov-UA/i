@@ -65,4 +65,12 @@ public class AccessGroup extends AbstractEntity {
     public void setaProcess(Set<Process> aProcess) {
         this.aProcess = aProcess;
     }
+
+    public void addaProcess(Process process) {
+        aProcess.add(process);
+    }
+
+    public void addaProcessTask(ProcessTask processTask) {
+        aProcessTask.add(processTask);
+    }
 }
