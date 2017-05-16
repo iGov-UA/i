@@ -192,9 +192,9 @@ angular.module('autocompleteService')
                 queryParams.params[queryKey] = queryValue
             }
             $scope.requestMoreItems([]).then(function (items) {
-                // $timeout(function () {
-                //   $scope.$select.items = items;
-                // }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
+                $timeout(function () {
+                  $scope.$select.items = items;
+                }, 0, !angular.equals(queryParams.params[queryKey], queryValue));
                 var filtered = null;
                 if(queryValue && isNaN(queryValue)){
                    filtered = items.filter(function(i){
