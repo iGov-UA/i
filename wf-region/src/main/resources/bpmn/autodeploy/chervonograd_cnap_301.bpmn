@@ -217,10 +217,11 @@
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Дата реєстрації заяви" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decision2" name="Рішення держслужбовця" type="enum" required="true"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="decision2" name="Рішення держслужбовця" type="enum" required="true">
         <activiti:value id="attr1_ok" name="Довідка готова. Запросити громадянина"></activiti:value>
         <activiti:value id="attr2_no" name="Відмова управління ЖКГ"></activiti:value>
+                </activiti:formProperty>
+                <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
