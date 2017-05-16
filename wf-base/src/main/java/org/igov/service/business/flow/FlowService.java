@@ -289,6 +289,8 @@ public class FlowService implements ApplicationContextAware {
      * @return generated slots.
      */
     public List<FlowSlotVO> buildFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate) {
+        
+        LOG.info("buildFlowSlots started...");
         Flow flow = flowServiceDataDao.findByIdExpected(nID_Flow_ServiceData);
         
         List<FlowSlotVO> res = new ArrayList<>();
@@ -478,7 +480,7 @@ public class FlowService implements ApplicationContextAware {
     
     public ClearSlotsResult clearFlowSlots(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate,
             boolean bWithTickets) {
-        
+        LOG.info("clearFlowSlots started...");
         List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow_ServiceData, startDate, stopDate);
         DateTime operationTime = DateTime.now();
         

@@ -11,6 +11,9 @@ import org.igov.util.db.QueryBuilder;
 
 import java.util.*;
 import org.igov.model.core.GenericEntityDao;
+import org.igov.service.business.flow.FlowService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User: goodg_000
@@ -19,7 +22,9 @@ import org.igov.model.core.GenericEntityDao;
  */
 @Repository
 public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements FlowSlotDao {
-
+    
+    private static final Logger LOG = LoggerFactory.getLogger(FlowSlotDaoImpl.class);
+    
     protected FlowSlotDaoImpl() {
         super(FlowSlot.class);
     }
@@ -115,5 +120,13 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
         }
 
         return res;
+    }
+    
+    @Override
+    public void delete(FlowSlot entity){
+        LOG.info("FlowSlot deleting started...");
+        LOG.info("FlowSlot deleted id {}", entity.getId());
+        LOG.info("FlowSlot deleted name {}", entity.getName());
+        super.delete(entity);
     }
 }
