@@ -29,18 +29,18 @@ public class AccessGroup extends AbstractEntity {
     private String sID;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class)
     @JoinTable(name = "AccessGroup_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessGroup"),
             inverseJoinColumns = @JoinColumn(name = "nID_ProcessTask"))
     private Set<ProcessTask> aProcessTask = new HashSet<>();
     
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class)
     @JoinTable(name = "AccessGroup_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessGroup"),
             inverseJoinColumns = @JoinColumn(name = "nID_Process"))
-    private Set<org.igov.analytic.model.process.Process> aProcess = new HashSet<>();
+    private Set<Process> aProcess = new HashSet<>();
 
     public String getsID() {
         return sID;
