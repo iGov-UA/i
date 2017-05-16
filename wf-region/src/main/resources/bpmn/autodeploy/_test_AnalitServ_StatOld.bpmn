@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_AnalitServ_StatOld" name="Для сервера аналитики старые аттачи" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="ScancopyDoc1" name="Копія рішення суду" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Enum_test" name="Оберіть варіант" type="enum">
+          <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
+          <activiti:value id="sEnumMarried" name="одруження"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask10" name="Загрузка файлов" activiti:delegateExpression="#{fileTaskUpload}">
+    </serviceTask>
+    <serviceTask id="servicetask1" name="Уведомление гражданина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Заява про державну реєстрацію розірвання шлюбу]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+
+Результати первинної перевірки звернення будуть спрямовані на цей е-мейл протягом трьох робочих днів. <br />
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <userTask id="usertask1" name="Обработка заявки" activiti:candidateGroups="test_stat">
+      <extensionElements>
+        <activiti:formProperty id="ScancopyDoc2" name="Копія рішення суду" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Enum_test" name="Оберіть варіант ; ;writable=false" type="enum">
+          <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
+          <activiti:value id="sEnumMarried" name="одруження"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Рішення" type="enum">
+          <activiti:value id="Yes" name="так"></activiti:value>
+          <activiti:value id="No" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/test_analit.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/test_analit.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <userTask id="usertask2" name="Тестирование файлов">
+      <extensionElements>
+        <activiti:formProperty id="Enum_test" name="Оберіть варіант ; ;writable=false" type="enum">
+          <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
+          <activiti:value id="sEnumMarried" name="одруження"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecision1" name="Рішення" type="enum">
+          <activiti:value id="Yes1" name="так"></activiti:value>
+          <activiti:value id="No1" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/test_analit.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/test_analit.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
+		<activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+  			<activiti:field name="aFieldInheritedAttachmentID">
+    		<activiti:expression>${ScancopyDoc1},${ScancopyDoc2},${PrintForm_1}</activiti:expression>
+  			</activiti:field>
+		</activiti:taskListener>
+		</extensionElements>
+     </userTask>
+    <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_AnalitServ_StatOld">
+    <bpmndi:BPMNPlane bpmnElement="_test_AnalitServ_StatOld" id="BPMNPlane__test_AnalitServ_StatOld">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="82.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="700.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="117.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="305.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="475.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="645.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
