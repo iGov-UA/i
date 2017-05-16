@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboardJsApp').service('signService', function ($q, $base64, cryptoPluginFactory, FileSaver, Blob) {
+angular.module('dashboardJsApp').service('signService', function ($q, $base64, cryptoPluginFactory) {
   var tspURL = "http://acsk.privatbank.ua/services/tsp/";//presume we have online mode and pass url to plugin
   var sessionTimeout = 36000;
   var pluginVersion = '1.0.3';
@@ -175,20 +175,6 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
 
       return d.promise;
     });
-  };
-
-  this.saveSignedDocument = function (sEncodedBase64, sFileName){
-    var byteCharacters = $base64.decode(sEncodedBase64);
-    var byteNumbers = new Array(byteCharacters.length);
-    for (var i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    var byteArray = new Uint8Array(byteNumbers);
-    var blob = new Blob([byteArray], {type: 'application/pdf'});
-    if(!sFileName || sFileName === ''){
-      sFileName = 'document';
-    }
-    FileSaver.saveAs(blob, sFileName + '.pdf');
   };
 
   this.errorCodes = errorCodes;

@@ -26,7 +26,6 @@ angular.module('dashboardJsApp', [
   'ea.treeview',
   'cryptoPlugin',
   'textAngular',
-  'ngFileSaver',
   'angularSpectrumColorpicker'
 ]).config(function($urlRouterProvider, $locationProvider, $compileProvider) {
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);

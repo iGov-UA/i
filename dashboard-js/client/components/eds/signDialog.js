@@ -31,7 +31,15 @@ angular.module('dashboardJsApp')
       var signModal = openModal(modalScope);
 
       signModal.result.then(function (signedContent) {
-        signService.saveSignedDocument(signedContent.sign);
+        var byteCharacters = $base64.decode(signedContent.sign);
+        var byteNumbers = new Array(byteCharacters.length);
+        for (var i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        var blob = new Blob([byteArray], {type: 'application/pdf'});
+        var url = (window.URL || window.webkitURL).createObjectURL(blob);
+        window.open(url, '_blank');
         resultCallback(signedContent);
       }, function () {
         dismissCallback();

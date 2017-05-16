@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboardJsApp').service('generationService', function ($q, $http, $base64, FileSaver, Blob) {
+angular.module('dashboardJsApp').service('generationService', function ($q, $http, $base64) {
   this.generatePDFFromHTML = function (htmlContent) {
     var body = {
       htmlContent: htmlContent
