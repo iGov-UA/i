@@ -4,58 +4,57 @@
     <documentation>https://github.com/e-government-ua/i/issues/1353</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTableOld1" name="sTableOld2" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sCountry_2&quot;,&quot;name&quot;:&quot;Країна походження товару&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sID_UA_Country_2&quot;,&quot;name&quot;:&quot;Код країни походження&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="aaa" name="aaa" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="крок 1" activiti:assignee="kermit">
-      <extensionElements>
-        <activiti:formProperty id="sTableOld2" name="sTableOld2" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sCharakterUgoda&quot;,&quot;name&quot;:&quot;Характер угоди&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;10&quot;,&quot;name&quot;:&quot;10 Переміщення товарів з розрахунками за товар у валюті України&quot;},{&quot;id&quot;:&quot;12&quot;,&quot;name&quot;:&quot;12 Переміщення товарів за договорами лізингу (оренди) з розрахунками у валюті України&quot;},{&quot;id&quot;:&quot;21&quot;,&quot;name&quot;:&quot;21 Переміщення товарів з розрахунками за товар у ВКВ (крім позначених кодами 22, 23, 26)&quot;},{&quot;id&quot;:&quot;22&quot;,&quot;name&quot;:&quot;22 Переміщення товарів за договорами лізингу (оренди) з розрахунками у вільноконвертованій валюті&quot;},{&quot;id&quot;:&quot;23&quot;,&quot;name&quot;:&quot;23 Переміщення товарів за державним кредитом&quot;},{&quot;id&quot;:&quot;26&quot;,&quot;name&quot;:&quot;26 Переміщення товарів у рахунок погашення державного кредиту&quot;},{&quot;id&quot;:&quot;31&quot;,&quot;name&quot;:&quot;31 Переміщення товарів з розрахунком за товар у кліринговій валюті (крім позначених кодами 33, 36)&quot;},{&quot;id&quot;:&quot;33&quot;,&quot;name&quot;:&quot;33 Переміщення товарів за державним кредитом&quot;},{&quot;id&quot;:&quot;36&quot;,&quot;name&quot;:&quot;36 Переміщення товарів у рахунок погашення державного кредиту&quot;},{&quot;id&quot;:&quot;41&quot;,&quot;name&quot;:&quot;41 Переміщення товарів з розрахунком за товар у замкнутій валюті (крім позначених кодами 42, 43)&quot;},{&quot;id&quot;:&quot;42&quot;,&quot;name&quot;:&quot;42 Переміщення товарів за договорами лізингу (оренди) з розрахунками у валюті з обмеженою конвертацією&quot;},{&quot;id&quot;:&quot;43&quot;,&quot;name&quot;:&quot;43 Переміщення товарів за державним кредитом&quot;},{&quot;id&quot;:&quot;51&quot;,&quot;name&quot;:&quot;51 Переміщення товарів при здійсненні товарообмінних (бартерних) операцій у порядку прямого товарообміну чи в обмін на виконані роботи або надані послуги&quot;},{&quot;id&quot;:&quot;71&quot;,&quot;name&quot;:&quot;71 Переміщення товарів у рахунок компенсаційних зобов'язань з розрахунками в кліринговій валюті&quot;},{&quot;id&quot;:&quot;72&quot;,&quot;name&quot;:&quot;72 Переміщення товарів у рахунок зобов'язань за угодами з країнами СНД&quot;},{&quot;id&quot;:&quot;78&quot;,&quot;name&quot;:&quot;78 Переміщення товарів у рахунок компенсаційних зобов'язань з розрахунками у ВКВ&quot;},{&quot;id&quot;:&quot;84&quot;,&quot;name&quot;:&quot;84 Інше&quot;}]}]}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]; ;bVisible=false" type="string" default="принтформа с тейблом" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <userTask id="usertask2" name="крок 2" activiti:assignee="kermit" activiti:candidateGroups="sales">
-      <extensionElements>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint.html]; ;bVisible=false" type="string" default="принтформа с тейблом" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${sTableOld1}, ${sTableOld2}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow61" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow62" sourceRef="usertask2" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow63" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="тестове повідомлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[тест письма на несколько адресов сервистаска мульти-пульти]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+тело письма
+${sEmail}
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersEmailByGroup('GrekD')}" activiti:elementVariable="sEmail"></multiInstanceLoopCharacteristics>
+    </serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_newattach_OldTable">
     <bpmndi:BPMNPlane bpmnElement="_test_newattach_OldTable" id="BPMNPlane__test_newattach_OldTable">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="52.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="137.0" x="130.0" y="60.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="137.0" x="330.0" y="60.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="500.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="280.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="267.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="330.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
-        <omgdi:waypoint x="467.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="500.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="132.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="87.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="130.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="132.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="237.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
