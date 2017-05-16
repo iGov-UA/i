@@ -2736,8 +2736,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }*/
         
             //historyService.deleteHistoricProcessInstance(sID_Process_Activiti);
-            
-            oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
+            HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery()
+                .processInstanceId(sID_Process_Activiti).singleResult();
+            LOG.info("oHistoricProcessInstance id {}", oHistoricProcessInstance.getId());
+            //oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
         }
         catch (Exception ex){
             LOG.info("Error during order deliting: {}", ex);
