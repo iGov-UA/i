@@ -4,15 +4,15 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідний лист-відповідь"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber ; ; bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sApplicant" name="Кореспондент ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sReportCommon" name="sReportCommon ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName_Executor" name="Виконавець ; ; bVisible=false" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameDepart" name="Департамент ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sApplicant" name="Кореспондент ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReportCommon" name="sReportCommon ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_Executor" name="Виконавець ; ;bVisible=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
@@ -28,12 +28,12 @@
     <userTask id="usertask4" name="Канцелярія - формування та реєстрація вихідного листа-відповіді">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідний лист-відповідь" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ; bVisible=false" type="string" default="MJU_Dnipro_0"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ; bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ;bVisible=false" type="string" default="MJU_Dnipro_0"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Реєстраційний номер документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" required="true"></activiti:formProperty>
@@ -43,7 +43,7 @@
         <activiti:formProperty id="sName_Executor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" variable="sNameDepart" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_AutorResolution" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameDepart" name="Департамент ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
@@ -66,13 +66,13 @@
           <activiti:value id="sEnumYear" name="щороку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html] ; ; bVisible=false" type="string" default="РКК1" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html] ; ; bVisible=false" type="string" default="бланк ДВС" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html] ; ; bVisible=false" type="string" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html] ; ; bVisible=false" type="string" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html] ; ; bVisible=false" type="string" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html] ; ; bVisible=false" type="string" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html] ; ; bVisible=false" type="string" default="бланк ВПВР" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/_doc_justice_171_rkk1.html] ; ;bVisible=false" type="string" default="РКК1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/_doc_justice_171_dvs.html] ; ;bVisible=false" type="string" default="бланк ДВС" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/minust/_doc_justice_171_bankrut.html] ; ;bVisible=false" type="string" default="бланк відділу банкрутства" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/_doc_justice_171_dracs.html] ; ;bVisible=false" type="string" default="бланк ДРАЦС" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html] ; ;bVisible=false" type="string" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html] ; ;bVisible=false" type="string" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html] ; ;bVisible=false" type="string" default="бланк ВПВР" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
