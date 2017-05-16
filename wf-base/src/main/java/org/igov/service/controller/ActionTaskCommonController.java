@@ -1579,12 +1579,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (mJsonBody != null) {
             if (mJsonBody.containsKey("saField")) {
                 saField = (String) mJsonBody.get("saField");
+                LOG.info("<<<<<<<<<<<<<<<<<<<<saField", saField );
             }
             if (mJsonBody.containsKey("soParams")) {
                 soParams = (String) mJsonBody.get("soParams");
+                LOG.info("<<<<<<<<<<<<<<<<<<<soParams",soParams);
             }
             if (mJsonBody.containsKey("sBody")) {
                 sBody = (String) mJsonBody.get("sBody");
+                LOG.info("<<<<<<<<<<<<<<<<<<sBody", sBody);
             }
         }
 
@@ -1612,6 +1615,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     saField,
                     "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sBody), sToken, null, sSubjectInfo, nID_Subject);//sO(sBody))
             LOG.info("(sReturn={})", sReturn);
+            LOG.info("sID_Order=", sID_Order);
+            LOG.info("(saField={})", saField);
+           
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042
             oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sO(sBody), sMail, sToken, nID_Process, saField, soParams);
@@ -1622,7 +1628,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     HttpStatus.FORBIDDEN);
         }
     }
-
     @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  ActionCommonTaskController: Вызов сервиса ответа по полям требующим уточнения #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n\n"
             + "- обновляет поля формы указанного процесса значениями, переданными в параметре saField Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable=\"false\"\n\n"
