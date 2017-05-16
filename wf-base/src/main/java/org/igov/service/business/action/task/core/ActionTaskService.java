@@ -1119,6 +1119,8 @@ public class ActionTaskService {
             }
 
             Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
+            LOG.info("getBusinessProcessesFieldsOfLogin: Collection<FlowElement> elements = {} for oProcessDefinition = {}", elements, oProcessDefinition.getId());
+            
             for (FlowElement flowElement : elements) {
                 if (flowElement instanceof UserTask) {
                     LOG.debug("Processing user task with ID {} name {} ", flowElement.getId(), flowElement.getName());
@@ -1171,7 +1173,7 @@ public class ActionTaskService {
                     sb.append(oGroup.getId());
                     sb.append(",");
                 }
-                LOG.debug("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
+                LOG.info("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
             }
             
             LOG.debug("Found {} active process definitions", aProcessDefinition.size());
@@ -1186,7 +1188,7 @@ public class ActionTaskService {
                     Set<String> aCandidateCroupsToCheck = getGroupsOfProcessTask(oProcessDefinition);
 
                     loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
-
+                    LOG.info("aCandidateCroupsToCheck = {}", aCandidateCroupsToCheck);
                     for (Group oGroup : aGroup) {
                         for (String sProcessGroupMask : aCandidateCroupsToCheck) {//asProcessGroupMask
                             if (sProcessGroupMask.contains("${")) {
