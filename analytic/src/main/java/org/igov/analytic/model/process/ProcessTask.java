@@ -69,16 +69,16 @@ public class ProcessTask extends AbstractEntity {
     @ManyToMany(targetEntity = AccessGroup.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "AccessGroup_ProcessTask",
-            joinColumns = @JoinColumn(name = "nID_AccessGroup"),
-            inverseJoinColumns = @JoinColumn(name = "nID_ProcessTask"))
+            joinColumns = @JoinColumn(name = "nID_ProcessTask"),
+            inverseJoinColumns = @JoinColumn(name = "nID_AccessGroup"))
     private Set<AccessGroup> aAccessGroup = new HashSet<>();
 
     @JsonProperty(value = "aAccessUser")
     @ManyToMany(targetEntity = AccessUser.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "AccessUser_ProcessTask",
-            joinColumns = @JoinColumn(name = "nID_AccessUser"),
-            inverseJoinColumns = @JoinColumn(name = "nID_ProcessTask"))
+            joinColumns = @JoinColumn(name = "nID_ProcessTask"),
+            inverseJoinColumns = @JoinColumn(name = "nID_AccessUser"))
     private Set<AccessUser> aAccessUser = new HashSet<>();
 
     @JsonIgnore
