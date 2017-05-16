@@ -197,7 +197,7 @@ public class ActionEventHistoryService {
             oHistoryEvent_Service.setnID_ServiceData(nID_ServiceData);
             oHistoryEvent_Service.setsID_UA(sID_UA);
             oHistoryEvent_Service.setnRate(null);
-            oHistoryEvent_Service.setSoData(soData);
+          //  oHistoryEvent_Service.setSoData(soData);
             oHistoryEvent_Service.setsToken(sToken);
             oHistoryEvent_Service.setsHead(sHead);
             oHistoryEvent_Service.setsBody(sBody);
