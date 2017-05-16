@@ -2729,15 +2729,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             //String sID_Order = generalConfig.getOrderId_ByOrder(Long.parseLong(nID_Order));
             LOG.info("sID_Process_Activiti in deleteHistoricProcessInstance {}", sID_Process_Activiti);
             
-            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(sID_Process_Activiti).singleResult();
+            /*ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(sID_Process_Activiti).singleResult();
 
             if (processInstance != null) {
                 runtimeService.deleteProcessInstance(sID_Process_Activiti, "deleted");
-            }
+            }*/
         
-            historyService.deleteHistoricProcessInstance(sID_Process_Activiti);
+            //historyService.deleteHistoricProcessInstance(sID_Process_Activiti);
             
-            //oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
+            oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
         }
         catch (Exception ex){
             LOG.info("Error during order deliting: {}", ex);
