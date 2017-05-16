@@ -78,6 +78,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.activiti.engine.task.NativeTaskQuery;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
 
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.model.subject.SubjectRightBPDao;
@@ -85,6 +86,7 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
+import org.igov.util.ToolLuna;
 
 /**
  * @author BW
@@ -114,7 +116,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private FormService formService;
     @Autowired
     private RepositoryService repositoryService;
-
+    
+    @Autowired
+    private HistoryEvent_ServiceDao historyEventServiceDao;
+        
     @Autowired
     private IdentityService identityService;
 
@@ -2716,9 +2721,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "/deleteHistoricProcessInstance", notes = "##### Удалить закрытый процесс#####\n\n")
     @RequestMapping(value = "/deleteHistoricProcessInstance", method = RequestMethod.GET)
     public @ResponseBody
-    void deleteHistoricProcessInstance(@ApiParam(value = "ид бизнес-процесса", required = true) 
-    @RequestParam(value = "sID_Process_Activiti", required = true) String sID_Process_Activiti) {
-        oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
+    void deleteHistoricProcessInstance(@ApiParam(value = "номер заявки", required = true) 
+    @RequestParam(value = "nID_Order", required = true) String nID_Order) throws CRCInvalidException {
+        LOG.info("deleteHistoricProcessInstance started...");
+        try{
+            String sID_Process_Activiti = String.valueOf(ToolLuna.getValidatedOriginalNumber(Long.parseLong(nID_Order)));
+            //String sID_Order = generalConfig.getOrderId_ByOrder(Long.parseLong(nID_Order));
+            LOG.info("sID_Process_Activiti in deleteHistoricProcessInstance {}", sID_Process_Activiti);
+            runtimeService.deleteProcessInstance(sID_Process_Activiti, "deleted");
+            
+            historyService.deleteHistoricProcessInstance(sID_Process_Activiti);
+            
+            //oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
+        }
+        catch (Exception ex){
+            LOG.info("Error during order deliting: {}", ex);
+            throw new RuntimeException ("Error during order deliting: " + ex.getMessage());
+        }
     }
 
     @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")
