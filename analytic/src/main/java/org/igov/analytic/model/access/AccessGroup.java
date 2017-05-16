@@ -29,11 +29,11 @@ public class AccessGroup extends AbstractEntity {
     private String sID;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class, mappedBy = "aAccessGroup")
     private Set<ProcessTask> aProcessTask = new HashSet<>();
     
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Process.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Process.class, mappedBy = "aAccessGroup")
     private Set<Process> aProcess = new HashSet<>();
 
     public String getsID() {

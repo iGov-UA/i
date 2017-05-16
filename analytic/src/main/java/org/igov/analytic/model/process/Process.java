@@ -70,7 +70,7 @@ public class Process extends AbstractEntity{
     private List<ProcessTask> aProcessTask = new ArrayList<>();
     
     @JsonProperty(value = "aAccessGroup")
-    @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcess", cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity=AccessGroup.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "AccessGroup_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessGroup"),
@@ -78,7 +78,7 @@ public class Process extends AbstractEntity{
     private Set<AccessGroup> aAccessGroup = new HashSet<>();
     
     @JsonProperty(value = "aAccessUser")
-    @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcess", cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity=AccessUser.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "AccessUser_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_AccessUser"),

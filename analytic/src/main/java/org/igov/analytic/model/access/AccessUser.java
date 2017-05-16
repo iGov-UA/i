@@ -28,11 +28,11 @@ public class AccessUser extends AbstractEntity{
     private String sID;
     
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class, mappedBy = "aAccessUser")
     private Set<ProcessTask> aProcessTask = new HashSet<>();
     
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Process.class, mappedBy = "aAccessUser")
     private Set<Process> aProcess = new HashSet<>();
 
     public String getsID() {
