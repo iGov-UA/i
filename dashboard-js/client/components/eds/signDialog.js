@@ -31,6 +31,7 @@ angular.module('dashboardJsApp')
       var signModal = openModal(modalScope);
 
       signModal.result.then(function (signedContent) {
+        signService.saveSignedDocument(signedContent.sign);
         resultCallback(signedContent);
       }, function () {
         dismissCallback();

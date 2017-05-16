@@ -61,12 +61,8 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
                 scope.signedContent = {
                   signedContentName: "document" + new Date().getMilliseconds()
                 };
-                //console.log('SIGN!!! \n' + signedContent.sign);
-                var decodedSignedPDF = $base64.decode(signedContent.sign);
-                //var blob = new Blob([decodedSignedPDF], {type: 'application/pdf'});
                 var aFiles = [];
-                var file = new File([decodedSignedPDF], propertyId + ".pdf", {type: "application/pdf"});
-                //file.webkitRelativePath = (window.URL || window.webkitURL).createObjectURL(file);
+                var file = generationService.getSignedFile(signedContent.sign, propertyId);
                 aFiles.push(file);
                 scope.upload(aFiles, propertyId);
                 scope.isPrintFormNeverUploaded = false
@@ -93,10 +89,7 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
                 scope.signedContent = {
                   signedContentName: "document" + new Date().getMilliseconds()
                 };
-                console.log('SIGN!!! \n' + signedContent.sign);
-                var decodedSignedPDF = $base64.decode(signedContent.sign);
-                var blob = new Blob([decodedSignedPDF], {type: 'application/pdf'});
-                scope.signedContent.signedContentURL = (window.URL || window.webkitURL).createObjectURL(blob);
+                scope.signedContent.signedContentURL = generationService.getSignedFileLink(signedContent.sign);
               }, function () {
                 console.log('Sign Dismissed');
                 //todo dissmiss sign
