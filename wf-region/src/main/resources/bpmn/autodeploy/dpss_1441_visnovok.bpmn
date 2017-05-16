@@ -138,11 +138,11 @@
         <activiti:formProperty id="label_info_03" name=" ; ;labelType=info" type="label" default="Висновок державної санітарно-епідеміологічної експертизи (з накладанням ЕЦП) буде направлено Вам на ел.пошту, вказану в Заяві"></activiti:formProperty>
         <activiti:formProperty id="label_info_04" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надано в Держпродспожислужбі за адресою:  м. Київ, вул. Б.Грінченка, 1"></activiti:formProperty>
         <activiti:formProperty id="label_info_05" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надіслано Укрпоштою. Сплата послуги Укрпошти відбувається в момент отримання листа"></activiti:formProperty>
-        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="string"></activiti:formProperty>
         <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="User Task" activiti:candidateGroups="ASO">
+    <userTask id="usertask1" name="Попередній розгляд Інститутом" activiti:candidateGroups="ASO">
       <extensionElements>
         <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
@@ -159,7 +159,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="marker_03" name="Дані фіз.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_04" name="Дані юр.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код за ЄДРПОУ заявника експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код за ЄДРПОУ заявника експертизи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Заявник (власник); ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Податковий ідентифікаційний номер заявника експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
@@ -255,7 +255,7 @@
         <activiti:formProperty id="label_info_03" name=" ; ;labelType=info" type="label" default="Висновок державної санітарно-епідеміологічної експертизи (з накладанням ЕЦП) буде направлено Вам на ел.пошту, вказану в Заяві"></activiti:formProperty>
         <activiti:formProperty id="label_info_04" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надано в Держпродспожислужбі за адресою:  м. Київ, вул. Б.Грінченка, 1"></activiti:formProperty>
         <activiti:formProperty id="label_info_05" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надіслано Укрпоштою. Сплата послуги Укрпошти відбувається в момент отримання листа"></activiti:formProperty>
-        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dpss/dpss_1441_visnovok.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]; ;bVisible=false" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
