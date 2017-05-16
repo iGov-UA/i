@@ -2739,6 +2739,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery()
                 .processInstanceId(sID_Process_Activiti).singleResult();
             LOG.info("oHistoricProcessInstance id {}", oHistoricProcessInstance.getId());
+            historyService.deleteHistoricProcessInstance(oHistoricProcessInstance.getId());
             //oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
         }
         catch (Exception ex){
