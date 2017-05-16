@@ -142,9 +142,9 @@
         <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="User Task" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="User Task" activiti:candidateGroups="ASO">
       <extensionElements>
-      <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_07" name="Список технологія, діючий об'єкт тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" writable="false">
@@ -176,17 +176,17 @@
         <activiti:formProperty id="marker_12" name="Код за ДКПП наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_13" name="Код за УКТЗЕД наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_14" name="Артиул наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" writable="false" default="NO">
+        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=YES" type="enum" writable="false" default="NO">
+        <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" writable="false" default="NO">
+        <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
