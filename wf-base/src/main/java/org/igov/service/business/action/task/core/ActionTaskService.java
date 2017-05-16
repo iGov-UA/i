@@ -1176,11 +1176,12 @@ public class ActionTaskService {
                 LOG.info("getBusinessProcessesObjectsOfLogin: sID_BP = {}", sID_BP);
                 
                 if (sID_BP.startsWith(sProcessDefinitionId)) {
-                
+                    LOG.info("sID_BP.startsWith(sProcessDefinitionId) = {}", sProcessDefinitionId);
                     if (!bDocOnly || sID_BP.startsWith("_doc_")) {
                     Set<String> aCandidateCroupsToCheck = getGroupsOfProcessTask(oProcessDefinition);
-
+                    LOG.info("aCandidateCroupsToCheck1 = {}", aCandidateCroupsToCheck);
                     loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
+                    LOG.info("aCandidateCroupsToCheck2 = {}", aCandidateCroupsToCheck);
 
                     for (Group oGroup : aGroup) {
                         for (String sProcessGroupMask : aCandidateCroupsToCheck) {//asProcessGroupMask
