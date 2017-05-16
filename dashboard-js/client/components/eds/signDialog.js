@@ -39,7 +39,11 @@ angular.module('dashboardJsApp')
         var byteArray = new Uint8Array(byteNumbers);
         var blob = new Blob([byteArray], {type: 'application/pdf'});
         var url = (window.URL || window.webkitURL).createObjectURL(blob);
-        window.open(url, '_blank');
+        var link = document.createElement("a");
+        link.download = "document.pdf";
+        link.href = url;
+        link.click();
+        //window.open(url, '_blank');
         resultCallback(signedContent);
       }, function () {
         dismissCallback();
