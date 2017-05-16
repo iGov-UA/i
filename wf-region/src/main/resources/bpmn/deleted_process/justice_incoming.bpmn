@@ -26,7 +26,7 @@
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="ProcessCountTask" activiti:delegateExpression="#{ProcessCountTaskListener}"></serviceTask>
-    <userTask id="usertask1" name="реєстрація ініціативного листа" activiti:candidateGroups="justice_common">
+    <userTask id="usertask1" name="реєстрація ініціативного листа">
       <extensionElements>
         <activiti:formProperty id="asCategoryIncoming" name="Категорія вхідного документу" type="enum" writable="false">
           <activiti:value id="sEnumCentralGov" name="документ центральних органів влади"></activiti:value>
@@ -58,7 +58,6 @@
           <activiti:value id="sEnumNotUrgentDoc" name="без ЕЦП"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа" type="file"></activiti:formProperty>
-       
         <activiti:formProperty id="sTable2" name="Оберіть виконавця" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sFirstName_Executor&quot;,&quot;name&quot;:&quot;Исполнитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel&quot;,&quot;type&quot;:&quot;select&quot;,&quot;required&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLogin_Executor&quot;,&quot;name&quot;:&quot;Логин&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;bVisible&quot;:&quot;false&quot;},{&quot;id&quot;:&quot;sEmail_Executor&quot;,&quot;name&quot;:&quot;Email&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="sID_Group_Activiti; ;bVisible=false" type="string" default="MJU_Dnipro_Top1"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="nDeepLevel; ;bVisible=false" type="string" default="3"></activiti:formProperty>
@@ -72,16 +71,12 @@
           <activiti:value id="sEnumNotCreateOutcomingLetter" name="не треба формувати поки що"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2_yellow" name="формування вихідного листа" activiti:candidateGroups="justice_common">
+    <userTask id="usertask2_yellow" name="формування вихідного листа">
       <extensionElements>
-       <activiti:formProperty id="asCategoryIncoming" name="Категорія вхідного документу" type="enum" writable="false">
+        <activiti:formProperty id="asCategoryIncoming" name="Категорія вхідного документу" type="enum" writable="false">
           <activiti:value id="sEnumCentralGov" name="документ центральних органів влади"></activiti:value>
           <activiti:value id="sEnumActsRevision" name="акт ревізії"></activiti:value>
           <activiti:value id="sEnumLogisticalSupport" name="заявка на матеріально-технічне  забезпечення"></activiti:value>
