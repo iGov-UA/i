@@ -28,23 +28,22 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
  * @author olga
  */
-@javax.persistence.Entity
-public class ProcessTask extends AbstractEntity{
-    
+@Entity
+public class ProcessTask extends AbstractEntity {
+
     @JsonProperty(value = "sID_")
     @Column
     private String sID_;
-    
+
     @JsonProperty(value = "oDateStart")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
     private DateTime oDateStart;
-    
+
     @JsonProperty(value = "oDateFinish")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
@@ -54,25 +53,25 @@ public class ProcessTask extends AbstractEntity{
     
     /*@JsonProperty(value = "sID_Data")
     @Column
-    private String sID_Data;*/	
-    
+    private String sID_Data;*/
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
-    
+
     @JsonProperty(value = "aAttribute")
     @OneToMany(mappedBy = "oProcessTask", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Attribute> aAttribute = new ArrayList<>();
-    
+
     @JsonProperty(value = "aAccessGroup")
-    @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcessTask", cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = AccessGroup.class, mappedBy = "aProcessTask", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<AccessGroup> aAccessGroup = new HashSet<>();
-    
+
     @JsonProperty(value = "aAccessUser")
-    @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcessTask", cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = AccessUser.class, mappedBy = "aProcessTask", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<AccessUser> aAccessUser = new HashSet<>();
 
