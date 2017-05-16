@@ -1157,8 +1157,11 @@ public class ActionTaskService {
                 .createProcessDefinitionQuery()
                 .active()
                 .latestVersion().list();
+
         
-        List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
+             
+              List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
             if (aGroup != null && !aGroup.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 for (Group oGroup : aGroup) {
@@ -1167,40 +1170,6 @@ public class ActionTaskService {
                 }
                 LOG.debug("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
             }
-        
-        if (sProcessDefinitionId != null) {
-                        
-            for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
-            
-                String sID_BP = oProcessDefinition.getId();
-                LOG.info("getBusinessProcessesObjectsOfLogin: sID_BP = {}", sID_BP);
-                
-                if (sID_BP.startsWith(sProcessDefinitionId)) {
-                    LOG.info("sID_BP.startsWith(sProcessDefinitionId) = {}", sProcessDefinitionId);
-                    if (!bDocOnly || sID_BP.startsWith("_doc_")) {
-                    Set<String> aCandidateCroupsToCheck = getGroupsOfProcessTask(oProcessDefinition);
-                    LOG.info("aCandidateCroupsToCheck1 = {}", aCandidateCroupsToCheck);
-                    loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
-                    LOG.info("aCandidateCroupsToCheck2 = {}", aCandidateCroupsToCheck);
-
-                    for (Group oGroup : aGroup) {
-                        for (String sProcessGroupMask : aCandidateCroupsToCheck) {//asProcessGroupMask
-                            if (sProcessGroupMask.contains("${")) {
-                                sProcessGroupMask = sProcessGroupMask.replaceAll("\\$\\{?.*}", "(.*)");
-                            }
-                            if (!sProcessGroupMask.contains("*")) {
-                                if (oGroup.getId().matches(sProcessGroupMask)) {
-                                    //return true;
-                                    aProcessDefinition_Return.add(oProcessDefinition);
-                                    }
-                                }
-                            }
-                        }
-                    }   
-                }
-            }
-            
-        } else if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
             
             LOG.debug("Found {} active process definitions", aProcessDefinition.size());
 
