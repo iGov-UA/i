@@ -76,19 +76,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>msvidran@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Бронювання житлових приміщень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо бронювання житлових приміщень.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -105,16 +99,17 @@
           <activiti:string><![CDATA[Бронювання житлових приміщень.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо бронювання житлових приміщень було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+  <p>Ваше звернення щодо бронювання житлових приміщень було зареєстровано у системі.<br>
+</p>
+<br>
+${sPhoneOrgan}
+	[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}, ${sWorkTime} <br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
