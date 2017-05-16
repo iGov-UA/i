@@ -1104,7 +1104,8 @@ public class ActionTaskService {
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
-               
+        LOG.info("getBusinessProcessesFieldsOfLogin: aProcessDefinition_Return = {}", aProcessDefinition_Return);
+        
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
             StartFormData formData = oFormService.getStartFormData(oProcessDefinition.getId());
@@ -1158,10 +1159,12 @@ public class ActionTaskService {
                 .active()
                 .latestVersion().list();
 
+        LOG.info("getBusinessProcessesObjectsOfLogin: all active processes aProcessDefinition = {}", aProcessDefinition);
         
-         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
+        if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
              
-              List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+            List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
+            
             if (aGroup != null && !aGroup.isEmpty()) {
                 StringBuilder sb = new StringBuilder();
                 for (Group oGroup : aGroup) {
