@@ -180,6 +180,7 @@ public class ActionTaskService {
         }
         List<Map<String, String>> amReturn = new LinkedList();
         JSONObject oFields = new JSONObject("{ \"soData\":" + saField + "}");
+        LOG.info("<<<<<<<<<<<<<<saField {}", saField);
         JSONArray aField = oFields.getJSONArray("soData");
         if (aField.length() == 0) {
             throw new CommonServiceException(
@@ -187,6 +188,7 @@ public class ActionTaskService {
                     "Can't make task question with no fields! (saField=" + saField + ")",
                     HttpStatus.FORBIDDEN);
         }
+        LOG.info("saField {}", saField);
         for (int i = 0; i < aField.length(); i++) {
             JSONObject oField = aField.getJSONObject(i);
             Map<String, String> m = new HashMap();
@@ -1404,8 +1406,11 @@ public class ActionTaskService {
         Map<String, Object> mBody = new HashMap<>();
         Map<String, String> mParam = new HashMap<>();
         mParam.put("sID_Order", sID_Order);
+        LOG.info("sID_Order", sID_Order);
         mBody.put("soData", saField);
+        LOG.info("soData {}", saField);
         mBody.put("sBody", sBody);
+        LOG.info("sBody", sBody);
         mParam.put("sSubjectInfo", sSubjectInfo);
         if (nID_Subject != null) {
             mParam.put("nID_Subject", nID_Subject + "");
@@ -1415,6 +1420,7 @@ public class ActionTaskService {
         }
 
         mParam.put("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
+        LOG.info("nID_StatusType", oHistoryEvent_Service_StatusType.getnID() + "");
         mParam.put("sToken", sToken);
 LOG.info("mParam from ActionTaskService = {};", mParam);
 LOG.info("mBody from ActionTaskService = {};", mBody);
