@@ -7,12 +7,11 @@ package org.igov.analytic.model.access;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 
+import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
 
