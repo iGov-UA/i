@@ -2728,8 +2728,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String sID_Process_Activiti = String.valueOf(ToolLuna.getValidatedOriginalNumber(Long.parseLong(nID_Order)));
             //String sID_Order = generalConfig.getOrderId_ByOrder(Long.parseLong(nID_Order));
             LOG.info("sID_Process_Activiti in deleteHistoricProcessInstance {}", sID_Process_Activiti);
-            runtimeService.deleteProcessInstance(sID_Process_Activiti, "deleted");
             
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processSubject.getSnID_Process_Activiti()).singleResult();
+
+            if (processInstance != null) {
+                runtimeService.deleteProcessInstance(sID_Process_Activiti, "deleted");
+            }
+        
             historyService.deleteHistoricProcessInstance(sID_Process_Activiti);
             
             //oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
