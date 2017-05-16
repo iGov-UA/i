@@ -104,6 +104,7 @@ public class ActionTaskCentralController {
             Map<String, String> mParam = new HashMap<String, String>();
             mParam.put("nID_Process", processId);
             mParam.put("saField", saField);
+            LOG.info("saField ", saField);
             LOG.info(" mParam={} ", mParam);
             String sReturnRegion = httpRequester.getInside(sURL, mParam);
             LOG.info("(sReturnRegion={})", sReturnRegion);
