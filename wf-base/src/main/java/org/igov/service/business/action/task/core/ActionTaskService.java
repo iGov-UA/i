@@ -1720,13 +1720,13 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         Map<String, String> mParam = new HashMap<>();
         mParam.put("nID_StatusType", oStatusType.getnID() + "");
         mParam.put("sBody", sBody);
-        LOG.info("Deleting process {}: {}", nID_Process, statusType_Name);
+        LOG.info("Deleting process {}: {}", snID_Process, statusType_Name);
         oHistoryEventService.updateHistoryEvent(
                 sID_Order, statusType_Name, false, oStatusType, mParam);
         try {
-            oRuntimeService.deleteProcessInstance(nID_Process, sReason);
+            oRuntimeService.deleteProcessInstance(snID_Process, sReason);
         } catch (ActivitiObjectNotFoundException e) {
-            LOG.error("Could not find process {} to delete: {}", nID_Process, e);
+            LOG.error("Could not find process {} to delete: {}", snID_Process, e);
         }
         success = true;
         return success;
