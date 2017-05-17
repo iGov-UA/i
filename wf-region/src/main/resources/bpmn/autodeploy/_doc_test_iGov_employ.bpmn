@@ -42,7 +42,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
             <activiti:string><![CDATA[_default_Author]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -77,7 +77,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sName_SubjectRole" name="логін найманого працівника ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -86,16 +86,22 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <serviceTask id="servicetask1" name="Лист-погодження" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Вітаємо! Вашу кандидатуру підтверджено</activiti:expression>
+          <activiti:expression><![CDATA[Вітаємо! Вашу кандидатуру підтверджено]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Шановний колего!  Ваш логін ${sLogin}  та пароль ${sParol}. Будь ласка, перейдіть за посиланням для підтвердження: https://alpha.test.region.igov.org.ua/</activiti:expression>
+          <activiti:expression><![CDATA[Шановний колего!  Ваш логін ${sLogin}  та пароль ${sParol}. Будь ласка, перейдіть за посиланням для підтвердження: https://alpha.test.region.igov.org.ua/]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:string><![CDATA[+380961335385]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[вас прийнято]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -128,9 +134,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumYes" name="так"></activiti:value>
           <activiti:value id="sEnumNo" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/_doc_test_iGov_employ.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/_doc_test_iGov_employ.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
