@@ -2730,8 +2730,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         deleteProccess.closeProcess(sID_Process_Def);
     }
     
-    @ApiOperation(value = "/deleteHistoricProcessInstance", notes = "##### Удалить закрытый процесс#####\n\n")
-    @RequestMapping(value = "/deleteHistoricProcessInstance", method = RequestMethod.GET)
+    @ApiOperation(value = "/deleteHistoricProcessInstance", notes = "#####\n" +
+           "https://alpha.test.region.igov.org.ua/wf/service/action/task/deleteHistoricProcessInstance?nID_Order=335750019 \n"
+            + " Удалить закрытый процесс#####\n\n")
+    @RequestMapping(value = "/deleteHistoricProcessInstance", method = RequestMethod.DELETE)
     public @ResponseBody
     void deleteHistoricProcessInstance(@ApiParam(value = "номер заявки", required = true) 
     @RequestParam(value = "nID_Order", required = true) String nID_Order) throws CRCInvalidException {
