@@ -7,6 +7,7 @@ package org.igov.analytic.model.access;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,11 +19,10 @@ import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
 
 /**
- *
  * @author olga
  */
 @Entity
-public class AccessGroup extends AbstractEntity {
+public class AccessGroup extends AbstractEntity{
 
     @JsonProperty(value = "sID")
     @Column
@@ -31,7 +31,7 @@ public class AccessGroup extends AbstractEntity {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class, mappedBy = "aAccessGroup")
     private Set<ProcessTask> aProcessTask = new HashSet<>();
-    
+
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Process.class, mappedBy = "aAccessGroup")
     private Set<Process> aProcess = new HashSet<>();

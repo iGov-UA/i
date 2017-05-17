@@ -26,59 +26,58 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
- *
  * @author olga
  */
 @javax.persistence.Entity
-public class Process extends AbstractEntity{
-    
+public class Process extends AbstractEntity {
+
     @JsonProperty(value = "sID_")
     @Column
     private String sID_;
-    
+
     @JsonProperty(value = "oSourceDB")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_SourceDB")
     private SourceDB oSourceDB;
-    
+
     @JsonProperty(value = "oDateStart")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
     private DateTime oDateStart;
-    
+
     @JsonProperty(value = "oDateFinish")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
     private DateTime oDateFinish;
-    
+
     @JsonProperty(value = "sID_Data")
     @Column
     private String sID_Data;
-    
+
     @JsonProperty(value = "aAttribute")
     @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Attribute> aAttribute = new ArrayList<>();
-    
+
     @JsonProperty(value = "aProcessTask")
     @OneToMany(mappedBy = "oProcess", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<ProcessTask> aProcessTask = new ArrayList<>();
-    
+
     @JsonProperty(value = "aAccessGroup")
-    @ManyToMany(targetEntity=AccessGroup.class, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = AccessGroup.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "AccessGroup_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_Process"),
             inverseJoinColumns = @JoinColumn(name = "nID_AccessGroup"))
     private Set<AccessGroup> aAccessGroup = new HashSet<>();
-    
+
     @JsonProperty(value = "aAccessUser")
-    @ManyToMany(targetEntity=AccessUser.class, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = AccessUser.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "AccessUser_ProcessTask",
             joinColumns = @JoinColumn(name = "nID_Process"),
