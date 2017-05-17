@@ -49,7 +49,7 @@ public class ActionTaskCentralController {
     private HistoryEvent_ServiceDao historyEventServiceDao;
 
     @ApiOperation(value = "/setTaskAnswer_Central", notes = "Нет описания")
-    @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
+    @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.POST)
     public @ResponseBody
     void setTaskAnswer(
             @ApiParam(value = "строка-ид заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
@@ -101,16 +101,17 @@ public class ActionTaskCentralController {
             String sURL = sHost + "/service/action/task/setTaskAnswer";
             String processId = String.valueOf(oHistoryEvent_Service.getnID_Process());
             LOG.info("sURL={}", sURL);
-            Map<String, String> mParam = new HashMap<String, String>();
+            Map<String, Object> mParam = new HashMap<>();
             mParam.put("nID_Process", processId);
             mParam.put("saField", saField);
             LOG.info("saField ", saField);
             LOG.info(" mParam={} ", mParam);
-            String sReturnRegion = httpRequester.getInside(sURL, mParam);
+            String sReturnRegion = httpRequester.postInside(sURL, mParam);
+            
             LOG.info("(sReturnRegion={})", sReturnRegion);
 
             String mergeUrl = sHost + "/service/action/task/mergeVariable";
-            Map<String, String> mergeParams = new HashMap<String, String>();
+            Map<String, String> mergeParams = new HashMap<>();
             mergeParams.put("processInstanceId", processId);
             mergeParams.put("key", "saTaskStatus");
             mergeParams.put("insertValues", "GotAnswer");
