@@ -11,7 +11,7 @@
       <button ng-if="!signedContent" ng-click='signWithEDS()' class='btn btn-igov'>Підписати</button>
       <a ng-if="signedContent" download="{{ signedContent.signedContentName }}.pdf" ng-href="{{ signedContent.signedContentURL }}" class='btn btn-igov'>Скачати документ</a>
     </div>
-    <div class='ng-modal-dialog-print-button'>
+    <div class='ng-modal-dialog-print-button' ng-if="$parent.$root.config.bTest">
       <button ng-if="showSignAndUploadButton() && isPrintFormNeverUploaded" ng-click='signAndUpload(printFormLinkedToFileField)' class='btn btn-igov'>Підписати та надіслати</button>
     </div>
     <div class='ng-modal-dialog-print-button'>
