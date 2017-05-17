@@ -136,7 +136,7 @@ module.exports.setTaskAnswer = function(req, res) {
       },
       'qs': oDataNew,
       'headers': {
-        'Content-Type': 'application/json; charset=utf-8'
+        'Content-Type': 'text/html;charset=utf-8'
       },
       'body': JSON.stringify(req.body)
     }, callback);

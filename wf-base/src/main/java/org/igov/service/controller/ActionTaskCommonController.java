@@ -1669,7 +1669,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             } catch (UnsupportedEncodingException e){
                 decoded = sJson;
             }
-            mJsonBody = JsonRestUtils.readObject(decoded, Map.class);
+            mJsonBody = (Map<String, Object>) JSONValue.parse(decoded);
         } catch (Exception e) {
             throw new IllegalArgumentException("Error parse JSON smData: " + e.getMessage());
         }
