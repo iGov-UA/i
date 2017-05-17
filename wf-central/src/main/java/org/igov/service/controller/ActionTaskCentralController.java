@@ -121,6 +121,7 @@ public class ActionTaskCentralController {
             }
             String sURL = sHost + "/service/action/task/setTaskAnswer";
             String processId = String.valueOf(oHistoryEvent_Service.getnID_Process());
+            sURL=sURL + "?nID_Process=" + processId;
             LOG.info("sURL={}", sURL);
             Map<String, Object> mParam = new HashMap<>();
             mParam.put("nID_Process", processId);
@@ -128,7 +129,7 @@ public class ActionTaskCentralController {
             LOG.info("saField ", saField);
             LOG.info(" mParam={} ", mParam);
             String json = JSONValue.toJSONString(mParam);
-            String reqBody = URLEncoder.encode(json, "UTF-8");
+            String reqBody = URLEncoder.encode(saField, "UTF-8");
             String sReturnRegion = httpRequester.postInside(sURL, null, reqBody, null);
             
             LOG.info("(sReturnRegion={})", sReturnRegion);
