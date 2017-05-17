@@ -20,7 +20,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявки на перевезення (підкріплення) готівкових цінностей для відділень м. Києва та Київської області" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума готівки" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="Валюта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Номер та адреса відділення відправника" type="string" required="true"></activiti:formProperty>
@@ -32,8 +32,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ);" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
@@ -63,7 +61,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявки на перевезення (підкріплення) готівкових цінностей для відділень м. Києва та Київської області" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума готівки" type="long"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="Валюта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Номер та адреса відділення відправника" type="string"></activiti:formProperty>
@@ -71,8 +69,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="nInterestRate" name="Відсоткова ставка" type="long"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
@@ -121,7 +117,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявка на перевезення (вивіз) готівкових цінностей для відділень м.Києва та Київської області" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Заявки на перевезення (підкріплення) готівкових цінностей для відділень м. Києва та Київської області" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума готівки" type="long"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="Валюта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Номер та адреса відділення відправника" type="string"></activiti:formProperty>
@@ -129,8 +125,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="nInterestRate" name="Відсоткова ставка" type="long"></activiti:formProperty>
         <activiti:formProperty id="sInfo" name="Додаткова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_cash_support_akordbank.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sEncashment" name="Служба інкасації (ФГС/ДПСЗ)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата доставки готівкових цінностей отримувачем" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
@@ -154,7 +148,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Заявку на перевезення (вивіз) готівкових цінностей погодженно]]></activiti:expression>
+          <activiti:expression><![CDATA[Заявку на перевезення (підкіплення) готівкових цінностей погодженно]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:string><![CDATA[+380961335385]]></activiti:string>
