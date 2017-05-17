@@ -1694,12 +1694,18 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     }
 
     public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception {
+        String snID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
+        return deleteProcess(snID_Process, sLogin, sReason);
+    }
+    
+    public boolean deleteProcess(String snID_Process, String sLogin, String sReason) throws Exception {
         boolean success;
-        String nID_Process;
+        //String nID_Process;
         
-        nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
+        //nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
 
-        String sID_Order = oGeneralConfig.getOrderId_ByOrder(nID_Order);
+        //String sID_Order = oGeneralConfig.getOrderId_ByOrder(nID_Order);
+        String sID_Order = oGeneralConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
 
         HistoryEvent_Service_StatusType oStatusType = HistoryEvent_Service_StatusType.REMOVED;
         String statusType_Name = oStatusType.getsName_UA();
@@ -1724,7 +1730,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         }
         success = true;
         return success;
-    }
+    }    
+    
 
     public boolean deleteProcessSimple(String snID_Process, String sLogin, String sReason) throws Exception {
         boolean bOk = false;

@@ -934,12 +934,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "DeleteProcess", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
     @RequestMapping(value = "/delete-process", method = RequestMethod.DELETE)
     public @ResponseBody
-    void deleteProcess(@RequestParam(value = "nID_Order") Long nID_Order,
+    void deleteProcess(@RequestParam(value = "nID_Order", required = false) Long nID_Order,
+            @RequestParam(value = "nID_Process", required = false) String snID_Process,
             @RequestParam(value = "sLogin", required = false) String sLogin,
             @RequestParam(value = "sReason", required = false) String sReason)
             throws Exception {
         //Вызывать сервис централа и апдейтить в истории статус на 8 (закрыт)
-        oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
+        if(snID_Process!=null){
+            oActionTaskService.deleteProcess(snID_Process, sLogin, sReason);
+        }else{
+            oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
+        }
     }
 
     @ApiOperation(value = "DeleteProcess", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
