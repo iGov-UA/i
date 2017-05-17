@@ -1645,9 +1645,27 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.POST)
     public @ResponseBody
     void setTaskAnswer_Region(
-            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
-            @ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField
+            //@ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
+            //@ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
+            @RequestBody String sJson
     ) throws CommonServiceException {
+        Long nID_Process = 0L;
+        String saField = "";
+        Map<String, Object> mJsonBody;
+        try {
+            mJsonBody = JsonRestUtils.readObject(sJson, Map.class);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error parse JSON smData: " + e.getMessage());
+        }
+
+        if(mJsonBody != null){
+            if (mJsonBody.containsKey("saField")){
+                saField = (String) mJsonBody.get("saField");
+            }
+            if (mJsonBody.containsKey("nID_Process")){
+                nID_Process = (Long) mJsonBody.get("nID_Process");
+            }
+        }
 
         try {
             

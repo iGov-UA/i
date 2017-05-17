@@ -12,16 +12,14 @@ import org.igov.model.subject.ServerDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.JSON.JsonRestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,13 +51,34 @@ public class ActionTaskCentralController {
     public @ResponseBody
     void setTaskAnswer(
             @ApiParam(value = "строка-ид заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
-            @ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField", required = true) String saField,
+            //@ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField", required = true) String saField,
             @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required  = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "булевый флаг. Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
-            @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody
+            @RequestBody String sJson
+            //@ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody
         ) throws CommonServiceException {
+
+        String sBody = "";
+        String saField = "";
+
+        Map<String, String> mJsonBody;
+        try {
+            mJsonBody = JsonRestUtils.readObject(sJson, Map.class);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error parse JSON smData: " + e.getMessage());
+        }
+
+        if(mJsonBody != null){
+            if (mJsonBody.containsKey("saField")){
+                saField = (String) mJsonBody.get("saField");
+            }
+            if (mJsonBody.containsKey("sBody")){
+                sBody = (String) mJsonBody.get("sBody");
+            }
+        }
+
 
         try {
             LOG.info("/setTaskAnswer_Central started");
@@ -106,8 +125,8 @@ public class ActionTaskCentralController {
             mParam.put("saField", saField);
             LOG.info("saField ", saField);
             LOG.info(" mParam={} ", mParam);
-            String sReturnRegion = httpRequester.postInside(sURL, mParam);
-
+            String sReturnRegion = httpRequester.postInside(sURL, null, JsonRestUtils.toJson(mParam), "text/html; charset=utf-8");
+            
             LOG.info("(sReturnRegion={})", sReturnRegion);
 
             String mergeUrl = sHost + "/service/action/task/mergeVariable";
