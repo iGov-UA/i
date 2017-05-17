@@ -1655,12 +1655,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.POST)
     public @ResponseBody
     void setTaskAnswer_Region(
-            //@ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             //@ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
-            @RequestBody String sJson
+            @RequestBody String saField
     ) throws CommonServiceException {
-        Long nID_Process = 0L;
-        String saField = "";
+        //Long nID_Process = 0L;
+        //String saField = "";
+        /*
         Map<String, Object> mJsonBody;
         try {
             String decoded = "";
@@ -1682,6 +1683,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 nID_Process = (Long) mJsonBody.get("nID_Process");
             }
         }
+*/
+        try {
+            saField = URLDecoder.decode(saField, "UTF-8");
+        } catch (UnsupportedEncodingException e){
+            saField = saField;
+        }
+        LOG.info("Start setTaskAnswer whith param nID_Process=" + nID_Process + " and body string saField=" + saField);
 
         try {
             
