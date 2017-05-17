@@ -16,6 +16,7 @@
 
     envConfigService.loadConfig(function (config) {
       iGovNavbarHelper.isTest = config.bTest;
+      $rootScope.config = config;
     });
 
     $scope.isAdmin = Auth.isAdmin;
