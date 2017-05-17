@@ -8,7 +8,7 @@
           <activiti:value id="sEnamRishNo" name="Ні, рішення необхідно отримати"></activiti:value>
           <activiti:value id="sEnamRishYes" name="Рішеня вже прийнято"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sLabeRishNo" name=" ; ;labelType=info" type="label" default="Заявка буде передана до організаційного відділу для винесення питання на сесію, після цього вас будеповідомлено про подальші дії"></activiti:formProperty>
+        <activiti:formProperty id="sLabeRishNo" name=" ; ;labelType=info" type="label" default="Заявка буде передана до організаційного відділу для винесення питання на сесію, після цього вас буде повідомлено про подальші дії"></activiti:formProperty>
         <activiti:formProperty id="sLabeRishYes" name=" ; ;labelType=info" type="label" default="Заявка буде передана до відділу земельних відносин та архітектури для внесення змін в договір"></activiti:formProperty>
         <activiti:formProperty id="markerRish" name="markers" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/Zem1481Rish.json')}"></activiti:formProperty>
         
@@ -151,7 +151,7 @@ ${sPhoneOrgan}.&lt;br /&gt;
     </sequenceFlow>
     <userTask id="usertask1" name="ЦНАП перевірка" activiti:candidateGroups="test_Orenda_SD">
       <extensionElements>
-        <activiti:formProperty id="asRish" name="Чи прийнято рішення радою про внесення змін до договору" type="enum" required="true">
+        <activiti:formProperty id="asRish" name="Чи прийнято рішення радою про внесення змін до договору" type="enum" writable="false">
           <activiti:value id="sEnamRishNo" name="Ні, рішення необхідно отримати"></activiti:value>
           <activiti:value id="sEnamRishYes" name="Рішеня вже прийнято"></activiti:value>
         </activiti:formProperty>
@@ -161,7 +161,7 @@ ${sPhoneOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Код ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/Osoba_OpenData_DovPaspIpnStatutFiles.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFizO" name="Фізична особа (особисто)"></activiti:value>
           <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
           <activiti:value id="sEnamUrK" name="Юридична особа (керівник)"></activiti:value>
@@ -301,7 +301,7 @@ ${sNameOrgan}.&lt;br /&gt;
     </serviceTask>
     <userTask id="usertask2" name="Земельний відділ, до рішення" activiti:candidateGroups="test_Orenda_SD">
       <extensionElements>
-        <activiti:formProperty id="asRish" name="Чи прийнято вже рішення" type="enum" required="true">
+        <activiti:formProperty id="asRish" name="Чи прийнято вже рішення" type="enum" writable="false">
           <activiti:value id="sEnamRishNo" name="Ні, рішення необхідно отримати"></activiti:value>
           <activiti:value id="sEnamRishYes" name="Рішеня вже прийнято"></activiti:value>
         </activiti:formProperty>
@@ -311,7 +311,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Код ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/Osoba_OpenData_DovPaspIpnStatutFiles.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFizO" name="Фізична особа (особисто)"></activiti:value>
           <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
           <activiti:value id="sEnamUrK" name="Юридична особа (керівник)"></activiti:value>
@@ -458,7 +458,7 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow13" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask3" name="Оганізаційний відділ" activiti:candidateGroups="test_Orenda_SD">
       <extensionElements>
-        <activiti:formProperty id="asRish" name="Чи прийнято вже рішення" type="enum" required="true">
+        <activiti:formProperty id="asRish" name="Чи прийнято вже рішення" type="enum" writable="false">
           <activiti:value id="sEnamRishNo" name="Ні, рішення необхідно отримати"></activiti:value>
           <activiti:value id="sEnamRishYes" name="Рішеня вже прийнято"></activiti:value>
         </activiti:formProperty>
@@ -468,7 +468,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Код ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/Osoba_OpenData_DovPaspIpnStatutFiles.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFizO" name="Фізична особа (особисто)"></activiti:value>
           <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
           <activiti:value id="sEnamUrK" name="Юридична особа (керівник)"></activiti:value>
@@ -623,7 +623,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Код ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/Osoba_OpenData_DovPaspIpnStatutFiles.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFizO" name="Фізична особа (особисто)"></activiti:value>
           <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
           <activiti:value id="sEnamUrK" name="Юридична особа (керівник)"></activiti:value>
@@ -659,7 +659,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="tZminu" name="Які зміни внести; ;writable=false" type="textArea"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_3" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;nFile_Dogovir&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="nFile_RishRada" name="Рішення Ради; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_RishRada" name="Рішення Ради; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dogovir" name="Договір оренди землі;(якщо файлів кілька завантажте ZIP архівом) ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="chekDopDog" name="Чи є додаткові угоди до договору оренди?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -794,7 +794,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Код ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/Osoba_OpenData_DovPaspIpnStatutFiles.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFizO" name="Фізична особа (особисто)"></activiti:value>
           <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
           <activiti:value id="sEnamUrK" name="Юридична особа (керівник)"></activiti:value>
@@ -905,7 +905,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Код ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/Osoba_OpenData_DovPaspIpnStatutFiles.json')}"></activiti:formProperty>
-        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFizO" name="Фізична особа (особисто)"></activiti:value>
           <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
           <activiti:value id="sEnamUrK" name="Юридична особа (керівник)"></activiti:value>
