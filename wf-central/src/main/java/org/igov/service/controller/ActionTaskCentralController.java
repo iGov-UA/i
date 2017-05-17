@@ -53,13 +53,11 @@ public class ActionTaskCentralController {
     public @ResponseBody
     void setTaskAnswer(
             @ApiParam(value = "строка-ид заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
-            //@ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField", required = true) String saField,
             @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required  = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "булевый флаг. Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
-            @RequestBody String sJson
-            //@ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody
+            @ApiParam(value = "JSON с параметрами: sBody - строка тела сообщения; saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestBody String sJson
         ) throws CommonServiceException {
 
         String sBody = "";
@@ -80,7 +78,6 @@ public class ActionTaskCentralController {
                 sBody = (String) mJsonBody.get("sBody");
             }
         }
-
 
         try {
             LOG.info("/setTaskAnswer_Central started");
@@ -121,14 +118,10 @@ public class ActionTaskCentralController {
             }
             String sURL = sHost + "/service/action/task/setTaskAnswer";
             String processId = String.valueOf(oHistoryEvent_Service.getnID_Process());
+            sURL=sURL + "?nID_Process=" + processId;
             LOG.info("sURL={}", sURL);
-            Map<String, Object> mParam = new HashMap<>();
-            mParam.put("nID_Process", processId);
-            mParam.put("saField", saField);
             LOG.info("saField ", saField);
-            LOG.info(" mParam={} ", mParam);
-            String json = JSONValue.toJSONString(mParam);
-            String reqBody = URLEncoder.encode(json, "UTF-8");
+            String reqBody = URLEncoder.encode(saField, "UTF-8");
             String sReturnRegion = httpRequester.postInside(sURL, null, reqBody, null);
             
             LOG.info("(sReturnRegion={})", sReturnRegion);
