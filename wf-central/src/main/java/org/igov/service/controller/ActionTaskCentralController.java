@@ -13,6 +13,7 @@ import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import org.igov.io.GeneralConfig;
@@ -125,7 +127,9 @@ public class ActionTaskCentralController {
             mParam.put("saField", saField);
             LOG.info("saField ", saField);
             LOG.info(" mParam={} ", mParam);
-            String sReturnRegion = httpRequester.postInside(sURL, null, JsonRestUtils.toJson(mParam), "text/html; charset=utf-8");
+            String json = JSONValue.toJSONString(mParam);
+            String reqBody = URLEncoder.encode(json, "UTF-8");
+            String sReturnRegion = httpRequester.postInside(sURL, null, reqBody, "application/json;charset=utf-8");
             
             LOG.info("(sReturnRegion={})", sReturnRegion);
 

@@ -135,6 +135,9 @@ module.exports.setTaskAnswer = function(req, res) {
         'password': options.password
       },
       'qs': oDataNew,
+      'headers': {
+        'Content-Type': 'application/json; charset=utf-8'
+      },
       'body': JSON.stringify(req.body)
     }, callback);
   //}
