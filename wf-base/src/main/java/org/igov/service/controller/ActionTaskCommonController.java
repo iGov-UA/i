@@ -1628,7 +1628,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "- Обновляет в сущности HistoryEvent_Service поле soData значением из saField и поле sToken значением null.\n"
             + "- Сохраняет информацию о действии в Мой Журнал (Текст: На заявку №____ дан ответ гражданином: [sBody])\n\n"
             + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=54352839&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
+            + "в body передаем строку: \"[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]\"\n\n"
             + "Ответы: Пустой ответ в случае успешного обновления\n\n"
             + "Токен отсутствует\n\n"
             + "\n```json\n"
@@ -1642,12 +1643,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```json\n"
             + "{\"code\":\"BUSINESS_ERR\",\"message\":\"form property 'bankIdinn' is not writable\"}\n"
             + "\n```\n")
-    @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.GET)
+    @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.POST)
     public @ResponseBody
     void setTaskAnswer_Region(
-            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
-            @ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField
+            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @ApiParam(value = "saField - строка-массива полей", required = true) @RequestBody String saField
     ) throws CommonServiceException {
+
+        try {
+            saField = URLDecoder.decode(saField, "UTF-8");
+        } catch (UnsupportedEncodingException e){
+            saField = saField;
+        }
+        LOG.info("Start setTaskAnswer whith param nID_Process=" + nID_Process + " and body string saField=" + saField);
 
         try {
             
@@ -1656,7 +1664,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             List<Task> aTask = taskService.createTaskQuery().processInstanceId(nID_Process + "").list();
 
             for (Task oTask : aTask) {
-                //LOG.info("oTask: (getName()={},getDescription()={},getId()={})", oTask.getName(), oTask.getDescription(), oTask.getId());
                 TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
                 Map<String, String> mField = new HashMap<>();
                 for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
