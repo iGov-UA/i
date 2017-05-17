@@ -129,7 +129,7 @@ public class ActionTaskCentralController {
             LOG.info(" mParam={} ", mParam);
             String json = JSONValue.toJSONString(mParam);
             String reqBody = URLEncoder.encode(json, "UTF-8");
-            String sReturnRegion = httpRequester.postInside(sURL, null, reqBody, "application/json;charset=utf-8");
+            String sReturnRegion = httpRequester.postInside(sURL, null, reqBody, null);
             
             LOG.info("(sReturnRegion={})", sReturnRegion);
 
