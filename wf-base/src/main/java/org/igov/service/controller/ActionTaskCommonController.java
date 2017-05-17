@@ -78,6 +78,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.activiti.engine.task.NativeTaskQuery;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
 
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.model.subject.SubjectRightBPDao;
@@ -85,6 +86,7 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
+import org.igov.util.ToolLuna;
 
 /**
  * @author BW
@@ -114,7 +116,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private FormService formService;
     @Autowired
     private RepositoryService repositoryService;
-
+    
+    @Autowired
+    private HistoryEvent_ServiceDao historyEventServiceDao;
+        
     @Autowired
     private IdentityService identityService;
 
@@ -1574,12 +1579,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (mJsonBody != null) {
             if (mJsonBody.containsKey("saField")) {
                 saField = (String) mJsonBody.get("saField");
+                LOG.info("<<<<<<<<<<<<<<<<<<<<saField", saField );
             }
             if (mJsonBody.containsKey("soParams")) {
                 soParams = (String) mJsonBody.get("soParams");
+                LOG.info("<<<<<<<<<<<<<<<<<<<soParams",soParams);
             }
             if (mJsonBody.containsKey("sBody")) {
                 sBody = (String) mJsonBody.get("sBody");
+                LOG.info("<<<<<<<<<<<<<<<<<<sBody", sBody);
             }
         }
 
@@ -1607,6 +1615,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     saField,
                     "Необхідно уточнити дані" + (sBody == null ? "" : ", за коментарем: " + sBody), sToken, null, sSubjectInfo, nID_Subject);//sO(sBody))
             LOG.info("(sReturn={})", sReturn);
+            LOG.info("sID_Order=", sID_Order);
+            LOG.info("(saField={})", saField);
+           
             //oActionTaskService.setInfo_ToActiviti("" + nID_Process, saField, sBody);
             //createSetTaskQuestionsMessage(sID_Order, sO(sBody), saField);//issue 1042
             oNotificationPatterns.sendTaskEmployeeQuestionEmail(sHead, sO(sBody), sMail, sToken, nID_Process, saField, soParams);
@@ -1617,7 +1628,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     HttpStatus.FORBIDDEN);
         }
     }
-
     @ApiOperation(value = "Вызов сервиса ответа по полям требующим уточнения", notes = "#####  ActionCommonTaskController: Вызов сервиса ответа по полям требующим уточнения #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=nID_Protected&saField=saField&sToken=sToken&sBody=sBody\n\n\n"
             + "- обновляет поля формы указанного процесса значениями, переданными в параметре saField Важно:позволяет обновлять только те поля, для которых в форме бизнес процесса не стоит атрибут writable=\"false\"\n\n"
@@ -1642,12 +1652,36 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```json\n"
             + "{\"code\":\"BUSINESS_ERR\",\"message\":\"form property 'bankIdinn' is not writable\"}\n"
             + "\n```\n")
-    @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.GET)
+    @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.POST)
     public @ResponseBody
     void setTaskAnswer_Region(
-            @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
-            @ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField
+            //@ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
+            //@ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
+            @RequestBody String sJson
     ) throws CommonServiceException {
+        Long nID_Process = 0L;
+        String saField = "";
+        Map<String, Object> mJsonBody;
+        try {
+            String decoded = "";
+            try {
+                decoded = URLDecoder.decode(sJson, "UTF-8");
+            } catch (UnsupportedEncodingException e){
+                decoded = sJson;
+            }
+            mJsonBody = (Map<String, Object>) JSONValue.parse(decoded);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error parse JSON smData: " + e.getMessage());
+        }
+
+        if(mJsonBody != null){
+            if (mJsonBody.containsKey("saField")){
+                saField = (String) mJsonBody.get("saField");
+            }
+            if (mJsonBody.containsKey("nID_Process")){
+                nID_Process = (Long) mJsonBody.get("nID_Process");
+            }
+        }
 
         try {
             
@@ -2716,9 +2750,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "/deleteHistoricProcessInstance", notes = "##### Удалить закрытый процесс#####\n\n")
     @RequestMapping(value = "/deleteHistoricProcessInstance", method = RequestMethod.GET)
     public @ResponseBody
-    void deleteHistoricProcessInstance(@ApiParam(value = "ид бизнес-процесса", required = true) 
-    @RequestParam(value = "sID_Process_Activiti", required = true) String sID_Process_Activiti) {
-        oActionTaskService.deleteHistoricProcessInstance(sID_Process_Activiti);
+    void deleteHistoricProcessInstance(@ApiParam(value = "номер заявки", required = true) 
+    @RequestParam(value = "nID_Order", required = true) String nID_Order) throws CRCInvalidException {
+        LOG.info("deleteHistoricProcessInstance started...");
+        try{
+            String sID_Process_Activiti = String.valueOf(ToolLuna.getValidatedOriginalNumber(Long.parseLong(nID_Order)));
+            LOG.info("sID_Process_Activiti in deleteHistoricProcessInstance {}", sID_Process_Activiti);
+            
+            if(runtimeService.createProcessInstanceQuery().processInstanceId(sID_Process_Activiti)
+                    .active().singleResult() != null){
+                runtimeService.deleteProcessInstance(sID_Process_Activiti, "deleted");
+            }
+            HistoricProcessInstance oHistoricProcessInstance = historyService.createHistoricProcessInstanceQuery()
+                .processInstanceId(sID_Process_Activiti).singleResult();
+            LOG.info("oHistoricProcessInstance id {}", oHistoricProcessInstance.getId());
+            
+            historyService.deleteHistoricProcessInstance(oHistoricProcessInstance.getId());
+            
+        }
+        catch (Exception ex){
+            LOG.info("Error during order deliting: {}", ex);
+            throw new RuntimeException ("Error during order deliting: " + ex.getMessage());
+        }
     }
 
     @ApiOperation(value = "/getAnswer_DFS", notes = "##### Получение ответов по процессам ДФС#####\n\n")

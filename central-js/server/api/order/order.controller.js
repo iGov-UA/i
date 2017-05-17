@@ -119,19 +119,26 @@ module.exports.setTaskAnswer = function(req, res) {
       res.end();
     };
 
-    var oDataNew = req.body;
+    //var oDataNew = req.body;
+    var oDataNew = {
+      sID_Order: req.body.sID_Order
+    }
     if (oUtil.bExist(req.session) && req.session.hasOwnProperty('subject') && req.session.subject.hasOwnProperty('nID')) {
         oDataNew = _.extend(oDataNew, {nID_Subject: req.session.subject.nID});
     }
     oDataNew = _.extend(oDataNew, {bAuth: true});
 
-    return request.get({
+    return request.post({
       'url': url,
       'auth': {
         'username': options.username,
         'password': options.password
       },
-      'qs': oDataNew
+      'qs': oDataNew,
+      'headers': {
+        'Content-Type': 'text/html;charset=utf-8'
+      },
+      'body': JSON.stringify(req.body)
     }, callback);
   //}
 };

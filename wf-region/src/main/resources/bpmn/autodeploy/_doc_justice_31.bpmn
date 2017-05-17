@@ -17,7 +17,7 @@
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Depart_1" name="id группы ; ; bVisible=false" type="string" default="MJU_Dnipro_Sub_"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Sub" name="id группы ; ; bVisible=false" type="string" default="MJU_Dnipro_Sub_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ; bVisible=false" type="string" default="MJU_Dnipro_0"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ; bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -66,7 +66,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTableMailing" name="Розсилка на емайл; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTableMailing_doc_justice_31.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTableMailing" name="Розсилка на емайл; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTableMailing_doc_justice_31_people.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameDepart" name="Департамент ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html] ; ; bVisible=false" type="string" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_7" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/_doc_justice_171_nakaz.html" type="file" writable="false"></activiti:formProperty>
@@ -220,35 +220,6 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
     <sequenceFlow id="flow65" name="false" sourceRef="exclusivegateway1" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == 'false'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="тестове повідомлення" activiti:delegateExpression="#{MailTaskWithAttachments}">
-      <extensionElements>
-        <activiti:field name="to">
-          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[тест письма на несколько адресов сервистаска]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-тело письма
-${sEmail}
-
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_7}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersEmailByGroup('GrekD')}" activiti:elementVariable="sEmail"></multiInstanceLoopCharacteristics>
-    </serviceTask>
     <serviceTask id="mailtask1" name="Mail Task" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
@@ -272,12 +243,11 @@ ${sEmail}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow68" sourceRef="usertask4" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow69" sourceRef="servicetask3" targetRef="scripttask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="тестове повідомлення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -301,9 +271,9 @@ ${sEmail}
           <activiti:expression><![CDATA[${PrintForm_7}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
-      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersEmailByGroupFromTable('GrekD')}" activiti:elementVariable="sEmail"></multiInstanceLoopCharacteristics>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersEmailFromTable(execution.getProcessInstanceId(), 'sTableViewed', 'sEmail')}" activiti:elementVariable="sEmail"></multiInstanceLoopCharacteristics>
     </serviceTask>
-    <sequenceFlow id="flow70" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow70" sourceRef="usertask4" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_31">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_31" id="BPMNPlane__doc_justice_31">
@@ -334,14 +304,11 @@ ${sEmail}
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="760.0" y="270.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="568.0" y="65.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask1" id="BPMNShape_mailtask1">
         <omgdc:Bounds height="55.0" width="105.0" x="930.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="720.0" y="64.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="568.0" y="64.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="65.0" y="92.0"></omgdi:waypoint>
@@ -382,18 +349,13 @@ ${sEmail}
           <omgdc:Bounds height="14.0" width="24.0" x="639.0" y="273.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
-        <omgdi:waypoint x="526.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="568.0" y="92.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="772.0" y="119.0"></omgdi:waypoint>
-        <omgdi:waypoint x="578.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="119.0"></omgdi:waypoint>
         <omgdi:waypoint x="460.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
-        <omgdi:waypoint x="673.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="526.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="568.0" y="91.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

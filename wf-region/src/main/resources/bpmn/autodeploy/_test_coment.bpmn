@@ -7,10 +7,17 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTestDate" name="Тип дейт" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sString" name="Тип string" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sString2" name="Тип string2" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sString3" name="Тип string3" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sString4" name="Тип string4" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextArea" name="Тип textArea" type="textArea" default="Україна, Дніпропетровська обл., м."></activiti:formProperty>
-        <activiti:formProperty id="nLong" name="Який за рахунком шлюб; перший, другий тощо" type="long"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTextArea2" name="Тип textArea2" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTextArea3" name="Тип textArea3" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nLong" name="Тип long" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nLong2" name="Тип long2" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nLong3" name="Тип long3" type="long"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="fileHTML" name="fileHTML" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="nDouble" name="double" type="double"></activiti:formProperty>
       </extensionElements>
@@ -30,7 +37,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 
-Значения дейт в письмо: value{[sTestDate]}
+Значения дейт в письмо CENTRAL: value{[sTestDate]}
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 
@@ -46,17 +53,50 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім`я; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTestDate" name="Тип дейт; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sString" name="Тип string; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sString2" name="Тип string2; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sString3" name="Тип string3; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sString4" name="Тип string4; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextArea" name="Тип textArea; ;writable=false" type="textArea" default="Україна, Дніпропетровська обл., м."></activiti:formProperty>
-        <activiti:formProperty id="nLong" name="Який за рахунком шлюб; ;writable=false" type="long"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Ваш контактний телефон; ;writable=false" type="string" default="+380"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTextArea2" name="Тип textArea2; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTextArea3" name="Тип textArea3; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="nLong" name="Тип long; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nLong2" name="Тип long2; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nLong3" name="Тип long3; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="fileHTML" name="fileHTML" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="nDouble" name="double; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sTestDate2" name="Тип дейт2" type="date"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask2" name="письмо" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[тест уточнения всех форматов]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+
+Значения дейт в письмо ДАШБОРД: value{[sTestDate2]}
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_coment">
     <bpmndi:BPMNPlane bpmnElement="_test_coment" id="BPMNPlane__test_coment">
@@ -70,7 +110,10 @@
         <omgdc:Bounds height="55.0" width="105.0" x="380.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="530.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="535.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="137.0"></omgdi:waypoint>
@@ -82,7 +125,11 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="485.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="530.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="552.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="552.0" y="140.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

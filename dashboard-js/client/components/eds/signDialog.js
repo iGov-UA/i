@@ -31,6 +31,19 @@ angular.module('dashboardJsApp')
       var signModal = openModal(modalScope);
 
       signModal.result.then(function (signedContent) {
+        var byteCharacters = $base64.decode(signedContent.sign);
+        var byteNumbers = new Array(byteCharacters.length);
+        for (var i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        var blob = new Blob([byteArray], {type: 'application/pdf'});
+        var url = (window.URL || window.webkitURL).createObjectURL(blob);
+        var link = document.createElement("a");
+        link.download = "document.pdf";
+        link.href = url;
+        link.click();
+        //window.open(url, '_blank');
         resultCallback(signedContent);
       }, function () {
         dismissCallback();
