@@ -56,7 +56,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
@@ -78,7 +78,7 @@ ${sPhoneOrgan}
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка вхідної документації ЦНАП (1-й крок)" activiti:candidateGroups="cnap_lviv_chervonogradT">
+    <userTask id="usertask1" name="Обробка вхідної документації ЦНАП (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -98,7 +98,6 @@ ${sPhoneOrgan}
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_316_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:formProperty id="file1" name="Висновок органу санітарно-епідеміологічної служби; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Лікарське свідоцтво про смерть; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Дозвіл виконавчого органу відповідної сільської, селищної, міської ради на поховання останків на іншому кладовищу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -108,10 +107,10 @@ ${sPhoneOrgan}
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Адресат ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask3" name="Обробка звернення міською радою (2-й крок)" activiti:candidateGroups="chervonograd_mvk1">
+    <userTask id="usertask3" name="Обробка звернення міською радою (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -127,11 +126,10 @@ ${sPhoneOrgan}
         <activiti:formProperty id="date_registrastion" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="answer" name="Скан копія рішення виконавчого комітету" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_316_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="decision" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:formProperty id="file1" name="Висновок органу санітарно-епідеміологічної служби; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Лікарське свідоцтво про смерть; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file3" name="Дозвіл виконавчого органу відповідної сільської, селищної, міської ради на поховання останків на іншому кладовищу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-   
+        <activiti:taskListener event="decision" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -143,7 +141,7 @@ ${sPhoneOrgan}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
@@ -177,7 +175,7 @@ ${sPhoneOrgan}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
@@ -201,7 +199,7 @@ ${sPhoneOrgan}
     <sequenceFlow id="flow9" name="decision == 'doc_ok'" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'doc_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Відповідь громадянину (3-й крок)" activiti:candidateGroups="cnap_lviv_chervonogradT">
+    <userTask id="usertask2" name="Відповідь громадянину (3-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -219,9 +217,8 @@ ${sPhoneOrgan}
           <activiti:value id="attr1_ok" name="Рішення готове"></activiti:value>
           <activiti:value id="attr2_no" name="Відмова управління ЖКГ"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="answer" name="Скан копія рішення виконавчого комітету" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="decision" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-       <activiti:formProperty id="answer" name="Скан копія рішення виконавчого комітету" type="file" writable="false"></activiti:formProperty>
-   
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="usertask2"></sequenceFlow>
@@ -233,7 +230,7 @@ ${sPhoneOrgan}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
@@ -255,7 +252,7 @@ ${sPhoneOrgan}
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${answer}</activiti:expression>
+          <activiti:expression><![CDATA[${answer}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -265,7 +262,7 @@ ${sPhoneOrgan}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
@@ -286,7 +283,7 @@ ${sPhoneOrgan}
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${answer}</activiti:expression>
+          <activiti:expression><![CDATA[${answer}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -383,7 +380,7 @@ ${sPhoneOrgan}
         <omgdi:waypoint x="652.0" y="214.0"></omgdi:waypoint>
         <omgdi:waypoint x="585.0" y="214.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="596.0" y="172.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="596.0" y="172.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -394,7 +391,7 @@ ${sPhoneOrgan}
         <omgdi:waypoint x="672.0" y="234.0"></omgdi:waypoint>
         <omgdi:waypoint x="672.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="97.0" x="633.0" y="230.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="97.0" x="633.0" y="230.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -410,7 +407,7 @@ ${sPhoneOrgan}
         <omgdi:waypoint x="539.0" y="502.0"></omgdi:waypoint>
         <omgdi:waypoint x="481.0" y="502.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="492.0" y="461.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="492.0" y="461.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -418,7 +415,7 @@ ${sPhoneOrgan}
         <omgdi:waypoint x="539.0" y="654.0"></omgdi:waypoint>
         <omgdi:waypoint x="481.0" y="654.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="492.0" y="653.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="492.0" y="653.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
