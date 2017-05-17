@@ -1628,7 +1628,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "- Обновляет в сущности HistoryEvent_Service поле soData значением из saField и поле sToken значением null.\n"
             + "- Сохраняет информацию о действии в Мой Журнал (Текст: На заявку №____ дан ответ гражданином: [sBody])\n\n"
             + "Примеры:\n\n"
-            + "https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=54352839&saField=[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/setTaskAnswer?nID_Protected=54352839&sToken=93ODp4uPBb5To4Nn3kY1\n\n"
+            + "в body передаем строку: \"[{%27id%27:%27bankIdinn%27,%27type%27:%27string%27,%27value%27:%271234567890%27}]\"\n\n"
             + "Ответы: Пустой ответ в случае успешного обновления\n\n"
             + "Токен отсутствует\n\n"
             + "\n```json\n"
@@ -1646,34 +1647,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     void setTaskAnswer_Region(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
-            //@ApiParam(value = "saField - строка-массива полей", required = true) @RequestParam(value = "saField") String saField,
-            @RequestBody String saField
+            @ApiParam(value = "saField - строка-массива полей", required = true) @RequestBody String saField
     ) throws CommonServiceException {
-        //Long nID_Process = 0L;
-        //String saField = "";
-        /*
-        Map<String, Object> mJsonBody;
-        try {
-            String decoded = "";
-            try {
-                decoded = URLDecoder.decode(sJson, "UTF-8");
-            } catch (UnsupportedEncodingException e){
-                decoded = sJson;
-            }
-            mJsonBody = (Map<String, Object>) JSONValue.parse(decoded);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Error parse JSON smData: " + e.getMessage());
-        }
 
-        if(mJsonBody != null){
-            if (mJsonBody.containsKey("saField")){
-                saField = (String) mJsonBody.get("saField");
-            }
-            if (mJsonBody.containsKey("nID_Process")){
-                nID_Process = (Long) mJsonBody.get("nID_Process");
-            }
-        }
-*/
         try {
             saField = URLDecoder.decode(saField, "UTF-8");
         } catch (UnsupportedEncodingException e){
@@ -1688,7 +1664,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             List<Task> aTask = taskService.createTaskQuery().processInstanceId(nID_Process + "").list();
 
             for (Task oTask : aTask) {
-                //LOG.info("oTask: (getName()={},getDescription()={},getId()={})", oTask.getName(), oTask.getDescription(), oTask.getId());
                 TaskFormData oTaskFormData = formService.getTaskFormData(oTask.getId());
                 Map<String, String> mField = new HashMap<>();
                 for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
