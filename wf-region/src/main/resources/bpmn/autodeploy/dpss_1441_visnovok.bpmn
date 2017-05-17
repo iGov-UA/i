@@ -1,32 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dpss_1441_visnovok" name="Висновок державної санітарно-епідеміологічної експертизи" isExecutable="true">
-    <extensionElements>
-      <activiti:field xmlns:activiti="http://activiti.org/bpmn" name="from">
-        <activiti:string>noreply@igov.org.ua</activiti:string>
-      </activiti:field>
-      <activiti:field xmlns:activiti="http://activiti.org/bpmn" name="to">
-        <activiti:expression>${email}</activiti:expression>
-      </activiti:field>
-      <activiti:field xmlns:activiti="http://activiti.org/bpmn" name="subject">
-        <activiti:expression>${sPosluga_name}</activiti:expression>
-      </activiti:field>
-      <activiti:field xmlns:activiti="http://activiti.org/bpmn" name="text">
-        <activiti:expression>[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
-      </activiti:field>
-      <activiti:field xmlns:activiti="http://activiti.org/bpmn" name="sPhone_SMS">
-        <activiti:expression>$(phone)</activiti:expression>
-      </activiti:field>
-      <activiti:field xmlns:activiti="http://activiti.org/bpmn" name="sText_SMS">
-        <activiti:expression>Za Vashе zvernennya [sID_Order]  pryinyato v robotu. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-      </activiti:field>
-      <activiti:field xmlns:activiti="http://activiti.org/bpmn" name="saAttachmentsForSend">
-        <activiti:expression>" "</activiti:expression>
-      </activiti:field>
-    </extensionElements>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sPosluga_name" name="Висновок державної санітарно-епідеміологічної експертизи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_07" name="Список технологія, діючий об'єкт тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
@@ -69,6 +46,7 @@
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
@@ -186,6 +164,8 @@
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
@@ -258,7 +238,7 @@
         <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dpss/dpss_1441_visnovok.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]; ;bVisible=false" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="exclusivegateway8"></sequenceFlow>
