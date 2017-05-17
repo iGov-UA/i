@@ -1652,7 +1652,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "\n```json\n"
             + "{\"code\":\"BUSINESS_ERR\",\"message\":\"form property 'bankIdinn' is not writable\"}\n"
             + "\n```\n")
-    @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.GET)
+    @RequestMapping(value = "/setTaskAnswer", method = RequestMethod.POST)
     public @ResponseBody
     void setTaskAnswer_Region(
             @ApiParam(value = "номер-ИД процесса", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
