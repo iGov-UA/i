@@ -801,7 +801,7 @@ public class ProcessSubjectService {
      * Изменение статуса процесса
      * https://github.com/e-government-ua/i/issues/1660
      * 
-     * @param sID_ProcessSubjectStatus  статус на который  нужно изменить  
+     * @param sID_ProcessSubjectStatus  статус на который нужно изменить  
      * @param snID_Task_Activiti        ид таски
      * @param sLoginMain                логин того, кто вызвал сервис
      * @param sLoginSecondary           Логин исполнителя, нужен в некоторых кейсах, когда сервис вызывает контролирующий
