@@ -813,7 +813,7 @@ public class ProcessSubjectService {
                 
         String snID_Process_Activiti = oActionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
         
-        ProcessSubject oProcessSubject = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLogin);
+        ProcessSubject oProcessSubject = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
                   
         String sLoginRole = oProcessSubject.getsLoginRole();
         
@@ -863,8 +863,8 @@ public class ProcessSubjectService {
             
         } else {
         
-            LOG.info("setProcessSubjectStatus: sLogin= " + sLogin + "has not enough rights to modify the process oProcessSubject.Id= " + oProcessSubject.getId());
-            throw new IllegalArgumentException("sLogin= " + sLogin + "has not enough rights to modify the process oProcessSubject.Id= " + oProcessSubject.getId());
+            LOG.info("setProcessSubjectStatus: sLogin= " + sLoginMain + "has not enough rights to modify the process oProcessSubject.Id= " + oProcessSubject.getId());
+            throw new IllegalArgumentException("sLogin= " + sLoginMain + "has not enough rights to modify the process oProcessSubject.Id= " + oProcessSubject.getId());
         }
         
         return oProcessSubject;
