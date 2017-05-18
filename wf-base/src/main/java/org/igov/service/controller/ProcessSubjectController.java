@@ -186,7 +186,7 @@ public class ProcessSubjectController {
     @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody
     public ProcessSubject setProcessSubjectStatus(
-                @ApiParam(value = "ид процесса", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
+                @ApiParam(value = "статус", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
                 @ApiParam(value = "ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
                 @ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
                 @ApiParam(value = "sText", required = false) @RequestParam(value = "sText", required = false) String sText,
@@ -195,4 +195,15 @@ public class ProcessSubjectController {
 
         return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLogin, sText, sDatePlaneNew);
     }*/
+    
+    @ApiOperation(value = "Синхронизировать ProcessSubject ", notes = "")
+    @RequestMapping(value = "/syncProcessSubject", method = RequestMethod.GET)
+    @ResponseBody
+    public ProcessSubject syncProcessSubject(
+                @ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
+            @ApiParam(value = "ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti
+    ) {
+    
+        return processSubjectService.syncProcessSubjectController(snID_Process_Activiti, snID_Task_Activiti);
+    }
 }

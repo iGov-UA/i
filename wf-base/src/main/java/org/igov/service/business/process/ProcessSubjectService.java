@@ -868,4 +868,8 @@ public class ProcessSubjectService {
         
         return oProcessSubject;
     }
+
+    public ProcessSubject syncProcessSubjectController(String snID_Process_Activiti, String snID_Task_Activiti) {
+        
+    }
 }
