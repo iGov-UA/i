@@ -119,16 +119,16 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         }*/
     }
     private void addBuilderFlowSlotsJob_2(Scheduler scheduler) throws SchedulerException {
-        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart",
-                "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
+        JobDetail oJobDetail_BuilderFlowSlots_Standart_1 = new JobDetail("oJobDetail_BuilderFlowSlots_Standart_1",
+                "oJobDetail_BuilderFlowSlots_Group_1", JobBuilderFlowSlots.class);
 
-        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
-                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup");
+        CronTrigger oCronTrigger_EveryNight_Deep_1 = new CronTrigger("oCronTrigger_EveryNight_Deep_1",
+                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup_1");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
             CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 12,13 1/1 * ?"); 
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
-            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
+            oCronTrigger_EveryNight_Deep_1.setCronExpression(oCronExpression__EveryNight_Deep); 
         } catch (Exception oException) {
             LOG.error("FAIL: ", oException.getMessage());
             LOG.debug("FAIL: ", oException);
@@ -136,7 +136,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         //TODO:раскомментировать после тестирования
         //if (true || !generalConfig.isSelfTest()) {
             LOG.info("scheduleJob...");
-            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart_1, oCronTrigger_EveryNight_Deep_1);
         /*} else {
             LOG.info("scheduleJob... SKIPED(test)!");
         }*/
