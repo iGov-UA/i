@@ -877,6 +877,6 @@ public class ProcessSubjectService {
         
         processSubjectDao.saveOrUpdate(oProcessSubject);
         
-        return new ProcessSubject();
+        return oProcessSubject;
     }
 }
