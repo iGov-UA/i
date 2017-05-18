@@ -1731,7 +1731,6 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         success = true;
         return success;
     }    
-    
 
     public boolean deleteProcessSimple(String snID_Process, String sLogin, String sReason) throws Exception {
         boolean bOk = false;
