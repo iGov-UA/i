@@ -216,11 +216,11 @@ public class ProcessSubject extends AbstractEntity {
         this.sDateFact = sDateFact;
     }
 
-    public String getSnID_Task_Activiti() {
+    public String getsnID_Task_Activiti() {
         return snID_Task_Activiti;
     }
 
-    public void setSnID_Task_Activiti(String snID_Task_Activiti) {
+    public void setsnID_Task_Activiti(String snID_Task_Activiti) {
         this.snID_Task_Activiti = snID_Task_Activiti;
     }
     

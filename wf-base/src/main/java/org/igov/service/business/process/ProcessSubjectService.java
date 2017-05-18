@@ -869,7 +869,14 @@ public class ProcessSubjectService {
         return oProcessSubject;
     }
 
-    public ProcessSubject syncProcessSubjectController(String snID_Process_Activiti, String snID_Task_Activiti) {
+    public ProcessSubject syncProcessSubjectController(String snID_Process_Activiti, String snID_Task_Activiti, String sLogin) {
+        
+        ProcessSubject oProcessSubject = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLogin);
+        
+        oProcessSubject.setsnID_Task_Activiti(snID_Task_Activiti);
+        
+        processSubjectDao.saveOrUpdate(oProcessSubject);
+        
         return new ProcessSubject();
     }
 }
