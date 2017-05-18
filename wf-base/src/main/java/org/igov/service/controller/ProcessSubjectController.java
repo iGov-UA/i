@@ -201,7 +201,7 @@ public class ProcessSubjectController {
     @ResponseBody
     public ProcessSubject syncProcessSubject(
                 @ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
-            @ApiParam(value = "ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti
+                @ApiParam(value = "ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti
     ) {
     
         return processSubjectService.syncProcessSubjectController(snID_Process_Activiti, snID_Task_Activiti);
