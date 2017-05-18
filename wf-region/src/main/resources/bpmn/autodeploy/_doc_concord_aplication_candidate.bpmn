@@ -8,6 +8,36 @@
         <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ваше м'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saChangeName" name="Чи міняли раніше прізвище, власне ім’я, по батькові?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCause" name="Причина зміни прізвища" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateBirth" name="Дата народження" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth" name="Місце народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual1" name="Адреса фактичного місця проживання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asMilitary" name="Відношення до військової служби" type="enum" required="true">
+          <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
+          <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
+          <activiti:value id="yesMilitary" name="перебуваю на військовій службі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saInvestigation" name="Чи притягалися Ви або Ваші близькі родичі до кримінальної відповідальності?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sComposition" name="Склад військ (командний, технічний і т.д.)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCorps" name="Рід військ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sCrime" name="Коли і за що притягалися до відповідальності" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
