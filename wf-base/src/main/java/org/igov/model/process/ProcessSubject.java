@@ -92,6 +92,10 @@ public class ProcessSubject extends AbstractEntity {
     @JoinColumn(name = "nID_ProcessSubjectTask")
     private ProcessSubjectTask oProcessSubjectTask;
     
+    @JsonProperty(value = "snID_Task_Activiti")
+    @Column
+    private String snID_Task_Activiti;
+    
     public List<ProcessSubject> getaProcessSubjectChild() {
 	return aProcessSubjectChild;
     }
@@ -211,6 +215,15 @@ public class ProcessSubject extends AbstractEntity {
     public void setsDateFact(DateTime sDateFact) {
         this.sDateFact = sDateFact;
     }
+
+    public String getSnID_Task_Activiti() {
+        return snID_Task_Activiti;
+    }
+
+    public void setSnID_Task_Activiti(String snID_Task_Activiti) {
+        this.snID_Task_Activiti = snID_Task_Activiti;
+    }
+    
    
     @Override
     public String toString() {
@@ -228,7 +241,8 @@ public class ProcessSubject extends AbstractEntity {
                 + ", aProcessSubjectChild=" + aProcessSubjectChild
                 + ", sTextType=" + sTextType
                 + ", sLoginRole=" + sLoginRole
-                + ", oProcessSubjectTask=" + oProcessSubjectTask + '}';
+                + ", oProcessSubjectTask=" + oProcessSubjectTask
+                + ", snID_Task_Activiti=" + snID_Task_Activiti + '}';
     }
     
         
