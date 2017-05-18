@@ -71,6 +71,9 @@ public class MigrationServiceImpl implements MigrationService {
     private AttributeTypeDao attributeTypeDao;
 
     @Autowired
+    private AttributeNameDao attributeNameDao;
+
+    @Autowired
     private RepositoryService repositoryService;
 
     @Autowired
@@ -123,7 +126,7 @@ public class MigrationServiceImpl implements MigrationService {
         process.setaProcessTask(createProcessTaskList(historicProcess.getId(), process));
         process.setsID_Data("sID_Data Process");
         process.setCustomProcess(createCustomProcessToInsert(historicProcess, process));
-        process.setaAccessGroup(getAccessGroupFromStartForm(historicProcess));//это со стартовой формы заполняется
+        process.setaAccessGroup(getAccessGroupFromStartForm(historicProcess));//это со стартовой формы заполняется(act_hi_identitylink глянуть)
         process.setaAccessUser(null);
         return process;
     }
@@ -161,7 +164,7 @@ public class MigrationServiceImpl implements MigrationService {
     private Set<AccessGroup> getAccessGroupFromStartForm(HistoricProcessInstance processInstance) {
         StartFormData startFormData = formService.getStartFormData(processInstance.getProcessDefinitionId());
         List<FormProperty> propertyList = startFormData.getFormProperties();
-        for(FormProperty property :propertyList) {
+        for (FormProperty property : propertyList) {
             LOG.info(property.getName());
         }
         return null;
@@ -288,9 +291,14 @@ public class MigrationServiceImpl implements MigrationService {
             attribute.setName(id);
             attribute.setoAttributeType(getAttributeType(value, attribute));
             attribute.setsID_("sID_ Attribute");
+            attribute.setoAttributeName(createAttributeName(id));
             resultList.add(attribute);
         });
         return resultList;
+    }
+
+    private AttributeName createAttributeName(String id) {
+        return attributeNameDao.getAttributeNameByStringId(id);
     }
 
     private Map<String, Object> convertToAttributesMap(List<HistoricVariableInstance> variables) {
