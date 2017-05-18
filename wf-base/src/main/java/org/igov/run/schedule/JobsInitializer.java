@@ -43,8 +43,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     public void afterPropertiesSet() throws Exception {
         addEscalationJob(scheduler);
         addFeedBackJob(scheduler);
-        addBuilderFlowSlotsJob_1(scheduler);
-        addBuilderFlowSlotsJob_2(scheduler);
+        addBuilderFlowSlotsJob(scheduler);
     }
 
     private void addEscalationJob(Scheduler scheduler) throws SchedulerException {
@@ -95,7 +94,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         }*/
     }
 
-    private void addBuilderFlowSlotsJob_1(Scheduler scheduler) throws SchedulerException {
+    private void addBuilderFlowSlotsJob(Scheduler scheduler) throws SchedulerException {
         JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart",
                 "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
 
@@ -103,7 +102,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
                 "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup");
         try {
             LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 12 1/1 * ?"); 
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0/30 6-7 1/1 * ?"); 
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
         } catch (Exception oException) {
@@ -114,29 +113,6 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         //if (true || !generalConfig.isSelfTest()) {
             LOG.info("scheduleJob...");
             scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
-        /*} else {
-            LOG.info("scheduleJob... SKIPED(test)!");
-        }*/
-    }
-    private void addBuilderFlowSlotsJob_2(Scheduler scheduler) throws SchedulerException {
-        JobDetail oJobDetail_BuilderFlowSlots_Standart_1 = new JobDetail("oJobDetail_BuilderFlowSlots_Standart_1",
-                "oJobDetail_BuilderFlowSlots_Group_1", JobBuilderFlowSlots.class);
-
-        CronTrigger oCronTrigger_EveryNight_Deep_1 = new CronTrigger("oCronTrigger_EveryNight_Deep_1",
-                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup_1");
-        try {
-            LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 12,13 1/1 * ?"); 
-            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
-            oCronTrigger_EveryNight_Deep_1.setCronExpression(oCronExpression__EveryNight_Deep); 
-        } catch (Exception oException) {
-            LOG.error("FAIL: ", oException.getMessage());
-            LOG.debug("FAIL: ", oException);
-        }
-        //TODO:раскомментировать после тестирования
-        //if (true || !generalConfig.isSelfTest()) {
-            LOG.info("scheduleJob...");
-            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart_1, oCronTrigger_EveryNight_Deep_1);
         /*} else {
             LOG.info("scheduleJob... SKIPED(test)!");
         }*/
