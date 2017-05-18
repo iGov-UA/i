@@ -10,9 +10,7 @@
 
 	<camelContext id="wf-camel-context-flowSlot" trace="${routeTrace}"
 		xmlns="http://camel.apache.org/schema/spring">
-		<propertyPlaceholder id="properties"
-			location="ref:osgiProps,ref:mavenProps" />
-
+			<propertyPlaceholder id="properties" location="ref:dataProps" />
 		<!-- ******************** Таймер для запуска процесса загрузки слотов  ************************** -->
 		<route id="Timer-flowSlot" autoStartup="{{flowSlot.enable}}">
 			<description>Таймер для запуска процесса загрузки слотов</description>
