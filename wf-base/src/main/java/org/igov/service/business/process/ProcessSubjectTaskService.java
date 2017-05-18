@@ -92,9 +92,9 @@ public class ProcessSubjectTaskService {
         return aListOfProcessSubjectTask;
     }
     
-    private List<ProcessSubject> setProcessSubjectList(JSONArray aJsonProcessSubject, 
-            JSONObject oJsonProcessSubjectTask, ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti) throws ParseException, Exception 
-    {
+    
+    private List<ProcessSubject> buildProcessSubjectList(JSONArray aJsonProcessSubject, 
+            JSONObject oJsonProcessSubjectTask, ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti) throws ParseException{
         ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(1L);
         
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
@@ -133,15 +133,20 @@ public class ProcessSubjectTaskService {
             aProcessSubject.add(oProcessSubject);
             LOG.info("oProcessSubject in setProcessSubjectList: {}", oProcessSubject);
             
-            if((JSONObject)oJsonProcessSubjectTask.get("sKey_GroupPostfix") != null){
+            /*if((JSONObject)oJsonProcessSubjectTask.get("sKey_GroupPostfix") != null){
                 oDocumentStepService.cloneDocumentStepSubject((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
                     (String)((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject)oJsonProcessSubject).get("sLogin"), "_", false);
-            }
+            }*/
         }
         
-        oProcessSubjectDao.saveOrUpdate(aProcessSubject);
-        
         return aProcessSubject;
+    }
+    
+    private List<ProcessSubject> setProcessSubjectList(JSONArray aJsonProcessSubject, 
+            JSONObject oJsonProcessSubjectTask, ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti) throws ParseException, Exception 
+    {
+        return oProcessSubjectDao.saveOrUpdate(buildProcessSubjectList(aJsonProcessSubject, 
+                oJsonProcessSubjectTask, oProcessSubjectTask, snID_Process_Activiti));
     }
     
     /*private void saveProcessSubjectTree(ProcessSubject oProcessSubjectParent, ProcessSubject oProcessSubjectChild){
@@ -207,16 +212,20 @@ public class ProcessSubjectTaskService {
             
             //for(Object oJsonProcessSubjectTask :  aJsonProcessSubjectTask){
             for(Object oJsonProcessSubjectTask :  oaProcessSubjectTask){
+                
+                String sActionType = (String)((JSONObject)oJsonProcessSubjectTask).get("sBody");
+                
                 //Map<String, Object> mProcessSubjectTask = JsonRestUtils.readObject(oJsonProcessSubjectTask, Map.class);
                 //JSONArray aJsonProcessSubject =  (JSONArray) parser.parse((String)mProcessSubjectTask.get("aProcessSubject"));
                 JSONArray aJsonProcessSubject =  (JSONArray) ((JSONObject)oJsonProcessSubjectTask).get("aProcessSubject");
                 LOG.info("oJsonProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
                 //ProcessSubject oProcessSubjectParent = oProcessSubjectDao.findByProcessActivitiId((String)mProcessSubjectTask.get("snID_Process_Activiti_Root"));
-                if(((JSONObject)oJsonProcessSubjectTask).get("ProcessSubjectTask") == null){
-                    //this is a new process
-                    String sKey = oBytesDataInmemoryStorage.putBytes(((JSONObject)oJsonProcessSubjectTask).toJSONString().getBytes());
-                    LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
+                String sKey = oBytesDataInmemoryStorage.putBytes(((JSONObject)oJsonProcessSubjectTask).toJSONString().getBytes());
+                LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
 
+                if(sActionType.equals("set")){
+                    //this is a new process
+                   
                     ProcessSubjectTask oProcessSubjectTask = new ProcessSubjectTask();
                     /// по snId_Task вытягиваем id процесса
                     oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
@@ -236,8 +245,33 @@ public class ProcessSubjectTaskService {
                     List<ProcessSubject> aProcessSubject = 
                             setProcessSubjectList(aJsonProcessSubject, (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, oProcessInstance.getId());
                     LOG.info("aProcessSubject in synctProcessSubjectTask: {}", aProcessSubject);
-                }else{
-                    //this is a process edit
+                
+                }else if (sActionType.equals("edit")){
+                    //TODO: Get ProcessSubject array from ProcessSubjectTask entity;
+                    //TODO: saving in Redis and set new value in variable;
+                    //TODO: common service;
+                
+                    ProcessSubject oProcessSubjectController = getProcessSubjectByTask(snId_Task);
+                    
+                    List<ProcessSubject> aProcessSubject_saved = 
+                            oProcessSubjectDao.findAllBy("snID_Process_Activiti", oProcessSubjectController.getSnID_Process_Activiti());
+                    
+                    List<String> aNewLogin = new ArrayList<>();
+                    
+                    for (Object oJsonProcessSubject : aJsonProcessSubject) {
+                        aNewLogin.add((String)((JSONObject)oJsonProcessSubject).get("sLogin"));
+                    }
+                    
+                    for(ProcessSubject oProcessSubject : aProcessSubject_saved){
+                        if(!aNewLogin.contains(oProcessSubject.getsLogin())){
+                           oProcessSubjectService.removeProcessSubjectDeep(oProcessSubject);
+                        }
+                    }
+                    
+                    
+                    
+                }else if (sActionType.equals("delegate")){
+                    
                 }
             }
         }
@@ -245,5 +279,10 @@ public class ProcessSubjectTaskService {
             throw new RuntimeException("Error task setting: " + ex.getMessage());
         }
     }
+    
+    private ProcessSubject getProcessSubjectByTask(String snID_Task_Activiti){
+        return oProcessSubjectDao.findByExpected("snID_Task_Activiti", snID_Task_Activiti);
+    }
+    
     
 }
