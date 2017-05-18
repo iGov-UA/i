@@ -95,27 +95,27 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     }
 
     private void addBuilderFlowSlotsJob(Scheduler scheduler) throws SchedulerException {
-        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart",
+        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart1",
                 "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
 
-        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
-                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup");
-        try {
+        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep1",
+                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup1");
+       
             LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 6 1/1 * ?"); //0 0 2 1/1 * ?
+        try { 
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 0 6 1/1 * ?"); //раз в сутки в 6-00
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
+            
+         /*CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 6,7 1/1 * ?"); //раз в сутки 6-30,7-30
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);  */
         } catch (Exception oException) {
             LOG.error("FAIL: ", oException.getMessage());
             LOG.debug("FAIL: ", oException);
         }
-        //TODO:раскомментировать после тестирования
-        //if (true || !generalConfig.isSelfTest()) {
-            LOG.info("scheduleJob...");
-            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
-        /*} else {
-            LOG.info("scheduleJob... SKIPED(test)!");
-        }*/
     }
     
     private void addPaymentProcessorJob(Scheduler scheduler) throws SchedulerException {

@@ -12,17 +12,17 @@ import org.igov.model.subject.ServerDao;
 import org.igov.service.business.action.ActionEventService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
+import org.igov.util.JSON.JsonRestUtils;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import org.igov.io.GeneralConfig;
@@ -49,17 +49,35 @@ public class ActionTaskCentralController {
     private HistoryEvent_ServiceDao historyEventServiceDao;
 
     @ApiOperation(value = "/setTaskAnswer_Central", notes = "Нет описания")
-    @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.GET)
+    @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.POST)
     public @ResponseBody
     void setTaskAnswer(
             @ApiParam(value = "строка-ид заявки", required = true) @RequestParam(value = "sID_Order", required = true) String sID_Order,
-            @ApiParam(value = "строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestParam(value = "saField", required = true) String saField,
             @ApiParam(value = "строка-токена. Данный параметр формируется и сохраняется в запись HistoryEvent_Service во время вызова метода setTaskQuestions", required  = false) @RequestParam(value = "sToken", required = false) String sToken,
             @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam(value = "nID_Subject", required = false) Long nID_Subject,
             @ApiParam(value = "строка заголовка сообщения", required = false) @RequestParam(value = "sHead", required = false) String sHead,
             @ApiParam(value = "булевый флаг. Включить авторизацию", required = false) @RequestParam(value = "bAuth", required = false, defaultValue = "false") Boolean bAuth,
-            @ApiParam(value = "строка тела сообщения", required = false) @RequestParam(value = "sBody", required = false) String sBody
+            @ApiParam(value = "JSON с параметрами: sBody - строка тела сообщения; saField - строка-массива полей (например: \"[{'id':'sFamily','type':'string','value':'Белявцев'},{'id':'nAge','type':'long','value':35}]\")", required = true) @RequestBody String sJson
         ) throws CommonServiceException {
+
+        String sBody = "";
+        String saField = "";
+
+        Map<String, String> mJsonBody;
+        try {
+            mJsonBody = JsonRestUtils.readObject(sJson, Map.class);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error parse JSON smData: " + e.getMessage());
+        }
+
+        if(mJsonBody != null){
+            if (mJsonBody.containsKey("saField")){
+                saField = (String) mJsonBody.get("saField");
+            }
+            if (mJsonBody.containsKey("sBody")){
+                sBody = (String) mJsonBody.get("sBody");
+            }
+        }
 
         try {
             LOG.info("/setTaskAnswer_Central started");
@@ -100,16 +118,16 @@ public class ActionTaskCentralController {
             }
             String sURL = sHost + "/service/action/task/setTaskAnswer";
             String processId = String.valueOf(oHistoryEvent_Service.getnID_Process());
+            sURL=sURL + "?nID_Process=" + processId;
             LOG.info("sURL={}", sURL);
-            Map<String, String> mParam = new HashMap<String, String>();
-            mParam.put("nID_Process", processId);
-            mParam.put("saField", saField);
-            LOG.info(" mParam={} ", mParam);
-            String sReturnRegion = httpRequester.getInside(sURL, mParam);
+            LOG.info("saField ", saField);
+            String reqBody = URLEncoder.encode(saField, "UTF-8");
+            String sReturnRegion = httpRequester.postInside(sURL, null, reqBody, null);
+            
             LOG.info("(sReturnRegion={})", sReturnRegion);
 
             String mergeUrl = sHost + "/service/action/task/mergeVariable";
-            Map<String, String> mergeParams = new HashMap<String, String>();
+            Map<String, String> mergeParams = new HashMap<>();
             mergeParams.put("processInstanceId", processId);
             mergeParams.put("key", "saTaskStatus");
             mergeParams.put("insertValues", "GotAnswer");
