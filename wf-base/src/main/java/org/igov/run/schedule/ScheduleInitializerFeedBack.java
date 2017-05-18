@@ -18,11 +18,9 @@ public class ScheduleInitializerFeedBack {
     private final static Logger LOG = LoggerFactory.getLogger(ScheduleInitializerFeedBack.class);
     
     public void init() throws SchedulerException {
-        LOG.info("Schedule Factory...");
-        SchedulerFactory oSchedulerFactory = new StdSchedulerFactory();
-        LOG.info("getScheduler...");
-        Scheduler oScheduler = oSchedulerFactory.getScheduler();
 
+        SchedulerFactory oSchedulerFactory = new StdSchedulerFactory();
+        Scheduler oScheduler = oSchedulerFactory.getScheduler();
         long nNowMS = System.currentTimeMillis();
         LOG.info("(nNowMS={})", nNowMS);
 
@@ -31,23 +29,17 @@ public class ScheduleInitializerFeedBack {
         CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
                 "oCronTrigger_EveryNight_Group");
         try {
-            LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression(
-                    "0 0 2 1/1 * ?");
-            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 2 1/1 * ?");
+            LOG.info("oCronExpression__EveryNight_Deep ok!");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep);
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression ok!");
+            oScheduler.scheduleJob(oJobDetail_FeedBack_Standart, oCronTrigger_EveryNight_Deep);
+            LOG.info("oScheduler.scheduleJob ok!");
+            oScheduler.start();
+            LOG.info(" oScheduler.start ok!");
         } catch (Exception oException) {
-            LOG.error("Bad: ", oException.getMessage());
-            LOG.debug("FAIL:", oException);
-            //oException.printStackTrace();
+            LOG.error("Bad: ", oException);
         }
-        LOG.info("scheduleJob...");
-        oScheduler.scheduleJob(oJobDetail_FeedBack_Standart, oCronTrigger_EveryNight_Deep);
-
-        LOG.info("start...");
-        oScheduler.start();
-        LOG.info("Ok!!");
-
     }
 
 }
