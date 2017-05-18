@@ -801,14 +801,15 @@ public class ProcessSubjectService {
      * Изменение статуса процесса
      * https://github.com/e-government-ua/i/issues/1660
      * 
-     * @param sID_ProcessSubjectStatus - статус на который нужно изменить
-     * @param snID_Task_Activiti - ид таски
-     * @param sLogin - логин того, кто вызвал сервис
-     * @param sText - если приходит, то изменяем
-     * @param sDatePlaneNew - планируемая дата выполнения
-     * @return processSubject - процесс, который был изменен
+     * @param sID_ProcessSubjectStatus  статус на который нужно изменить  
+     * @param snID_Task_Activiti        ид таски
+     * @param sLoginMain                логин того, кто вызвал сервис
+     * @param sLoginSecondary           Логин исполнителя, нужен в некоторых кейсах, когда сервис вызывает контролирующий
+     * @param sText                     Текстовое поле
+     * @param sDatePlaneNew             Дата на которую нужно перенести срок
+     * @return                          Процесс, который был изменен
      */
-    public ProcessSubject setProcessSubjectStatus(String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLogin, String sText, DateTime sDatePlaneNew) {
+    public ProcessSubject setProcessSubjectStatus(String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLoginMain, String sLoginSecondary, String sText, DateTime sDatePlaneNew) {
                 
         String snID_Process_Activiti = oActionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
         

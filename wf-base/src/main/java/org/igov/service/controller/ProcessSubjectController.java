@@ -17,14 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.util.List;
-import java.util.Map;
+import org.joda.time.DateTime;
+
+import org.joda.time.format.DateTimeFormat;
 
 import org.json.simple.parser.ParseException;
 
@@ -180,21 +181,25 @@ public class ProcessSubjectController {
         return oProcessSubjectTaskService.getProcessSubjectLoginsWithoutTask(snID_Process_Activiti, sFilterLoginRole);
     }
     
-    /*
+    
     @ApiOperation(value = "Задать статус процесса ", notes = "##### Пример:\n" 
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectStatus?nID_ProcessSubjectStatus=1&snID_Task_Activiti=33042597&sLogin=justice_common \n")
-    @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+    @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.GET)
     @ResponseBody
     public ProcessSubject setProcessSubjectStatus(
-                @ApiParam(value = "статус", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
-                @ApiParam(value = "ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
-                @ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-                @ApiParam(value = "sText", required = false) @RequestParam(value = "sText", required = false) String sText,
-                @ApiParam(value = "JSON-объект с данными", required = true) @RequestBody Map<String, Object> mJsonBody
+                @ApiParam(value = "Статус", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
+                @ApiParam(value = "Ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
+                @ApiParam(value = "Логин того, кто вызвал сервис", required = true) @RequestParam(value = "sLoginMain", required = true) String sLoginMain,
+                @ApiParam(value = "Логин исполнителя, нужен в некоторых кейсах, когда сервис вызывает контролирующий", required = false)
+                @RequestParam(value = "sLoginSecondary", required = false) String sLoginSecondary,
+                @ApiParam(value = "Текстовое поле", required = false) @RequestParam(value = "sText", required = false) String sText,
+                @ApiParam(value = "Дата на которую нужно перенести срок", required = false) @RequestParam(value = "sDatePlaneNew", required = false) String sDatePlaneNew
     ) {
+        
+        DateTime dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
 
-        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLogin, sText, sDatePlaneNew);
-    }*/
+        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginSecondary, sLoginMain, sText, dtDatePlaneNew);
+    }
     
     @ApiOperation(value = "Синхронизировать ProcessSubject ", notes = "")
     @RequestMapping(value = "/syncProcessSubject", method = RequestMethod.GET)
