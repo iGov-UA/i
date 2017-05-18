@@ -11,8 +11,6 @@ import org.activiti.engine.task.IdentityLink;
 
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
-import org.igov.model.process.ProcessSubjectTask;
-import org.igov.model.process.ProcessSubjectTaskDao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +30,7 @@ public class SyncProcessSubject implements TaskListener {
     
     @Autowired
     private ProcessSubjectDao oProcessSubjectDao;
-    
-    @Autowired
-    ProcessSubjectTaskDao oProcessSubjectTaskDao;
-    
+        
     private final static Logger LOG = LoggerFactory.getLogger(SyncProcessSubject.class);
     
     @Override
@@ -70,10 +65,7 @@ public class SyncProcessSubject implements TaskListener {
             ProcessSubject oProcessSubject = oProcessSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, login);
             LOG.info("SyncProcessSubject: oProcessSubject={}", oProcessSubject);
             
-            ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByExpected("nID", snID_Task_Activiti);
-            LOG.info("SyncProcessSubject: oProcessSubjectTask={}", oProcessSubjectTask);
-            
-            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
+            oProcessSubject.setsnID_Task_Activiti(snID_Task_Activiti);
             
             oProcessSubjectDao.saveOrUpdate(oProcessSubject);
         
