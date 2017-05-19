@@ -299,7 +299,8 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private AttributeName createAttributeName(String id) {
-        return attributeNameDao.findBy("sID", id).get();
+        return attributeNameDao.getAttributeNameByStringId(id);
+        //return attributeNameDao.findBy("sID", id).get();
     }
 
     private Map<String, Object> convertToAttributesMap(List<HistoricVariableInstance> variables) {
