@@ -127,6 +127,18 @@ public class HistoryEvent_Service extends AbstractEntity {
     @Type(type = DATETIME_TYPE)
     @Column(name = "sDateClose", length = 25)
     private DateTime sDateClose;
+    
+    @JsonProperty(value = "sID_Public_SubjectOrganJoin")
+    @Column(name = "sID_Public_SubjectOrganJoin")
+    private String sID_Public_SubjectOrganJoin;
+    
+    public String getsID_Public_SubjectOrganJoin() {
+		return sID_Public_SubjectOrganJoin;
+	}
+
+	public void setsID_Public_SubjectOrganJoin(String sID_Public_SubjectOrganJoin) {
+		this.sID_Public_SubjectOrganJoin = sID_Public_SubjectOrganJoin;
+	}
 
     public String getsID() {
         return sID;

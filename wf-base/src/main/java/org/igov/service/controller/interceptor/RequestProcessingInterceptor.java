@@ -772,7 +772,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         
-        LOG.info("sRequestBody {}", sRequestBody);
+        LOG.info("sRequestBody {}", sRequestBody);// 
         LOG.info("sResponseBody {}", sResponseBody);
         LOG.info("mParamRequest {}", mParamRequest);
         
@@ -808,6 +808,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             String sID_UA = mParamRequest.get("sID_UA");
             if (sID_UA != null) {
                 mParam.put("sID_UA", sID_UA);
+            }
+            
+            String sID_Public_SubjectOrganJoin = mParamRequest.get("sID_Public_SubjectOrganJoin");
+            if (sID_Public_SubjectOrganJoin != null) {
+                mParam.put("sID_Public_SubjectOrganJoin", sID_Public_SubjectOrganJoin);
             }
 
             LOG.info("RequestProcessingInterceptor sID_UA: " + sID_UA);
