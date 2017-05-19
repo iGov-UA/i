@@ -381,7 +381,7 @@ public class ProcessSubjectTaskService {
         LOG.info("TaskInstance deleted..");
         Optional<ProcessSubjectTree> processSubjectTreeToDelete = oProcessSubjectTreeDao.findBy("processSubjectChild", processSubject);
         
-        if(processSubjectTreeToDelete.get() != null){
+        if(processSubjectTreeToDelete.isPresent()){
             LOG.info("processSubjectTreeToDelete {}", processSubjectTreeToDelete.get());
             oProcessSubjectTreeDao.delete(processSubjectTreeToDelete.get());
         }
