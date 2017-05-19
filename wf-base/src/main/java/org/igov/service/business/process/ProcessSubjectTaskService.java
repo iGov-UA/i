@@ -134,7 +134,7 @@ public class ProcessSubjectTaskService {
             LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", oaProcessSubjectTask.toJSONString());
             for(Object oJsonProcessSubjectTask :  oaProcessSubjectTask){
                 
-                String sActionType = (String)((JSONObject)oJsonProcessSubjectTask).get("sBody");
+                String sActionType = (String)((JSONObject)oJsonProcessSubjectTask).get("sActionType");
                 JSONArray aJsonProcessSubject =  (JSONArray) ((JSONObject)oJsonProcessSubjectTask).get("aProcessSubject");
                 LOG.info("oJsonProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
                 String sKey = oBytesDataInmemoryStorage.putBytes(((JSONObject)oJsonProcessSubjectTask).toJSONString().getBytes());

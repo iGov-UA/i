@@ -40,6 +40,7 @@ public class HistoryEventServiceImpl implements HistoryEventService {
 
     public String doRemoteRequest(String sURL, Map<String, String> mParam, String sID_Order, String sUserTaskName)
             throws Exception {
+    	LOG.info("mParam before in doRemoteRequest {}", mParam);    	
         mParam.put("sID_Order", sID_Order);
         if (sUserTaskName != null) {
             mParam.put("sUserTaskName", sUserTaskName);
