@@ -830,6 +830,7 @@ public class ProcessSubjectService {
     ) {
                 
         String snID_Process_Activiti = oActionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
+        LOG.info("setProcessSubjectStatus: snID_Process_Activiti=" + snID_Process_Activiti);
         
         ProcessSubject oProcessSubjectMain = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
                   
@@ -911,7 +912,7 @@ public class ProcessSubjectService {
             
         } else {
         
-            throw  new RuntimeException("Login=" + sLoginMain +" has no access to change a status.");
+            throw  new RuntimeException("Login=" + sLoginMain + " has no access to change a status.");
         }
         
         return oProcessSubjectMain;
