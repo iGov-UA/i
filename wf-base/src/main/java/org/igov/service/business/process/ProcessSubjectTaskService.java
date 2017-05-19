@@ -1,6 +1,7 @@
 package org.igov.service.business.process;
 
 
+import com.google.common.collect.Lists;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +17,7 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
+import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectStatus;
 import org.igov.model.process.ProcessSubjectStatusDao;
 
@@ -190,7 +192,7 @@ public class ProcessSubjectTaskService {
                     for(ProcessSubject oProcessSubject : aProcessSubject_saved){
                         if(!aNewLogin.contains(oProcessSubject.getsLogin())){
                            LOG.info("Login to delete in new task setting schema is {}", oProcessSubject.getsLogin());
-                           oProcessSubjectService.removeProcessSubjectDeep(oProcessSubject);
+                           removeProcessSubjectDeep(oProcessSubject);
                         }
                         else{
                             LOG.info("Login to update in new task setting schema is {}", oProcessSubject.getsLogin());
@@ -306,7 +308,6 @@ public class ProcessSubjectTaskService {
         }
     }
     
-    
     private List<ProcessSubject> setProcessSubjectList(JSONArray aJsonProcessSubject, JSONObject oJsonProcessSubjectTask,
             ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti, List<ProcessSubject> aProcessSubject_ToUpdate) throws ParseException, Exception 
     {
@@ -367,6 +368,44 @@ public class ProcessSubjectTaskService {
         return oProcessSubjectDao.saveOrUpdate(aProcessSubject);
     }
     
+    public void removeProcessSubject(ProcessSubject processSubject) {
+        LOG.info("removeProcessSubject started...");
+        Task TaskInstance = oTaskService.createTaskQuery().processInstanceId(processSubject.getsnID_Task_Activiti()).singleResult();
+        LOG.info("TaskInstance {}", TaskInstance.getId());
+        
+        if (TaskInstance != null) {
+            oTaskService.deleteTask(TaskInstance.getId());
+        }
+        
+        LOG.info("TaskInstance deleted..");
+        ProcessSubjectTree processSubjectTreeToDelete = oProcessSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
+        
+        if(processSubjectTreeToDelete != null){
+            LOG.info("processSubjectTreeToDelete {}", processSubjectTreeToDelete);
+            oProcessSubjectTreeDao.delete(processSubjectTreeToDelete);
+        }
+        else{
+            LOG.info("processSubjectTree is null");
+        }
+        
+        oProcessSubjectDao.delete(processSubject);
+        LOG.info("removeProcessSubject ended...");
+    }
+
+    public void removeProcessSubjectDeep(ProcessSubject processSubject) {
+        LOG.info("removeProcessSubjectDeep started...");
+        ProcessSubjectResult processSubjectResult = oProcessSubjectService.getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
+        LOG.info("processSubjectResult {}", processSubjectResult.getaProcessSubject());
+        List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
+        List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
+        
+        for (ProcessSubject oProcessSubject : aReverseProcessSubject) {
+            removeProcessSubject(oProcessSubject);
+        }
+
+        removeProcessSubject(processSubject);
+        LOG.info("removeProcessSubjectDeep ended...");
+    }
     
     /**
      * Получение ProcessSubject 
