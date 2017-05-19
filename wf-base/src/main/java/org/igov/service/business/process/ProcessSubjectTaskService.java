@@ -340,7 +340,7 @@ public class ProcessSubjectTaskService {
             
             oProcessSubject.setsTextType((String) ((JSONObject)oJsonProcessSubjectTask).get("sTextType"));
             oProcessSubject.setsLogin((String) ((JSONObject)oJsonProcessSubject).get("sLogin"));
-            oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("‘sLoginRole"));
+            oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("sLoginRole"));
             oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
