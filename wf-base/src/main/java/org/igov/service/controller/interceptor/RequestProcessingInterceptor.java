@@ -781,6 +781,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         }
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+        
+        LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
+        
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
@@ -810,13 +813,17 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 mParam.put("sID_UA", sID_UA);
             }
             
+            LOG.info("RequestProcessingInterceptor sID_UA: " + sID_UA);
+            
+            
             String sID_Public_SubjectOrganJoin = mParamRequest.get("sID_Public_SubjectOrganJoin");
             if (sID_Public_SubjectOrganJoin != null) {
                 mParam.put("sID_Public_SubjectOrganJoin", sID_Public_SubjectOrganJoin);
             }
-
-            LOG.info("RequestProcessingInterceptor sID_UA: " + sID_UA);
-
+            
+            LOG.info("RequestProcessingInterceptor sID_Public_SubjectOrganJoin: " + sID_Public_SubjectOrganJoin);
+            
+            
             //TODO: need remove in future
             String snID_Region = mParamRequest.get("nID_Region");
             if (snID_Region != null) {
