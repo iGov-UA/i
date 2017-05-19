@@ -233,7 +233,6 @@ public class ProcessSubject extends AbstractEntity {
                 + ", oProcessSubjectStatus=" + oProcessSubjectStatus
                 + ", nOrder=" + nOrder
                 + ", sLogin=" + sLogin
-                + ", sDateFact=" + sDateFact
                 + ", sDateEdit=" + sDateEdit
                 + ", sDatePlan=" + sDatePlan
                 + ", sDatePlanNew=" + sDatePlanNew

@@ -828,9 +828,8 @@ public class ProcessSubjectService {
             String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLoginMain, String sLoginSecondary,
             String sText, DateTime sDatePlaneNew
     ) {
-        LOG.info("setProcessSubjectStatus:  sID_ProcessSubjectStatus=" + sID_ProcessSubjectStatus + " snID_Task_Activiti=" + snID_Task_Activiti + " sLoginMain=" + sLoginMain);
+        
         String snID_Process_Activiti = oActionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
-        LOG.info("setProcessSubjectStatus: snID_Process_Activiti=" + snID_Process_Activiti);
         
         ProcessSubject oProcessSubjectMain = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
                   
@@ -870,12 +869,11 @@ public class ProcessSubjectService {
                 }
                 
                 ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginSecondary);
-                
-                ProcessSubjectStatus oProcessSubjectStatusExecutor = processSubjectStatusDao.findByExpected("sID", "transfered"); 
-                
+  
+                oProcessSubjectExecutor.setsDateEdit(dtCurrentDate);
                 oProcessSubjectExecutor.setsDatePlan(sDatePlaneNew);
                 oProcessSubjectExecutor.setsDatePlanNew(null);
-                oProcessSubjectExecutor.setoProcessSubjectStatus(oProcessSubjectStatusExecutor);
+                oProcessSubjectExecutor.setoProcessSubjectStatus(oProcessSubjectStatus);
                 
                 processSubjectDao.saveOrUpdate(oProcessSubjectExecutor);
             
@@ -888,12 +886,11 @@ public class ProcessSubjectService {
                 }
                 
                 ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginSecondary);
-                
-                ProcessSubjectStatus oProcessSubjectStatusExecutor = processSubjectStatusDao.findByExpected("sID", "rejected");
-                
+
+                oProcessSubjectExecutor.setsDateEdit(dtCurrentDate);
                 oProcessSubjectExecutor.setsDateFact(null);
                 oProcessSubjectExecutor.setsText(null);
-                oProcessSubjectExecutor.setoProcessSubjectStatus(oProcessSubjectStatusExecutor);
+                oProcessSubjectExecutor.setoProcessSubjectStatus(oProcessSubjectStatus);
                 
                 processSubjectDao.saveOrUpdate(oProcessSubjectExecutor);
                 
