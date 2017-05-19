@@ -238,8 +238,7 @@ public class ProcessSubject extends AbstractEntity {
                 + ", sDatePlanNew=" + sDatePlanNew
                 + ", aProcessSubjectChild=" + aProcessSubjectChild
                 + ", sTextType=" + sTextType
-                + ", sLoginRole=" + sLoginRole
-                + ", snID_Task_Activiti=" + snID_Task_Activiti + '}';
+                + ", sLoginRole=" + sLoginRole + '}';
     }
     
         
