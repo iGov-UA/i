@@ -210,6 +210,6 @@ public class ProcessSubjectController {
                 @ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin", required = true) String sLogin
     ) {
     
-        return processSubjectService.syncProcessSubjectController(snID_Process_Activiti, snID_Task_Activiti, sLogin);
+        return processSubjectService.syncProcessSubject(snID_Process_Activiti, snID_Task_Activiti, sLogin);
     }
 }

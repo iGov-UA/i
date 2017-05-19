@@ -910,7 +910,7 @@ public class ProcessSubjectService {
         return oProcessSubjectMain;
     }
 
-    public ProcessSubject syncProcessSubjectController(String snID_Process_Activiti, String snID_Task_Activiti, String sLogin) {
+    public ProcessSubject syncProcessSubject(String snID_Process_Activiti, String snID_Task_Activiti, String sLogin) {
         
         ProcessSubject oProcessSubject = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLogin);
         
