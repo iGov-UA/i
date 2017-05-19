@@ -194,7 +194,14 @@ public class ProcessSubjectController {
                 @ApiParam(value = "Дата на которую нужно перенести срок", required = false) @RequestParam(value = "sDatePlaneNew", required = false) String sDatePlaneNew
     ) {
         LOG.info("setProcessSubjectStatus: start service");
-        DateTime dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
+        
+        DateTime dtDatePlaneNew = null;
+        
+        if (sDatePlaneNew != null) {
+        
+            dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
+        }
+        
         LOG.info("setProcessSubjectStatus: controller sID_ProcessSubjectStatus=" + sID_ProcessSubjectStatus + " snID_Task_Activiti=" + snID_Task_Activiti + " sLoginMain=" + sLoginMain);
         return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginMain, sLoginSecondary, sText, dtDatePlaneNew);
     }
