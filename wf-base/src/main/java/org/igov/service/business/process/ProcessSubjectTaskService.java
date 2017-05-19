@@ -340,7 +340,7 @@ public class ProcessSubjectTaskService {
             
             oProcessSubject.setsTextType((String) ((JSONObject)oJsonProcessSubjectTask).get("sTextType"));
             oProcessSubject.setsLogin((String) ((JSONObject)oJsonProcessSubject).get("sLogin"));
-            oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("‘sLoginRole"));
+            oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("sLoginRole"));
             oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
@@ -371,9 +371,9 @@ public class ProcessSubjectTaskService {
     public void removeProcessSubject(ProcessSubject processSubject) {
         LOG.info("removeProcessSubject started...");
         Task TaskInstance = oTaskService.createTaskQuery().processInstanceId(processSubject.getsnID_Task_Activiti()).singleResult();
-        LOG.info("TaskInstance {}", TaskInstance.getId());
         
         if (TaskInstance != null) {
+            LOG.info("TaskInstance {}", TaskInstance.getId());
             oTaskService.deleteTask(TaskInstance.getId());
         }
         
