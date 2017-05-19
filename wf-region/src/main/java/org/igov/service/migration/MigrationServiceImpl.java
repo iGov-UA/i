@@ -71,10 +71,14 @@ public class MigrationServiceImpl implements MigrationService {
     private AttributeTypeDao attributeTypeDao;
 
     @Autowired
+    private AttributeTypeCustomDao attributeTypeCustomDao;
+
+    @Autowired
     private AttributeNameDao attributeNameDao;
 
     @Autowired
     private RepositoryService repositoryService;
+
 
     @Autowired
     private FormService formService;//
@@ -293,14 +297,21 @@ public class MigrationServiceImpl implements MigrationService {
             attribute.setoAttributeType(getAttributeType(value, attribute));
             attribute.setsID_("sID_ Attribute");
             attribute.setoAttributeName(createAttributeName(id));
+            attribute.setoAttributeTypeCustom(createAttributeTypeCustom(id));
             resultList.add(attribute);
         });
         return resultList;
     }
 
+    private AttributeTypeCustom createAttributeTypeCustom(String variableId) {
+        HistoricVariableInstance historicVariableInstance =
+                historyService.createHistoricVariableInstanceQuery().variableName(variableId).singleResult();
+        return attributeTypeCustomDao.findBy("name", historicVariableInstance.getVariableTypeName()).get();
+    }
+
     private AttributeName createAttributeName(String id) {
-        return attributeNameDao.getAttributeNameByStringId(id);
-        //return attributeNameDao.findBy("sID", id).get();
+        //return attributeNameDao.getAttributeNameByStringId(id);
+        return attributeNameDao.findBy("sID", id).get();
     }
 
     private Map<String, Object> convertToAttributesMap(List<HistoricVariableInstance> variables) {
