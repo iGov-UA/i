@@ -136,7 +136,7 @@ public class ProcessSubjectController {
         }
         return processSubjectResult;
     }
-
+    /*
     @ApiOperation(value = "Задать статус процесса", notes = "##### Пример:\n"
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectStatus?snID_Process_Activiti=MJU_Dnipro&nID_ProcessSubjectStatus=1 \n")
     @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.GET)
@@ -152,7 +152,7 @@ public class ProcessSubjectController {
             LOG.error("FAIL: ", e);
         }
         return processSubjectResult;
-    }
+    }*/
 
     @ApiOperation(value = "Сохранить процесс", notes = "##### Пример:\n"
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectDatePlan?snID_Process_Activiti=MJU_Dnipro&sDatePlan=2016-11-19 \n")
@@ -181,7 +181,6 @@ public class ProcessSubjectController {
         return oProcessSubjectTaskService.getProcessSubjectLoginsWithoutTask(snID_Process_Activiti, sFilterLoginRole);
     }
     
-    /*
     @ApiOperation(value = "Задать статус процесса ", notes = "##### Пример:\n" 
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectStatus?nID_ProcessSubjectStatus=1&snID_Task_Activiti=33042597&sLogin=justice_common \n")
     @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.GET)
@@ -199,7 +198,7 @@ public class ProcessSubjectController {
         DateTime dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
 
         return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginSecondary, sLoginMain, sText, dtDatePlaneNew);
-    }*/
+    }
     
     @ApiOperation(value = "Синхронизировать ProcessSubject", notes = "Пример вызова:"
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/syncProcessSubject?snID_Process_Activiti=свое значение&snID_Task_Activiti=свое значение&sLogin=свое значение")
