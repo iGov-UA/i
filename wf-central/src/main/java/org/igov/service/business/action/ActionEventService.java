@@ -511,7 +511,8 @@ public class ActionEventService {
             String sBody,
             Long nID_Proccess_Feedback,
             Long nID_Proccess_Escalation,
-            Long nID_StatusType
+            Long nID_StatusType,
+            String sID_Public_SubjectOrganJoin
     ) {
         int dash_position = sID_Order.indexOf(DASH);
         int nID_Server = dash_position != -1 ? Integer.parseInt(sID_Order.substring(0, dash_position)) : 0;
@@ -538,6 +539,7 @@ public class ActionEventService {
         oHistoryEvent_Service.setnID_Server(nID_Server);
         oHistoryEvent_Service.setnID_Proccess_Feedback(nID_Proccess_Feedback);
         oHistoryEvent_Service.setnID_Proccess_Escalation(nID_Proccess_Escalation);
+        oHistoryEvent_Service.setsID_Public_SubjectOrganJoin(sID_Public_SubjectOrganJoin);
         oHistoryEvent_Service = historyEventServiceDao.addHistoryEvent_Service(oHistoryEvent_Service);
         Map<String, String> mParamMessage = new HashMap<>();
         mParamMessage.put(HistoryEventMessage.SERVICE_NAME, sHead);//sProcessInstanceName
