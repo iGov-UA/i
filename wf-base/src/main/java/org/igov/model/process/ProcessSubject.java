@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
+import javax.persistence.FetchType;
 import javax.persistence.Transient;
 
 @javax.persistence.Entity
@@ -88,7 +89,7 @@ public class ProcessSubject extends AbstractEntity {
     private String sLoginRole;
     
     @JsonProperty(value = "oProcessSubjectTask")
-    @ManyToOne(targetEntity = ProcessSubjectTask.class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = ProcessSubjectTask.class)
     @JoinColumn(name = "nID_ProcessSubjectTask")
     private ProcessSubjectTask oProcessSubjectTask;
     
