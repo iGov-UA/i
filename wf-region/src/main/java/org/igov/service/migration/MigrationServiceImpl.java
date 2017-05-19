@@ -93,7 +93,7 @@ public class MigrationServiceImpl implements MigrationService {
 
     private DateTime getStartTime() {
         //Config config = configDao.findLatestConfig();
-        Config config = configDao.findBy("sName", "dateLastBackup").get();
+        Config config = configDao.findBy("name", "dateLastBackup").get();
         String dateTime = config.getsValue();
         DateTime time = DateTime.parse(dateTime);//date parsing doesn't work properly
         HistoricProcessInstance processInstance =
