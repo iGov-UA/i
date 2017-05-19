@@ -3,31 +3,39 @@
   <process id="OSBB_1552_Inishiativ" name="ОСББ - надання ініціативний групі інформації про площі будинку" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTextDe_Pracue" name="Увага!" type="label" default="Послуга працює у всіх районах Дніпра крім Індустріального"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть необхідний вам КЖЕП" type="select" default="0" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_1" name="Інформація про ініціативну групу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;AdressBud&quot;],&quot;sValue&quot;:&quot;Інформація про ініціативну групу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="AdressBud" name="Адреса будунку де планується створити ОСББ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_Initiativ" name="Дата створення ініціативної групи" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocInitiativ" name="Протокол ініціативної групи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText1" name="Дані заявника------------------------------------------------------------" type="label" default="Перший член ініціативної групи"></activiti:formProperty>
+        <activiti:formProperty id="sDocInitiativ" name="Протокол ініціативної групи;(завантажте сканкопію з підписами членів ініціативної групи) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeGroup" name=" ; ;labelType=info" type="label" default="УВАГА! Подати заявку може будь який член ініціативної групи. При цьому неохідно вказати дані інших членів групи. Мінімальна кількість ініціативної групи 3 людини."></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Паспорт заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Паспорт заявника;(завантажте сканкопію з якої буде видно місце реєстрації) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника;(вкажіть повну адресу: місто, вулицю, будинок, квартиру)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText2" name="---------------------------------------------------------------------------------" type="label" default="Другий член ініціативної групи"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Другий член ініціативної групи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;PIB_Init_2&quot;],&quot;sValue&quot;:&quot;Другий член ініціативної групи&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PIB_Init_2" name="ПІБ другого члена ініціативної групи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport_2" name="Паспорта другого члена ініціативної групи" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress2" name="Адреса другого члена ініціативної групи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText3" name="---------------------------------------------------------------------------------" type="label" default="Третій член ініціативної групи"></activiti:formProperty>
+        <activiti:formProperty id="sDaniAdress2" name="Адреса другого члена ініціативної групи;(вкажіть повну адресу: місто, вулицю, будинок, квартиру)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Третій член ініціативної групи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;PIB_Init_3&quot;],&quot;sValue&quot;:&quot;Третій член ініціативної групи&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PIB_Init_3" name="ПІБ третього члена ініціативної групи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport_3" name="Паспорта третього члена ініціативної групи" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress3" name="Адреса третього члена ініціативної групи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDaniAdress3" name="Адреса третього члена ініціативної групи;(вкажіть повну адресу: місто, вулицю, будинок, квартиру)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeDocOtr" name=" ; ;labelType=info" type="label" default="Оберіть спосіб отримання відповіді. Ви можете отримати відповідь в електронному форматі і вам не доведеться відвідувати комунальне підприємство."></activiti:formProperty>
+                
         <activiti:formProperty id="asDocOtr" name="Як ви хочете отримати відповідь?" type="enum" required="true">
           <activiti:value id="sEnamPapir" name="Отримати паперові документи нарочно"></activiti:value>
           <activiti:value id="sEnamElectro" name="Лист на електронну пошту"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -39,40 +47,6 @@
         <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ ; ;bVisible=false" type="string" default="надання ініціативній групі інформації про площі будинку"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask2" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression><![CDATA[Заявка про ${sPosluga_name}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо ${sPosluga_nameZV} прийнято в роботу. <br />
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail протягом 3х днів.</p>
-<br />
-${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <serviceTask id="servicetask3" name="Лист чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -85,62 +59,11 @@ ${sNameOrgan}.<br />
           <activiti:expression><![CDATA[Нова заявка про ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow4" sourceRef="parallelgateway2" targetRef="servicetask7"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="JKP_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-        <activiti:formProperty id="AdressBud" name="Адреса будунку де планується створити ОСББ; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDate_Initiativ" name="Дата створення ініціативної групи" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sText4" name="Iніціативна група" type="label" default="Дані по членам ініціативної группи"></activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення (член ініціативної групи №1)" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PIB_Init_2" name="Член ініціативної групи №2" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress2" name="Адреса другого члена ініціативної групи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PIB_Init_3" name="Член ініціативної групи №3" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDaniAdress3" name="Адреса третього члена ініціативної групи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDocOtr" name="Як ви хочете отримати відповідь?" type="enum" writable="false">
-          <activiti:value id="sEnamPapir" name="Отримати паперові документи нарочно"></activiti:value>
-          <activiti:value id="sEnamElectro" name="Лист на електронну пошту"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
-          <activiti:value id="acceptPapir" name="Заява оформлена вірно, надіслати лист з запрошенням"></activiti:value>
-          <activiti:value id="acceptElectro" name="Заява оформлена вірно, надіслати електронну відповідь"></activiti:value>
-          <activiti:value id="reject" name="Відмова у наданні відповіді"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sText5" name="Увага!" type="label" default="Обов'язково заповніть вказані нижче поля"></activiti:formProperty>
-        <activiti:formProperty id="sPlosha" name="Загальна площа окремих квартир і окремих нежитлових приміщень будинку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPropisano" name="Кількість зареєстрованих в будинку осіб" type="string"></activiti:formProperty>
-        <activiti:formProperty id="taVlasn_Nejit" name="Інформація про власників нежитлових приміщень" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="taTexDoc" name="Інформація про технічну документацію, перелічити наявні документи" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="asPrimOREnda" name="Чи є допоміжні приміщення, що здаються в оренду?" type="enum" writable="false">
-          <activiti:value id="sEnamTak" name="Наявні приміщення що здаються в оренду"></activiti:value>
-          <activiti:value id="sEnamNi" name="Відсутні приміщення що здатьбся в оренду"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPloshaOrendi" name="Загальна площа приміщень, які здаються в оренду" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sSubsidi" name="Загальний розмір пільг та субсидій" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBorg" name="Cума заборгованості мешканців за останній рік" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDocVidpovid" name="Відповідь в електронному форматі" type="file"></activiti:formProperty>
-        <activiti:formProperty id="Komment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker" name="initiativ" type="markers" default="${markerService.loadFromFile('AK/OSBB/Initiativ_Dash.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Initiativ.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDocInitiativ},${sDocPassport},${sDocPassport_2},${sDocPassport_3}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow5" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Онлайн документ" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -149,134 +72,32 @@ ${sNameOrgan}.<br />
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+          <activiti:expression><![CDATA[Заявка про ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-Заява оформлена вірно.<br />
-Відповідь у вкладенні до цього листа.<br /><br />
-Додатково. За результатами опрацювання Вашої заяви повідомляємо:<br />
-Загальна площа окремих квартир і окремих нежитлових приміщень будинку: ${sPlosha}<br />
-Кількість зареєстрованих в будинку осіб: ${sPropisano}<br />
-Інформація про власників нежитлових приміщень: ${taVlasn_Nejit}<br />
-Чи є допоміжні приміщення, що здаються в оренду? - enum{[asPrimOREnda]}<br />
-Загальна площа приміщень, які здаються в оренду: ${sPloshaOrendi}<br />
-Загальний розмір пільг та субсидій: ${sSubsidi}<br />
-Cума заборгованості мешканців за останній рік ${sBorg}<br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p> Ваше звернення щодо ${sPosluga_nameZV} прийнято в роботу. <br />
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail протягом 3х днів.</p>
+<br />
 ${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-${sAddress}.<br />
-${sWorkTime}.<br />
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${sDocVidpovid}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow7" name="Видача онлайн" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptElectro'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask5" name="Видача на руки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-Заява оформлена вірно.<br />
-Ви можете отримати документ за вказаною нижче адресою.<br /><br />
-Додатково. За результатами опрацювання Вашої заяви повідомляємо:<br />
-Загальна площа окремих квартир і окремих нежитлових приміщень будинку: ${sPlosha}<br />
-Кількість зареєстрованих в будинку осіб: ${sPropisano}<br />
-Інформація про власників нежитлових приміщень: ${taVlasn_Nejit}<br />
-Чи є допоміжні приміщення, що здаються в оренду? - enum{[asPrimOREnda]}<br />
-Загальна площа приміщень, які здаються в оренду: ${sPloshaOrendi}<br />
-Загальний розмір пільг та субсидій: ${sSubsidi}<br />
-Cума заборгованості мешканців за останній рік ${sBorg}<br />
-${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-${sAddress}.<br />
-${sWorkTime}.<br />
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow8" name="Видача на руки" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptPapir'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-На жаль, Вам відмовлено у наданні послуги. Заява оформлені НЕ вірно. Відмова. <br />
-Причина відмови: ${Komment} <br /><br />
-Якщо Вам необхідно отримати інформацію по площі, ви можете подати ще одну заявку на порталі igov.org.ua <br />
-${sPhoneOrgan}.<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}.<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow9" name="Відмова" sourceRef="exclusivegateway1" targetRef="parallelgateway3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
-    </sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow11" sourceRef="parallelgateway4" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow12" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask7" name="Контроль" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -307,6 +128,208 @@ ${sNameOrgan}.<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <sequenceFlow id="flow4" sourceRef="parallelgateway2" targetRef="servicetask7"></sequenceFlow>
+    <userTask id="usertask1" name="Обробка звернення" activiti:candidateGroups="JKP_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="markersLine_1" name="Інформація про ініціативну групу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;AdressBud&quot;],&quot;sValue&quot;:&quot;Інформація про ініціативну групу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="AdressBud" name="Адреса будунку де планується створити ОСББ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_Initiativ" name="Дата створення ініціативної групи" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocInitiativ" name="Протокол ініціативної групи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_22" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення (член ініціативної групи №1); ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDaniAdress1" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Другий член ініціативної групи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;PIB_Init_2&quot;],&quot;sValue&quot;:&quot;Другий член ініціативної групи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="PIB_Init_2" name="ПІБ другого члена ініціативної групи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDaniAdress2" name="Адреса другого члена ініціативної групи; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Третій член ініціативної групи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;PIB_Init_3&quot;],&quot;sValue&quot;:&quot;Третій член ініціативної групи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="PIB_Init_3" name="ПІБ третього члена ініціативної групи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDaniAdress3" name="Адреса третього члена ініціативної групи; ;writable=false" type="string"></activiti:formProperty>
+                
+        <activiti:formProperty id="markersLine_5" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;asDocOtr&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asDocOtr" name="Як заявник хочете отримати відповідь?" type="enum" writable="false">
+          <activiti:value id="sEnamPapir" name="Отримати паперові документи нарочно"></activiti:value>
+          <activiti:value id="sEnamElectro" name="Лист на електронну пошту"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="acceptPapir" name="Заява оформлена вірно, надіслати лист з запрошенням"></activiti:value>
+          <activiti:value id="acceptElectro" name="Заява оформлена вірно, надіслати електронну відповідь"></activiti:value>
+          <activiti:value id="reject" name="Відмова у наданні відповіді"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sText5" name="Увага!" type="label" default="Обов'язково заповніть вказані нижче поля"></activiti:formProperty>
+        <activiti:formProperty id="sPlosha" name="Загальна площа окремих квартир і окремих нежитлових приміщень будинку" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPropisano" name="Кількість зареєстрованих в будинку осіб" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="taVlasn_Nejit" name="Інформація про власників нежитлових приміщень" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="taTexDoc" name="Інформація про технічну документацію, перелічити наявні документи" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asPrimOREnda" name="Чи є допоміжні приміщення, що здаються в оренду?" type="enum">
+          <activiti:value id="sEnamTak" name="Наявні приміщення що здаються в оренду"></activiti:value>
+          <activiti:value id="sEnamNi" name="Відсутні приміщення що здатьбся в оренду"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPloshaOrendi" name="Загальна площа приміщень, які здаються в оренду" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sSubsidi" name="Загальний розмір пільг та субсидій" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBorg" name="Cума заборгованості мешканців за останній рік" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDocVidpovid" name="Відповідь в електронному форматі; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Komment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="sShapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="marker" name="initiativ" type="markers" default="${markerService.loadFromFile('AK/OSBB/Initiativ_Dash.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBodyPrint11" name="[pattern/print/AK/OSBB/Initiativ.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви Сторінка 1" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow7" name="Видача онлайн" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptElectro'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" name="Видача на руки" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'acceptPapir'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow9" name="Відмова" sourceRef="exclusivegateway1" targetRef="parallelgateway3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Онлайн документ" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+Заява оформлена вірно.<br />
+Відповідь у вкладенні до цього листа.<br /><br />
+Додатково. За результатами опрацювання Вашої заяви повідомляємо:<br />
+Загальна площа окремих квартир і окремих нежитлових приміщень будинку: ${sPlosha}<br />
+Кількість зареєстрованих в будинку осіб: ${sPropisano}<br />
+Інформація про власників нежитлових приміщень: ${taVlasn_Nejit}<br />
+Чи є допоміжні приміщення, що здаються в оренду? - enum{[asPrimOREnda]}<br />
+Загальна площа приміщень, які здаються в оренду: ${sPloshaOrendi}<br />
+Загальний розмір пільг та субсидій: ${sSubsidi}<br />
+Cума заборгованості мешканців за останній рік ${sBorg}<br />
+${sPhoneOrgan}.<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.<br />
+${sAddress}.<br />
+${sWorkTime}.<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${sDocVidpovid}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    
+    <serviceTask id="servicetask5" name="Видача на руки" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+Заява оформлена вірно.<br />
+Ви можете отримати документ за вказаною нижче адресою.<br /><br />
+Додатково. За результатами опрацювання Вашої заяви повідомляємо:<br />
+Загальна площа окремих квартир і окремих нежитлових приміщень будинку: ${sPlosha}<br />
+Кількість зареєстрованих в будинку осіб: ${sPropisano}<br />
+Інформація про власників нежитлових приміщень: ${taVlasn_Nejit}<br />
+Чи є допоміжні приміщення, що здаються в оренду? - enum{[asPrimOREnda]}<br />
+Загальна площа приміщень, які здаються в оренду: ${sPloshaOrendi}<br />
+Загальний розмір пільг та субсидій: ${sSubsidi}<br />
+Cума заборгованості мешканців за останній рік ${sBorg}<br />
+${sPhoneOrgan}.<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.<br />
+${sAddress}.<br />
+${sWorkTime}.<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    
+    <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+На жаль, Вам відмовлено у наданні послуги. Заява оформлена НЕ вірно. Відмова. <br />
+Причина відмови: ${Komment} <br /><br />
+Якщо Вам необхідно отримати інформацію по площі, ви можете подати ще одну заявку на порталі igov.org.ua <br />
+${sPhoneOrgan}.<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="parallelgateway4" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    
     <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="parallelgateway1"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
@@ -315,7 +338,32 @@ ${sNameOrgan}.<br />
     <sequenceFlow id="flow16" sourceRef="servicetask3" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="parallelgateway2" targetRef="servicetask2"></sequenceFlow>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
-    <serviceTask id="servicetask8" name="Контроль відмов" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask8" name="Контроль відмов" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Контроль відмов. ${sPosluga_name}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+На жаль, Вам відмовлено у наданні послуги. Заява оформлена НЕ вірно. Відмова. &lt;br&gt;
+Причина відмови: ${Komment} &lt;br&gt;&lt;br&gt;
+Якщо Вам необхідно отримати інформацію по площі, ви можете подати ще одну заявку на порталі igov.org.ua &lt;br&gt;
+${sPhoneOrgan}.&lt;br&gt;
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}&lt;br&gt;
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow18" sourceRef="parallelgateway3" targetRef="servicetask8"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="parallelgateway3" targetRef="servicetask6"></sequenceFlow>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
