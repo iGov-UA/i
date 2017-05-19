@@ -51,6 +51,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import org.igov.io.GeneralConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -60,7 +62,7 @@ import org.springframework.stereotype.Component;
 @Component("processSubjectService")
 public class ProcessSubjectService {
 
-    private static final Log LOG = LogFactory.getLog(ProcessSubjectService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProcessSubjectService.class);
     private static final long FAKE_ROOT_PROCESS_ID = 0;
 
     @Autowired
@@ -382,9 +384,9 @@ public class ProcessSubjectService {
     }
 
     public void removeProcessSubject(ProcessSubject processSubject) {
-
+        LOG.info("removeProcessSubject started...");
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processSubject.getSnID_Process_Activiti()).singleResult();
-
+        LOG.info("processInstance {}", processInstance);
         if (processInstance != null) {
             runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         }
@@ -392,18 +394,23 @@ public class ProcessSubjectService {
         ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
         processSubjectTreeDao.delete(processSubjectTreeToDelete);
         processSubjectDao.delete(processSubject);
+        LOG.info("removeProcessSubject ended...");
     }
 
     public void removeProcessSubjectDeep(ProcessSubject processSubject) {
+        LOG.info("removeProcessSubjectDeep started...");
         ProcessSubjectResult processSubjectResult = getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
+        LOG.info("processSubjectResult {}", processSubjectResult.getaProcessSubject());
         List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
+        
         List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
-
+        
         for (ProcessSubject oProcessSubject : aReverseProcessSubject) {
             removeProcessSubject(oProcessSubject);
         }
 
         removeProcessSubject(processSubject);
+        LOG.info("removeProcessSubjectDeep ended...");
     }
 
     public void editProcessSubject(ProcessSubject processSubject, Map<String, Object> mParamDocument) throws ParseException {
