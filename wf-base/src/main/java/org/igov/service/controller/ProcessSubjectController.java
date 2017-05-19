@@ -201,7 +201,8 @@ public class ProcessSubjectController {
         return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginSecondary, sLoginMain, sText, dtDatePlaneNew);
     }*/
     
-    @ApiOperation(value = "Синхронизировать ProcessSubject ", notes = "")
+    @ApiOperation(value = "Синхронизировать ProcessSubject", notes = "Пример вызова:"
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/syncProcessSubject?snID_Process_Activiti=свое значение&snID_Task_Activiti=свое значение&sLogin=свое значение")
     @RequestMapping(value = "/syncProcessSubject", method = RequestMethod.GET)
     @ResponseBody
     public ProcessSubject syncProcessSubject(
