@@ -225,21 +225,25 @@ public class ProcessSubject extends AbstractEntity {
     }
     
    
-    @Override
-    public String toString() {
-        return "ProcessSubject{" + "id=" + getId()
-                + ", snID_Process_Activiti=" + snID_Process_Activiti
-                + ", sText=" + sText
-                + ", oProcessSubjectStatus=" + oProcessSubjectStatus
-                + ", nOrder=" + nOrder
-                + ", sLogin=" + sLogin
-                + ", sDateEdit=" + sDateEdit
-                + ", sDatePlan=" + sDatePlan
-                + ", sDatePlanNew=" + sDatePlanNew
-                + ", aProcessSubjectChild=" + aProcessSubjectChild
-                + ", sTextType=" + sTextType
-                + ", sLoginRole=" + sLoginRole + '}';
-    }
+     @Override
+     public String toString() {
+         return "ProcessSubject{" + "id=" + getId()
+                 + ", snID_Process_Activiti=" + snID_Process_Activiti
+                 + ", sText=" + sText
+                 + ", oProcessSubjectStatus=" + oProcessSubjectStatus
+                 + ", nOrder=" + nOrder
+                 + ", sLogin=" + sLogin
+                 + ", sDateFact=" + sDateFact
+                 + ", sDateEdit=" + sDateEdit
+                 + ", sDatePlan=" + sDatePlan
+                 + ", sDatePlanNew=" + sDatePlanNew
+                 + ", aUser=" + aUser
+                 + ", aProcessSubjectChild=" + aProcessSubjectChild
+                 + ", sTextType=" + sTextType
+                 + ", sLoginRole=" + sLoginRole
+                 + ", oProcessSubjectTask=" + oProcessSubjectTask
+                 + ", snID_Task_Activiti=" + snID_Task_Activiti + '}';
+     }
     
         
 }
