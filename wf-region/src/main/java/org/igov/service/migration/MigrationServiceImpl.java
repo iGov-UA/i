@@ -304,9 +304,9 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private AttributeTypeCustom createAttributeTypeCustom(String variableId) {
-        HistoricVariableInstance historicVariableInstance =
-                historyService.createHistoricVariableInstanceQuery().variableName(variableId).singleResult();
-        return attributeTypeCustomDao.findBy("name", historicVariableInstance.getVariableTypeName()).get();
+        List<HistoricVariableInstance> historicVariableInstance =
+                historyService.createHistoricVariableInstanceQuery().variableName(variableId).list();
+        return attributeTypeCustomDao.findBy("name", historicVariableInstance.get(0).getVariableTypeName()).get();
     }
 
     private AttributeName createAttributeName(String id) {
