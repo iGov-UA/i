@@ -28,7 +28,7 @@ public class ProcessSubjectTask extends AbstractEntity{
     @Column
     private String snID_Process_Activiti_Root;
     
-    @OneToMany(mappedBy = "oProcessSubjectTask", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "oProcessSubjectTask", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE) 
     private List<ProcessSubject> aProcessSubject;
 
