@@ -1,8 +1,6 @@
 package org.igov.processor;
 
 import org.igov.service.business.flow.FlowService;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,7 @@ public class JobBuilderFlowSlotsProcessor {
     @Autowired
     private FlowService oFlowService;	
     
-    public void executeFlowSlots(JobExecutionContext context) throws JobExecutionException {
+    public void executeFlowSlots()  {
         
         try{
             LOG.info("executeFlowSlots start.....");

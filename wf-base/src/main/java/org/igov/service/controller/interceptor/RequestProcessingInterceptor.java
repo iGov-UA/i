@@ -772,7 +772,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         
-        LOG.info("sRequestBody {}", sRequestBody);
+        LOG.info("sRequestBody {}", sRequestBody);// 
         LOG.info("sResponseBody {}", sResponseBody);
         LOG.info("mParamRequest {}", mParamRequest);
         
@@ -781,6 +781,28 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         }
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+        
+        LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
+        
+        JSONArray properties = (JSONArray) omRequestBody.get("properties");
+        LOG.info("properties >>>>>>>>>>>>>> {}", properties );
+        Iterator<JSONObject> iterator = properties.iterator();
+        String sID_Public_SubjectOrganJoin = null;
+        while (iterator.hasNext()) {
+            JSONObject jsonObject = iterator.next();
+
+            String sId = (String) jsonObject.get("id");
+            String sValue = (String) jsonObject.get("value");
+
+            if (sId.equals("sID_Public_SubjectOrganJoin")) {
+            	sID_Public_SubjectOrganJoin = sValue;
+            	 break;
+            }
+        }
+        LOG.info("RequestProcessingInterceptor sID_Public_SubjectOrganJoin: " + sID_Public_SubjectOrganJoin);
+        mParam.put("sID_Public_SubjectOrganJoin", sID_Public_SubjectOrganJoin);
+        
+        
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
@@ -809,9 +831,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if (sID_UA != null) {
                 mParam.put("sID_UA", sID_UA);
             }
-
+            
             LOG.info("RequestProcessingInterceptor sID_UA: " + sID_UA);
-
+                      
             //TODO: need remove in future
             String snID_Region = mParamRequest.get("nID_Region");
             if (snID_Region != null) {
