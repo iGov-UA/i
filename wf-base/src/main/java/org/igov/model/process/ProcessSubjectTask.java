@@ -64,13 +64,13 @@ public class ProcessSubjectTask extends AbstractEntity{
         this.aProcessSubject = aProcessSubject;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "ProcessSubjectTask{"
                 + "id=" + getId()
                 + "sHead=" + sHead + ", sBody=" + sBody
                 + ", snID_Process_Activiti_Root=" + snID_Process_Activiti_Root
                 + ", aProcessSubject=" + aProcessSubject + '}';
-    }
+    }*/
    
 }

@@ -225,7 +225,7 @@ public class ProcessSubject extends AbstractEntity {
     }
     
    
-     @Override
+    /* @Override
      public String toString() {
          return "ProcessSubject{" + "id=" + getId()
                  + ", snID_Process_Activiti=" + snID_Process_Activiti
@@ -238,12 +238,10 @@ public class ProcessSubject extends AbstractEntity {
                  + ", sDatePlan=" + sDatePlan
                  + ", sDatePlanNew=" + sDatePlanNew
                  + ", aUser=" + aUser
-                 + ", aProcessSubjectChild=" + aProcessSubjectChild
                  + ", sTextType=" + sTextType
                  + ", sLoginRole=" + sLoginRole
-                 + ", oProcessSubjectTask=" + oProcessSubjectTask
                  + ", snID_Task_Activiti=" + snID_Task_Activiti + '}';
-     }
+     }*/
     
         
 }
