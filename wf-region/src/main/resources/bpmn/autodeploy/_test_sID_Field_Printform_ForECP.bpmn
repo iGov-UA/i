@@ -21,12 +21,14 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;bVisible=false" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="fDoc1" name="Файл для накладання ЕЦП - 1; ;sID_Field_Printform_ForECP=sVarTextBody_1, bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="fDoc2" name="Файл для накладання ЕЦП - 2; ;sID_Field_Printform_ForECP=sVarTextBody_2, bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="fDoc3" name="Файл для накладання ЕЦП - 3; ;sID_Field_Printform_ForECP=sVarTextBody_3, bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sVarTextBody_1" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false" type="string" default="Прінтформа №1" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVarTextBody_2" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false" type="string" default="Прінтформа №2" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sVarTextBody_3" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false" type="string" default="Прінтформа №3" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_1" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_2" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №2" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_3" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №3" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -46,7 +48,7 @@
         <activiti:formProperty id="sVarTextBody_2" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false" type="string" default="Прінтформа №2" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sVarTextBody_3" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false" type="string" default="Прінтформа №3" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fDoc4" name="Файл для накладання ЕЦП - 4; ;sID_Field_Printform_ForECP=sVarTextBody_4, bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sVarTextBody_4" name="[pattern/print/justice/justice_1499_UrChange_print_20170328.html]; ;bVisible=false" type="string" default="Прінтформа №4" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_4" name="[pattern/print/justice/justice_1499_UrChange_print_20170328.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №4" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
