@@ -161,13 +161,21 @@ public class ProcessSubjectTaskService {
                 
                 }else if (sActionType.equals("edit")){
                     
+                    LOG.info("editing started....");
+                    
                     ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
                             Long.parseLong((String)((JSONObject)oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
                     
+                    LOG.info("oProcessSubjectTask is {}", oProcessSubjectTask);
+                    
                     ProcessSubject oProcessSubjectController = getProcessSubjectByTask(snId_Task);
+                    
+                    LOG.info("oProcessSubjectController is {}", oProcessSubjectController);
                     
                     List<ProcessSubject> aProcessSubject_saved = 
                             oProcessSubjectDao.findAllBy("snID_Process_Activiti", oProcessSubjectController.getSnID_Process_Activiti());
+                    
+                    LOG.info("aProcessSubject_saved is {}", aProcessSubject_saved);
                     
                     List<String> aNewLogin = new ArrayList<>();
                     
@@ -175,15 +183,17 @@ public class ProcessSubjectTaskService {
                         aNewLogin.add((String)((JSONObject)oJsonProcessSubject).get("sLogin"));
                     }
                     
+                    LOG.info("aNewLogin is {}", aNewLogin);
+                    
                     List<ProcessSubject> aProcessSubject_ToUpdate = new ArrayList<>();
                     
                     for(ProcessSubject oProcessSubject : aProcessSubject_saved){
                         if(!aNewLogin.contains(oProcessSubject.getsLogin())){
+                           LOG.info("Login to delete in new task setting schema is {}", oProcessSubject.getsLogin());
                            oProcessSubjectService.removeProcessSubjectDeep(oProcessSubject);
-                           LOG.info("Login to delete in new task setting schema is {}", aNewLogin);
                         }
                         else{
-                            LOG.info("Login to update in new task setting schema is {}", aNewLogin);
+                            LOG.info("Login to update in new task setting schema is {}", oProcessSubject.getsLogin());
                             aProcessSubject_ToUpdate.add(oProcessSubject);
                         }
                     }
