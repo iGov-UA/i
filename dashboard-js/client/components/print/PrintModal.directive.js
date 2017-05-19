@@ -31,7 +31,7 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
       scope.isPrintFormNeverUploaded = true;
       scope.showSignAndUploadButton = function () {
         var aFileFields = scope.taskForm.filter(function (field) {
-          return field.type === 'file' && field.options.hasOwnProperty('sID_Field_Printfotm_ForECP');
+          return field.type === 'file' && field.options.hasOwnProperty('sID_Field_Printform_ForECP');
         });
         for(var j = 0; j < aFileFields.length; j++){
           for(var i = 0; i < scope.taskForm.length; i++){
