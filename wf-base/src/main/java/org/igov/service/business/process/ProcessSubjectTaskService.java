@@ -1,6 +1,7 @@
 package org.igov.service.business.process;
 
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -378,11 +379,11 @@ public class ProcessSubjectTaskService {
         }
         
         LOG.info("TaskInstance deleted..");
-        ProcessSubjectTree processSubjectTreeToDelete = oProcessSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
+        Optional<ProcessSubjectTree> processSubjectTreeToDelete = oProcessSubjectTreeDao.findBy("processSubjectChild", processSubject);
         
-        if(processSubjectTreeToDelete != null){
-            LOG.info("processSubjectTreeToDelete {}", processSubjectTreeToDelete);
-            oProcessSubjectTreeDao.delete(processSubjectTreeToDelete);
+        if(processSubjectTreeToDelete.get() != null){
+            LOG.info("processSubjectTreeToDelete {}", processSubjectTreeToDelete.get());
+            oProcessSubjectTreeDao.delete(processSubjectTreeToDelete.get());
         }
         else{
             LOG.info("processSubjectTree is null");
