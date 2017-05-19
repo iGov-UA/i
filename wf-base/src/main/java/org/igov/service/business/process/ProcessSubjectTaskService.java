@@ -285,10 +285,14 @@ public class ProcessSubjectTaskService {
                             }
                         }
 
-                        oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
+                        /*oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
                                 (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
-                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));
-
+                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));*/
+                        
+                        setProcessSubjectList(aJsonProcessSubject, 
+                                (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
+                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate);
+                        
                         oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
                         oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
                         oProcessSubjectTask.setsHead((String)((JSONObject)oJsonProcessSubjectTask).get("sHead"));
@@ -348,7 +352,7 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setsTextType((String) ((JSONObject)oJsonProcessSubjectTask).get("sTextType"));
             oProcessSubject.setsLogin((String) ((JSONObject)oJsonProcessSubject).get("sLogin"));
             oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("sLoginRole"));
-            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
+//            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
             oProcessSubject.setnOrder(nOrder);

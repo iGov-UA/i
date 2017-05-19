@@ -88,10 +88,10 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private String sLoginRole;
     
-    @JsonProperty(value = "oProcessSubjectTask")
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = ProcessSubjectTask.class)
+    /*@JsonProperty(value = "oProcessSubjectTask")
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = ProcessSubjectTask.class)
     @JoinColumn(name = "nID_ProcessSubjectTask")
-    private ProcessSubjectTask oProcessSubjectTask;
+    private ProcessSubjectTask oProcessSubjectTask;*/
     
     @JsonProperty(value = "snID_Task_Activiti")
     @Column
@@ -185,17 +185,17 @@ public class ProcessSubject extends AbstractEntity {
         return sTextType;
     }
 
-    public ProcessSubjectTask getoProcessSubjectTask() {
-        return oProcessSubjectTask;
-    }
-
     public void setsTextType(String sTextType) {
         this.sTextType = sTextType;
+    }
+    
+    /*public ProcessSubjectTask getoProcessSubjectTask() {
+        return oProcessSubjectTask;
     }
 
     public void setoProcessSubjectTask(ProcessSubjectTask oProcessSubjectTask) {
         this.oProcessSubjectTask = oProcessSubjectTask;
-    }
+    }*/
 
     public DateTime getsDatePlanNew() {
         return sDatePlanNew;
