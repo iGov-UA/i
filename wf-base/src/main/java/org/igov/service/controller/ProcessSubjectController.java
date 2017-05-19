@@ -196,8 +196,8 @@ public class ProcessSubjectController {
     ) {
         
         DateTime dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
-
-        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginSecondary, sLoginMain, sText, dtDatePlaneNew);
+        LOG.info("setProcessSubjectStatus: controller sID_ProcessSubjectStatus=" + sID_ProcessSubjectStatus + " snID_Task_Activiti=" + snID_Task_Activiti + " sLoginMain=" + sLoginMain);
+        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginMain, sLoginSecondary, sText, dtDatePlaneNew);
     }
     
     @ApiOperation(value = "Синхронизировать ProcessSubject", notes = "Пример вызова:"

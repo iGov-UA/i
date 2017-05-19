@@ -828,7 +828,7 @@ public class ProcessSubjectService {
             String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLoginMain, String sLoginSecondary,
             String sText, DateTime sDatePlaneNew
     ) {
-                
+        LOG.info("setProcessSubjectStatus:  sID_ProcessSubjectStatus=" + sID_ProcessSubjectStatus + " snID_Task_Activiti=" + snID_Task_Activiti + " sLoginMain=" + sLoginMain);
         String snID_Process_Activiti = oActionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
         LOG.info("setProcessSubjectStatus: snID_Process_Activiti=" + snID_Process_Activiti);
         
