@@ -370,7 +370,7 @@ public class ProcessSubjectTaskService {
     
     public void removeProcessSubject(ProcessSubject processSubject) {
         LOG.info("removeProcessSubject started...");
-        Task TaskInstance = oTaskService.createTaskQuery().processInstanceId(processSubject.getsnID_Task_Activiti()).singleResult();
+        Task TaskInstance = oTaskService.createTaskQuery().processInstanceId(processSubject.getSnID_Task_Activiti()).singleResult();
         
         if (TaskInstance != null) {
             LOG.info("TaskInstance {}", TaskInstance.getId());

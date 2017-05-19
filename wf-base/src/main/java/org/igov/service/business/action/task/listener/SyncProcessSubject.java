@@ -65,7 +65,7 @@ public class SyncProcessSubject implements TaskListener {
         
         ProcessSubject oProcessSubject = oProcessSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLogin);
             
-        oProcessSubject.setsnID_Task_Activiti(snID_Task_Activiti);
+        oProcessSubject.setSnID_Task_Activiti(snID_Task_Activiti);
             
         oProcessSubjectDao.saveOrUpdate(oProcessSubject);
     }
