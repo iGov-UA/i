@@ -189,12 +189,11 @@ public class ProcessSubjectController {
                 @ApiParam(value = "Статус", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
                 @ApiParam(value = "Ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
                 @ApiParam(value = "Логин того, кто вызвал сервис", required = true) @RequestParam(value = "sLoginMain", required = true) String sLoginMain,
-                @ApiParam(value = "Логин исполнителя, нужен в некоторых кейсах, когда сервис вызывает контролирующий", required = false)
-                @RequestParam(value = "sLoginSecondary", required = false) String sLoginSecondary,
+                @ApiParam(value = "Логин исполнителя, нужен в некоторых кейсах, когда сервис вызывает контролирующий", required = false) @RequestParam(value = "sLoginSecondary", required = false) String sLoginSecondary,
                 @ApiParam(value = "Текстовое поле", required = false) @RequestParam(value = "sText", required = false) String sText,
                 @ApiParam(value = "Дата на которую нужно перенести срок", required = false) @RequestParam(value = "sDatePlaneNew", required = false) String sDatePlaneNew
     ) {
-        
+        LOG.info("setProcessSubjectStatus: start service");
         DateTime dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
         LOG.info("setProcessSubjectStatus: controller sID_ProcessSubjectStatus=" + sID_ProcessSubjectStatus + " snID_Task_Activiti=" + snID_Task_Activiti + " sLoginMain=" + sLoginMain);
         return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginMain, sLoginSecondary, sText, dtDatePlaneNew);
