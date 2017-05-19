@@ -243,7 +243,7 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow18" sourceRef="servicetask6" targetRef="parallelgateway3"></sequenceFlow>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow19" sourceRef="parallelgateway4" targetRef="servicetask6"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Контроль відмов">
+    <serviceTask id="servicetask8" name="Контроль відмов" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>akylish88@gmail.com</activiti:expression>
