@@ -567,11 +567,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     && oTaskFormData.getFormProperties() != null) {
                 for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
                     aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
-                   /* LOG.info("Matching2 property (Id={},Name={},Type={},Value={})",
-                            oFormProperty.getId(), oFormProperty.getName(),
-                            oFormProperty.getType().getName(),
-                            oFormProperty.getValue());
-                    */
+
                 }
             }
         } catch (Exception e) {
