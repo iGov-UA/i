@@ -233,27 +233,27 @@ public class ProcessSubjectTaskService {
             
                         ProcessInstance oProcessInstance = oRuntimeService.startProcessInstanceByKey((String) ((JSONObject)oJsonProcessSubjectTask).get("sID_BP"), mParamTask); 
                         
-                        oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
+                        /*oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
                         oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
                         oProcessSubjectTask.setsHead((String)((JSONObject)oJsonProcessSubjectTask).get("sHead"));
                         
-                        oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
+                        oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);*/
                         
                         List<ProcessSubject> aProcessSubject = 
                             setProcessSubjectList(aJsonProcessSubject, (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, oProcessInstance.getId(), null);
                         
-                        ProcessSubject ProcessSubjectController = null;
+                        /*ProcessSubject ProcessSubjectController = null;
                         
                         for(ProcessSubject oProcessSubject : aProcessSubject){
                             if(oProcessSubject.getsLoginRole().equals("Controller")){
                                 ProcessSubjectController = oProcessSubject;
                                 break;
                             }
-                        }
+                        }*/
                         
                         for(ProcessSubject oProcessSubject : aProcessSubject){
                             if(oProcessSubject.getsLoginRole().equals("Executor")){
-                                saveProcessSubjectTree(ProcessSubjectController, oProcessSubject);
+                                saveProcessSubjectTree(oProcessSubjectController, oProcessSubject);
                             }
                         }
                     }
