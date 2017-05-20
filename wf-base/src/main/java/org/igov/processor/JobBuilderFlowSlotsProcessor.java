@@ -11,20 +11,18 @@ public class JobBuilderFlowSlotsProcessor {
 
 	  private final static Logger LOG = LoggerFactory.getLogger(JobBuilderFlowSlotsProcessor.class);
 	
-    @Autowired
-    private FlowService oFlowService;	
-    
-    public void executeFlowSlots()  {
-        
-        try{
-            LOG.info("executeFlowSlots start.....");
-            oFlowService.buildFlowSlots();
-            LOG.info("executeFlowSlots finish.....");
-        }
-        catch(Exception ex){
-            LOG.info("JobBuilderFlowSlots throws an error: {}", ex);
-        }
-    } 
-	
-	
+  @Autowired
+  private FlowService oFlowService;	
+  
+  public void executeFlowSlots()  {
+      try{
+          LOG.info("executeFlowSlots start.....");
+          oFlowService.buildFlowSlots();
+          LOG.info("executeFlowSlots finish.....");
+      }
+      catch(Exception ex){
+          LOG.info("JobBuilderFlowSlots throws an error: {}", ex);
+      }
+  }
+
 }

@@ -1,6 +1,7 @@
 package org.igov.service.business.process;
 
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -200,7 +201,7 @@ public class ProcessSubjectTaskService {
                         }
                     }
                     
-                    oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
+                    /*oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
                             (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
                             oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));
                     
@@ -211,7 +212,7 @@ public class ProcessSubjectTaskService {
                     oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
                     
                     oRuntimeService.setVariable(oProcessSubjectController.getSnID_Process_Activiti(), 
-                            "sID_File_StorateTemp", sKey);
+                            "sID_File_StorateTemp", sKey);*/
                     
                 }else if (sActionType.equals("delegate")){
                     
@@ -284,10 +285,14 @@ public class ProcessSubjectTaskService {
                             }
                         }
 
-                        oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
+                        /*oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
                                 (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
-                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));
-
+                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));*/
+                        
+                        setProcessSubjectList(aJsonProcessSubject, 
+                                (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
+                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate);
+                        
                         oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
                         oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
                         oProcessSubjectTask.setsHead((String)((JSONObject)oJsonProcessSubjectTask).get("sHead"));
@@ -311,6 +316,7 @@ public class ProcessSubjectTaskService {
     private List<ProcessSubject> setProcessSubjectList(JSONArray aJsonProcessSubject, JSONObject oJsonProcessSubjectTask,
             ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti, List<ProcessSubject> aProcessSubject_ToUpdate) throws ParseException, Exception 
     {
+        LOG.info("setProcessSubjectList started..");
         ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(1L);
         
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
@@ -325,7 +331,12 @@ public class ProcessSubjectTaskService {
                 //update existing entity;
                 for(ProcessSubject oProcessSubject_ToUpdate : aProcessSubject_ToUpdate){
                     if(oProcessSubject_ToUpdate.getsLogin().equals((String) ((JSONObject)oJsonProcessSubject).get("sLogin"))){
-                        oProcessSubject = oProcessSubject_ToUpdate;
+                        LOG.info("oProcessSubject to update is {}", oProcessSubject);
+                        if (((JSONObject)oJsonProcessSubject).get("sDatePlan") != null) {
+                            DateTime datePlan = new DateTime(oProcessSubjectService.parseDate(
+                                    (String) ((JSONObject)oJsonProcessSubject).get("sDatePlan")));
+                            oProcessSubject_ToUpdate.setsDatePlan(datePlan);
+                        }
                         break;
                     }
                 }
@@ -341,7 +352,7 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setsTextType((String) ((JSONObject)oJsonProcessSubjectTask).get("sTextType"));
             oProcessSubject.setsLogin((String) ((JSONObject)oJsonProcessSubject).get("sLogin"));
             oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("sLoginRole"));
-            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
+//            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
             oProcessSubject.setnOrder(nOrder);
@@ -378,16 +389,17 @@ public class ProcessSubjectTaskService {
         }
         
         LOG.info("TaskInstance deleted..");
-        ProcessSubjectTree processSubjectTreeToDelete = oProcessSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
+        Optional<ProcessSubjectTree> processSubjectTreeToDelete = oProcessSubjectTreeDao.findBy("processSubjectChild", processSubject);
         
-        if(processSubjectTreeToDelete != null){
-            LOG.info("processSubjectTreeToDelete {}", processSubjectTreeToDelete);
-            oProcessSubjectTreeDao.delete(processSubjectTreeToDelete);
+        if(processSubjectTreeToDelete.isPresent()){
+            LOG.info("processSubjectTreeToDelete {}", processSubjectTreeToDelete.get());
+            oProcessSubjectTreeDao.delete(processSubjectTreeToDelete.get());
         }
         else{
             LOG.info("processSubjectTree is null");
         }
         
+        LOG.info("deleted processSubject Id is {}", processSubject.getId());
         oProcessSubjectDao.delete(processSubject);
         LOG.info("removeProcessSubject ended...");
     }

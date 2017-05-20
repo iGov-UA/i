@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
+import javax.persistence.FetchType;
 import javax.persistence.Transient;
 
 @javax.persistence.Entity
@@ -87,10 +88,10 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private String sLoginRole;
     
-    @JsonProperty(value = "oProcessSubjectTask")
-    @ManyToOne(targetEntity = ProcessSubjectTask.class)
+    /*@JsonProperty(value = "oProcessSubjectTask")
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = ProcessSubjectTask.class)
     @JoinColumn(name = "nID_ProcessSubjectTask")
-    private ProcessSubjectTask oProcessSubjectTask;
+    private ProcessSubjectTask oProcessSubjectTask;*/
     
     @JsonProperty(value = "snID_Task_Activiti")
     @Column
@@ -184,17 +185,17 @@ public class ProcessSubject extends AbstractEntity {
         return sTextType;
     }
 
-    public ProcessSubjectTask getoProcessSubjectTask() {
-        return oProcessSubjectTask;
-    }
-
     public void setsTextType(String sTextType) {
         this.sTextType = sTextType;
+    }
+    
+    /*public ProcessSubjectTask getoProcessSubjectTask() {
+        return oProcessSubjectTask;
     }
 
     public void setoProcessSubjectTask(ProcessSubjectTask oProcessSubjectTask) {
         this.oProcessSubjectTask = oProcessSubjectTask;
-    }
+    }*/
 
     public DateTime getsDatePlanNew() {
         return sDatePlanNew;
@@ -225,7 +226,7 @@ public class ProcessSubject extends AbstractEntity {
     }
     
    
-     @Override
+    /* @Override
      public String toString() {
          return "ProcessSubject{" + "id=" + getId()
                  + ", snID_Process_Activiti=" + snID_Process_Activiti
@@ -238,12 +239,10 @@ public class ProcessSubject extends AbstractEntity {
                  + ", sDatePlan=" + sDatePlan
                  + ", sDatePlanNew=" + sDatePlanNew
                  + ", aUser=" + aUser
-                 + ", aProcessSubjectChild=" + aProcessSubjectChild
                  + ", sTextType=" + sTextType
                  + ", sLoginRole=" + sLoginRole
-                 + ", oProcessSubjectTask=" + oProcessSubjectTask
                  + ", snID_Task_Activiti=" + snID_Task_Activiti + '}';
-     }
+     }*/
     
         
 }
