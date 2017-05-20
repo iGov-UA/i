@@ -7,6 +7,10 @@
     <div class='col-md-12 ng-modal-dialog-content-view' ng-style='dialogStyle'>
       <div class='ng-modal-dialog-content' ng-transclude></div>
     </div>
+    <div class='ng-modal-dialog-print-button' ng-if="$parent.$root.config.bTest">
+      <button ng-if="!signedContent" ng-click='signWithEDS()' class='btn btn-igov'>Підписати</button>
+      <a ng-if="signedContent" download="{{ signedContent.signedContentName }}.pdf" ng-href="{{ signedContent.signedContentURL }}" class='btn btn-igov'>Скачати документ</a>
+    </div>
     <div class='ng-modal-dialog-print-button'>
       <button ng-click='printContent()' class='btn btn-igov'>Роздрукувати</button>
     </div>

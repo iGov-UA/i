@@ -52,6 +52,7 @@ angular.module('app', [
 }).run(function ($rootScope, $state, $injector, statesRepository) {
   $rootScope.state = $state;
   $rootScope.profile = {
+    nID_Place_Profile: statesRepository.getID_Place_Profile(),
     isKyivCity: !!statesRepository.isKyivCity()
   };
 

@@ -78,7 +78,9 @@ public class HistoryEventServiceImpl implements HistoryEventService {
         if (!generalConfig.getSelfHostCentral().contains("ksds.nads.gov.ua") && !generalConfig.getSelfHostCentral().contains("staff.igov.org.ua")) {
             String sURL = generalConfig.getSelfHostCentral() + httpRequester.getFullURL(URI_UPDATE_HISTORY_EVENT, params);
             String json = JSONValue.toJSONString(body);
+            LOG.info("json from HistoryEventServiceImpl is: {}",json);
             String reqBody = URLEncoder.encode(json, "UTF-8");
+            LOG.info("reqBody from HistoryEventServiceImpl is: {}", reqBody);
             LOG.info("START POST Request updateHistoryEvent (sURL={}, body={})", sURL, body);
             try {
                 soResponse = httpRequester.postInside(sURL, null, reqBody, "text/html;charset=utf-8");

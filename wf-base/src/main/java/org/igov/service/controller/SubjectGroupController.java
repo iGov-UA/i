@@ -23,6 +23,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.Map;
+import org.igov.model.subject.SubjectGroup;
 import org.igov.service.business.subject.SubjectGroupTreeService_new;
 
 @Controller
@@ -115,6 +116,17 @@ public class SubjectGroupController {
             throws Exception {
         
         return subjectRightBPService.getBPs_ForExport(sLogin);
+    }
+    
+    @ApiOperation(value = "Получение организационной иерархии вверх")
+    @RequestMapping(value = "/getSubjectGroupsTreeUp", method = RequestMethod.GET)
+    @ResponseBody
+    public List<SubjectGroup> getSubjectGroupsTreeUp(
+            @ApiParam(value = "Идентификатор группы", required = true) @RequestParam(value = "sID_Group_Activiti", required = true) String sID_Group_Activiti,
+            @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей", required = false) @RequestParam(value = "sSubjectType", required = false) String sSubjectType) {
+        
+        return subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType);
+       
     }
     
 }

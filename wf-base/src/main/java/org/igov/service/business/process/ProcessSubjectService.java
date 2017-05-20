@@ -36,20 +36,21 @@ import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessSubjectTreeDao;
 import org.igov.model.process.ProcessUser;
 import org.igov.service.conf.AttachmetService;
+import org.igov.service.business.action.event.ActionEventHistoryService;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired; 
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import org.igov.io.GeneralConfig;
-import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -91,6 +92,9 @@ public class ProcessSubjectService {
     
     @Autowired
     private AttachmetService oAttachmetService;
+    
+    @Autowired
+    private ActionTaskService oActionTaskService;
 
     public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel, String sFind) {
 
@@ -475,7 +479,7 @@ public class ProcessSubjectService {
                     if (!mParamDocumentNew.isEmpty()) {
                         
                         addEditHistoryEvent(processSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
-                                    processSubject.getsLogin(), processSubject.getProcessSubjectStatus().getId());
+                                    processSubject.getsLogin(), processSubject.getoProcessSubjectStatus().getId());
                         
                         for (ProcessSubject oProcessSubject : aProcessSubject_Child) {
                             oProcessSubject.setsDateEdit(new DateTime(df_StartProcess.parse(df_StartProcess.format(new Date()))));
@@ -501,7 +505,7 @@ public class ProcessSubjectService {
                             }
                             
                             addEditHistoryEvent(oProcessSubject.getSnID_Process_Activiti(), sNewHistoryData, sOldHistoryData,
-                                    processSubject.getsLogin(), oProcessSubject.getProcessSubjectStatus().getId());
+                                    processSubject.getsLogin(), oProcessSubject.getoProcessSubjectStatus().getId());
                             
                             oProcessSubject.setsDatePlan(datePlan);
                             processSubjectDao.saveOrUpdate(oProcessSubject);
@@ -703,7 +707,7 @@ public class ProcessSubjectService {
                         for (String sLogin : aProcessSubjectLoginToDelete) {
                             if (oProcessSubject.getsLogin().equals(sLogin)) {
 
-                                String sProcessSubjectStatus = oProcessSubject.getProcessSubjectStatus().getsID();
+                                String sProcessSubjectStatus = oProcessSubject.getoProcessSubjectStatus().getsID();
 
                                 if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
                                         || sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed"))) {
@@ -722,7 +726,7 @@ public class ProcessSubjectService {
         }
     }
 
-    private Date parseDate(String sDate) throws java.text.ParseException {
+    public Date parseDate(String sDate) throws java.text.ParseException {
         DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
         DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
         Date oDateReturn;
@@ -759,13 +763,13 @@ public class ProcessSubjectService {
 
 	    for (ProcessSubject oProcessSubject_Сhild : aProcessSubject_Child) {
   
-		String sProcessSubjectStatus = oProcessSubject_Сhild.getProcessSubjectStatus().getsID();
+		String sProcessSubjectStatus = oProcessSubject_Сhild.getoProcessSubjectStatus().getsID();
 		LOG.info("String sProcessSubjectStatus Сhild is....... = " + sProcessSubjectStatus);
 
 		if (!(sProcessSubjectStatus.equals("executed") || sProcessSubjectStatus.equals("notExecuted")
 			|| sProcessSubjectStatus.equals("unactual") || sProcessSubjectStatus.equals("closed")))	{
 
-		    oProcessSubject_Сhild.setProcessSubjectStatus(oProcessSubjectStatusUnactual);
+		    oProcessSubject_Сhild.setoProcessSubjectStatus(oProcessSubjectStatusUnactual);
 		    LOG.info("String sProcessSubjectStatus Сhild is   now....... = " + sProcessSubjectStatus);
 		    try {
 			oProcessSubject_Сhild.setsDateEdit(
@@ -791,5 +795,77 @@ public class ProcessSubjectService {
 		}
 	    }
 	}
+    }
+    
+    /**
+     * Изменение статуса процесса
+     * https://github.com/e-government-ua/i/issues/1660
+     * 
+     * @param sID_ProcessSubjectStatus - статус на который нужно изменить
+     * @param snID_Task_Activiti - ид таски
+     * @param sLogin - логин того, кто вызвал сервис
+     * @param sText - если приходит, то изменяем
+     * @param sDatePlaneNew - планируемая дата выполнения
+     * @return processSubject - процесс, который был изменен
+     */
+    public ProcessSubject setProcessSubjectStatus(String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLogin, String sText, DateTime sDatePlaneNew) {
+                
+        String snID_Process_Activiti = oActionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
+        
+        ProcessSubject oProcessSubject = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLogin);
+                  
+        String sLoginRole = oProcessSubject.getsLoginRole();
+        
+        if (sLoginRole.equals("Executor") || sLoginRole.equals("Controller")) {
+            
+            ProcessSubjectStatus oProcessSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
+            
+            DateTime dtCurrentDate = new DateTime();
+             
+            oProcessSubject.setsDateEdit(dtCurrentDate);
+            oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
+            
+            if (sText != null) {          
+                
+                oProcessSubject.setsText(sText);
+            }
+        
+            if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
+                || sID_ProcessSubjectStatus.equals("unactual") && sLoginRole.equals("Executor")) {
+  
+                oProcessSubject.setsDateFact(dtCurrentDate);
+                
+            } else if (sID_ProcessSubjectStatus.equals("requestTransfered") && sLoginRole.equals("Executor")) {
+                
+                oProcessSubject.setsDatePlanNew(sDatePlaneNew);
+                
+            } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRole.equals("Controller")) {
+            
+                oProcessSubject.setsDatePlan(sDatePlaneNew);
+                oProcessSubject.setsDatePlanNew(null);
+                //статус у исполнителя меняем на transfered
+            
+            } else if (sID_ProcessSubjectStatus.equals("rejected") && sLoginRole.equals("Controller")) {
+                
+                oProcessSubject.setsDateFact(null);
+                oProcessSubject.setsText(null);
+                //проставить статус rejected в записи исполнителя
+            
+            } else if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
+                || sID_ProcessSubjectStatus.equals("unactual") && sLoginRole.equals("Controller")) {
+            
+                //Так же необходимо закрыть со статусом unactual по цепочке все делегированные задачи, если они не были отработаны исполнителями.
+                
+            }
+            
+            processSubjectDao.saveOrUpdate(oProcessSubject);
+            
+        } else {
+        
+            LOG.info("setProcessSubjectStatus: sLogin= " + sLogin + "has not enough rights to modify the process oProcessSubject.Id= " + oProcessSubject.getId());
+            throw new IllegalArgumentException("sLogin= " + sLogin + "has not enough rights to modify the process oProcessSubject.Id= " + oProcessSubject.getId());
+        }
+        
+        return oProcessSubject;
     }
 }

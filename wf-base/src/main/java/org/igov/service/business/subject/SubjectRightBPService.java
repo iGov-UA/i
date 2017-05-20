@@ -41,20 +41,26 @@ public class SubjectRightBPService {
             List<String> asID_Group = new ArrayList<>();
 
             if (aGroup != null) {
-		aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
+            	aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
             }
             
-            List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group_Referent", asID_Group);
+            List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("asID_Group_Export", asID_Group);
             
-            if(aSubjectRightBP != null){
-                for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) 
-                {
-                    Map<String, String> mSubjectRightBP = new HashMap<>();
-                    mSubjectRightBP.put("sName_BP", oSubjectRightBP.getsID_BP());
-                    mSubjectRightBP.put("sNote", oSubjectRightBP.getsNote());
-                    aResultMap.add(mSubjectRightBP);
+		if (aSubjectRightBP != null) {
+			for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) {
+				List<ProcessDefinition> aProcessDefinition = oRepositoryService.createProcessDefinitionQuery()
+						.processDefinitionKeyLike(oSubjectRightBP.getsID_BP()).active().latestVersion().list();
+				Map<String, String> mSubjectRightBP = new HashMap<>();
+				mSubjectRightBP.put("sID_BP", oSubjectRightBP.getsID_BP());
+				mSubjectRightBP.put("sNote", oSubjectRightBP.getsNote());
+				 if(!aProcessDefinition.isEmpty()){
+					 mSubjectRightBP.put("sName_BP",aProcessDefinition.get(0).getName());
+				 }else {
+					 mSubjectRightBP.put("sName_BP","");
+				 }
+				aResultMap.add(mSubjectRightBP);
+			}
 		}
-            }
             
             return aResultMap;
         }

@@ -141,37 +141,23 @@ angular.module('journal').controller('JournalSearchController', function (
         MessagesService.getServiceMessages(sID_Order, sToken).then(function (oResponse) {
           if (ErrorsFactory.bSuccessResponse(oResponse)) {
             if (bExist(oResponse.messages)) {
-              $scope.aOrderMessages = oResponse.messages;
+              var aMessages = oResponse.messages;
+              $scope.aOrderMessages = [];
               if (events) {
-                $scope.aOrderMessages = $scope.aOrderMessages.concat(events);
+                aMessages = aMessages.concat(events);
               }
-              angular.forEach($scope.aOrderMessages, function (oOrderMessage, nIndex) {
+              angular.forEach(aMessages, function (oOrderMessage, nIndex) {
                 oOrderMessage.sDate = moment(oOrderMessage.sDate).toDate();
-                  if (oOrderMessage.sData) {
+                  if (oOrderMessage.aSubjectMessageQuestionFields) {
                     try {
-                      var aField = JSON.parse(oOrderMessage.sData.replace(/'/g, '\''));
+                      var aField = oOrderMessage.aSubjectMessageQuestionFields;
                       angular.forEach(aField, function (oField) {
-                        // если выполяеться данное условие, то в объекте будет только "общий" коммент от чиновника
-                        // плюс тип - string, поэтому остальные поля в любом случае будут undefined, в этом мне кажется нет необходимости
-
-                        // if (!bExist(oField.sID)) {
-                        //   oField.sID = oField.id;
-                        //   oField.sName = oField.id;
-                        //   oField.sType = oField.type;
-                        //   oField.sValue = oField.value;
-                        //   oField.sValueNew = oField.value;
-                        //   oField.sNotify = oField.value;
-                        //   oField.id = "";
-                        //   oField.type = "";
-                        //   oField.value = "";
-                        // }
                         if (oField.sType === "date") {
                           oField.oFactory = DatepickerFactory.prototype.createFactory();
                           oField.oFactory.value = oField.sValueNew;
                           oField.oFactory.required = true;
                         }
                       });
-                      oOrderMessage.aData = aField;
                     } catch (sError) {
                       ErrorsFactory.addFail({
                         sBody: 'Помилка десереалізації об`єкту з полями, у яких зауваження!',
@@ -179,6 +165,9 @@ angular.module('journal').controller('JournalSearchController', function (
                         asParam: ['oData.soData: ' + oResponse.soData]
                       });
                     }
+                  }
+                  if((oOrderMessage.sMessage && !oOrderMessage.sMessage.match(/По заявці №[0-9-]+ дана відповідь громадянином:\W*\n*%tableBody%/)) || !oOrderMessage.sMessage){
+                    $scope.aOrderMessages.push(oOrderMessage);
                   }
               });
             } else {
@@ -268,6 +257,23 @@ angular.module('journal').controller('JournalSearchController', function (
                 sBody: 'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!',
                 sError: sError,
                 asParam: ['oData.saField: ' + $scope.aOrderMessages[0].aData]
+              });
+            }
+          }
+          if ($scope.aOrderMessages[0].aSubjectMessageQuestionFields) {
+            try {
+              angular.forEach($scope.aOrderMessages[0].aSubjectMessageQuestionFields, function (oField) {
+                if (oField.sType === "date") {
+                  oField.sValueNew = oField.oFactory.value ? oField.oFactory.get() : oField.sValueNew;//.value
+                  oField.oFactory = null;
+                }
+              });
+              oData.saField = JSON.stringify($scope.aOrderMessages[0].aSubjectMessageQuestionFields);
+            } catch (sError) {
+              ErrorsFactory.addFail({
+                sBody: 'Помилка сереалізації об`єкту з полями, у яких відповіді на зауваження!',
+                sError: sError,
+                asParam: ['oData.saField: ' + $scope.aOrderMessages[0].aSubjectMessageQuestionFields]
               });
             }
           }

@@ -32,7 +32,12 @@
             DELETE FROM "SubjectGroupTree";
             DELETE FROM "SubjectGroup";
             DELETE FROM "SubjectOrganDepartment";
-
+            DELETE FROM "Relation_ObjectGroup";
+            DELETE FROM "ObjectGroup";
+            DELETE FROM "Relation_ObjectItem";
+            DELETE FROM "ObjectItem";
+            DELETE FROM "Relation";
+            DELETE FROM "RelationClass";
             DELETE FROM "SubjectOrganJoinAttribute";
             DELETE FROM "SubjectOrganJoin";
             DELETE FROM "SubjectAccount" where "nID" < 20000;
@@ -438,6 +443,7 @@
             <column name="sLaw" type="STRING"/>
             <column name="nOpenedLimit" type="NUMERIC"/>
             <column name="sSubjectOperatorName" type="STRING"/>
+            <column name="saKeyword" type="STRING"/>
         </loadData>
 
         <loadUpdateData primaryKey  = "nID"
@@ -596,6 +602,7 @@
             <column name="nID" type="NUMERIC"/>
             <column name="nID_Subject_Source" type="NUMERIC"/>
             <column name="sID_Private_Source" type="STRING"/>
+            <column name="sName" type="STRING"/>
         </loadUpdateData>
         
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Relation_ObjectItem.csv" tableName="Relation_ObjectItem" separator=";">

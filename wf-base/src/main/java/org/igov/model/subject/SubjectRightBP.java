@@ -3,11 +3,18 @@ package org.igov.model.subject;
 import javax.persistence.Column;
 
 import org.igov.model.core.AbstractEntity;
+import org.igov.service.business.subject.SubjectRightBPService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @javax.persistence.Entity
 public class SubjectRightBP extends AbstractEntity {
+	private static final Logger LOG = LoggerFactory.getLogger(SubjectRightBPService.class);
 
     @JsonProperty(value = "sID_BP")
     @Column(name = "sID_BP", nullable = false)
@@ -84,5 +91,18 @@ public class SubjectRightBP extends AbstractEntity {
     public void setsNote(String sNote) {
         this.sNote = sNote;
     }
+
+    @Override
+    public String toString() {
+     try {
+      return new ObjectMapper().configure(SerializationFeature.WRAP_ROOT_VALUE, true)
+        .writerWithDefaultPrettyPrinter().writeValueAsString(this);
+     } catch (JsonProcessingException e) {
+      LOG.info(String.format("error [%s]", e.getMessage()));
+     }
+     return null;
+    }
+    
+    
 
 }

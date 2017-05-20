@@ -326,15 +326,26 @@
               <div class="col-xs-8">
                 <span class="documentRole">{{users.sName}}:</span><br>
                 <span ng-repeat="user in users.aUser">
-                <span title="{{user.sLogin}}">
-                  <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
-                    {{ user.sFIO }}{{$last ? '' : ', '}}
+                  <span ng-if="user.sLogin === user.sID_Group"
+                        ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}"
+                        title="{{user.sLogin}}">
+                    {{ user.sFIO }}
+                    <span ng-if="users.sDate && users.sFIO_Referent"
+                          title="{{users.sLogin_Referent}}"
+                          style="font-weight: normal">
+                      ({{users.sFIO_Referent}})
+                    </span>
+
                   </span>
                 </span>
-              </span>
               </div>
               <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
+                <div ng-if="!users.bNeedECP">
+                  <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
+                </div>
+                <div ng-if="users.bNeedECP">
+                  <span class="documentDate">{{users.sDateECP ? users.sDateECP : 'Немає ЕЦП'}}</span>
+                </div>
               </div>
             </div>
 
@@ -342,10 +353,14 @@
               <div class="col-xs-8">
                 <span class="documentRole">{{users.sName}}:</span><br>
                 <span ng-repeat="user in users.aUser">
-                <span title="{{user.sLogin}}">
-                  <span ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}">
-                    {{ user.sFIO }}{{$last ? '' : ', '}}
-                  </span>
+                  <span ng-if="user.sLogin === user.sID_Group"
+                        ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}"
+                        title="{{user.sLogin}}"
+                        style="font-weight: normal">
+                    {{ user.sFIO }}
+                    <span ng-if="users.sDate && users.sFIO_Referent" title="{{users.sLogin_Referent}}">
+                      ({{users.sFIO_Referent}})
+                    </span>
                 </span>
               </span>
               </div>
@@ -442,6 +457,12 @@
               <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Задачу опрацьовано.</label>
             </div>
           </div>
+
+          <button ng-hide="!isRemoveDocumentButtonVisible()"
+                  ng-click="removeDocument(selectedTask.processInstanceId)"
+                  class="btn btn-danger"
+                  ng-disabled="isTaskInProcess()">Видалити
+          </button>
 
           <div ng-hide="(selectedTask.assignee === null && !isDocument())
            || sSelectedTask === 'finished'

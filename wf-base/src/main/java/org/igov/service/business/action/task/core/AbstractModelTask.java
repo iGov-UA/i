@@ -59,20 +59,12 @@ public abstract class AbstractModelTask {
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
     @Autowired
     public TaskService taskService;
-    /*@Autowired
-    private ObjectFileService oObjectFileService;
-    
-    @Autowired
-    private IBytesDataStorage oBytesDataStaticStorage;*/
-    
     @Autowired
     protected AttachmetService oAttachmetService;
     
     @Autowired
     GeneralConfig generalConfig;
     
-    @Autowired
-    private RuntimeService oRuntimeService;
 
     /**
      * Возвращает сложный ключ переменной бизнес-процесса
@@ -245,7 +237,6 @@ public abstract class AbstractModelTask {
         List<FormProperty> aFormProperty = oFormData.getFormProperties();
         if (!aFormProperty.isEmpty()) {
             for (FormProperty oFormProperty : aFormProperty) {
-                //if (oFormProperty.getType() instanceof FormFileType && oFormProperty.getName().equalsIgnoreCase(fieldName)) {
                 if (oFormProperty.getName().equalsIgnoreCase(sFieldName)) {
                     return oFormProperty.getValue() != null ? oFormProperty.getValue() : "";
                 }
@@ -268,12 +259,7 @@ public abstract class AbstractModelTask {
     public static ByteArrayOutputStream multipartFileToByteArray(MultipartFile oMultipartFile, String sFileNameReal)
             throws IOException {
 
-        LOG.debug("(sFileNameReal={})", sFileNameReal);
-
-        //String sFilename = new String(file.getOriginalFilename().getBytes(), "Cp1251");//UTF-8
-        //LOG.debug("(sFilename={})", sFilename);
         String sFilenameEncoded = new String(oMultipartFile.getOriginalFilename().getBytes(Charset.forName("UTF-8")));//UTF-8
-        LOG.debug("(sFilenameEncoded={})", sFilenameEncoded);
         ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(
                 oMultipartFile.getBytes(), oMultipartFile.getName(), sFileNameReal == null ? sFilenameEncoded : sFileNameReal,
                 oMultipartFile.getContentType());
@@ -340,15 +326,13 @@ public abstract class AbstractModelTask {
     
     public void addNewAttachmentToTask(DelegateExecution oExecution, JSONObject oJsonTaskAttachVO, String sFieldID) {
 
-        LOG.info("oJsonTaskAttachVO instanceof TaskAttachVO)");
-        LOG.info("oJsonTaskAttachVO sID_StorageType: " + oJsonTaskAttachVO.get("sID_StorageType"));
         MultipartFile oMultipartFile = null;
 
         try {
             oMultipartFile = oAttachmetService
                     .getAttachment(oExecution.getProcessInstanceId(), sFieldID, null, null);
         } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException|CRCInvalidException|RecordNotFoundException ex) {
-            LOG.info("getAttachment has some errors: " + ex);
+            LOG.error("getAttachment has some errors: " + ex);
         }
 
         if (oMultipartFile != null) {
@@ -371,10 +355,10 @@ public abstract class AbstractModelTask {
                             aAttribute, aByteFile, true);
 
             } catch (IOException|CRCInvalidException|RecordNotFoundException ex) {
-                LOG.info("createAttachment has some errors: " + ex);
+                LOG.error("createAttachment has some errors: " + ex);
             }
         } else {
-            LOG.info("oVariableMultipartFile is null");
+            LOG.error("oVariableMultipartFile is null");
         }
     }
 
@@ -382,19 +366,15 @@ public abstract class AbstractModelTask {
             List<Attachment> aAttachment, String sCurrFieldID, String sCurrFieldName) {
 
         String sID_Field = sCurrFieldID;
-        LOG.info("(sID_Field={})", sID_Field);
 
-        //String sDescription = asFieldName.get((asFieldName.size() - 1) - n);
         String sDescription = sCurrFieldName;
         if (sDescription != null && sDescription.contains(";")) {
-            //LOG.info("BEFORE:(sDescription={})", sDescription);
             sDescription = sDescription.split(";")[0];
         }
         if (sDescription == null) {
             sDescription = "";
         }
         if (getField(oFormData, sID_Field).getType() instanceof TableFormType) {
-            //sDescription = sDescription+"[table]";
             sDescription = sDescription + "[table][id=" + sID_Field + "]";
         }
         LOG.info("(sDescription={})", sDescription);
@@ -430,16 +410,10 @@ public abstract class AbstractModelTask {
             Attachment oAttachment = createAttachment(oByteArrayMultipartFile, oTask, sDescription); // передаем контент файла, Execution таски, имя поля
 
             if (oAttachment != null) {
-                LOG.info("Added attachment with ID {} to the task:process {}:{}",
-                        oAttachment.getId(), oTask.getId(), oExecution.getProcessInstanceId());
                 aAttachment.add(oAttachment);
                 String nID_Attachment = oAttachment.getId();
-                LOG.info("Try set variable(sID_Field={}) with the value(nID_Attachment={}), for new attachment...",
-                        sID_Field, nID_Attachment);
                 oExecution.getEngineServices().getRuntimeService()
                         .setVariable(oExecution.getProcessInstanceId(), sID_Field, nID_Attachment); //Цепляем аттачмент к таске вот тут
-                LOG.info("Finished setting new value for variable with attachment (sID_Field={})",
-                        sID_Field);
             } else {
                 LOG.error("Can't add attachment to (oTask.getId()={})", oTask.getId()); //TODO: Need remove because of new Log(
                 new Log(this.getClass(), LOG)//this.getClass()
@@ -447,13 +421,10 @@ public abstract class AbstractModelTask {
                         ._Status(Log.LogStatus.ERROR)
                         ._Head("Can't create Attachment for Task")
                         ._Body("oAttachment == null")
-                        //._Exception(oException)
-                        //._Param("n", n)
                         ._Param("sID_Field", sID_Field)
                         ._Param("sKeyRedis", sFieldValue)
                         ._Param("sDescription", sDescription)
                         ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
-                        //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
                         ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
                         ._Param("oTask.getId()", oTask.getId())
                         ._Param("oTask.getName()", oTask.getName())
@@ -462,7 +433,6 @@ public abstract class AbstractModelTask {
 
         } else { //если ид  - не редиста
             try {
-                LOG.info("Checking whether attachment with ID {} has already been saved and this is attachment object ID", sFieldValue);
                 Attachment oAttachment = oExecution.getEngineServices().getTaskService().getAttachment(sFieldValue);
                 aAttachment.add(oAttachment); //То атач уже создан и сохранен
             } catch (Exception oException) {
@@ -472,13 +442,10 @@ public abstract class AbstractModelTask {
                         ._Status(Log.LogStatus.ERROR)
                         ._Head("Invalid Redis Key of Attachment")
                         ._Body(oException.getMessage())
-                        //._Exception(oException)
-                        //._Param("n", n)
                         ._Param("sID_Field", sID_Field)
                         ._Param("sKeyRedis", sFieldValue)
                         ._Param("sDescription", sDescription)
                         ._Param("sID_Order", generalConfig.getOrderId_ByProcess(oExecution.getProcessInstanceId()))
-                        //._Param("oExecution.getProcessInstanceId()", oExecution.getProcessInstanceId())
                         ._Param("oExecution.getProcessDefinitionId()", oExecution.getProcessDefinitionId())
                         ._Param("oTask.getId()", oTask.getId())
                         ._Param("oTask.getName()", oTask.getName())
@@ -501,15 +468,9 @@ public abstract class AbstractModelTask {
         
         DelegateExecution oExecution = oTask.getExecution();
         List<Attachment> aAttachment = new LinkedList<>();
-        LOG.info("addAttachmentsToTask is used... " + dateFormat.format(date));
-        LOG.info("SCAN:file");
         List<String> asFieldID = getListFieldCastomTypeFile(oFormData);
-        LOG.info("[addAttachmentsToTask]");
-        LOG.info("(asFieldID in new schema={})", asFieldID);
         List<String> asFieldValue = getVariableValues(oExecution, asFieldID);
-        LOG.info("(asFieldValue in new schema ={})", asFieldValue);
         List<String> asFieldName = getListCastomFieldName(oFormData);
-        LOG.info("(asFieldName in new schema ={})", asFieldName);
 
         if (!asFieldValue.isEmpty()) {
             int n = 0;
@@ -527,23 +488,19 @@ public abstract class AbstractModelTask {
                         JSONParser parser = new JSONParser(); 
                         
                         try {
-                            LOG.info("Parsing value + " + sFieldValue + " time: " + dateFormat.format(date));
                             oJsonTaskAttachVO = (JSONObject)parser.parse(sFieldValue);
                         } catch (Exception ex) {
-                            LOG.info("There aren't TaskAttachVO objects in sFieldValue - JSON parsing error: ", ex);
+                            LOG.error("There aren't TaskAttachVO objects in sFieldValue - JSON parsing error: ", ex);
                         }
                         
                         if(oJsonTaskAttachVO != null && oJsonTaskAttachVO.get("sID_StorageType") != null){ //try to process field with new logic
-                            LOG.info("It is new JSON object: " + oJsonTaskAttachVO.toJSONString());
                             
                             if (getField(oFormData, asFieldID.get(n)).getType() instanceof TableFormType) {
-                                LOG.info("it is a table type");
                                 MultipartFile oTableMultipartfile = null;
                                 try{       
                                     oTableMultipartfile = oAttachmetService.getAttachment(null, null, (String)oJsonTaskAttachVO.get("sKey"), (String)oJsonTaskAttachVO.get("sID_StorageType"));
                                     if (oTableMultipartfile != null){
                                         LOG.info("oTableMultipartfile content is: " + IOUtils.toString(oTableMultipartfile.getInputStream()));
-                                            //oTableMultipartfileContent
                                             JSONObject oTableJSONObject = null;
                                             try {
                                                 oTableJSONObject = (JSONObject) parser.parse(IOUtils.toString(oTableMultipartfile.getInputStream()));
@@ -567,18 +524,15 @@ public abstract class AbstractModelTask {
                                                                 JSONObject oJsonMap = (JSONObject) aJsonField.get(j);
                                                                 
                                                                 Object oValue = oJsonMap.get("type");
-                                                                //if (TYPE_NAME.equals((String)oValue)){
                                                                 if ((String)oValue != null && ((String)oValue).contains(FormFileType.TYPE_NAME)){    
                                                                     
                                                                     String oFileValue = (String)oJsonMap.get("value");
-                                                                    LOG.info("Current file value in the table is: " + oFileValue);
-                                                                    
                                                                     JSONObject oJsonTableFile = null;
 
                                                                     try {
                                                                         oJsonTableFile = (JSONObject)parser.parse(oFileValue);
                                                                     } catch (ParseException ex) {
-                                                                        LOG.info("There aren't TaskAttachVO objects in sFieldValue in table - JSON parsing error: ", ex);
+                                                                        LOG.error("There aren't TaskAttachVO objects in sFieldValue in table - JSON parsing error: ", ex);
                                                                     }
                                                                     
                                                                     if(oJsonTableFile != null && oJsonTableFile.get("sID_StorageType") != null){
@@ -589,7 +543,7 @@ public abstract class AbstractModelTask {
                                                                             oMultipartFile = oAttachmetService
                                                                                     .getAttachment(null, null, (String)oJsonTableFile.get("sKey"), "Redis");
                                                                         } catch (ParseException | RecordInmemoryException | IOException | ClassNotFoundException | CRCInvalidException | RecordNotFoundException ex) {
-                                                                            LOG.info("getAttachment has some errors: " + ex);
+                                                                            LOG.error("getAttachment has some errors: " + ex);
                                                                         }
                                                                         
                                                                         if (oMultipartFile != null) {
@@ -692,7 +646,6 @@ public abstract class AbstractModelTask {
             }
         }
         scanExecutionOnQueueTickets(oExecution, oFormData);
-        //return aAttachemet;
         return aAttachment;
 
     }
@@ -828,8 +781,6 @@ public abstract class AbstractModelTask {
             asID_Attachment[i] = asID_Attachment[i].trim();
         }
 
-        List<String> aAttachmentNotFound = new ArrayList<>();
-
         for (String sID_Attachment : asID_Attachment) {
             if (sID_Attachment != null && !"".equals(sID_Attachment.trim()) && !"null".equals(sID_Attachment.trim())) {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
@@ -878,7 +829,6 @@ public abstract class AbstractModelTask {
             }
         }
         if (!aAttachmentNotFound.isEmpty()) {
-            //the next line returns no collection hence no items from aAttachmentNotFound are added to aAttachment; consider replacing
             LOG.info("aAttachmentNotFound is not Empty!");
             List<Attachment> aAttachmentByProcess = taskService.getProcessInstanceAttachments(processInstanceId);
 

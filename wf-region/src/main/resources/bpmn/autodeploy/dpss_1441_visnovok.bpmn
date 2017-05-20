@@ -3,6 +3,7 @@
   <process id="dpss_1441_visnovok" name="Висновок державної санітарно-епідеміологічної експертизи" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sPosluga_name" name="Висновок державної санітарно-епідеміологічної експертизи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_07" name="Список технологія, діючий об'єкт тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
@@ -25,32 +26,32 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника (власника)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника (власника)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника (власника)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocationFOP" name="Місцезнаходження" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocationFOP" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWebsite" name="Веб-сторінка" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об'єкта експертизи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSphere" name="Сфера застосування та реалізації об'єкта експертизи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker_12" name="Крд за ДКПП наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_12" name="Код за ДКПП наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_13" name="Код за УКТЗЕД наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_14" name="Артиул наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=yes" type="enum" default="no">
+        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" default="NO">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=yes" type="enum" default="no">
+        <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=YES" type="enum" default="NO">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=yes" type="enum" default="no">
+        <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-         <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи" type="string" required="true"></activiti:formProperty>
-        
+        <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCountry_02" name="Країна походження об'єкта експертизи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocProducer" name="Виробник, розробник документів (його представник в Україні)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers_02" name="Линия реквизитов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sLocation&quot;],&quot;sValue&quot;:&quot;Реквізити виробника, розробника&quot;}}}"></activiti:formProperty>
@@ -115,21 +116,204 @@
         <activiti:formProperty id="label_info_03" name=" ; ;labelType=info" type="label" default="Висновок державної санітарно-епідеміологічної експертизи (з накладанням ЕЦП) буде направлено Вам на ел.пошту, вказану в Заяві"></activiti:formProperty>
         <activiti:formProperty id="label_info_04" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надано в Держпродспожислужбі за адресою:  м. Київ, вул. Б.Грінченка, 1"></activiti:formProperty>
         <activiti:formProperty id="label_info_05" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надіслано Укрпоштою. Сплата послуги Укрпошти відбувається в момент отримання листа"></activiti:formProperty>
-        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="string"></activiti:formProperty>
         <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="User Task" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Попередній розгляд Інститутом" activiti:candidateGroups="ASO">
       <extensionElements>
+        <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_07" name="Список технологія, діючий об'єкт тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" writable="false">
+          <activiti:value id="Rawmaterials" name="Сировина, продукція тощо"></activiti:value>
+          <activiti:value id="Projects" name="Проекти, нормативні документи тощо"></activiti:value>
+          <activiti:value id="Technologies" name="Технологія, діючий об'єкт тощо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_01" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;saSubjectType&quot;],&quot;sValue&quot;:&quot;Реквізити власника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="saSubjectType" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="FOP" name="Фізична особа - підприємець"></activiti:value>
+          <activiti:value id="JUR" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_03" name="Дані фіз.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_04" name="Дані юр.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код за ЄДРПОУ заявника експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Заявник (власник); ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Податковий ідентифікаційний номер заявника експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocationFOP" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Назва об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSphere" name="Сфера застосування та реалізації об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_12" name="Код за ДКПП наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_13" name="Код за УКТЗЕД наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_14" name="Артиул наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_02" name="Країна походження об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocProducer" name="Виробник, розробник документів (його представник в Україні); ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="Линия реквизитов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sLocation&quot;],&quot;sValue&quot;:&quot;Реквізити виробника, розробника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLocation" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone_1" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email_1" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite_1" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContract" name="Дані про контракт на постачання об'єкта в Україну; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saTypeCredentials" name="Документ про повноваження заявника представляти виробника (власника)" type="enum" writable="false">
+          <activiti:value id="Agreement" name="Договір"></activiti:value>
+          <activiti:value id="Contract" name="Контракт"></activiti:value>
+          <activiti:value id="Attorney" name="Доручення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRequisites" name="Реквізити документа; Договору/Контракту/Доручення;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_10" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc101;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_11" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc201;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc101" name="Специфікація;Довідка про повний склад об'єкта експертизи та показники його ідентифікації;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc102" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх якості та безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності, склад, характеристику, терміни придатності, умови зберігання тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc103" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc104" name="Рекомендації із застосування та інструкція для споживача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc105" name="Етикетка; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc106" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc107" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc108" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc109" name="Акт про обстеження підприємства-виробника продукції;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc110" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками якості і безпечності;За наявності ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc111" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки - якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі - і за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc112" name="Токсикологічне досьє (для основних діючих речовин, а також для спеціальних інгредієнтів) за розділами: гостра токсичність, підгостра токсичність, хронічна токсичність, алергенна, сенсибілізативна, імунотоксична, тератогенна, ембріотоксична, канцерогенна, мутагенна дія тощо з посиланням на виконавця досліджень (у випадках, передбачених законодавством України);Токсикологічне досьє може надаватися українською, англійською, російською мовами, а його анотована частина - у перекладі українською мовою;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc113" name="Результати клінічних, натурних випробувань, епідеміологічних, популяційних досліджень тощо або науково обґрунтовані докази їх недоцільності;У випадках, передбачених законодавством України;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc114" name="Методи контролю небезпечних факторів в об'єктах експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc201" name="Проект документ;Нормативний, проектний, державний, галузевий стандарт, технічні умови тощо, програми в одному примірнику. Документ подається в останній редакції із супровідним листом, де наводяться реквізити організації-розробника.У разі повторного подання документа обов'язкове посилання на номер і дату раніше виданого висновку або погодження головним державним санітарним лікарем. У проекті документа повинні бути відомості про:призначення продукції, об'єкта, виробництва, споруди, програми тощо; Основні характеристики, склад, конструкція тощо; періодичність і обсяг контролю конкретних гігієнічних, медико-біологічних та інших показників щодо безпеки для здоров'я людини; вимоги безпеки для здоров'я при виготовленні та застосуванні продукції, реалізації програм, забудови, експлуатації тощо;заходи щодо захисту людини від шкідливого впливу продукції, промислового об'єкта тощо під час її виготовлення, будівництва, застосування, експлуатації тощо;заходи щодо охорони навколишнього середовища, у тому числі утилізація і знешкодження відходів виробництва, продукції по закінченні гарантійного строку та інші вимоги до її безпеки.;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc202" name="Пояснювальна записка; Пояснювальна записка повинна містити описи матеріалів, сфери та умов застосування, фізико-хімічних властивостей, небезпечності, токсичності, міграції речовин, методик їх виявлення, способів утилізації матеріалів по закінченні гарантійного строку, якщо вони не зазначені в документі тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc203" name="Результати відповідних вимірювань, випробувань, досліджень, обстежень, регламентації тощо; За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc204" name="Проект маркування, інструкції тощо; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc205" name="Опис технологічного процесу, регламенту (технологічна інструкція) виготовлення та застосування продукції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc206" name="Інші відомості, необхідні для оцінки можливого впливу продукції на здоров'я людини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc302" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc303" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc304" name="Рекомендації із застосування та технологічна інструкція експлуатації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc305" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc306" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc307" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc308" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки, якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc309" name="Акт про обстеження підприємства;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc310" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками безпечності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="label_info_01" name=" ; ;labelType=warning" type="label" default="Для проведення експертизи необхідно надати зразки об'єкта експертизи протягом 14 календарних днів. Адресу для направлення зразків буде надіслано електронною поштою"></activiti:formProperty>
+        <activiti:formProperty id="label_info_02" name=" ; ;labelType=warning" type="label" default="Матеріали після проведення експертизи не повертаються"></activiti:formProperty>
+        <activiti:formProperty id="marker_081" name="Висновок наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_082" name="Висновок відсутній" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saConclusionAvaliable" name="Я вже маю проект висновку державної санітарно-епідеміологічної експертизи" type="enum" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
+          <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
+          <activiti:value id="Paper" name="Паперова форма надається у Дерджпродспоживслужбі"></activiti:value>
+          <activiti:value id="Mail" name="Паперова форма надсилається Укрпоштою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="label_info_03" name=" ; ;labelType=info" type="label" default="Висновок державної санітарно-епідеміологічної експертизи (з накладанням ЕЦП) буде направлено Вам на ел.пошту, вказану в Заяві"></activiti:formProperty>
+        <activiti:formProperty id="label_info_04" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надано в Держпродспожислужбі за адресою:  м. Київ, вул. Б.Грінченка, 1"></activiti:formProperty>
+        <activiti:formProperty id="label_info_05" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надіслано Укрпоштою. Сплата послуги Укрпошти відбувається в момент отримання листа"></activiti:formProperty>
+        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dpss/dpss_1441_visnovok.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]; ;bVisible=false" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="exclusivegateway8"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask1" name="Лист про прийняття до розгляду та виставлення рахунку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Вашу заяву було попередньо перевірено та прийнято..<br />
+Очікуйте рахунку, про що Вам буде повідомлено електронной почтою та смс. <br />
+${sPhoneOrgan}.<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[$(phone)]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  poslugu pryinyato v robotu. Ochikuyte rahunku na splatu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask2" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Вам відмовлено у розгляді поданих документів.  Відмова. <br />
+Причина відмови: ${comment} <br /><br />
+Розглянувши та виправивши зауваження, Ви можете знову подати документи на порталі igov.org.ua <br />
+${sPhoneOrgan}.<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[$(phone)]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="servicetask2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
@@ -140,7 +324,7 @@
       </timerEventDefinition>
     </intermediateCatchEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Оплата надійшла?" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('sCountPayment')
 src=(+src + +1)
 execution.setVariable('sCountPayment', src)</script>
@@ -148,34 +332,606 @@ execution.setVariable('sCountPayment', src)</script>
     <sequenceFlow id="flow8" sourceRef="timerintermediatecatchevent1" targetRef="scripttask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow9" sourceRef="scripttask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow10" sourceRef="exclusivegateway2" targetRef="timerintermediatecatchevent1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
-    <sequenceFlow id="flow11" sourceRef="exclusivegateway2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow10" name="оплати немає, але час ще є" sourceRef="exclusivegateway2" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Лист-відмова у звязку з несплатою за послугу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ви не сплатили вчасно за замовлену послугу,тому її розгляд скасовано.<br />
+У разі необхідності, Ви можете знову подати документи на порталі igov.org.ua <br />
+${sPhoneOrgan}.<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[$(phone)]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow11" name="немає оплати" sourceRef="exclusivegateway2" targetRef="servicetask3"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow12" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="институт" activiti:candidateGroups="ASO"></userTask>
-    <serviceTask id="servicetask4" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <userTask id="usertask2" name="институт " activiti:candidateGroups="ASO"></userTask>
+    <serviceTask id="servicetask4" name="Лист-підтвердення про прийняття в роботу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Дякуємо за своєчасну сплату за замовлену послугу.<br />
+Експертизу буде розпочато найблизчим часом. Якщо Вам необхідо надіслати зразки, зробіть ще найближчим часом <br />
+${sPhoneOrgan}.<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[$(phone)]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <userTask id="usertask4" name="эксперт" activiti:candidateGroups="ASO"></userTask>
+    <userTask id="usertask4" name="эксперт" activiti:candidateGroups="ASO">
+      <extensionElements>
+        <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_07" name="Список технологія, діючий об'єкт тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" writable="false">
+          <activiti:value id="Rawmaterials" name="Сировина, продукція тощо"></activiti:value>
+          <activiti:value id="Projects" name="Проекти, нормативні документи тощо"></activiti:value>
+          <activiti:value id="Technologies" name="Технологія, діючий об'єкт тощо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_01" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;saSubjectType&quot;],&quot;sValue&quot;:&quot;Реквізити власника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="saSubjectType" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="FOP" name="Фізична особа - підприємець"></activiti:value>
+          <activiti:value id="JUR" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_03" name="Дані фіз.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_04" name="Дані юр.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код за ЄДРПОУ заявника експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Заявник (власник); ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Податковий ідентифікаційний номер заявника експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocationFOP" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Назва об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSphere" name="Сфера застосування та реалізації об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_12" name="Код за ДКПП наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_13" name="Код за УКТЗЕД наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_14" name="Артиул наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_02" name="Країна походження об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocProducer" name="Виробник, розробник документів (його представник в Україні); ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="Линия реквизитов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sLocation&quot;],&quot;sValue&quot;:&quot;Реквізити виробника, розробника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLocation" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone_1" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email_1" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite_1" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContract" name="Дані про контракт на постачання об'єкта в Україну; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saTypeCredentials" name="Документ про повноваження заявника представляти виробника (власника)" type="enum" writable="false">
+          <activiti:value id="Agreement" name="Договір"></activiti:value>
+          <activiti:value id="Contract" name="Контракт"></activiti:value>
+          <activiti:value id="Attorney" name="Доручення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRequisites" name="Реквізити документа; Договору/Контракту/Доручення;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_10" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc101;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_11" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc201;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc101" name="Специфікація;Довідка про повний склад об'єкта експертизи та показники його ідентифікації;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc102" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх якості та безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності, склад, характеристику, терміни придатності, умови зберігання тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc103" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc104" name="Рекомендації із застосування та інструкція для споживача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc105" name="Етикетка; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc106" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc107" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc108" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc109" name="Акт про обстеження підприємства-виробника продукції;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc110" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками якості і безпечності;За наявності ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc111" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки - якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі - і за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc112" name="Токсикологічне досьє (для основних діючих речовин, а також для спеціальних інгредієнтів) за розділами: гостра токсичність, підгостра токсичність, хронічна токсичність, алергенна, сенсибілізативна, імунотоксична, тератогенна, ембріотоксична, канцерогенна, мутагенна дія тощо з посиланням на виконавця досліджень (у випадках, передбачених законодавством України);Токсикологічне досьє може надаватися українською, англійською, російською мовами, а його анотована частина - у перекладі українською мовою;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc113" name="Результати клінічних, натурних випробувань, епідеміологічних, популяційних досліджень тощо або науково обґрунтовані докази їх недоцільності;У випадках, передбачених законодавством України;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc114" name="Методи контролю небезпечних факторів в об'єктах експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc201" name="Проект документ;Нормативний, проектний, державний, галузевий стандарт, технічні умови тощо, програми в одному примірнику. Документ подається в останній редакції із супровідним листом, де наводяться реквізити організації-розробника.У разі повторного подання документа обов'язкове посилання на номер і дату раніше виданого висновку або погодження головним державним санітарним лікарем. У проекті документа повинні бути відомості про:призначення продукції, об'єкта, виробництва, споруди, програми тощо; Основні характеристики, склад, конструкція тощо; періодичність і обсяг контролю конкретних гігієнічних, медико-біологічних та інших показників щодо безпеки для здоров'я людини; вимоги безпеки для здоров'я при виготовленні та застосуванні продукції, реалізації програм, забудови, експлуатації тощо;заходи щодо захисту людини від шкідливого впливу продукції, промислового об'єкта тощо під час її виготовлення, будівництва, застосування, експлуатації тощо;заходи щодо охорони навколишнього середовища, у тому числі утилізація і знешкодження відходів виробництва, продукції по закінченні гарантійного строку та інші вимоги до її безпеки.;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc202" name="Пояснювальна записка; Пояснювальна записка повинна містити описи матеріалів, сфери та умов застосування, фізико-хімічних властивостей, небезпечності, токсичності, міграції речовин, методик їх виявлення, способів утилізації матеріалів по закінченні гарантійного строку, якщо вони не зазначені в документі тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc203" name="Результати відповідних вимірювань, випробувань, досліджень, обстежень, регламентації тощо; За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc204" name="Проект маркування, інструкції тощо; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc205" name="Опис технологічного процесу, регламенту (технологічна інструкція) виготовлення та застосування продукції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc206" name="Інші відомості, необхідні для оцінки можливого впливу продукції на здоров'я людини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc302" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc303" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc304" name="Рекомендації із застосування та технологічна інструкція експлуатації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc305" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc306" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc307" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc308" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки, якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc309" name="Акт про обстеження підприємства;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc310" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками безпечності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="label_info_01" name=" ; ;labelType=warning" type="label" default="Для проведення експертизи необхідно надати зразки об'єкта експертизи протягом 14 календарних днів. Адресу для направлення зразків буде надіслано електронною поштою"></activiti:formProperty>
+        <activiti:formProperty id="label_info_02" name=" ; ;labelType=warning" type="label" default="Матеріали після проведення експертизи не повертаються"></activiti:formProperty>
+        <activiti:formProperty id="marker_081" name="Висновок наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_082" name="Висновок відсутній" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saConclusionAvaliable" name="Я вже маю проект висновку державної санітарно-епідеміологічної експертизи" type="enum" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
+          <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
+          <activiti:value id="Paper" name="Паперова форма надається у Дерджпродспоживслужбі"></activiti:value>
+          <activiti:value id="Mail" name="Паперова форма надсилається Укрпоштою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="label_info_03" name=" ; ;labelType=info" type="label" default="Висновок державної санітарно-епідеміологічної експертизи (з накладанням ЕЦП) буде направлено Вам на ел.пошту, вказану в Заяві"></activiti:formProperty>
+        <activiti:formProperty id="label_info_04" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надано в Держпродспожислужбі за адресою:  м. Київ, вул. Б.Грінченка, 1"></activiti:formProperty>
+        <activiti:formProperty id="label_info_05" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надіслано Укрпоштою. Сплата послуги Укрпошти відбувається в момент отримання листа"></activiti:formProperty>
+        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dpss/dpss_1441_visnovok.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <userTask id="usertask5" name="нач. отдела" activiti:candidateGroups="ASO"></userTask>
-    <userTask id="usertask6" name="зам" activiti:candidateGroups="ASO"></userTask>
+    <userTask id="usertask5" name="нач. отдела" activiti:candidateGroups="ASO">
+      <extensionElements>
+        <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_07" name="Список технологія, діючий об'єкт тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" writable="false">
+          <activiti:value id="Rawmaterials" name="Сировина, продукція тощо"></activiti:value>
+          <activiti:value id="Projects" name="Проекти, нормативні документи тощо"></activiti:value>
+          <activiti:value id="Technologies" name="Технологія, діючий об'єкт тощо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_01" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;saSubjectType&quot;],&quot;sValue&quot;:&quot;Реквізити власника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="saSubjectType" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="FOP" name="Фізична особа - підприємець"></activiti:value>
+          <activiti:value id="JUR" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_03" name="Дані фіз.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_04" name="Дані юр.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код за ЄДРПОУ заявника експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Заявник (власник); ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Податковий ідентифікаційний номер заявника експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocationFOP" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Назва об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSphere" name="Сфера застосування та реалізації об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_12" name="Код за ДКПП наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_13" name="Код за УКТЗЕД наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_14" name="Артиул наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_02" name="Країна походження об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocProducer" name="Виробник, розробник документів (його представник в Україні); ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="Линия реквизитов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sLocation&quot;],&quot;sValue&quot;:&quot;Реквізити виробника, розробника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLocation" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone_1" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email_1" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite_1" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContract" name="Дані про контракт на постачання об'єкта в Україну; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saTypeCredentials" name="Документ про повноваження заявника представляти виробника (власника)" type="enum" writable="false">
+          <activiti:value id="Agreement" name="Договір"></activiti:value>
+          <activiti:value id="Contract" name="Контракт"></activiti:value>
+          <activiti:value id="Attorney" name="Доручення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRequisites" name="Реквізити документа; Договору/Контракту/Доручення;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_10" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc101;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_11" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc201;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc101" name="Специфікація;Довідка про повний склад об'єкта експертизи та показники його ідентифікації;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc102" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх якості та безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності, склад, характеристику, терміни придатності, умови зберігання тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc103" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc104" name="Рекомендації із застосування та інструкція для споживача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc105" name="Етикетка; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc106" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc107" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc108" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc109" name="Акт про обстеження підприємства-виробника продукції;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc110" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками якості і безпечності;За наявності ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc111" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки - якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі - і за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc112" name="Токсикологічне досьє (для основних діючих речовин, а також для спеціальних інгредієнтів) за розділами: гостра токсичність, підгостра токсичність, хронічна токсичність, алергенна, сенсибілізативна, імунотоксична, тератогенна, ембріотоксична, канцерогенна, мутагенна дія тощо з посиланням на виконавця досліджень (у випадках, передбачених законодавством України);Токсикологічне досьє може надаватися українською, англійською, російською мовами, а його анотована частина - у перекладі українською мовою;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc113" name="Результати клінічних, натурних випробувань, епідеміологічних, популяційних досліджень тощо або науково обґрунтовані докази їх недоцільності;У випадках, передбачених законодавством України;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc114" name="Методи контролю небезпечних факторів в об'єктах експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc201" name="Проект документ;Нормативний, проектний, державний, галузевий стандарт, технічні умови тощо, програми в одному примірнику. Документ подається в останній редакції із супровідним листом, де наводяться реквізити організації-розробника.У разі повторного подання документа обов'язкове посилання на номер і дату раніше виданого висновку або погодження головним державним санітарним лікарем. У проекті документа повинні бути відомості про:призначення продукції, об'єкта, виробництва, споруди, програми тощо; Основні характеристики, склад, конструкція тощо; періодичність і обсяг контролю конкретних гігієнічних, медико-біологічних та інших показників щодо безпеки для здоров'я людини; вимоги безпеки для здоров'я при виготовленні та застосуванні продукції, реалізації програм, забудови, експлуатації тощо;заходи щодо захисту людини від шкідливого впливу продукції, промислового об'єкта тощо під час її виготовлення, будівництва, застосування, експлуатації тощо;заходи щодо охорони навколишнього середовища, у тому числі утилізація і знешкодження відходів виробництва, продукції по закінченні гарантійного строку та інші вимоги до її безпеки.;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc202" name="Пояснювальна записка; Пояснювальна записка повинна містити описи матеріалів, сфери та умов застосування, фізико-хімічних властивостей, небезпечності, токсичності, міграції речовин, методик їх виявлення, способів утилізації матеріалів по закінченні гарантійного строку, якщо вони не зазначені в документі тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc203" name="Результати відповідних вимірювань, випробувань, досліджень, обстежень, регламентації тощо; За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc204" name="Проект маркування, інструкції тощо; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc205" name="Опис технологічного процесу, регламенту (технологічна інструкція) виготовлення та застосування продукції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc206" name="Інші відомості, необхідні для оцінки можливого впливу продукції на здоров'я людини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc302" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc303" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc304" name="Рекомендації із застосування та технологічна інструкція експлуатації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc305" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc306" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc307" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc308" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки, якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc309" name="Акт про обстеження підприємства;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc310" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками безпечності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="label_info_01" name=" ; ;labelType=warning" type="label" default="Для проведення експертизи необхідно надати зразки об'єкта експертизи протягом 14 календарних днів. Адресу для направлення зразків буде надіслано електронною поштою"></activiti:formProperty>
+        <activiti:formProperty id="label_info_02" name=" ; ;labelType=warning" type="label" default="Матеріали після проведення експертизи не повертаються"></activiti:formProperty>
+        <activiti:formProperty id="marker_081" name="Висновок наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_082" name="Висновок відсутній" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saConclusionAvaliable" name="Я вже маю проект висновку державної санітарно-епідеміологічної експертизи" type="enum" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
+          <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
+          <activiti:value id="Paper" name="Паперова форма надається у Дерджпродспоживслужбі"></activiti:value>
+          <activiti:value id="Mail" name="Паперова форма надсилається Укрпоштою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="label_info_03" name=" ; ;labelType=info" type="label" default="Висновок державної санітарно-епідеміологічної експертизи (з накладанням ЕЦП) буде направлено Вам на ел.пошту, вказану в Заяві"></activiti:formProperty>
+        <activiti:formProperty id="label_info_04" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надано в Держпродспожислужбі за адресою:  м. Київ, вул. Б.Грінченка, 1"></activiti:formProperty>
+        <activiti:formProperty id="label_info_05" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надіслано Укрпоштою. Сплата послуги Укрпошти відбувається в момент отримання листа"></activiti:formProperty>
+        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dpss/dpss_1441_visnovok.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask6" name="зам" activiti:candidateGroups="ASO">
+      <extensionElements>
+        <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_07" name="Список технологія, діючий об'єкт тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" writable="false">
+          <activiti:value id="Rawmaterials" name="Сировина, продукція тощо"></activiti:value>
+          <activiti:value id="Projects" name="Проекти, нормативні документи тощо"></activiti:value>
+          <activiti:value id="Technologies" name="Технологія, діючий об'єкт тощо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_01" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;saSubjectType&quot;],&quot;sValue&quot;:&quot;Реквізити власника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="saSubjectType" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="FOP" name="Фізична особа - підприємець"></activiti:value>
+          <activiti:value id="JUR" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_03" name="Дані фіз.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_04" name="Дані юр.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код за ЄДРПОУ заявника експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Заявник (власник); ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Податковий ідентифікаційний номер заявника експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocationFOP" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Назва об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSphere" name="Сфера застосування та реалізації об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_12" name="Код за ДКПП наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_13" name="Код за УКТЗЕД наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_14" name="Артиул наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_02" name="Країна походження об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocProducer" name="Виробник, розробник документів (його представник в Україні); ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="Линия реквизитов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sLocation&quot;],&quot;sValue&quot;:&quot;Реквізити виробника, розробника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLocation" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone_1" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email_1" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite_1" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContract" name="Дані про контракт на постачання об'єкта в Україну; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saTypeCredentials" name="Документ про повноваження заявника представляти виробника (власника)" type="enum" writable="false">
+          <activiti:value id="Agreement" name="Договір"></activiti:value>
+          <activiti:value id="Contract" name="Контракт"></activiti:value>
+          <activiti:value id="Attorney" name="Доручення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRequisites" name="Реквізити документа; Договору/Контракту/Доручення;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_10" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc101;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_11" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc201;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc101" name="Специфікація;Довідка про повний склад об'єкта експертизи та показники його ідентифікації;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc102" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх якості та безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності, склад, характеристику, терміни придатності, умови зберігання тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc103" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc104" name="Рекомендації із застосування та інструкція для споживача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc105" name="Етикетка; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc106" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc107" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc108" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc109" name="Акт про обстеження підприємства-виробника продукції;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc110" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками якості і безпечності;За наявності ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc111" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки - якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі - і за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc112" name="Токсикологічне досьє (для основних діючих речовин, а також для спеціальних інгредієнтів) за розділами: гостра токсичність, підгостра токсичність, хронічна токсичність, алергенна, сенсибілізативна, імунотоксична, тератогенна, ембріотоксична, канцерогенна, мутагенна дія тощо з посиланням на виконавця досліджень (у випадках, передбачених законодавством України);Токсикологічне досьє може надаватися українською, англійською, російською мовами, а його анотована частина - у перекладі українською мовою;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc113" name="Результати клінічних, натурних випробувань, епідеміологічних, популяційних досліджень тощо або науково обґрунтовані докази їх недоцільності;У випадках, передбачених законодавством України;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc114" name="Методи контролю небезпечних факторів в об'єктах експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc201" name="Проект документ;Нормативний, проектний, державний, галузевий стандарт, технічні умови тощо, програми в одному примірнику. Документ подається в останній редакції із супровідним листом, де наводяться реквізити організації-розробника.У разі повторного подання документа обов'язкове посилання на номер і дату раніше виданого висновку або погодження головним державним санітарним лікарем. У проекті документа повинні бути відомості про:призначення продукції, об'єкта, виробництва, споруди, програми тощо; Основні характеристики, склад, конструкція тощо; періодичність і обсяг контролю конкретних гігієнічних, медико-біологічних та інших показників щодо безпеки для здоров'я людини; вимоги безпеки для здоров'я при виготовленні та застосуванні продукції, реалізації програм, забудови, експлуатації тощо;заходи щодо захисту людини від шкідливого впливу продукції, промислового об'єкта тощо під час її виготовлення, будівництва, застосування, експлуатації тощо;заходи щодо охорони навколишнього середовища, у тому числі утилізація і знешкодження відходів виробництва, продукції по закінченні гарантійного строку та інші вимоги до її безпеки.;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc202" name="Пояснювальна записка; Пояснювальна записка повинна містити описи матеріалів, сфери та умов застосування, фізико-хімічних властивостей, небезпечності, токсичності, міграції речовин, методик їх виявлення, способів утилізації матеріалів по закінченні гарантійного строку, якщо вони не зазначені в документі тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc203" name="Результати відповідних вимірювань, випробувань, досліджень, обстежень, регламентації тощо; За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc204" name="Проект маркування, інструкції тощо; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc205" name="Опис технологічного процесу, регламенту (технологічна інструкція) виготовлення та застосування продукції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc206" name="Інші відомості, необхідні для оцінки можливого впливу продукції на здоров'я людини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc302" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc303" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc304" name="Рекомендації із застосування та технологічна інструкція експлуатації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc305" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc306" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc307" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc308" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки, якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc309" name="Акт про обстеження підприємства;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc310" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками безпечності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="label_info_01" name=" ; ;labelType=warning" type="label" default="Для проведення експертизи необхідно надати зразки об'єкта експертизи протягом 14 календарних днів. Адресу для направлення зразків буде надіслано електронною поштою"></activiti:formProperty>
+        <activiti:formProperty id="label_info_02" name=" ; ;labelType=warning" type="label" default="Матеріали після проведення експертизи не повертаються"></activiti:formProperty>
+        <activiti:formProperty id="marker_081" name="Висновок наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_082" name="Висновок відсутній" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saConclusionAvaliable" name="Я вже маю проект висновку державної санітарно-епідеміологічної експертизи" type="enum" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
+          <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
+          <activiti:value id="Paper" name="Паперова форма надається у Дерджпродспоживслужбі"></activiti:value>
+          <activiti:value id="Mail" name="Паперова форма надсилається Укрпоштою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="label_info_03" name=" ; ;labelType=info" type="label" default="Висновок державної санітарно-епідеміологічної експертизи (з накладанням ЕЦП) буде направлено Вам на ел.пошту, вказану в Заяві"></activiti:formProperty>
+        <activiti:formProperty id="label_info_04" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надано в Держпродспожислужбі за адресою:  м. Київ, вул. Б.Грінченка, 1"></activiti:formProperty>
+        <activiti:formProperty id="label_info_05" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надіслано Укрпоштою. Сплата послуги Укрпошти відбувається в момент отримання листа"></activiti:formProperty>
+        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dpss/dpss_1441_visnovok.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow26" sourceRef="usertask6" targetRef="exclusivegateway6"></sequenceFlow>
-    <userTask id="usertask7" name="рук" activiti:candidateGroups="ASO"></userTask>
+    <userTask id="usertask7" name="рук" activiti:candidateGroups="ASO">
+      <extensionElements>
+        <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_07" name="Список технологія, діючий об'єкт тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" writable="false">
+          <activiti:value id="Rawmaterials" name="Сировина, продукція тощо"></activiti:value>
+          <activiti:value id="Projects" name="Проекти, нормативні документи тощо"></activiti:value>
+          <activiti:value id="Technologies" name="Технологія, діючий об'єкт тощо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_01" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;saSubjectType&quot;],&quot;sValue&quot;:&quot;Реквізити власника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="saSubjectType" name="Суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="FOP" name="Фізична особа - підприємець"></activiti:value>
+          <activiti:value id="JUR" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_03" name="Дані фіз.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_04" name="Дані юр.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код за ЄДРПОУ заявника експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Заявник (власник); ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Податковий ідентифікаційний номер заявника експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника (власника); ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocationFOP" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Назва об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSphere" name="Сфера застосування та реалізації об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_12" name="Код за ДКПП наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_13" name="Код за УКТЗЕД наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_14" name="Артиул наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_02" name="Країна походження об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocProducer" name="Виробник, розробник документів (його представник в Україні); ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="Линия реквизитов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sLocation&quot;],&quot;sValue&quot;:&quot;Реквізити виробника, розробника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLocation" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone_1" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email_1" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite_1" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContract" name="Дані про контракт на постачання об'єкта в Україну; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saTypeCredentials" name="Документ про повноваження заявника представляти виробника (власника)" type="enum" writable="false">
+          <activiti:value id="Agreement" name="Договір"></activiti:value>
+          <activiti:value id="Contract" name="Контракт"></activiti:value>
+          <activiti:value id="Attorney" name="Доручення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRequisites" name="Реквізити документа; Договору/Контракту/Доручення;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_10" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc101;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_11" name="Линия разделения" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sDoc201;],&quot;sValue&quot;:&quot;Перелік документів та матеріалів для проведення робіт для потреб державної санітарно-епідеміологічної експертизи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc101" name="Специфікація;Довідка про повний склад об'єкта експертизи та показники його ідентифікації;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc102" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх якості та безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності, склад, характеристику, терміни придатності, умови зберігання тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc103" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc104" name="Рекомендації із застосування та інструкція для споживача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc105" name="Етикетка; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc106" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc107" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc108" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc109" name="Акт про обстеження підприємства-виробника продукції;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc110" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками якості і безпечності;За наявності ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc111" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки - якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі - і за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc112" name="Токсикологічне досьє (для основних діючих речовин, а також для спеціальних інгредієнтів) за розділами: гостра токсичність, підгостра токсичність, хронічна токсичність, алергенна, сенсибілізативна, імунотоксична, тератогенна, ембріотоксична, канцерогенна, мутагенна дія тощо з посиланням на виконавця досліджень (у випадках, передбачених законодавством України);Токсикологічне досьє може надаватися українською, англійською, російською мовами, а його анотована частина - у перекладі українською мовою;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc113" name="Результати клінічних, натурних випробувань, епідеміологічних, популяційних досліджень тощо або науково обґрунтовані докази їх недоцільності;У випадках, передбачених законодавством України;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc114" name="Методи контролю небезпечних факторів в об'єктах експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc201" name="Проект документ;Нормативний, проектний, державний, галузевий стандарт, технічні умови тощо, програми в одному примірнику. Документ подається в останній редакції із супровідним листом, де наводяться реквізити організації-розробника.У разі повторного подання документа обов'язкове посилання на номер і дату раніше виданого висновку або погодження головним державним санітарним лікарем. У проекті документа повинні бути відомості про:призначення продукції, об'єкта, виробництва, споруди, програми тощо; Основні характеристики, склад, конструкція тощо; періодичність і обсяг контролю конкретних гігієнічних, медико-біологічних та інших показників щодо безпеки для здоров'я людини; вимоги безпеки для здоров'я при виготовленні та застосуванні продукції, реалізації програм, забудови, експлуатації тощо;заходи щодо захисту людини від шкідливого впливу продукції, промислового об'єкта тощо під час її виготовлення, будівництва, застосування, експлуатації тощо;заходи щодо охорони навколишнього середовища, у тому числі утилізація і знешкодження відходів виробництва, продукції по закінченні гарантійного строку та інші вимоги до її безпеки.;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc202" name="Пояснювальна записка; Пояснювальна записка повинна містити описи матеріалів, сфери та умов застосування, фізико-хімічних властивостей, небезпечності, токсичності, міграції речовин, методик їх виявлення, способів утилізації матеріалів по закінченні гарантійного строку, якщо вони не зазначені в документі тощо;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc203" name="Результати відповідних вимірювань, випробувань, досліджень, обстежень, регламентації тощо; За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc204" name="Проект маркування, інструкції тощо; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc205" name="Опис технологічного процесу, регламенту (технологічна інструкція) виготовлення та застосування продукції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc206" name="Інші відомості, необхідні для оцінки можливого впливу продукції на здоров'я людини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc302" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;Документ, що підтверджує якість продукції, що містить дані про показники безпечності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc303" name="Дані щодо реєстрації об'єкта експертизи в країні-виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc304" name="Рекомендації із застосування та технологічна інструкція експлуатації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc305" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc306" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc307" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи, а також технологічна документація (процес, регламент, інструкція тощо);За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc308" name="Протоколи досліджень об'єкта експертизи за показниками якості та безпеки, якщо дослідження проводились раніше, в іншій лабораторії (установі), у тому числі за кордоном;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc309" name="Акт про обстеження підприємства;За наявності;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc310" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують її виробництво за показниками безпечності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="label_info_01" name=" ; ;labelType=warning" type="label" default="Для проведення експертизи необхідно надати зразки об'єкта експертизи протягом 14 календарних днів. Адресу для направлення зразків буде надіслано електронною поштою"></activiti:formProperty>
+        <activiti:formProperty id="label_info_02" name=" ; ;labelType=warning" type="label" default="Матеріали після проведення експертизи не повертаються"></activiti:formProperty>
+        <activiti:formProperty id="marker_081" name="Висновок наявний" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_082" name="Висновок відсутній" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saConclusionAvaliable" name="Я вже маю проект висновку державної санітарно-епідеміологічної експертизи" type="enum" writable="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
+          <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
+          <activiti:value id="Paper" name="Паперова форма надається у Дерджпродспоживслужбі"></activiti:value>
+          <activiti:value id="Mail" name="Паперова форма надсилається Укрпоштою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="label_info_03" name=" ; ;labelType=info" type="label" default="Висновок державної санітарно-епідеміологічної експертизи (з накладанням ЕЦП) буде направлено Вам на ел.пошту, вказану в Заяві"></activiti:formProperty>
+        <activiti:formProperty id="label_info_04" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надано в Держпродспожислужбі за адресою:  м. Київ, вул. Б.Грінченка, 1"></activiti:formProperty>
+        <activiti:formProperty id="label_info_05" name=" ; ;labelType=info" type="label" default="Паперову форму висновку державної санітарно-епідеміологічної експертизи буде надіслано Укрпоштою. Сплата послуги Укрпошти відбувається в момент отримання листа"></activiti:formProperty>
+        <activiti:formProperty id="sLocationMail" name="Введіть поштову адресу для направлення Висновку; ПІБ отримувача, Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="label_info_06" name=" ; ;labelType=warning" type="label" default="Підтверджую, що заявлений мною об'єкт експертизи відповідає показникам якості та безпеки, представленим у супровідній документації "></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dpss/dpss_1441_visnovok.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow27" sourceRef="exclusivegateway6" targetRef="usertask7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow29" sourceRef="usertask7" targetRef="exclusivegateway7"></sequenceFlow>
     <sequenceFlow id="flow32" sourceRef="exclusivegateway4" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="usertask4" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="usertask5" targetRef="exclusivegateway4"></sequenceFlow>
-    <sequenceFlow id="flow35" sourceRef="exclusivegateway4" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow35" name="проект висновку незадовільний" sourceRef="exclusivegateway4" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="exclusivegateway4" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="exclusivegateway6" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="exclusivegateway7" targetRef="usertask6"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask5" name="Лист про надання висновку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Дякуємо за звернення за послугою.<br />
+Висновок державної санітарно-епідеміологічної експертизи за Вашим зверненням [sID_Order] готовий. <br />
+${sPhoneOrgan}.<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}.<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[$(phone)]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order] Vysnovok DPSS gotovyi . Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <userTask id="usertask8" name="User Task" activiti:candidateGroups="ASO"></userTask>
     <sequenceFlow id="flow40" sourceRef="exclusivegateway7" targetRef="usertask8"></sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="usertask8" targetRef="servicetask5"></sequenceFlow>
@@ -195,10 +951,10 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="91.0" y="154.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="221.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="118.0" x="184.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="340.0" y="220.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="121.0" x="322.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="222.0" y="310.0"></omgdc:Bounds>
@@ -219,16 +975,16 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="700.0" y="228.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="785.0" y="221.0"></omgdc:Bounds>
+        <omgdc:Bounds height="76.0" width="105.0" x="843.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="935.0" y="231.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1000.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="668.0" y="380.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="391.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="303.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="145.0" x="647.0" y="303.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="1683.0" y="480.0"></omgdc:Bounds>
@@ -255,7 +1011,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="1323.0" y="477.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="1543.0" y="470.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="1543.0" y="470.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask8" id="BPMNShape_usertask8">
         <omgdc:Bounds height="55.0" width="105.0" x="1408.0" y="470.0"></omgdc:Bounds>
@@ -268,7 +1024,7 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="110.0" y="230.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="242.0" y="276.0"></omgdi:waypoint>
+        <omgdi:waypoint x="243.0" y="281.0"></omgdi:waypoint>
         <omgdi:waypoint x="242.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
@@ -281,11 +1037,11 @@ execution.setVariable('sCountPayment', src)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="262.0" y="330.0"></omgdi:waypoint>
-        <omgdi:waypoint x="392.0" y="329.0"></omgdi:waypoint>
-        <omgdi:waypoint x="392.0" y="275.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="329.0"></omgdi:waypoint>
+        <omgdi:waypoint x="382.0" y="288.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="445.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="443.0" y="254.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="247.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -302,22 +1058,28 @@ execution.setVariable('sCountPayment', src)</script>
         <omgdi:waypoint x="592.0" y="158.0"></omgdi:waypoint>
         <omgdi:waypoint x="497.0" y="158.0"></omgdi:waypoint>
         <omgdi:waypoint x="497.0" y="230.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="39.0" width="100.0" x="570.0" y="161.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="740.0" y="248.0"></omgdi:waypoint>
-        <omgdi:waypoint x="785.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="843.0" y="248.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="13.0" width="70.0" x="759.0" y="250.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="890.0" y="248.0"></omgdi:waypoint>
-        <omgdi:waypoint x="935.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="948.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1000.0" y="247.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="720.0" y="268.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="303.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="719.0" y="358.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="380.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="371.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="391.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
         <omgdi:waypoint x="1028.0" y="497.0"></omgdi:waypoint>
@@ -347,7 +1109,10 @@ execution.setVariable('sCountPayment', src)</script>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="843.0" y="477.0"></omgdi:waypoint>
         <omgdi:waypoint x="843.0" y="407.0"></omgdi:waypoint>
-        <omgdi:waypoint x="773.0" y="407.0"></omgdi:waypoint>
+        <omgdi:waypoint x="772.0" y="418.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="39.0" width="100.0" x="842.0" y="408.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="863.0" y="497.0"></omgdi:waypoint>
@@ -372,19 +1137,19 @@ execution.setVariable('sCountPayment', src)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="1513.0" y="497.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1543.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1543.0" y="500.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="1648.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1648.0" y="500.0"></omgdi:waypoint>
         <omgdi:waypoint x="1683.0" y="497.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="720.0" y="435.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="446.0"></omgdi:waypoint>
         <omgdi:waypoint x="720.0" y="470.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="130.0" y="250.0"></omgdi:waypoint>
-        <omgdi:waypoint x="190.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="184.0" y="250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
         <omgdi:waypoint x="110.0" y="270.0"></omgdi:waypoint>

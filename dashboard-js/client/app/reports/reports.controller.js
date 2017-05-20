@@ -31,13 +31,13 @@
           return $scope.exportURL;
     };
 
-    processes.getUserProcesses().then(function (data) {
+    processes.getBPs_ForExport().then(function (data) {
       $scope.processesList = data;
 
       if (typeof $scope.processesList === 'undefined') {
           $scope.processesList = "error";
       } else if (typeof $scope.processesList !== 'undefined' && $scope.processesList.length > 0) {
-        $scope.export.sBP = $scope.processesList[0].oSubjectRightBP.sID_BP;
+        $scope.export.sBP = $scope.processesList[0].sID_BP;
         $scope.initExportUrl();
       }
     }, function () {

@@ -60,21 +60,23 @@
                ng-click="openLetter(oOrderMessage.nID)">
               <span class="glyphicon glyphicon-envelope"></span> Переглянути лист, який Вам було відправлено
             </a>
-            <!--<br>
-            <div ng-if="oOrderMessage.osData.aFile && oOrderMessage.oSubjectMessageType.nID === 10">
-              <div ng-if="oOrderMessage.osData.aFile.length == 1">
-                <a ng-href="{{getDocumentLink(oOrderMessage.osData.aFile[0].sKey)}}"
-                   target="_self">
-                        <span class="glyphicon glyphicon-download"
-                              title="Завантажити файл, що був Вам надісланий разом з листом"
-                              aria-hidden="true"></span></a>
-              </div>
-              <div ng-if="oOrderMessage.osData.aFile.length > 1">
-
-              </div>
-            </div>-->
-
-            <p style="padding-bottom: 20px" ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
+            <p  style="padding-bottom: 20px" ng-bind-html="oOrderMessage.sMessage || oOrderMessage.sBody" class="hide-table"></p>
+            <div ng-if="oOrderMessage.aSubjectMessageQuestionFields && oOrderMessage.aSubjectMessageQuestionFields.length > 0">
+              <table class="QuestionFields">
+                <tr>
+                  <td>Поле</td>
+                  <td>Значення</td>
+                  <td ng-if="oOrderMessage.oSubjectMessageType.nID == 4">Нове значення</td>
+                  <td>Коментар</td>
+                </tr>
+                <tr ng-repeat="field in oOrderMessage.aSubjectMessageQuestionFields">
+                  <td>{{field.sName}}</td>
+                  <td>{{field.sValue}}</td>
+                  <td ng-if="oOrderMessage.oSubjectMessageType.nID == 4">{{field.sValueNew}}</td>
+                  <td>{{field.sNotify}}</td>
+                </tr>
+              </table>
+            </div>
             <div ng-repeat="oFile in oOrderMessage.osData.aFile">
               <span ng-if="oFile.sFileName && oFile.sFileName.trim() && oFile.sID_DataLinkAuthor !== 'SFS'">Прикріплено файл: "{{::oFile.sFileName}}"</span>
               <div ng-if="oOrderMessage.oSubjectMessageType &&
@@ -100,73 +102,72 @@
               </div>
             </div>
             <form novalidate name="oQuestion" ng-if="bOrderQuestion && $index == 0 && !sServerReturnOnAnswer" style="padding: 20px" class="form-horizontal">
-
-              <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID"
+              <div class="form-group" ng-repeat="oField in oOrderMessage.aSubjectMessageQuestionFields track by oField.sID"
                    ng-switch on="oField.sType">
-                    <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
-                      <span ng-if="oField.sName">{{oField.sName}} :</span>
-                      <!--<span ng-if="!oField.sName">{{oField.sGeneralComment}}</span>-->
-                      <br /><span style="color: #CC0000" ng-if="oOrderMessage.oSubjectMessageType.nID !== 4">{{oField.sNotify}}</span>
-                    </label>
-                    <div class="col-md-6">
+                <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
+                  <span ng-if="oField.sName">{{oField.sName}} :</span>
+                  <!--<span ng-if="!oField.sName">{{oField.sGeneralComment}}</span>-->
+                  <br /><span style="color: #CC0000" ng-if="oOrderMessage.oSubjectMessageType.nID !== 4">{{oField.sNotify}}</span>
+                </label>
+                <div class="col-md-6">
 
-                        <input ng-switch-when="string"
-                             type="text"
-                             name="{{oField.sID}}"
-                             ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
-                             ng-model="oField.sValueNew"
-                             ng-required="true"
-                             class="form-control">
+                  <input ng-switch-when="string"
+                         type="text"
+                         name="{{oField.sID}}"
+                         ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                         ng-model="oField.sValueNew"
+                         ng-required="true"
+                         class="form-control">
 
-                        <input ng-switch-when="long"
-                               type="number"
-                               name="{{oField.sID}}"
-                               ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
-                               string-to-number
-                               ng-model="oField.sValueNew"
-                               ng-required="true"
-                               class="form-control">
+                  <input ng-switch-when="long"
+                         type="number"
+                         name="{{oField.sID}}"
+                         ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                         string-to-number
+                         ng-model="oField.sValueNew"
+                         ng-required="true"
+                         class="form-control">
 
-                        <input ng-switch-when="double"
-                               type="number"
-                               name="{{oField.sID}}"
-                               ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
-                               string-to-number
-                               ng-model="oField.sValueNew"
-                               ng-required="true"
-                               class="form-control">
+                  <input ng-switch-when="double"
+                         type="number"
+                         name="{{oField.sID}}"
+                         ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                         string-to-number
+                         ng-model="oField.sValueNew"
+                         ng-required="true"
+                         class="form-control">
 
-                        <p ng-switch-when="date" class="input-group ng-scope datepicker-central" style="width:150px;">
-                          <input
-                            type="text"
-                            name="{{oField.sID}}"
-                            datepicker-popup="{{oField.oFactory.format}}"
-                            is-open="oField.oFactory.opened"
-                            datepicker-options="oField.oFactory.options"
-                            ng-model="oField.oFactory.value"
-                            ng-required="true"
-                            close-text="Close"
-                            ng-readonly="true"
-                            class="form-control"
-                            value="oField.oFactory.value">
+                  <p ng-switch-when="date" class="input-group ng-scope datepicker-central" style="width:150px;">
+                    <input
+                      type="text"
+                      name="{{oField.sID}}"
+                      datepicker-popup="{{oField.oFactory.format}}"
+                      is-open="oField.oFactory.opened"
+                      datepicker-options="oField.oFactory.options"
+                      ng-model="oField.oFactory.value"
+                      ng-required="true"
+                      close-text="Close"
+                      ng-readonly="true"
+                      class="form-control"
+                      value="oField.oFactory.value">
 
-                          <span class="input-group-btn">
+                    <span class="input-group-btn">
                             <button type="button"
                                     class="btn btn-default"
                                     ng-click="oField.oFactory.open($event)">
                               <i class="glyphicon glyphicon-calendar"></i>
                             </button>
                           </span>
-                        </p>
+                  </p>
 
-                        <textarea ng-switch-when="textArea"
-                              name="{{oField.sID}}"
-                              ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
-                              ng-model="oField.sValueNew"
-                              ng-required="true"
-                              class="form-control">
+                  <textarea ng-switch-when="textArea"
+                            name="{{oField.sID}}"
+                            ng-hide="oField.sID==='resident' || oField.sID === 'sCountry'"
+                            ng-model="oField.sValueNew"
+                            ng-required="true"
+                            class="form-control">
                         </textarea>
-                    </div>
+                </div>
               </div>
 
               <div class="row" style="margin-bottom: 0; margin-top: 20px">

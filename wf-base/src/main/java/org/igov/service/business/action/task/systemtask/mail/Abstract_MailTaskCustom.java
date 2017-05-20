@@ -2,9 +2,8 @@ package org.igov.service.business.action.task.systemtask.mail;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.util.ToolLuna.getProtectedNumber;
-import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
-
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -20,45 +19,48 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.HistoryService;
-import org.activiti.engine.TaskService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.util.json.JSONException;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.task.Task;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
+import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.io.fs.FileSystemDictonary;
 import org.igov.io.mail.Mail;
 import org.igov.io.sms.ManagerSMS;
-import org.igov.io.web.HttpRequester;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
-
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import org.igov.service.business.finance.Currency;
 import org.igov.service.business.finance.Liqpay;
 import org.igov.service.business.object.Language;
 import org.igov.service.business.place.PlaceService;
+import org.igov.service.business.util.CustomRegexPattern;
+import org.igov.service.business.util.DateUtilFormat;
 import org.igov.service.controller.security.AccessContract;
 import org.igov.service.controller.security.AuthenticationTokenSelector;
+import org.igov.service.exception.CRCInvalidException;
+import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.Tool;
 import org.igov.util.ToolWeb;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,42 +68,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-public abstract class Abstract_MailTaskCustom extends AbstractModelTask implements JavaDelegate {
+
+
+public abstract class Abstract_MailTaskCustom extends AbstractModelTask implements JavaDelegate, CustomRegexPattern {
 
     static final transient Logger LOG = LoggerFactory
             .getLogger(Abstract_MailTaskCustom.class);
-    private static final Pattern TAG_PAYMENT_BUTTON_LIQPAY = Pattern
-            .compile("\\[paymentButton_LiqPay(.*?)\\]");
-    private static final Pattern TAG_sPATTERN_CONTENT_CATALOG = Pattern
-            .compile("[a-zA-Z]+\\{\\[(.*?)\\]\\}");
-    private static final Pattern TAG_PATTERN_PREFIX = Pattern
-            .compile("_[0-9]+");
-    private static final Pattern TAG_PATTERN_DOUBLE_BRACKET = Pattern
-            .compile("\\{\\[(.*?)\\]\\}");
-    private static final String TAG_CANCEL_TASK = "[cancelTask]";
-    private static final String TAG_CANCEL_TASK_SIMPLE = "[cancelTaskSimple]";
-    private static final String TAG_nID_Protected = "[nID_Protected]";
-    private static final String TAG_sID_Order = "[sID_Order]";
-    private static final String TAG_nID_SUBJECT = "[nID_Subject]";
-    private static final String TAG_sDateCreate = "[sDateCreate]";
-    // private static final String TAG_sURL_SERVICE_MESSAGE =
-    // "[sURL_ServiceMessage]";
-    private static final Pattern TAG_sURL_SERVICE_MESSAGE = Pattern
-            .compile("\\[sURL_ServiceMessage(.*?)\\]");
-    private static final Pattern TAG_sURL_FEEDBACK_MESSAGE = Pattern
-            .compile("\\[sURL_FeedbackMessage(.*?)\\]");
-    private static final Pattern TAG_sPATTERN_CONTENT_COMPILED = Pattern
-            .compile("\\[pattern/(.*?)\\]");
-    private static final String TAG_Function_AtEnum = "enum{[";
-    private static final String TAG_Function_To = "]}";
-    private static final String PATTERN_MERCHANT_ID = "sID_Merchant%s";
-    private static final String PATTERN_SUM = "sSum%s";
-    private static final String PATTERN_CURRENCY_ID = "sID_Currency%s";
-    private static final String PATTERN_DESCRIPTION = "sDescription%s";
-    private static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
 
-    @Autowired
-    public HistoryService historyService;
     @Value("${general.Mail.sHost}")
     public String mailServerHost;
     @Value("${general.Mail.nPort}")
@@ -114,42 +87,31 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public String mailServerPassword;
     @Value("${general.Mail.sAddressNoreply}")
     public String mailAddressNoreplay;
-
     @Value("${general.Mail.bUseSSL}")
     private boolean bSSL;
     @Value("${general.Mail.bUseTLS}")
     private boolean bTLS;
-
+    
     public Expression from;
     public Expression to;
     public Expression subject;
     public Expression text;
-
-    protected Expression sID_Merchant;
-    protected Expression sSum;
-    protected Expression sID_Currency;
-    protected Expression sLanguage;
-    protected Expression sDescription;
     protected Expression nID_Subject;
-    // private static final String PATTERN_DELIMITER = "_";
+    
+    @Autowired
+    public HistoryService historyService;
 
-    //@Autowired
-    //public ManagerSMS_New oManagerSMS;
     @Autowired
     public ManagerSMS ManagerSMS;
 
     @Autowired
-    AccessKeyService accessCover;
+    public AccessKeyService accessCover;
     @Autowired
-    GeneralConfig generalConfig;
+    public GeneralConfig generalConfig;
     @Autowired
     private ApplicationContext context;
     @Autowired
-    private HttpRequester httpRequester;
-    // @Autowired
-    // AccessDataService accessDataDao;
-    @Autowired
-    Liqpay liqBuy;
+    public Liqpay liqBuy;
     @Autowired
     private CancelTaskUtil cancelTaskUtil;
 
@@ -167,39 +129,36 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             return null;
         }
 
-        LOG.debug("sTextSource=" + sTextSource);
-
         String sTextReturn = sTextSource;
 
         sTextReturn = replaceTags_LIQPAY(sTextReturn, execution);
-
+        
         sTextReturn = populatePatternWithContent(sTextReturn);
 
         sTextReturn = replaceTags_Enum(sTextReturn, execution);
+        
 
         sTextReturn = replaceTags_Catalog(sTextReturn, execution);
 
         sTextReturn = new FileSystemDictonary()
                 .replaceMVSTagWithValue(sTextReturn);
+        
 
         Long nID_Order = getProtectedNumber(Long.valueOf(execution
                 .getProcessInstanceId()));
 
         if (sTextReturn.contains(TAG_nID_Protected)) {
-            LOG.info("TAG_nID_Protected:(nID_Order={})", nID_Order);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_Protected
                     + "\\E", "" + nID_Order);
         }
 
         if (sTextReturn.contains(TAG_sID_Order)) {
             String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
-            LOG.info("TAG_sID_Order:(sID_Order={})", sID_Order);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sID_Order + "\\E",
                     "" + sID_Order);
         }
 
         if (sTextReturn.contains(TAG_CANCEL_TASK)) {
-            LOG.info("TAG_CANCEL_TASK:(nID_Protected={})", nID_Order);
             String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(
                     nID_Order, false);
             sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK,
@@ -207,7 +166,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         }
 
         if (sTextReturn.contains(TAG_CANCEL_TASK_SIMPLE)) {
-            LOG.info("TAG_CANCEL_TASK_SIMPLE:(nID_Protected={})", nID_Order);
             String sHTML_CancelTaskButton = cancelTaskUtil.getCancelFormHTML(
                     nID_Order, true);
             sTextReturn = sTextReturn.replace(TAG_CANCEL_TASK_SIMPLE,
@@ -215,7 +173,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         }
 
         if (sTextReturn.contains(TAG_nID_SUBJECT)) {
-            LOG.info("TAG_nID_SUBJECT: (nID_Subject={})", nID_Subject);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_nID_SUBJECT
                     + "\\E", "" + nID_Subject);
         }
@@ -228,7 +185,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             DateTimeFormatter formatter = JsonDateTimeSerializer.DATETIME_FORMATTER;
             String sDateCreate = formatter.print(oProcessInstanceStartDate
                     .getTime());
-            LOG.info("TAG_sDateCreate: (sDateCreate={})", sDateCreate);
             sTextReturn = sTextReturn.replaceAll("\\Q" + TAG_sDateCreate
                     + "\\E", "" + sDateCreate);
         }
@@ -246,20 +202,17 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         List<String> previousUserTaskId = getPreviousTaskId(execution);
         int nLimit = StringUtils.countMatches(textWithoutTags,
                 TAG_Function_AtEnum);
-        LOG.info("Found {} enum occurrences in the text ", nLimit);
+  
         Map<String, FormProperty> aProperty = new HashMap<>();
         int foundIndex = 0;
         while (nLimit > 0) {
             nLimit--;
             int nAt = textWithoutTags.indexOf(TAG_Function_AtEnum, foundIndex);
-            LOG.info("sTAG_Function_AtEnum, (nAt={})", nAt);
             foundIndex = nAt + 1;
             int nTo = textWithoutTags.indexOf(TAG_Function_To, foundIndex);
             foundIndex = nTo + 1;
-            LOG.info("sTAG_Function_ToEnum,(nTo={})", nTo);
             String sTAG_Function_AtEnum = textWithoutTags.substring(nAt
                     + TAG_Function_AtEnum.length(), nTo);
-            LOG.info("(sTAG_Function_AtEnum={})", sTAG_Function_AtEnum);
 
             if (aProperty.isEmpty()) {
                 loadPropertiesFromTasks(execution, previousUserTaskId,
@@ -271,19 +224,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 String snID = property.getId();
                 if (!bReplaced && "enum".equals(sType)
                         && sTAG_Function_AtEnum.equals(snID)) {
-                    LOG.info(String
-                            .format("Found field! Matching property snID=%s:name=%s:sType=%s:sValue=%s with fieldNames",
-                                    snID, property.getName(), sType,
-                                    property.getValue()));
 
                     Object variable = execution.getVariable(property.getId());
                     if (variable != null) {
                         String sID_Enum = variable.toString();
-                        LOG.info("execution.getVariable()(sID_Enum={})",
-                                sID_Enum);
                         String sValue = ActionTaskService.parseEnumProperty(
                                 property, sID_Enum);
-                        LOG.info("9sValue={})", sValue);
 
                         textWithoutTags = textWithoutTags.replaceAll("\\Q"
                                 + TAG_Function_AtEnum + sTAG_Function_AtEnum
@@ -309,7 +255,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             loadPropertiesFromTasks(execution, aPreviousUserTask_ID, mProperty);
             while (matcher.find()) {
                 String tag_Payment_CONTENT_CATALOG = matcher.group();
-                LOG.info("Found tag catalog group:{}", matcher.group());
                 if (!tag_Payment_CONTENT_CATALOG
                         .startsWith(TAG_Function_AtEnum)) {
                     String prefix;
@@ -317,24 +262,16 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                             .matcher(tag_Payment_CONTENT_CATALOG);
                     if (matcherPrefix.find()) {
                         prefix = matcherPrefix.group();
-                        LOG.info("Found double bracket tag group: {}",
-                                matcherPrefix.group());
                         String form_ID = StringUtils.replace(prefix, "{[", "");
                         form_ID = StringUtils.replace(form_ID, "]}", "");
-                        LOG.info("(form_ID={})", form_ID);
                         FormProperty formProperty = mProperty.get(form_ID);
-                        LOG.info("Found form property : {}", formProperty);
-
                         if (formProperty != null && formProperty.getValue() != null) {
                             replacement = formProperty.getValue();
-                            LOG.info("(formVariable={})", formProperty.getValue());
                         } else {
                             List<String> aID = new ArrayList<>();
                             aID.add(form_ID);
                             List<String> proccessVariable = AbstractModelTask
                                     .getVariableValues(execution, aID);
-                            LOG.info("(proccessVariable={})",
-                                    proccessVariable);
                             if (!proccessVariable.isEmpty()
                                     && proccessVariable.get(0) != null) {
                                 replacement = proccessVariable.get(0);
@@ -345,9 +282,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                             String sType = formProperty.getType().getName();
                             if ("date".equals(sType)) {
                                 if (formProperty.getValue() != null) {
-                                    LOG.info(
-                                            "formProperty.getValue() getFormattedDateS : {}",
-                                            formProperty.getValue());
                                     replacement = getFormattedDateS(formProperty
                                             .getValue());
                                 }
@@ -355,7 +289,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                         }
                     }
                 }
-                LOG.info("Replacement for pattern : {}", replacement);
                 matcher.appendReplacement(outputTextBuffer, replacement);
                 replacement = "";
             }
@@ -393,11 +326,9 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     .getVariable(pattern_merchant).toString() : execution
                     .getVariable(String.format(PATTERN_MERCHANT_ID, ""))
                     .toString();
-            LOG.info("{}={}", pattern_merchant, sID_Merchant);
             String sSum = execution.getVariable(pattern_sum) != null ? execution
                     .getVariable(pattern_sum).toString() : execution
                     .getVariable(String.format(PATTERN_SUM, "")).toString();
-            LOG.info("{}={}", pattern_sum, sSum);
             if (sSum != null) {
                 sSum = sSum.replaceAll(",", ".");
             }
@@ -405,7 +336,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     .getVariable(pattern_currency).toString() : execution
                     .getVariable(String.format(PATTERN_CURRENCY_ID, ""))
                     .toString();
-            LOG.info("{}={}", pattern_currency, sID_Currency);
             Currency oID_Currency = Currency
                     .valueOf(sID_Currency == null ? "UAH" : sID_Currency);
 
@@ -414,7 +344,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     .getVariable(pattern_description).toString() : execution
                     .getVariable(String.format(PATTERN_DESCRIPTION, ""))
                     .toString();
-            LOG.info("{}={}", pattern_description, sDescription);
+                  
+            String pattern_expired_period_hour = String.format(PATTERN_EXPIRED_PERIOD_HOUR, prefix);
+            Integer nExpired_Period_Hour = execution.getVariable(pattern_expired_period_hour) != null 
+                    ? ((Long)execution.getVariable(pattern_expired_period_hour)).intValue() : null;
 
             String sID_Order = "TaskActiviti_" + execution.getId().trim()
                     + prefix;
@@ -427,12 +360,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     .getVariable(String.format(PATTERN_SUBJECT_ID, ""))
                     .toString());
             nID_Subject = (nID_Subject == null ? 0 : nID_Subject);
-            LOG.info("{}={}", pattern_subject, nID_Subject);
             boolean bTest = generalConfig.isTest_LiqPay();
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant,
                     sSum, oID_Currency, sLanguage, sDescription, sID_Order,
                     sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
-                    nID_Subject, bTest);
+                    nID_Subject, bTest, nExpired_Period_Hour);
             matcher.appendReplacement(outputTextBuffer, htmlButton);
         }
         return matcher.appendTail(outputTextBuffer).toString();
@@ -455,23 +387,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     + "/wf/service/subject/message/setMessageRate";
 
             String sURI = ToolWeb.deleteContextFromURL(URL_SERVICE_MESSAGE);
-            /*
-			 * ProcessDefinition processDefinition =
-			 * execution.getEngineServices()
-			 * .getRepositoryService().createProcessDefinitionQuery()
-			 * .processDefinitionId(execution.getProcessDefinitionId())
-			 * .singleResult();
-             */
 
             String sQueryParamPattern = "?"
-                    // + "sHead=Отзыв" + "&sMail= " + "&sData="
-                    // + (processDefinition != null &&
-                    // processDefinition.getName() != null ?
-                    // processDefinition.getName().trim() : "")
                     + "&sID_Rate="
                     + prefix.replaceAll("_", "")
-                    // + "&nID_SubjectMessageType=1" + "&nID_Protected="+
-                    // nID_Protected
                     + "&sID_Order="
                     + generalConfig.getOrderId_ByOrder(nID_Order);
 
@@ -494,39 +413,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         return matcher.appendTail(outputTextBuffer).toString();
     }
 
-    //TODO: Допилить и начать использовать PlaceServiceImpl вместо этого
-    /*private String getPlaceByProcess(String sID_Process) {
-        Map<String, String> mParam = new HashMap<String, String>();
-        mParam.put("nID_Process", sID_Process);
-        //LOG.info("2sID_Process: " + sID_Process);
-        mParam.put("nID_Server", generalConfig.getSelfServerId().toString());
-        //LOG.info("3generalConfig.getSelfServerId().toString(): " + generalConfig.getSelfServerId().toString());
-        String sURL = generalConfig.getSelfHostCentral() + "/wf/service/object/place/getPlaceByProcess";
-        //LOG.info("ssURL: " + sURL);
-        LOG.info("(sURL={},mParam={})", sURL, mParam);
-        String soResponse = null;
-        String sName = null;
-        try {
-            soResponse = httpRequester.getInside(sURL, mParam);
-            LOG.info("soResponse={}", soResponse);
-            Map mReturn = JsonRestUtils.readObject(soResponse, Map.class);
-            LOG.info("mReturn={}" + mReturn);
-            sName = (String) mReturn.get("sName");
-            LOG.info("sName={}", sName);
-        } catch (Exception ex) {
-            LOG.error("", ex);
-        }
-        //LOG.info("(soResponse={})", soResponse);
-        return sName;//soResponse
-    }*/
     private String replaceTags_sURL_FEEDBACK_MESSAGE(String textWithoutTags,
             DelegateExecution execution, Long nID_Order) throws Exception {
 
-        LOG.info("Replace tags(textWithoutTags= {}, nID={})", textWithoutTags, nID_Order);
-
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher oMatcher = TAG_sURL_FEEDBACK_MESSAGE.matcher(textWithoutTags);
-        LOG.info("Replace tags (oMatcher= {})", oMatcher.find());
         while (oMatcher.find()) {
             String tag_sURL_FEEDBACK_MESSAGE = oMatcher.group();
             List<String> aPreviousUserTask_ID = getPreviousTaskId(execution);
@@ -540,16 +431,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             String sAuthorFIO = "";
             String sAuthorFIO_Original = "";
 
-            //FormProperty oFormProperty = null;
             String sPrefix = "";
             Matcher oMatcherPrefix = TAG_PATTERN_PREFIX.matcher(tag_sURL_FEEDBACK_MESSAGE);
             if (oMatcherPrefix.find()) {
                 sPrefix = oMatcherPrefix.group();
-                LOG.info("Found double bracket tag group: {}", sPrefix);
-                /*String form_ID = StringUtils.replace(sPrefix, "{[", "");
-                                form_ID = StringUtils.replace(form_ID, "]}", "");
-                                LOG.info("(form_ID={})", form_ID);
-                                oFormProperty = mProperty.get(form_ID);*/
             }
 
             for (Entry<String, FormProperty> oFormPropertyEntry : mProperty.entrySet()) {
@@ -557,7 +442,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
                 if (oFormProperty != null) {
                     String sID = oFormProperty.getId();
-                    LOG.info("(id={})", sID);
 
                     if ("email".equalsIgnoreCase(sID) && oFormProperty.getValue() != null && !"null".equalsIgnoreCase(oFormProperty.getValue())) {
                         sAuthorMail = oFormProperty.getValue();
@@ -573,42 +457,28 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     }
                     if ("clFIO".equalsIgnoreCase(sID) && oFormProperty.getValue() != null && !"null".equalsIgnoreCase(oFormProperty.getValue())) {
                         sAuthorFIO_Original = oFormProperty.getValue();
-//                        LOG.info("(sAuthorFIO_Original={})", sAuthorFIO_Original);
                     }
-                    LOG.info("oFormProperty != null :"
-                            + "(sAuthorMail={}, sAuthorLastName= {}, sAuthorFirstName= {}, sAuthorMiddleName= {}, sAuthorFIO_Original= {})",
-                            sAuthorMail, sAuthorLastName, sAuthorFirstName, sAuthorMiddleName, sAuthorFIO_Original);
                 }
             }
 
             if (sAuthorFIO_Original != null && !"".equals(sAuthorFIO_Original.trim())) {
                 String[] as = sAuthorFIO_Original.split("\\ ");
-                //LOG.info("(as={})", as);
                 if (as.length > 0 && (sAuthorLastName == null || "".equals(sAuthorLastName.trim()))) {
                     sAuthorLastName = as[0];
-                    //LOG.info("(as[0]={})", as[0]);
                 }
                 if (as.length > 1 && (sAuthorFirstName == null || "".equals(sAuthorFirstName.trim()))) {
                     sAuthorFirstName = as[1];
-                    //LOG.info("(as[1]={})", as[1]);
                 }
                 if (as.length > 2 && (sAuthorMiddleName == null || "".equals(sAuthorMiddleName.trim()))) {
                     sAuthorMiddleName = as[2];
-                    //LOG.info("(as[2]={})", as[2]);
                 }
-                //sAuthorFIO_Original = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
-                //sAuthorFIO_Original=sAuthorFIO_Original.substring(0,1)+".";
             }
             if (sAuthorFirstName != null && !"".equals(sAuthorFirstName.trim())) {
-                //bankIdfirstName=bankIdfirstName.substring(0,1)+".";
             }
             if (sAuthorMiddleName != null && !"".equals(sAuthorMiddleName.trim())) {
-                //bankIdmiddleName=bankIdmiddleName.substring(0,1)+".";
             }
-            //sAuthorFIO = bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
             sAuthorFIO = sAuthorFirstName + " " + sAuthorMiddleName;
 
-            //LOG.info("(sAuthorFIO={})", sAuthorFIO);
             String sPlace = "";
             String sID_Place_UA = "";
             Long nID_Service = 0L;
@@ -651,11 +521,9 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     // TODO: Need remove in future!!!
                     + "&" + AuthenticationTokenSelector.ACCESS_CONTRACT + "="
                     + AccessContract.RequestAndLoginUnlimited.name();
-//					+ AccessContract.RequestAndLogin.name();
             LOG.info("(sURI={},{})", sURI, sQueryParam);
             String sAccessKey = accessCover.getAccessKeyCentral(sURI
                     + sQueryParam, AccessContract.RequestAndLoginUnlimited);
-//					+ sQueryParam, AccessContract.RequestAndLogin);
             String sReplacemet = sURL_FEEDBACK_MESSAGE + sQueryParam + "&"
                     + AuthenticationTokenSelector.ACCESS_KEY + "=" + sAccessKey;
             LOG.info("(replacemet URL={}) ", sReplacemet);
@@ -666,14 +534,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
     private void loadPropertiesFromTasks(DelegateExecution oDelegateExecution,
             List<String> asID_UserTaskPrevious, Map<String, FormProperty> aFormPropertyReturn) {
-        LOG.info("(execution.getId()={})", oDelegateExecution.getId());
-        LOG.info("(execution.getProcessDefinitionId()={})",
-                oDelegateExecution.getProcessDefinitionId());
-        LOG.info("(execution.getProcessInstanceId()={})",
-                oDelegateExecution.getProcessInstanceId());
-        String[] as = oDelegateExecution.getProcessDefinitionId().split("\\:");
-        String s = as[2];
-        LOG.info("(s={})", s);
 
         for (String sID_UserTaskPrevious : asID_UserTaskPrevious) {
             try {
@@ -686,7 +546,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 if (oFormData != null && oFormData.getFormProperties() != null) {
                     for (FormProperty oFormProperty : oFormData.getFormProperties()) {
                         aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
-                        LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+                        LOG.info("Matching1 property (Id={},Name={},Type={},Value={})",
                                 oFormProperty.getId(), oFormProperty.getName(),
                                 oFormProperty.getType().getName(),
                                 oFormProperty.getValue());
@@ -707,7 +567,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     && oTaskFormData.getFormProperties() != null) {
                 for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
                     aFormPropertyReturn.put(oFormProperty.getId(), oFormProperty);
-                    LOG.info("Matching property (Id={},Name={},Type={},Value={})",
+                    LOG.info("Matching2 property (Id={},Name={},Type={},Value={})",
                             oFormProperty.getId(), oFormProperty.getName(),
                             oFormProperty.getType().getName(),
                             oFormProperty.getValue());
@@ -733,7 +593,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 .getFlowElements()) {
             if (flowElement instanceof UserTask) {
                 UserTask userTask = (UserTask) flowElement;
-                LOG.info("Checking user task with ID={} ", userTask.getId());
                 resIDs.add(userTask.getId());
 
             }
@@ -785,43 +644,179 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     private static String getPatternContentReplacement(Matcher matcher) throws IOException,
             URISyntaxException {
         String sPath = matcher.group(1);
-        LOG.info("Found content group! (sPath={})", sPath);
         byte[] bytes = getFileData_Pattern(sPath);
         String sData = Tool.sData(bytes);
-        LOG.debug("Loaded content from file:" + sData);
         return sData;
     }
 
     public Mail Mail_BaseFromTask(DelegateExecution oExecution)
             throws Exception {
 
-        String sFromMail = getStringFromFieldExpression(from, oExecution);
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
 
-        //saveServiceMessage_Mail(sHead, sBody, generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), saToMail);
-
         Mail oMail = context.getBean(Mail.class);
-
+        
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
                 ._Body(sBody)._AuthUser(mailServerUsername)
                 ._AuthPassword(mailServerPassword)._Host(mailServerHost)
                 ._Port(Integer.valueOf(mailServerPort))
-                // ._SSL(true)
-                // ._TLS(true)
                 ._SSL(bSSL)._TLS(bTLS);
 
         return oMail;
     }
+    
+    /**
+     * Метод, который отправляет емайл с полем типа texthtml из json-mongo
+     * @param oExecution
+     * @return
+     * @throws Exception
+     */
+    public Mail sendToMailFromMongo(DelegateExecution oExecution)
+            throws Exception {
+
+        String saToMail = getStringFromFieldExpression(to, oExecution);
+        String sHead = getStringFromFieldExpression(subject, oExecution);
+        String sBodySource = getStringFromFieldExpression(text, oExecution);
+        
+        Mail oMail = context.getBean(Mail.class);
+        
+        /**
+         * достаем json который приходит в тексте из шага в виде ключ значение из монги 
+         */
+        String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
+        LOG.info("sJsonMongo is ", sJsonMongo);
+        /**
+         * достаем оригинальный текст html из mongo
+         */
+        //if(!sJsonMongo.equals("")||sJsonMongo!=null){
+        String sBodyFromMongoResult = getHtmlTextFromMongo(sJsonMongo); 
+        
+        /**
+         * из полного текста с патернами, который в бп мы заменяем json на textHtml из монги
+         */
+        //убираем json скобки
+        String sBodySourceReplace = StringUtils.replace(sBodySource, "{", "").replaceAll("}", "");
+        String sBodySourceReplaceR = sBodySourceReplace.replace("[]", "").replace("[]", "");
+        String sJsonMongoReplace = StringUtils.replace(sJsonMongo, "{", "").replaceAll("}", "");
+        String sJsonMongoReplaceR = sJsonMongoReplace.replace("[]", "").replace("[]", "");
+        
+        //заменяем тело json на текст html
+        String sBodyForMail = sBodySourceReplaceR.replaceAll(sJsonMongoReplaceR, sBodyFromMongoResult);
+        
+        //анализируем тело
+        String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
+           
+        //отправляем по емайлу
+        oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
+                ._Body(sBodyForMailResult)._AuthUser(mailServerUsername)
+                ._AuthPassword(mailServerPassword)._Host(mailServerHost)
+                ._Port(Integer.valueOf(mailServerPort))
+                ._SSL(bSSL)._TLS(bTLS);
+        
+        return oMail;
+        }
+
+    
+    /**
+     * Метод получения из монго текст письма
+     * @param sJsonHtml
+     * @return
+     * @throws IOException
+     * @throws ParseException
+     * @throws RecordInmemoryException
+     * @throws ClassNotFoundException
+     * @throws CRCInvalidException
+     * @throws RecordNotFoundException
+     */
+    public String getHtmlTextFromMongo(String sJsonHtml) throws IOException, ParseException, RecordInmemoryException,
+            ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
+        String sBodyFromMongo = null;
+        JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
+        LOG.info("sJsonHtmlInFormatMongo: {}", sJsonHtmlInFormatMongo);
+        try{
+             InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+                       sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
+                       .getInputStream();
+
+             sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+        }catch(JSONException e){
+            LOG.error("JSONException: {}",e.getMessage());
+            return null;
+        }
+             return sBodyFromMongo;
+        
+          
+    }
+    
+
+	/**
+     * Метод для получения json содержащий sKey - sID_StorageType записи в монго текста письма
+     * @param oExecution
+     * @return
+     */
+    public String loadFormPropertyFromTaskHTMLText(DelegateExecution oExecution) {
+        List<String> previousUserTaskId = getPreviousTaskId(oExecution);
+        List<String> aFormPropertyReturnJsonForMongo = new ArrayList<>();
+        for (String sID_UserTaskPrevious : previousUserTaskId) {
+            try {
+                FormData oFormData = null;
+                if (previousUserTaskId != null && !previousUserTaskId.isEmpty()) {
+                    oFormData = oExecution.getEngineServices()
+                            .getFormService().getTaskFormData(sID_UserTaskPrevious);
+                }
+                if (oFormData != null && oFormData.getFormProperties() != null) {
+                    for (FormProperty oFormProperty : oFormData.getFormProperties()) {
+                        if(oFormProperty.getValue()!=null && "fileHTML".equals(oFormProperty.getType().getName())) {
+                        aFormPropertyReturnJsonForMongo.add(oFormProperty.getValue());
+                    }
+                    }
+                }
+            } catch (Exception e) {
+                LOG.error(
+                        "Error: {}, occured while looking for a form for task:{}",
+                        e.getMessage(), sID_UserTaskPrevious);
+                LOG.debug("FAIL:", e);
+            }
+        }
+        
+        if(!aFormPropertyReturnJsonForMongo.isEmpty()) {
+            return aFormPropertyReturnJsonForMongo.get(0);
+        }
+        return "{\"\":\"\"}";
+    }
+    
 
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)
             throws Exception {
-
-        oMail.send();
-        saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
-        //return oMail;
+    	//если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
+    	if(generalConfig.isSelfTest()) {
+    		LOG.info("generalConfig.isSelfTest()! " + generalConfig.isSelfTest());
+    		if(oMail.getBody()!=null && !oMail.getBody().contains("Шановний колего!")) {
+    			oMail.send();
+       	     	saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
+    			LOG.info("sendMailOfTask ok!");
+    		}else {
+    			Mail oMailClerk = context.getBean(Mail.class);
+    			oMailClerk._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(oMail.getHead())
+    		                ._Body(oMail.getBody())._AuthUser(generalConfig.getsUsnameClerk())
+    		                ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
+    		                ._Port(Integer.valueOf(oMail.getPort()))
+    		                ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
+    			 LOG.info("sendMailOfTask clerk prop! "+generalConfig.getsAddrClerk()+"--"+generalConfig.getsUsnameClerk());
+    			oMailClerk.send();
+        	     saveServiceMessage_Mail(oMailClerk.getHead(), oMailClerk.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMailClerk.getTo());
+        	     LOG.info("sendMailOfTask clerk ok!");
+    		}
+    		
+    	}else {
+    		 oMail.send();
+    	     saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
+    	     LOG.info("sendMailOfTask ok!");
+    	}
+       
     }
 
     private String getFormattedDate(Date date) {
@@ -831,13 +826,13 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
         Calendar oCalendar = Calendar.getInstance();
         oCalendar.setTime(date);
-        SimpleDateFormat oSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat oSimpleDateFormat = new SimpleDateFormat(DateUtilFormat.DATE_FORMAT_yyyy_MM_dd);
         return oSimpleDateFormat.format(oCalendar.getTime());
     }
 
     private String getFormattedDateS(String date) {
         DateTimeFormatter dateStringFormat = DateTimeFormat
-                .forPattern("dd/MM/yyyy");
+                .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
         DateTime dateTime = dateStringFormat.parseDateTime(date);
         Date d = dateTime.toDate();
         return getFormattedDate(d);
@@ -859,9 +854,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         mParam.put("sBody", sHead);//sBody
         mParam.put("sID_Order", sID_Order);
         mParam.put("sMail", sMail);
-        //mParam.put("nID_Subject", "0");
-        //mParam.put("sContacts", "0");
-        //params.put("sData", "0");
 
         mParam.put("nID_SubjectMessageType", "" + 10L);
         mParam.put("sID_DataLinkSource", "Region");
@@ -891,8 +883,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 }
             }
         };
-        // run saving message in 10 seconds so history event will be in the
-        // database already by that time
         oScheduledExecutorService.schedule(oRunnable, 10, TimeUnit.SECONDS);
         oScheduledExecutorService.shutdown();
 

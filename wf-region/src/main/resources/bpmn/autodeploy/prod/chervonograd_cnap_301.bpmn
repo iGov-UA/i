@@ -26,20 +26,19 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>cnap80100@ukr.net</activiti:expression>
+          <activiti:expression><![CDATA[pastux.nikolay@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -50,32 +49,31 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:299:5]<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:299:2]<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -95,14 +93,10 @@
           <activiti:value id="doc_ok" name="З документами все гаразд - направити документи в Управління ЖКГ"></activiti:value>
           <activiti:value id="doc_bad" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="file1" name="Довідка про склад сім'ї та реєстрацію (Форма №2 розширена)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_301_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_301_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask3" name="Підготовка відповіді управлінням ЖКГ (2-й крок)" activiti:candidateGroups="chervonograd_mvk1">
@@ -116,11 +110,11 @@
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Дата реєстрації звернення у ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reference" name="Завантажте відскановану довідку або відповідь з відмовою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_301_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_301_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1}</activiti:expression>
+            <activiti:expression><![CDATA[${file1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -134,35 +128,34 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: 
-&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання було відхилено.</p>
+<p>Причина в наступному: 
+</p>
+<p>${decisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:299:5]<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:299:2],<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -176,33 +169,32 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання - відправлене в управління житлово-комунального господарства міської ради.&lt;br /&gt;
-Спеціалісти повинні дати відповідь протягом шести календарних днів з дня реєстрації заяви.&lt;br /&gt; 
-Номер Вашого замовлення: ${number_cnap}&lt;br /&gt;
-&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt; 
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання - відправлене в управління житлово-комунального господарства міської ради.<br />
+Спеціалісти повинні дати відповідь протягом шести календарних днів з дня реєстрації заяви.<br /> 
+Номер Вашого замовлення: ${number_cnap}<br />
+</p>
+[pattern_dictonary:dnepr_reg_cnap.csv:299:5]<br /> 
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:299:2],<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] naprvleno do vidpovidnoho viddilu. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] naprvleno do vidpovidnoho viddilu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -226,7 +218,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${reference}</activiti:expression>
+            <activiti:expression><![CDATA[${reference}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -240,39 +232,38 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання - опрацьовано. &lt;br /&gt;
-Ви можете отримати довідку особисто за адресою:&lt;br/&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:3]&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання - опрацьовано. <br />
+Ви можете отримати довідку особисто за адресою:<br/>
+[pattern_dictonary:dnepr_reg_cnap.csv:299:3]<br />
 При собі треба мати документ, що посвідчує особу.
-&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt; 
-&lt;br /&gt;
-Графік роботи:&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:4]&lt;br /&gt;
+</p>
+[pattern_dictonary:dnepr_reg_cnap.csv:299:5]<br /> 
+<br />
+Графік роботи:<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:299:4]<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:299:2],<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${reference}</activiti:expression>
+          <activiti:expression><![CDATA[${reference}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -282,33 +273,32 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання опрацьовано та відхилено Управлінням житлово-комунального господарства міської ради. &lt;br /&gt;
-&lt;p&gt;Відповідь у додатку до цього листа&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt; 
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення щодо надання довідки про перебування на квартирному обліку при міськвиконкомі за місцем проживання опрацьовано та відхилено Управлінням житлово-комунального господарства міської ради. <br />
+<p>Відповідь у додатку до цього листа</p>
+[pattern_dictonary:dnepr_reg_cnap.csv:299:5]<br /> 
+<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2],&lt;br/&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:299:2],<br/>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${reference}</activiti:expression>
+          <activiti:expression><![CDATA[${reference}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -405,7 +395,7 @@
         <omgdi:waypoint x="652.0" y="214.0"></omgdi:waypoint>
         <omgdi:waypoint x="585.0" y="214.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="596.0" y="172.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="596.0" y="172.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -416,7 +406,7 @@
         <omgdi:waypoint x="672.0" y="234.0"></omgdi:waypoint>
         <omgdi:waypoint x="672.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="97.0" x="633.0" y="230.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="97.0" x="633.0" y="230.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -432,7 +422,7 @@
         <omgdi:waypoint x="391.0" y="375.0"></omgdi:waypoint>
         <omgdi:waypoint x="333.0" y="375.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="344.0" y="334.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="344.0" y="334.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -440,7 +430,7 @@
         <omgdi:waypoint x="391.0" y="527.0"></omgdi:waypoint>
         <omgdi:waypoint x="333.0" y="527.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="344.0" y="526.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="344.0" y="526.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">

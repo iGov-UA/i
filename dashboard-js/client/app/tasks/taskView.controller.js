@@ -8,12 +8,12 @@
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
-      'processSubject', '$sce', 'eaTreeViewFactory',
+      'processSubject', '$sce', 'eaTreeViewFactory', '$location',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
-                processSubject, $sce, eaTreeViewFactory) {
+                processSubject, $sce, eaTreeViewFactory, $location) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -927,6 +927,16 @@
           }
         };
 
+        $scope.$on('refresh-task-view-after-delegate', function () {
+          for(var taskIndex = 0; taskIndex < $scope.filteredTasks.length; taskIndex++){
+            if($scope.filteredTasks[taskIndex].Id === this.taskId){
+              $scope.filteredTasks.splice(taskIndex, 1);
+              break;
+            }
+          }
+          $scope.lightweightRefreshAfterSubmit();
+        });
+
         $scope.submitTaskQuestion = function (form) {
           Modal.inform.submitTaskQuestion(function() {return $scope.submitTask(form);});
         };
@@ -935,7 +945,7 @@
           console.log("println");
           console.log(form);
           return true;
-        }
+        };
         $scope.saveChangesTask = function (form) {
           if ($scope.selectedTask && $scope.taskForm) {
             console.log($scope.taskForm);
@@ -1311,7 +1321,7 @@
           angular.forEach(tableRow, function (row) {
             angular.forEach(row.aField, function (field) {
               fixName(field);
-              if(field.type === 'date') {
+              if(field.type === 'date' && field.value || field.type === 'date' && field.props && field.props.value) {
                 var match = /^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/.test(field.props.value);
                 if(!match) {
                   var onlyDate = field.props.value.split('T')[0];
@@ -1441,6 +1451,22 @@
               })
             }
           });
+
+          angular.forEach($scope.taskData.aNewAttachment, function (attachment) {
+            if(attachment.type === 'table' && attachment.value && attachment.value.indexOf('sKey') > -1) {
+              try {
+                var data = JSON.parse(attachment.value);
+                tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, attachment.id, true).then(function (res) {
+                  if(res.type && res.type === 'table') {
+                    fixFieldsForTable(res);
+                    $scope.taskData.aTable.push(res);
+                  }
+                })
+              } catch (e) {
+                console.log( 'Помилка в таблицi ' + attachment.id + ' ' + e )
+              }
+            }
+          });
           $scope.updateTemplateList();
         };
         $scope.searchingTablesForPrint();
@@ -1521,8 +1547,10 @@
           });
           var currentUser = $scope.getCurrentUserLogin();
           for(var i=0; i<notSigned.length; i++) {
-            if(notSigned[i].aUser[0].sLogin === currentUser) {
-              return true;
+            for(var l=0; l<notSigned[i].aUser.length; l++) {
+              if(notSigned[i].aUser[l].sLogin === currentUser) {
+                return true;
+              }
             }
           }
         };
@@ -1603,6 +1631,38 @@
           }
         };
 
+        $scope.isRemoveDocumentButtonVisible = function () {
+          return $scope.taskData.mProcessVariable && $scope.taskData.mProcessVariable.sLoginAuthor === iGovNavbarHelper.currentUser.id && $scope.sSelectedTask !== 'finished' && $scope.isDocument;
+        };
+
+        $scope.removeDocument = function (nID_Process) {
+          Modal.confirm.delete(function (event) {
+            $scope.taskForm.isInProcess = true;
+            tasks.removeDocumentSteps(nID_Process)
+              .then(function(){
+                $scope.taskForm.isInProcess = false;
+                for(var taskIndex = 0; taskIndex < $scope.filteredTasks.length; taskIndex++){
+                  if($scope.filteredTasks[taskIndex].processInstanceId === nID_Process){
+                    $scope.filteredTasks.splice(taskIndex, 1);
+                    if(angular.isArray(iGovNavbarHelper.menus)){
+                      angular.forEach(iGovNavbarHelper.menus, function (menu) {
+                        if(menu.type === 'documents'){
+                          if(menu.count){
+                            menu.count = menu.count - 1;
+                          }
+                        }
+                      });
+                    }
+                    break;
+                  }
+                }
+                $location.path("/tasks/documents");
+              }, function () {
+                $scope.lightweightRefreshAfterSubmit();
+              });
+          })('документ');
+        };
+
         $scope.getBpAndFieldID = function (field) {
           if($scope.taskData && $scope.taskData.oProcess && $scope.taskData.oProcess.sBP){
             return $scope.taskData.oProcess.sBP.split(':')[0] + "_--_" + field.id;
@@ -1639,7 +1699,7 @@
             return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
           }
         };
-
+console.log($scope)
         $rootScope.$broadcast("update-search-counter");
       }
     ])

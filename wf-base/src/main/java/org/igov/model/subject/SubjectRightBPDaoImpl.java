@@ -24,7 +24,7 @@ public class SubjectRightBPDaoImpl extends GenericEntityDao<Long, SubjectRightBP
             criteria.add(Restrictions.eq("sID_BP", sID_BP));
         }
         if (sID_Group_Referent != null) {
-            criteria.add(Restrictions.eq("sID_Group_Referent", sID_Group_Referent));
+            criteria.add(Restrictions.eq("asID_Group_Export", sID_Group_Referent));
         }
         
         return (SubjectRightBP)criteria.uniqueResult();
