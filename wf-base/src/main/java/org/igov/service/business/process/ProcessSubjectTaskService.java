@@ -225,7 +225,7 @@ public class ProcessSubjectTaskService {
                     
                     LOG.info("aProcessSubjectTree is {}", aProcessSubjectTree);
                     
-                    if(aProcessSubjectTree == null){
+                    if(aProcessSubjectTree.isEmpty()){
                         LOG.info("this is first delegating");
                         ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
                             Long.parseLong((String)((JSONObject)oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
