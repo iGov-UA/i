@@ -332,7 +332,7 @@ public class ProcessSubjectTaskService {
             List<ProcessSubject> aProcessSubject_ToUpdate, Long nStartOrder) throws ParseException, Exception 
     {
         LOG.info("setProcessSubjectList started..");
-        LOG,info("nStartOrder is {}", nStartOrder);
+        LOG.info("nStartOrder is {}", nStartOrder);
         ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(1L);
         
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
