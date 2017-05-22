@@ -32,9 +32,9 @@
           <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
           <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_Rodich" name="Сканкопія документів, що підтверджують родинний зв'язок;(якщо файлів кілька, завантажте ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Spadok" name="Сканкопія документа, що підтверджує статус спадкоємця; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджує статус опікуна; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Rodich" name="Документи, що підтверджують родинний зв'язок (сканкопія);(якщо файлів кілька, завантажте ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Spadok" name="Документи, що підтверджують статус спадкоємця (сканкопія); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Opika" name="Документ, що підтверджує статус опікуна (сканкопія); ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/rodich.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_3" name="Інформація про померлого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sZap_Name&quot;],&quot;sValue&quot;:&quot;Інформація про померлого&quot;}}}"></activiti:formProperty>
@@ -149,9 +149,9 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
           <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_Rodich" name="Сканкопія документів, що підтверджують родинний зв'язок; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file_Spadok" name="Сканкопія документа, що підтверджує статус спадкоємця; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджує статус опікуна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Rodich" name="Документи, що підтверджують родинний зв'язок (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Spadok" name="Документи, що підтверджують статус спадкоємця (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Opika" name="Документ, що підтверджує статус опікуна (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_3" name="Інформація про померлого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sZap_Name&quot;],&quot;sValue&quot;:&quot;Інформація про померлого&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sZap_Name" name="Приізвище, ім'я, по батькові померлого; ;writable=false" type="string"></activiti:formProperty>
@@ -170,7 +170,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="acceptVid" name="Запитувані відомості відсутні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть час візиту заявника. Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Death_print.html]; ;bVisible=false ," type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Death_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -209,7 +209,7 @@ ${sBankDetails1}&lt;br /&gt;&lt;br /&gt;
 &lt;br&gt;
 Для цього Вам потрібно зайти у розділ &lt;a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank"&gt;Мій журнал&lt;/a&gt; та відправити цей файл співробітнику відділу ДРАЦС:
 &lt;ul&gt;
-&lt;li&gt;праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу с співробітником відділу ДРАЦС;&lt;/li&gt;
+&lt;li&gt;праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу з співробітником відділу ДРАЦС;&lt;/li&gt;
 &lt;li&gt;в полі залиште коментар, який побачить співробітник відділу ДРАЦС;&lt;/li&gt;
 &lt;li&gt;нижче поля натисніть “Додати файл” та оберіть файл, який Ви підписали заздалегіть;&lt;/li&gt;
 &lt;li&gt;натисніть кнопку “Відправити”.&lt;/li&gt;
@@ -258,7 +258,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Вам відмовлено у наданні послуги. Заява оформлені НЕ вірно. Відмова. &lt;br /&gt;
 Причина відмови: ${comment} &lt;br /&gt;&lt;br /&gt;
-Якщо Вам необхідно отримати витяг, ви можете подати ще одну заявку на порталі igov.org.ua &lt;br /&gt;
+Якщо Вам необхідно отримати свідоцтво, ви можете подати ще одну заявку на порталі igov.org.ua &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -367,9 +367,9 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
           <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_Rodich" name="Сканкопія документів, що підтверджують родинний зв'язок; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file_Spadok" name="Сканкопія документа, що підтверджує статус спадкоємця; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджує статус опікуна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Rodich" name="Документи, що підтверджують родинний зв'язок (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Spadok" name="Документи, що підтверджують статус спадкоємця (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Opika" name="Документ, що підтверджує статус опікуна (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_3" name="Інформація про померлого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sZap_Name&quot;],&quot;sValue&quot;:&quot;Інформація про померлого&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sZap_Name" name="Приізвище, ім'я, по батькові померлого; ;writable=false" type="string"></activiti:formProperty>
@@ -387,8 +387,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="accept" name="Послуга оплачена, свідоцтво надане"></activiti:value>
           <activiti:value id="reject" name="Заявник не з'явився для отримання свідоцтва"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Death_print.html]; ;bVisible=false ," type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern/print/minust/check_Svidot.html]; ;bVisible=false ," type="string" default="Квитанція про оплату" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Death_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/minust/check_Svidot.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Квитанція про оплату" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквизит; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum_Kvit" name="сума платежу; ;bVisible=false" type="string"></activiti:formProperty>
