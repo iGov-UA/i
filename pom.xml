@@ -65,17 +65,13 @@
         </profile>
         <profile>
             <id>omega</id>
-                 <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
-                     
                 <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
-                <sRevision>a</sRevision>
+                <sRevision>o</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
                 <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
-                <sRevisionSubPath></sRevisionSubPath>
+                <sRevisionSubPath>/prod</sRevisionSubPath>
             </properties>
         </profile>
         <profile>
@@ -84,7 +80,7 @@
                 <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
                 <sRevision></sRevision>
-                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
                 <sRevisionLibPostfixBase>-RELEASE</sRevisionLibPostfixBase>
                 <sRevisionSubPath>/prod</sRevisionSubPath>
             </properties>
@@ -166,14 +162,14 @@
     <distributionManagement>
         <!-- XXX Replace localNexus to iGov_Nexus or something like that. And reconfigure Jenkins -->
         <repository>
-            <id>iDoc_Nexus</id>
+            <id>eGovUa_Nexus</id>
             <name>Internal Releases</name>
-            <url>https://nexus.tech.btsol.com.ua/nexus/content/repositories/releases/</url>
+            <url>https://nexus.tech.btsol.com.ua/nexus/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
-            <id>iDoc_Nexus</id>
+            <id>eGovUa_Nexus</id>
             <name>Internal Snapshots</name>
-            <url>https://nexus.tech.btsol.com.ua/nexus/content/repositories/snapshots/</url>
+            <url>https://nexus.tech.btsol.com.ua/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
     <repositories>
@@ -190,8 +186,8 @@
             <url>http://central.maven.org/maven2</url>
         </repository>
         <repository>
-            <id>iDoc_Nexus</id>
-            <url>https://nexus.tech.btsol.com.ua/nexus/content/groups/public/</url>
+            <id>eGovUa_Nexus</id>
+            <url>https://nexus.tech.btsol.com.ua/nexus/content/groups/public</url>
         </repository>
         <repository>
             <id>Activiti</id>
@@ -586,17 +582,6 @@
 
         <pluginManagement>
             <plugins>
-      <plugin>
-      <artifactId>maven-site-plugin</artifactId>
-      <version>3.4</version>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.maven.wagon</groupId>
-          <artifactId>wagon-webdav-jackrabbit</artifactId>
-          <version>2.8</version>
-        </dependency>
-      </dependencies>
-    </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
