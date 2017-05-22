@@ -98,7 +98,7 @@ public enum HistoryEventType {
     CLOSE_DOCUMENT(18L,
             "DocumentClosed",
             "Процесс дошел до конца и закрылся",
-            "Документ перміщено до архіву"),
+            "Документ перміщено до архіву");/*
     TASK_CANCELED(19L,
             "TaskCanceled",
             "Вы самосточтельно отменили заявку №" + HistoryEventMessage.TASK_NUMBER,
@@ -138,7 +138,7 @@ public enum HistoryEventType {
     TASK_NOT_ACTUAL(28L,
             "TaskNotActual",
             "Контролирующий снял задание как выполненное (sID_ProcessSubjectStatus = unactual, sLoginRole= Controller)",
-            "%ПІБ контролюючого (логін контролюючого)% - завдання не актуальне");
+            "%ПІБ контролюючого (логін контролюючого)% - завдання не актуальне");*/
     
 
     private Long nID;
