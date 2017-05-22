@@ -1003,6 +1003,7 @@ public class ActionEventController implements ControllerConstants {
         DateTime to = DateTime.parse(sDate_to, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
 
         List<ServicesStatistics> servicesStatistics = oActionEventService.getServicesStatisticsOfDnepr(from, to);
+        LOG.info("servicesStatistics " + servicesStatistics);
 
         String[] headingFields = {"nID_Service", "ServiceName", "SID_UA", "placeName", "nCountTotal", "nCountFeedback",
             "nCountEscalation", "averageRate", "averageTime"};
@@ -1016,9 +1017,12 @@ public class ActionEventController implements ControllerConstants {
         try {
             csvWriter = new CSVWriter(httpResponse.getWriter(), ';', CSVWriter.NO_QUOTE_CHARACTER);
             csvWriter.writeNext(headers.toArray(new String[headers.size()]));
+            
+            LOG.info("asID_BpForStatisticsOfDnepr " + asID_BpForStatisticsOfDnepr);
 
             for (ServicesStatistics item : servicesStatistics) {
             	  if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(String.valueOf(item.getnID_Service()))) {
+            		  LOG.info("String.valueOf(item.getnID_Service()) " + String.valueOf(item.getnID_Service()));
                 List<String> line = new LinkedList<>();
                 line.add(String.valueOf(item.getnID_Service()));
                 line.add(item.getServiceName());
