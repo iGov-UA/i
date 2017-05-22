@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEventDao;
@@ -265,6 +264,11 @@ public class ActionEventService {
 
     public List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to) {
         List<ServicesStatistics> servicesStatistics = historyEventServiceDao.getServicesStatistics(from, to);
+        return servicesStatistics;
+    }
+    
+    public List<ServicesStatistics> getServicesStatisticsOfDnepr(DateTime from, DateTime to) {
+        List<ServicesStatistics> servicesStatistics = historyEventServiceDao.getServicesStatisticsOfDnepr(from, to);
         return servicesStatistics;
     }
 

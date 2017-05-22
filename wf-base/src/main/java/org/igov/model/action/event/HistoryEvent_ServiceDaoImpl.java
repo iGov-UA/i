@@ -36,6 +36,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
     private static final String COUNT_FIELD = "nCount";
     private static final int RATE_CORRELATION_NUMBER = 20; // for converting rate to percents in range 0..100
     private static final String GET_SERVICES_STATISTICS_QUERY = "get_ServicesStatistics.sql";
+    private static final String GET_SERVICES_STATISTICS_QUERY_DNEPR = "get_ServicesStatisticsOfDnepr.sql";
 
     @Autowired
     private QueryLoader sqlStorage;
@@ -174,6 +175,21 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
         return servicesStatistics;
     }
 
+    @Override
+    public List<ServicesStatistics> getServicesStatisticsOfDnepr(DateTime from, DateTime to) {
+        String queryString = sqlStorage.get(GET_SERVICES_STATISTICS_QUERY_DNEPR);
+
+        List<ServicesStatistics> servicesStatistics = null;
+        SQLQuery query = getSession().createSQLQuery(queryString);
+        query.setParameter("dateFrom", from.toString("y-MM-d HH:mm:ss"));
+        query.setParameter("dateTo", to.toString("y-MM-d HH:mm:ss"));
+        query.addEntity(ServicesStatistics.class);
+
+        servicesStatistics = query.list();
+
+        return servicesStatistics;
+    }
+    
     @Override
     public HistoryEvent_Service getOrgerByID(String sID_Order) throws CRCInvalidException, EntityNotFoundException, IllegalArgumentException {
         Integer nID_Server;

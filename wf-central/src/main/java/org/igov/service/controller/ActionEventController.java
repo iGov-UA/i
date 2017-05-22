@@ -1,15 +1,38 @@
 package org.igov.service.controller;
 
-import com.google.common.base.Optional;
-import io.swagger.annotations.*;
-import liquibase.util.csv.CSVWriter;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
-import org.igov.model.action.event.*;
+import org.igov.model.action.event.HistoryEvent;
+import org.igov.model.action.event.HistoryEventDao;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.event.ServicesStatistics;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
-import org.igov.model.subject.*;
+import org.igov.model.subject.Server;
+import org.igov.model.subject.ServerDao;
+import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectHuman;
+import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.service.business.action.ActionEventService;
@@ -26,20 +49,25 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.NumberUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.google.common.base.Optional;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import liquibase.util.csv.CSVWriter;
 
 @Controller
 @Api(tags = {"ActionEventController -- События по действиям и статистика"})
@@ -69,6 +97,10 @@ public class ActionEventController implements ControllerConstants {
     private SubjectHumanDao subjectHumanDao;
     @Autowired
     private ActionEventHistoryService actionEventHistoryService;
+    
+    
+    @Value("${asID_BpForStatisticsOfDnepr}")
+    private String [] asID_BpForStatisticsOfDnepr;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -950,4 +982,62 @@ public class ActionEventController implements ControllerConstants {
         }
         return result;
     }
+    
+    @ApiOperation(value = "Получение статистики по выбранному списку сервисов и региону за заданный промежуток времени", notes
+            = "##### Примеры:\n"
+            + "https://test.igov.org.ua/wf/service/action/event/getServicesStatisticOfDnepr?sDate_from=2010-07-04 12:09:56&sDate_to=2019-07-04 12:09:56\n\n"
+            + "Результат\n"
+            + "\n```csv\n"
+            + "nID_Service;ServiceName;SID_UA;placeName;nCountTotal;averageRate;averageTime\n"
+            + "1;Надання довідки про притягнення до кримінальної відповідальності, відсутність (наявність) судимості або обмежень, передбачених кримінально-процесуальним законодавством України;1200000000;Дніпропетровська;4;0.0;7.516667\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getServicesStatisticOfDnepr", method = RequestMethod.GET)
+    public @ResponseBody
+    void getServicesStatisticOfDnepr(
+            @ApiParam(value = "дата \"С\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_from") String sDate_from,
+            @ApiParam(value = "дата \"По\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_to") String sDate_to,
+            HttpServletResponse httpResponse) {
+
+        //parse date to check that it has appropriate form
+        DateTime from = DateTime.parse(sDate_from, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+        DateTime to = DateTime.parse(sDate_to, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+
+        List<ServicesStatistics> servicesStatistics = oActionEventService.getServicesStatisticsOfDnepr(from, to);
+
+        String[] headingFields = {"nID_Service", "ServiceName", "SID_UA", "placeName", "nCountTotal", "nCountFeedback",
+            "nCountEscalation", "averageRate", "averageTime"};
+        List<String> headers = new ArrayList<>();
+        headers.addAll(Arrays.asList(headingFields));
+
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + "ServicesStatistics.csv");
+        httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
+
+        CSVWriter csvWriter;
+        try {
+            csvWriter = new CSVWriter(httpResponse.getWriter(), ';', CSVWriter.NO_QUOTE_CHARACTER);
+            csvWriter.writeNext(headers.toArray(new String[headers.size()]));
+
+            for (ServicesStatistics item : servicesStatistics) {
+            	  if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(String.valueOf(item.getnID_Service()))) {
+                List<String> line = new LinkedList<>();
+                line.add(String.valueOf(item.getnID_Service()));
+                line.add(item.getServiceName());
+                line.add(String.valueOf(item.getSID_UA()));
+                line.add(item.getPlaceName());
+                line.add(item.getnCountTotal() == null ? "0" : item.getnCountTotal().toString());
+                line.add(item.getnCountFeedback() == null ? "0" : item.getnCountFeedback().toString());
+                line.add(item.getnCountEscalation() == null ? "0" : item.getnCountEscalation().toString());
+                line.add(item.getAverageRate() == null ? "0" : item.getAverageRate().toString());
+                //divide average time (mins) to 60 to get hours
+                line.add(item.getAverageTime() == null ? "0" : String.valueOf(item.getAverageTime().floatValue() / 60f));
+                csvWriter.writeNext(line.toArray(new String[line.size()]));
+            }
+            }
+            csvWriter.close();
+        } catch (Exception e) {
+            LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+            LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
+        }
+    }
+
 }
