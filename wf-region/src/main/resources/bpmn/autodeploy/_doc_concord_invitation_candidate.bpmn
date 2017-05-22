@@ -4,9 +4,9 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Запрошення кандидата до заповнення анкети"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -28,9 +28,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="processInstanceId" name="ІД процесу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище кандидата" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я кандидата" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові кандидата" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSurname" name="Прізвище кандидата" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameMmiddle" name="Ім'я та По батькові кандидата" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail кандидата" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону кандидата" type="string" default="+380" required="true"></activiti:formProperty>
         
@@ -49,7 +48,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow15" name="прийнято" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Лист кандидату" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask1" name="Лист кандидату" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
     <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -58,7 +57,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Подання процесуальних документів для розгляду у відкритому касаційному провадженні]]></activiti:string>
+          <activiti:string><![CDATA[ConcordBank - Запрошення до заповнення анкети]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[
@@ -102,8 +101,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 <body style="background: #e4e4e4;&#10;              -webkit-font-smoothing:antialiased;&#10;              width:100% !important;&#10;              -webkit-text-size-adjust:none;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
-<!-- internal padding -->
-<!-- ПРЕДТЕКСТ -->
+
 <table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
   <tbody>
       <tr>
@@ -137,8 +135,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
                 <table style="margin:0;&#10;                                                                         padding:0; &#10;                                                                         border-collapse:collapse; &#10;                                                                         mso-table-lspace:0pt !important; &#10;                                                                         mso-table-rspace:0pt !important;" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
                     <tbody>
                         <tr>
-                            <td style="line-height:0; font-size:0; padding: 5px 0 5px; text-align: left; background-color:#449DCD;mso-table-lspace: 0pt !important;mso-table-rspace:0pt !important">
-								<img height="71" width="278" src="https://delta.test.igov.org.ua/wf/VAADIN/themes/activiti/img/concord2.png" alt="iGov" id="new0" data-editable-image="new0">
+                            <td style="line-height:0; font-size:0; padding: 5px 10px 5px 35px; text-align: left; background-color:#449DCD;mso-table-lspace: 0pt !important;mso-table-rspace:0pt !important">
+								<img height="88" width="100" src="https://delta.test.igov.org.ua/wf/VAADIN/themes/activiti/img/concord2.png" alt="ConcordBank" id="new0" data-editable-image="new0">
                             </td>
 							
 
@@ -226,7 +224,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 
 <style type="text/css" data-br=""> div[data-editable] br { display: block; margin: 12px 0; } </style></body></html>
-
 ]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
