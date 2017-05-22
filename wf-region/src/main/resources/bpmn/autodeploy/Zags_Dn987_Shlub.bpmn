@@ -4,40 +4,42 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний РАГС" type="select" default="0" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassportNom" name="Паспортні дані: Серія та номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassportVud" name="Паспортні дані: Ким видано паспорт і коли" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Копія паспорту;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт (сканкопія);(1,2 сторінка та сторінка з місцем реєстрації, завантажте ZIP архівом або PDF файлом);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника;(вкажіть повну адресу: місто, вулиця, будинк, квартира)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Ваш статус" type="enum" required="true">
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація подружжя" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asRodich&quot;],&quot;sValue&quot;:&quot;Інформація про подружжя&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asRodich" name="Статус заявника" type="enum" required="true">
           <activiti:value id="sEnamCholovik" name="Чоловік"></activiti:value>
           <activiti:value id="sEnamDrugina" name="Дружина"></activiti:value>
           <activiti:value id="sEnamPredsCh" name="Представник чоловіка"></activiti:value>
           <activiti:value id="sEnamPredsDr" name="Представник дружини"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sChol_LastName" name="Прізвище чоловіка" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChol_Name" name="Ім'я чоловіка" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sChol_MiddleName" name="По батькові чоловіка" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDruz_LastName" name="Прізвище дружини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDruz_Name" name="Ім'я дружини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDruz_MiddleName" name="По батькові дружини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sChol_Name" name="Прізвище, ім'я, по батькові чоловіка" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDruz_Name" name="Прізвище, ім'я, по батькові дружини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Dov" name="Довіреність представника; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/shlub.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDate_Shlub" name="Дата одруження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlase_Shlub" name="Місце одруження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asMeta" name="Зазначте мету отримання свідоцтва" type="enum" required="true">
+        
+        <activiti:formProperty id="sDate_Shlub" name="Дата одруження" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlase_Shlub" name="Місце одруження;(вкажіть місто і якщо можливо орган реєстрації де було зареєстровано шлюб)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asMeta" name="Зазначте причину отримання свідоцтва" type="enum" required="true">
           <activiti:value id="sEnamMetaZag" name="Оригінал свідоцтва загублено"></activiti:value>
           <activiti:value id="sEnamMetaPosh" name="Оригінал свідоцтва пошкоджено"></activiti:value>
           <activiti:value id="sEnamMetaZnish" name="Оригінал свідоцтва знищено"></activiti:value>
           <activiti:value id="sEnamMetaVkr" name="Оригінал свідоцтва вкрадено"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ІД-номер суб'єкткта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сума платежу; ;bVisible=false" type="string" default="0.53"></activiti:formProperty>
         <activiti:formProperty id="sSum_Kvit" name="сума платежу; ;bVisible=false" type="string" default="0.51"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ІД-строкової валюти; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
