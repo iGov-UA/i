@@ -34,14 +34,12 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', 'signDialog
           return field.type === 'file' && field.options.hasOwnProperty('sID_Field_Printform_ForECP');
         });
         for(var j = 0; j < aFileFields.length; j++){
-          for(var i = 0; i < scope.taskForm.length; i++){
-            if(aFileFields[j].options['sID_Field_Printform_ForECP'] === scope.taskForm[i].id){
-              scope.printFormLinkedToFileField = aFileFields[j].id;
-              if(aFileFields[j].value && aFileFields[j].value.length > 0){
-                scope.isPrintFormNeverUploaded = false;
-              }
-              return true
+          if(aFileFields[j].options['sID_Field_Printform_ForECP'] === scope.model.printTemplate.id){
+            scope.printFormLinkedToFileField = aFileFields[j].id;
+            if(aFileFields[j].value && aFileFields[j].value.length > 0){
+              scope.isPrintFormNeverUploaded = false;
             }
+            return true
           }
         }
         return false;
