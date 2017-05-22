@@ -1076,5 +1076,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     protected void closeEscalationProcessIfExists(String sID_Process) {
         closeTaskEvent.closeEscalationProcessIfExists(sID_Process);
     }
+    
+    private boolean isSetProcessSubjectStatus(HttpServletRequest oRequest) {
+    LOG.info("isSetProcessSubjectStatus: interceptor catch");
+        return (oRequest != null && oRequest.getRequestURL().toString().indexOf(SERVICE_SUBJECT_PROCESS_SET_PROCESS_SUBJECT_STATUS) > 0
+                && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
+    }
 
 }
