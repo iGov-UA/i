@@ -3,7 +3,6 @@
   <process id="_doc_concord_aplication_candidate" name="Заявка на подбор персонала" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на подбор персонала"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -13,9 +12,14 @@
         <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual1" name="Адреса фактичного місця проживання" type="string" default="bankIdAddressFactual" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdemail" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?" type="enum" default="yes" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual1" name="Адреса фактичного місця проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="saChangeName" name="Чи змінювали раніше прізвище, власне ім’я, по батькові?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -29,7 +33,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdemail" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби" type="enum" required="true">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
@@ -52,6 +55,7 @@
         <activiti:formProperty id="sTable3" name="Освіта; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Освіта" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sTable3&quot;],&quot;sValue&quot;:&quot;Освіта&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="info2" name="; ;labelType=info" type="label" default="Я даю свою згоду на:1. Перевірку, обробку та зберігання моїх персональних даних, зазначених у цій Анкеті, з використанням засобів автоматизації та/або без використання таких засобів (в рамках Закону України «Про захист персональних даних» від 1  червня 2010 року, № 2297-VІ»).2. Перевірку свого паспорта, в базі даних втрачених паспортів Міністерства внутрішніх справ України,3. Одноразове отримання Банком моєї кредитної історії у вигляді кредитного звіту* у будь якому Бюро кредитних історій з яким Банком укладено відповідний договір згідно чинного законодавства України.* - Кандидат підтверджує, що зазначена згода надається ним з використанням термінів та понять, які передбачені Законом України «Про організацію формування та обігу кредитних історій» та з усвідомленням ним змісту вказаних термінів та понять. &quot;Кредитна історія&quot; - це сукупність інформації про юридичну або фізичну особу, яка її  ідентифікує, відомостей про виконання ним зобов'язань по кредитних операціях, і іншій  відкритій інформації. Кредитна історія складається з:- інформації, що ідентифікує суб'єкта кредитної історії;- інформації про суб'єкта кредитної історії, яка складається з сукупності документованої інформації з державних реєстрів, інших баз даних прилюдного користування;&quot;Кредитний звіт&quot; - сукупність інформації про суб'єкта кредитної історії, яка є повним або частковим відображенням його кредитної історії." writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
