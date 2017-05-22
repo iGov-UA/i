@@ -415,7 +415,7 @@ public class BpServiceHandler {
 
     private Set<String> getCandidateGroups(final String sProcessName, final String snID_Task,
             final Map<String, Object> mTaskVariable) {
-        LOG.info("sProcessName: " + sProcessName + "snID_Task: " + snID_Task + "mTaskVariable: " + mTaskVariable);
+        
         Set<String> asCandidateCroupToCheck = getCurrentCadidateGroup(sProcessName);
         LOG.info("asCandidateCroupToCheck: " + asCandidateCroupToCheck);
         String saCandidateCroupToCheck = asCandidateCroupToCheck.toString();
