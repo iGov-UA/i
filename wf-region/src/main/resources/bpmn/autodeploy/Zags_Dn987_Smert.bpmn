@@ -4,16 +4,20 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть необхідний ДРАЦС" type="select" default="0" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassportNom" name="Паспортні дані: Серія та номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassportVud" name="Паспортні дані: Ким видано паспорт і коли" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Копія паспорту;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт (сканкопія);(1,2 сторінка та сторінка з місцем реєстрації, завантажте ZIP архівом або PDF файлом);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника;(вкажіть повну адресу: місто, вулиця, будинк, квартира)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="markersLine_2" name="Родинний зв'язок" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asRodich&quot;],&quot;sValue&quot;:&quot;Родинний зв'язок&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asRodich" name="Вкажіть ким ви є особі, щодо якої запитується свідоцтво" type="enum" required="true">
           <activiti:value id="sEnamRodich1" name="Дружина"></activiti:value>
           <activiti:value id="sEnamRodich2" name="Чоловік"></activiti:value>
@@ -28,23 +32,26 @@
           <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
           <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_Rodich" name="Сканкопія документів, що підтверджують родинний зв'язок;(якщо файлів кілька, завантажте ZIP архівом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Spadok" name="Сканкопія документа, що підтверджує статус спадкоємця" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджує статус опікуна" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Rodich" name="Сканкопія документів, що підтверджують родинний зв'язок;(якщо файлів кілька, завантажте ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Spadok" name="Сканкопія документа, що підтверджує статус спадкоємця; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджує статус опікуна; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/rodich.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sZap_LastName" name="Прізвище померлого" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sZap_Name" name="Ім'я померлого" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sZap_MiddleName" name="По батькові померлого" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sRegistr_smert" name="Вкажіть місце і дату реєстрації смерті особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asMeta" name="Зазначте мету отримання свідоцтва" type="enum" required="true">
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про померлого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sZap_Name&quot;],&quot;sValue&quot;:&quot;Інформація про померлого&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sZap_Name" name="Приізвище, ім'я, по батькові померлого" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_death" name="Дата смерті" type="date" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sRegistr_smert" name="Вкажіть місце і дату реєстрації смерті особи;(якщо ви не пам'ятаєте дату реєстрації, залиште в цьому полі прочерк)" type="string" required="true" default="-"></activiti:formProperty>
+        <activiti:formProperty id="asMeta" name="Зазначте причину отримання свідоцтва" type="enum" required="true">
           <activiti:value id="sEnamMetaZag" name="Оригінал свідоцтва загублено"></activiti:value>
           <activiti:value id="sEnamMetaPosh" name="Оригінал свідоцтва пошкоджено"></activiti:value>
           <activiti:value id="sEnamMetaZnish" name="Оригінал свідоцтва знищено"></activiti:value>
           <activiti:value id="sEnamMetaVkr" name="Оригінал свідоцтва вкрадено"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ІД-номер суб'єкткта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн (0.51 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сума платежу; ;bVisible=false" type="string" default="0.53"></activiti:formProperty>
         <activiti:formProperty id="sSum_Kvit" name="сума платежу; ;bVisible=false" type="string" default="0.51"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ІД-строкової валюти; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
@@ -118,14 +125,17 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow2" sourceRef="scripttask2" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Опрацювання звернення, перевірка наявності відомостей" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="markersLine_111" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_111&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassportNom" name="Паспортні дані: Серія та номер; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassportVud" name="Паспортні дані: Ким видано паспорт і коли; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника; ;writable=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Ким є заявник особі, щодо якої запитується свідоцтво" type="enum" writable="false">
+        
+        <activiti:formProperty id="markersLine_2" name="Родинний зв'язок" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asRodich&quot;],&quot;sValue&quot;:&quot;Родинний зв'язок&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asRodich" name="Ким заявник є особі, щодо якої запитується свідоцтво" type="enum" writable="false">
           <activiti:value id="sEnamRodich1" name="Дружина"></activiti:value>
           <activiti:value id="sEnamRodich2" name="Чоловік"></activiti:value>
           <activiti:value id="sEnamRodich3" name="Син"></activiti:value>
@@ -139,14 +149,21 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
           <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="DeathFio" name="ПІБ особи щодо якої запитується свідоцтво; ;writable=false" type="string" default="${sZap_LastName} ${sZap_Name} ${sZap_MiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="file_Rodich" name="Сканкопія документів, що підтверджують родинний зв'язок; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Spadok" name="Сканкопія документа, що підтверджує статус спадкоємця; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджує статус опікуна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про померлого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sZap_Name&quot;],&quot;sValue&quot;:&quot;Інформація про померлого&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sZap_Name" name="Приізвище, ім'я, по батькові померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_death" name="Дата смерті" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegistr_smert" name="Місце і дата реєстрації смерті особи; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asMeta" name="Мета отримання свідоцтва" type="enum" writable="false">
+        <activiti:formProperty id="asMeta" name="Зазначте причину отримання свідоцтва" type="enum" writable="false">
           <activiti:value id="sEnamMetaZag" name="Оригінал свідоцтва загублено"></activiti:value>
           <activiti:value id="sEnamMetaPosh" name="Оригінал свідоцтва пошкоджено"></activiti:value>
           <activiti:value id="sEnamMetaZnish" name="Оригінал свідоцтва знищено"></activiti:value>
           <activiti:value id="sEnamMetaVkr" name="Оригінал свідоцтва вкрадено"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати лист про оплату послуги"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
@@ -154,15 +171,9 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть час візиту заявника. Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Death_print.html]; ;bVisible=false ," type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Zags/Zags_Death_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_Rodich},${file_Spadok},${file_Opika},${sDocPassport}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -332,14 +343,17 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask2" name="Надання відповіді" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassportNom" name="Паспортні дані: Серія та номер; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDaniPassportVud" name="Паспортні дані: Ким видано паспорт і коли; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_111" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_111&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт (сканкопія); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sbankIdAdressFactual" name="Адреса заявника; ;writable=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRodich" name="Ким є заявник особі, щодо якої запитується свідоцтво" type="enum" writable="false">
+        
+        <activiti:formProperty id="markersLine_2" name="Родинний зв'язок" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asRodich&quot;],&quot;sValue&quot;:&quot;Родинний зв'язок&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asRodich" name="Ким заявник є особі, щодо якої запитується свідоцтво" type="enum" writable="false">
           <activiti:value id="sEnamRodich1" name="Дружина"></activiti:value>
           <activiti:value id="sEnamRodich2" name="Чоловік"></activiti:value>
           <activiti:value id="sEnamRodich3" name="Син"></activiti:value>
@@ -353,21 +367,27 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:value id="sEnamRodich11" name="Спадкоємець за законом чи заповітом"></activiti:value>
           <activiti:value id="sEnamRodich12" name="Представник органу опіки або піклування, що представляє особу яка має право на свідоцтво"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="DeathFio" name="ПІБ особи щодо якої запитується свідоцтво" type="string" default="${sZap_LastName} ${sZap_Name} ${sZap_MiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistr_smert" name="Місце і дата реєстрації смерті особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asMeta" name="Мета отримання свідоцтва" type="enum" writable="false">
+        <activiti:formProperty id="file_Rodich" name="Сканкопія документів, що підтверджують родинний зв'язок; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Spadok" name="Сканкопія документа, що підтверджує статус спадкоємця; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_Opika" name="Сканкопія документа, що підтверджує статус опікуна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про померлого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sZap_Name&quot;],&quot;sValue&quot;:&quot;Інформація про померлого&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sZap_Name" name="Приізвище, ім'я, по батькові померлого; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_death" name="Дата смерті" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegistr_smert" name="Місце і дата реєстрації смерті особи; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asMeta" name="Зазначте причину отримання свідоцтва" type="enum" writable="false">
           <activiti:value id="sEnamMetaZag" name="Оригінал свідоцтва загублено"></activiti:value>
           <activiti:value id="sEnamMetaPosh" name="Оригінал свідоцтва пошкоджено"></activiti:value>
           <activiti:value id="sEnamMetaZnish" name="Оригінал свідоцтва знищено"></activiti:value>
           <activiti:value id="sEnamMetaVkr" name="Оригінал свідоцтва вкрадено"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide_2" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Послуга оплачена, свідоцтво надане"></activiti:value>
           <activiti:value id="reject" name="Заявник не з'явився для отримання свідоцтва"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Death_print.html]; ;bVisible=false ," type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/AK/Zags/Zags_Death_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/minust/check_Svidot.html]; ;bVisible=false ," type="string" default="Квитанція про оплату" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквизит; ;bVisible=false" type="string"></activiti:formProperty>
@@ -375,11 +395,6 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="sDescription" name="опис платежу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_Rodich},${file_Spadok},${file_Opika},${sDocPassport}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow14" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
