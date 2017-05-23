@@ -33,6 +33,7 @@ angular.module('app')
       $scope.mainSpinner = false;
       $rootScope.fullCatalog = data;
       $scope.catalog = data;
+      getKeywoeds();
       if ($rootScope.isOldStyleView) {
         $rootScope.busSpinner = false;
         $scope.spinner = false;
@@ -61,6 +62,7 @@ angular.module('app')
         });
       });
       $scope.catalog = ctlg;
+      getKeywoeds();
     };
 
     $scope.isSfs = function() {
@@ -97,11 +99,35 @@ angular.module('app')
       $location.path("/service/"+nID+"/general");
     };
 
+    function getKeywoeds() {
+      if($scope.catalog.aService){
+        angular.forEach($scope.catalog.aService, function (oService) {
+          oService.aKeywords = getKeywordsArray(oService.saKeyword);
+        })
+      }
+    }
+    function getKeywordsArray(str) {
+      var arr = str.split(",");
+      for(var keyInd = 0; keyInd < arr.length; keyInd++){
+        arr[keyInd] = $.trim(arr[keyInd]);
+        if(arr[keyInd].indexOf('#') !== 0){
+          arr[keyInd] = '#' + arr[keyInd];
+        }
+      }
+      if(angular.isArray(arr) && arr.length > 0){
+        while (arr.indexOf('#') >= 0){
+          arr.splice(arr.indexOf('#'), 1);
+        }
+      }
+      return arr;
+    }
+
     $scope.$on('$stateChangeStart', function(event, toState) {
       $scope.spinner = true;
       if(toState.name === 'index') {
         CatalogService.getCatalogTreeTag(1).then(function (res) {
           $scope.catalog = res;
+          getKeywoeds();
           $scope.changeCategory();
           $scope.spinner = false;
           $scope.mainSpinner = false;
