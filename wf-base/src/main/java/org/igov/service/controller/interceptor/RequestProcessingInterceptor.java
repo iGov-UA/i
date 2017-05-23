@@ -132,9 +132,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     }
 
     @Override
-    public void postHandle(HttpServletRequest request,
+    public void postHandle(HttpServletRequest oRequest,
             HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
+        
+        processSubjectStatusHistoryWriting(oRequest);
     }
 
     @Override
@@ -1082,5 +1084,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         return (oRequest != null && oRequest.getRequestURL().toString().indexOf(SERVICE_SUBJECT_PROCESS_SET_PROCESS_SUBJECT_STATUS) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
-
+    
+    private void processSubjectStatusHistoryWriting(HttpServletRequest oRequest) {
+        
+        if (isSetProcessSubjectStatus(oRequest)) {
+        
+            LOG.info("ProcessSubjectStatus interceptor");
+        }
+    }
 }

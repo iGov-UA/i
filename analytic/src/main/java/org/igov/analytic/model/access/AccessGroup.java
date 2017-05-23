@@ -7,40 +7,34 @@ package org.igov.analytic.model.access;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import java.util.Set;
+import javax.persistence.*;
+
+import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.AbstractEntity;
 
 /**
- *
  * @author olga
  */
-@javax.persistence.Entity
-public class AccessGroup extends AbstractEntity {
+@Entity
+public class AccessGroup extends AbstractEntity{
 
     @JsonProperty(value = "sID")
     @Column
     private String sID;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class)
-    @JoinTable(name = "AccessGroup_ProcessTask",
-            joinColumns = @JoinColumn(name = "nID_AccessGroup"),
-            inverseJoinColumns = @JoinColumn(name = "nID_ProcessTask"))
-    private List<ProcessTask> aProcessTask = new ArrayList<>();
-    
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = ProcessTask.class, mappedBy = "aAccessGroup")
+    private Set<ProcessTask> aProcessTask = new HashSet<>();
+
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = org.igov.analytic.model.process.Process.class)
-    @JoinTable(name = "AccessGroup_ProcessTask",
-            joinColumns = @JoinColumn(name = "nID_AccessGroup"),
-            inverseJoinColumns = @JoinColumn(name = "nID_Process"))
-    private List<org.igov.analytic.model.process.Process> aProcess = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Process.class, mappedBy = "aAccessGroup")
+    private Set<Process> aProcess = new HashSet<>();
 
     public String getsID() {
         return sID;
@@ -50,20 +44,27 @@ public class AccessGroup extends AbstractEntity {
         this.sID = sID;
     }
 
-    public List<ProcessTask> getaProcessTask() {
+    public Set<ProcessTask> getaProcessTask() {
         return aProcessTask;
     }
 
-    public void setaProcessTask(List<ProcessTask> aProcessTask) {
+    public void setaProcessTask(Set<ProcessTask> aProcessTask) {
         this.aProcessTask = aProcessTask;
     }
 
-    public List<org.igov.analytic.model.process.Process> getaProcess() {
+    public Set<Process> getaProcess() {
         return aProcess;
     }
 
-    public void setaProcess(List<org.igov.analytic.model.process.Process> aProcess) {
+    public void setaProcess(Set<Process> aProcess) {
         this.aProcess = aProcess;
     }
 
+    public void addaProcess(Process process) {
+        aProcess.add(process);
+    }
+
+    public void addaProcessTask(ProcessTask processTask) {
+        aProcessTask.add(processTask);
+    }
 }

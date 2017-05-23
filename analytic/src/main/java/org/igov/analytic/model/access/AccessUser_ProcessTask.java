@@ -6,9 +6,8 @@
 package org.igov.analytic.model.access;
 
 /**
- *
  * @author olga
  */
 public class AccessUser_ProcessTask {
-    
+
 }
