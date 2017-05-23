@@ -100,7 +100,7 @@ public class ActionEventController implements ControllerConstants {
     
     
     @Value("${asID_BpForStatisticsOfDnepr}")
-    private Long [] asID_BpForStatisticsOfDnepr;
+    private String [] asID_BpForStatisticsOfDnepr;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -1018,12 +1018,12 @@ public class ActionEventController implements ControllerConstants {
             csvWriter = new CSVWriter(httpResponse.getWriter(), ';', CSVWriter.NO_QUOTE_CHARACTER);
             csvWriter.writeNext(headers.toArray(new String[headers.size()]));
             
-            LOG.info("asID_BpForStatisticsOfDnepr " + asID_BpForStatisticsOfDnepr);
+            LOG.info("asID_BpForStatisticsOfDnepr " + asID_BpForStatisticsOfDnepr.toString());
 
             for (ServicesStatistics item : servicesStatistics) {
             	  
                 List<String> line = new LinkedList<>();
-                if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(item.getnID_Service())) {
+                if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(String.valueOf(item.getnID_Service()))) {
           		  LOG.info("String.valueOf(item.getnID_Service()) " + String.valueOf(item.getnID_Service()));
                 line.add(String.valueOf(item.getnID_Service()));
                 line.add(item.getServiceName());
