@@ -3,100 +3,104 @@ package org.igov.analytic.model.process;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.AbstractEntity;
 import org.igov.util.JSON.JsonDateDeserializer;
 import org.igov.util.JSON.JsonDateSerializer;
 import org.joda.time.DateTime;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * Created by dpekach on 26.12.16.
  */
 @Entity
+@Table(name = "Custom Process Task")
 public class CustomProcessTask extends AbstractEntity {
 
-    @JsonProperty(value = "oProcessTask")
+    @JsonProperty
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nID_ProcessTask")
+    @Cascade(value = CascadeType.ALL)
     private ProcessTask oProcessTask;
 
-    @JsonProperty(value = "nProcessDefinitionId")
+    @JsonProperty
     @Column
-    private String nProcessDefinitionId;
+    private String sProcessDefinitionId;
 
-    @JsonProperty(value = "sTaskDefinitionKey")
+    @JsonProperty
     @Column
     private String sTaskDefinitionKey;
 
-    @JsonProperty(value = "nProcessInstanceId")
+    @JsonProperty
     @Column
-    private Integer nProcessInstanceId;
+    private String sProcessInstanceId;
 
-    @JsonProperty(value = "nExecutionId")
+    @JsonProperty
     @Column
-    private Integer nExecutionId;
+    private String sExecutionId;
 
-    @JsonProperty(value = "sName")
+    @JsonProperty
     @Column
     private String sName;
 
-    @JsonProperty(value = "nParentTaskId")
+    @JsonProperty
     @Column
-    private Integer nParentTaskId;
+    private String sParentTaskId;
 
-    @JsonProperty(value = "sDescription")
+    @JsonProperty
     @Column
     private String sDescription;
 
-    @JsonProperty(value = "sOwner")
+    @JsonProperty
     @Column
     private String sOwner;
 
-    @JsonProperty(value = "sAssignee")
+    @JsonProperty
     @Column
     private String sAssignee;
 
-    @JsonProperty(value = "oClaimTime")
+    @JsonProperty
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
     private DateTime oClaimTime;
 
-    @JsonProperty(value = "nDuration")
+    @JsonProperty
     @Column
     private Long nDuration;
 
-    @JsonProperty(value = "sDelete")
+    @JsonProperty
     @Column
     private String sDeleteReason;
 
-    @JsonProperty(value = "nPriority")
+    @JsonProperty
     @Column
     private Integer nPriority;
 
-    @JsonProperty(value = "oDueDate")
+    @JsonProperty
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
     private DateTime oDueDate;
 
-    @JsonProperty(value = "nFormKey")
+    @JsonProperty
     @Column
-    private Integer nFormKey;
+    private String sFormKey;
 
-    @JsonProperty(value = "sCategory")
+    @JsonProperty
     @Column
     private String sCategory;
 
-    @JsonProperty(value = "nTenantId")
+    @JsonProperty
     @Column
-    private Integer nTenantId;
+    private String sTenantId;
+
 
     public ProcessTask getoProcessTask() {
         return oProcessTask;
@@ -106,12 +110,12 @@ public class CustomProcessTask extends AbstractEntity {
         this.oProcessTask = oProcessTask;
     }
 
-    public String getnProcessDefinitionId() {
-        return nProcessDefinitionId;
+    public String getsProcessDefinitionId() {
+        return sProcessDefinitionId;
     }
 
-    public void setnProcessDefinitionId(String nProcessDefinitionId) {
-        this.nProcessDefinitionId = nProcessDefinitionId;
+    public void setsProcessDefinitionId(String sProcessDefinitionId) {
+        this.sProcessDefinitionId = sProcessDefinitionId;
     }
 
     public String getsTaskDefinitionKey() {
@@ -122,20 +126,20 @@ public class CustomProcessTask extends AbstractEntity {
         this.sTaskDefinitionKey = sTaskDefinitionKey;
     }
 
-    public Integer getnProcessInstanceId() {
-        return nProcessInstanceId;
+    public String getsProcessInstanceId() {
+        return sProcessInstanceId;
     }
 
-    public void setnProcessInstanceId(Integer nProcessInstanceId) {
-        this.nProcessInstanceId = nProcessInstanceId;
+    public void setsProcessInstanceId(String sProcessInstanceId) {
+        this.sProcessInstanceId = sProcessInstanceId;
     }
 
-    public Integer getnExecutionId() {
-        return nExecutionId;
+    public String getsExecutionId() {
+        return sExecutionId;
     }
 
-    public void setnExecutionId(Integer nExecutionId) {
-        this.nExecutionId = nExecutionId;
+    public void setsExecutionId(String sExecutionId) {
+        this.sExecutionId = sExecutionId;
     }
 
     public String getsName() {
@@ -146,12 +150,12 @@ public class CustomProcessTask extends AbstractEntity {
         this.sName = sName;
     }
 
-    public Integer getnParentTaskId() {
-        return nParentTaskId;
+    public String getsParentTaskId() {
+        return sParentTaskId;
     }
 
-    public void setnParentTaskId(Integer nParentTaskId) {
-        this.nParentTaskId = nParentTaskId;
+    public void setsParentTaskId(String sParentTaskId) {
+        this.sParentTaskId = sParentTaskId;
     }
 
     public String getsDescription() {
@@ -218,12 +222,12 @@ public class CustomProcessTask extends AbstractEntity {
         this.oDueDate = oDueDate;
     }
 
-    public Integer getnFormKey() {
-        return nFormKey;
+    public String getsFormKey() {
+        return sFormKey;
     }
 
-    public void setnFormKey(Integer nFormKey) {
-        this.nFormKey = nFormKey;
+    public void setsFormKey(String sFormKey) {
+        this.sFormKey = sFormKey;
     }
 
     public String getsCategory() {
@@ -234,24 +238,24 @@ public class CustomProcessTask extends AbstractEntity {
         this.sCategory = sCategory;
     }
 
-    public Integer getnTenantId() {
-        return nTenantId;
+    public String getsTenantId() {
+        return sTenantId;
     }
 
-    public void setnTenantId(Integer nTenantId) {
-        this.nTenantId = nTenantId;
+    public void setsTenantId(String sTenantId) {
+        this.sTenantId = sTenantId;
     }
 
     @Override
     public String toString() {
         return "CustomProcessTask{" +
                 "oProcessTask=" + oProcessTask +
-                ", nProcessDefinitionId='" + nProcessDefinitionId + '\'' +
+                ", sProcessDefinitionId='" + sProcessDefinitionId + '\'' +
                 ", sTaskDefinitionKey='" + sTaskDefinitionKey + '\'' +
-                ", nProcessInstanceId=" + nProcessInstanceId +
-                ", nExecutionId=" + nExecutionId +
+                ", sProcessInstanceId='" + sProcessInstanceId + '\'' +
+                ", sExecutionId='" + sExecutionId + '\'' +
                 ", sName='" + sName + '\'' +
-                ", nParentTaskId=" + nParentTaskId +
+                ", sParentTaskId='" + sParentTaskId + '\'' +
                 ", sDescription='" + sDescription + '\'' +
                 ", sOwner='" + sOwner + '\'' +
                 ", sAssignee='" + sAssignee + '\'' +
@@ -260,9 +264,9 @@ public class CustomProcessTask extends AbstractEntity {
                 ", sDeleteReason='" + sDeleteReason + '\'' +
                 ", nPriority=" + nPriority +
                 ", oDueDate=" + oDueDate +
-                ", nFormKey=" + nFormKey +
+                ", nFormKey='" + sFormKey + '\'' +
                 ", sCategory='" + sCategory + '\'' +
-                ", nTenantId=" + nTenantId +
+                ", sTenantId='" + sTenantId + '\'' +
                 '}';
     }
 }

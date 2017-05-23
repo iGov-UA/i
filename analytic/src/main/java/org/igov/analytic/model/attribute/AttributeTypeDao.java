@@ -8,9 +8,8 @@ package org.igov.analytic.model.attribute;
 import org.igov.model.core.EntityDao;
 
 /**
- *
  * @author olga
  */
-public interface AttributeTypeDao  extends EntityDao<Long, AttributeType>{
-    
+public interface AttributeTypeDao extends EntityDao<Long, AttributeType> {
+
 }

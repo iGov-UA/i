@@ -22,25 +22,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 /**
- *
  * @author olga
  */
 @javax.persistence.Entity
 public class Attribute_Date extends AbstractEntity {
-    
+
     @JsonProperty(value = "oValue")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
-    private DateTime    oValue;
-    
+    private DateTime oValue;
+
     @JsonIgnore
     @OneToOne
     @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "nID_Attribute")
     Attribute oAttribute;
-    
+
     public DateTime getoValue() {
         return oValue;
     }
@@ -48,7 +47,7 @@ public class Attribute_Date extends AbstractEntity {
     public void setoValue(DateTime oValue) {
         this.oValue = oValue;
     }
-    
+
     public Attribute getoAttribute() {
         return oAttribute;
     }
@@ -56,5 +55,5 @@ public class Attribute_Date extends AbstractEntity {
     public void setoAttribute(Attribute oAttribute) {
         this.oAttribute = oAttribute;
     }
-    
+
 }
