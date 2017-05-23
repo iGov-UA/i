@@ -347,6 +347,7 @@ public class ProcessSubjectTaskService {
                 //update existing entity;
                 for(ProcessSubject oProcessSubject_ToUpdate : aProcessSubject_ToUpdate){
                     if(oProcessSubject_ToUpdate.getsLogin().equals((String) ((JSONObject)oJsonProcessSubject).get("sLogin"))){
+                        oProcessSubject = oProcessSubject_ToUpdate;
                         LOG.info("oProcessSubject to update is {}", oProcessSubject);
                         if (((JSONObject)oJsonProcessSubject).get("sDatePlan") != null) {
                             DateTime datePlan = new DateTime(oProcessSubjectService.parseDate(
