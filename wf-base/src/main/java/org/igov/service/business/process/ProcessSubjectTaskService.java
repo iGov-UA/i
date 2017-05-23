@@ -347,6 +347,7 @@ public class ProcessSubjectTaskService {
                 //update existing entity;
                 for(ProcessSubject oProcessSubject_ToUpdate : aProcessSubject_ToUpdate){
                     if(oProcessSubject_ToUpdate.getsLogin().equals((String) ((JSONObject)oJsonProcessSubject).get("sLogin"))){
+                        oProcessSubject = oProcessSubject_ToUpdate;
                         LOG.info("oProcessSubject to update is {}", oProcessSubject);
                         if (((JSONObject)oJsonProcessSubject).get("sDatePlan") != null) {
                             DateTime datePlan = new DateTime(oProcessSubjectService.parseDate(
@@ -423,12 +424,15 @@ public class ProcessSubjectTaskService {
     public void removeProcessSubjectDeep(ProcessSubject processSubject) {
         LOG.info("removeProcessSubjectDeep started...");
         ProcessSubjectResult processSubjectResult = oProcessSubjectService.getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
+        
         LOG.info("processSubjectResult {}", processSubjectResult.getaProcessSubject());
         List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
         List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
         
         for (ProcessSubject oProcessSubject : aReverseProcessSubject) {
-            removeProcessSubject(oProcessSubject);
+            LOG.info("oProcessSubject catalog user is {}", oProcessSubject.getaUser());
+            
+            //removeProcessSubject(oProcessSubject);
         }
 
         removeProcessSubject(processSubject);
