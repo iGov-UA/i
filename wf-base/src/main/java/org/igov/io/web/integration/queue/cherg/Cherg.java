@@ -136,42 +136,48 @@ public class Cherg {
             LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
                     urlBasePart + urlWorkdays,
                     mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
-                    + oHttpEntityCover.nStatus());
+            //throw new Exception("[sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+            //       + oHttpEntityCover.nStatus());
+            sReturn=null;
         } else if ( sReturn == null ) {
-            throw new Exception("Response is null for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+            LOG.error("Response is null for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
                     + oHttpEntityCover.nStatus());
+            //throw new Exception("Response is null for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+            //        + oHttpEntityCover.nStatus());
         }
 
         JSONParser oJSONParser = new JSONParser();
         JSONObject oJSONObjectGot;
-        JSONArray oaJSONArrayReturn = null;
-	try {
-	    oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
-	
-	    JSONArray oaJSONArray =  new JSONArray();
-	    if (!oJSONObjectGot.get("status-code").equals("0")) {
-	       LOG.error("code=={}, detail=={}", oJSONObjectGot.get("status-code"), oJSONObjectGot.get("status-detail"));
-	    }else{
-	       oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
-	       LOG.info("Workdays all days:{}", oaJSONArray);
-	    }
+        JSONArray oaJSONArrayReturn = new JSONArray();
+        if(sReturn!=null){
+            try {
 
-	    oaJSONArrayReturn = new JSONArray();
-	    for(Object o:oaJSONArray) {
-	       JSONObject oJSONObject = (JSONObject) o;
-	       String sDate = oJSONObject.get("date").toString();
-	       String snDateType = oJSONObject.get("work_day").toString();
-	       if ( snDateType.equals("1")) {
-		   oaJSONArrayReturn.add(sDate);
-	       }
-	    }
-	    
-	} catch (ParseException e) {
-            LOG.error("Error parsing response = {}", sReturn, e);
-            throw new Exception("Error parsing response for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
-                    + oHttpEntityCover.nStatus());
-	}
+                oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
+
+                JSONArray oaJSONArray =  new JSONArray();
+                if (!oJSONObjectGot.get("status-code").equals("0")) {
+                   LOG.error("code=={}, detail=={}", oJSONObjectGot.get("status-code"), oJSONObjectGot.get("status-detail"));
+                }else{
+                   oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
+                   LOG.info("Workdays all days:{}", oaJSONArray);
+                }
+
+                oaJSONArrayReturn = new JSONArray();
+                for(Object o:oaJSONArray) {
+                   JSONObject oJSONObject = (JSONObject) o;
+                   String sDate = oJSONObject.get("date").toString();
+                   String snDateType = oJSONObject.get("work_day").toString();
+                   if ( snDateType.equals("1")) {
+                       oaJSONArrayReturn.add(sDate);
+                   }
+                }
+
+            } catch (ParseException e) {
+                LOG.error("Error parsing response = {}", sReturn, e);
+                throw new Exception("Error parsing response for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
+                        + oHttpEntityCover.nStatus());
+            }
+        }
 
         return oaJSONArrayReturn;
     }
