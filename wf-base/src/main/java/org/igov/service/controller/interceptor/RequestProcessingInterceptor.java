@@ -42,6 +42,8 @@ import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightDao;
+import org.igov.model.process.ProcessSubject;
+import org.igov.model.process.ProcessSubjectDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.CloseTaskEvent;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -111,6 +113,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private GenericEntityDao<Long, DocumentStep> documentStepDao;
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
+    
+    @Autowired
+    private ProcessSubjectDao oProcessSubjectDao;
     
     @Value("${asID_BP_SendMail}")
     private String[] asID_BP_SendMail;
@@ -1090,6 +1095,25 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         if (isSetProcessSubjectStatus(oRequest)) {
         
             LOG.info("ProcessSubjectStatus interceptor");
+            
+            Map<String, String> mRequestParam = new HashMap<>();
+            Enumeration<String> paramsName = oRequest.getParameterNames();
+
+            while (paramsName.hasMoreElements()) {
+                String sKey = (String) paramsName.nextElement();
+                mRequestParam.put(sKey, oRequest.getParameter(sKey));
+            }
+            LOG.info("processSubjectStatusHistoryWriting: mRequestParam={}", mRequestParam);
+            
+            String snID_Task_Activiti = mRequestParam.get("snID_Task_Activiti");
+            String sLoginMain = mRequestParam.get("sLoginMain");
+            String sID_ProcessSubjectStatus = mRequestParam.get("sID_ProcessSubjectStatus");
+            
+            String snID_Process_Activiti = actionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
+            
+            ProcessSubject oProcessSubject = oProcessSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
+           
+            
         }
     }
 }
