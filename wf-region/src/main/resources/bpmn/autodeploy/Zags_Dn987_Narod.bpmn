@@ -50,6 +50,14 @@
           <activiti:value id="sEnamMetaVkr" name="Оригінал свідоцтва вкрадено"></activiti:value>
         </activiti:formProperty>
         
+        <activiti:formProperty id="labelECP" name=" ; ;labelType=info" type="label" default="Підписання ЕЦП пришвидшить виготовлення свідоцтва, в такому випадку воно буде виготовлено одразу після оплати. &lt;br&gt;В іншому випадку, свідоцтво буде виготовлено під час вашого візиту і вам доведеться зачекати у відділі ДРАЦС."></activiti:formProperty>
+        <activiti:formProperty id="chekECP" name="Хочете підписати звернення ЕЦП?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
+          <activiti:value id="ecp_yes" name="так"></activiti:value>
+          <activiti:value id="ecp_no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/AK/Zags/Zags_Nar_print.html"></activiti:formProperty>
+        <activiti:formProperty id="markerECP" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/ZagzECP.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sID_Payment" name="ІД транзакції платежу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ІД-номер суб'єкткта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -252,7 +260,9 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
           <activiti:value id="acceptVid" name="Запитувані відомості відсутні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment" name="Вкажіть час візиту заявника. Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Komment" name="Вкажіть причину відмови у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDate_Vizit" name="Оберіть дату з якої заявник може отримати свідоцтво" type="date"></activiti:formProperty>
+        <activiti:formProperty id="markerDash" name="marker" type="markers" default="${markerService.loadFromFile('AK/Zags/ZagzDash.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sBody" name="[pattern/print/AK/Zags/Zags_Nar_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
@@ -279,30 +289,24 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Співробітник відділу ДРАЦС перевірив Вашу заяву. Вона оформлена вірно.&lt;br /&gt;
-Ви можете отримати свідоцтво. &lt;br /&gt;
-Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою:&lt;br /&gt;
-${sAddress}.&lt;br /&gt;&lt;br /&gt;
-Дата і час візиту для отримання свідоцтва: ${comment} &lt;br /&gt;&lt;br /&gt;
 Для отримання свідоцтва Вам необхідно сплатити державне мито у розмірі: 51 копійка.&lt;br /&gt;
 Ви можете сплатити його звичайним банківським платежем за наступними реквізитами:&lt;br /&gt;
 ${sBankDetails1}&lt;br /&gt;&lt;br /&gt;
-або сплатити прямо зараз банківською карткою (для цього Вам знадобиться ввести номер картки, строк дії та CVV-код). Для цього натисніть цю кнопку:&lt;br /&gt;
+або сплатити прямо зараз банківською карткою. Для цього натисніть цю кнопку:&lt;br /&gt;
 (до вартості послуги буде додана комісія 1,8%)&lt;br /&gt;&lt;br /&gt;
 [paymentButton_LiqPay]&lt;br /&gt;&lt;br /&gt;
+
 &lt;b&gt;Якщо ви оплатили послугу самостійно, вам треба завантажити скановану копію квитанції&lt;/b&gt;&lt;br&gt;
+Як це зробити читайте у  &lt;a href=" https://igov.org.ua/service/1533/instruction" target="_blank"&gt;Як це працює&lt;/a&gt;:
 &lt;br&gt;
-Для цього Вам потрібно зайти у розділ &lt;a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank"&gt;Мій журнал&lt;/a&gt; та відправити цей файл співробітнику відділу ДРАЦС:
-&lt;ul&gt;
-&lt;li&gt;праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу зі співробітником відділу ДРАЦС;&lt;/li&gt;
-&lt;li&gt;в полі залиште коментар, який побачить співробітник відділу ДРАЦС;&lt;/li&gt;
-&lt;li&gt;нижче поля натисніть “Додати файл” та оберіть файл, який Ви підписали заздалегідь;&lt;/li&gt;
-&lt;li&gt;натисніть кнопку “Відправити”.&lt;/li&gt;
-&lt;/ul&gt;&lt;br /&gt;
+
+Для отримання свідоцтва потрібно особисто звернутися до відділу ДРАЦС за адресою:&lt;br /&gt;
+${sAddress}.&lt;br /&gt;&lt;br /&gt;
+
 Необхідні документи, які потрібно мати з собою при візиті до ДРАЦС:&lt;br /&gt;
 - документ, що посвідчує особу&lt;br /&gt;
 - квитанція про сплату державного мита (не потрібно, якщо Ви скористалися для оплати кнопкою вище)&lt;br /&gt;&lt;br /&gt;
+Дата візиту для отримання свідоцтва: ${sDate_Vizit} &lt;br /&gt;&lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -342,7 +346,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
 [pattern/mail/new_design/_common_content_start.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Вам відмовлено у наданні послуги. Заява оформлені НЕ вірно. Відмова. &lt;br /&gt;
-Причина відмови: ${comment} &lt;br /&gt;&lt;br /&gt;
+Причина відмови: ${Komment} &lt;br /&gt;&lt;br /&gt;
 Якщо Вам необхідно отримати свідоцтво, ви можете подати ще одну заявку на порталі igov.org.ua &lt;br /&gt;
 ${sPhoneOrgan}.&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
