@@ -6,34 +6,34 @@
 package org.igov.analytic.model.attribute;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 
 import org.igov.model.core.NamedEntity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- *
  * @author olga
  */
-@javax.persistence.Entity
-public class AttributeName extends NamedEntity{ 
-    
+@Entity
+public class AttributeName extends NamedEntity {
+
     @JsonProperty(value = "sID")
     @Column
     private String sID;
-        
+
     @JsonProperty(value = "nOrder")
     @Column
     private Long nOrder;
-    
-    public Long getnOrder(){
+
+    public Long getnOrder() {
         return nOrder;
     }
 
-    public void setnOrder(Long nOrder){
+    public void setnOrder(Long nOrder) {
         this.nOrder = nOrder;
     }
-    
+
     public String getsID() {
         return sID;
     }
