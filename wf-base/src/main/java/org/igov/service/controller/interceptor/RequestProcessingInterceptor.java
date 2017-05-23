@@ -191,7 +191,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
             } catch (Exception ex) {
                 LOG.info("Error parsing sRequestBody: {}", ex);
-                LOG.info("sRequestBody is: {}", sRequestBody);
+                //LOG.info("sRequestBody is: {}", sRequestBody);
             }
 
             try {
@@ -200,7 +200,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
             } catch (Exception ex) {
                 LOG.debug("Error parsing sRequestBody: {}", ex);
-                LOG.debug("sRequestBody is: {}", sResponseBody);
+                //LOG.debug("sRequestBody is: {}", sResponseBody);
             }
 
             if (isCloseTask(oRequest, sResponseBody)) {
@@ -628,8 +628,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         }
 
         if (!bFinish) {
-            LOG.info("(mRequestParam={})", mRequestParam);
-            LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
+            //LOG.info("(mRequestParam={})", mRequestParam);
+            //LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
             if (sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")) {
             } else {
@@ -639,7 +639,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
         String sResponseBody = !bFinish ? null : oResponse.toString();
         if (bFinish) {
-            LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
+            //LOG.info("(sResponseBody={})", sCut(nLen, sResponseBody));
             if (sURL.endsWith(SERVICE_ACTION_ITEM_GET_SERVICE)
                     || sURL.endsWith(SERVICE_ACTION_ITEM_GET_SERVICES_TREE)
                     || (sURL.endsWith(SERVICE_FORM_FORM_DATA)
@@ -676,9 +676,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bSaveHistory, oResponse.getStatus());
             }
 
-            LOG.info("isSaveTask(oRequest, sResponseBody): " + isSaveTask(oRequest, sResponseBody));
-            LOG.info("oRequest.getRequestURL: " + oRequest.getRequestURL().toString());
-            LOG.info("sResponseBody before SaveTask: " + sResponseBody);
+            //LOG.info("isSaveTask(oRequest, sResponseBody): " + isSaveTask(oRequest, sResponseBody));
+            //LOG.info("oRequest.getRequestURL: " + oRequest.getRequestURL().toString());
+            //LOG.info("sResponseBody before SaveTask: " + sResponseBody);
 
             if (isSaveTask(oRequest, sResponseBody)) {
                 sType = "Save";
@@ -709,7 +709,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 
                 if(oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0){
                     LOG.info("We catch cancel task...");
-                    LOG.info("mRequestParam {}", mRequestParam);
+                    //LOG.info("mRequestParam {}", mRequestParam);
                     String nID_Order = mRequestParam.get("nID_Order");
                     LOG.info("nID_Order {}", nID_Order);
                     
@@ -738,8 +738,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             } else if (isUpdateTask(oRequest)) {
                 sType = "Update";
                 LOG.info("saveUpdatedTaskInfo block started");
-                LOG.info("oRequest URL: {}", oRequest.getRequestURL().toString());
-                LOG.info("oRequest mRequestParam: {}", mRequestParam);
+                //LOG.info("oRequest URL: {}", oRequest.getRequestURL().toString());
+                //LOG.info("oRequest mRequestParam: {}", mRequestParam);
                 saveUpdatedTaskInfo(sResponseBody, mRequestParam);
                 LOG.info("saveUpdatedTaskInfo block finished");
             }
@@ -779,9 +779,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         
-        LOG.info("sRequestBody {}", sRequestBody);// 
-        LOG.info("sResponseBody {}", sResponseBody);
-        LOG.info("mParamRequest {}", mParamRequest);
+        //LOG.info("sRequestBody {}", sRequestBody);// 
+        //LOG.info("sResponseBody {}", sResponseBody);
+        //LOG.info("mParamRequest {}", mParamRequest);
         
         if (sResponseBody == null) {
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
@@ -789,10 +789,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
         
-        LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
+        //LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
         
         JSONArray properties = (JSONArray) omRequestBody.get("properties");
-        LOG.info("properties >>>>>>>>>>>>>> {}", properties );
+        //LOG.info("properties >>>>>>>>>>>>>> {}", properties );
         Iterator<JSONObject> iterator = properties.iterator();
         String sID_Public_SubjectOrganJoin = null;
         while (iterator.hasNext()) {
@@ -871,7 +871,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             sendMailTo(omRequestBody, sID_Order, snID_Subject, snID_Service, oProcessDefinition);
 
             historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
-            LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
+            //LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
             if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
                 //Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
                 //LOG.info("RequestProcessInterceptor process count: " + count.intValue());
@@ -891,7 +891,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
         LOG.info("Method saveClosedTaskInfo started");
         
-        LOG.info("sRequestBody is {}", sRequestBody);
+        //LOG.info("sRequestBody is {}", sRequestBody);
         LOG.info("snClosedTaskId is {}", snClosedTaskId);
         
         JSONObject omRequestBody = null;
@@ -983,11 +983,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         if (sMailTo != null) {
         	 if (Arrays.asList(asID_BP_SendMail).contains(oProcessDefinition.getKey())) {
                 ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
-                LOG.info("Before send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
+                //LOG.info("Before send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
                 oNotificationPatterns.sendTaskCreatedInfoEmail(sMailTo, sID_Order, bankIdFirstName, bankIdLastName);
-                LOG.info("Send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
+                //LOG.info("Send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
             } else {
-                LOG.info("SKIP send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
+                //LOG.info("SKIP send notification mail... (sMailTo={}, oProcessDefinition.getKey()={})", sMailTo, oProcessDefinition.getKey());
             }
         }
 
@@ -997,12 +997,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 mParamSync.put("snID_Subject", snID_Subject);
                 mParamSync.put("sMailTo", sMailTo);
                 mParamSync.put("sPhone", sPhone);
-                LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject,
-                        sPhone);
+                //LOG.info("Вносим параметры в коллекцию (sMailTo {}, snID_Subject {}, sPhone {})", sMailTo, snID_Subject,
+                //        sPhone);
                 String sURL = generalConfig.getSelfHostCentral() + URI_SYNC_CONTACTS;
                 LOG.info("Подключаемся к центральному порталу by sURL: " + sURL);
                 String sResponse = httpRequester.getInside(sURL, mParamSync);
-                LOG.info("Подключение осуществлено.. sResponse is: " + sResponse);
+                //LOG.info("Подключение осуществлено.. sResponse is: " + sResponse);
             } catch (Exception ex) {
                 LOG.warn("(isSaveTask exception {})", ex.getMessage());
             }
