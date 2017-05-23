@@ -1,66 +1,68 @@
 package org.igov.analytic.model.process;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 import org.igov.model.core.AbstractEntity;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * Created by dpekach on 26.12.16.
  */
 @Entity
+@Table(name = "Custom Process")
 public class CustomProcess extends AbstractEntity {
 
-    @JsonProperty(value = "oProcess")
+    @JsonProperty
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nID_Process")
+    @Cascade(CascadeType.ALL)
     private Process oProcess;
 
-
-    @JsonProperty(value = "sProcessInstanceId")
+    @JsonProperty
     @Column
     private String sProcessInstanceId;
 
-    @JsonProperty(value = "sBusinessKey")
+    @JsonProperty
     @Column
     private String sBusinessKey;
 
-    @JsonProperty(value = "sProcessDefinitionId")
+    @JsonProperty
     @Column
     private String sProcessDefinitionId;
 
-
-    @JsonProperty(value = "nDuration")
+    @JsonProperty
     @Column
     private Long nDuration;
 
-    @JsonProperty(value = "sStartUserId")
+    @JsonProperty
     @Column
     private String sStartUserId;
 
-    @JsonProperty(value = "sStartActivityId")
+    @JsonProperty
     @Column
     private String sStartActivityId;
 
-    @JsonProperty(value = "sEndActivityId")
+    @JsonProperty
     @Column
     private String sEndActivityId;
 
-    @JsonProperty(value = "sSuperProcessInstanceId")
+    @JsonProperty
     @Column
     private String sSuperProcessInstanceId;
 
-    @JsonProperty(value = "sDeleteReason")
+    @JsonProperty
     @Column
     private String sDeleteReason;
 
-    @JsonProperty(value = "sTenantId")
+    @JsonProperty
     @Column
     private String sTenantId;
 
-    @JsonProperty(value = "sName")
+    @JsonProperty
     @Column
     private String sName;
 
@@ -164,7 +166,7 @@ public class CustomProcess extends AbstractEntity {
     public String toString() {
         return "CustomProcess{" +
                 "oProcess=" + oProcess +
-                ", sProcessInstanceId=" + sProcessInstanceId +
+                ", sProcessInstanceId='" + sProcessInstanceId + '\'' +
                 ", sBusinessKey='" + sBusinessKey + '\'' +
                 ", sProcessDefinitionId='" + sProcessDefinitionId + '\'' +
                 ", nDuration=" + nDuration +
