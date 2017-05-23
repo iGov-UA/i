@@ -424,12 +424,15 @@ public class ProcessSubjectTaskService {
     public void removeProcessSubjectDeep(ProcessSubject processSubject) {
         LOG.info("removeProcessSubjectDeep started...");
         ProcessSubjectResult processSubjectResult = oProcessSubjectService.getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
+        
         LOG.info("processSubjectResult {}", processSubjectResult.getaProcessSubject());
         List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
         List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
         
         for (ProcessSubject oProcessSubject : aReverseProcessSubject) {
-            removeProcessSubject(oProcessSubject);
+            LOG.info("oProcessSubject catalog user is {}", oProcessSubject.getaUser());
+            
+            //removeProcessSubject(oProcessSubject);
         }
 
         removeProcessSubject(processSubject);
