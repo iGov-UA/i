@@ -188,12 +188,16 @@ public class ProcessSubjectController {
     public ProcessSubject setProcessSubjectStatus(
                 @ApiParam(value = "Статус", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
                 @ApiParam(value = "Ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
-                @ApiParam(value = "Логин того, кто вызвал сервис", required = true) @RequestParam(value = "sLoginMain", required = true) String sLoginMain,
-                @ApiParam(value = "Логин исполнителя, нужен в некоторых кейсах, когда сервис вызывает контролирующий", required = false) @RequestParam(value = "sLoginSecondary", required = false) String sLoginSecondary,
+                @ApiParam(value = "Логин контролирующего", required = true) @RequestParam(value = "sLoginController", required = true) String sLoginController,
+                @ApiParam(value = "Логин исполнителя", required = true) @RequestParam(value = "sLoginExecutor", required = true) String sLoginExecutor,
                 @ApiParam(value = "Текстовое поле", required = false) @RequestParam(value = "sText", required = false) String sText,
                 @ApiParam(value = "Дата на которую нужно перенести срок", required = false) @RequestParam(value = "sDatePlaneNew", required = false) String sDatePlaneNew
     ) {
-
+        if (sLoginController == null && sLoginExecutor == null) {
+        
+            throw new RuntimeException("Impossible to set status, because login is absent");
+        }
+        
         DateTime dtDatePlaneNew = null;
         
         if (sDatePlaneNew != null) {
@@ -201,7 +205,7 @@ public class ProcessSubjectController {
             dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
         }
        
-        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginMain, sLoginSecondary, sText, dtDatePlaneNew);
+        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginController, sLoginExecutor, sText, dtDatePlaneNew);
     }
     
     @ApiOperation(value = "Синхронизировать ProcessSubject", notes = "Пример вызова:"

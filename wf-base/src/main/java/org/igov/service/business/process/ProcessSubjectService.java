@@ -812,22 +812,29 @@ public class ProcessSubjectService {
     }
     
     /**
-     * Изменение статуса процесса. Имеет значение, кто вызвал сервис: для исполнителя используются
-     * одни кейсы, для контролирующего другие. По логину sLoginMain определяем какой кейс будет 
-     * выполняться.
+     * Изменение статуса процесса. По наличию логинов и статусу определяем какой
+     * кейс должен отработать.
      * 
      * @param sID_ProcessSubjectStatus  Статус, который нужно установить 
      * @param snID_Task_Activiti        Ид таски
-     * @param sLoginMain                Логин того, кто вызвал сервис
-     * @param sLoginSecondary           Логин исполнителя, нужен в некоторых кейсах, когда сервис вызывает контролирующий
+     * @param sLoginController          Логин контролирующего
+     * @param sLoginExecutor            Логин исполнителя
      * @param sText                     Текстовое поле
      * @param sDatePlaneNew             Дата на которую нужно перенести срок
      * @return                          Процесс, который был изменен
      */
     public ProcessSubject setProcessSubjectStatus(
-            String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLoginMain, String sLoginSecondary,
+            String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLoginController, String sLoginExecutor,
             String sText, DateTime sDatePlaneNew
     ) {
+        
+        String sLoginMain = sLoginController;
+                
+        if (sLoginExecutor != null && sLoginController == null) {
+            
+            sLoginMain = sLoginExecutor;
+        
+        } 
         
         String snID_Process_Activiti = oActionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
         
@@ -863,12 +870,12 @@ public class ProcessSubjectService {
             //Перенос срока контролирующим
             } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRoleMain.equals("Controller")) {
                 
-                if (sLoginSecondary == null) {
+                if (sLoginExecutor == null) {
                 
                     throw new RuntimeException("Did not send an executor login. To set this status you need to send executor's login besides controller's.");
                 }
                 
-                ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginSecondary);
+                ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginExecutor);
   
                 oProcessSubjectExecutor.setsDateEdit(dtCurrentDate);
                 oProcessSubjectExecutor.setsDatePlan(sDatePlaneNew);
@@ -880,12 +887,12 @@ public class ProcessSubjectService {
             //Контролирующий отклонил отчет    
             } else if (sID_ProcessSubjectStatus.equals("rejected") && sLoginRoleMain.equals("Controller")) {
                 
-                if (sLoginSecondary == null) {
+                if (sLoginExecutor == null) {
                 
                     throw new RuntimeException("Did not send an executor login. To set this status you need to send executor's login besides controller's.");
                 }
                 
-                ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginSecondary);
+                ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginExecutor);
 
                 oProcessSubjectExecutor.setsDateEdit(dtCurrentDate);
                 oProcessSubjectExecutor.setsDateFact(null);
@@ -909,7 +916,7 @@ public class ProcessSubjectService {
             
         } else {
         
-            throw  new RuntimeException("Login=" + sLoginMain + " has no access to change a status.");
+            throw  new RuntimeException("Login=" + sLoginController + " has no access to change a status.");
         }
         
         return oProcessSubjectMain;
