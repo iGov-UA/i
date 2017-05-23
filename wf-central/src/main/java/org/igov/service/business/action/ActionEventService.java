@@ -10,6 +10,8 @@ import static org.igov.service.business.action.task.core.ActionTaskService.amFie
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +19,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.web.HttpRequester;
 import org.igov.model.action.event.HistoryEventDao;
 import org.igov.model.action.event.HistoryEventMessage;
@@ -31,7 +36,6 @@ import org.igov.model.document.DocumentDao;
 import org.igov.model.object.place.Region;
 import org.igov.model.subject.message.SubjectMessage;
 import org.igov.model.subject.message.SubjectMessagesDao;
-import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.subject.SubjectMessageService;
@@ -39,11 +43,15 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.util.ToolLuna;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import liquibase.util.csv.CSVWriter;
 
 /**
  *
@@ -79,17 +87,10 @@ public class ActionEventService {
     @Qualifier("regionDao")
     private GenericEntityDao<Long, Region> regionDao;
     
-    @Autowired
-    private ActionEventHistoryService oActionEventHistoryService;
+    @Value("${asID_BpForStatisticsOfDnepr}")
+    private String [] asID_BpForStatisticsOfDnepr;
 
 
-    /*public void setOldTaskDates(Long nId_Task, HistoryEvent_Service historyEventService) {
-        LOG.info(String.format("Finding task [id = %s] and its dates as historic object", nId_Task));
-        HistoricTaskInstance task = oHistoryService.createHistoricTaskInstanceQuery().taskId(String.valueOf(nId_Task)).singleResult();
-        if (task != null && task.getCreateTime() != null) {
-            historyEventService.setsDateCreate(new DateTime(task.getCreateTime()));
-        }
-    }*/
     public void checkAuth(HistoryEvent_Service oHistoryEvent_Service, Long nID_Subject, String sToken) throws Exception {
         if (sToken != null) {
             if (sToken.equals(oHistoryEvent_Service.getsToken())) {
@@ -267,9 +268,63 @@ public class ActionEventService {
         return servicesStatistics;
     }
     
-    public List<ServicesStatistics> getServicesStatisticsOfDnepr(DateTime from, DateTime to) {
+    /**
+     * Сервис получения статистики по городу Днепр
+     * @param sDate_from
+     * @param sDate_to
+     * @param httpResponse
+     */
+    public void getServicesStatisticsOfDnepr(String sDate_from, String sDate_to, HttpServletResponse httpResponse) {
+
+    	//parse date to check that it has appropriate form
+        DateTime from = DateTime.parse(sDate_from, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+        DateTime to = DateTime.parse(sDate_to, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+
         List<ServicesStatistics> servicesStatistics = historyEventServiceDao.getServicesStatisticsOfDnepr(from, to);
-        return servicesStatistics;
+        LOG.info("servicesStatistics " + servicesStatistics);
+
+        String[] headingFields = {"nID_Service", "ServiceName", "SID_UA", "placeName", "nCountTotal", "nCountFeedback",
+            "nCountEscalation", "averageRate", "averageTime"};
+        List<String> headers = new ArrayList<>();
+        headers.addAll(Arrays.asList(headingFields));
+
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + "ServicesStatistics.csv");
+        httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
+
+        /**
+         * запись в файл
+         */
+        CSVWriter csvWriter;
+        try {
+            csvWriter = new CSVWriter(httpResponse.getWriter(), ';', CSVWriter.NO_QUOTE_CHARACTER);
+            csvWriter.writeNext(headers.toArray(new String[headers.size()]));
+            
+            LOG.info("asID_BpForStatisticsOfDnepr " + Arrays.asList(asID_BpForStatisticsOfDnepr));
+
+			for (ServicesStatistics item : servicesStatistics) {
+				LOG.info("String.valueOf(item.getnID_Service()) " + String.valueOf(item.getnID_Service()));
+				List<String> line = new LinkedList<>();
+				if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(String.valueOf(item.getnID_Service()))) {
+					LOG.info("String.valueOf(item.getnID_Service()) -->> " + String.valueOf(item.getnID_Service()));
+					line.add(String.valueOf(item.getnID_Service()));
+					line.add(item.getServiceName());
+					line.add(String.valueOf(item.getSID_UA()));
+					line.add(item.getPlaceName());
+					line.add(item.getnCountTotal() == null ? "0" : item.getnCountTotal().toString());
+					line.add(item.getnCountFeedback() == null ? "0" : item.getnCountFeedback().toString());
+					line.add(item.getnCountEscalation() == null ? "0" : item.getnCountEscalation().toString());
+					line.add(item.getAverageRate() == null ? "0" : item.getAverageRate().toString());
+					// divide average time (mins) to 60 to get hours
+					line.add(item.getAverageTime() == null ? "0"
+							: String.valueOf(item.getAverageTime().floatValue() / 60f));
+					csvWriter.writeNext(line.toArray(new String[line.size()]));
+				}
+			}
+            csvWriter.close();
+        } catch (Exception e) {
+            LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+            LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
+        }
     }
 
     public List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {
