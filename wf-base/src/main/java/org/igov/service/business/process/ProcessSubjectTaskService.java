@@ -135,12 +135,12 @@ public class ProcessSubjectTaskService {
     
     public void synctProcessSubjectTask(JSONArray oaProcessSubjectTask, String snId_Task){
         try{
-            LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", oaProcessSubjectTask.toJSONString());
+            //LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", oaProcessSubjectTask.toJSONString());
             for(Object oJsonProcessSubjectTask :  oaProcessSubjectTask){
                 
                 String sActionType = (String)((JSONObject)oJsonProcessSubjectTask).get("sActionType");
                 JSONArray aJsonProcessSubject =  (JSONArray) ((JSONObject)oJsonProcessSubjectTask).get("aProcessSubject");
-                LOG.info("oJsonProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
+                //LOG.info("oJsonProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
                 String sKey = oBytesDataInmemoryStorage.putBytes(((JSONObject)oJsonProcessSubjectTask).toJSONString().getBytes());
                 LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
 
@@ -153,11 +153,11 @@ public class ProcessSubjectTaskService {
                     ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
                             Long.parseLong((String)((JSONObject)oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
                     
-                    LOG.info("oProcessSubjectTask is {}", oProcessSubjectTask);
+                    //LOG.info("oProcessSubjectTask is {}", oProcessSubjectTask);
                     
                     ProcessSubject oProcessSubjectController = getProcessSubjectByTask(snId_Task);
                     
-                    LOG.info("oProcessSubjectController is {}", oProcessSubjectController);
+                    //LOG.info("oProcessSubjectController is {}", oProcessSubjectController);
                     
                     List<ProcessSubject> aProcessSubject_saved = 
                             oProcessSubjectDao.findAllBy("snID_Process_Activiti", oProcessSubjectController.getSnID_Process_Activiti());

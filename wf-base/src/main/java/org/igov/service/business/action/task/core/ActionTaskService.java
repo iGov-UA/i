@@ -1163,7 +1163,7 @@ public class ActionTaskService {
                 .active()
                 .latestVersion().list();
 
-        LOG.info("getBusinessProcessesObjectsOfLogin: all active processes aProcessDefinition = {}", aProcessDefinition);
+        //LOG.info("getBusinessProcessesObjectsOfLogin: all active processes aProcessDefinition = {}", aProcessDefinition);
         
         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
              

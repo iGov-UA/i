@@ -346,7 +346,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
             } catch (Exception ex) {
                 LOG.info("Error parsing sRequestBody: {}", ex);
-                LOG.info("sRequestBody is: {}", sRequestBody);
+                //LOG.info("sRequestBody is: {}", sRequestBody);
             }
 
             try {
@@ -664,7 +664,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     || sURL.contains(SERVICE_OBJECT_FILE)
                     || sURL.contains(SERVICE_DOCUMENT_GET_DOCUMENT_ABSTRACT)) {
             } else {
-                LOG_BIG.debug("(sResponseBody={})", sResponseBody);
+                //LOG_BIG.debug("(sResponseBody={})", sResponseBody);
             }
         }
         String sType = "";
@@ -691,8 +691,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                 ._Status(Log.LogStatus.ERROR)
                                 ._Head("Error hapened while start process!")
                                 ._Body(oResponse.toString())
-                                ._Param("sRequestBody", sRequestBody)
-                                ._Param("sResponseBody", sResponseBody)
+                                //._Param("sRequestBody", sRequestBody)
+                                //._Param("sResponseBody", sResponseBody)
                                 ._Param("mRequestParam", mRequestParam)
                                 .save();
                     } catch (Exception ex) {
@@ -754,8 +754,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         //                    ._Body(oException.getMessage())
                         ._Param("sURL", sURL)
                         ._Param("mRequestParam", mRequestParam)
-                        ._Param("sRequestBody", sRequestBody)
-                        ._Param("sResponseBody", sResponseBody)
+                        //._Param("sRequestBody", sRequestBody)
+                        //._Param("sResponseBody", sResponseBody)
                         ._LogTrace()
                         .save();
             } catch (Exception e) {
@@ -784,7 +784,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         //LOG.info("mParamRequest {}", mParamRequest);
         
         if (sResponseBody == null) {
-            LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
+            //LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
