@@ -1018,7 +1018,7 @@ public class ActionEventController implements ControllerConstants {
             csvWriter = new CSVWriter(httpResponse.getWriter(), ';', CSVWriter.NO_QUOTE_CHARACTER);
             csvWriter.writeNext(headers.toArray(new String[headers.size()]));
             
-            LOG.info("asID_BpForStatisticsOfDnepr " + asID_BpForStatisticsOfDnepr.toString());
+            LOG.info("asID_BpForStatisticsOfDnepr " + Arrays.asList(asID_BpForStatisticsOfDnepr));
 
             for (ServicesStatistics item : servicesStatistics) {
             	  
