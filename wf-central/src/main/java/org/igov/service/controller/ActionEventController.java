@@ -100,7 +100,7 @@ public class ActionEventController implements ControllerConstants {
     
     
     @Value("${asID_BpForStatisticsOfDnepr}")
-    private String [] asID_BpForStatisticsOfDnepr;
+    private Long [] asID_BpForStatisticsOfDnepr;
 
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -1021,9 +1021,10 @@ public class ActionEventController implements ControllerConstants {
             LOG.info("asID_BpForStatisticsOfDnepr " + asID_BpForStatisticsOfDnepr);
 
             for (ServicesStatistics item : servicesStatistics) {
-            	  if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(String.valueOf(item.getnID_Service()))) {
-            		  LOG.info("String.valueOf(item.getnID_Service()) " + String.valueOf(item.getnID_Service()));
+            	  
                 List<String> line = new LinkedList<>();
+                if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(item.getnID_Service())) {
+          		  LOG.info("String.valueOf(item.getnID_Service()) " + String.valueOf(item.getnID_Service()));
                 line.add(String.valueOf(item.getnID_Service()));
                 line.add(item.getServiceName());
                 line.add(String.valueOf(item.getSID_UA()));
