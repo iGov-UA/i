@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_238" name="Видача довідки про наявність та розмір земельної частки (паю)" isExecutable="true">
+  <process id="dnepr_cnap_238" name="Довідка про наявність та розмір земельної частки (паю)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
@@ -12,10 +12,6 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asVybir" name="Вкажіть мету отримання довідки" type="enum" required="true">
-          <activiti:value id="one" name="Для пред'явлення в органи соціального захисту населення або в центр зайнятості (термін виконання 1 робочий день)"></activiti:value>
-          <activiti:value id="ten" name="Універсальна довідка (10 робочих днів)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sClerkPost" name="почта чиновника; ;bVisible=false" type="string"></activiti:formProperty>
@@ -46,7 +42,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Видача довідки про наявність та розмір земельної частки (паю)]]></activiti:string>
+          <activiti:string><![CDATA[Звернення на тему: Довідка про наявність та розмір земельної частки (паю)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[
@@ -80,10 +76,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[Akylish@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Видача довідки про наявність та розмір земельної частки (паю). Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Довідка про наявність та розмір земельної частки (паю). Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
@@ -100,10 +96,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asVybir" name="Вкажіть мету отримання довідки" type="enum" writable="false">
-          <activiti:value id="one" name="Для пред'явлення в органи соціального захисту населення або в центр зайнятості (термін виконання 1 роб. день)"></activiti:value>
-          <activiti:value id="ten" name="Універсальна довідка (10 роб. днів)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="proverka" name="Рішення про видачу довідки" type="enum" required="true">
@@ -114,7 +106,7 @@
         <activiti:formProperty id="result" name="Додайте скановану копію витягу з Державного земельного кадастру, якщо заяву опрацьовано або скановану копію відмови, якщо ні" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr238.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr238.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr238.html]; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -137,7 +129,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача довідки про наявність та розмір земельної частки (паю)]]></activiti:string>
+          <activiti:string><![CDATA[Довідка про наявність та розмір земельної частки (паю)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -180,7 +172,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача довідки про наявність та розмір земельної частки (паю)]]></activiti:string>
+          <activiti:string><![CDATA[Довідка про наявність та розмір земельної частки (паю)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -217,10 +209,6 @@ ${sWorkTime}.<br />
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asVybir" name="Вкажіть мету отримання довідки" type="enum" writable="false">
-          <activiti:value id="one" name="Для пред'явлення в органи соціального захисту населення або в центр зайнятості (термін виконання 1 робочих день)"></activiti:value>
-          <activiti:value id="ten" name="Універсальна довідка (10 робочих днів)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="proverkaCNAP" name="Рішення ЦНАП про прийняття або відхилення повідомлення" type="enum" required="true">
           <activiti:value id="ok" name="Заяву прийнято"></activiti:value>
@@ -228,7 +216,7 @@ ${sWorkTime}.<br />
         </activiti:formProperty>
         <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr238.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr238.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr238.html]; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -250,7 +238,7 @@ ${sWorkTime}.<br />
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача довідки про наявність та розмір земельної частки (паю)]]></activiti:string>
+          <activiti:string><![CDATA[Довідка про наявність та розмір земельної частки (паю)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -287,7 +275,7 @@ ${sWorkTime}.<br />
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача довідки про наявність та розмір земельної частки (паю)]]></activiti:string>
+          <activiti:string><![CDATA[Довідка про наявність та розмір земельної частки (паю)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
@@ -396,7 +384,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте скановану копію витягу з Державного земельного кадастру, якщо заяву опрацьовано або скановану копію відмови, якщо ні" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr238.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr238.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr238.html]; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -413,7 +401,7 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[middayka@yandex.ru]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Заява повернена із ДГК: Надання відомостей з Державного земельного кадастру у формі викопіювань з кадастрової карти (плану) та іншої картографічної документації Державного земельного кадастру.]]></activiti:string>

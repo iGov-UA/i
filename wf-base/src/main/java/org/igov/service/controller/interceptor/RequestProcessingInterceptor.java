@@ -670,9 +670,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bSaveHistory, oResponse.getStatus());
             }
 
-            LOG.info("isSaveTask(oRequest, sResponseBody): " + isSaveTask(oRequest, sResponseBody));
-            LOG.info("oRequest.getRequestURL: " + oRequest.getRequestURL().toString());
-            LOG.info("sResponseBody before SaveTask: " + sResponseBody);
+            //LOG.info("isSaveTask(oRequest, sResponseBody): " + isSaveTask(oRequest, sResponseBody));
+            //LOG.info("oRequest.getRequestURL: " + oRequest.getRequestURL().toString());
+            //LOG.info("sResponseBody before SaveTask: " + sResponseBody);
 
             if (isSaveTask(oRequest, sResponseBody)) {
                 sType = "Save";
