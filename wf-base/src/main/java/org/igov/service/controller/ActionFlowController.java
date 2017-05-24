@@ -1295,7 +1295,9 @@ public class ActionFlowController {
     @RequestMapping(value = "/buildFlowSlot", method = RequestMethod.GET)
     public @ResponseBody
     String buildFlowSlot(@ApiParam(value = "ИД слота резервации", required = false) @RequestParam(value = "nID_SlotHold", required = false) String nID_SlotHold) {
+        LOG.info("buildFlowSlot start");
         oFlowService.buildFlowSlots();
+        LOG.info("buildFlowSlot stop!!!");
         return "ok!";
     }
 
