@@ -829,8 +829,9 @@ public class ProcessSubjectService {
     ) {
         
         /**
-         *Определяем кто вызвал сервис. Пришел только логин sLoginExecutor - исполнитель, пришел только
-         *логин sLoginController - контролирующий, если пришло два логина - контролирующий.
+         *Определяем кто вызвал сервис (исполнитель или контролирующий). Чтобы понять какой кейс 
+         * должен отработать. Пришел только логин sLoginExecutor - исполнитель, пришел только
+         * логин sLoginController - контролирующий, если пришло два логина - контролирующий.
          */
         String sLoginMain = sLoginController;
                 
@@ -853,8 +854,7 @@ public class ProcessSubjectService {
             DateTime dtCurrentDate = new DateTime();
             DateTime dtDatePlaneNew = null;
                 
-            if (sDatePlaneNew != null) {
-        
+            if (sDatePlaneNew != null) {        
                 dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
             }
              
@@ -884,8 +884,7 @@ public class ProcessSubjectService {
             //Перенос срока контролирующим
             } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRoleMain.equals("Controller")) {
                 
-                if (sLoginExecutor == null) {
-                
+                if (sLoginExecutor == null) {                
                     throw new RuntimeException("Did not send an executor login. To set this status you must to send executor's login besides controller's.");
                 }
                 
@@ -905,8 +904,7 @@ public class ProcessSubjectService {
             //Контролирующий отклонил отчет    
             } else if (sID_ProcessSubjectStatus.equals("rejected") && sLoginRoleMain.equals("Controller")) {
                 
-                if (sLoginExecutor == null) {
-                
+                if (sLoginExecutor == null) {                
                     throw new RuntimeException("Did not send an executor login. To set this status you must to send executor's login besides controller's.");
                 }
                 
