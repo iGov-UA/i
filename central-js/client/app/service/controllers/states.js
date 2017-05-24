@@ -1,7 +1,7 @@
 angular.module('app')
 .controller('ServiceFormController', function ($scope, service, regions, AdminService,
                                                ServiceService, TitleChangeService, CatalogService,
-                                               $anchorScroll, $rootScope, feedback, statesRepository) {
+                                               $anchorScroll, $rootScope, feedback, statesRepository, $sce) {
   $scope.spinner = true;
   $scope.service = service;
   $scope.regions = regions;
@@ -12,6 +12,10 @@ angular.module('app')
   } else {
     $scope.bHideTab = false;
   }
+  
+  $scope.getHtml = function (html) {
+    return $sce.trustAsHtml(html);
+  };
 
   //TODO should be refactored after refactoring for single controller for app/service/index.html
   $scope.feedback = feedback;
