@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
  * Time: 19:21
  */
 @Repository
-public class FlowServiceDataDaoImpl extends GenericEntityDao<Long, Flow> implements FlowServiceDataDao {
+public class FlowDaoImpl extends GenericEntityDao<Long, Flow> implements FlowDao {
 
-    public FlowServiceDataDaoImpl() {
+    public FlowDaoImpl() {
         super(Flow.class);
     }
 
