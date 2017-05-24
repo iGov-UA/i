@@ -402,7 +402,7 @@ public class ProcessSubjectTaskService {
         
         if (TaskInstance != null) {
             LOG.info("TaskInstance {}", TaskInstance.getId());
-            oTaskService.deleteTask(TaskInstance.getId());
+            oTaskService.deleteTask(TaskInstance.getId(), "deleted");
         }
         
         LOG.info("TaskInstance deleted..");
