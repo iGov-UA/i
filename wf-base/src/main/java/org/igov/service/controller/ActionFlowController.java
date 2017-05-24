@@ -1296,7 +1296,11 @@ public class ActionFlowController {
     public @ResponseBody
     String buildFlowSlot(@ApiParam(value = "ИД слота резервации", required = false) @RequestParam(value = "nID_SlotHold", required = false) String nID_SlotHold) {
         LOG.info("buildFlowSlot start");
-        oFlowService.buildFlowSlots();
+		try {
+			oFlowService.buildFlowSlots();
+		} catch (Exception e) {
+			LOG.error("ERROR buildFlowSlot!!! " + e.getMessage());
+		}
         LOG.info("buildFlowSlot stop!!!");
         return "ok!";
     }

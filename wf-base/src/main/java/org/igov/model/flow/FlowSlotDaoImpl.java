@@ -91,17 +91,9 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
     public int updateSlots(Long nID_Flow_ServiceData, Collection<DateTime> dates, String newDuration) {
     	LOG.info("updateSlots size ---->>>>>>>>>>>>>>>>" + dates.size());
     	List<DateTime>listDates = new ArrayList<>(dates);
-    	if(dates.size()>1) {
     		for(DateTime dateTime:listDates) {
     			updateSlot(nID_Flow_ServiceData,dateTime,newDuration);
-        	}
-    	}else {
-    	 QueryBuilder qb = new QueryBuilder(getSession(), "update FlowSlot s set ");
-	        qb.append("s.sDuration = :DURATION ", newDuration);
-	        qb.append("where s.flow.id = :FLOW_ID and ", nID_Flow_ServiceData);
-	        qb.appendInSafe("s.sDate", "DATE", new ArrayList<>(dates));
-	        return qb.toQuery().executeUpdate();
-    	}
+    		}
 		return 0;
     }
 
