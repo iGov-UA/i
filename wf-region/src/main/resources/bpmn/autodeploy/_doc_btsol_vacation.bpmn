@@ -30,6 +30,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата начала отпуска" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Дата конца отпуска" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkBegin" name="За период работы с" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkEnd" name="по" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDepartment" name="Название структурного подразделения" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_AssignTo" name="Исполнение обязанностей возложить на; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
@@ -37,6 +40,9 @@
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_vacation_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
+        
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -67,6 +73,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата начала отпуска" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Дата конца отпуска" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkBegin" name="За период работы с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkEnd" name="по" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDepartment" name="Название структурного подразделения" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_AssignTo" name="Исполнение обязанностей возложить на" type="select" writable="false"></activiti:formProperty>
@@ -77,6 +86,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_vacation_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -140,6 +151,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата начала отпуска" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Дата конца отпуска" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkBegin" name="За период работы с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkEnd" name="по" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDepartment" name="Название структурного подразделения" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_AssignTo" name="Исполнение обязанностей возложить на" type="select" writable="false"></activiti:formProperty>
@@ -152,6 +166,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumSign" name="Завизировано"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_vacation_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -197,6 +213,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата начала отпуска" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Дата конца отпуска" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkBegin" name="За период работы с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkEnd" name="по" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDepartment" name="Название структурного подразделения" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_AssignTo" name="Исполнение обязанностей возложить на" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLogin_AssignTo" name="sLogin_AssignTo; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Резолюция (согласование)" type="enum" writable="false">
@@ -207,6 +226,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumSign" name="Завизировано"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_vacation_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -238,6 +259,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sDateVacationBegin" name="Дата начала отпуска" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateVacationEnd" name="Дата конца отпуска" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkBegin" name="За период работы с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateWorkEnd" name="по" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDepartment" name="Название структурного подразделения" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_AssignTo" name="Исполнение обязанностей возложить на" type="select" writable="false"></activiti:formProperty>
@@ -253,6 +277,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sCommentUT5" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT5&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_vacation_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
