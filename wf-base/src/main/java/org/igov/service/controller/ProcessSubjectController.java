@@ -188,8 +188,8 @@ public class ProcessSubjectController {
     public ProcessSubject setProcessSubjectStatus(
                 @ApiParam(value = "Статус", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
                 @ApiParam(value = "Ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
-                @ApiParam(value = "Логин контролирующего", required = true) @RequestParam(value = "sLoginController", required = true) String sLoginController,
-                @ApiParam(value = "Логин исполнителя", required = true) @RequestParam(value = "sLoginExecutor", required = true) String sLoginExecutor,
+                @ApiParam(value = "Логин контролирующего", required = false) @RequestParam(value = "sLoginController", required = false) String sLoginController,
+                @ApiParam(value = "Логин исполнителя", required = false) @RequestParam(value = "sLoginExecutor", required = false) String sLoginExecutor,
                 @ApiParam(value = "Текстовое поле", required = false) @RequestParam(value = "sText", required = false) String sText,
                 @ApiParam(value = "Дата на которую нужно перенести срок", required = false) @RequestParam(value = "sDatePlaneNew", required = false) String sDatePlaneNew
     ) {
