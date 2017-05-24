@@ -114,14 +114,82 @@
 
 <div class='justice-print-0333'>
 	<section class="print_wrap">
-	<br />
-	    <div class="line_col ta-r">
+	<br>
+	    
+        <!-- Физ. особа -->
+            <div id="individual" class="line_col ta-r">
 	    <div class="no_line_field w350 ta-l"><b>Головне територіальне управління юстиції у Дніпропетровській області</b><span></span></div><br><br>
 		<div class="no_line_field w350 ta-l">пр. Дмитра Яворницького, 21-А, м. Дніпро, 49000<span></span></div><br>
 		<div class="no_line_field w450 ta-l"><i><b>СКАРЖНИК: [bankIdlastName] [bankIdfirstName] [bankIdmiddleName]</b></i><span></span></div><br>
 		<div class="no_line_field w350 ta-l">[bankIdAddressFactual]<span></span></div><br>
 		<div class="no_line_field w350 ta-l">e-mail: [email]<span></span></div><br>
             </div><br>
+            
+        <!-- Представник физ. особи -->
+            <div id="representativeIndividual" class="line_col ta-r">
+	    <div class="no_line_field w350 ta-l"><b>Головне територіальне управління юстиції у Дніпропетровській області</b><span></span></div><br><br>
+		<div class="no_line_field w350 ta-l">пр. Дмитра Яворницького, 21-А, м. Дніпро, 49000<span></span></div><br>
+		<div class="no_line_field w450 ta-l"><i><b>СКАРЖНИК: [bankIdlastName] [bankIdfirstName] [bankIdmiddleName]</b></i><span></span></div><br>
+		<div class="no_line_field w350 ta-l">[bankIdAddressFactual]<span></span></div><br>
+		<div class="no_line_field w350 ta-l">e-mail: [email]<span></span></div><br>
+                <div class="no_line_field w450 ta-l"><i><b>ПРЕДСТАВНИК: [sRepresentativeLastName] [sRepresentativeFirstName] [sRepresentativeMiddleName]</b></i><span></span></div><br>
+                <div class="no_line_field w350 ta-l">Адреса: [sRepresentativeAddressFactual]<span></span></div><br>
+                <div class="no_line_field w350 ta-l">[sRepresentativeDoc]<span></span></div><br>
+            </div><br>
+            
+        <!-- Юр. особа -->
+            <div id="legalEntity" class="line_col ta-r">
+	    <div class="no_line_field w350 ta-l"><b>Головне територіальне управління юстиції у Дніпропетровській області</b><span></span></div><br><br>
+		<div class="no_line_field w350 ta-l">пр. Дмитра Яворницького, 21-А, м. Дніпро, 49000<span></span></div><br>
+		<div class="no_line_field w450 ta-l"><i><b>СКАРЖНИК: [sFullName_SubjectOrgan_01]</b></i><span></span></div><br>
+		<div class="no_line_field w350 ta-l">Адреса: [sAddressCompanyLett]<span></span></div><br>
+                <div class="no_line_field w350 ta-l">код ЄДРПОУ: [sID_SubjectOrgan_OKPO_01]<span></span></div><br>
+		<div class="no_line_field w350 ta-l">e-mail: [email]<span></span></div><br>
+            </div><br>
+            
+        <!-- Представник юр. особи -->
+            <div id="representativeLegalEntity" class="line_col ta-r">
+	    <div class="no_line_field w350 ta-l"><b>Головне територіальне управління юстиції у Дніпропетровській області</b><span></span></div><br><br>
+		<div class="no_line_field w350 ta-l">пр. Дмитра Яворницького, 21-А, м. Дніпро, 49000<span></span></div><br>
+		<div class="no_line_field w450 ta-l"><i><b>СКАРЖНИК: [sFullName_SubjectOrgan_01]</b></i><span></span></div><br>
+		<div class="no_line_field w350 ta-l">Адреса: [sAddressCompanyLett]<span></span></div><br>
+                <div class="no_line_field w350 ta-l">код ЄДРПОУ: [sID_SubjectOrgan_OKPO_01]<span></span></div><br>
+		<div class="no_line_field w350 ta-l">e-mail: [email]<span></span></div><br>
+                <div class="no_line_field w450 ta-l"><i><b>ПРЕДСТАВНИК: [sRepresentCompLastName] [sRepresentCompFirstName] [sRepresentCompMiddleName]</b></i><span></span></div><br>
+                <div class="no_line_field w350 ta-l">[sRepresentCompDoc]<span></span></div><br>
+            </div><br>
+            
+            <script type="text/javascript">
+				var typeComplaint = "[asTypeComplaint]";
+					if([typeComplaint] == 'sIndividual'){
+						document.getElementById('individual').style.display = 'inline';
+					} else {
+						document.getElementById('individual').style.display = 'none';
+					}
+                                        
+                                        if([typeComplaint] == 'sRepresentativeIndividual'){
+						document.getElementById('representativeIndividual').style.display = 'inline';
+					} else {
+						document.getElementById('representativeIndividual').style.display = 'none';
+					}
+                                        
+                                        if([typeComplaint] == 'sLegalEntity'){
+						document.getElementById('legalEntity').style.display = 'inline';
+					} else {
+						document.getElementById('legalEntity').style.display = 'none';
+					}
+                                        
+                                        if([typeComplaint] == 'sRepresentativeLegalEntity'){
+						document.getElementById('representativeLegalEntity').style.display = 'inline';
+					} else {
+						document.getElementById('representativeLegalEntity').style.display = 'none';
+					}
+			
+			</script>
+            
+            
+            
+            
 	    <div class="line_col ta-c m-t-25"><b>СКАРГА</b><br></div>
 	        <div class="ta-c"><b>на [asRealtyTop] від [sDateDecisionKnown] № [sNumberDecision] [asSubjectCategory]</b></div><br><br>
 

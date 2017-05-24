@@ -115,7 +115,7 @@
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -485,11 +485,11 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sSots" name="Орган, для якого видається довідка" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1Dash" name="hide fields" type="markers" default="${markerService.loadFromFile('form3/forma2_dashboard.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2Dash" name="hide fields" type="markers" default="${markerService.loadFromFile('form3/forma2_dashboard_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/forma2.html]; ;bVisible=false" type="string" default="Форма 3" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/forma2_lubin.html]; ;bVisible=false" type="string" default="Форма 2" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/forma3.html]; ;bVisible=false" type="string" default="Форма Мінсоцполітики №204" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/forma3_1.html]; ;bVisible=false" type="string" default="Форма Мінсоцполітики №204 (розширена)" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/forma3_lubin.html]; ;bVisible=false" type="string" default="Форма Мінсоцполітики №204 (для домогосподарств)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/forma2.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма 3" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/forma2_lubin.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма 2" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/forma3.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма Мінсоцполітики №204" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dms/forma3_1.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма Мінсоцполітики №204 (розширена)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/forma3_lubin.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма Мінсоцполітики №204 (для домогосподарств)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nPasport" name="Скан-копія паспорту з пропискою;Якщо декілька сторінок завантажте ZIP-архівом;bNew=true" type="file" writable="false"></activiti:formProperty>

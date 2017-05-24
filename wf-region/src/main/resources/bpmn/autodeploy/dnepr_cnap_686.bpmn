@@ -514,8 +514,8 @@
         <activiti:formProperty id="markers_Hide_100_01" name="показать заяву исходную" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_100_01&quot;:{&quot;aField_ID&quot;:[&quot;sBody_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ні'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_100_02" name="показать заяву со старым ФИО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_100_02&quot;:{&quot;aField_ID&quot;:[&quot;sBody_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Так'&quot;}}}"></activiti:formProperty>
 -->
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html] ; ;bVisible=false" type="string" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print_02.html] ; ;bVisible=false" type="string" default="Заява про реєстрацію змін - зміна ПІБ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print_02.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про реєстрацію змін - зміна ПІБ" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="group_pattern" name="Префикс названия группы ; ;bVisible=false" type="string" default="jur"></activiti:formProperty>
         <activiti:taskListener event="complete" delegateExpression="${FindGroup}"></activiti:taskListener>
@@ -1101,7 +1101,7 @@
         <activiti:formProperty id="sVarPayGetSchet" name="РАХУНОК; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarSumPay" name="Сумма; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print_pay.html]; ;bVisible=false" type="string" default="Квитанція про сплату за послугу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print_pay.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Квитанція про сплату за послугу" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fDoc_02" name="Копія нового ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -1119,8 +1119,8 @@
         <activiti:formProperty id="markers_Hide_100_01" name="показать заяву исходную" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_100_01&quot;:{&quot;aField_ID&quot;:[&quot;sBody_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ні'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_100_02" name="показать заяву со старым ФИО" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_100_02&quot;:{&quot;aField_ID&quot;:[&quot;sBody_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectIzm_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Так'&quot;}}}"></activiti:formProperty>
 -->
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false" type="string" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print_02.html]; ;bVisible=false" type="string" default="Заява про реєстрацію змін - зміна ПІБ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_686_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print_02.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про реєстрацію змін - зміна ПІБ" writable="false"></activiti:formProperty>
 
 <!--
 		  <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -1267,7 +1267,7 @@
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false" type="string" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fDoc_02" name="Копія нового ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
