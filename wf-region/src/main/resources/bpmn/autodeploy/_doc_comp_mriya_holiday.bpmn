@@ -4,15 +4,15 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку"></activiti:formProperty>
-        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key ; ; bVisible=false" type="string" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
-        <activiti:formProperty id="sKeyOrgan" name="Организация_Key ; ; bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
-        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key ; ; bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key ; ;bVisible=false" type="string" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeyOrgan" name="Организация_Key ; ;bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key ; ;bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
         
         
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
@@ -41,16 +41,16 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Подача заяви про відпустку" activiti:candidateGroups="mriya_common">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заява на відпустку" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="Mriya_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="Mriya_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         
-        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key ; ; bVisible=false" type="string" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
-        <activiti:formProperty id="sKeyOrgan" name="Организация_Key ; ; bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
-        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key ; ; bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key ; ;bVisible=false" type="string" default="c82f6314-6faa-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeyOrgan" name="Организация_Key ; ;bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
+        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key ; ;bVisible=false" type="string" default="a1257d8c-6fb0-11d9-ac6c-0080482454f7"></activiti:formProperty>
         
         
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum">
@@ -71,7 +71,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_mriyaHoliday.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mriya/holiday_print.html] ; ; bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mriya/holiday_print.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/mriya/holiday_print.html"   type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
@@ -93,15 +93,15 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="Результати розгляду" activiti:candidateGroups="mriya_common">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" variable="sName_SubjectRole"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" variable="sName_SubjectRole"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         
-        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKeyOrgan" name="Организация_Key ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKeyResponsible" name="Ответственный_Key ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKeyOrgan" name="Организация_Key ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKeySubjectType" name="ФизЛицо_Key ; ;bVisible=false" type="string"></activiti:formProperty>
         
         
         <activiti:formProperty id="sTypeVacation" name="Тип відпустки" type="enum" writable="false">
@@ -120,7 +120,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/mriya/holiday_print.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mriya/holiday_print.html] ; ; bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mriya/holiday_print.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>

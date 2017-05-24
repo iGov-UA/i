@@ -4,10 +4,10 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Службова на доплату"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="ProcessCountTaskCustomListener" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
@@ -37,13 +37,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </scriptTask>
     <userTask id="usertask10" name="Створення заявки - співробітник відділу">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -64,7 +64,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumCreateAccept" name="створити"></activiti:value>
           <activiti:value id="sEnumCreateDeny" name="відмінити"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="sAutorResolution ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="sAutorResolution ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Author]]></activiti:string>
@@ -77,13 +77,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask1" name="Узгодження заявки - керівник підрозділу">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -105,7 +105,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumDepartmentAccept" name="Узгоджено"></activiti:value>
           <activiti:value id="sEnumDepartmentDeny" name="Не узгоджено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="sAutorResolution ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="sAutorResolution ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Author]]></activiti:string>
@@ -118,13 +118,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask2" name="Узгодження службової  - Директор напрямку" activiti:candidateGroups="OE_Direction_Top">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -156,13 +156,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask3" name="Узгодження службової  - Директор персоналу">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -201,13 +201,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask5" name="Узгодження службової  - Фін.директор">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -233,7 +233,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumFinAccept" name="Узгоджено"></activiti:value>
           <activiti:value id="sEnumFinDeny" name="Не узгоджено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bVerificationSignatures" name="bVerificationSignatures ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="bVerificationSignatures ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -243,13 +243,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask11" name="Узгодження службової - Голова правління" activiti:async="true">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -285,13 +285,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask6" name="Створення наказу відділом мотивації">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -307,11 +307,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </activiti:formProperty>
         <activiti:formProperty id="sText" name="Текст ініціативного листа" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateOrder" name="Дата наказу" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/OE/_doc_oe_premium_print.html] ; ; bVisible=false" type="string" default="Службова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/iDoc/OE/_doc_oe_premium_order_print.html] ; ; bVisible=false" type="string" default="Наказ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/OE/_doc_oe_premium_print.html] ; ;bVisible=false" type="string" default="Службова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/iDoc/OE/_doc_oe_premium_order_print.html] ; ;bVisible=false" type="string" default="Наказ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Службова;File title;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_print.html,sFileName=Sluzhbova,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Наказ;File title;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_order_print.html,sFileName=Nakaz,bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="sAutorResolution ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="sAutorResolution ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Додаткові матеріали (співробітник відділу); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Додаткові матеріали (керівник підрозділу); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="Додаткові матеріали (директор напрямку); ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -319,7 +319,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sDoc5" name="Додаткові матеріали (фінансовий директор); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc6" name="Додаткові матеріали (голова правління); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Додаткові матеріали; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_oe_premium.json')}"></activiti:formProperty>
-        <activiti:formProperty id="nNumber" name="Номер наказу ; ; bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер наказу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -329,13 +329,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask12" name="Узгодження наказу- Директор напрямку">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -372,13 +372,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask13" name="Узгодження наказу - Директор персоналу">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -409,13 +409,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask14" name="Узгодження наказу - Профспілковий комітет">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -446,13 +446,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask7" name="Канцелярія - створення паперової копії наказу і підпис" activiti:async="true">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -470,8 +470,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="nNumber" name="Номер наказу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateOrder" name="Дата наказу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/OE/_doc_oe_premium_print.html] ; ; bVisible=false" type="string" default="Службова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/iDoc/OE/_doc_oe_premium_order_print.html] ; ; bVisible=false" type="string" default="Наказ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/OE/_doc_oe_premium_print.html] ; ;bVisible=false" type="string" default="Службова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/iDoc/OE/_doc_oe_premium_order_print.html] ; ;bVisible=false" type="string" default="Наказ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Службова;File title;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_print.html,sFileName=Sluzhbova,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Наказ;File title;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_order_print.html,sFileName=Nakaz,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -483,13 +483,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </userTask>
     <userTask id="usertask9" name="Ознайомлення і виконання наказу на доплату">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>
@@ -507,7 +507,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="nNumber" name="Номер наказу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateOrder" name="Дата наказу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор службової; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bVerificationSignatures" name="bVerificationSignatures ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bVerificationSignatures" name="bVerificationSignatures ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Службова;File title;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_print.html,sFileName=Sluzhbova,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Наказ;File title;sPrintFormFileAsPDF=pattern/print/iDoc/OE/_doc_oe_premium_order_print.html,sFileName=Nakaz,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -855,13 +855,13 @@ execution.setVariable('sCloningOfLaw_Supervisor', oResult)</script>
     </sequenceFlow>
     <userTask id="usertask16" name="Пропозиції відділу мотивації">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Філія" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Філія №1"></activiti:value>

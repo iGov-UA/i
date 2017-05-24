@@ -89,11 +89,12 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
 
     @Override
     public int updateSlots(Long nID_Flow_ServiceData, Collection<DateTime> dates, String newDuration) {
-        QueryBuilder qb = new QueryBuilder(getSession(), "update FlowSlot s set ");
-        qb.append("s.sDuration = :DURATION ", newDuration);
-        qb.append("where s.flow.id = :FLOW_ID and ", nID_Flow_ServiceData);
-        qb.appendInSafe("s.sDate", "DATE", new ArrayList<>(dates));
-        return qb.toQuery().executeUpdate();
+    	LOG.info("updateSlots size ---->>>>>>>>>>>>>>>>" + dates.size());
+    	List<DateTime>listDates = new ArrayList<>(dates);
+    		for(DateTime dateTime:listDates) {
+    			updateSlot(nID_Flow_ServiceData,dateTime,newDuration);
+    		}
+		return 0;
     }
 
     private FlowSlot findSlotByDate(Flow flow, DateTime targetDateTime) {
@@ -128,5 +129,14 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
         LOG.info("FlowSlot deleted id {}", entity.getId());
         LOG.info("FlowSlot deleted name {}", entity.getName());
         super.delete(entity);
+    }
+    
+    
+    private int updateSlot(Long nID_Flow_ServiceData, DateTime dateTime, String newDuration) {
+    	QueryBuilder qb = new QueryBuilder(getSession(), "update FlowSlot s set ");
+        qb.append("s.sDuration = :DURATION ", newDuration);
+        qb.append("where s.flow.id = :FLOW_ID and ", nID_Flow_ServiceData);
+        qb.append("s.sDate = :DATE", dateTime);
+        return qb.toQuery().executeUpdate();
     }
 }

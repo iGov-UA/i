@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_doc_concord_invitation_candidate" name="Запрошення кандидата до заповнення анкети" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Запрошення кандидата до заповнення анкети"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//1 получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+
+//2 получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
+</script>
+    </scriptTask>
+    <userTask id="usertask1" name="Запрошення кандидата до заповнення анкети">
+      <extensionElements>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Запрошення кандидата до заповнення анкети" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSurname" name="Прізвище кандидата" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameMmiddle" name="Ім'я та По батькові кандидата" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail кандидата" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону кандидата" type="string" default="+380" required="true"></activiti:formProperty>
+        
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_concord]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow15" name="прийнято" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Лист кандидату" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[ConcordBank - Запрошення до заповнення анкети]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="width=600" name="viewport" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title> </title>
+    <style type="text/css">
+
+        body {
+            width:100%!important;
+            -webkit-text-size-adjust:100%;
+            -ms-text-size-adjust:100%;
+            margin:0;
+            padding:0;
+        }
+        a:link {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+        a:visited {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+			hr {
+			border-bottom: 1px dotted #c2c2c2; 
+			border-top:none;
+			border-left:none;
+			border-right:none;
+			height: 1px; 
+		}
+    </style>
+</head>
+
+<body style="background: #e4e4e4;&#10;              -webkit-font-smoothing:antialiased;&#10;              width:100% !important;&#10;              -webkit-text-size-adjust:none;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+  <tbody>
+      <tr>
+          <td style="text-align: center">
+                <span style="color:#58889D; font-size:5px;"></span>
+          </td>
+      </tr>
+      <tr>
+          <td style="  padding-bottom: 0; mso-table-lspace:0pt !important; mso-table-rspace:0pt !important" height="0"></td>
+      </tr>
+  </tbody>
+</table>                
+
+<!-- main table -->
+<table style="margin:0; padding:0;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td align="center">
+
+            <!-- main content starts here-->
+            <center style="width: 100%;max-width: 600px !important;-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-moz-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+
+                <!--[if gte mso 9]>
+                <table border="0" cellpadding="0" cellspacing="0" 
+                      style="margin:0;padding:0;width: 100%;max-width: 600px;box-shadow:  10px 10px 4px rgba(0,0,0,0.1);-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+                    <tr>
+                        <td>
+                <![endif]-->
+
+                <!-- header logo -->
+                <table style="margin:0;&#10;                                                                         padding:0; &#10;                                                                         border-collapse:collapse; &#10;                                                                         mso-table-lspace:0pt !important; &#10;                                                                         mso-table-rspace:0pt !important;" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="line-height:0; font-size:0; padding: 5px 10px 5px 35px; text-align: left; background-color:#449DCD;mso-table-lspace: 0pt !important;mso-table-rspace:0pt !important">
+								<img height="88" width="100" src="https://delta.test.igov.org.ua/wf/VAADIN/themes/activiti/img/concord2.png" alt="ConcordBank" id="new0" data-editable-image="new0">
+                            </td>
+							
+
+                        </tr>
+                    </tbody>
+                </table> <!-- contents section 1/5 end-->
+
+
+                <!--  main content  -->
+                <table style="margin:0;padding-left: 0;padding-right: 0;-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;" 
+						width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="padding-bottom: 0;background-color: #FFFFFF;mso-table-lspace:0pt !important;mso-table-rspace:0pt !important;padding:10px">
+								<table style="margin:0; padding:0; text-align: center" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+
+                                            <tr>					
+    <td style="padding: 35px 35px 0;&#10; mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+        <p style="font:24px Arial, sans-serif!important;&#10;                                                          overflow: hidden;&#10;                                                          color:#000;&#10;                                                          margin:0;&#10;                                                          padding:0 0 20px;&#10;                                                          line-height: 28px !important;">
+          <b>value{[bankIdfirstName]} value{[bankIdmiddleName]}</b>
+        </p>
+    </td>
+</tr>
+
+
+
+<tr>
+    <td style="overflow:hidden; margin:0; padding:20px 35px 20px 35px; font:16px Arial, sans-serif!important; text-align: left; padding-bottom: 35px;&#10; mso-table-lspace:0pt !important;&#10; mso-table-rspace:0pt !important">
+	
+	
+Ваше резюме пройшло первинну оцінку на вакансію ${sVacancy}.<br>
+Просимо Вас у термін 2 дні заповнити <a target="_blank" href="https://delta.test.igov.org.ua/service/3000/general" >анкету</a>. <br>
+
+Ви отримаєте додатковий лист за результатми розгляду Вашої анкети.
+
+	        </td>
+      </tr>
+   </tbody>
+</table>
+	
+						<tr>
+                            <td style="padding: 20px 35px 25px;&#10;background-color: #449DCD;&#10;-webkit-border-bottom-left-radius: 15px;&#10;-moz-border-bottom-left-radius: 15px;&#10;                                        border-bottom-left-radius: 15px;&#10;-webkit-border-bottom-right-radius: 15px;&#10;                                        -moz-border-bottom-right-radius: 15px;&#10;                                        border-bottom-right-radius: 15px;&#10;                                        mso-table-lspace:0pt !important;&#10;                                        mso-table-rspace:0pt !important;">
+
+                                <table style="margin:0; padding: 0; text-align: left" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding-bottom: 0;&#10;mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+                                                <p style="font:15px Arial, sans-serif!important; color:white; margin: 0; padding: 0; line-height: 22px !important;">
+                                                    З повагою, <br>                                                 
+													
+													Управління по роботі з персоналом ConcordBank <br>   
+																								
+                                                </p>
+												 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+						
+						                    </tbody>
+                </table>
+
+                <!--[if gte mso 9]>
+                        </td>
+                    </tr>
+                </table>
+                <![endif]-->
+            </center>
+        </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- internal padding bottom -->
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+                <tbody><tr>
+                    <td style="line-height:0;&#10;                                            font-size:0;&#10;                                            padding-bottom: 0;&#10;                                            mso-table-lspace:0pt !important;&#10;                                            mso-table-rspace:0pt !important" height="100">
+
+                    </td>
+                </tr>   
+</tbody></table>   
+
+
+<style type="text/css" data-br=""> div[data-editable] br { display: block; margin: 12px 0; } </style></body></html>
+]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Zapovnit, bud laska, anketu. Detali u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>" "</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    
+    
+    </serviceTask>
+    <sequenceFlow id="flow27" sourceRef="usertask1" targetRef="servicetask1"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow28" sourceRef="servicetask1" targetRef="endevent3"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_concord_invitation_candidate">
+    <bpmndi:BPMNPlane bpmnElement="_doc_concord_invitation_candidate" id="BPMNPlane__doc_concord_invitation_candidate">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="35.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="131.0" x="300.0" y="35.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="1472.0" y="655.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1544.0" y="658.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="480.0" y="35.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="646.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="245.0" y="62.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="62.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="1512.0" y="675.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1544.0" y="675.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="48.0" x="1499.0" y="692.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="95.0" y="62.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="62.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="431.0" y="62.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="62.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="585.0" y="62.0"></omgdi:waypoint>
+        <omgdi:waypoint x="646.0" y="62.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

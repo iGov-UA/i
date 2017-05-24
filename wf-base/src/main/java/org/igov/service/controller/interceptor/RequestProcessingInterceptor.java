@@ -76,6 +76,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     private boolean bFinish = false;
     private static final String FORM_FORM_DATA = "/form/form-data";
+    private static final String START_PROCESS = "/startProcess";
     private static final String DOCUMENT_SERVICE = "/action/task/setDocument";
     private static final String RUNTIME_TASKS = "/runtime/tasks";
     private static final String POST = "POST";
@@ -702,6 +703,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 } else {
                     saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
                 }
+                //{nID_Service=25, nID_Subject=255289, nID_ServiceData=542, sID_BP=dms_0025_ID2 545_iGov:1:1, sID_UA=1210100000}
                 LOG.info("saveNewTaskInfo block finished");
             } else if (isCloseTask(oRequest, sResponseBody)) {
                 LOG.info("saveClosedTaskInfo block started");
@@ -813,8 +815,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
-        String snID_Process = String.valueOf(omResponseBody.get("id")); //разобраться чего получаем нал в некоторых случаях
-        
+        //String osnID_Process = omResponseBody.containsKey("id"); //разобраться чего получаем нал в некоторых случаях
+        String snID_Process = String.valueOf(omResponseBody.containsKey("id")?omResponseBody.get("id"):omResponseBody.get("snID_Process")); //разобраться чего получаем нал в некоторых случаях
+        //if(snID_Process) //{"snID_Process":"23285433","nID_Task":"23285483"}
         if(sRequestBody != null && sRequestBody.contains("sCancelInfo")){
             runtimeService.setVariable(snID_Process, "sCancelInfo", String.format("Заявка актуальна"));
         }
@@ -823,7 +826,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             Long nID_Process = Long.valueOf(snID_Process);
             LOG.info("snID_Process please be here: " + snID_Process);
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
-            String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
+            //String snID_Subject = String.valueOf(omRequestBody.get("nID_Subject"));
+            String snID_Subject = String.valueOf(omRequestBody.containsKey("nID_Subject")?omRequestBody.get("nID_Subject"):mParamRequest.get("nID_Subject"));
             mParam.put("nID_Subject", snID_Subject);
 
             LOG.info("(sID_Order={},nID_Subject={})", sID_Order, snID_Subject);
@@ -875,7 +879,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
                 //Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));
                 //LOG.info("RequestProcessInterceptor process count: " + count.intValue());
-            }
+            }//2017-05-16_13:56:48.390 
         }
     }
 
@@ -1054,7 +1058,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
         return (bFinish && sResponseBody != null && !"".equals(sResponseBody))
-                && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                //&& oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                ||
+                oRequest.getRequestURL().toString().indexOf(START_PROCESS) > 0
+                )
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim());
     }
 

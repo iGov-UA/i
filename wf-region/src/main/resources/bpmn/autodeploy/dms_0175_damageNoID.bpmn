@@ -312,11 +312,11 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="chomy" name="У зв'язку з чим отримується документ ; ;bVisible=false" type="string" default="непридантість паспорта для користування" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pidstava" name="Підстава для отримання нового документу ; ;bVisible=false" type="string" default="${bankIdPassport}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="zminna_zapyt" name="про обмін паспорта взамін непридатного для користування ; ;bVisible=false" type="string" default="про обмін паспорта взамін непридатного для користування" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_na_pasport16Fr(dnepr).html] ; ;bVisible=false" type="string" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_na_pasportBk(dnepr).html] ; ;bVisible=false" type="string" default="Заява для видачі зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/check_mail(dnepr).html] ; ;bVisible=false" type="string" default="Запит в інше місто" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_7" name="[pattern/print/dms/vidomist16Fr(dnepr).html] ; ;bVisible=false" type="string" default="Відомості про реєстрацію лицьова" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_8" name="[pattern/print/dms/vidomist16Bk(dnepr).html] ; ;bVisible=false" type="string" default="Відомості про реєстрацію зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dms/zajava_na_pasport16Fr(dnepr).html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для видачі лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_na_pasportBk(dnepr).html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для видачі зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dms/check_mail(dnepr).html] ; ;bVisible=false ,bPrintform=true" type="string" default="Запит в інше місто" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/dms/vidomist16Fr(dnepr).html] ; ;bVisible=false ,bPrintform=true" type="string" default="Відомості про реєстрацію лицьова" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_8" name="[pattern/print/dms/vidomist16Bk(dnepr).html] ; ;bVisible=false ,bPrintform=true" type="string" default="Відомості про реєстрацію зворотня" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
             <activiti:expression><![CDATA[${bankId_scan_passport}, ${doksmen}]]></activiti:expression>
