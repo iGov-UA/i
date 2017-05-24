@@ -2,6 +2,7 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.*;
 import static java.lang.Math.toIntExact;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import org.igov.io.web.integration.queue.cherg.Cherg;
@@ -406,7 +407,7 @@ public class ActionFlowController {
             @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
             @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
             @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
-            @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) {
+            @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) throws ParseException {
 
         DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
         DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
