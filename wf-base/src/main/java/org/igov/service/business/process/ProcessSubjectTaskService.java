@@ -400,7 +400,7 @@ public class ProcessSubjectTaskService {
         LOG.info("removeProcessSubject started...");
         //Task TaskInstance = oTaskService.createTaskQuery().processInstanceId(processSubject.getSnID_Task_Activiti()).singleResult();
         
-        if (TaskInstance != null) {
+        if (processSubject.getSnID_Task_Activiti() != null) {
             LOG.info("TaskInstance {}", processSubject.getSnID_Task_Activiti());
             oTaskService.deleteTask(processSubject.getSnID_Task_Activiti(), "deleted");
         }
