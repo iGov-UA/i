@@ -20,8 +20,9 @@
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ на увольнение" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameDismissal" name="ФИО увольняемого" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPositionDismissal" name="Должность увольняемого" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivisionDismissal" name="Подразделение увольняемого" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_Department" name="Департамент (структурое подразделение); ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Комментарий руководителя" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeLaw" name="Статья" type="enum" required="true">
           <activiti:value id="sEnumLaw_1" name="по соглашению сторон (Ст.36 п.1)"></activiti:value>
@@ -33,11 +34,21 @@
           <activiti:value id="sEnumLaw_7" name="по собственному желанию (прием на работу по конкурсу) (Ст.38)"></activiti:value>
           <activiti:value id="sEnumLaw_8" name="по собственному желанию (в связи с невозможностью продолжения работы по состоянию здоровья) (Ст.38)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина увольнения" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCause" name="Основание увольнения" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateDismissal" name="Уволить с" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateDismissal" name="Уволить" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bAssistance" name="Помощь при увольнении; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAssistanceSum" name="Сумма (грн.)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="сумма выходного пособия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sAssistanceSum&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bAssistance&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2 ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_dismissal_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -60,8 +71,9 @@
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameDismissal" name="ФИО увольняемого" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPositionDismissal" name="Должность увольняемого" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivisionDismissal" name="Подразделение увольняемого" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_Department" name="Департамент (структурое подразделение); ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeLaw" name="Статья" type="enum" writable="false">
           <activiti:value id="sEnumLaw_1" name="по соглашению сторон (Ст.36 п.1)"></activiti:value>
           <activiti:value id="sEnumLaw_2" name="по собственному желанию (Ст.38)"></activiti:value>
@@ -72,14 +84,19 @@
           <activiti:value id="sEnumLaw_7" name="по собственному желанию (прием на работу по конкурсу) (Ст.38)"></activiti:value>
           <activiti:value id="sEnumLaw_8" name="по собственному желанию (в связи с невозможностью продолжения работы по состоянию здоровья) (Ст.38)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина увольнения" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCause" name="Основание увольнения" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateDismissal" name="Уволить с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateDismissal" name="Уволить" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAssistanceSum" name="Помощь при увольнении" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_dismissal_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -144,8 +161,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumLaw_7" name="по собственному желанию (прием на работу по конкурсу) (Ст.38)"></activiti:value>
           <activiti:value id="sEnumLaw_8" name="по собственному желанию (в связи с невозможностью продолжения работы по состоянию здоровья) (Ст.38)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина увольнения" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCause" name="Основание увольнения" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateDismissal" name="Уволить с" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateDismissal" name="Уволить" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAssistanceSum" name="Помощь при увольнении" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Статус документа" type="enum" writable="false">
           <activiti:value id="sEnumSign" name="Завизирован"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
