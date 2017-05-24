@@ -719,9 +719,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 response.put("aMessage", oMessageService.gerOrderMessagesByProcessInstanceID(nID_Process));
             } catch (Exception oException) {
                 LOG.error("Can't get: {}", oException.getMessage());
-                throw new CommonServiceException(
+                /*throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
+                        "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);*/
             }
         }
         if (bIncludeProcessVariables.equals(Boolean.TRUE)) {
@@ -1506,7 +1506,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws IOException {
 
         String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
-        LOG.info("Result: {}", jsonRes);
+        //LOG.info("Result: {}", jsonRes);
         return jsonRes;
     }
 

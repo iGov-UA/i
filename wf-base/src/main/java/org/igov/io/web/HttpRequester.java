@@ -111,6 +111,7 @@ public class HttpRequester {
         StringBuilder osReturn = new StringBuilder();
         try {
             HttpURLConnection oConnection = (HttpURLConnection) oURL.openConnection();
+            oConnection.setConnectTimeout(5000);//add
             if (sUser != null && sPassword != null) {
                 String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
                 oConnection.setRequestProperty("authorization", "Basic " + sAuth);
@@ -217,7 +218,7 @@ public class HttpRequester {
 
             URLConnection oConnectAbstract = oURL.openConnection();
             oConnection = (HttpURLConnection) oConnectAbstract;
-
+            oConnection.setConnectTimeout(5000);//add
             String sUser = generalConfig.getAuthLogin();
             String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
@@ -335,7 +336,7 @@ public class HttpRequester {
                 SSLContext oSSLContext = SSLContext.getInstance("SSL");
                 oSSLContext.init(null, trustAllCerts, new SecureRandom());
                 HttpsURLConnection.setDefaultSSLSocketFactory(oSSLContext.getSocketFactory());
-            } catch (Exception oException) {
+                } catch (Exception oException) {
                 //_RiseWarn(oException, "simplifySSLConnection", "", "Fail getting SSLContext");
                 LOG.warn("simplifySSLConnection. Fail getting SSLContext: " + oException.getMessage());
             }
@@ -360,7 +361,7 @@ public class HttpRequester {
         try {
 
             oConnection = (HttpURLConnection) oURL.openConnection();
-
+            oConnection.setConnectTimeout(5000);//add
             String sUser = generalConfig.getAuthLogin();
             String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);

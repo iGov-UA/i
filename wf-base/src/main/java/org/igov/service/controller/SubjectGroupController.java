@@ -105,7 +105,7 @@ public class SubjectGroupController {
             throws Exception {
         LOG.info("sLogin: ", sLogin);
         List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
-        LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
+        //LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
         return aResSubjectRightBPVO;
     }
     

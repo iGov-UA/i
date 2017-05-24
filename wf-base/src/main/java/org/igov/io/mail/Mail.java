@@ -69,7 +69,7 @@ public class Mail extends Abstract_Mail {
     @Override
     public void send() throws EmailException {
         LOG.info("send mail started...");
-        LOG.info("(getFrom()={})", getFrom());
+        //LOG.info("(getFrom()={})", getFrom());
         LOG.info("(getTo()={})", getTo());
         String sTo = getTo();
         String sToNew = sTo;
@@ -79,15 +79,15 @@ public class Mail extends Abstract_Mail {
             LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
         }
-        LOG.info("(getHead()={})", getHead());
+        //LOG.info("(getHead()={})", getHead());
 
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
         LOG.info("(bUniSender={})", bUniSender);
-        LOG_BIG.info("(bUniSender={})", bUniSender);
-        LOG_BIG.debug("(getFrom()={})", getFrom());
-        LOG_BIG.debug("(getTo()={})", getTo());
-        LOG_BIG.debug("(getHead()={})", getHead());
-        LOG_BIG.debug("(getBody={})", getBody());
+        //LOG_BIG.info("(bUniSender={})", bUniSender);
+        //LOG_BIG.debug("(getFrom()={})", getFrom());
+        //LOG_BIG.debug("(getTo()={})", getTo());
+        //LOG_BIG.debug("(getHead()={})", getHead());
+        //LOG_BIG.debug("(getBody={})", getBody());
 
         StringBuilder sbBody = new StringBuilder(500);
         sbBody.append("host: ");
@@ -122,7 +122,7 @@ public class Mail extends Abstract_Mail {
             sendAlternativeWay(sbBody.toString());
         }
         
-        LOG.info("send mail ended ehith sbBody: " + sbBody.toString());
+        //LOG.info("send mail ended ehith sbBody: " + sbBody.toString());
     }
 
     public void sendOld() throws EmailException {
@@ -421,7 +421,7 @@ public class Mail extends Abstract_Mail {
                     ._Status(Log.LogStatus.ERROR)
                     ._Head("First try send fail")
                     ._Param("getTo", getTo())
-                    ._Param("sbBody", sbBody)
+                    //._Param("sbBody", sbBody)
                     ._Param("oID_Message", oID_Message)
                     .save()
             ;
@@ -441,7 +441,7 @@ public class Mail extends Abstract_Mail {
                         ._Head("Final send trying fail")
                         //._Body(oException1.getMessage())
                         ._Param("getTo", getTo())
-                        ._Param("sbBody", sbBody)
+                        //._Param("sbBody", sbBody)
                         .save()
                 ;
         }
