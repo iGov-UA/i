@@ -22,7 +22,7 @@ public class DefaultFlowSlotGenerator {
     protected static final Logger LOG = LoggerFactory.getLogger(DefaultFlowSlotGenerator.class);
 
     public List<FlowSlot> generateObjects(Map<String, String> configuration, DateTime startDate, DateTime endDate,
-            int maxGeneratedSlotsCount, String defaultFlowSlotName, List<ExcludeDateRange> aDateRange_Exclude) {
+            int maxGeneratedSlotsCount, String defaultFlowSlotName, List<ExcludeDateRange> aDateRange_Exclude) throws ParseException {
         LOG.info("generateObjects slots is started");
         TreeMap<DateTime, FlowSlot> res = new TreeMap<>();
 
@@ -31,12 +31,7 @@ public class DefaultFlowSlotGenerator {
             String cronExpressionString = entry.getKey();
             String slotDuration = entry.getValue();
 
-            CronExpression cronExpression;
-            try {
-                cronExpression = new CronExpression(cronExpressionString);
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+            CronExpression cronExpression = new CronExpression(cronExpressionString);
 
             int generatedSlotsCount = 0;
             while (currDateTime.isBefore(endDate)) {

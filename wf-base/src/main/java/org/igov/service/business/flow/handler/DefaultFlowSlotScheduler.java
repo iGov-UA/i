@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,7 @@ public class DefaultFlowSlotScheduler extends BaseFlowSlotScheduler {
     }
 
     @Override
-    public List<FlowSlot> generateObjects(String sData) {
+    public List<FlowSlot> generateObjects(String sData) throws java.text.ParseException{
         Map<String, String> configuration = JsonRestUtils.readObject(sData, Map.class);
 
         prepareInterval();

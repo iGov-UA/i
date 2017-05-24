@@ -7,7 +7,7 @@ import org.igov.model.core.EntityDao;
  * Date: 21.06.2015
  * Time: 15:44
  */
-public interface FlowServiceDataDao extends EntityDao<Long, Flow> {
+public interface FlowDao extends EntityDao<Long, Flow> {
 
     /**
      * Gets id of entity Flow_ServiceData with given sID_BP and nID_SubjectOrganDepartment
