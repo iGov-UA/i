@@ -36,10 +36,7 @@ import org.activiti.engine.FormService;
 import org.activiti.engine.form.FormProperty;
 import org.igov.run.schedule.JobBuilderFlowSlots;
 import org.igov.service.business.action.task.form.QueueDataFormType;
-import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
-import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
 import org.igov.service.business.flow.handler.ExcludeDateRange;
-import org.igov.util.JSON.JsonDateSerializer;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -289,7 +286,7 @@ public class FlowService implements ApplicationContextAware {
      * @param oDateEnd stop date of generation (exclusive)
      * @return generated slots.
      */
-    public List<FlowSlotVO> buildFlowSlots(Long nID_Flow, DateTime oDateStart, DateTime oDateEnd) {
+    public List<FlowSlotVO> buildFlowSlots(Long nID_Flow, DateTime oDateStart, DateTime oDateEnd) throws ParseException {
 
         LOG.info("buildFlowSlots started nID_Flow = {}, oDateStart = {}, oDateEnd = {}", nID_Flow, oDateStart, oDateEnd);
         Flow oFlow = flowDao.findByIdExpected(nID_Flow);
@@ -994,7 +991,7 @@ public class FlowService implements ApplicationContextAware {
         return result;
     }
 
-    public List<FlowSlotVO> buildFlowSlotsTest(Long nID_Flow, DateTime startDate, DateTime stopDate) {
+    public List<FlowSlotVO> buildFlowSlotsTest(Long nID_Flow, DateTime startDate, DateTime stopDate) throws ParseException {
 
         Flow flow = flowDao.findByIdExpected(nID_Flow);
 
@@ -1054,7 +1051,7 @@ public class FlowService implements ApplicationContextAware {
         }
     }
 
-    public void checkAndBuildFlowSlots(Flow oFlow, DateTime oDateStart) {
+    public void checkAndBuildFlowSlots(Flow oFlow, DateTime oDateStart) throws ParseException {
         //Maxline: TODO добавить исключения
         Long nID_Flow = oFlow.getId();
         Long nID_ServiceData = oFlow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
