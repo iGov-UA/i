@@ -1294,7 +1294,7 @@ public class ActionFlowController {
                 + "Если на указанные даты слоты уже сгенерены то они не будут генерится повторно, и в ответ включаться не будут.")})
     @RequestMapping(value = "/buildFlowSlot", method = RequestMethod.GET)
     public @ResponseBody
-    String buildFlowSlot(@ApiParam(value = "ИД слота резервации", required = true) @RequestParam(value = "nID_SlotHold") String nID_SlotHold) {
+    String buildFlowSlot(@ApiParam(value = "ИД слота резервации", required = false) @RequestParam(value = "nID_SlotHold", required = false) String nID_SlotHold) {
         oFlowService.buildFlowSlots();
         return "ok!";
     }
