@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_test_justice_incoming" name="130" isExecutable="true">
+  <process id="_doc_test_justice_incoming" name="Тестування _sID_Field_Printform_ForECP" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ; bVisible=false" type="string"></activiti:formProperty>
@@ -27,6 +27,22 @@
         <activiti:formProperty id="sLogin_Executor" name="Логін" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLogin_LastSubmited" name="sLogin_LastSubmited" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginAuthor" name="sLoginAuthor" type="string"></activiti:formProperty>
+
+<!--
+        <activiti:formProperty id="fDoc1" name="Файл для накладання ЕЦП - 1; ;sID_Field_Printform_ForECP=sVarTextBody_1, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc2" name="Файл для накладання ЕЦП - 2; ;sID_Field_Printform_ForECP=sVarTextBody_2, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc3" name="Файл для накладання ЕЦП - 3; ;sID_Field_Printform_ForECP=sVarTextBody_3, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_1" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_2" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №2" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_3" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №3" writable="false"></activiti:formProperty>
+-->
+        <activiti:formProperty id="fDoc1" name="Файл для накладання ЕЦП - 1; ;sID_Field_Printform_ForECP=sBody_1, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc2" name="Файл для накладання ЕЦП - 2; ;sID_Field_Printform_ForECP=sBody_2, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc3" name="Файл для накладання ЕЦП - 3; ;sID_Field_Printform_ForECP=sBody_3, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false" type="string" default="Прінтформа №1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false" type="string" default="Прінтформа №2" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false" type="string" default="Прінтформа №3" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -52,6 +68,14 @@
         <activiti:formProperty id="sLogin_Executor" name="Логін" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLogin_LastSubmited" name="sLogin_LastSubmited" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLoginAuthor" name="sLoginAuthor" type="string"></activiti:formProperty>
+
+<!--
+        <activiti:formProperty id="fDoc4" name="Файл для накладання ЕЦП - 4; ;sID_Field_Printform_ForECP=sVarTextBody_4, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_4" name="[pattern/print/justice/justice_1499_UrChange_print_20170328.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №4" writable="false"></activiti:formProperty>
+-->
+        <activiti:formProperty id="fDoc4" name="Файл для накладання ЕЦП - 4; ;sID_Field_Printform_ForECP=sBody_4, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false" type="string" default="Прінтформа №4" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -74,6 +98,21 @@
         <activiti:formProperty id="sName_Executor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Executor" name="Логін" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLogin_LastSubmited" name="sLogin_LastSubmited" type="string"></activiti:formProperty>
+<!--
+        <activiti:formProperty id="fDoc5" name="Файл для накладання ЕЦП - 5; ;sID_Field_Printform_ForECP=sVarTextBody_5, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc6" name="Файл для накладання ЕЦП - 6; ;sID_Field_Printform_ForECP=sVarTextBody_6, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc7" name="Файл для накладання ЕЦП - 7; ;sID_Field_Printform_ForECP=sVarTextBody_7, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_5" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №5" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_6" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №6" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_7" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №7" writable="false"></activiti:formProperty>
+-->
+        <activiti:formProperty id="fDoc5" name="Файл для накладання ЕЦП - 1; ;sID_Field_Printform_ForECP=sBody_5, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc6" name="Файл для накладання ЕЦП - 2; ;sID_Field_Printform_ForECP=sBody_6, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc7" name="Файл для накладання ЕЦП - 3; ;sID_Field_Printform_ForECP=sBody_7, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false" type="string" default="Прінтформа №5" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_6" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false" type="string" default="Прінтформа №6" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false" type="string" default="Прінтформа №7" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -111,6 +150,21 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sName_Executor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Executor" name="Логін" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLogin_LastSubmited" name="sLogin_LastSubmited" type="string"></activiti:formProperty>
+<!--
+        <activiti:formProperty id="fDoc8" name="Файл для накладання ЕЦП - 5; ;sID_Field_Printform_ForECP=sVarTextBody_5, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc9" name="Файл для накладання ЕЦП - 6; ;sID_Field_Printform_ForECP=sVarTextBody_6, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc10" name="Файл для накладання ЕЦП - 7; ;sID_Field_Printform_ForECP=sVarTextBody_7, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_8" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №5" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_6" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №6" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVarTextBody_7" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false, bPrintform=true" type="string" default="Прінтформа №7" writable="false"></activiti:formProperty>
+-->
+        <activiti:formProperty id="fDoc5" name="Файл для накладання ЕЦП - 1; ;sID_Field_Printform_ForECP=sBody_5, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc6" name="Файл для накладання ЕЦП - 2; ;sID_Field_Printform_ForECP=sBody_6, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fDoc7" name="Файл для накладання ЕЦП - 3; ;sID_Field_Printform_ForECP=sBody_7, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false" type="string" default="Прінтформа №5" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_6" name="[pattern/print/dnepr_cnap_686_print.html]; ;bVisible=false" type="string" default="Прінтформа №6" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_7" name="[pattern/print/dnepr_cnap_560_fop2_print_01.html]; ;bVisible=false" type="string" default="Прінтформа №7" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
