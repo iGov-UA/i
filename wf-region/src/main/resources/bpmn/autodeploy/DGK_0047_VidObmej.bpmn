@@ -77,9 +77,9 @@
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var sum = 23,11;
+      <script>var sum = 23.11;
 if ((execution.getVariable('asLust')) === 'sEnamLustKur') {
-	sum =  43,47;
+	sum =  43.47;
 }
 execution.setVariable('sSum', sum);  
 
@@ -201,7 +201,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -245,7 +245,7 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr233.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -381,7 +381,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidmovaDGK.json')}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr233.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false ,bPrintform=true " type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -443,7 +443,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidmovaDGK.json')}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr233.html"  type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr233.html] ; ;bVisible=false ,bPrintform=true " type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -458,7 +458,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>ДГК обробив заяву. ${sPosluga_name}</activiti:expression>
@@ -692,7 +692,7 @@ ${sNameOrgan}&lt;br/&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Доставка не оплачена. Документи буде отримано нарочно. ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}</activiti:expression>

@@ -7,7 +7,8 @@ angular.module('dashboardJsApp').service('PrintTemplateService', ['tasks', 'Fiel
   function findPrintTemplate (form, sCustomFieldID) {
     var s = ((sCustomFieldID!==null && sCustomFieldID !== undefined && sCustomFieldID!=='-') ? sCustomFieldID : 'sBody');
     var printTemplateResult = form.filter(function (item) {
-      var bPrintform = item.id === s || (item.name && item.name.indexOf('bPrintform=true') >= 0);
+      //var bPrintform = item.id === s || (item.name && item.name.indexOf('bPrintform=true') >= 0);
+      var bPrintform = item.id === s;
       return bPrintform;
       //return item.id === s;
     });

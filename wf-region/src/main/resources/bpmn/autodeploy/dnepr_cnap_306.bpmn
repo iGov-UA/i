@@ -91,7 +91,7 @@ ${sPhoneOrgan}</p>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[sofia.danylevych@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Будівельний паспорт забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
@@ -141,7 +141,7 @@ ${sPhoneOrgan}</p>
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]; ;bVisible=false" type="string" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -263,7 +263,7 @@ ${sNameOrgan}<br>
           <activiti:value id="reject" name="В опрацюванні заявки відмовлено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]; ;bVisible=false" type="string" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArchName" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
@@ -375,7 +375,7 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[sofia.danylevych@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sArkhPost}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[ТЕСТ!
@@ -393,7 +393,7 @@ ${sNameOrgan}<br>
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[sofia.danylevych@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Результат опрацювання звернення ГоловАПУ]]></activiti:expression>
@@ -444,7 +444,7 @@ ${sNameOrgan}<br>
         <activiti:formProperty id="sArchName" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/BudPass.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]; ;bVisible=false" type="string" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment1" name="Примітка:" type="string" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>

@@ -183,7 +183,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення: Отримання субсидії на оплату житлово-комунальних послуг]]></activiti:expression>
@@ -347,8 +347,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/UPSZN/subsidy_zayava_1.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/UPSZN/subsidy_declaration_2.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ScanPassport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rent" name="Договір найму (оренди) житла; за наявності ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="declaration0" name="Довідка про доходи (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -595,8 +595,8 @@ ${sNameOrgan}<br/>
           <activiti:value id="attr5" name="субсидія потребує розгляду комісії"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decision" name="Рішення про надання субсидії" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/subsidy_zayava_1.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/UPSZN/subsidy_declaration_2.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ScanPassport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rent" name="Договір найму (оренди) житла; за наявності ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="declaration0" name="Довідка про доходи (сканована копія); подається у разі зазначення в декларації інших отриманих доходів, інформація про які відсутня у ДФС, Пенсійному фонді України, фондах соціального страхування, і відповідно до законодавства не може бути отримана за запитом УПСЗН. У разі неможливості підтвердити такі доходи довідкою, завантажте письмове пояснення з зазначенням їх розміру ;bNew=true" type="file" writable="false"></activiti:formProperty>

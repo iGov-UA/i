@@ -4,10 +4,10 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Роспорядження про створення контракту"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
@@ -23,12 +23,12 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Керівник - виставлення завдання">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asTypical" name="Типовий контракт; ;sID_CheckboxTrue=sEnumTypical" type="enum" default="sEnumNotTypical">
           <activiti:value id="sEnumTypical" name="типовий"></activiti:value>
@@ -39,7 +39,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="е-мейл контролюючого виконання завдання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEscalationDay" name="Дата ескалації ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEscalationDay" name="Дата ескалації ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
@@ -54,13 +54,13 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow24" sourceRef="usertask1" targetRef="scripttask4"></sequenceFlow>
     <userTask id="usertask3" name="Підготовка договору">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="Velta_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="Velta_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocCity" name="Місто підписання контракту" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string"></activiti:formProperty>
@@ -90,7 +90,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html] ; ; bVisible=false" type="string" default="Стандартний контракт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html] ; ;bVisible=false" type="string" default="Стандартний контракт" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -100,13 +100,13 @@ execution.setVariable('processInstanceId', processInstanceId)
     </userTask>
     <userTask id="usertask5" name="ЮрОтделФиниш">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="Velta_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="Velta_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст контракту" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocCity" name="Місто підписання контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string" writable="false"></activiti:formProperty>
@@ -132,7 +132,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sMistake" name="потрібно виправити помилку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html] ; ; bVisible=false" type="string" default="Стандартний контракт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html] ; ;bVisible=false" type="string" default="Стандартний контракт" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -166,13 +166,13 @@ execution.setVariable('processInstanceId', processInstanceId)
     </sequenceFlow>
     <userTask id="usertask6" name="НачальникФиниш">
       <extensionElements>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Роспорядження про створення контракту" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="Velta_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="Velta_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocCity" name="Місто підписання контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата створення контракту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCompName" name="Повна назва контрагента" type="string" writable="false"></activiti:formProperty>
@@ -197,7 +197,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="sPrint" name="роздрукувати для підпису"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="bVerificationSignatures" name="obj3 - проверка подписи; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html] ; ; bVisible=false" type="string" default="Стандартний контракт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/velta/velta_contract.html] ; ;bVisible=false" type="string" default="Стандартний контракт" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/iDoc/velta/velta_contract.html" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
