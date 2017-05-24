@@ -112,7 +112,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка. ${sPosluga_name}</activiti:expression>
@@ -233,7 +233,7 @@ ${sWorkTime}.&lt;br /&gt;
         <activiti:formProperty id="sReestrat_date_vug5" name="Дата виготовлення; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_N_posv5" name="Реєстраційний номер КОРО реєстратора розрахункових операцій; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrat_jblic_dfs5" name="Дата початку обліку в органах ДФС; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/nicolaev_dfs_592.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/nicolaev_dfs_592.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст; ;bVisible=false" type="string" default="Якщо заявка прийнята, вона знов з'явиться в необроблених, візьміть ії в роботу і зробіть помітку чи видано на руки документ. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="ur_fiz_print" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamUr&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamUr'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnamFiz&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnamFiz'&quot;},&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;s2yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print2&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s2yes'&quot;},&quot;ShowElementsOnTrue_4&quot;:{&quot;aElement_ID&quot;:[&quot;s3yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print3&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s3yes'&quot;},&quot;ShowElementsOnTrue_5&quot;:{&quot;aElement_ID&quot;:[&quot;s4yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print4&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s4yes'&quot;},&quot;ShowElementsOnTrue_6&quot;:{&quot;aElement_ID&quot;:[&quot;s5yes&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;print5&quot;},&quot;sCondition&quot;:&quot;[sCond]=='s5yes'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>

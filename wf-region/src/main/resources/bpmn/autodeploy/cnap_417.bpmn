@@ -44,7 +44,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Дозвіл на виготовлення технічної документації із землеустрою щодо встановлення меж земельної ділянки.]]></activiti:string>
@@ -115,7 +115,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_417_print.html]; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_417_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/cnap_417_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;,&quot;docUr_pf&quot;,&quot;povidUr_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceSubject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'||[sCond]=='Юридична особа'&quot;},&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;,&quot;docFiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceSubject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'||[sCond]=='Фізична особа'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -153,7 +153,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern\print\novopskov\novopscov__417_print.html]; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern\print\novopskov\novopscov__417_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;pattern\print\novopskov\novopscov__417_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;UO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceSubject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'||[sCond]=='Юридична особа'&quot;},&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;FO&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceSubject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'||[sCond]=='Фізична особа'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>

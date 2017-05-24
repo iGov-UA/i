@@ -5,7 +5,7 @@
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку поменял верни" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="результат обробки вхідних даних" type="enum" required="true">
           <activiti:value id="new" name="Используем bPrintform=true"></activiti:value>
           <activiti:value id="old" name="s_body без изменений"></activiti:value>
@@ -18,6 +18,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/testPrint2.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint2.html]" type="string" default="Заява" writable="false"></activiti:formProperty>
+          <activiti:formProperty id="sBodyP33" name="[pattern/print/AK/Zags/Zags_Vutiag_printP33.html]; ;bVisible=false" type="string" default="Форма заяви Сторінка 3" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -30,7 +31,10 @@
           <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
+
+          <activiti:string><![CDATA[Звернення на тему: Прийняття щодо зміни прізвища, імені та по батькові дитини gjvtyzk dthyb]]></activiti:string>
+
+
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
@@ -55,6 +59,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/testPrint2.html,sFileName=Zayava_na_oblik" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="s_1" name="[pattern/print/testPrint2.html]; ;bPrintform=true" type="string" default="Заява" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="sBodyP33" name="[pattern/print/AK/Zags/Zags_Vutiag_printP33.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви Сторінка 3" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>

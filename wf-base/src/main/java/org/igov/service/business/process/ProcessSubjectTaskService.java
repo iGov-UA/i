@@ -398,11 +398,11 @@ public class ProcessSubjectTaskService {
     
     public void removeProcessSubject(ProcessSubject processSubject) {
         LOG.info("removeProcessSubject started...");
-        Task TaskInstance = oTaskService.createTaskQuery().processInstanceId(processSubject.getSnID_Task_Activiti()).singleResult();
+        //Task TaskInstance = oTaskService.createTaskQuery().processInstanceId(processSubject.getSnID_Task_Activiti()).singleResult();
         
         if (TaskInstance != null) {
-            LOG.info("TaskInstance {}", TaskInstance.getId());
-            oTaskService.deleteTask(TaskInstance.getId());
+            LOG.info("TaskInstance {}", processSubject.getSnID_Task_Activiti());
+            oTaskService.deleteTask(processSubject.getSnID_Task_Activiti(), "deleted");
         }
         
         LOG.info("TaskInstance deleted..");
@@ -431,11 +431,10 @@ public class ProcessSubjectTaskService {
         
         for (ProcessSubject oProcessSubject : aReverseProcessSubject) {
             LOG.info("oProcessSubject catalog user is {}", oProcessSubject.getaUser());
-            
-            //removeProcessSubject(oProcessSubject);
+            removeProcessSubject(oProcessSubject);
         }
 
-        removeProcessSubject(processSubject);
+        //removeProcessSubject(processSubject);
         LOG.info("removeProcessSubjectDeep ended...");
     }
     

@@ -16,13 +16,13 @@
         <activiti:formProperty id="sAdres" name="Адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nKadastr_num" name="Кадастровий номер" type="long"></activiti:formProperty>
         <activiti:formProperty id="sPloscha" name="Площа (га)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_name" name="назва послуги ; ; bVisible=false" type="string" default="Видача відомостей з документації із землеустрою, що включена до Державного фонду документації із землеустрою"></activiti:formProperty>
-        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ ; ; bVisible=false" type="string" default="Видача відомостей з документації із землеустрою, що включена до Державного фонду документації із землеустрою"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_name" name="назва послуги ; ;bVisible=false" type="string" default="Видача відомостей з документації із землеустрою, що включена до Державного фонду документації із землеустрою"></activiti:formProperty>
+        <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ ; ;bVisible=false" type="string" default="Видача відомостей з документації із землеустрою, що включена до Державного фонду документації із землеустрою"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -72,7 +72,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_54_GotEkspluat.html] ; ; bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_54_GotEkspluat.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -168,7 +168,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="reject" name="ЦНАП виніс відмову по заяві"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_54_GotEkspluat.html] ; ; bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_54_GotEkspluat.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
