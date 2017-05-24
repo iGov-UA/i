@@ -89,9 +89,9 @@ public class DefaultFlowSlotScheduler extends BaseFlowSlotScheduler {
 
             if (!slots.isEmpty()) {
                 Set<DateTime> existingDates = flowSlotDao.findFlowSlotsDates(flow.getId(), minDateTime, maxDateTime);
-                for(DateTime startDateTime : existingDates){
+                /*for(DateTime startDateTime : existingDates){
                     LOG.info("Date already exist startDateTime: " + startDateTime);
-                }
+                }*/
                 for (FlowSlot slot : slots) {
                     if (!existingDates.contains(slot.getsDate())) {
                         slot.setFlow(flow);
