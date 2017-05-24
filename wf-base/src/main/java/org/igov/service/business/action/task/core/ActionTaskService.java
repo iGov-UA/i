@@ -1106,7 +1106,6 @@ public class ActionTaskService {
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
-        LOG.info("getBusinessProcessesFieldsOfLogin: aProcessDefinition_Return={} for login={}", aProcessDefinition_Return);
         
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
@@ -1121,7 +1120,7 @@ public class ActionTaskService {
             }
 
             Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
-            LOG.info("getBusinessProcessesFieldsOfLogin: Collection<FlowElement> elements = {} for oProcessDefinition = {}", elements, oProcessDefinition.getId());
+            //LOG.info("getBusinessProcessesFieldsOfLogin: Collection<FlowElement> elements = {} for oProcessDefinition = {}", elements, oProcessDefinition.getId());
             
             for (FlowElement flowElement : elements) {
                 if (flowElement instanceof UserTask) {
