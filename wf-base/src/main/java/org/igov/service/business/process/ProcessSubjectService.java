@@ -828,6 +828,10 @@ public class ProcessSubjectService {
             String sText, DateTime sDatePlaneNew
     ) {
         
+        /**
+         *Определяем кто вызвал сервис. Пришел только логин sLoginExecutor - исполнитель, пришел только
+         *логин sLoginController - контролирующий, если пришло два логина - контролирующий.
+         */
         String sLoginMain = sLoginController;
                 
         if (sLoginExecutor != null && sLoginController == null) {
