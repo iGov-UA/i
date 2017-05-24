@@ -87,16 +87,15 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <scriptTask id="scripttask2" name="клонирование" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_GroupPostfix_New = execution.getVariable('sLogin_Executor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')</script>
     </scriptTask>
     <sequenceFlow id="flow44" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow45" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask3" name="клонирование" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
-var sKey_GroupPostfix_New = execution.getVariable('sLogin_Executor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')</script>
     </scriptTask>
     <sequenceFlow id="flow46" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
@@ -125,9 +124,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow48" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask4" name="клонирование" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
-var sKey_GroupPostfix_New = execution.getVariable('sLogin_Executor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_3')</script>
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_4')</script>
     </scriptTask>
     <sequenceFlow id="flow49" sourceRef="usertask3" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow50" sourceRef="scripttask4" targetRef="usertask4"></sequenceFlow>
@@ -162,7 +160,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="55.0" width="105.0" x="730.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="670.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="668.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
         <omgdi:waypoint x="305.0" y="95.0"></omgdi:waypoint>
@@ -194,10 +192,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
         <omgdi:waypoint x="642.0" y="123.0"></omgdi:waypoint>
-        <omgdi:waypoint x="722.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="722.0" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="150.0"></omgdi:waypoint>
         <omgdi:waypoint x="782.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
