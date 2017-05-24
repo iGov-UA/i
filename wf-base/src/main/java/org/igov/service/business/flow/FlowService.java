@@ -1026,6 +1026,7 @@ public class FlowService implements ApplicationContextAware {
         DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         LOG.info(" oDateStart = {}", oDateStart);
         List<Flow> aFlowServiceData = flowServiceDataDao.findAll();
+        LOG.info(" aFlowServiceData = {}", aFlowServiceData.size());
         for (Flow flow : aFlowServiceData) {
             try {
                 LOG.info("Flow_ServiceData ID {}, sID_BP = {} ", flow.getId(), flow.getsID_BP());
