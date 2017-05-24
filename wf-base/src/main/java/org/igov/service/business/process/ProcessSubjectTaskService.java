@@ -431,10 +431,11 @@ public class ProcessSubjectTaskService {
         
         for (ProcessSubject oProcessSubject : aReverseProcessSubject) {
             LOG.info("oProcessSubject catalog user is {}", oProcessSubject.getaUser());
+            LOG.info("processSubject id to delete {}", oProcessSubject.getId());
             removeProcessSubject(oProcessSubject);
         }
 
-        //removeProcessSubject(processSubject);
+        removeProcessSubject(processSubject);
         LOG.info("removeProcessSubjectDeep ended...");
     }
     
