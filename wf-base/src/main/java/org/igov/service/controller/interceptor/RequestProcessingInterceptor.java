@@ -355,7 +355,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
             } catch (Exception ex) {
                 LOG.info("Error parsing sRequestBody: {}", ex);
-                LOG.info("sRequestBody is: {}", sResponseBody);
+                //LOG.info("sRequestBody is: {}", sResponseBody);
             }
 
             /*if (isUpdateProcess(oRequest)){
@@ -696,7 +696,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                 ._Param("mRequestParam", mRequestParam)
                                 .save();
                     } catch (Exception ex) {
-                        LOG.error("Can't save error to MSG", ex);
+                        LOG.error("Can't save error to MSG", ex.getMessage());
                     }
                     return;
                 } else {
@@ -745,8 +745,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
         } catch (Exception oException) {
             LOG_BIG.error("Can't save service-history record: {}", oException.getMessage());
-            LOG_BIG.error("FAIL:", oException);
-            try {
+            //LOG_BIG.error("FAIL:", oException);
+            /*try {
                 new Log(oException, LOG)//this.getClass()
                         ._Case("IC_Task" + sType)
                         ._Status(Log.LogStatus.ERROR)
@@ -754,13 +754,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         //                    ._Body(oException.getMessage())
                         ._Param("sURL", sURL)
                         ._Param("mRequestParam", mRequestParam)
-                        //._Param("sRequestBody", sRequestBody)
-                        //._Param("sResponseBody", sResponseBody)
+                        ._Param("sRequestBody", sRequestBody)
+                        ._Param("sResponseBody", sResponseBody)
                         ._LogTrace()
                         .save();
             } catch (Exception e) {
                 LOG.error("Can't send an error message to service MSG\n", e);
-            }
+            }*/
 
         }
         LOG.info("Method 'protocolize' finished");
