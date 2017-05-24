@@ -858,19 +858,18 @@ public class ProcessSubjectService {
                 dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
             }
              
-            oProcessSubjectMain.setsDateEdit(dtCurrentDate);
-            oProcessSubjectMain.setoProcessSubjectStatus(oProcessSubjectStatus);
-            
-            if (sText != null) {          
-                
-                oProcessSubjectMain.setsText(sText);
-            }
-            
             //Исполнитель отработал задачу
             if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
                 || sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Executor")) {
-  
+                
+                if (sText != null) {                          
+                    oProcessSubjectMain.setsText(sText);
+                }
+                oProcessSubjectMain.setsDateEdit(dtCurrentDate);
+                oProcessSubjectMain.setoProcessSubjectStatus(oProcessSubjectStatus);
                 oProcessSubjectMain.setsDateFact(dtCurrentDate);
+                
+                processSubjectDao.saveOrUpdate(oProcessSubjectMain);
                 
             //Просьба о переносе срока исполнителем    
             } else if (sID_ProcessSubjectStatus.equals("requestTransfered") && sLoginRoleMain.equals("Executor")) {
@@ -879,7 +878,14 @@ public class ProcessSubjectService {
                     throw new RuntimeException("Did not send a request date sDatePlaneNew. To set this status you must send a date which you need to set.");
                 }
                 
+                if (sText != null) {                          
+                    oProcessSubjectMain.setsText(sText);
+                }
+                oProcessSubjectMain.setsDateEdit(dtCurrentDate);
+                oProcessSubjectMain.setoProcessSubjectStatus(oProcessSubjectStatus);                
                 oProcessSubjectMain.setsDatePlanNew(dtDatePlaneNew);
+                
+                processSubjectDao.saveOrUpdate(oProcessSubjectMain);
             
             //Перенос срока контролирующим
             } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRoleMain.equals("Controller")) {
@@ -892,6 +898,16 @@ public class ProcessSubjectService {
                     throw new RuntimeException("Did not send a request date sDatePlaneNew. To set this status you must send a date which you need to set.");
                 }
                 
+                //вносим изменения в контролера
+                if (sText != null) {                          
+                    oProcessSubjectMain.setsText(sText);
+                }
+                oProcessSubjectMain.setsDateEdit(dtCurrentDate);
+                oProcessSubjectMain.setoProcessSubjectStatus(oProcessSubjectStatus);
+                
+                processSubjectDao.saveOrUpdate(oProcessSubjectMain);
+                
+                //вносим изменения в исполнителя
                 ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginExecutor);
   
                 oProcessSubjectExecutor.setsDateEdit(dtCurrentDate);
@@ -908,6 +924,16 @@ public class ProcessSubjectService {
                     throw new RuntimeException("Did not send an executor login. To set this status you must to send executor's login besides controller's.");
                 }
                 
+                //вносим изменения в контролера
+                if (sText != null) {                          
+                    oProcessSubjectMain.setsText(sText);
+                }
+                oProcessSubjectMain.setsDateEdit(dtCurrentDate);
+                oProcessSubjectMain.setoProcessSubjectStatus(oProcessSubjectStatus);
+                
+                processSubjectDao.saveOrUpdate(oProcessSubjectMain);
+                
+                //вносим изменения в исполнителя
                 ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginExecutor);
 
                 oProcessSubjectExecutor.setsDateEdit(dtCurrentDate);
@@ -916,16 +942,12 @@ public class ProcessSubjectService {
                 oProcessSubjectExecutor.setoProcessSubjectStatus(oProcessSubjectStatus);
                 
                 processSubjectDao.saveOrUpdate(oProcessSubjectExecutor);
-                
-            }
             
-            processSubjectDao.saveOrUpdate(oProcessSubjectMain);
-            
-            //Закрытие задания контролирующим
-            if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
+            //Закрытие задания контролирующим    
+            } else if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
                 || sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Controller")) {
             
-                updateStatusTaskTreeAndCloseProcess(snID_Process_Activiti, "unactual");
+                //сервис Егора
                 
             }
             
