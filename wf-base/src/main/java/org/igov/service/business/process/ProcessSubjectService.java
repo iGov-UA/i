@@ -825,7 +825,7 @@ public class ProcessSubjectService {
      */
     public ProcessSubject setProcessSubjectStatus(
             String sID_ProcessSubjectStatus, String snID_Task_Activiti, String sLoginController, String sLoginExecutor,
-            String sText, DateTime sDatePlaneNew
+            String sText, String sDatePlaneNew
     ) {
         
         /**
@@ -851,6 +851,12 @@ public class ProcessSubjectService {
             ProcessSubjectStatus oProcessSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
             
             DateTime dtCurrentDate = new DateTime();
+            DateTime dtDatePlaneNew = null;
+                
+            if (sDatePlaneNew != null) {
+        
+                dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
+            }
              
             oProcessSubjectMain.setsDateEdit(dtCurrentDate);
             oProcessSubjectMain.setoProcessSubjectStatus(oProcessSubjectStatus);
@@ -869,20 +875,28 @@ public class ProcessSubjectService {
             //Просьба о переносе срока исполнителем    
             } else if (sID_ProcessSubjectStatus.equals("requestTransfered") && sLoginRoleMain.equals("Executor")) {
                 
-                oProcessSubjectMain.setsDatePlanNew(sDatePlaneNew);
+                if (dtDatePlaneNew == null) {               
+                    throw new RuntimeException("Did not send a request date sDatePlaneNew. To set this status you must send a date which you need to set.");
+                }
+                
+                oProcessSubjectMain.setsDatePlanNew(dtDatePlaneNew);
             
             //Перенос срока контролирующим
             } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRoleMain.equals("Controller")) {
                 
                 if (sLoginExecutor == null) {
                 
-                    throw new RuntimeException("Did not send an executor login. To set this status you need to send executor's login besides controller's.");
+                    throw new RuntimeException("Did not send an executor login. To set this status you must to send executor's login besides controller's.");
+                }
+                
+                if (dtDatePlaneNew == null) {               
+                    throw new RuntimeException("Did not send a request date sDatePlaneNew. To set this status you must send a date which you need to set.");
                 }
                 
                 ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginExecutor);
   
                 oProcessSubjectExecutor.setsDateEdit(dtCurrentDate);
-                oProcessSubjectExecutor.setsDatePlan(sDatePlaneNew);
+                oProcessSubjectExecutor.setsDatePlan(dtDatePlaneNew);
                 oProcessSubjectExecutor.setsDatePlanNew(null);
                 oProcessSubjectExecutor.setoProcessSubjectStatus(oProcessSubjectStatus);
                 
@@ -893,7 +907,7 @@ public class ProcessSubjectService {
                 
                 if (sLoginExecutor == null) {
                 
-                    throw new RuntimeException("Did not send an executor login. To set this status you need to send executor's login besides controller's.");
+                    throw new RuntimeException("Did not send an executor login. To set this status you must to send executor's login besides controller's.");
                 }
                 
                 ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginExecutor);

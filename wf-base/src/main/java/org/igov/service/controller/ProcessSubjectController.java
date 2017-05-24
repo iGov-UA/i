@@ -197,15 +197,8 @@ public class ProcessSubjectController {
         
             throw new RuntimeException("Impossible to set status, because login is absent");
         }
-        
-        DateTime dtDatePlaneNew = null;
-        
-        if (sDatePlaneNew != null) {
-        
-            dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
-        }
-       
-        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginController, sLoginExecutor, sText, dtDatePlaneNew);
+                
+        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginController, sLoginExecutor, sText, sDatePlaneNew);
     }
     
     @ApiOperation(value = "Синхронизировать ProcessSubject", notes = "Пример вызова:"
