@@ -65,13 +65,11 @@
         <activiti:formProperty id="nFile_DGK_Vutiag" name="Витяг з Державного земельного кадастру про ділянку;(якщо у витягу з ДЗК відсутня інформація про зареєстроване право власності, додайте витяг з реєстру речових прав на нерухоме майно) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_NormGroshOcin" name="Витяг про нормативну грошову оцінку ділянки;(станом на рік звернення) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabeDGK" name=" ; ;labelType=info" type="label" default="Витяг з кадастру про ділянку і витяг про нормативну грошову оцінку ви можете отримати перейшовши за посиланням - &lt;a href=&quot;http://map.land.gov.ua/kadastrova-karta &quot; target=&quot;_blank&quot;&gt; на кадастрову карту&lt;/a&gt;"></activiti:formProperty>
-        
         <activiti:formProperty id="asNeruh" name="Наявність об'єктів нерухомості на ділянці" type="enum" required="true">
           <activiti:value id="sEnamNeruhNo" name="Нерухомість відсутня"></activiti:value>
           <activiti:value id="sEnamNeruhBud" name="Ведеться будівництво"></activiti:value>
           <activiti:value id="sEnamNeruhYes" name="Наявний об'єкт нерухомості"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="nFile_DozvilBud" name="Дозвільні документи на будівництво;(якщо файлів кілька завантажте ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_NerVlasn" name="Право власності на нерухоме майно;(наприклад договір купівлі продажу, рішення суду, свідоцтво на спадщину і т.д., якщо файлів кілька завантажте ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_TexPasp" name="Технічний паспорт на об'єкти що знаходяться на ділянці;(якщо файлів кілька завантажте ZIP архівом);bNew=true" type="file" required="true"></activiti:formProperty>
@@ -181,8 +179,8 @@ ${sPhoneOrgan}.<br />
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Statut" name="Статут організації;(витяг зі статуту, що посвідчує право укладати договори) ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Dovirenist" name="Довіреність на представника;(або інший документ що підтверджує повноваження у випадку юридичної особи) ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Statut" name="Статут організації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovirenist" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний особистий (мобільний) номер телефону для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_D" name="Інформація про довірителя" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Dogov&quot;],&quot;sValue&quot;:&quot;Інформація про довірителя&quot;}}}"></activiti:formProperty>
@@ -193,14 +191,33 @@ ${sPhoneOrgan}.<br />
         <activiti:formProperty id="nFile_DovScan_passport" name="Паспорт довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_inn" name="ІПН довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
+        <activiti:formProperty id="markersLine_2" name="Інформація про договір" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Dogov&quot;],&quot;sValue&quot;:&quot;Інформація про договір&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNum_Dogov" name="Номер договору; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_Dogov" name="Дата укладення договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_DogovEnd" name="Дата закінчення договору" type="date" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_2" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="dPlosh" name="Площа земельної ділянки; ;writable=false" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sZem_Adress" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на земельній ділянці; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="dPlosh" name="Площа орендованої ділянки; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sZem_Adress" name="Адреса орендованої ділянки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на орендованій землі; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;nFile_Dogovir&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovir" name="Договір оренди землі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="chekDopDog" name="Чи є додаткові угоди до договору оренди?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DopDog" name="Додаткові угоди до договору оренди; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DGK_Vutiag" name="Витяг з Державного земельного кадастру про ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_NormGroshOcin" name="Витяг про нормативну грошову оцінку ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
+        <activiti:formProperty id="asNeruh" name="Наявність об'єктів нерухомості на ділянці" type="enum" writable="false">
+          <activiti:value id="sEnamNeruhNo" name="Нерухомість відсутня"></activiti:value>
+          <activiti:value id="sEnamNeruhBud" name="Ведеться будівництво"></activiti:value>
+          <activiti:value id="sEnamNeruhYes" name="Наявний об'єкт нерухомості"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DozvilBud" name="Дозвільні документи на будівництво; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_NerVlasn" name="Право власності на нерухоме майно; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_TexPasp" name="Технічний паспорт на об'єкти що знаходяться на ділянці; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно"></activiti:value>
@@ -323,12 +340,35 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="sDov_Adress" name="Адреса довірителя" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_passport" name="Паспорт довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_inn" name="ІПН довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="dPlosh" name="Площа земельної ділянки; ;writable=false" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sZem_Adress" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на земельній ділянці; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про договір" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Dogov&quot;],&quot;sValue&quot;:&quot;Інформація про договір&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNum_Dogov" name="Номер договору; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_Dogov" name="Дата укладення договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_DogovEnd" name="Дата закінчення договору" type="date" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="dPlosh" name="Площа орендованої ділянки; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sZem_Adress" name="Адреса орендованої ділянки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на орендованій землі; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;nFile_Dogovir&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovir" name="Договір оренди землі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="chekDopDog" name="Чи є додаткові угоди до договору оренди?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DopDog" name="Додаткові угоди до договору оренди; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DGK_Vutiag" name="Витяг з Державного земельного кадастру про ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_NormGroshOcin" name="Витяг про нормативну грошову оцінку ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asNeruh" name="Наявність об'єктів нерухомості на ділянці" type="enum" writable="false">
+          <activiti:value id="sEnamNeruhNo" name="Нерухомість відсутня"></activiti:value>
+          <activiti:value id="sEnamNeruhBud" name="Ведеться будівництво"></activiti:value>
+          <activiti:value id="sEnamNeruhYes" name="Наявний об'єкт нерухомості"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DozvilBud" name="Дозвільні документи на будівництво; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_NerVlasn" name="Право власності на нерухоме майно; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_TexPasp" name="Технічний паспорт на об'єкти що знаходяться на ділянці; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asZemRish" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnamAccept" name="Заява оформлена вірно"></activiti:value>
           <activiti:value id="sEnamVidmova" name="Відмова. Заява оформлена НЕ вірно"></activiti:value>
@@ -401,8 +441,8 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 <p>Ваше звернення про ${sPosluga_nameZV} пройшло перевірку у земельному відділі і передано для опрацювання в організаційний відділ.<br>
-Організаційний відділ винесе Ваше питання будене винесено на сесію ради.<br />
-За після розгляду на сесії ви отримаєте повідомлення на цей email.<br />
+Ваше питання будене винесено на сесію ради.<br />
+Після розгляду на сесії ви отримаєте повідомлення на цей email.<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}.<br />
@@ -453,12 +493,35 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="sDov_Adress" name="Адреса довірителя" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_passport" name="Паспорт довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_inn" name="ІПН довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="dPlosh" name="Площа земельної ділянки; ;writable=false" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sZem_Adress" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на земельній ділянці; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про договір" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Dogov&quot;],&quot;sValue&quot;:&quot;Інформація про договір&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNum_Dogov" name="Номер договору; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_Dogov" name="Дата укладення договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_DogovEnd" name="Дата закінчення договору" type="date" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="dPlosh" name="Площа орендованої ділянки; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sZem_Adress" name="Адреса орендованої ділянки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на орендованій землі; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;nFile_Dogovir&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovir" name="Договір оренди землі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="chekDopDog" name="Чи є додаткові угоди до договору оренди?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DopDog" name="Додаткові угоди до договору оренди; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DGK_Vutiag" name="Витяг з Державного земельного кадастру про ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_NormGroshOcin" name="Витяг про нормативну грошову оцінку ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asNeruh" name="Наявність об'єктів нерухомості на ділянці" type="enum" writable="false">
+          <activiti:value id="sEnamNeruhNo" name="Нерухомість відсутня"></activiti:value>
+          <activiti:value id="sEnamNeruhBud" name="Ведеться будівництво"></activiti:value>
+          <activiti:value id="sEnamNeruhYes" name="Наявний об'єкт нерухомості"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DozvilBud" name="Дозвільні документи на будівництво; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_NerVlasn" name="Право власності на нерухоме майно; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_TexPasp" name="Технічний паспорт на об'єкти що знаходяться на ділянці; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asOrgRish" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnamAccept" name="Рішення ради прийнято"></activiti:value>
           <activiti:value id="sEnamVidmova" name="Відмова. Рада не прийняла рішення"></activiti:value>
@@ -586,16 +649,40 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="sDov_Adress" name="Адреса довірителя" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_passport" name="Паспорт довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_inn" name="ІПН довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="dPlosh" name="Площа земельної ділянки; ;writable=false" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sZem_Adress" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на земельній ділянці; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про договір" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Dogov&quot;],&quot;sValue&quot;:&quot;Інформація про договір&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNum_Dogov" name="Номер договору; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_Dogov" name="Дата укладення договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_DogovEnd" name="Дата закінчення договору" type="date" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="dPlosh" name="Площа орендованої ділянки; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sZem_Adress" name="Адреса орендованої ділянки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на орендованій землі; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;nFile_Dogovir&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovir" name="Договір оренди землі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="chekDopDog" name="Чи є додаткові угоди до договору оренди?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DopDog" name="Додаткові угоди до договору оренди; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DGK_Vutiag" name="Витяг з Державного земельного кадастру про ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_NormGroshOcin" name="Витяг про нормативну грошову оцінку ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asNeruh" name="Наявність об'єктів нерухомості на ділянці" type="enum" writable="false">
+          <activiti:value id="sEnamNeruhNo" name="Нерухомість відсутня"></activiti:value>
+          <activiti:value id="sEnamNeruhBud" name="Ведеться будівництво"></activiti:value>
+          <activiti:value id="sEnamNeruhYes" name="Наявний об'єкт нерухомості"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DozvilBud" name="Дозвільні документи на будівництво; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_NerVlasn" name="Право власності на нерухоме майно; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_TexPasp" name="Технічний паспорт на об'єкти що знаходяться на ділянці; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_R" name="Інформація про рішення ради" type="markers" default="{&quot;attributes&quot;:{&quot;Line_R&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Rish&quot;],&quot;sValue&quot;:&quot;Інформація про рішення ради&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNum_Rish" name="Номер рішення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_Rish" name="Дата рішення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_RishRada" name="Рішення Ради; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asCnapRish_2etap" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnamAccept" name="Рішення є. Передати документи до земельного відділу"></activiti:value>
           <activiti:value id="sEnamVidmovaNevirn" name="Відмова. Наявні документи не вірні"></activiti:value>
@@ -738,16 +825,40 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sDov_Adress" name="Адреса довірителя" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_passport" name="Паспорт довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_inn" name="ІПН довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="dPlosh" name="Площа земельної ділянки; ;writable=false" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sZem_Adress" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на земельній ділянці; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про договір" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Dogov&quot;],&quot;sValue&quot;:&quot;Інформація про договір&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNum_Dogov" name="Номер договору; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_Dogov" name="Дата укладення договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_DogovEnd" name="Дата закінчення договору" type="date" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="dPlosh" name="Площа орендованої ділянки; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sZem_Adress" name="Адреса орендованої ділянки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на орендованій землі; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;nFile_Dogovir&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dogovir" name="Договір оренди землі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="chekDopDog" name="Чи є додаткові угоди до договору оренди?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DopDog" name="Додаткові угоди до договору оренди; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DGK_Vutiag" name="Витяг з Державного земельного кадастру про ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_NormGroshOcin" name="Витяг про нормативну грошову оцінку ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asNeruh" name="Наявність об'єктів нерухомості на ділянці" type="enum" writable="false">
+          <activiti:value id="sEnamNeruhNo" name="Нерухомість відсутня"></activiti:value>
+          <activiti:value id="sEnamNeruhBud" name="Ведеться будівництво"></activiti:value>
+          <activiti:value id="sEnamNeruhYes" name="Наявний об'єкт нерухомості"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_DozvilBud" name="Дозвільні документи на будівництво; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_NerVlasn" name="Право власності на нерухоме майно; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_TexPasp" name="Технічний паспорт на об'єкти що знаходяться на ділянці; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_R" name="Інформація про рішення ради" type="markers" default="{&quot;attributes&quot;:{&quot;Line_R&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Rish&quot;],&quot;sValue&quot;:&quot;Інформація про рішення ради&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNum_Rish" name="Номер рішення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_Rish" name="Дата рішення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_RishRada" name="Рішення Ради; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asZemRish_2etap" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnamAccept" name="Послугу надано в повному обсязі. Запросити заявника отримати документи в ЦНАПі"></activiti:value>
         </activiti:formProperty>
@@ -830,12 +941,20 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="sDov_Adress" name="Адреса довірителя" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_passport" name="Паспорт довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_inn" name="ІПН довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="dPlosh" name="Площа земельної ділянки; ;writable=false" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sZem_Adress" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на земельній ділянці; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про договір" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Dogov&quot;],&quot;sValue&quot;:&quot;Інформація про договір&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNum_Dogov" name="Номер договору; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_Dogov" name="Дата укладення договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_DogovEnd" name="Дата закінчення договору" type="date" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="dPlosh" name="Площа орендованої ділянки; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sZem_Adress" name="Адреса орендованої ділянки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на орендованій землі; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="nFile_RishRada" name="Рішення Ради; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_OrendDogov" name="Договір оренди землі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asCnapVudach_2etap" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="sEnamFedback" name="Заявник отримав документ"></activiti:value>
           <activiti:value id="sEnamNagad" name="Заявник не з'явився, надіслати лист-нагадування"></activiti:value>
