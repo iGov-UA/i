@@ -43,7 +43,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     public void afterPropertiesSet() throws Exception {
         addEscalationJob(scheduler);
         addFeedBackJob(scheduler);
-        addBuilderFlowSlotsJob(scheduler);
+        //addBuilderFlowSlotsJob(scheduler);
     }
 
     private void addEscalationJob(Scheduler scheduler) throws SchedulerException {
@@ -95,11 +95,11 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     }
 
     private void addBuilderFlowSlotsJob(Scheduler scheduler) throws SchedulerException {
-        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart1",
+        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart",
                 "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
 
-        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep1",
-                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup1");
+        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
+                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup");
        
             LOG.info("oCronExpression__EveryNight_Deep...");
         try { 
@@ -108,10 +108,10 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
             scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
             
-         /*CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 6,7 1/1 * ?"); //раз в сутки 6-30,7-30
+         CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 6,7 1/1 * ?"); //раз в сутки 6-30,7-30
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
-            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);  */
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);  
         } catch (Exception oException) {
             LOG.error("FAIL: ", oException.getMessage());
             LOG.debug("FAIL: ", oException);
