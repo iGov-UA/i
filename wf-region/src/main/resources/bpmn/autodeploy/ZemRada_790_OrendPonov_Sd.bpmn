@@ -9,7 +9,7 @@
           <activiti:value id="sEnamRishYes" name="Так, рішеня вже прийнято"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sLabeRishNo" name=" ; ;labelType=info" type="label" default="Заявка буде передана до організаційного відділу для винесення питання на сесію, після цього вас буде повідомлено про результат і подальші дії"></activiti:formProperty>
-        <activiti:formProperty id="sLabeRishYes" name=" ; ;labelType=info" type="label" default="Заявка буде передана до відділу земельних відносин та архітектури для укладення договору"></activiti:formProperty>
+        <activiti:formProperty id="sLabeRishYes" name=" ; ;labelType=info" type="label" default="Заявка буде передана до відділу земельних відносин та архітектури для поновлення договору"></activiti:formProperty>
         <activiti:formProperty id="markerRish" name="markers" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/Zem1481Rish.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -37,7 +37,7 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний особистий (мобільний) номер телефону для зворотнього зв'язку" type="string" default="+380" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_D" name="Інформація про довірителя" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sNum_Dogov&quot;],&quot;sValue&quot;:&quot;Інформація про довірителя&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_D" name="Інформація про довірителя" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sDov_lastName&quot;],&quot;sValue&quot;:&quot;Інформація про довірителя&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDov_lastName" name="Прізвище довірителя" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDov_firstName" name="Ім'я довірителя" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDov_middleName" name="По батькові довірителя" type="string" required="true"></activiti:formProperty>
@@ -192,18 +192,22 @@ ${sPhoneOrgan}.<br />
         <activiti:formProperty id="sDov_Adress" name="Адреса довірителя" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_passport" name="Паспорт довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DovScan_inn" name="ІПН довірителя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="markersLine_2" name="Інформація про ділянку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;dPlosh&quot;],&quot;sValue&quot;:&quot;Інформація про ділянку&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="dPlosh" name="Площа земельної ділянки; ;writable=false" type="double"></activiti:formProperty>
         <activiti:formProperty id="sZem_Adress" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNazvaBud" name="Назва об'єкта що знаходиться на земельній ділянці; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFile_DGK_Vutiag" name="Витяг з Державного земельного кадастру про ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_NormGroshOcin" name="Витяг про нормативну грошову оцінку ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно"></activiti:value>
           <activiti:value id="reject" name="Відмова. Заява оформлена НЕ вірно"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/ZemRada_127_OrendDog.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/ZemRada_790_OrendPonov.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPrint" name="markers" type="markers" default="${markerService.loadFromFile('AK/PrintM_4_FoUoFopUop.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
