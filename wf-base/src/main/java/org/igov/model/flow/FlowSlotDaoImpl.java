@@ -144,7 +144,7 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
     	QueryBuilder qb = new QueryBuilder(getSession(), "update FlowSlot s set ");
         qb.append("s.sDuration = :DURATION ", newDuration);
         qb.append("where s.flow.id = :FLOW_ID and ", nID_Flow_ServiceData);
-        qb.append("s.sDate", "DATE", dateTime);
+        qb.append("s.sDate = :DATE", dateTime);
         return qb.toQuery().executeUpdate();
     }
 }
