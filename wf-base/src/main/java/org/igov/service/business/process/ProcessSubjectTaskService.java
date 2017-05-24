@@ -402,7 +402,7 @@ public class ProcessSubjectTaskService {
         
         if (processSubject.getSnID_Task_Activiti() != null) {
             LOG.info("TaskInstance {}", processSubject.getSnID_Task_Activiti());
-            oTaskService.deleteTask(processSubject.getSnID_Task_Activiti(), "deleted");
+            oTaskService.complete(processSubject.getSnID_Task_Activiti());
         }
         
         LOG.info("TaskInstance deleted..");
