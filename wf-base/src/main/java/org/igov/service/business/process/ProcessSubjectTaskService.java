@@ -405,8 +405,11 @@ public class ProcessSubjectTaskService {
                 oTaskService.complete(processSubject.getSnID_Task_Activiti());
             }
         } else {
-            LOG.info("TaskInstance is to delete {}", processSubject.getSnID_Task_Activiti());
-            oRuntimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
+            LOG.info("ProcessInstance is to delete {}", processSubject.getSnID_Process_Activiti());
+            ProcessInstance processInstance = oRuntimeService.createProcessInstanceQuery().processInstanceId(processSubject.getSnID_Process_Activiti()).singleResult();
+            if (processInstance != null) {
+                oRuntimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
+            }
         }
         
         LOG.info("TaskInstance deleted..");
