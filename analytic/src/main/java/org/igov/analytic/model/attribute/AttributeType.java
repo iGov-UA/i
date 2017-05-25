@@ -7,11 +7,12 @@ package org.igov.analytic.model.attribute;
 
 import org.igov.model.core.NamedEntity;
 
+import javax.persistence.Entity;
+
 /**
- *
  * @author olga
  */
-@javax.persistence.Entity
-public class AttributeType extends NamedEntity{ 
-    
+@Entity
+public class AttributeType extends NamedEntity {
+
 }

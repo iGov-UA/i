@@ -8,9 +8,8 @@ package org.igov.analytic.model.process;
 import org.igov.model.core.EntityDao;
 
 /**
- *
  * @author olga
  */
-public interface ProcessDao extends EntityDao<Long, Process>{
-      
+public interface ProcessDao extends EntityDao<Long, Process> {
+    void saveWithConfigBackup(Process process);
 }

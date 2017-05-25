@@ -3,6 +3,7 @@
   <process id="chervonograd_cnap_316" name="Надання дозволу на перепоховання останкiв померлих" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -14,68 +15,64 @@
         <activiti:formProperty id="cemeteryOld" name="Назва міського кладовища, або адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cemeteryNew" name="Адреса нового кладовища" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="reasChange" name="Причина перепоховання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Висновок органу санітарно-епідеміологічної служби" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Лікарське свідоцтво про смерть" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Дозвіл виконавчого органу відповідної сільської, селищної, міської ради на поховання останків на іншому кладовищу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Висновок органу санітарно-епідеміологічної служби; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Лікарське свідоцтво про смерть; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Дозвіл виконавчого органу відповідної сільської, селищної, міської ради на поховання останків на іншому кладовищу; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Адресат ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>msvidran@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо надання дозволу на перепоховання останкiв померлих.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення громадянину про доставку в ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо надання дозволу на перепоховання останкiв померлих було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+ <p> Ваше звернення щодо надання дозволу на перепоховання останкiв померлих було зареєстровано у системі.
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
+</p>
+<br>
+${sPhoneOrgan}
+	[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br>
+			 ${sWorkTime} <br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка вхідної документації ЦНАП (1-й крок)" activiti:candidateGroups="cnap_lviv_chervonogradT">
+    <userTask id="usertask1" name="Обробка вхідної документації ЦНАП (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -94,16 +91,20 @@
           <activiti:value id="doc_bad" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_316_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_316_print.html]; ;bVisible=false ,bPrintform=true " type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Висновок органу санітарно-епідеміологічної служби; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Лікарське свідоцтво про смерть; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Дозвіл виконавчого органу відповідної сільської, селищної, міської ради на поховання останків на іншому кладовищу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Адресат ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask3" name="Обробка звернення міською радою (2-й крок)" activiti:candidateGroups="chervonograd_mvk1">
+    <userTask id="usertask3" name="Обробка звернення міською радою (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -118,13 +119,11 @@
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="answer" name="Скан копія рішення виконавчого комітету" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_316_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_316_print.html]; ;bVisible=false ,bPrintform=true " type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Висновок органу санітарно-епідеміологічної служби; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Лікарське свідоцтво про смерть; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Дозвіл виконавчого органу відповідної сільської, селищної, міської ради на поховання останків на іншому кладовищу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="decision" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -136,25 +135,28 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+<p>
 На жаль, Ваше звернення щодо надання дозволу на перепоховання останкiв померлих було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: 
-&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2],&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+Причина в наступному: 
+</p>
+<p>${decisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+<br>
+ ${sPhoneOrgan}
+	[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br>
+			 ${sWorkTime} <br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -168,30 +170,32 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо надання дозволу на перепоховання останкiв померлих - відправлене в управління житлово-комунального господарства міської ради.&lt;br /&gt;
-Спеціалісти повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
-Номер Вашого замовлення: ${number_cnap}&lt;br /&gt;
-&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2],&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+<p>Ваше звернення щодо надання дозволу на перепоховання останкiв померлих - відправлене в управління житлово-комунального господарства міської ради.<br> 
+Спеціалісти повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви.<br> 
+Номер Вашого замовлення: ${number_cnap}</p>
+<br>
+ ${sPhoneOrgan}
+	[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan} <br>
+			 ${sWorkTime} <br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" name="decision == 'doc_ok'" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'doc_ok'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Відповідь громадянину (3-й крок)" activiti:candidateGroups="cnap_lviv_chervonogradT">
+    <userTask id="usertask2" name="Відповідь громадянину (3-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -209,12 +213,8 @@
           <activiti:value id="attr1_ok" name="Рішення готове"></activiti:value>
           <activiti:value id="attr2_no" name="Відмова управління ЖКГ"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="answer" name="Скан копія рішення виконавчого комітету" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="decision" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${answer}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="usertask2"></sequenceFlow>
@@ -226,32 +226,30 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+<p>
 Ваше звернення щодо надання дозволу на перепоховання останкiв померлих - опрацьовано. &lt;br /&gt;
-Рішення в додатку до листа або Ви можете отримати особисто за адресою:&lt;br/&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:3]&lt;br /&gt;
+Рішення в додатку до листа або Ви можете отримати особисто
 При собі треба мати документ, що посвідчує особу.
-&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt; 
-&lt;br /&gt;
-Графік роботи:&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:4]&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2],&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+</p>
+<br>
+[pattern/mail/new_design/_common_content_end.html]
+                        [pattern/mail/new_design/_common_feedback.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br>
+			${sWorkTime}<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${answer}</activiti:expression>
+          <activiti:expression><![CDATA[${answer}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -261,27 +259,29 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання дозволу на перепоховання останкiв померлих.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення щодо надання дозволу на перепоховання останкiв померлих опрацьовано та відхилено Управлінням житлово-комунального господарства міської ради. &lt;br /&gt;
-Відповідь у додатку доцього листа.&lt;br /&gt; 
-&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:299:5]&lt;br /&gt; 
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:299:2],&lt;br/&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+<p>
+Ваше звернення щодо надання дозволу на перепоховання останкiв померлих опрацьовано та відхилено Управлінням житлово-комунального господарства міської ради.<br>
+Відповідь у додатку доцього листа.Відповідь у додатку до цього листа.<br>
+ ${sPhoneOrgan}
+			</p>
+            <p>За необхідності Ви можете подати ще одне звернення на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			[pattern/mail/new_design/_common_content_end.html]
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br>
+			${sWorkTime}<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${answer}</activiti:expression>
+          <activiti:expression><![CDATA[${answer}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -296,17 +296,12 @@
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_chervonograd_cnap_316">
     <bpmndi:BPMNPlane bpmnElement="chervonograd_cnap_316" id="BPMNPlane_chervonograd_cnap_316">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="100.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="65.0" width="151.0" x="160.0" y="85.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="270.0" y="118.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="267.0" y="197.0"></omgdc:Bounds>
@@ -350,18 +345,6 @@
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="287.0" y="637.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="285.0" y="148.0"></omgdi:waypoint>
-        <omgdi:waypoint x="284.0" y="197.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="311.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="445.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="117.0"></omgdi:waypoint>
@@ -378,7 +361,7 @@
         <omgdi:waypoint x="652.0" y="214.0"></omgdi:waypoint>
         <omgdi:waypoint x="585.0" y="214.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="596.0" y="172.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="596.0" y="172.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -389,7 +372,7 @@
         <omgdi:waypoint x="672.0" y="234.0"></omgdi:waypoint>
         <omgdi:waypoint x="672.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="97.0" x="633.0" y="230.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="97.0" x="633.0" y="230.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -405,7 +388,7 @@
         <omgdi:waypoint x="539.0" y="502.0"></omgdi:waypoint>
         <omgdi:waypoint x="481.0" y="502.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="492.0" y="461.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="492.0" y="461.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -413,7 +396,7 @@
         <omgdi:waypoint x="539.0" y="654.0"></omgdi:waypoint>
         <omgdi:waypoint x="481.0" y="654.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="492.0" y="653.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="492.0" y="653.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -427,6 +410,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="672.0" y="361.0"></omgdi:waypoint>
         <omgdi:waypoint x="672.0" y="400.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

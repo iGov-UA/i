@@ -12,7 +12,7 @@
         <activiti:formProperty id="sDistr" name="Район" type="string" default="місто"></activiti:formProperty>
         <activiti:formProperty id="sNP" name="Населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddr" name="Вулиця, будинок, квартира" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubekt" name="Звернення подаю як" type="enum" required="true">
           <activiti:value id="fiz" name="фізична особа"></activiti:value>
@@ -50,14 +50,8 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
-        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
@@ -120,19 +114,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Vidpovid" name="Завантажте копію відповіді; якщо необхідно;bNew=true" type="file"></activiti:formProperty>
-		<activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dsmsu_0270_InfoZapyt.html,sFileName=InfoZapyt" type="file" writable="false"></activiti:formProperty>        <activiti:formProperty id="sBody1" name="[pattern/print/dsmsu_0270_InfoZapyt.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dsmsu_0270_InfoZapyt.html,sFileName=InfoZapyt" type="file" writable="false"></activiti:formProperty>
+		<activiti:formProperty id="sBody1" name="[pattern/print/dsmsu_0270_InfoZapyt.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask4" name="Лист-особисто/єлектронною поштою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask4" name="Лист-особисто/єлектронною поштою" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
@@ -166,14 +155,8 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Лист-якщо поштою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask5" name="Лист-якщо поштою" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
@@ -226,14 +209,8 @@
     </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Лист-відмова розгляду" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask6" name="Лист-відмова розгляду" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>

@@ -1225,9 +1225,9 @@
           $scope.tabHistoryAppeal = param;
         };
 
-        $scope.newPrint = function (form, id) {
+        $scope.newPrint = function (form, item) {
           runCalculation(form);
-          $scope.model.printTemplate = id;
+          $scope.model.printTemplate = item;
           $scope.print(form, true);
         };
 

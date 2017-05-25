@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.apache.ibatis.annotations.One;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
@@ -22,57 +23,67 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
- *
  * @author olga
  */
-@javax.persistence.Entity
-public class ProcessTask extends AbstractEntity{
-    
+@Entity
+public class ProcessTask extends AbstractEntity {
+
     @JsonProperty(value = "sID_")
     @Column
     private String sID_;
-    
+
     @JsonProperty(value = "oDateStart")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
-    private DateTime    oDateStart ;
-    
+    private DateTime oDateStart;
+
     @JsonProperty(value = "oDateFinish")
     @JsonSerialize(using = JsonDateSerializer.class)
     @JsonDeserialize(using = JsonDateDeserializer.class)
     @Type(type = DATETIME_TYPE)
     @Column
-    private DateTime    oDateFinish ;
+    private DateTime oDateFinish;
     
     /*@JsonProperty(value = "sID_Data")
     @Column
-    private String sID_Data;*/	
-    
+    private String sID_Data;*/
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
-    
+
     @JsonProperty(value = "aAttribute")
     @OneToMany(mappedBy = "oProcessTask", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Attribute> aAttribute = new ArrayList<>();
-    
-    @JsonProperty(value = "aAccessGroup")
-    @ManyToMany(targetEntity=AccessGroup.class, mappedBy = "aProcessTask")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<AccessGroup> aAccessGroup = new ArrayList<>();
-    
-    @JsonProperty(value = "aAccessUser")
-    @ManyToMany(targetEntity=AccessUser.class, mappedBy = "aProcessTask")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<AccessUser> aAccessUser = new ArrayList<>();
 
+    @JsonProperty(value = "aAccessGroup")
+    @ManyToMany(targetEntity = AccessGroup.class, cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "AccessGroup_ProcessTask",
+            joinColumns = @JoinColumn(name = "nID_ProcessTask"),
+            inverseJoinColumns = @JoinColumn(name = "nID_AccessGroup"))
+    private Set<AccessGroup> aAccessGroup = new HashSet<>();
+
+    @JsonProperty(value = "aAccessUser")
+    @ManyToMany(targetEntity = AccessUser.class, cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "AccessUser_ProcessTask",
+            joinColumns = @JoinColumn(name = "nID_ProcessTask"),
+            inverseJoinColumns = @JoinColumn(name = "nID_AccessUser"))
+    private Set<AccessUser> aAccessUser = new HashSet<>();
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "oProcessTask", cascade = CascadeType.ALL)
+    private CustomProcessTask customProcessTask;
 
     public String getsID_() {
         return sID_;
@@ -122,20 +133,27 @@ public class ProcessTask extends AbstractEntity{
         this.aAttribute = aAttribute;
     }
 
-    public List<AccessGroup> getaAccessGroup() {
+    public Set<AccessGroup> getaAccessGroup() {
         return aAccessGroup;
     }
 
-    public void setaAccessGroup(List<AccessGroup> aAccessGroup) {
+    public void setaAccessGroup(Set<AccessGroup> aAccessGroup) {
         this.aAccessGroup = aAccessGroup;
     }
 
-    public List<AccessUser> getaAccessUser() {
+    public Set<AccessUser> getaAccessUser() {
         return aAccessUser;
     }
 
-    public void setaAccessUser(List<AccessUser> aAccessUser) {
+    public void setaAccessUser(Set<AccessUser> aAccessUser) {
         this.aAccessUser = aAccessUser;
     }
-    
+
+    public CustomProcessTask getCustomProcessTask() {
+        return customProcessTask;
+    }
+
+    public void setCustomProcessTask(CustomProcessTask customProcessTask) {
+        this.customProcessTask = customProcessTask;
+    }
 }

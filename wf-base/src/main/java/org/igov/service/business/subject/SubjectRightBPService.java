@@ -80,7 +80,7 @@ public class SubjectRightBPService {
 		LOG.info("In the method getSubjectRightBPs sLogin={}, asID_Group={}", sLogin, asID_Group);
 
 		List<SubjectRightBP> aSubjectRightBP = subjectRightBPDao.findAllByInValues("sID_Group_Referent", asID_Group);
-		LOG.info("In the method getSubjectRightBPs aSubjectRightBP {}", aSubjectRightBP);
+		//LOG.info("In the method getSubjectRightBPs aSubjectRightBP {}", aSubjectRightBP);
 		
 				
 		for (SubjectRightBP oSubjectRightBP : aSubjectRightBP) {

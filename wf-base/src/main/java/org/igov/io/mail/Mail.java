@@ -69,7 +69,7 @@ public class Mail extends Abstract_Mail {
     @Override
     public void send() throws EmailException {
         LOG.info("send mail started...");
-        LOG.info("(getFrom()={})", getFrom());
+        //LOG.info("(getFrom()={})", getFrom());
         LOG.info("(getTo()={})", getTo());
         String sTo = getTo();
         String sToNew = sTo;
@@ -79,15 +79,15 @@ public class Mail extends Abstract_Mail {
             LOG.info("(getTo()(fixed)={})", sToNew);
             _To(sToNew);
         }
-        LOG.info("(getHead()={})", getHead());
+        //LOG.info("(getHead()={})", getHead());
 
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
         LOG.info("(bUniSender={})", bUniSender);
-        LOG_BIG.info("(bUniSender={})", bUniSender);
-        LOG_BIG.debug("(getFrom()={})", getFrom());
-        LOG_BIG.debug("(getTo()={})", getTo());
-        LOG_BIG.debug("(getHead()={})", getHead());
-        LOG_BIG.debug("(getBody={})", getBody());
+        //LOG_BIG.info("(bUniSender={})", bUniSender);
+        //LOG_BIG.debug("(getFrom()={})", getFrom());
+        //LOG_BIG.debug("(getTo()={})", getTo());
+        //LOG_BIG.debug("(getHead()={})", getHead());
+        //LOG_BIG.debug("(getBody={})", getBody());
 
         StringBuilder sbBody = new StringBuilder(500);
         sbBody.append("host: ");
@@ -122,7 +122,7 @@ public class Mail extends Abstract_Mail {
             sendAlternativeWay(sbBody.toString());
         }
         
-        LOG.info("send mail ended ehith sbBody: " + sbBody.toString());
+        //LOG.info("send mail ended ehith sbBody: " + sbBody.toString());
     }
 
     public void sendOld() throws EmailException {
@@ -130,23 +130,23 @@ public class Mail extends Abstract_Mail {
         LOG.info("init");
         try {
             MultiPartEmail oMultiPartEmail = new MultiPartEmail();
-            LOG.info("(getHost()={})", getHost());
+            //LOG.info("(getHost()={})", getHost());
             oMultiPartEmail.setHostName(getHost());
 
             String[] asTo = { sMailOnly(getTo()) };
             if (getTo().contains("\\,")) {
                 asTo = getTo().split("\\,");//sTo
                 for (String s : asTo) {
-                    LOG.info("oMultiPartEmail.addTo (s={})", s);
+                    //LOG.info("oMultiPartEmail.addTo (s={})", s);
                     oMultiPartEmail.addTo(s, "receiver");
                 }
             }
 
-            LOG.info("(getFrom()={})", getFrom());
-            LOG_BIG.debug("(getFrom()={})", getFrom());
+            //LOG.info("(getFrom()={})", getFrom());
+            //LOG_BIG.debug("(getFrom()={})", getFrom());
             oMultiPartEmail.setFrom(getFrom(), getFrom());//"iGov"
             oMultiPartEmail.setSubject(getHead());
-            LOG.info("getHead()={}", getHead());
+            //LOG.info("getHead()={}", getHead());
             String sLogin = getAuthUser();
             if (sLogin != null && !"".equals(sLogin.trim())) {
                 oMultiPartEmail.setAuthentication(sLogin, getAuthPassword());
@@ -190,12 +190,12 @@ public class Mail extends Abstract_Mail {
             //        new InternetAddress(sTo, "recipient", DEFAULT_ENCODING));
             //new InternetAddress(getTo(), "recipient", DEFAULT_ENCODING));
             oMimeMessage.setSubject(getHead(), DEFAULT_ENCODING);
-            LOG.info("oMimeMessage head: " + getHead());
+            //LOG.info("oMimeMessage head: " + getHead());
             
             _AttachBody(getBody());
-            LOG.info("(getBody()={})", getBody());
+            //LOG.info("(getBody()={})", getBody());
             oMimeMessage.setContent(oMultiparts);
-            LOG.info("oMimeMessage content: " + oMimeMessage.getContent().toString());
+            //LOG.info("oMimeMessage content: " + oMimeMessage.getContent().toString());
             //            oMimeMessage.getRecipients(Message.RecipientType.CC);
             //methodCallRunner.registrateMethod(Transport.class.getName(), "send", new Object[]{oMimeMessage});
             
@@ -210,7 +210,7 @@ public class Mail extends Abstract_Mail {
             LOG.info("Mail was transported....");
             LOG.info("Send " + getTo() + "!!!!!!!!!!!!!!!!!!!!!!!!");
         } catch (Exception oException) {
-            LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
+            //LOG.error("FAIL: {} (getTo()={})", oException.getMessage(), getTo());
             LOG.trace("FAIL:", oException);
             throw new EmailException("Error happened when sending email (" + getTo() + ")"
                     + "Exception message: " + oException.getMessage(), oException);
@@ -421,7 +421,7 @@ public class Mail extends Abstract_Mail {
                     ._Status(Log.LogStatus.ERROR)
                     ._Head("First try send fail")
                     ._Param("getTo", getTo())
-                    ._Param("sbBody", sbBody)
+                    //._Param("sbBody", sbBody)
                     ._Param("oID_Message", oID_Message)
                     .save()
             ;
@@ -441,7 +441,7 @@ public class Mail extends Abstract_Mail {
                         ._Head("Final send trying fail")
                         //._Body(oException1.getMessage())
                         ._Param("getTo", getTo())
-                        ._Param("sbBody", sbBody)
+                        //._Param("sbBody", sbBody)
                         .save()
                 ;
         }

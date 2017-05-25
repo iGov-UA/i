@@ -68,9 +68,9 @@
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var sum = 23,11;
+      <script>var sum = 23.11;
 if ((execution.getVariable('asLust')) === 'sEnamLustKur') {
-	sum =  43,47;
+	sum =  43.47;
 }
 execution.setVariable('sSum', sum);  
 
@@ -196,7 +196,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
@@ -230,7 +230,7 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hide name" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;vl&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;pr&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html] ; ;bVisible=false" type="string" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -357,7 +357,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidmovaDGK.json')}"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hide name" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;vl&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;pr&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Zemelni_Poslugi/211_6-ZEM.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html] ; ;bVisible=false" type="string" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -499,7 +499,7 @@ ${sNameOrgan}&lt;br/&gt;
         <activiti:formProperty id="result" name="Завантажте скановану копію відповіді; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hide name" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;vl&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;pr&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;goal&quot;},&quot;sCondition&quot;: &quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/Zemelni_Poslugi/211_6-ZEM.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html] ; ;bVisible=false" type="string" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/211_6-ZEM.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява на видачу 6-ЗЕМ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="shapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -522,7 +522,7 @@ ${sNameOrgan}&lt;br/&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>${sPosluga_name}</activiti:expression>
@@ -788,7 +788,7 @@ ${sNameOrgan}&lt;br/&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Доставка не оплачена. Документи буде отримано нарочно. ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}</activiti:expression>

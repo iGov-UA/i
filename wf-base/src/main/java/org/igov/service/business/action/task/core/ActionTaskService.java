@@ -1106,7 +1106,6 @@ public class ActionTaskService {
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
-        LOG.info("getBusinessProcessesFieldsOfLogin: aProcessDefinition_Return={} for login={}", aProcessDefinition_Return);
         
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
@@ -1121,7 +1120,7 @@ public class ActionTaskService {
             }
 
             Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
-            LOG.info("getBusinessProcessesFieldsOfLogin: Collection<FlowElement> elements = {} for oProcessDefinition = {}", elements, oProcessDefinition.getId());
+            //LOG.info("getBusinessProcessesFieldsOfLogin: Collection<FlowElement> elements = {} for oProcessDefinition = {}", elements, oProcessDefinition.getId());
             
             for (FlowElement flowElement : elements) {
                 if (flowElement instanceof UserTask) {
@@ -1163,7 +1162,7 @@ public class ActionTaskService {
                 .active()
                 .latestVersion().list();
 
-        LOG.info("getBusinessProcessesObjectsOfLogin: all active processes aProcessDefinition = {}", aProcessDefinition);
+        //LOG.info("getBusinessProcessesObjectsOfLogin: all active processes aProcessDefinition = {}", aProcessDefinition);
         
         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
              
@@ -1717,12 +1716,18 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     }
 
     public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception {
+        String snID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
+        return deleteProcess(snID_Process, sLogin, sReason);
+    }
+    
+    public boolean deleteProcess(String snID_Process, String sLogin, String sReason) throws Exception {
         boolean success;
-        String nID_Process;
+        //String nID_Process;
         
-        nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
+        //nID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));
 
-        String sID_Order = oGeneralConfig.getOrderId_ByOrder(nID_Order);
+        //String sID_Order = oGeneralConfig.getOrderId_ByOrder(nID_Order);
+        String sID_Order = oGeneralConfig.getOrderId_ByProcess(Long.valueOf(snID_Process));
 
         HistoryEvent_Service_StatusType oStatusType = HistoryEvent_Service_StatusType.REMOVED;
         String statusType_Name = oStatusType.getsName_UA();
@@ -1737,17 +1742,17 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         Map<String, String> mParam = new HashMap<>();
         mParam.put("nID_StatusType", oStatusType.getnID() + "");
         mParam.put("sBody", sBody);
-        LOG.info("Deleting process {}: {}", nID_Process, statusType_Name);
+        LOG.info("Deleting process {}: {}", snID_Process, statusType_Name);
         oHistoryEventService.updateHistoryEvent(
                 sID_Order, statusType_Name, false, oStatusType, mParam);
         try {
-            oRuntimeService.deleteProcessInstance(nID_Process, sReason);
+            oRuntimeService.deleteProcessInstance(snID_Process, sReason);
         } catch (ActivitiObjectNotFoundException e) {
-            LOG.error("Could not find process {} to delete: {}", nID_Process, e);
+            LOG.error("Could not find process {} to delete: {}", snID_Process, e);
         }
         success = true;
         return success;
-    }
+    }    
 
     public boolean deleteProcessSimple(String snID_Process, String sLogin, String sReason) throws Exception {
         boolean bOk = false;

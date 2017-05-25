@@ -3,9 +3,9 @@
   <process id="_doc_mhp_agreementContract" name="Погодження договорів поставки товарів (послуг)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="ProcessInstanceId" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -15,10 +15,10 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <userTask id="usertask1" name="Підготовка проекту договору">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MHP_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" required="true"></activiti:formProperty>
@@ -59,7 +59,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
           <activiti:value id="sEnumSighting" name="отправить за визами"></activiti:value>
           <activiti:value id="sEnumEnd" name="удалить"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ; bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -91,10 +91,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <userTask id="usertask2" name="Перевірка правовстановлюючих документівта проекту договору (юрист)">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MHP_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
@@ -134,7 +134,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumReturn" name="повернути з зауваженням"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextRemarkJustice" name="Зауваження" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ; bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -159,10 +159,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <userTask id="usertask3" name="Узгодження договору (юрист)">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MHP_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
@@ -197,7 +197,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ; bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -233,10 +233,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <userTask id="usertask4" name="Підписання керівник департаменту">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MHP_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
@@ -271,17 +271,17 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ; bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow18" sourceRef="scripttask7" targetRef="usertask4"></sequenceFlow>
     <userTask id="usertask5" name="Перевірка фінансових умов (ФЕД)">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MHP_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
@@ -321,7 +321,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumReturn" name="повернути з зауваженням"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextRemarkFinance" name="Зауваження" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ; bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -344,10 +344,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <userTask id="usertask6" name="Підписання Заступник голови правління">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MHP_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
@@ -382,7 +382,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ; bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -401,10 +401,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <userTask id="usertask7" name="Підписання Голова правління">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MHP_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
@@ -439,7 +439,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ; bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -460,10 +460,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <userTask id="usertask8" name="Узгодження договору (ФЕД)">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="MHP_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MHP_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sSubjectContract" name="Предмет договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocNubmber" name="Номер договору" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nContractAmount" name="Сума договору (без ПДВ)" type="double" writable="false"></activiti:formProperty>
@@ -498,7 +498,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sHeader_10" name="10-й блок договору (заголовок)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContent_10" name="Вміст десятого блоку" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Правовстановлюючи документи від постачальника; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/mhp/sTable1_doc_mhp_agreementContract.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ; bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/mhp/_doc_mhp_agreementContract_print1.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>

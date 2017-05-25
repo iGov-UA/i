@@ -28,9 +28,9 @@ public class ProcessSubjectTask extends AbstractEntity{
     @Column
     private String snID_Process_Activiti_Root;
     
-    @OneToMany(mappedBy = "oProcessSubjectTask", cascade = CascadeType.ALL, orphanRemoval = true)
+    /*@OneToMany(mappedBy = "oProcessSubjectTask", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE) 
-    private List<ProcessSubject> aProcessSubject;
+    private List<ProcessSubject> aProcessSubject;*/
 
     public String getsHead() {
         return sHead;
@@ -42,10 +42,6 @@ public class ProcessSubjectTask extends AbstractEntity{
 
     public String getSnID_Process_Activiti_Root() {
         return snID_Process_Activiti_Root;
-    }
-
-    public List<ProcessSubject> getaProcessSubject() {
-        return aProcessSubject;
     }
 
     public void setsHead(String sHead) {
@@ -60,17 +56,21 @@ public class ProcessSubjectTask extends AbstractEntity{
         this.snID_Process_Activiti_Root = snID_Process_Activiti_Root;
     }
 
-    public void setaProcessSubject(List<ProcessSubject> aProcessSubject) {
+    /*public void setaProcessSubject(List<ProcessSubject> aProcessSubject) {
         this.aProcessSubject = aProcessSubject;
     }
+    
+    public List<ProcessSubject> getaProcessSubject() {
+        return aProcessSubject;
+    }*/
 
-    @Override
+    /*@Override
     public String toString() {
         return "ProcessSubjectTask{"
                 + "id=" + getId()
                 + "sHead=" + sHead + ", sBody=" + sBody
                 + ", snID_Process_Activiti_Root=" + snID_Process_Activiti_Root
                 + ", aProcessSubject=" + aProcessSubject + '}';
-    }
+    }*/
    
 }

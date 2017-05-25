@@ -719,9 +719,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 response.put("aMessage", oMessageService.gerOrderMessagesByProcessInstanceID(nID_Process));
             } catch (Exception oException) {
                 LOG.error("Can't get: {}", oException.getMessage());
-                throw new CommonServiceException(
+                /*throw new CommonServiceException(
                         ExceptionCommonController.BUSINESS_ERROR_CODE,
-                        "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);
+                        "Can't get: " + oException.getMessage(), oException, HttpStatus.FORBIDDEN);*/
             }
         }
         if (bIncludeProcessVariables.equals(Boolean.TRUE)) {
@@ -939,12 +939,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @ApiOperation(value = "DeleteProcess", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
     @RequestMapping(value = "/delete-process", method = RequestMethod.DELETE)
     public @ResponseBody
-    void deleteProcess(@RequestParam(value = "nID_Order") Long nID_Order,
+    void deleteProcess(@RequestParam(value = "nID_Order", required = false) Long nID_Order,
+            @RequestParam(value = "nID_Process", required = false) String snID_Process,
             @RequestParam(value = "sLogin", required = false) String sLogin,
             @RequestParam(value = "sReason", required = false) String sReason)
             throws Exception {
         //Вызывать сервис централа и апдейтить в истории статус на 8 (закрыт)
-        oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
+        if(snID_Process!=null){
+            oActionTaskService.deleteProcess(snID_Process, sLogin, sReason);
+        }else{
+            oActionTaskService.deleteProcess(nID_Order, sLogin, sReason);
+        }
     }
 
     @ApiOperation(value = "DeleteProcess", notes = "#####  ActionCommonTaskController: описания нет #####\n\n")
@@ -1506,7 +1511,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws IOException {
 
         String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
-        LOG.info("Result: {}", jsonRes);
+        //LOG.info("Result: {}", jsonRes);
         return jsonRes;
     }
 
@@ -2730,8 +2735,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         deleteProccess.closeProcess(sID_Process_Def);
     }
     
-    @ApiOperation(value = "/deleteHistoricProcessInstance", notes = "##### Удалить закрытый процесс#####\n\n")
-    @RequestMapping(value = "/deleteHistoricProcessInstance", method = RequestMethod.GET)
+    @ApiOperation(value = "/deleteHistoricProcessInstance", notes = "#####\n" +
+           "https://alpha.test.region.igov.org.ua/wf/service/action/task/deleteHistoricProcessInstance?nID_Order=335750019 \n"
+            + " Удалить закрытый процесс#####\n\n")
+    @RequestMapping(value = "/deleteHistoricProcessInstance", method = RequestMethod.DELETE)
     public @ResponseBody
     void deleteHistoricProcessInstance(@ApiParam(value = "номер заявки", required = true) 
     @RequestParam(value = "nID_Order", required = true) String nID_Order) throws CRCInvalidException {
@@ -3134,7 +3141,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "JSON-объект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
     ) throws Exception {
         LOG.info("updateProcess started...");
-        LOG.info("sJsonBody {}", sJsonBody);
+        //LOG.info("sJsonBody {}", sJsonBody);
         
         Map<String, Object> mParam = new HashMap<>();
         Map<String, Object> mReturn = new HashMap<>();

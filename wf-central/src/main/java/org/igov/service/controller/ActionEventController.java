@@ -1,19 +1,41 @@
 package org.igov.service.controller;
 
-import com.google.common.base.Optional;
-import io.swagger.annotations.*;
-import liquibase.util.csv.CSVWriter;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityInsedeCover;
-import org.igov.model.action.event.*;
+import org.igov.model.action.event.HistoryEvent;
+import org.igov.model.action.event.HistoryEventDao;
+import org.igov.model.action.event.HistoryEvent_Service;
+import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.event.HistoryEvent_Service_StatusType;
+import org.igov.model.action.event.ServicesStatistics;
 import org.igov.model.action.task.core.entity.ActionProcessCount;
 import org.igov.model.action.task.core.entity.ActionProcessCountDao;
-import org.igov.model.subject.*;
+import org.igov.model.subject.Server;
+import org.igov.model.subject.ServerDao;
+import org.igov.model.subject.Subject;
+import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectHuman;
+import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.message.SubjectMessageFeedback;
 import org.igov.model.subject.message.SubjectMessageFeedbackDao;
 import org.igov.service.business.action.ActionEventService;
-import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.RecordNotFoundException;
@@ -30,16 +52,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.NumberUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.google.common.base.Optional;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import liquibase.util.csv.CSVWriter;
 
 @Controller
 @Api(tags = {"ActionEventController -- События по действиям и статистика"})
@@ -67,9 +93,7 @@ public class ActionEventController implements ControllerConstants {
     private SubjectDao subjectDao;
     @Autowired
     private SubjectHumanDao subjectHumanDao;
-    @Autowired
-    private ActionEventHistoryService actionEventHistoryService;
-
+    
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
             + "для sID_Order проверяется соответствие формату (должен содержать \"-\"), если черточки нету -- то перед строкой добавляется \"0-\"\n"
@@ -139,13 +163,14 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(value = "строка тела сообщения (для поддержки дополнения заявки со стороны гражданина)", required = false) @RequestParam(value = "sBody", required = false) String sBody,
             @ApiParam(value = "номер-ид запущенного процесса для обработки фидбеков (issue 962)", required = false) @RequestParam(value = "nID_Proccess_Feedback", required = false) Long nID_Proccess_Feedback,
             @ApiParam(value = "номер-ид бп эсклации (поле на перспективу для следующего тз по эскалации)", required = false) @RequestParam(value = "nID_Proccess_Escalation", required = false) Long nID_Proccess_Escalation,
-            @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType
+            @ApiParam(value = "числовой код, который соответсвует статусу", required = true) @RequestParam(value = "nID_StatusType", required = true) Long nID_StatusType,
+            @ApiParam(value = "значение органа, в котором заказана услуга", required = false) @RequestParam(value = "sID_Public_SubjectOrganJoin", required = false) String sID_Public_SubjectOrganJoin
     ) {
-        /*LOG.info("addHistoryEvent_Service was started with params: sID_Order: {} nID_Subject : {} sUserTaskName: {} "
+        LOG.info("addHistoryEvent_Service was started with params: sID_Order: {} nID_Subject : {} sUserTaskName: {} "
                 + "nID_Service: {} nID_ServiceData: {} nID_ServiceData: {} nID_Region: {} sID_UA: {} soData: {} "
                 + "sToken: {} sHead: {} sBody: nID_Proccess_Feedback: {} nID_Proccess_Escalation: {} nID_StatusType: {}",
         sID_Order, nID_Subject, sUserTaskName, nID_Service, nID_ServiceData, nID_ServiceData, nID_Region, 
-        sID_UA, soData, sToken, sHead, sBody, nID_Proccess_Feedback, nID_Proccess_Escalation, nID_StatusType);*/
+        sID_UA, soData, sToken, sHead, sBody, nID_Proccess_Feedback, nID_Proccess_Escalation, nID_StatusType,  sID_Public_SubjectOrganJoin);
         
         return oActionEventService.addActionStatus_Central(
                 sID_Order,
@@ -161,7 +186,8 @@ public class ActionEventController implements ControllerConstants {
                 sBody,
                 nID_Proccess_Feedback,
                 nID_Proccess_Escalation,
-                nID_StatusType
+                nID_StatusType,
+                sID_Public_SubjectOrganJoin
         );
     }
 
@@ -247,8 +273,8 @@ public class ActionEventController implements ControllerConstants {
             throw new CommonServiceException(HttpStatus.BAD_REQUEST.toString(), "nID_StatusType is undefined");
         }
 
-        LOG.info("sBody= " + sBody);
-        LOG.info("soData= " + soData);
+        //LOG.info("sBody= " + sBody);
+        //LOG.info("soData= " + soData);
 
         return oActionEventService.updateActionStatus_Central(
                 sID_Order,
@@ -948,4 +974,29 @@ public class ActionEventController implements ControllerConstants {
         }
         return result;
     }
+    
+    @ApiOperation(value = "Получение статистики по выбранному списку сервисов и региону за заданный промежуток времени", notes
+            = "##### Примеры:\n"
+            + "https://test.igov.org.ua/wf/service/action/event/getServicesStatisticOfDnepr?sDate_from=2010-07-04 12:09:56&sDate_to=2019-07-04 12:09:56\n\n"
+            + "Результат\n"
+            + "\n```csv\n"
+            + "nID_Service;ServiceName;SID_UA;placeName;nCountTotal;averageRate;averageTime\n"
+            + "1;Надання довідки про притягнення до кримінальної відповідальності, відсутність (наявність) судимості або обмежень, передбачених кримінально-процесуальним законодавством України;1200000000;Дніпропетровська;4;0.0;7.516667\n"
+            + "\n```\n")
+    @RequestMapping(value = "/getServicesStatisticOfDnepr", method = RequestMethod.GET)
+    public @ResponseBody
+    void getServicesStatisticOfDnepr(
+            @ApiParam(value = "дата \"С\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_from") String sDate_from,
+            @ApiParam(value = "дата \"По\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_to") String sDate_to,
+            HttpServletResponse httpResponse) {
+
+		try {
+			oActionEventService.getServicesStatisticsOfDnepr(sDate_from, sDate_to, httpResponse);
+
+		} catch (Exception e) {
+			LOG.error("Error getServicesStatisticOfDnepr {}", e.getMessage());
+			LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
+		}
+    }
+
 }

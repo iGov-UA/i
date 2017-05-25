@@ -49,6 +49,7 @@ public interface HistoryEvent_ServiceDao extends EntityDao<Long, HistoryEvent_Se
      */
     List<ServicesStatistics> getServicesStatistics(DateTime from, DateTime to);
     
+    List<ServicesStatistics> getServicesStatisticsOfDnepr(DateTime from, DateTime to);
     
     List<HistoryEvent_Service> getOrdersHistory(Long nID_Subject, Long nID_Service, String sID_UA);
     

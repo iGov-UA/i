@@ -50,8 +50,8 @@
         <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 18.01"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 38.38"></activiti:value>
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 23,11"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43,47"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;bFlag&quot;,&quot;FlagPost&quot;,&quot;sAddress&quot;,&quot;shapka&quot;,&quot;sShapka&quot;,&quot;sMailClerk_dgk&quot;,&quot;sMailClerk&quot;,&quot;sPhoneOrgan&quot;,&quot;sNameOrgan&quot;,&quot;sWorkTime&quot;,&quot;sID_Payment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sCountPayment&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
@@ -60,7 +60,7 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина) ; ;bVisible=false" type="string" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string" default="18.01"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string" default="23,11"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюти ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -82,9 +82,9 @@
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var sum = 18.01;
+      <script>var sum = 23.11;
 if ((execution.getVariable('asLust')) === 'sEnamLustKur') {
-	sum =  38.38;
+	sum =  43.47;
 }
 execution.setVariable('sSum', sum);  
 
@@ -192,7 +192,7 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
@@ -241,7 +241,7 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/KadastrVnesennaZmin.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrVnesennaZmin.html] ; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrVnesennaZmin.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -381,7 +381,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="result" name="Відповідь ДГК" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidmovaDGK.json')}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/KadastrVnesennaZmin.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrVnesennaZmin.html] ; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrVnesennaZmin.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -448,7 +448,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="result" name="Відповідь ДГК" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidmovaDGK.json')}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/KadastrVnesennaZmin.html"  type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrVnesennaZmin.html] ; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/KadastrVnesennaZmin.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -464,7 +464,7 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[ДГК обробив заяву. ${sPosluga_name}]]></activiti:expression>
@@ -698,7 +698,7 @@ ${sNameOrgan}<br/>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Доставка не оплачена. Документи буде отримано нарочно. ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}]]></activiti:expression>
@@ -781,8 +781,8 @@ ${sNameOrgan}<br/>
         <activiti:formProperty id="sIndex" name="Індекс заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 17.70"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 37.70"></activiti:value>
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 23,11"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43,47"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostIdentif" name="Ідентифікатор внутрішнього поштового відправлення" type="string" required="true"></activiti:formProperty>

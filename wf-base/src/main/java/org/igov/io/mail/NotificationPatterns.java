@@ -78,19 +78,19 @@ public class NotificationPatterns {
             File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_PATTERN_EMAIL, "auto_client_notify.html");
             String sBody = Files.toString(oFile, Charset.defaultCharset());
             
-            LOG.info("sBody testing: " + sBody);
+            //LOG.info("sBody testing: " + sBody);
             
             if (sID_Order != null) {
                 sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
-                LOG.info("!!!after sID_Order replace sBody: " + sBody);
+                //LOG.info("!!!after sID_Order replace sBody: " + sBody);
             }
             if (bankIdFirstName != null) {
                 sBody = sBody.replaceAll("\\[sClientName\\]", bankIdFirstName);
-                LOG.info("!!!after bankIdFirstName replace sBody: " + sBody);
+                //LOG.info("!!!after bankIdFirstName replace sBody: " + sBody);
             }
             if (bankIdLastName != null) {
                 sBody = sBody.replaceAll("\\[sClientSurname\\]", bankIdLastName);
-                LOG.info("!!!after bankIdLastName replace sBody: " + sBody);
+                //LOG.info("!!!after bankIdLastName replace sBody: " + sBody);
             }
 
             Mail oMail = context.getBean(Mail.class);
@@ -190,7 +190,7 @@ public class NotificationPatterns {
         try {
             sHead = ((sHead == null || "".equals(sHead.trim())) ? 
                     "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
-            LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
+            //LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
             String sClientFIO = null;
             String sEmployerFIO = null;
             try {

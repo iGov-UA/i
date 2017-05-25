@@ -109,7 +109,7 @@ ${sNameOrgan}.<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Надання містобудівних умов та обмежень забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
@@ -149,7 +149,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="reject" name="В опрацюванні заявки відмовлено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment1" name="Примітка:" type="string" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -275,7 +275,7 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -317,7 +317,7 @@ ${sNameOrgan}.<br />
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Результат опрацювання ГоловАПУ звернення.]]></activiti:expression>
@@ -356,7 +356,7 @@ ${sNameOrgan}.<br />
         </activiti:formProperty>
         <activiti:formProperty id="result" name="Завантажте скан-копію відповіді" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask3" name="Лист з відповіддю" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -744,7 +744,7 @@ ${sNameOrgan}.&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -862,7 +862,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>ДГК обробив заяву. Для видачі Вам надіслано відповідь. ${sPosluga_name}</activiti:expression>

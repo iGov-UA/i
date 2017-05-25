@@ -8,9 +8,8 @@ package org.igov.analytic.model.config;
 import org.igov.model.core.EntityDao;
 
 /**
- *
  * @author olga
  */
-public interface ConfigDao extends EntityDao<Long, Config>{
-    
+public interface ConfigDao extends EntityDao<Long, Config> {
+    Config findLatestConfig();
 }

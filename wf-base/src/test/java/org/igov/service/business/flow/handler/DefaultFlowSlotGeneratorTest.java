@@ -1,6 +1,7 @@
 package org.igov.service.business.flow.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.text.ParseException;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,7 +40,7 @@ public class DefaultFlowSlotGeneratorTest {
     }
 
     @Test
-    public void testGenerateEmptyConfiguration() throws JsonProcessingException {
+    public void testGenerateEmptyConfiguration() throws JsonProcessingException, ParseException {
         Map<String, String> configuration = new HashMap<>();
         String sData = JsonRestUtils.toJson(configuration);
         List<FlowSlot> slot = generator.generateObjects(configuration, startDate, endDate, maxGeneratedSlotsCount,
@@ -48,7 +49,7 @@ public class DefaultFlowSlotGeneratorTest {
         Assert.assertTrue(slot.isEmpty());
     }
 
-    private void validateGeneration(String cronExpression, int slotsCount) throws JsonProcessingException {
+    private void validateGeneration(String cronExpression, int slotsCount) throws JsonProcessingException, ParseException {
         Map<String, String> configuration = new HashMap<>();
         configuration.put(cronExpression, DEFAULT_DURATION);
 
@@ -59,7 +60,7 @@ public class DefaultFlowSlotGeneratorTest {
     }
 
     @Test
-    public void testGenerate() throws JsonProcessingException {
+    public void testGenerate() throws JsonProcessingException, ParseException {
 
         for (int i = 1; i <= 4; ++i) {
             endDate = startDate.plusDays(i);
@@ -80,14 +81,14 @@ public class DefaultFlowSlotGeneratorTest {
     }
 
     @Test
-    public void testGenerateNearToRealData1() throws JsonProcessingException {
+    public void testGenerateNearToRealData1() throws JsonProcessingException, ParseException {
         startDate = new DateTime(2015, 7, 1, 0, 0);
         endDate = new DateTime(2015, 7, 2, 0, 0);
         validateGeneration("0 0/15 8-15 ? * MON-FRI *", 32);
     }
 
     @Test(expected = IllegalStateException.class)
-    public void testTooManyValues() throws JsonProcessingException {
+    public void testTooManyValues() throws JsonProcessingException, ParseException {
         maxGeneratedSlotsCount = 59;
         validateGeneration("0 * 14 * * ?", 60);
     }

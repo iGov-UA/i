@@ -7,12 +7,12 @@
     <div class='col-md-12 ng-modal-dialog-content-view' ng-style='dialogStyle'>
       <div class='ng-modal-dialog-content' ng-transclude></div>
     </div>
-    <div class='ng-modal-dialog-print-button'>
-      <button ng-if="!signedContent" ng-click='signWithEDS()' class='btn btn-igov'>Підписати</button>
-      <a ng-if="signedContent" download="{{ signedContent.signedContentName }}.pdf" ng-href="{{ signedContent.signedContentURL }}" class='btn btn-igov'>Скачати документ</a>
+    <div class='ng-modal-dialog-print-button' ng-if="$parent.$root.config.bTest">
+      <button ng-if="!(model.printTemplate.oEDS && model.printTemplate.oEDS.sSignedContentURL)" ng-click='signWithEDS()' class='btn btn-igov'>Підписати</button>
+      <a ng-if="model.printTemplate.oEDS && model.printTemplate.oEDS.sSignedContentURL" download="{{ model.printTemplate.oEDS.sSignedContentName }}.pdf" ng-href="{{ model.printTemplate.oEDS.sSignedContentURL }}" class='btn btn-igov'>Скачати документ</a>
     </div>
-    <div class='ng-modal-dialog-print-button'>
-      <button ng-if="showSignAndUploadButton() && isPrintFormNeverUploaded" ng-click='signAndUpload(printFormLinkedToFileField)' class='btn btn-igov'>Підписати та надіслати</button>
+    <div class='ng-modal-dialog-print-button' ng-if="$parent.$root.config.bTest">
+      <button ng-if="showSignAndUploadButton()" ng-click='signAndUpload()' class='btn btn-igov'>Підписати та надіслати</button>
     </div>
     <div class='ng-modal-dialog-print-button'>
       <button ng-click='printContent()' class='btn btn-igov'>Роздрукувати</button>
