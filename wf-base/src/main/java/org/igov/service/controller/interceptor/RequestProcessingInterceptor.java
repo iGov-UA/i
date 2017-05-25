@@ -1098,7 +1098,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
     
-    private void processSubjectStatusHistoryWriting(HttpServletRequest oRequest) {
+    private void processSubjectStatusHistoryWriting(HttpServletRequest oRequest) throws Exception {
         
         if (isSetProcessSubjectStatus(oRequest)) {
         
@@ -1139,9 +1139,28 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 
                 if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
                     
+                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task_Activiti).singleResult();
+                    LOG.info("processSubjectStatusHistoryWriting: oHistoricTaskInstance={}", oHistoricTaskInstance);
+                    
+                    String sProcessInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                    LOG.info("processSubjectStatusHistoryWriting: sProcessInstanceId={}", sProcessInstanceId);
+                    
+                    String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sProcessInstanceId));
+                    LOG.info("processSubjectStatusHistoryWriting: sID_Order={}", sID_Order);
+                    
+                    List<Task> aTask = taskService.createTaskQuery().processInstanceId(sProcessInstanceId).active().list();
+                    LOG.info("processSubjectStatusHistoryWriting: aTask={}", aTask);
+                    
+                    boolean bProcessClosed = aTask == null || aTask.isEmpty();
+                    String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                    LOG.info("processSubjectStatusHistoryWriting: sUserTaskName={}", sUserTaskName);
+                    
+                    
                     if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
                     
-                        //TaskRequestDone
+                        Map<String, String> mParam = new HashMap<>();
+                        
+                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 20L);
                         
                     } else if (sID_ProcessSubjectStatus.equals("notExecuted") && sLoginRoleMain.equals("Executor")) {
                     
