@@ -74,6 +74,10 @@
         <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioClerk_SignDovidka" name="Посада та П.І.Б. посадової особи, яка підписує довідку ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrganAdressBuro" name="Назва, посада та П.І.Б. посадової особи в Адресному Бюро, куди надсилається запит ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrganAdressBuroTo" name="Назва в давальному відмінку Адресного Бюро, куди надсилається запит ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrganAdressBuroFrom" name="Назва в давальному відмінку відділу реєстрації; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sCommentForAdressBuro" name="Коментар посадовця для адресного бюро ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином ; ;bVisible=false" type="string" default="False"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="hide fields" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_11.json')}"></activiti:formProperty>
@@ -212,15 +216,20 @@
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCommentForAdressBuro" name="Текст, який буде додано до запиту в адресне бюро" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган надання послуги ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs_Another_Person" name="Перелік додатків файлів-додатков для довіреної особи ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sStringInZayava" name="Формування строки в заяві ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrganAdressBuro" name="Назва, посада та П.І.Б. посадової особи в Адресному Бюро, куди надсилається запит ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrganAdressBuroTo" name="Назва в давальному відмінку Адресного Бюро, куди надсилається запит ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrganAdressBuroFrom" name="Назва в давальному відмінку відділу реєстрації; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0024_Zayava_na_Dovidku_Person.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу довідки"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0024_Zayava_na_Dovidku_Another_Person.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу довідки (від довіреної особи)"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0024_Dovidka_projivannya.html] ; ;bVisible=false ,bPrintform=true" type="string" default="ДОВІДКА про реєстрацію місця проживання особи"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0024_Dovidka_perebuvannya.html] ; ;bVisible=false ,bPrintform=true" type="string" default="ДОВІДКА про реєстрацію місця перебування особи"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0024_Zaput_Adres_Buro.html] ; ;bVisible=false ,bPrintform=true" type="string" default="ЗАПИТ до адресного бюро"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="tune print" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyPassportZ" name="Паспорт (інший документ), що посвідчує заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DocPredstavnika" name="Документ, що підтверджує статус законного представника особи; Наприклад, свідоцтво про народження (для батьків) або оформлена довіреність. Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -482,15 +491,20 @@
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCommentForAdressBuro" name="Текст, який буде додано до запиту в адресне бюро" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган надання послуги ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs_Another_Person" name="Перелік додатків файлів-додатков для довіреної особи ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sStringInZayava" name="Формування строки в заяві ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrganAdressBuro" name="Назва, посада та П.І.Б. посадової особи в Адресному Бюро, куди надсилається запит ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrganAdressBuroTo" name="Назва в давальному відмінку Адресного Бюро, куди надсилається запит ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationOrganAdressBuroFrom" name="Назва в давальному відмінку відділу реєстрації; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/rada_0024_Zayava_na_Dovidku_Person.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу довідки"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/skv/rada_0024_Zayava_na_Dovidku_Another_Person.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу довідки (від довіреної особи)"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/skv/rada_0024_Dovidka_projivannya.html] ; ;bVisible=false ,bPrintform=true" type="string" default="ДОВІДКА про реєстрацію місця проживання особи"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0024_Dovidka_perebuvannya.html] ; ;bVisible=false ,bPrintform=true" type="string" default="ДОВІДКА про реєстрацію місця перебування особи"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0024_Zaput_Adres_Buro.html] ; ;bVisible=false ,bPrintform=true" type="string" default="ЗАПИТ до адресного бюро"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0024_Zayava_na_Dovidku_Person.html,sFileName=Zayava_pro_vydachu_dovidky,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0024_Zayava_na_Dovidku_Another_Person.html,sFileName=Zayava_pro_vydachu_dovidky_vid_zakonnoho_predstavnyka,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="tune print" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_2.json')}"></activiti:formProperty>
