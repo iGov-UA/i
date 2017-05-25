@@ -1116,8 +1116,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             String snID_Task_Activiti = mRequestParam.get("snID_Task_Activiti");
             String sLoginController = mRequestParam.get("sLoginController");
             String sLoginExecutor = mRequestParam.get("sLoginExecutor");
-            String sText = mRequestParam.get("sText");
-            String sDatePlaneNew = mRequestParam.get("sDatePlaneNew");
             String sID_ProcessSubjectStatus = mRequestParam.get("sID_ProcessSubjectStatus");
             
             if (sLoginController != null || sLoginExecutor != null) {
@@ -1142,6 +1140,44 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
                 
                     LOG.info("processSubjectStatusHistoryWriting: first case");
+                    
+                    if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
+                    
+                        //TaskRequestDone
+                        
+                    } else if (sID_ProcessSubjectStatus.equals("notExecuted") && sLoginRoleMain.equals("Executor")) {
+                    
+                        //TaskRequestNotDone
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Executor")) {
+                    
+                        //TaskRequestNotActual
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("requestTransfered") && sLoginRoleMain.equals("Executor")) {
+                    
+                        //TaskRequestTransfered
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskTransfered
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("rejected") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskRejected
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskDone
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("notExecuted") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskNotDone
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskNotActual
+                    
+                    }
                 }
             }
             
