@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="_test_sID_Pay_MasterPass" name="Тестування поля sID_Pay_MasterPass для роботи з  платіжною системою MasterCard" isExecutable="true">
-    <documentation>
+
+	<documentation>
 		AGVersion: 2017.05.15
 	</documentation>
+
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Pay_MasterPass" name="sID_Pay_MasterPass" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum_MasterPass" name="Сума платежу, у копійках" type="string" default="100"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=False" type="textArea" default="{&quot;p2r&quot;: [{&quot;amount&quot;: &quot;100&quot;,&quot;fio&quot;: &quot;айгов&quot;,&quot;edrpou&quot;: &quot;00000000&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків" type="string" default="Призначення_платежу_у_форматі_текст_до_100_знаків"></activiti:formProperty>
+        <activiti:formProperty id="sSum_MasterPass" name="Сума платежу, у копійках; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="textArea" default="{&quot;p2r&quot;: [{&quot;amount&quot;: &quot;110&quot;,&quot;fio&quot;: &quot;ФОП Иванов&quot;,&quot;edrpou&quot;: &quot;00000001&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый-1&quot;}, {&quot;amount&quot;: &quot;120&quot;,&quot;fio&quot;: &quot;ФОП Петров&quot;,&quot;edrpou&quot;: &quot;00000002&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый-2&quot;}, {&quot;amount&quot;: &quot;130&quot;,&quot;fio&quot;: &quot;ФОП Сидоров&quot;,&quot;edrpou&quot;: &quot;00000003&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый-3&quot;}, {&quot;amount&quot;: &quot;140&quot;,&quot;fio&quot;: &quot;ООО Рога&quot;,&quot;edrpou&quot;: &quot;00000004&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый-4&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string" default="Призначення_платежу_у_форматі_текст_до_100_знаків"></activiti:formProperty>
       </extensionElements>
     </startEvent>
+    
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Pay_MasterPass" name="sID_Pay_MasterPass" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sSum_MasterPass" name="Сума платежу, у копійках; ;bVisible=False" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=False" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=False" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sSum_MasterPass" name="Сума платежу, у копійках; ;bVisible=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>

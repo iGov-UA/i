@@ -102,13 +102,12 @@ public enum HistoryEventType {
     TASK_CANCELED(19L,
             "TaskCanceled",
             "Вы самосточтельно отменили заявку №" + HistoryEventMessage.TASK_NUMBER,
-            "Ви самостійно скасували заявку");
-            /*
+            "Ви самостійно скасували заявку"),
     TASK_REQUEST_DONE(20L,
             "TaskRequestDone",
-            "исполнитель отработал задачу (sID_ProcessSubjectStatus = executed, sLoginRole= Executor)",
-            "%ПІБ виконавця (логін виконавця)% - завдання виконано"),
-    TASK_REQUEST_NOT_DONE(21L,
+            "Исполнитель отработал задачу (sID_ProcessSubjectStatus = executed, sLoginRole= Executor)",
+            "%ПІБ виконавця (логін виконавця)% - завдання виконано");
+    /*TASK_REQUEST_NOT_DONE(21L,
             "TaskRequestNotDone",
             "исполнитель отработал задачу (sID_ProcessSubjectStatus = notExecuted, sLoginRole= Executor)",
             "%ПІБ виконавця (логін виконавця)% - завдання не виконано"),

@@ -951,7 +951,6 @@ public class ProcessSubjectService {
                 
             }
             
-            
         } else {
         
             throw  new RuntimeException("Login=" + sLoginController + " has no access to change a status.");

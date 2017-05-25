@@ -800,12 +800,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         while (iterator.hasNext()) {
             JSONObject jsonObject = iterator.next();
 
-            String sId = (String) jsonObject.get("id");
-            String sValue = (String) jsonObject.get("value");
-
-            if (sId.equals("sID_Public_SubjectOrganJoin")) {
-            	sID_Public_SubjectOrganJoin = sValue;
-            	 break;
+            if(jsonObject.get("value")instanceof java.lang.String) {
+	            String sId = (String) jsonObject.get("id");
+	            String sValue = (String) jsonObject.get("value");
+	
+	            if (sId.equals("sID_Public_SubjectOrganJoin")) {
+	            	sID_Public_SubjectOrganJoin = sValue;
+	            	 break;
+	            }
             }
         }
         LOG.info("RequestProcessingInterceptor sID_Public_SubjectOrganJoin: " + sID_Public_SubjectOrganJoin);
@@ -1098,7 +1100,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
     
-    private void processSubjectStatusHistoryWriting(HttpServletRequest oRequest) {
+    private void processSubjectStatusHistoryWriting(HttpServletRequest oRequest) throws Exception {
         
         if (isSetProcessSubjectStatus(oRequest)) {
         
@@ -1114,12 +1116,90 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("processSubjectStatusHistoryWriting: mRequestParam={}", mRequestParam);
             
             String snID_Task_Activiti = mRequestParam.get("snID_Task_Activiti");
-            String sLoginMain = mRequestParam.get("sLoginMain");
+            String sLoginController = mRequestParam.get("sLoginController");
+            String sLoginExecutor = mRequestParam.get("sLoginExecutor");
             String sID_ProcessSubjectStatus = mRequestParam.get("sID_ProcessSubjectStatus");
             
-            String snID_Process_Activiti = actionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
+            if (sLoginController != null || sLoginExecutor != null) {
             
-            ProcessSubject oProcessSubject = oProcessSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
+                /**
+                *Определяем кто вызвал сервис (исполнитель или контролирующий). Пришел только
+                * логин sLoginExecutor - исполнитель, пришел только логин sLoginController - контролирующий,
+                * если пришло два логина - контролирующий.
+                */
+                 String sLoginMain = sLoginController;
+                
+                if (sLoginExecutor != null && sLoginController == null) {          
+                    sLoginMain = sLoginExecutor;
+                } 
+                
+                String snID_Process_Activiti = actionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
+            
+                ProcessSubject oProcessSubjectMain = oProcessSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
+                
+                String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
+                
+                if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
+                    
+                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(snID_Task_Activiti).singleResult();
+                    LOG.info("processSubjectStatusHistoryWriting: oHistoricTaskInstance={}", oHistoricTaskInstance);
+                    
+                    String sProcessInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                    LOG.info("processSubjectStatusHistoryWriting: sProcessInstanceId={}", sProcessInstanceId);
+                    
+                    String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sProcessInstanceId));
+                    LOG.info("processSubjectStatusHistoryWriting: sID_Order={}", sID_Order);
+                    
+                    List<Task> aTask = taskService.createTaskQuery().processInstanceId(sProcessInstanceId).active().list();
+                    LOG.info("processSubjectStatusHistoryWriting: aTask={}", aTask);
+                    
+                    boolean bProcessClosed = aTask == null || aTask.isEmpty();
+                    String sUserTaskName = bProcessClosed ? "закрита" : aTask.stream().filter(oTask -> oTask.getId().equals(snID_Task_Activiti)).findFirst().toString();
+                    LOG.info("processSubjectStatusHistoryWriting: sUserTaskName={}", sUserTaskName);
+                    
+                    if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
+                    
+                        Map<String, String> mParam = new HashMap<>();
+                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                        
+                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 20L);
+                        
+                    } else if (sID_ProcessSubjectStatus.equals("notExecuted") && sLoginRoleMain.equals("Executor")) {
+                    
+                        //TaskRequestNotDone
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Executor")) {
+                    
+                        //TaskRequestNotActual
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("requestTransfered") && sLoginRoleMain.equals("Executor")) {
+                    
+                        //TaskRequestTransfered
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskTransfered
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("rejected") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskRejected
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskDone
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("notExecuted") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskNotDone
+                    
+                    } else if (sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Controller")) {
+                    
+                        //TaskNotActual
+                    
+                    }
+                }
+            }
+            
            
             
         }
