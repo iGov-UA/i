@@ -1114,12 +1114,37 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("processSubjectStatusHistoryWriting: mRequestParam={}", mRequestParam);
             
             String snID_Task_Activiti = mRequestParam.get("snID_Task_Activiti");
-            String sLoginMain = mRequestParam.get("sLoginMain");
+            String sLoginController = mRequestParam.get("sLoginController");
+            String sLoginExecutor = mRequestParam.get("sLoginExecutor");
+            String sText = mRequestParam.get("sText");
+            String sDatePlaneNew = mRequestParam.get("sDatePlaneNew");
             String sID_ProcessSubjectStatus = mRequestParam.get("sID_ProcessSubjectStatus");
             
-            String snID_Process_Activiti = actionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
+            if (sLoginController != null || sLoginExecutor != null) {
             
-            ProcessSubject oProcessSubject = oProcessSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
+                /**
+                *Определяем кто вызвал сервис (исполнитель или контролирующий). Пришел только
+                * логин sLoginExecutor - исполнитель, пришел только логин sLoginController - контролирующий,
+                * если пришло два логина - контролирующий.
+                */
+                 String sLoginMain = sLoginController;
+                
+                if (sLoginExecutor != null && sLoginController == null) {          
+                    sLoginMain = sLoginExecutor;
+                } 
+                
+                String snID_Process_Activiti = actionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
+            
+                ProcessSubject oProcessSubjectMain = oProcessSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
+                
+                String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
+                
+                if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
+                
+                    LOG.info("processSubjectStatusHistoryWriting: first case");
+                }
+            }
+            
            
             
         }
