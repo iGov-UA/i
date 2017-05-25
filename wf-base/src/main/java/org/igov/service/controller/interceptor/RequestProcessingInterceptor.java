@@ -1152,9 +1152,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     LOG.info("processSubjectStatusHistoryWriting: aTask={}", aTask);
                     
                     boolean bProcessClosed = aTask == null || aTask.isEmpty();
-                    String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                    String sUserTaskName = bProcessClosed ? "закрита" : aTask.stream().filter(oTask -> oTask.getId().equals(snID_Task_Activiti)).findFirst().toString();
                     LOG.info("processSubjectStatusHistoryWriting: sUserTaskName={}", sUserTaskName);
-                    
                     
                     if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
                     
