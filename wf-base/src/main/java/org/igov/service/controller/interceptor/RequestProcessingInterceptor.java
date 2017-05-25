@@ -800,12 +800,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         while (iterator.hasNext()) {
             JSONObject jsonObject = iterator.next();
 
-            String sId = (String) jsonObject.get("id");
-            String sValue = (String) jsonObject.get("value");
-
-            if (sId.equals("sID_Public_SubjectOrganJoin")) {
-            	sID_Public_SubjectOrganJoin = sValue;
-            	 break;
+            if(jsonObject.get("value")instanceof java.lang.String) {
+	            String sId = (String) jsonObject.get("id");
+	            String sValue = (String) jsonObject.get("value");
+	
+	            if (sId.equals("sID_Public_SubjectOrganJoin")) {
+	            	sID_Public_SubjectOrganJoin = sValue;
+	            	 break;
+	            }
             }
         }
         LOG.info("RequestProcessingInterceptor sID_Public_SubjectOrganJoin: " + sID_Public_SubjectOrganJoin);
