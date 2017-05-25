@@ -781,9 +781,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         
-        LOG.info("sRequestBody {}", sRequestBody);// 
-        LOG.info("sResponseBody {}", sResponseBody);
-        LOG.info("mParamRequest {}", mParamRequest);
+        //LOG.info("sRequestBody {}", sRequestBody);// 
+        //LOG.info("sResponseBody {}", sResponseBody);
+        //LOG.info("mParamRequest {}", mParamRequest);
         
         if (sResponseBody == null) {
             //LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
@@ -791,10 +791,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
         
-        LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
+        //LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
         
         JSONArray properties = (JSONArray) omRequestBody.get("properties");
-        LOG.info("properties >>>>>>>>>>>>>> {}", properties );
+        //LOG.info("properties >>>>>>>>>>>>>> {}", properties );
         Iterator<JSONObject> iterator = properties.iterator();
         String sID_Public_SubjectOrganJoin = null;
         while (iterator.hasNext()) {
