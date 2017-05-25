@@ -106,7 +106,7 @@ public enum HistoryEventType {
     TASK_REQUEST_DONE(20L,
             "TaskRequestDone",
             "Исполнитель отработал задачу (sID_ProcessSubjectStatus = executed, sLoginRole= Executor)",
-            "%ПІБ виконавця (логін виконавця)% - завдання виконано");
+            HistoryEventMessage.FIO + " - завдання виконано");
     /*TASK_REQUEST_NOT_DONE(21L,
             "TaskRequestNotDone",
             "исполнитель отработал задачу (sID_ProcessSubjectStatus = notExecuted, sLoginRole= Executor)",
