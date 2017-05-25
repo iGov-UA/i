@@ -402,7 +402,15 @@ public class ProcessSubjectTaskService {
         
         if (processSubject.getSnID_Task_Activiti() != null) {
             LOG.info("TaskInstance {}", processSubject.getSnID_Task_Activiti());
-            oTaskService.complete(processSubject.getSnID_Task_Activiti());
+            List<Task> aTaskInstance = 
+                    oTaskService.createTaskQuery()
+                            .processInstanceId(processSubject.getSnID_Task_Activiti())
+                            .active().list();
+            if(aTaskInstance.size() > 1){
+                oTaskService.complete(processSubject.getSnID_Task_Activiti());
+            }else{
+                oRuntimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
+            }
         }
         
         LOG.info("TaskInstance deleted..");

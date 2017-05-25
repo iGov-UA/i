@@ -2,6 +2,7 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.*;
 import static java.lang.Math.toIntExact;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import org.igov.io.web.integration.queue.cherg.Cherg;
@@ -37,7 +38,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.igov.model.flow.FlowServiceDataDao;
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.Flow;
@@ -45,6 +45,7 @@ import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
 import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
 import org.igov.service.business.flow.slot.Day;
+import org.igov.model.flow.FlowDao;
 
 /**
  * User: goodg_000 Date: 21.06.2015 Time: 14:02
@@ -64,7 +65,7 @@ public class ActionFlowController {
     Cherg cherg;
 
     @Autowired
-    private FlowServiceDataDao flowServiceDataDao;
+    private FlowDao flowServiceDataDao;
 
     @Autowired
     private FlowSlotDao flowSlotDao;
@@ -406,13 +407,13 @@ public class ActionFlowController {
             @ApiParam(value = "строка-ИД бизнес-процесса потока (обязательный если нет nID_Flow_ServiceData)", required = false) @RequestParam(value = "sID_BP", required = false) String sID_BP,
             @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment,
             @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
-            @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) {
+            @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) throws ParseException {
 
         DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
         DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
 
         try {
-            nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
+            nID_Flow_ServiceData = oFlowService.determineFlow_ID(
                     nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
         } catch (RecordNotFoundException e) {
             LOG.error(e.getMessage());
@@ -490,7 +491,7 @@ public class ActionFlowController {
         DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
 
         try {
-            nID_Flow_ServiceData = oFlowService.determineFlowServiceDataID(
+            nID_Flow_ServiceData = oFlowService.determineFlow_ID(
                     nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
         } catch (RecordNotFoundException e) {
             LOG.error("Error: {}", e.getMessage());
@@ -557,7 +558,7 @@ public class ActionFlowController {
             @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
-        return oFlowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        return oFlowService.getFilteredFlowPropertiesForFlow(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 Boolean.FALSE);
     }
 
@@ -617,7 +618,7 @@ public class ActionFlowController {
             @ApiParam(value = "ИД номер-ИН департамента", required = false) @RequestParam(value = "nID_SubjectOrganDepartment", required = false) Long nID_SubjectOrganDepartment
     ) throws Exception {
 
-        return oFlowService.getFilteredFlowPropertiesForFlowServiceData(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
+        return oFlowService.getFilteredFlowPropertiesForFlow(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment,
                 Boolean.TRUE);
     }
 
@@ -793,7 +794,7 @@ public class ActionFlowController {
 
         try {
             nID_Flow_ServiceData = oFlowService
-                    .determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
+                    .determineFlow_ID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
         } catch (RecordNotFoundException e) {
             LOG.error(e.getMessage());
             LOG.debug("FAIL:", e);
@@ -852,7 +853,7 @@ public class ActionFlowController {
 
         try {
             nID_Flow_ServiceData = oFlowService
-                    .determineFlowServiceDataID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
+                    .determineFlow_ID(nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
         } catch (RecordNotFoundException e) {
             LOG.error(e.getMessage());
             LOG.debug("FAIL:", e);

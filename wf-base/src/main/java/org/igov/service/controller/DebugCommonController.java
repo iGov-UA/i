@@ -35,7 +35,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.igov.io.GeneralConfig;
-import org.igov.model.flow.FlowServiceDataDao;
 import org.igov.model.flow.Flow;
 import org.igov.service.business.finance.PaymentProcessorService;
 import org.igov.service.business.flow.FlowService;
@@ -43,6 +42,7 @@ import org.igov.service.business.flow.slot.Days;
 import org.igov.service.business.flow.slot.Day;
 import org.igov.service.business.flow.slot.FlowSlotVO;
 import org.joda.time.DateTime;
+import org.igov.model.flow.FlowDao;
 
 /**
  * @author BW
@@ -66,7 +66,7 @@ public class DebugCommonController {
     private FlowService oFlowService;
 
     @Autowired
-    private FlowServiceDataDao flowServiceDataDao;
+    private FlowDao flowServiceDataDao;
 
     @Autowired
     private TaskService taskService;
