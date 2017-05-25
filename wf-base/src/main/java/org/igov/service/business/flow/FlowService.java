@@ -384,12 +384,12 @@ public class FlowService implements ApplicationContextAware {
             }
         }
         
-        for (ExcludeDateRange oExcludeDateRange : aoDateRange_Exclude) {
+        /*for (ExcludeDateRange oExcludeDateRange : aoDateRange_Exclude) {
             LOG.info("-----");
             LOG.info("start cron exclude date before apply: " + oExcludeDateRange.getsDateTimeAt());
             LOG.info("stop cron exclude date before apply: " + oExcludeDateRange.getsDateTimeTo());
             LOG.info("-----");
-        }
+        }*/
         
         for (FlowProperty flowProperty : flow.getFlowProperties()) {
             if (flowProperty.getbExclude() == null || !flowProperty.getbExclude()) {
@@ -426,10 +426,10 @@ public class FlowService implements ApplicationContextAware {
                             startDate, stopDate, flowProperty.getsData());
                     
                     if (flowProperty.getsData() != null && !"".equals(flowProperty.getsData().trim())) {
-                        List<FlowSlot> generatedSlots = handler.generateObjects(flowProperty.getsData());
-                        for (FlowSlot slot : generatedSlots) {
+                        handler.generateObjects(flowProperty.getsData());
+                        /*for (FlowSlot slot : generatedSlots) {
                             res.add(new FlowSlotVO(slot));
-                        }
+                        }*/
                     }
                 }
             }
