@@ -59,15 +59,13 @@
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//1 получение ИД текущего процесса
-var processInstanceId = execution.getProcessInstanceId();
+      <script>//1. получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId()
 execution.setVariable('processInstanceId', processInstanceId)
-
 //2 получение ИД БП
 var executeProcessDefinitionId = execution.getProcessDefinitionId();
 var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
-
 </script>
     </scriptTask>
     <userTask id="usertask1" name="Співбесіда з кандидатом" activiti:assignee="concord">
@@ -75,9 +73,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
@@ -89,13 +86,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual1" name="Адреса фактичного місця проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="saChangeName" name="Чи змінювали раніше прізвище, власне ім’я, по батькові?" type="enum" required="true">
+        <activiti:formProperty id="bankIdAddressFactual1" name="Адреса фактичного місця проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="saChangeName" name="Чи змінювали раніше прізвище, власне ім’я, по батькові?; ;writable=false" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові; ;writable=false" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCause" name="Причина зміни прізвища, ім’я, по батькові; ;writable=false" type="enum" required="true">
+        <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sCause" name="Причина зміни прізвища, ім’я, по батькові; ;writable=false" type="enum">
           <activiti:value id="At_will" name="За власним бажанням"></activiti:value>
           <activiti:value id="Marriage" name="Шлюб (реєстрація, розірвання, скасування)"></activiti:value>
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
@@ -108,21 +105,21 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
           <activiti:value id="yesMilitary" name="перебуваю на військовій службі"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComposition" name="Склад військ (командний, технічний і т.д.)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCorps" name="Рід військ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sComposition" name="Склад військ (командний, технічний і т.д.)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCorps" name="Рід військ" type="string"></activiti:formProperty>
         <activiti:formProperty id="saInvestigation" name="Чи притягалися Ви або Ваші близькі родичі до кримінальної відповідальності?; ;writable=false" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCrime" name="Коли і за що притягалися до відповідальності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCrime" name="Коли і за що притягалися до відповідальності" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Якщо притягалися до відповідальності" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Трудова діяльність лінія" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sTable1&quot;],&quot;sValue&quot;:&quot;Трудова діяльність(включаючи військову службу, роботу за сумісництвом та ін.)&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Близькі родичі" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;Ваші близькі родичі&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Освіта; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Освіта" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sTable3&quot;],&quot;sValue&quot;:&quot;Освіта&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="info2" name="; ;labelType=info" type="label" default="Я даю свою згоду на:1. Перевірку, обробку та зберігання моїх персональних даних, зазначених у цій Анкеті, з використанням засобів автоматизації та/або без використання таких засобів (в рамках Закону України «Про захист персональних даних» від 1  червня 2010 року, № 2297-VІ»).2. Перевірку свого паспорта, в базі даних втрачених паспортів Міністерства внутрішніх справ України,3. Одноразове отримання Банком моєї кредитної історії у вигляді кредитного звіту* у будь якому Бюро кредитних історій з яким Банком укладено відповідний договір згідно чинного законодавства України.* - Кандидат підтверджує, що зазначена згода надається ним з використанням термінів та понять, які передбачені Законом України «Про організацію формування та обігу кредитних історій» та з усвідомленням ним змісту вказаних термінів та понять. &quot;Кредитна історія&quot; - це сукупність інформації про юридичну або фізичну особу, яка її  ідентифікує, відомостей про виконання ним зобов'язань по кредитних операціях, і іншій  відкритій інформації. Кредитна історія складається з:- інформації, що ідентифікує суб'єкта кредитної історії;- інформації про суб'єкта кредитної історії, яка складається з сукупності документованої інформації з державних реєстрів, інших баз даних прилюдного користування;&quot;Кредитний звіт&quot; - сукупність інформації про суб'єкта кредитної історії, яка є повним або частковим відображенням його кредитної історії." writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
@@ -130,9 +127,17 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="якщо відповідає" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_5.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_concord]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>concord</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="Перевірка кандидата СБ">
@@ -140,7 +145,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Ваше прізвище; ;writable=false" type="string"></activiti:formProperty>
@@ -252,7 +256,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Ваше прізвище; ;writable=false" type="string"></activiti:formProperty>
@@ -393,6 +396,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 </script>
     </scriptTask>
     <sequenceFlow id="flow41" sourceRef="scripttask8" targetRef="usertask4"></sequenceFlow>
+    <scriptTask id="scripttask9" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//1. получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId()
+execution.setVariable('processInstanceId', processInstanceId)</script>
+    </scriptTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_concord_aplication_candidate">
     <bpmndi:BPMNPlane bpmnElement="_doc_concord_aplication_candidate" id="BPMNPlane__doc_concord_aplication_candidate">
@@ -461,6 +469,9 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
         <omgdc:Bounds height="55.0" width="105.0" x="1250.0" y="42.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="40.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="205.0" y="67.0"></omgdi:waypoint>
