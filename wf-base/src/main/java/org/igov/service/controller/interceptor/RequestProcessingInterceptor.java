@@ -1138,8 +1138,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
                 
                 if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
-                
-                    LOG.info("processSubjectStatusHistoryWriting: first case");
                     
                     if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
                     
