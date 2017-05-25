@@ -111,7 +111,7 @@ public class HttpRequester {
         StringBuilder osReturn = new StringBuilder();
         try {
             HttpURLConnection oConnection = (HttpURLConnection) oURL.openConnection();
-            oConnection.setConnectTimeout(5000);//add
+            
             if (sUser != null && sPassword != null) {
                 String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
                 oConnection.setRequestProperty("authorization", "Basic " + sAuth);
@@ -125,6 +125,8 @@ public class HttpRequester {
             }
 
             oConnection.setDoOutput(true);
+            oConnection.setConnectTimeout(5000);//add
+            oConnection.setReadTimeout(5000);
             OutputStreamWriter writer = new OutputStreamWriter(oConnection.getOutputStream(), "UTF-8");
             writer.write(saParam);
             //DataOutputStream writer = new DataOutputStream(oConnection.getOutputStream());
@@ -218,7 +220,7 @@ public class HttpRequester {
 
             URLConnection oConnectAbstract = oURL.openConnection();
             oConnection = (HttpURLConnection) oConnectAbstract;
-            oConnection.setConnectTimeout(5000);//add
+           
             String sUser = generalConfig.getAuthLogin();
             String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
@@ -232,6 +234,10 @@ public class HttpRequester {
             oConnection.setRequestMethod(requestMethod);
             oConnection.setDoInput(true);
             oConnection.setDoOutput(true);
+            oConnection.setConnectTimeout(5000);//add
+            oConnection.getConnectTimeout();
+            LOG.info("getConnectTimeout>>>>>>>>>>>>", oConnection.getConnectTimeout() );
+            oConnection.setReadTimeout(5000);
             nStatus = oConnection.getResponseCode();//???
             if (oConnection.getResponseCode() >= HttpStatus.BAD_REQUEST.value()) {
                 oInputStream = oConnection.getErrorStream();
@@ -361,7 +367,7 @@ public class HttpRequester {
         try {
 
             oConnection = (HttpURLConnection) oURL.openConnection();
-            oConnection.setConnectTimeout(5000);//add
+            
             String sUser = generalConfig.getAuthLogin();
             String sPassword = generalConfig.getAuthPassword();
             String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
@@ -370,6 +376,8 @@ public class HttpRequester {
             oConnection.setRequestMethod(RequestMethod.GET.name());
             oConnection.setDoInput(true);
             oConnection.setDoOutput(true);
+            oConnection.setConnectTimeout(5000);//add
+            oConnection.setReadTimeout(5000);
             nStatus = oConnection.getResponseCode();//???
             if (oConnection.getResponseCode() >= HttpStatus.BAD_REQUEST.value()) {
                 oInputStream = oConnection.getErrorStream();
