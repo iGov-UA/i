@@ -127,6 +127,7 @@ public class HttpRequester {
             oConnection.setDoOutput(true);
            // oConnection.setConnectTimeout(5000);//add
            // oConnection.setReadTimeout(5000);
+            
             OutputStreamWriter writer = new OutputStreamWriter(oConnection.getOutputStream(), "UTF-8");
             writer.write(saParam);
             //DataOutputStream writer = new DataOutputStream(oConnection.getOutputStream());
