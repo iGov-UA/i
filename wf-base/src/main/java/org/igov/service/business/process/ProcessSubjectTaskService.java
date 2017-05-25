@@ -164,6 +164,7 @@ public class ProcessSubjectTaskService {
                                 aJsonProcessSubject, sKey);
                     }
                     else{
+                        LOG.info("second delegating started...");
                         //this isn't first delegating
                         ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
                             Long.parseLong((String)((JSONObject)oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
@@ -172,21 +173,29 @@ public class ProcessSubjectTaskService {
                             oProcessSubjectDao.findAllBy("snID_Process_Activiti", 
                                     aProcessSubjectTree.get(0).getProcessSubjectChild().getSnID_Process_Activiti());
 
-                        List<String> aNewLogin = new ArrayList<>();
+                        LongSummaryStatistics summaryStatistics = aProcessSubject_saved.stream()
+                            .mapToLong(ProcessSubject::getnOrder)
+                            .summaryStatistics();
                     
+                        LOG.info("aProcessSubject_saved is {}", aProcessSubject_saved);
+
+                        List<String> aNewLogin = new ArrayList<>();
+
                         for (Object oJsonProcessSubject : aJsonProcessSubject) {
                             aNewLogin.add((String)((JSONObject)oJsonProcessSubject).get("sLogin"));
                         }
+
+                        LOG.info("aNewLogin is {}", aNewLogin);
 
                         List<ProcessSubject> aProcessSubject_ToUpdate = new ArrayList<>();
 
                         for(ProcessSubject oProcessSubject : aProcessSubject_saved){
                             if(!aNewLogin.contains(oProcessSubject.getsLogin())){
-                               oProcessSubjectService.removeProcessSubjectDeep(oProcessSubject);
-                               LOG.info("Login to delete in new task setting schema is {}", aNewLogin);
+                               LOG.info("Login to delete in new task setting schema is {}", oProcessSubject.getsLogin());
+                               removeProcessSubjectDeep(oProcessSubject);
                             }
                             else{
-                                LOG.info("Login to update in new task setting schema is {}", aNewLogin);
+                                LOG.info("Login to update in new task setting schema is {}", oProcessSubject.getsLogin());
                                 aProcessSubject_ToUpdate.add(oProcessSubject);
                             }
                         }
@@ -194,11 +203,11 @@ public class ProcessSubjectTaskService {
                         /*oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
                                 (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
                                 oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));*/
-                        
+
                         setProcessSubjectList(aJsonProcessSubject, 
                                 (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
-                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate, 0L);
-                        
+                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate, summaryStatistics.getMax() + 1);
+
                         oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
                         oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
                         oProcessSubjectTask.setsHead((String)((JSONObject)oJsonProcessSubjectTask).get("sHead"));
