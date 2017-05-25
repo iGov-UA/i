@@ -1159,6 +1159,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
                     
                         Map<String, String> mParam = new HashMap<>();
+                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                         
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 20L);
                         
