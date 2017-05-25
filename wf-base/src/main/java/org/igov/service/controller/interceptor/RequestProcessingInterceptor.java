@@ -32,11 +32,14 @@ import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Task;
+
 import org.apache.commons.mail.EmailException;
+
 import org.igov.io.GeneralConfig;
 import org.igov.io.Log;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.io.web.HttpRequester;
+
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
 import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStep;
@@ -44,6 +47,9 @@ import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
+import org.igov.model.subject.SubjectGroup;
+import org.igov.model.subject.SubjectGroupDao;
+
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.event.CloseTaskEvent;
 import org.igov.service.business.action.event.HistoryEventService;
@@ -51,13 +57,16 @@ import org.igov.service.business.action.task.bp.handler.BpServiceHandler;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.escalation.EscalationHistoryService;
 import org.igov.service.exception.TaskAlreadyUnboundException;
+
 import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -117,6 +126,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     
     @Autowired
     private ProcessSubjectDao oProcessSubjectDao;
+    
+    @Autowired
+    private SubjectGroupDao oSubjectGroupDao;
     
     @Value("${asID_BP_SendMail}")
     private String[] asID_BP_SendMail;
@@ -1150,6 +1162,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sProcessInstanceId));
                     LOG.info("processSubjectStatusHistoryWriting: sID_Order={}", sID_Order);
                     
+                    SubjectGroup oSubjectGroup = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sLoginMain);
+                    String sFIO = oSubjectGroup.getoSubject().getsLabel();
+                    LOG.info("processSubjectStatusHistoryWriting: sFIO={}", sFIO);
+                    
                     List<Task> aTask = taskService.createTaskQuery().processInstanceId(sProcessInstanceId).active().list();
                     LOG.info("processSubjectStatusHistoryWriting: aTask={}", aTask);
                     
@@ -1161,6 +1177,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                         Map<String, String> mParam = new HashMap<>();
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                        mParam.put("sLogin", sLoginMain);
                         
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 20L);
                         
