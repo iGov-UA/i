@@ -124,6 +124,7 @@ public class HttpRequester {
             }
 
             oConnection.setDoOutput(true);
+            oConnection.setConnectTimeout(5000);
             OutputStreamWriter writer = new OutputStreamWriter(oConnection.getOutputStream(), "UTF-8");
             writer.write(saParam);
             //DataOutputStream writer = new DataOutputStream(oConnection.getOutputStream());
@@ -231,6 +232,7 @@ public class HttpRequester {
             oConnection.setRequestMethod(requestMethod);
             oConnection.setDoInput(true);
             oConnection.setDoOutput(true);
+            oConnection.setConnectTimeout(5000);
             nStatus = oConnection.getResponseCode();//???
             if (oConnection.getResponseCode() >= HttpStatus.BAD_REQUEST.value()) {
                 oInputStream = oConnection.getErrorStream();
@@ -369,6 +371,7 @@ public class HttpRequester {
             oConnection.setRequestMethod(RequestMethod.GET.name());
             oConnection.setDoInput(true);
             oConnection.setDoOutput(true);
+            oConnection.setConnectTimeout(5000);
             nStatus = oConnection.getResponseCode();//???
             if (oConnection.getResponseCode() >= HttpStatus.BAD_REQUEST.value()) {
                 oInputStream = oConnection.getErrorStream();
