@@ -28,12 +28,12 @@
         <activiti:formProperty id="nFile3" name="Копія вихідних даних на проектування та будівництво" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile4" name="Декларація про початок будівельних робіт Інспекції Державного архітектурно-будівельного контролю (ДАБК)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGol" name="шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGol" name="шапка заяви" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення адміністратора про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -42,7 +42,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[msvidran@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення: Дозвіл на знесення зелених насаджень. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
@@ -76,14 +76,14 @@
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0063_dozvilZN.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0063_dozvilZN.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_pr" name="print-show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGol" name="шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGol" name="шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -195,19 +195,19 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="edrpou" name="Ідентифікаційний номер або код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdressPost" name="Поштова адреса" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress2" name="Місце розташування насадження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGol" name="шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGol" name="шапка заяви" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="asDecideAnswer" name="Рішення про надання дозволу" type="enum" required="true">
           <activiti:value id="sEnumYes" name="Дозвіл готов. Запросити громадянина"></activiti:value>
           <activiti:value id="sEnumNo" name="Відмова в видачи дозвола. Відправити лист-повідомлення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nAnswerYes" name="Завантажте скан-копію дозволу" type="file"></activiti:formProperty>
         <activiti:formProperty id="nAnswerNo" name="Завантажте скан-копию листа-повідомлення" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0063_dozvilZN.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0063_dozvilZN.html]" type="invisible" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="required-show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_pr" name="print-show-hide" type="markers" default="${markerService.loadFromFile('dneprCnap/rada_0063_dozvilZN_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
