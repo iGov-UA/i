@@ -951,7 +951,7 @@ public class ProcessSubjectService {
                 
             }
             
-            
+            LOG.info("/setProcessSubjectStatus: service end");
         } else {
         
             throw  new RuntimeException("Login=" + sLoginController + " has no access to change a status.");
