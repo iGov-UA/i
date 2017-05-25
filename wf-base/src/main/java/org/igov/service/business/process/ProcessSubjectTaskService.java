@@ -396,21 +396,17 @@ public class ProcessSubjectTaskService {
         return oProcessSubjectDao.saveOrUpdate(aProcessSubject);
     }
     
-    public void removeProcessSubject(ProcessSubject processSubject) {
+    public void removeProcessSubject(ProcessSubject processSubject, boolean closeTaskFlag) {
         LOG.info("removeProcessSubject started...");
-        //Task TaskInstance = oTaskService.createTaskQuery().processInstanceId(processSubject.getSnID_Task_Activiti()).singleResult();
         
-        if (processSubject.getSnID_Task_Activiti() != null) {
-            LOG.info("TaskInstance {}", processSubject.getSnID_Task_Activiti());
-            List<Task> aTaskInstance = 
-                    oTaskService.createTaskQuery()
-                            .processInstanceId(processSubject.getSnID_Task_Activiti())
-                            .active().list();
-            if(aTaskInstance.size() > 1){
+        if (closeTaskFlag) {
+            if (processSubject.getSnID_Task_Activiti() != null) {
+                LOG.info("TaskInstance to remove is {}", processSubject.getSnID_Task_Activiti());
                 oTaskService.complete(processSubject.getSnID_Task_Activiti());
-            }else{
-                oRuntimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
             }
+        } else {
+            LOG.info("TaskInstance is to delete {}", processSubject.getSnID_Task_Activiti());
+            oRuntimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         }
         
         LOG.info("TaskInstance deleted..");
@@ -440,10 +436,10 @@ public class ProcessSubjectTaskService {
         for (ProcessSubject oProcessSubject : aReverseProcessSubject) {
             LOG.info("oProcessSubject catalog user is {}", oProcessSubject.getaUser());
             LOG.info("processSubject id to delete {}", oProcessSubject.getId());
-            removeProcessSubject(oProcessSubject);
+            removeProcessSubject(oProcessSubject, false);
         }
 
-        removeProcessSubject(processSubject);
+        removeProcessSubject(processSubject, true);
         LOG.info("removeProcessSubjectDeep ended...");
     }
     
