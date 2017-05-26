@@ -859,8 +859,8 @@ public class ProcessSubjectService {
             }
              
             //Исполнитель отработал задачу
-            if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
-                || sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Executor")) {
+            if ((sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
+                || sID_ProcessSubjectStatus.equals("unactual")) && sLoginRoleMain.equals("Executor")) {
                 
                 if (sText != null) {                          
                     oProcessSubjectMain.setsText(sText);
@@ -946,8 +946,8 @@ public class ProcessSubjectService {
             }
             
             //Закрытие задания контролирующим 
-            if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
-                || sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Controller")) {
+            if ((sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
+                || sID_ProcessSubjectStatus.equals("unactual")) && sLoginRoleMain.equals("Controller")) {
                 
                 LOG.info("setProcessSubjectStatus: last case");
                 removeProcessSubjectDeep(oProcessSubjectMain);
