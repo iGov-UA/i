@@ -848,7 +848,7 @@ public class ProcessSubjectService {
         String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
         
         if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
-            LOG.info("setProcessSubjectStatus: before cases");
+
             ProcessSubjectStatus oProcessSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
             
             DateTime dtCurrentDate = new DateTime();
@@ -942,9 +942,11 @@ public class ProcessSubjectService {
                 oProcessSubjectExecutor.setoProcessSubjectStatus(oProcessSubjectStatus);
                 
                 processSubjectDao.saveOrUpdate(oProcessSubjectExecutor);
+               
+            }
             
-            //Закрытие задания контролирующим    
-            } else if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
+            //Закрытие задания контролирующим 
+            if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
                 || sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Controller")) {
                 
                 LOG.info("setProcessSubjectStatus: last case");
@@ -954,7 +956,7 @@ public class ProcessSubjectService {
             
         } else {
         
-            throw  new RuntimeException("Login=" + sLoginController + " has no access to change a status.");
+            throw  new RuntimeException("Login=" + sLoginMain + " has no access to change a status.");
         }
         
         return oProcessSubjectMain;
