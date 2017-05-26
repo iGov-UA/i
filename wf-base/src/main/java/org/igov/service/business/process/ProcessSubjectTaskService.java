@@ -392,9 +392,10 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setsLogin((String) ((JSONObject)oJsonProcessSubject).get("sLogin"));
             oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("sLoginRole"));
 //            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
+            oProcessSubject.setnID_ProcessSubjectTask(oProcessSubjectTask.getId());
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
-            oProcessSubject.setnOrder(nOrder);
+            oProcessSubject.setnOrder(nOrder);  
             
             nOrder = nOrder + 1L;
             oProcessSubject.setSnID_Process_Activiti(snID_Process_Activiti);                                                                                   
