@@ -152,12 +152,16 @@ public class ProcessSubjectTaskService {
                     LOG.info("delegating started...");
 
                     ProcessSubject oProcessSubjectController = getProcessSubjectByTask(snId_Task);
-                    LOG.info("oProcessSubjectController is {}", oProcessSubjectController);
+                    LOG.info("oProcessSubjectController is {}", oProcessSubjectController.getsLogin());
                     
                     List<ProcessSubjectTree> aProcessSubjectTree =
                             oProcessSubjectTreeDao.findChildren(oProcessSubjectController.getSnID_Process_Activiti());
                     
-                    LOG.info("aProcessSubjectTree is {}", aProcessSubjectTree);
+                    //TODO: remove logs after testing
+                    for(ProcessSubjectTree oProcessSubjectTree : aProcessSubjectTree){
+                        LOG.info("aProcessSubjectTree parent is {}", oProcessSubjectTree.getProcessSubjectParent().getsLogin());
+                        LOG.info("aProcessSubjectTree children is {}", oProcessSubjectTree.getProcessSubjectChild().getsLogin());
+                    }
                     
                     if(aProcessSubjectTree.isEmpty()){
                         firstDelegateProcessSubject(oProcessSubjectController, oJsonProcessSubjectTask, 
@@ -169,6 +173,9 @@ public class ProcessSubjectTaskService {
                         ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
                             Long.parseLong((String)((JSONObject)oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
                         
+                        LOG.info("snID_Process_Activiti from child is: {}",  
+                                aProcessSubjectTree.get(0).getProcessSubjectChild().getSnID_Process_Activiti());
+                        
                         List<ProcessSubject> aProcessSubject_saved = 
                             oProcessSubjectDao.findAllBy("snID_Process_Activiti", 
                                     aProcessSubjectTree.get(0).getProcessSubjectChild().getSnID_Process_Activiti());
@@ -178,6 +185,11 @@ public class ProcessSubjectTaskService {
                             .summaryStatistics();
                     
                         LOG.info("aProcessSubject_saved is {}", aProcessSubject_saved);
+                        
+                        //TODO: remove logs after testing
+                        for(ProcessSubject oProcessSubject : aProcessSubject_saved){
+                            LOG.info("oProcessSubject_saved is {}", oProcessSubject.getsLogin());
+                        }
 
                         List<String> aNewLogin = new ArrayList<>();
 
