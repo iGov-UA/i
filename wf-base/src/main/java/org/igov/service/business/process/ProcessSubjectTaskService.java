@@ -218,7 +218,8 @@ public class ProcessSubjectTaskService {
 
                         setProcessSubjectList(aJsonProcessSubject, 
                                 (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
-                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate, summaryStatistics.getMax() + 1);
+                                aProcessSubjectTree.get(0).getProcessSubjectChild().getSnID_Process_Activiti(),
+                                aProcessSubject_ToUpdate, summaryStatistics.getMax() + 1);
 
                         oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
                         oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
@@ -391,9 +392,10 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setsLogin((String) ((JSONObject)oJsonProcessSubject).get("sLogin"));
             oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("sLoginRole"));
 //            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
+            oProcessSubject.setnID_ProcessSubjectTask(oProcessSubjectTask.getId());
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
-            oProcessSubject.setnOrder(nOrder);
+            oProcessSubject.setnOrder(nOrder);  
             
             nOrder = nOrder + 1L;
             oProcessSubject.setSnID_Process_Activiti(snID_Process_Activiti);                                                                                   

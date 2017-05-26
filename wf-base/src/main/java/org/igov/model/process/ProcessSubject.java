@@ -88,6 +88,10 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private String sLoginRole;
     
+    @JsonProperty(value = "nID_ProcessSubjectTask")
+    @Column
+    private Long nID_ProcessSubjectTask;
+    
     /*@JsonProperty(value = "oProcessSubjectTask")
     @ManyToOne(fetch = FetchType.EAGER, targetEntity = ProcessSubjectTask.class)
     @JoinColumn(name = "nID_ProcessSubjectTask")
@@ -196,6 +200,14 @@ public class ProcessSubject extends AbstractEntity {
     public void setoProcessSubjectTask(ProcessSubjectTask oProcessSubjectTask) {
         this.oProcessSubjectTask = oProcessSubjectTask;
     }*/
+
+    public Long getnID_ProcessSubjectTask() {
+        return nID_ProcessSubjectTask;
+    }
+
+    public void setnID_ProcessSubjectTask(Long nID_ProcessSubjectTask) {
+        this.nID_ProcessSubjectTask = nID_ProcessSubjectTask;
+    }
 
     public DateTime getsDatePlanNew() {
         return sDatePlanNew;
