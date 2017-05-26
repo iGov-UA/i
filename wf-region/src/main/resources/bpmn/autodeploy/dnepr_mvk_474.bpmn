@@ -36,13 +36,13 @@
         <activiti:formProperty id="nFile4" name="Графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж, контурів об'єктів нерухомого майна, розташованих на земельній ділянці, із зазначенням кадастрового номера земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile5" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile6" name="Довідка учасника антитерористичної операції" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sList_documents" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="график работы; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_345_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -53,13 +53,14 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk1}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[Звернення № [sID_Order]<br>
+          	[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -81,26 +82,24 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки. Реєстрація]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-			[pattern/mail/new_design/_common_content_start.html]  
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 			<p>
-				Ваше звернення з приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки було зареєстровано у системі.<br>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> з приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки було зареєстровано у системі.<br>
 				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.			
 			</p>
 			<br />
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}
-			[pattern/mail/new_design/_common_content_end.html] 
-			[pattern/mail/new_design/_common_signature_start.html]
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -135,15 +134,15 @@
         <activiti:formProperty id="sAdressLand" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="decision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="doc_ok" name="Документи прийняти на реєстрацію"></activiti:value>
           <activiti:value id="doc_bad" name="Відмовити громадянину, в разі неповного переліку документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sList_documents" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_345_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_345_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -173,13 +172,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки. Відхилено]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-			[pattern/mail/new_design/_common_content_start.html]  
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 		    <p>
-		    	На жаль, Ваше звернення з приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки було відхилено.
+		    	На жаль, Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> з приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки було відхилено.
 		    </p>
 		    <p>
 		    	Причина в наступному:<br>
@@ -192,13 +191,11 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}
-			[pattern/mail/new_design/_common_content_end.html] 
-			[pattern/mail/new_design/_common_signature_start.html]
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -256,27 +253,25 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки. Схвалено]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-			[pattern/mail/new_design/_common_content_start.html]  
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			<p> 
-				Ваше звернення з приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> з приводу видачи дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
 				Дозвіл в додатку до цього листа.
 			</p>
 			<br />
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}
-			[pattern/mail/new_design/_common_content_end.html] 
-			[pattern/mail/new_design/_common_feedback.html]   	
-			[pattern/mail/new_design/_common_signature_start.html]
+			${sPhoneOrgan}<br><br><br>			
+			[pattern/mail/_common_signature_start.html]
+			[pattern/mail/_common_feedback.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFileDecision}</activiti:expression>
@@ -301,13 +296,13 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки. Відмовлено]]></activiti:string>
+          <activiti:string><![CDATA[iGov: Дозвіл на розроблення проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-			[pattern/mail/new_design/_common_content_start.html]  
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 			<p> 
-				Ваше звернення з приводу видачі дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
+				Ваше звернення № <a href="https://igov.org.ua/search?sID_Order=[sID_Order]">[sID_Order]</a> з приводу видачі дозволу на розроблення проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br>
 				Вам відмовлено. <br>
 				Рішення в додатку до цього листа.
 			</p>			
@@ -318,13 +313,11 @@
 			За наявності питань можете звернутись за наступними контактами<br>
 			${sAddress}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}
-			[pattern/mail/new_design/_common_content_end.html] 
-			[pattern/mail/new_design/_common_signature_start.html]
+			${sPhoneOrgan}<br><br>
+			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}.<br />
-			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFileDecision}</activiti:expression>

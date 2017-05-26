@@ -66,6 +66,7 @@ public class RestRequest {
                 super.prepareConnection(connection, httpMethod);
                 connection.setInstanceFollowRedirects(false);
                 connection.setRequestMethod(httpMethod);
+                connection.setConnectTimeout(5000);
             }
         };
         RestTemplate restTemplate = new RestTemplate();
@@ -110,6 +111,7 @@ public class RestRequest {
                 super.prepareConnection(connection, httpMethod);
                 connection.setInstanceFollowRedirects(false);
                 connection.setRequestMethod(httpMethod);
+                connection.setConnectTimeout(5000);
             }
         };
         RestTemplate restTemplate = new RestTemplate();
