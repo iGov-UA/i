@@ -139,7 +139,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <userTask id="usertask2" name="Перевірка кандидата СБ">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -184,11 +183,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="markers2" name="Якщо притягалися до відповідальності" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Освіта; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Освіта; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorresponds1" name="Чи пройшов кандидат перевірку?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -208,6 +207,18 @@ execution.setVariable('processInstanceId', processInstanceId)
 var executeProcessDefinitionId = execution.getProcessDefinitionId();
 var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
+//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для СБ
+var sKey_GroupPostfix = '_default_concord'
+var sKey_GroupPostfix_New ='concord'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 </script>
     </scriptTask>
@@ -246,7 +257,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <userTask id="usertask3" name="Професійна співбесіда">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -291,9 +301,9 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="markers2" name="Якщо притягалися до відповідальності" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Освіта; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Освіта; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="info2" name="; ;labelType=info" type="label" default="Я даю свою згоду на:1. Перевірку, обробку та зберігання моїх персональних даних, зазначених у цій Анкеті, з використанням засобів автоматизації та/або без використання таких засобів (в рамках Закону України «Про захист персональних даних» від 1  червня 2010 року, № 2297-VІ»).2. Перевірку свого паспорта, в базі даних втрачених паспортів Міністерства внутрішніх справ України,3. Одноразове отримання Банком моєї кредитної історії у вигляді кредитного звіту* у будь якому Бюро кредитних історій з яким Банком укладено відповідний договір згідно чинного законодавства України.* - Кандидат підтверджує, що зазначена згода надається ним з використанням термінів та понять, які передбачені Законом України «Про організацію формування та обігу кредитних історій» та з усвідомленням ним змісту вказаних термінів та понять. &quot;Кредитна історія&quot; - це сукупність інформації про юридичну або фізичну особу, яка її  ідентифікує, відомостей про виконання ним зобов'язань по кредитних операціях, і іншій  відкритій інформації. Кредитна історія складається з:- інформації, що ідентифікує суб'єкта кредитної історії;- інформації про суб'єкта кредитної історії, яка складається з сукупності документованої інформації з державних реєстрів, інших баз даних прилюдного користування;&quot;Кредитний звіт&quot; - сукупність інформації про суб'єкта кредитної історії, яка є повним або частковим відображенням його кредитної історії." writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false" required="true"></activiti:formProperty>
