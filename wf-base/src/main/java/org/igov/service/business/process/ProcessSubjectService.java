@@ -954,20 +954,12 @@ public class ProcessSubjectService {
                 List<ProcessSubject> aListOfOrocessSubjectToRemove = processSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
                 
                 for (ProcessSubject oProcessSubject : aListOfOrocessSubjectToRemove) {
-                
-                    if (oProcessSubject.getsLoginRole().equals("Executor")) {
-                        
-                        removeProcessSubjectDeep(oProcessSubject);
-                        
-                    } else if (oProcessSubject.getsLoginRole().equals("Controller")) {
-                    
+              
                         removeProcessSubject(oProcessSubject);
                         
                     }
                 }
-                
-                
-            }
+                                
             
         } else {
         
