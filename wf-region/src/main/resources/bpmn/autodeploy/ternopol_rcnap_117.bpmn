@@ -42,6 +42,11 @@
         <activiti:formProperty id="passport_mother" name="Копія паспорту матері (1, 2, 10, 11-13 стор.); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+
+
+
+
+
         
       </extensionElements>
     </userTask>
@@ -71,7 +76,7 @@
     <serviceTask id="servicetask4" name="мейл службовцю" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -81,6 +86,11 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+
+
+
+
+
         </activiti:field>
       </extensionElements>
     </serviceTask>
