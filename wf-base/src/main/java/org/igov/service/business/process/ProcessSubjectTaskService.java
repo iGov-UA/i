@@ -218,7 +218,8 @@ public class ProcessSubjectTaskService {
 
                         setProcessSubjectList(aJsonProcessSubject, 
                                 (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
-                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate, summaryStatistics.getMax() + 1);
+                                aProcessSubjectTree.get(0).getProcessSubjectChild().getSnID_Process_Activiti(),
+                                aProcessSubject_ToUpdate, summaryStatistics.getMax() + 1);
 
                         oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
                         oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
