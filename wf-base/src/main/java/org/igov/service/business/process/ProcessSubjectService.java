@@ -950,7 +950,22 @@ public class ProcessSubjectService {
                 || sID_ProcessSubjectStatus.equals("unactual")) && sLoginRoleMain.equals("Controller")) {
                 
                 LOG.info("setProcessSubjectStatus: last case");
-                removeProcessSubjectDeep(oProcessSubjectMain);
+                
+                List<ProcessSubject> aListOfOrocessSubjectToRemove = processSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+                
+                for (ProcessSubject oProcessSubject : aListOfOrocessSubjectToRemove) {
+                
+                    if (oProcessSubject.getsLoginRole().equals("Executor")) {
+                        
+                        removeProcessSubjectDeep(oProcessSubject);
+                        
+                    } else if (oProcessSubject.getsLoginRole().equals("Controller")) {
+                    
+                        removeProcessSubject(oProcessSubject);
+                        
+                    }
+                }
+                
                 
             }
             
