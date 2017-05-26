@@ -947,7 +947,7 @@ public class ProcessSubjectService {
             } else if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
                 || sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Controller")) {
             
-                //сервис Егора
+                removeProcessSubjectDeep(oProcessSubjectMain);
                 
             }
             
