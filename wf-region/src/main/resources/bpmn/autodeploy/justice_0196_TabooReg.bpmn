@@ -25,8 +25,8 @@
 
 <!-- блок для юриков -->
 <!--         <activiti:formProperty id="InfoStart01" name="; ;labelType=info" type="label" default="Після введеня коду ЄДРПОУ перевірте дані якими буде автоматично заповнені поля про юрособу та за наявності невідповідностей підкорегуйте їх"></activiti:formProperty> -->
-        <activiti:formProperty id="markers_01" name="Дані юрособи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Введіть ЄДРПОУ та перевірте дані юрособи&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="Дані юрособи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Введіть ЄДРПОУ та перевірте дані юрособи-власника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ" type="string" reqrequired="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника;або " type="string" required="true"></activiti:formProperty>
@@ -69,15 +69,23 @@
           <activiti:value id="t_012" name="Інше"></activiti:value>
         </activiti:formProperty>
 <!-- если 012 то показать и сделать обязательным sVarTypeObjOther -->
+        <activiti:formProperty id="markers_Req_st_05" name="если 012 то сделать обязательным sVarTypeObjOther; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_st_05&quot;:{&quot;aField_ID&quot;:[&quot;sVarTypeObjOther&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectTypeObj&quot;},&quot;sCondition&quot;:&quot;[sClient] == 't_012'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_st_05" name="если 012 то показать sVarTypeObjOther; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_st_05&quot;:{&quot;aField_ID&quot;:[&quot;sVarTypeObjOther&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectTypeObj&quot;},&quot;sCondition&quot;:&quot;[sClient] == 't_012'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVarTypeObjOther" name="Введіть тип об`єкта" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="sVarRegNumObj" name="Реєстраційний номер об’єкта нерухомого майна" type="string"></activiti:formProperty>
 
 <!-- если 004 то показать и сделать обязательным sVarCadNumObj -->
+        <activiti:formProperty id="markers_Req_st_06" name="если 004 то сделать обязательным sVarCadNumObj; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_st_06&quot;:{&quot;aField_ID&quot;:[&quot;sVarCadNumObj&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectTypeObj&quot;},&quot;sCondition&quot;:&quot;[sClient] == 't_004'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_st_06" name="если 004 то показать sVarCadNumObj; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_st_06&quot;:{&quot;aField_ID&quot;:[&quot;sVarCadNumObj&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectTypeObj&quot;},&quot;sCondition&quot;:&quot;[sClient] == 't_004'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVarCadNumObj" name="Кадастровий номер" type="string"></activiti:formProperty>
 
 <!-- если не 004 то показать и сделать обязательным блок Адреса -->
+        <activiti:formProperty id="markers_Req_st_07" name="если не 004 то сделать обязательным блок Адреса; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_st_07&quot;:{&quot;aField_ID&quot;:[&quot;markers_03&quot;,&quot;asSelectRajObl&quot;,&quot;asSelectTypePlace&quot;,&quot;sVarPlaceNam&quot;,&quot;asSelectVulType&quot;,&quot;sVarVulName&quot;,&quot;sVarBudNum&quot;,&quot;asSelectBudUType&quot;,&quot;sVarBudUTypeNum&quot;,&quot;asSelectTypePom&quot;,&quot;sVarPomNum&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectTypeObj&quot;},&quot;sCondition&quot;:&quot;[sClient] != 't_004'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_st_07" name="если не 004 то показать обязательным блок Адреса; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_st_07&quot;:{&quot;aField_ID&quot;:[&quot;markers_03&quot;,&quot;asSelectRajObl&quot;,&quot;asSelectTypePlace&quot;,&quot;sVarPlaceNam&quot;,&quot;asSelectVulType&quot;,&quot;sVarVulName&quot;,&quot;sVarBudNum&quot;,&quot;asSelectBudUType&quot;,&quot;sVarBudUTypeNum&quot;,&quot;asSelectTypePom&quot;,&quot;sVarPomNum&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectTypeObj&quot;},&quot;sCondition&quot;:&quot;[sClient] != 't_004'&quot;}}}"></activiti:formProperty>
+
 <!-- введіть адресу об’єкта нерухомого майна або його складової частини -->
+        <activiti:formProperty id="markers_03" name="Введіть адресу об’єкта нерухомого майна або його складової частини" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;asSelectOblNam&quot;],&quot;sValue&quot;:&quot;Введіть адресу об’єкта нерухомого майна або його складової частини&quot;}}}"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectOblNam" name="Оберіть область" type="enum" default=" ">
           <activiti:value id="tf101" name="Вінницька область"></activiti:value>
@@ -112,6 +120,8 @@
           <activiti:value id="tf502" name="Ні"></activiti:value>
         </activiti:formProperty>
 		<!-- если да видно и обязательно-->
+        <activiti:formProperty id="markers_Req_st_08" name="если да видно и обязательно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_st_08&quot;:{&quot;aField_ID&quot;:[&quot;sVarRajOblNam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectRajObl&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf501'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_st_08" name="если да видно и обязательно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_st_08&quot;:{&quot;aField_ID&quot;:[&quot;sVarRajOblNam&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectRajObl&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf501'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVarRajOblNam" name="Найменування району області" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="asSelectTypePlace" name="Оберіть тип населеного пункту" type="enum" default=" ">
@@ -158,7 +168,7 @@
 		<!-- -->
         <activiti:formProperty id="sVarPomNum" name="Номер приміщення" type="string"></activiti:formProperty>
 
-		 <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+		<activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="markers_Req_st_01" name="обов'язково ЕЦП якщо ПІБ правильно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_st_01&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
