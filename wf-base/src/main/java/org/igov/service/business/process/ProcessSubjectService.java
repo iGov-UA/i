@@ -848,7 +848,7 @@ public class ProcessSubjectService {
         String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
         
         if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
-            
+            LOG.info("setProcessSubjectStatus: before cases");
             ProcessSubjectStatus oProcessSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
             
             DateTime dtCurrentDate = new DateTime();
