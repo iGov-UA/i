@@ -105,6 +105,8 @@ public class ActionEventHistoryService {
                     params.get("oldData"),
                     params.get("sLogin"),
                     params.get("new_BP_ID"),
+                    params.get("sLoginNew"),
+                    params.get("sName"),
                     true,
                     true,
                     false
@@ -153,6 +155,8 @@ public class ActionEventHistoryService {
             String oldData,
             String sLogin,
             String new_BP_ID,
+            String sLoginNew,
+            String sName,
             boolean saveHistoryEventService,
             boolean saveHistoryEvent,
             boolean saveSubjectMessage
@@ -221,6 +225,8 @@ public class ActionEventHistoryService {
             mParamMessage.put(HistoryEventMessage.FIO, sLogin);
             mParamMessage.put(HistoryEventMessage.NEW_DATA, newData);
             mParamMessage.put(HistoryEventMessage.OLD_DATA, oldData);
+            mParamMessage.put(HistoryEventMessage.LOGIN, sLoginNew);
+            mParamMessage.put(HistoryEventMessage.PIP, sName);
 
             
             if (oHistoryEvent_Service == null) {

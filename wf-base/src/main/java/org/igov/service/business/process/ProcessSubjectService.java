@@ -848,7 +848,7 @@ public class ProcessSubjectService {
         String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
         
         if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
-            
+            LOG.info("setProcessSubjectStatus: before cases");
             ProcessSubjectStatus oProcessSubjectStatus = processSubjectStatusDao.findByExpected("sID", sID_ProcessSubjectStatus);
             
             DateTime dtCurrentDate = new DateTime();
@@ -946,8 +946,9 @@ public class ProcessSubjectService {
             //Закрытие задания контролирующим    
             } else if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
                 || sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Controller")) {
-            
-                //сервис Егора
+                
+                LOG.info("setProcessSubjectStatus: last case");
+                removeProcessSubjectDeep(oProcessSubjectMain);
                 
             }
             
