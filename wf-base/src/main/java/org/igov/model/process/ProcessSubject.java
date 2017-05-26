@@ -88,7 +88,7 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private String sLoginRole;
     
-    @JsonProperty(value = "sLoginRole")
+    @JsonProperty(value = "nID_ProcessSubjectTask")
     @Column
     private Long nID_ProcessSubjectTask;
     
