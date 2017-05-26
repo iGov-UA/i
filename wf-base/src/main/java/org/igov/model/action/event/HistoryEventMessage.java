@@ -25,8 +25,8 @@ public class HistoryEventMessage {
     public static final String ORDER_ID = "%sID_Order%";
     public static final String LINKED_ORDER_ID = "%sID_Order_Link%";
     public static final String BP_ID = "%sID_BP%";
-    public static final String LOGIN = "%sLogin%";
-    public static final String PIP = "%ПІБ того хто викликав сервiс%";
+    public static final String LOGIN = "%sLoginNew%";
+    public static final String PIP = "%sName%";//ПІБ того хто викликав сервiс
     
     private static final Logger LOG = LoggerFactory.getLogger(HistoryEventMessage.class);
 

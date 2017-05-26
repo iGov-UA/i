@@ -1176,7 +1176,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                     Map<String, String> mParam = new HashMap<>();
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
-                        mParam.put("login", sLoginMain);
+                        mParam.put("sLoginNew", sLoginMain);
                         mParam.put("sName", sName);
                     
                     if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
