@@ -946,7 +946,8 @@ public class ProcessSubjectService {
             //Закрытие задания контролирующим    
             } else if (sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
                 || sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Controller")) {
-            
+                
+                LOG.info("setProcessSubjectStatus: last case");
                 removeProcessSubjectDeep(oProcessSubjectMain);
                 
             }
