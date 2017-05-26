@@ -123,7 +123,7 @@ public class ActionEventHistoryService {
             LOG.info("Creating journal message ended");
             
             historyEventDao.setHistoryEvent(nID_Subject, eventType.getnID(),
-                    eventType.getsName(), eventMessage, nID_HistoryEvent_Service, nID_Document, sSubjectInfo);
+                    eventMessage, eventMessage, nID_HistoryEvent_Service, nID_Document, sSubjectInfo);
         } catch (IOException e) {
             LOG.error("error: {}, during creating HistoryEvent", e.getMessage());
             LOG.trace("FAIL:", e);
