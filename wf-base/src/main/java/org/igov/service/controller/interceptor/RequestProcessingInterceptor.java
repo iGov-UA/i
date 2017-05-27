@@ -1194,7 +1194,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     }
                     LOG.info("mRequestParam2 post={}", mRequestAttribute);
                     
-                    JSONObject oTransportObject = (JSONObject) mRequestAttribute.get("mRequestAttribute");
+                    JSONObject oTransportObject = (JSONObject) mRequestAttribute.get("oTransportObject");
                     LOG.info("post oTransportObject={}", oTransportObject);
                     
                     String sLoginRole = (String) oTransportObject.get("sLoginRole");
