@@ -1180,9 +1180,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     oResponseBody.put("sUserTaskName", sUserTaskName);
                     oResponseBody.put("mParam", mParam);
                     
-                    oRequest.setAttribute("json", oResponseBody);
-                    LOG.info("request: params={}", oRequest.getParameterNames());
-                    
+                    oRequest.setAttribute("sLoginRole", sLoginRoleMain);
+                    oRequest.setAttribute("sID_Order", sID_Order);
+                    oRequest.setAttribute("sUserTaskName", sUserTaskName);
+
+                    Map<String, String> mRequestParam2 = new HashMap<>();
+                    Enumeration<String> paramsName2 = oRequest.getAttributeNames();
+
+                    while (paramsName2.hasMoreElements()) {
+                        String sKey = (String) paramsName2.nextElement();
+                        mRequestParam2.put(sKey, (String) oRequest.getAttribute(sKey));
+                    }
+                    LOG.info("mRequestParam2={}", mRequestParam2);
                     oResponse.setContentType("application/json");
                     oResponse.setCharacterEncoding("utf-8");
                     oResponse.getOutputStream().print(oResponseBody.toString());
