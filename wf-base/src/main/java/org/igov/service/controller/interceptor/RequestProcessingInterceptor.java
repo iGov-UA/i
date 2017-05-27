@@ -1181,7 +1181,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     oResponseBody.put("mParam", mParam);
                     
                     oResponse.setContentType("application/json");
-                    oResponse.getWriter().write(oResponseBody.toString());
+                    oResponse.getOutputStream().print(oResponseBody.toString());
                     LOG.info("Iterceptor pre: oResponse={}", oResponse);
                     
                 }
