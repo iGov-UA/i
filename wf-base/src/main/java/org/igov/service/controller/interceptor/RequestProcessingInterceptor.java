@@ -146,7 +146,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
         documentHistoryPreProcessing(oRequest, response);
-        processSubjectStatusHistoryWritingPreHandle(oRequest, response);
+        processSubjectStatusHistoryWritingPreHandle(oRequest);
         return true;
     }
 
@@ -155,7 +155,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
         
-        processSubjectStatusHistoryWritingPostHandle(oRequest, response);
+        processSubjectStatusHistoryWritingPostHandle(oRequest);
     }
 
     @Override
@@ -1113,7 +1113,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
     
-    private void processSubjectStatusHistoryWritingPreHandle(HttpServletRequest oRequest, HttpServletResponse oResponse) throws Exception {
+    private void processSubjectStatusHistoryWritingPreHandle(HttpServletRequest oRequest) throws Exception {
         
         if (isSetProcessSubjectStatus(oRequest)) {
                     
@@ -1164,43 +1164,29 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                     boolean bProcessClosed = aTask == null || aTask.isEmpty();
                     
+                    String sUserTask = aTask.stream().filter(oTask -> oTask.getId().equals(snID_Task_Activiti)).findFirst().toString();
+                    
                     //проверка, чтобы выбрать таску по ид, который пришел в запросе
-                    String sUserTaskName = bProcessClosed ? "закрита" : aTask.stream().filter(oTask -> oTask.getId().equals(snID_Task_Activiti)).findFirst().toString();
+                    String sUserTaskName = bProcessClosed ? "закрита" : sUserTask;
                     
-                    Map<String, String> mParam = new HashMap<>();
-                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
-                        mParam.put("sLoginNew", sLoginMain);
-                        mParam.put("sName", sName);
+                    JSONObject oTransportObject = new JSONObject();
+                                
+                    oTransportObject.put("sLoginRole", sLoginRoleMain);
+                    oTransportObject.put("sID_Order", sID_Order);
+                    oTransportObject.put("sUserTaskName", sUserTaskName);
+                    oTransportObject.put("sName", sName);
+                    oTransportObject.put("sLogin", sLoginMain);
+                    oTransportObject.put("sID_ProcessSubjectStatus", sID_ProcessSubjectStatus);       
                     
-                    JSONObject oResponseBody = new JSONObject();
-                    
-                    oResponseBody.put("sLoginRole", sLoginRoleMain);
-                    oResponseBody.put("sID_ProcessSubjectStatus", sID_ProcessSubjectStatus);
-                    oResponseBody.put("sID_Order", sID_Order);
-                    oResponseBody.put("sUserTaskName", sUserTaskName);
-                    oResponseBody.put("mParam", mParam);
-                    
-                    oRequest.setAttribute("sLoginRole", sLoginRoleMain);
-                    oRequest.setAttribute("sID_Order", sID_Order);
-                    oRequest.setAttribute("sUserTaskName", sUserTaskName);
+                    oRequest.setAttribute("oTransportObject", oTransportObject);
 
-                    Map<String, Object> mRequestParam2 = new HashMap<>();
-                    Enumeration<String> paramsName2 = oRequest.getAttributeNames();
-
-                    while (paramsName2.hasMoreElements()) {
-                        String sKey = (String) paramsName2.nextElement();
-                        mRequestParam2.put(sKey, oRequest.getAttribute(sKey));
-                    }
-                    LOG.info("mRequestParam2={}", mRequestParam2);
-                    
-                    
                 }
             }
                                    
         }
     }
     
-    private void processSubjectStatusHistoryWritingPostHandle(HttpServletRequest oRequest, HttpServletResponse oResponse) throws Exception {
+    private void processSubjectStatusHistoryWritingPostHandle(HttpServletRequest oRequest) throws Exception {
                     
                     Map<String, Object> mRequestParam2 = new HashMap<>();
                     Enumeration<String> paramsName2 = oRequest.getAttributeNames();
@@ -1210,7 +1196,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         mRequestParam2.put(sKey, oRequest.getAttribute(sKey));
                     }
                     LOG.info("mRequestParam2 post={}", mRequestParam2);
-                    /*
+                    /*                   
+                    Map<String, String> mParam = new HashMap<>();
+                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                        mParam.put("sLoginNew", sLogin);
+                        mParam.put("sName", sName);
+                    
                     if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 20L);
