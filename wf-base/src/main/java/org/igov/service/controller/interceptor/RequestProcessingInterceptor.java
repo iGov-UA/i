@@ -146,6 +146,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
         documentHistoryPreProcessing(oRequest, response);
+        processSubjectStatusHistoryWritingPreHandle(oRequest, response);
         return true;
     }
 
@@ -154,7 +155,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
         
-        processSubjectStatusHistoryWriting(oRequest);
+        processSubjectStatusHistoryWritingPostHandle(oRequest, response);
     }
 
     @Override
@@ -1112,7 +1113,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
     
-    private void processSubjectStatusHistoryWriting(HttpServletRequest oRequest) throws Exception {
+    private void processSubjectStatusHistoryWritingPreHandle(HttpServletRequest oRequest, HttpServletResponse oResponse) throws Exception {
         
         if (isSetProcessSubjectStatus(oRequest)) {
                     
@@ -1171,6 +1172,28 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         mParam.put("sLoginNew", sLoginMain);
                         mParam.put("sName", sName);
                     
+                    JSONObject oResponseBody = new JSONObject();
+                    
+                    oResponseBody.put("sLoginRole", sLoginRoleMain);
+                    oResponseBody.put("sID_ProcessSubjectStatus", sID_ProcessSubjectStatus);
+                    oResponseBody.put("sID_Order", sID_Order);
+                    oResponseBody.put("sUserTaskName", sUserTaskName);
+                    oResponseBody.put("mParam", mParam);
+                    
+                    oResponse.setContentType("application/json");
+                    oResponse.getWriter().write(oResponseBody.toString());
+                    LOG.info("Iterceptor pre: oResponse={}", oResponse);
+                    
+                }
+            }
+                                   
+        }
+    }
+    
+    private void processSubjectStatusHistoryWritingPostHandle(HttpServletRequest oRequest, HttpServletResponse oResponse) throws Exception {
+                    
+                    LOG.info("Iterceptor post: oResponse={}", oResponse);
+                    /*
                     if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 20L);
@@ -1207,12 +1230,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 28L);
                     
-                    }
-                }
-            }
-            
-           
-            
-        }
+                    }*/
     }
+    
 }
