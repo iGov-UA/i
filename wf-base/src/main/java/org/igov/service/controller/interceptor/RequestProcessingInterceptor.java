@@ -1164,10 +1164,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                     boolean bProcessClosed = aTask == null || aTask.isEmpty();
                     
-                    String sUserTask = aTask.stream().filter(oTask -> oTask.getId().equals(snID_Task_Activiti)).findFirst().toString();
-                    
                     //проверка, чтобы выбрать таску по ид, который пришел в запросе
-                    String sUserTaskName = bProcessClosed ? "закрита" : sUserTask;
+                    String sUserTaskName = bProcessClosed ? "закрита" : aTask.stream().filter(oTask -> oTask.getId().equals(snID_Task_Activiti)).findFirst().toString();
                     
                     JSONObject oTransportObject = new JSONObject();
                                 
@@ -1181,21 +1179,34 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     oRequest.setAttribute("oTransportObject", oTransportObject);
 
                 }
-            }
-                                   
+            }                                   
         }
     }
     
     private void processSubjectStatusHistoryWritingPostHandle(HttpServletRequest oRequest) throws Exception {
                     
-                    Map<String, Object> mRequestParam2 = new HashMap<>();
-                    Enumeration<String> paramsName2 = oRequest.getAttributeNames();
+                    Map<String, Object> mRequestAttribute = new HashMap<>();
+                    Enumeration<String> aAttributeName = oRequest.getAttributeNames();
 
-                    while (paramsName2.hasMoreElements()) {
-                        String sKey = (String) paramsName2.nextElement();
-                        mRequestParam2.put(sKey, oRequest.getAttribute(sKey));
+                    while (aAttributeName.hasMoreElements()) {
+                        String sKey = (String) aAttributeName.nextElement();
+                        mRequestAttribute.put(sKey, oRequest.getAttribute(sKey));
                     }
-                    LOG.info("mRequestParam2 post={}", mRequestParam2);
+                    LOG.info("mRequestParam2 post={}", mRequestAttribute);
+                    
+                    JSONObject oTransportObject = (JSONObject) mRequestAttribute.get("mRequestAttribute");
+                    LOG.info("post oTransportObject={}", oTransportObject);
+                    
+                    String sLoginRole = (String) oTransportObject.get("sLoginRole");
+                    String sID_Order = (String) oTransportObject.get("sID_Order");
+                    String sUserTaskName = (String) oTransportObject.get("sUserTaskName");
+                    String sName = (String) oTransportObject.get("sName");
+                    String sLogin = (String) oTransportObject.get("sLogin");
+                    String sID_ProcessSubjectStatus = (String) oTransportObject.get("sID_ProcessSubjectStatus");
+                    
+                    LOG.info("PostHandle all: sLoginRole={}, sID_Order={}, sUserTaskName={}, sName={}, sLogin={}, sID_ProcessSubjectStatus={}",
+                            sLoginRole, sID_Order, sUserTaskName, sName, sLogin,sID_ProcessSubjectStatus);
+                    
                     /*                   
                     Map<String, String> mParam = new HashMap<>();
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
