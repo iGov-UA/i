@@ -13,8 +13,8 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -323,6 +323,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Висновок" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -381,7 +382,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[Результат перевірки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Шановна(ий) ${bankIdfirstName}! На жаль, Ви не пройшли перевірку службою безпеки. Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансії і участь в процедурі співбесіди.</activiti:expression>
+          <activiti:expression>Шановна(ий) ${bankIdfirstName}! На жаль, Ви не пройшли перевірку службою безпеки. Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансію і участь в процедурі співбесіди.</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -454,21 +455,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="документ" type="file"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
-          <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_concord]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>concord</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow37" sourceRef="servicetask1" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="exclusivegateway5" targetRef="scripttask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCorresponds3=='yes'}]]></conditionExpression>
     </sequenceFlow>
@@ -490,7 +483,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 //переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_4'
+var sKey_Step= 'step_5'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
@@ -556,23 +549,43 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sCorresponds3" name="Кандидат прийняв пропозицію працевлаштування?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
-          <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_concord]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>concord</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow42" sourceRef="usertask5" targetRef="exclusivegateway5"></sequenceFlow>
+    <scriptTask id="scripttask9" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//1 получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+
+//2 получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
+//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_4'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для СБ
+var sKey_GroupPostfix = '_default_concord'
+var sKey_GroupPostfix_New ='concord'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+
+
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow43" sourceRef="servicetask1" targetRef="scripttask9"></sequenceFlow>
+    <sequenceFlow id="flow44" sourceRef="scripttask9" targetRef="usertask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_concord_aplication_candidate">
     <bpmndi:BPMNPlane bpmnElement="_doc_concord_aplication_candidate" id="BPMNPlane__doc_concord_aplication_candidate">
@@ -616,7 +629,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdc:Bounds height="35.0" width="35.0" x="974.0" y="199.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="1056.0" y="40.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1060.0" y="42.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="329.0" y="120.0"></omgdc:Bounds>
@@ -643,7 +656,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdc:Bounds height="55.0" width="105.0" x="1250.0" y="42.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="1056.0" y="120.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1060.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="1060.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="205.0" y="67.0"></omgdi:waypoint>
@@ -695,7 +711,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="1011.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1056.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1060.0" y="69.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="381.0" y="175.0"></omgdi:waypoint>
@@ -708,10 +724,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
         <omgdi:waypoint x="991.0" y="174.0"></omgdi:waypoint>
         <omgdi:waypoint x="991.0" y="199.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="1108.0" y="95.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1108.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
         <omgdi:waypoint x="1225.0" y="69.0"></omgdi:waypoint>
@@ -730,8 +742,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdi:waypoint x="1371.0" y="69.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="1108.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1112.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="1205.0" y="89.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="1112.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1112.0" y="120.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="1112.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1112.0" y="220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
