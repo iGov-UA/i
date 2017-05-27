@@ -1180,7 +1180,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     oResponseBody.put("sUserTaskName", sUserTaskName);
                     oResponseBody.put("mParam", mParam);
                     
+                    oRequest.setAttribute("json", oResponseBody);
+                    LOG.info("request: params={}", oRequest.getParameterNames());
+                    
                     oResponse.setContentType("application/json");
+                    oResponse.setCharacterEncoding("utf-8");
                     oResponse.getOutputStream().print(oResponseBody.toString());
                     LOG.info("Iterceptor pre: oResponse={}", oResponse);
                     
