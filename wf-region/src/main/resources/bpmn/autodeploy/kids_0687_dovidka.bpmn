@@ -17,12 +17,17 @@
         <activiti:formProperty id="passport_father" name="Копія паспорту батька (1, 2, 10, 11-13 стор.); ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="passport_mother" name="Копія паспорту матері (1, 2, 10, 11-13 стор.); ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей; завантажте єдиним архівом усі свідоцтва;bNew=true" type="file" required="true"></activiti:formProperty>
+
+
         <activiti:formProperty id="sNameArea" name="назва населеного пункту; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sFullContact" name="Повний контакт; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameAreaGen" name="Назва органу (род.відм.); ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
@@ -40,13 +45,19 @@
           <activiti:value id="accept" name="довідка готова"></activiti:value>
           <activiti:value id="reject" name="відмова у наданні довідки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minsoc/kusnetsovsk_vssm_117_print.html]; ;bVisible=false,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minsoc/kids_0687_dovidka_print.html]; ;bVisible=false,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови у наданні довідки внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію документа; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameArea" name="назва населеного пункту; ;bVisible=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="passport_father" name="Копія паспорту батька; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 		<activiti:formProperty id="passport_mother" name="Копія паспорту матері; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 		<activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+		
+        <activiti:formProperty id="sNameArea" name="назва населеного пункту; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullContact" name="Повний контакт; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameAreaGen" name="Назва органу (род.відм.); ;bVisible=false" type="string"></activiti:formProperty>        
+		
 		<activiti:formProperty id="markers" name="markers_required" type="markers" default="${markerService.loadFromFile('kids_687.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
