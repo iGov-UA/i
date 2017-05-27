@@ -1192,10 +1192,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         String sKey = (String) aAttributeName.nextElement();
                         mRequestAttribute.put(sKey, oRequest.getAttribute(sKey));
                     }
-                    LOG.info("mRequestParam2 post={}", mRequestAttribute);
                     
                     JSONObject oTransportObject = (JSONObject) mRequestAttribute.get("oTransportObject");
-                    LOG.info("post oTransportObject={}", oTransportObject);
                     
                     String sLoginRole = (String) oTransportObject.get("sLoginRole");
                     String sID_Order = (String) oTransportObject.get("sID_Order");
@@ -1203,53 +1201,49 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     String sName = (String) oTransportObject.get("sName");
                     String sLogin = (String) oTransportObject.get("sLogin");
                     String sID_ProcessSubjectStatus = (String) oTransportObject.get("sID_ProcessSubjectStatus");
-                    
-                    LOG.info("PostHandle all: sLoginRole={}, sID_Order={}, sUserTaskName={}, sName={}, sLogin={}, sID_ProcessSubjectStatus={}",
-                            sLoginRole, sID_Order, sUserTaskName, sName, sLogin,sID_ProcessSubjectStatus);
-                    
-                    /*                   
+               
                     Map<String, String> mParam = new HashMap<>();
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                         mParam.put("sLoginNew", sLogin);
                         mParam.put("sName", sName);
                     
-                    if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Executor")) {
+                    if (sID_ProcessSubjectStatus.equals("executed") && sLoginRole.equals("Executor")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 20L);
                         
-                    } else if (sID_ProcessSubjectStatus.equals("notExecuted") && sLoginRoleMain.equals("Executor")) {
+                    } else if (sID_ProcessSubjectStatus.equals("notExecuted") && sLoginRole.equals("Executor")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 21L);
                     
-                    } else if (sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Executor")) {
+                    } else if (sID_ProcessSubjectStatus.equals("unactual") && sLoginRole.equals("Executor")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 22L);
                     
-                    } else if (sID_ProcessSubjectStatus.equals("requestTransfered") && sLoginRoleMain.equals("Executor")) {
+                    } else if (sID_ProcessSubjectStatus.equals("requestTransfered") && sLoginRole.equals("Executor")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 23L);
                     
-                    } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRoleMain.equals("Controller")) {
+                    } else if (sID_ProcessSubjectStatus.equals("transfered") && sLoginRole.equals("Controller")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 24L);
                     
-                    } else if (sID_ProcessSubjectStatus.equals("rejected") && sLoginRoleMain.equals("Controller")) {
+                    } else if (sID_ProcessSubjectStatus.equals("rejected") && sLoginRole.equals("Controller")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 25L);
                     
-                    } else if (sID_ProcessSubjectStatus.equals("executed") && sLoginRoleMain.equals("Controller")) {
+                    } else if (sID_ProcessSubjectStatus.equals("executed") && sLoginRole.equals("Controller")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 26L);
                     
-                    } else if (sID_ProcessSubjectStatus.equals("notExecuted") && sLoginRoleMain.equals("Controller")) {
+                    } else if (sID_ProcessSubjectStatus.equals("notExecuted") && sLoginRole.equals("Controller")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 27L);
                     
-                    } else if (sID_ProcessSubjectStatus.equals("unactual") && sLoginRoleMain.equals("Controller")) {
+                    } else if (sID_ProcessSubjectStatus.equals("unactual") && sLoginRole.equals("Controller")) {
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 28L);
                     
-                    }*/
+                    }
     }
     
 }
