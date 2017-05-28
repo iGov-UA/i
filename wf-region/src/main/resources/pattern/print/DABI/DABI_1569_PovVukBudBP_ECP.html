@@ -10,6 +10,20 @@
 <body style="font-size: 14px;">
 
 
+<div id=test>
+
+
+</div>
+
+<script type="text/javascript">
+  var ScrOsoba1 = "[asOsoba]";
+  var ScrKilkFiz1 = "[asKilkFiz]";
+  var ScrZemKilk1 = "[asZemKilk]";
+
+  document.getElementById("test").innerHTML += "Получено ScrOsoba = " + ScrOsoba1 + "  ScrKilkFiz = " 
+  + ScrKilkFiz1 + "  ScrZemKilk = " + ScrZemKilk1 + "<br>";
+  </script>
+
 <table style="width: 100%; border-collapse: collapse;">
     <tbody>
     <tr>
@@ -953,43 +967,43 @@
         <td colspan="2" style="text-align: center;font-size: 17px;">Інформація про генерального підрядника (підрядника - у разі, коли будівельні роботи виконуються без залучення субпідрядників)</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">_[ScrGPodr1]</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">[sID_SubjectOrgan_OKPO_011]</td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">(прізвище, ім’я та по батькові фізичної особи,</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">_[ScrGPodr2]</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">[sFullName_SubjectOrgan_011]</td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">серія і номер паспорта, ким і коли виданий, місце проживання, номер облікової картки платника</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">_[ScrGPodr3]</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">[sLocation_SubjectOrgan_011]</td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">податків (не зазначається фізичними особами, які через свої релігійні переконання відмовляються</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px;border-bottom: 1px solid #000000;">_</td>
+        <td colspan="2" style="text-align: left; font-size: 15px;border-bottom: 1px solid #000000;">[sCEOName_SubjectOrgan_011]</td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">від прийняття реєстраційного номера облікової картки платника податків та</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">_</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;"> </td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">повідомили про це відповідному органу державної податкової служби і мають відмітку у паспорті);</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">_</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;"> </td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">найменування юридичної особи, місцезнаходження, код платника податків</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">_</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;"> </td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">згідно з ЄДРПОУ або податковий номер; номер телефону)<br><br></td>
@@ -1093,74 +1107,105 @@
     </tbody>
 </table>
 
+
+
 <script type="text/javascript">
   var ScrOsoba = "[asOsoba]";
   var ScrKilkFiz = "[asKilkFiz]";
   var ScrZemKilk = "[asZemKilk]";
 
+  document.getElementById("test").innerHTML += "Получено ScrOsoba = " + ScrOsoba + "  ScrKilkFiz = " 
+  + ScrKilkFiz + "  ScrZemKilk = " + ScrZemKilk + "<br>";
+
+  
+  document.getElementById("sEnamFiz").inn
+  
   switch(ScrOsoba) {
     case "sEnamFiz":
         document.getElementById("sEnamFiz").style.display = 'table';
         document.getElementById("sEnamFizP").style.display = 'none';
         document.getElementById("sEnamUrK").style.display = 'none';
         document.getElementById("sEnamUrP").style.display = 'none';
+        
+        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "sEnamFiz" + "<br>";
         break;
     case "sEnamFizP":
         document.getElementById("sEnamFiz").style.display = 'none';
         document.getElementById("sEnamFizP").style.display = 'table';
         document.getElementById("sEnamUrK").style.display = 'none';
         document.getElementById("sEnamUrP").style.display = 'none';
+        
+        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "sEnamFizP" + "<br>";
         break;
     case "sEnamUrK":
         document.getElementById("sEnamFiz").style.display = 'none';
         document.getElementById("sEnamFizP").style.display = 'none';
         document.getElementById("sEnamUrK").style.display = 'table';
         document.getElementById("sEnamUrP").style.display = 'none';
+        
+        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "sEnamUrK" + "<br>";
         break;
     case "sEnamUrP":
         document.getElementById("sEnamFiz").style.display = 'none';
         document.getElementById("sEnamFizP").style.display = 'none';
         document.getElementById("sEnamUrK").style.display = 'none';
         document.getElementById("sEnamUrP").style.display = 'table';
+        
+        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "sEnamUrP" + "<br>";
         break;
     default:
         document.getElementById("sEnamFiz").style.display = 'table';
         document.getElementById("sEnamFizP").style.display = 'none';
         document.getElementById("sEnamUrK").style.display = 'none';
         document.getElementById("sEnamUrP").style.display = 'none';
+        
+        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "default" + "<br>";
     }
   
   if(ScrOsoba == 'sEnamFiz'||ScrOsoba == 'sEnamFizP'||ScrOsoba == 'Фізична особа (особисто)'||ScrOsoba == 'Фізична особа (представник)'){
-    switch(ScrKilkFiz) {
+    
+	  document.getElementById("test").innerHTML += "Фізична особа" + "<br>";
+	  
+	  switch(ScrKilkFiz) {
         case "sEnam2":
           document.getElementById("sEnam2").style.display = 'table';
           document.getElementById("sEnam3").style.display = 'none';
           document.getElementById("sEnam4").style.display = 'none';
           document.getElementById("sEnam5").style.display = 'none';
+
+          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "sEnam2" + "<br>";
           break;
         case "sEnam3":
           document.getElementById("sEnam2").style.display = 'table';
           document.getElementById("sEnam3").style.display = 'table';
           document.getElementById("sEnam4").style.display = 'none';
           document.getElementById("sEnam5").style.display = 'none';
+
+          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "sEnam3" + "<br>";
           break;
         case "sEnam4":
           document.getElementById("sEnam2").style.display = 'table';
           document.getElementById("sEnam3").style.display = 'table';
           document.getElementById("sEnam4").style.display = 'table';
           document.getElementById("sEnam5").style.display = 'none';
+
+          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "sEnam4" + "<br>";
           break;
         case "sEnam5":
           document.getElementById("sEnam2").style.display = 'table';
           document.getElementById("sEnam3").style.display = 'table';
           document.getElementById("sEnam4").style.display = 'table';
           document.getElementById("sEnam5").style.display = 'table';
+
+          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "sEnam5" + "<br>";
           break;
         default:
           document.getElementById("sEnam2").style.display = 'none';
           document.getElementById("sEnam3").style.display = 'none';
           document.getElementById("sEnam4").style.display = 'none';
           document.getElementById("sEnam5").style.display = 'none';
+
+          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "default" + "<br>";
     }
   } 
   else {
@@ -1168,20 +1213,28 @@
     document.getElementById("sEnam3").style.display = 'none';
     document.getElementById("sEnam4").style.display = 'none';
     document.getElementById("sEnam5").style.display = 'none';
+    
+    document.getElementById("test").innerHTML += "Юридична особа" + "<br>";
   }
 
   switch(ScrZemKilk) {
     case "sEnamZem2":
         document.getElementById("sEnamZem2").style.display = 'table';
         document.getElementById("sEnamZem3").style.display = 'none';
+        document.getElementById("test").innerHTML += "Сработал ScrZemKilk - " + "sEnamZem2" + "<br>";
         break;
     case "sEnamZem3":
         document.getElementById("sEnamZem2").style.display = 'table';
         document.getElementById("sEnamZem3").style.display = 'table';
+        
+        document.getElementById("test").innerHTML += "Сработал ScrZemKilk - " + "sEnamZem3" + "<br>";
         break;
     default:
         document.getElementById("sEnamZem2").style.display = 'none';
         document.getElementById("sEnamZem3").style.display = 'none';
+        
+        
+        document.getElementById("test").innerHTML += "Сработал ScrZemKilk - " + "default" + "<br>";
     }
 
 </script> 
