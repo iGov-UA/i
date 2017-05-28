@@ -37,7 +37,7 @@
         
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asKilkFiz" name="Скільки власників у об'єкта будівництва" type="enum" required="true">
-          <activiti:value id="sEnam1" name="Тільки один (заявник)"></activiti:value>
+          <activiti:value id="sEnam1" name="Один"></activiti:value>
           <activiti:value id="sEnam2" name="Два"></activiti:value>
           <activiti:value id="sEnam3" name="Три"></activiti:value>
           <activiti:value id="sEnam4" name="Чотири"></activiti:value>
@@ -47,9 +47,9 @@
         <activiti:formProperty id="markersLine_D" name="Інформація про довірителя" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sDov_Name&quot;],&quot;sValue&quot;:&quot;Інформація про довірителя&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDov_Name" name="Прізвище, ім'я, по батькові довірителя" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lDov_inn" name="ІПН довірителя" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDov_passport" name="Паспорт довірителя" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDov_passport" name="Паспорт довірителя;(серія, номер, ким і коли видано)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDov_Adress" name="Адреса довірителя" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Dovirenist" name="Довіреність представника; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovirenist" name="Довіреність представника;(має бути обов'язково нотаріально посвідчена) ;bNew=true" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
@@ -188,16 +188,17 @@
           <activiti:value id="sEnamGPodrFiz" name="Заявник особисто (Господарським способом)"></activiti:value>
           <activiti:value id="sEnamGPodrUr" name="Генеральний підрядник - юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_011" name="Код ЄДРПОУ підрядника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_011" name="Повне найменування юридичної особи підрядника" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_011" name="Юридична адреса" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_011" name="ПІБ директора" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_011" name="Код ЄДРПОУ підрядника" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_011" name="Повне найменування юридичної особи підрядника" type="textArea" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_011" name="Юридична адреса" type="textArea" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_011" name="ПІБ директора" type="string" required="true" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_011" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="markerPidr" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIGPidr.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/DABI/DABI_1569_PovVukBudBP.html"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/DABI/DABI_1569_PovVukBudBP_ECP.html"></activiti:formProperty>
         
+        <activiti:formProperty id="clFio" name="ПІБ заявника; ;bVisible=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_dabi" name="Пошта ДЗК; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -352,7 +353,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="asKilkFiz" name="Скільки власників у об'єкта будівництва" type="enum" writable="false">
-          <activiti:value id="sEnam1" name="Тільки один (заявник)"></activiti:value>
+          <activiti:value id="sEnam1" name="Один"></activiti:value>
           <activiti:value id="sEnam2" name="Два"></activiti:value>
           <activiti:value id="sEnam3" name="Три"></activiti:value>
           <activiti:value id="sEnam4" name="Чотири"></activiti:value>
@@ -416,7 +417,6 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnamPasport" name="Будівельний паспорт"></activiti:value>
           <activiti:value id="sEnamProekt" name="Проект"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markerBudDok" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABI_DokBud.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPaspN" name="Номер будівельного паспорту; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPaspOrg" name="Орган що видав паспорт; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PaspData" name="Дата видачі паспорту" type="date" writable="false"></activiti:formProperty>
@@ -504,8 +504,8 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_1569_PovVukBudBP.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Повідомлення з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_1569_PovVukBudBP.html] ; ;bVisible=false" type="string" default="Повідомлення про будівництво" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan_dabi" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
