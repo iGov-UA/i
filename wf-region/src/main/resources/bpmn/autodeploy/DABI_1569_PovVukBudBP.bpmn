@@ -13,8 +13,8 @@
         <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 15.78"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 36.14"></activiti:value>
+          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 23.11"></activiti:value>
+          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43.47"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
         
@@ -36,7 +36,6 @@
         </activiti:formProperty>
         
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="asKilkFiz" name="Скільки власників у об'єкта будівництва" type="enum" required="true">
           <activiti:value id="sEnam1" name="Тільки один (заявник)"></activiti:value>
           <activiti:value id="sEnam2" name="Два"></activiti:value>
@@ -81,8 +80,6 @@
         <activiti:formProperty id="sPasport5" name="Паспортні дані п'ятого власника;(серія, номер, ким і коли видано)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress5" name="Адреса реєстрації п'ятого власника" type="string" required="true"></activiti:formProperty>
         
-        
-        
         <activiti:formProperty id="markersLine_2" name="Інформація про об’єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresBud&quot;],&quot;sValue&quot;:&quot;Інформація про об’єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdresBud" name="Будівельна адреса об'єкта;(вулиця та прив'язка до вже існуючої адреси, наприклад:м.Дніпро, вул.Поля, біля будинку №2)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameBud" name="Найменування об'єкта;(назва відповідно будівельного паспорту або проекту)" type="string" required="true"></activiti:formProperty>
@@ -99,6 +96,7 @@
           <activiti:value id="sEnamRes" name="Реставрація"></activiti:value>
           <activiti:value id="sEnamKR" name="Капітальний ремонт"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="BudData" name="Дата початку будівельних робіт" type="date" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_3" name="Інформація про документацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asBudDok&quot;],&quot;sValue&quot;:&quot;Інформація про документацію&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asBudDok" name="Документ на підставі якого ведеться будівництво;(будівельні паспорта видають з 2011го року)" type="enum" required="true">
@@ -106,8 +104,8 @@
           <activiti:value id="sEnamProekt" name="Проект"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerBudDok" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABI_DokBud.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sPaspN" name="Номер будівельного паспорту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPaspOrg" name="Орган що видав паспорт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPaspN" name="Номер будівельного паспорту" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPaspOrg" name="Орган що видав паспорт;(вкажіть повну назву органа)" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="PaspData" name="Дата видачі паспорту" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЄДРПОУ проектувальника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Найменування проектувальника" type="textArea" required="true"></activiti:formProperty>
@@ -196,19 +194,22 @@
         <activiti:formProperty id="sCEOName_SubjectOrgan_011" name="ПІБ директора" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_011" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="markerPidr" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIGPidr.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/DABI/DABI_1569_PovVukBudBP.html"></activiti:formProperty>
+        
         <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_dabi" name="Пошта ДЗК; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan_dabi" name="Назва органу; ;bVisible=false" type="string" default="Управління державного архітектурно-будівельного контролю"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина); ;bVisible=false" type="string" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="15.78"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="23.11"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюти; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string" default="сплата за отримання листа, комісія 1,8%"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -218,9 +219,9 @@
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var sum = 15.78;
+var sum = 23.11;
 if ((execution.getVariable('asLust')) === 'sEnamLustKur') {
-	sum =  36.14;
+	sum =  43.47;
 }
 execution.setVariable('sSum', sum);      
 
@@ -233,7 +234,7 @@ execution.setVariable('sSum', sum);
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.]]></activiti:expression>
@@ -258,13 +259,13 @@ execution.setVariable('sSum', sum);
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Ваше звернення №[sID_Order] було успішно зареєстроване у нашій системі.<br />
-Ви отримаєте відповідь протягом 30 робочих днів.<br /><br />
+Ви отримаєте відповідь протягом 10 робочих днів.<br /><br />
 
 Порядок обробки:<br>
 Спочатку вашу заяву перевірить ЦНАП.<br />
-Потім звернення надійде до Державної архітектурно-будівельної інспекції(ДАБІ) і буде нею оброблене.<br />
+Потім звернення надійде до Управління державного архітектурно-будівельного контролю(УДАБК) і буде ним оброблене.<br />
 Якщо помилки будуть критичні, в наданні послуги буде відмовлено.<br /><br />
-Після обробки в ДАБІ відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br />
+Після обробки в УДАБК відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -300,18 +301,18 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Ваше звернення №[sID_Order] було успішно зареєстроване у нашій системі.<br />
-Ви отримаєте відповідь протягом 30 робочих днів.<br /><br />
+Ви отримаєте відповідь протягом 10 робочих днів.<br /><br />
 
-Ви обрали доставку відповіді поштою. Після обробки звернення в ДАБІ вам надійде лист з посиланням для оплати.<br /><br />
+Ви обрали доставку відповіді поштою. Після обробки звернення в УДАБК вам надійде лист з посиланням для оплати.<br /><br />
 
 Порядок обробки:<br>
 Спочатку вашу заяву перевірить ЦНАП.<br />
-Потім звернення надійде до Державної архітектурно-будівельної інспекції(ДАБІ) і буде нею оброблене.<br />
+Потім звернення надійде до Управління державного архітектурно-будівельного контролю(УДАБК) і буде ним оброблене.<br />
 Якщо помилки будуть критичні, в наданні послуги буде відмовлено.<br /><br />
-Після обробки в ДАБІ відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br /><br />
+Після обробки в УДАБК відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br /><br />
 У випадку позитивного результату обробки в листі буде посилання для оплати доставки поштою.<br />
 На оплату буде надано 48 годин.<br />
-У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь нарочно в ЦНАПі.<br /> 
+У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь особисто в ЦНАПі.<br /> 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -393,8 +394,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sPasport5" name="Паспортні дані п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdress5" name="Адреса реєстрації п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
         
-        
-        
         <activiti:formProperty id="markersLine_2" name="Інформація про об’єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdresBud&quot;],&quot;sValue&quot;:&quot;Інформація про об’єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sAdresBud" name="Будівельна адреса об'єкту; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameBud" name="Найменування об'єкта; ;writable=false" type="string"></activiti:formProperty>
@@ -410,6 +409,8 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnamRes" name="Реставрація"></activiti:value>
           <activiti:value id="sEnamKR" name="Капітальний ремонт"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="BudData" name="Дата початку будівельних робіт" type="date" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_3" name="Інформація про документацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asBudDok&quot;],&quot;sValue&quot;:&quot;Інформація про документацію&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asBudDok" name="Документ на підставі якого ведеться будівництво" type="enum" writable="false">
           <activiti:value id="sEnamPasport" name="Будівельний паспорт"></activiti:value>
@@ -429,11 +430,13 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_03" name="Код ЄДРПОУ експертної організації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_03" name="Найменування експертної організації; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sEkspPIB" name="ПІБ відповідального експерта; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_4" name="Характеристики будинку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;lPov&quot;],&quot;sValue&quot;:&quot;Характеристики будинку&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lPov" name="Кількість поверхів; ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="dZagPlosh" name="Загальна площа (кв.м); ;writable=false" type="double"></activiti:formProperty>
         <activiti:formProperty id="dZtPlosh" name="Житлова площа (кв.м); ;writable=false" type="double"></activiti:formProperty>
         <activiti:formProperty id="dNZtPlosh" name="Нежитлова площа (кв.м); ;writable=false" type="double"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_5" name="Інформація про землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;asZemKilk&quot;],&quot;sValue&quot;:&quot;Інформація про землю&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asZemKilk" name="Кількість окремих земельних діялянок на яких будується об'єкт" type="enum" writable="false">
           <activiti:value id="sEnamZem1" name="Одна"></activiti:value>
@@ -477,6 +480,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="ZemKadN3" name="Кадастровий номер ділянки №3; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ZemPl3" name="Площа ділянки №3 (кв.м); ;writable=false" type="double"></activiti:formProperty>
         <activiti:formProperty id="markerZem" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIZem.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_6" name="Інформація про генерального підрядника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;asGPodrOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального підрядника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asGPodrOsoba" name="Будівництво здійснює" type="enum" writable="false">
           <activiti:value id="sEnamGPodrFiz" name="Заявник особисто (Господарським способом)"></activiti:value>
@@ -487,21 +491,31 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sLocation_SubjectOrgan_011" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_011" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markerPidr" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIGPidr.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_115" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_115&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Успіх! Заява оформлена вірно"></activiti:value>
-          <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
+          <activiti:value id="reject" name="Відмова. Заява оформлена НЕ вірно"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_1569_PovVukBudBP.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan_dabi" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
+    <sequenceFlow id="flow31" name="ВІДМОВА ЦНАП" sourceRef="exclusivegateway2" targetRef="parallelgateway3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow30" name="ЦНАП перевірка ОК" sourceRef="exclusivegateway2" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask4" name="Заява ОК" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -519,7 +533,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Ваше звернення №[sID_Order] пройшло попередню перевірку в ЦНАПі.<br />
-Документи передані в ДАБІ.<br /><br />
+Документи передані в УДАБК.<br /><br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -530,16 +544,14 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] peredano v DABI. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] peredano v UDABK. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow30" name="ЦНАП перевірка ОК" sourceRef="exclusivegateway2" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
-    </sequenceFlow>
+    
     <serviceTask id="servicetask5" name="ЦНАП Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
@@ -575,40 +587,120 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow31" name="ВІДМОВА ЦНАП" sourceRef="exclusivegateway2" targetRef="parallelgateway3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
-    </sequenceFlow>
+    <serviceTask id="servicetask17" name="Контроль ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Відмова ЦНАП. ${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+По вашому зверненню №[sID_Order] винесено відмову.<br />
+Заява не пройшла перевірку в ЦНАПі.<br />
+<p>Причина відмови: ${comment}</p>
+Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow34" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <userTask id="usertask2" name="ЦНАП після ДАБІ" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_fio" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_fio&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
-          <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
-          <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
+          <activiti:value id="sEnamFiz" name="Фізична особа (особисто)"></activiti:value>
+          <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа (подає керівник)"></activiti:value>
+          <activiti:value id="sEnamUrP" name="Юридична особа (подає представник)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markerOsoba2" name="Post" type="markers" default="${markerService.loadFromFile('AK/UrFizOsoba_Nofiles.json')}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asKilkFiz" name="Скільки власників у об'єкта будівництва" type="enum" writable="false">
+          <activiti:value id="sEnam1" name="Тільки один (заявник)"></activiti:value>
+          <activiti:value id="sEnam2" name="Два"></activiti:value>
+          <activiti:value id="sEnam3" name="Три"></activiti:value>
+          <activiti:value id="sEnam4" name="Чотири"></activiti:value>
+          <activiti:value id="sEnam5" name="П'ять"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_D" name="Інформація про довірителя" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sDov_Name&quot;],&quot;sValue&quot;:&quot;Інформація про довірителя&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDov_Name" name="Прізвище, ім'я, по батькові довірителя; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lDov_inn" name="ІПН довірителя; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDov_passport" name="Паспорт довірителя; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDov_Adress" name="Адреса довірителя; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovirenist" name="Довіреність представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN2" name="ІПН другого власника; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPasport2" name="Паспортні дані другого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса реєстрації другого власника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sPIB3" name="Прізвище, ім'я, по батькові третього власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN3" name="ІПН третього власника; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPasport3" name="Паспортні дані третього власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress3" name="Адреса реєстрації третього власника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sPIB4" name="Прізвище, ім'я, по батькові четвертого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN4" name="ІПН четвертого власника; ;writable=false" type="long" ></activiti:formProperty>
+        <activiti:formProperty id="sPasport4" name="Паспортні дані четвертого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress4" name="Адреса реєстрації четвертого власника; ;writable=false" type="string" ></activiti:formProperty>
+        
+        <activiti:formProperty id="sPIB5" name="Прізвище, ім'я, по батькові п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN5" name="ІПН п'ятого власника; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPasport5" name="Паспортні дані п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress5" name="Адреса реєстрації п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_115" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_115&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="decideCN" name="Результат обробки в ДАБІ" type="enum" required="true">
           <activiti:value id="accept" name="Заяву задоволено"></activiti:value>
-          <activiti:value id="reject" name="ДАБІ відмовив в наданні послуги"></activiti:value>
+          <activiti:value id="reject" name="УДАБК відмовив в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="commentCN" name="Вкажіть причину відмови" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="fileVidpov" name="Завантажте відповідь ДАБІ" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markerOpal" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekdashCnap.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerCN2" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekdashCnap.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
+    <sequenceFlow id="flow39" name="ДАБІ ОК" sourceRef="exclusivegateway4" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideCN == 'accept'&&asVidpovid != 'sEnamPost'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow66" name="ДАБІ ОК ПОШТА" sourceRef="exclusivegateway4" targetRef="servicetask10">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideCN == 'accept'&&asVidpovid == 'sEnamPost'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow70" name="ДАБІ ВІДМОВА" sourceRef="exclusivegateway4" targetRef="parallelgateway4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideCN == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow37" sourceRef="usertask2" targetRef="exclusivegateway4"></sequenceFlow>
     <serviceTask id="servicetask7" name="ДАБІ відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -626,7 +718,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 По вашому зверненню №[sID_Order] винесено відмову.<br />
-Заява не пройшла перевірку в ДАБІ.<br />
+Заява не пройшла перевірку в УДАБК.<br />
 <p>Причина відмови: ${commentCN}</p>
 Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 У разі подання повторної заявки, при вході під тим же логіном, поля будуть заповнені автоматично.<br />
@@ -651,6 +743,41 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <serviceTask id="servicetask18" name="Контроль ДАБІ" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Відмова ДАБІ. ${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+По вашому зверненню №[sID_Order] винесено відмову.<br />
+Заява не пройшла перевірку в УДАБК.<br />
+<p>Причина відмови: ${commentCN}</p>
+Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+У разі подання повторної заявки, при вході під тим же логіном, поля будуть заповнені автоматично.<br />
+Якщо вам потрібен документ з відмовою ви можете отримати його в ЦНАПі.<br />
+${sAddress}<br />
+${sWorkTime}<br />
+${sPhoneOrgan}<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${fileVidpov}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    
     <serviceTask id="servicetask8" name="ДАБІ все ОК" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -660,14 +787,14 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Оцініть якість надання послуги. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression><![CDATA[Звернення задоволено. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 
 По вашому зверненню №[sID_Order] винесено позитивне рішення.<br />
-ДАБІ успішно обробив вашу заяву.<br />
+УДАБК успішно обробив вашу заяву.<br />
 Отриманйте відповідь в ЦНАПі.<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
@@ -683,16 +810,14 @@ ${sNameOrgan}<br/>
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Nahaduvannya! Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow39" name="ДАБІ ОК" sourceRef="exclusivegateway4" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideCN == 'accept'&&asVidpovid != 'sEnamPost'}]]></conditionExpression>
-    </sequenceFlow>
+    
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow40" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="parallelgateway5" targetRef="endevent3"></sequenceFlow>
@@ -705,21 +830,21 @@ ${sNameOrgan}<br/>
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення задоволено. Оплатіть доставку. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression><![CDATA[Звернення задоволено. Оплатіть доставку поштою. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 По вашому зверненню №[sID_Order] винесено позитевне рішення.<br />
 Відповідь готова і передана в ЦНАП.<br /><br />
-При замовленні послуги, заповнюючи форму ви обрали доставку поштою.<br /> 
+При замовленні послуги, ви обрали доставку відповіді поштою.<br /> 
 Для того щоб закінчити процедуру, необхідно протягом 48 годин(2х діб) сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)
 [paymentButton_LiqPay]
 
 Після оплати, відповідь буде надано Укрпошті для доставки, про що вас повідомлять додатково.<br /><br />  
 
 <b>На оплату надано 48 годин.</b><br />
-У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь нарочно у ЦНАПі.<br /> 
+У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь особисто у ЦНАПі.<br /> 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -730,7 +855,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Oplatit` dostavky. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Oplatit` dostavky poshtoyu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
@@ -767,7 +892,7 @@ execution.setVariable('sCountPayment', src)
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Ви не оплатили поштову доставку відповіді ДАБІ протягом 48ми годин.<br /> 
+Ви не оплатили поштову доставку відповіді УДАБК протягом 48ми годин.<br /> 
 Поштова доставка скасована.<br /><br />
 Ви можете отримати відповідь в ЦНАПі.<br />
 ${sAddress}<br />
@@ -788,7 +913,7 @@ ${sNameOrgan}<br/>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Заявка не оплачена. Документи буде отримано нарочно. ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.]]></activiti:expression>
@@ -835,26 +960,79 @@ ${sNameOrgan}<br/>
     <userTask id="usertask3" name="УКРПОШТА" activiti:candidateGroups="UkrPost_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="В якому органі забрати документи" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_fio" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_fio&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
-          <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
-          <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
+          <activiti:value id="sEnamFiz" name="Фізична особа (особисто)"></activiti:value>
+          <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа (подає керівник)"></activiti:value>
+          <activiti:value id="sEnamUrP" name="Юридична особа (подає представник)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIndex" name="Індекс" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asKilkFiz" name="Скільки власників у об'єкта будівництва" type="enum" writable="false">
+          <activiti:value id="sEnam1" name="Тільки один (заявник)"></activiti:value>
+          <activiti:value id="sEnam2" name="Два"></activiti:value>
+          <activiti:value id="sEnam3" name="Три"></activiti:value>
+          <activiti:value id="sEnam4" name="Чотири"></activiti:value>
+          <activiti:value id="sEnam5" name="П'ять"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_D" name="Інформація про довірителя" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sDov_Name&quot;],&quot;sValue&quot;:&quot;Інформація про довірителя&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDov_Name" name="Прізвище, ім'я, по батькові довірителя; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lDov_inn" name="ІПН довірителя; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDov_passport" name="Паспорт довірителя; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDov_Adress" name="Адреса довірителя; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovirenist" name="Довіреність представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN2" name="ІПН другого власника; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPasport2" name="Паспортні дані другого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса реєстрації другого власника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sPIB3" name="Прізвище, ім'я, по батькові третього власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN3" name="ІПН третього власника; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPasport3" name="Паспортні дані третього власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress3" name="Адреса реєстрації третього власника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sPIB4" name="Прізвище, ім'я, по батькові четвертого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN4" name="ІПН четвертого власника; ;writable=false" type="long" ></activiti:formProperty>
+        <activiti:formProperty id="sPasport4" name="Паспортні дані четвертого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress4" name="Адреса реєстрації четвертого власника; ;writable=false" type="string" ></activiti:formProperty>
+        
+        <activiti:formProperty id="sPIB5" name="Прізвище, ім'я, по батькові п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN5" name="ІПН п'ятого власника; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPasport5" name="Паспортні дані п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress5" name="Адреса реєстрації п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_115" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_115&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">
+          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
+          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
           <activiti:value id="sEnamLustRek" name="Рекомендований лист"></activiti:value>
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="sPostIdentif" name="Ідентифікатор внутрішнього поштового відправлення" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -862,26 +1040,79 @@ ${sNameOrgan}<br/>
     <userTask id="usertask4" name="ЦНАП поштове відправлення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sPosluga_name" name="Назва послуги" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="В якому органі забрати документи" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_fio" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_fio&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
-          <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
-          <activiti:value id="sEnamUr" name="Юридична особа"></activiti:value>
+          <activiti:value id="sEnamFiz" name="Фізична особа (особисто)"></activiti:value>
+          <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа (подає керівник)"></activiti:value>
+          <activiti:value id="sEnamUrP" name="Юридична особа (подає представник)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubzvern" name="Повна назва юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEDRPOU" name="Код ЄДРПОУ" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="email" name="e-mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIndex" name="Індекс" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asKilkFiz" name="Скільки власників у об'єкта будівництва" type="enum" writable="false">
+          <activiti:value id="sEnam1" name="Тільки один (заявник)"></activiti:value>
+          <activiti:value id="sEnam2" name="Два"></activiti:value>
+          <activiti:value id="sEnam3" name="Три"></activiti:value>
+          <activiti:value id="sEnam4" name="Чотири"></activiti:value>
+          <activiti:value id="sEnam5" name="П'ять"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_D" name="Інформація про довірителя" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sDov_Name&quot;],&quot;sValue&quot;:&quot;Інформація про довірителя&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDov_Name" name="Прізвище, ім'я, по батькові довірителя; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lDov_inn" name="ІПН довірителя; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDov_passport" name="Паспорт довірителя; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDov_Adress" name="Адреса довірителя; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Dovirenist" name="Довіреність представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN2" name="ІПН другого власника; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPasport2" name="Паспортні дані другого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress2" name="Адреса реєстрації другого власника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sPIB3" name="Прізвище, ім'я, по батькові третього власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN3" name="ІПН третього власника; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPasport3" name="Паспортні дані третього власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress3" name="Адреса реєстрації третього власника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sPIB4" name="Прізвище, ім'я, по батькові четвертого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN4" name="ІПН четвертого власника; ;writable=false" type="long" ></activiti:formProperty>
+        <activiti:formProperty id="sPasport4" name="Паспортні дані четвертого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress4" name="Адреса реєстрації четвертого власника; ;writable=false" type="string" ></activiti:formProperty>
+        
+        <activiti:formProperty id="sPIB5" name="Прізвище, ім'я, по батькові п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lIPN5" name="ІПН п'ятого власника; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPasport5" name="Паспортні дані п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdress5" name="Адреса реєстрації п'ятого власника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_115" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_115&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">
+          <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
+          <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
           <activiti:value id="sEnamLustRek" name="Рекомендований лист"></activiti:value>
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sIndex" name="Індекс" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="decidePost" name="Підтвердьте передачу документів УкрПошті" type="enum" required="true">
           <activiti:value id="accept" name="Документи передано"></activiti:value>
         </activiti:formProperty>
@@ -903,7 +1134,7 @@ ${sNameOrgan}<br/>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 ЦНАП передав документи Укрпошті для відправлення.<br/>
-Через кілька днів ви отримаєте відповідь листом.<br/>
+Через кілька днів ви отримаєте відповідь поштовим листом.<br/>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br/>
@@ -936,7 +1167,7 @@ ${sNameOrgan}<br/>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Відповідь ДАБІ надіслано листом. Укрпошта підтверджує відправлення.<br />
+Відповідь УДАБК надіслано листом. Укрпошта підтверджує відправлення.<br />
 
 <p>Ідентифікатор внутрішнього поштового відправлення: ${sPostIdentif}</p>
 Відстежити доставку тут: <a href="http://services.ukrposhta.ua/bardcodesingle/" target="_blank">services.ukrposhta.ua</a>
@@ -966,25 +1197,19 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow61" sourceRef="servicetask2" targetRef="exclusivegateway6"></sequenceFlow>
     <sequenceFlow id="flow63" sourceRef="servicetask15" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow65" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow66" name="ДАБІ ОК ПОШТА" sourceRef="exclusivegateway4" targetRef="servicetask10">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideCN == 'accept'&&asVidpovid == 'sEnamPost'}]]></conditionExpression>
-    </sequenceFlow>
+    
     <sequenceFlow id="flow67" sourceRef="servicetask11" targetRef="servicetask16"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow68" sourceRef="servicetask16" targetRef="endevent5"></sequenceFlow>
     <endEvent id="endevent6" name="End"></endEvent>
     <sequenceFlow id="flow69" sourceRef="servicetask5" targetRef="endevent6"></sequenceFlow>
-    <sequenceFlow id="flow70" name="ДАБІ ВІДМОВА" sourceRef="exclusivegateway4" targetRef="parallelgateway4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideCN == 'reject'}]]></conditionExpression>
-    </sequenceFlow>
+    
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow71" sourceRef="parallelgateway3" targetRef="servicetask5"></sequenceFlow>
-    <serviceTask id="servicetask17" name="Контроль ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <sequenceFlow id="flow72" sourceRef="parallelgateway3" targetRef="servicetask17"></sequenceFlow>
     <sequenceFlow id="flow73" sourceRef="servicetask17" targetRef="endevent6"></sequenceFlow>
     <sequenceFlow id="flow74" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
-    <serviceTask id="servicetask18" name="Контроль ДАБІ" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <sequenceFlow id="flow75" sourceRef="parallelgateway4" targetRef="servicetask18"></sequenceFlow>
     <parallelGateway id="parallelgateway5" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow76" sourceRef="servicetask18" targetRef="parallelgateway5"></sequenceFlow>
