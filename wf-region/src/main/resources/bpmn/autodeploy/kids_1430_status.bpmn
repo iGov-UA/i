@@ -54,7 +54,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 			<p>
-			Ваше звернення №[sID_Order] щодо Встановлення статусу батьків та дитини з багатодітної сім’ї успішно зареєстроване.<br />
+			Ваше звернення щодо встановлення статусу батьків та дитини з багатодітної сім’ї успішно зареєстроване.<br />
 			Ви отримаєте відповідь протягом найближчого часу.
 			</p>
 			<p>Контакти підрозділу, яке буде займатися обробкою Вашого звернення:</p>
@@ -99,7 +99,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        		<activiti:formProperty id="passport_father" name="Копія паспорту батька; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_father" name="Копія паспорту батька; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="passport_mother" name="Копія паспорту матері; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="family" name="Довідка про склад сім’ї; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -113,6 +113,7 @@
         <activiti:formProperty id="comment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/kids_1430_status.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kids_1430_status.html] ; ;bVisible=false,bPrintForm=true" type="string" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="mark_req" name="Маркер_1" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCondit&quot;:&quot;decide&quot;},&quot;sCondition&quot;:&quot;[sCondit]=='accept'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -211,8 +212,8 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow46" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_264">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_264" id="BPMNPlane_dnepr_cnap_264">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_kids_1430_status">
+    <bpmndi:BPMNPlane bpmnElement="kids_1430_status" id="BPMNPlane_kids_1430_status">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
