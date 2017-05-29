@@ -385,7 +385,7 @@ public class ProcessSubjectService {
     }
 
     public void removeProcessSubject(ProcessSubject processSubject) {
-        LOG.info("removeProcessSubject started...");/*
+        LOG.info("removeProcessSubject started...");
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processSubject.getSnID_Process_Activiti()).singleResult();
         LOG.info("processInstance {}", processInstance);
         if (processInstance != null) {
@@ -407,7 +407,7 @@ public class ProcessSubjectService {
             
             LOG.info("removeProcessSubject: Exception={}", oException.getMessage());
         } 
-        */
+        
         processSubjectDao.delete(processSubject);
         LOG.info("removeProcessSubject ended...");
     }
