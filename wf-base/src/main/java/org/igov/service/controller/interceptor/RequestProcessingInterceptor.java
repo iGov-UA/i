@@ -1197,7 +1197,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         String sKey = (String) aAttributeName.nextElement();
                         mRequestAttribute.put(sKey, oRequest.getAttribute(sKey));
                     }
-                    
+                    /*
                     JSONObject oTransportObject = (JSONObject) mRequestAttribute.get("oTransportObject");
                     
                     String sLoginRole = (String) oTransportObject.get("sLoginRole");
@@ -1248,7 +1248,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 28L);
                     
-                    }
+                    }*/
     }
     
 }
