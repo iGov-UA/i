@@ -394,7 +394,7 @@ public class ProcessSubjectService {
         if (processInstance != null) {
             runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         }
-        
+        /*
         LOG.info("removeProcessSubject: before get tree");
 
         ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubject_Child", processSubject);
@@ -405,7 +405,7 @@ public class ProcessSubjectService {
           
         } else {
             LOG.info("processSubjectTree is null");
-        }
+        }*/
         
         processSubjectDao.delete(processSubject);
         LOG.info("removeProcessSubject ended...");
