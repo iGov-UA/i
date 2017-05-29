@@ -46,7 +46,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Надання статусу та видача (заміна) посвідчення «Інвалід війни»]]></activiti:string>
@@ -112,7 +112,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sSubstance" name="«Інвалід війни» ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/kalush_soczah_401_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/kalush_soczah_401_print.html] ; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/kalush_soczah_401_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -148,9 +148,11 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			<p> На жаль, Ваше звернення на тему: enum{[asType]} було відхилено.<br/>
+
 			<p> Причина в наступному:<br/>
 			<p>${decisionComment}</p>
 			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+
 			<br />
 			${sPhoneOrgan}<br />
 			[pattern/mail/_common_signature_start.html]
@@ -188,12 +190,16 @@ ${sNameOrgan}<br />
 			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 			<p>Ваше звернення на тему: enum{[asType]} - розглянуте.</p>
 			<p>Запрошуємо Вас отримати посвідчення за адресою:<br/>
+
 			</p>
 			${sPhoneOrgan}<br />
+
+
 			<br />
 			<br />
 			${sWorkTime}<br />
 			${sAddress}<br />
+
 			<br />
 			[pattern/mail/_common_signature_start.html]
 			${sNameOrgan}<br />

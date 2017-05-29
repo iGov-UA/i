@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="infrastr_1073_minStaff" name="Видача свідоцтва про мінімальний склад екіпажу судна" isExecutable="true">
+  <process id="infrastr_1073_minStaff" name="Свідоцтво про мінімальний склад екіпажу" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -56,7 +56,7 @@
           <activiti:expression><![CDATA[sku_76@ukr.net]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нова заявка. Видача свідоцтва про мінімальний склад екіпажу судна]]></activiti:expression>
+          <activiti:expression><![CDATA[Нова заявка. Свідоцтво про мінімальний склад екіпажу]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
@@ -73,7 +73,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача свідоцтва про мінімальний склад екіпажу судна. Реєстрація]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Свідоцтво про мінімальний склад екіпажу. Реєстрація]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -141,7 +141,7 @@
         <activiti:formProperty id="nDocVlasn" name="Копія свідоцтва про право власності на судно; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDocPass" name="Копія пасажирського свідоцтва; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nBill" name="Рахунок для сплати; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/min_equip_ecp.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/infr/min_equip_ecp.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/infr/min_equip_ecp.html,sFileName=ZayavaNaSvidoctvo,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('infrastr/infrastr_841_user1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -161,7 +161,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача свідоцтва про мінімальний склад екіпажу судна. Перевірка документів]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Свідоцтво про мінімальний склад екіпажу. Перевірка документів]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -205,7 +205,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача свідоцтва про мінімальний склад екіпажу судна. Перевірка документів]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Свідоцтво про мінімальний склад екіпажу. Перевірка документів]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -261,7 +261,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov: Видача свідоцтва про мінімальний склад екіпажу судна. Перевірка документів]]></activiti:expression>
+          <activiti:expression><![CDATA[iGov: Свідоцтво про мінімальний склад екіпажу. Перевірка документів]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -345,7 +345,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Видача свідоцтва про мінімальний склад екіпажу судна]]></activiti:string>
+          <activiti:string><![CDATA[Свідоцтво про мінімальний склад екіпажу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
