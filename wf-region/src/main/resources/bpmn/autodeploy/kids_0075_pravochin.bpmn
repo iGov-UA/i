@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="ternopil_rda_594" name="Дозвіл органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх" isExecutable="true">
+  <process id="kids_0075_pravochin" name="Дозвіл органу опіки та піклування на вчинення правочину з майном, що перебуває у власності неповнолітніх" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган у якому Ви бажаєте отримати відповідь" type="select" default="0"></activiti:formProperty>
@@ -10,7 +10,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
@@ -28,15 +27,15 @@
         <activiti:formProperty id="sPib_child_1" name="ПІБ дитини" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="date" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_2" name="ПІБ другої дитини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPib_child_3" name="ПІБ третьої дитини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPib_child_4" name="ПІБ четвертої дитини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPib_child_5" name="ПІБ пятої дитини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_5" name="Дата народження пятої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_5" name="Дата народження пятої дитини" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPib_child_6" name="ПІБ шостої дитини" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_6" name="Дата народження шостої дитини" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_6" name="Дата народження шостої дитини" type="date" default=" "></activiti:formProperty>
         <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" default=" " required="true">
           <activiti:value id="sVidchuzh" name="на відчуження (заставу, міну, придбання житла, прийняття в дар, продаж акцій) майна, право власності (користування) на яке має малолітня (неповнолітня ) дитина"></activiti:value>
           <activiti:value id="sAvto" name="на перереєстрацію автомобіля, який належить малолітній (неповнолітній ) дитині"></activiti:value>
@@ -57,7 +56,7 @@
         <activiti:formProperty id="sAdress_Zemlya" name="Вкажіть адресу земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPassport" name="Копія паспорта другого з батьків; опікунів, піклувальників;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nKod" name="Копія ІПН другого з батьків;опікунів, піклувальників;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nSvidotstvo" name="Копія свідоцтва про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSvidotstvo" name="Копія свідоцтва про народження дитини (дітей); у разі декількох дітей прохання завантажувати одним архівом;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nDovidka" name="Довідка з місця проживання, про склад сім'ї та реєстрацію (Форма-3) або витяг з домової книги; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nRishennya_mkv_opikun" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над дитиною; для опікунів, піклувальників;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nRishennya_mkv_mayno" name="Копія рішення виконавчого комітету міської ради про встановлення опіки над майном дитини; для опікунів, піклувальників;bNew=true" type="file"></activiti:formProperty>
@@ -82,7 +81,6 @@
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio_1" name="ПІБ другого з батьків, опікунів, піклувальників" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChildren" name="Укажіть кількість дітей; стосовно майна який необхідно дозвіл" type="enum" writable="false">
@@ -94,17 +92,17 @@
           <activiti:value id="six" name="6"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPib_child_1" name="ПІБ дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_2" name="ПІБ другої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_3" name="ПІБ третьої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_4" name="ПІБ четвертої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_5" name="ПІБ пятої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_5" name="Дата народження пятої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_5" name="Дата народження пятої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_6" name="ПІБ шостої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_6" name="Дата народження шостої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_6" name="Дата народження шостої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" writable="false">
           <activiti:value id="sVidchuzh" name="на відчуження (заставу, міну, придбання житла, прийняття в дар, продаж акцій) майна, право власності (користування) на яке має малолітня (неповнолітня ) дитина"></activiti:value>
           <activiti:value id="sAvto" name="на перереєстрацію автомобіля, який належить малолітній (неповнолітній ) дитині"></activiti:value>
@@ -149,10 +147,10 @@
         <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka494" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('ternopil/tern_594_cont1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/tern_rda_594.html]; ;bVisible=false" type="string" default="Заява громадянина першого з батьків на 1 дитину" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/tern_rda_594_1.html]; ;bVisible=false" type="string" default="Заява громадянина другого з батьків на 1 дитину" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/tern_rda_594_dity.html]; ;bVisible=false" type="string" default="Заява громадянина першого з батьків на декількох дітей" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/ternopil/tern_rda_594_2_dity.html]; ;bVisible=false" type="string" default="Заява громадянина другого з батьків на декількох дітей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/kids_0075_pravochin.html]; ;bVisible=false" type="string" default="Заява громадянина першого з батьків на 1 дитину" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/ternopilkids_0075_pravochin_2.html]; ;bVisible=false" type="string" default="Заява громадянина другого з батьків на 1 дитину" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/ternopil/kids_0075_pravochin_3.html]; ;bVisible=false" type="string" default="Заява громадянина першого з батьків на декількох дітей" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_4" name="[pattern/print/ternopil/kids_0075_pravochin_4.html]; ;bVisible=false" type="string" default="Заява громадянина другого з батьків на декількох дітей" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -162,7 +160,6 @@
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio_1" name="ПІБ другого з батьків, опікунів, піклувальників" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; на цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sChildren" name="Укажіть кількість дітей; стосовно майна який необхідно дозвіл" type="enum" writable="false">
@@ -174,17 +171,17 @@
           <activiti:value id="six" name="6"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sPib_child_1" name="ПІБ дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_1" name="Дата народження дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_2" name="ПІБ другої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_2" name="Дата народження другої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_3" name="ПІБ третьої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_3" name="Дата народження третьої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_4" name="ПІБ четвертої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_4" name="Дата народження четвертої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_5" name="ПІБ пятої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_5" name="Дата народження пятої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_5" name="Дата народження пятої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_child_6" name="ПІБ шостої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_child_6" name="Дата народження шостої дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_child_6" name="Дата народження шостої дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPravochyn" name="Оберіть вид правочину на який Ви хочете отримати дозвіл" type="enum" writable="false">
           <activiti:value id="sVidchuzh" name="на відчуження (заставу, міну, придбання житла, прийняття в дар, продаж акцій) майна, право власності (користування) на яке має малолітня (неповнолітня ) дитина"></activiti:value>
           <activiti:value id="sAvto" name="на перереєстрацію автомобіля, який належить малолітній (неповнолітній ) дитині"></activiti:value>
@@ -371,8 +368,8 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow34" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_ternopil_rda_594">
-    <bpmndi:BPMNPlane bpmnElement="ternopil_rda_594" id="BPMNPlane_ternopil_rda_594">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_kids_0075_pravochin">
+    <bpmndi:BPMNPlane bpmnElement="kids_0075_pravochin" id="BPMNPlane_kids_0075_pravochin">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="18.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
