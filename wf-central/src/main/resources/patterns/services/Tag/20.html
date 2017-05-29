@@ -1,224 +1,60 @@
-﻿<style>
-.article-block {
-    font-family: Open Sans, Arial, sans-serif;
-    color: #333333;
-}
-
-    .article-block li {
-        margin: 10px 0;
-    }
-
-    .article-block ol,
-    .article-block ul {
-        margin-bottom: 36px;
-    }
-
-     .article-block .content-art ol,
-     .article-block .content-art ul,
-     .article-block ol ul,
-     .article-block ol ol,
-     .article-block ul ul,
-     .article-block ul ol {
-         margin-bottom: 12px;
-     }
-
-    .article-block table ol,
-    .article-block table ul {
-        margin: 0 0 0 25px;
-        padding: 0;
-    }
-
-    .article-block table li {
-        padding: 5px 0 0 0;
-        margin: 0;
-    }
-
-
-    .article-block .notmarker > li {
-        list-style-type: none; /* Убираем маркеры */
-    }
-
-    .article-block sup {
-        color: #428bca;
-        font-size: 10.8333px;
-    }
-
-    .article-block a {
-        color: #428bca;
-    }
-
-    .article-block h1,
-    .article-block .ind-section {
-        margin-top: 46px;
-    }
-
-        .article-block h1.topic {
-            margin-top: 12px;
-        }
-
-    .article-block h2 {
-        margin-top: 36px;
-    }
-
-    .article-block h3 {
-        margin-top: 24px;
-    }
-
-    .article-block h1 > sup {
-        color: #428bca;
-        font-size: 15.8333px;
-    }
-
-    .article-block table {
-        border-spacing: 0;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        border-collapse: separate;
-    }
-
-    .article-block th {
-        background: #eeeeee;
-        text-align: center;
-    }
-
-    .article-block td,
-    .article-block th {
-        padding: 16px 10px;
-        vertical-align: central;
-        border-left: 1px solid #ddd;
-        border-top: 1px solid #ddd;
-    }
-
-    .article-block .tableNotHead tr:first-child > td,
-    .article-block tr:first-child > th {
-        border-top: none;
-    }
-
-        .article-block td:first-child,
-        .article-block tr:first-child > th:first-child {
-            border-left: none;
-        }
-        /* из-за background */
-        .article-block tr:first-child > th:first-child {
-            border-top-left-radius: 5px;
-        }
-
-        .article-block tr:first-child > th:last-child {
-            border-top-right-radius: 5px;
-        }
-
-    .article-block tr > td.small-text,
-    .article-block .small-text {
-        font-size: 10pt;
-    }
-
-
-    .article-block tr > td.va-c,
-    .article-block .va-c {
-        vertical-align: central;
-    }
-
-    .article-block tr > td.va-b,
-    .article-block .va-b {
-        vertical-align: bottom;
-    }
-
-    .article-block tr > td.va-t,
-    .article-block .va-t {
+﻿<style type="text/css">
+    #calculator input[type='checkbox'] {
         vertical-align: top;
+        margin: 0;
+        width: 17px;
+        height: 17px;
     }
 
-
-    .article-block tr > td.ta-c,
-    .article-block .ta-c {
-        text-align: center;
-    }
-
-    .article-block tr > td.ta-l,
-    .article-block .ta-l {
-        text-align: left;
-    }
-
-    .article-block tr > td.ta-r,
-    .article-block .ta-r {
-        text-align: right;
-    }
-
-    .article-block tr > td.ta-j,
-    .article-block p,
-    .article-block li,
-    .article-block .ta-j {
-        text-align: justify;
-        -webkit-hyphens: auto;
-        -moz-hyphens: auto;
-        -ms-hyphens: auto;
-        hyphens: auto;
-        word-wrap: break-word;
-    }
-
-    .article-block .attention-block {
-        margin: 20px;
-        padding: 20px;
-        border-left: 3px solid #eee;
-    }
-
-        .article-block .attention-block h4 {
-            margin-top: 0;
-            margin-bottom: 5px;
+        #calculator input[type='checkbox'] + label {
+            cursor: pointer;
         }
 
-        .article-block .attention-block p:last-child {
-            margin-bottom: 0;
+        #calculator input[type='checkbox']:not(checked) {
+            position: absolute;
+            opacity: 0;
         }
 
-    .article-block .attention-block-info {
-        background-color: #f4f8fa;
-        border-color: #5bc0de;
-    }
+            #calculator input[type='checkbox']:not(checked) + label {
+                position: relative;
+                padding: 0;
+            }
 
-        .article-block .attention-block-info h4 {
-            color: #5bc0de;
+                #calculator input[type='checkbox']:not(checked) + label:before {
+                    content: '';
+                    position: absolute;
+                    top: -14px;
+                    left: 0;
+                    width: 50px;
+                    height: 26px;
+                    border-radius: 13px;
+                    background: #CDD1DA;
+                    box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
+                }
+
+                #calculator input[type='checkbox']:not(checked) + label:after {
+                    content: ' ';
+                    position: absolute;
+                    top: -12px;
+                    left: 2px;
+                    width: 22px;
+                    height: 22px;
+                    border-radius: 10px;
+                    background: #FFF;
+                    box-shadow: 0 2px 5px rgba(0,0,0,.3);
+                    transition: all .2s;
+                }
+
+
+
+        #calculator input[type='checkbox']:checked + label:before {
+            background: rgba(9,177,9,.7);
         }
 
-    .article-block .attention {
-        padding: 16px 10px;
-        border: 1px solid #dddddd;
-        border-radius: 5px;
-        background-color: #ffffff;
-    }
-
-    .article-block .note {
-        color: #999;
-    }
-
-    .article-block .b {
-        font-weight: bold;
-    }
-
-    .article-block .notb {
-        font-weight: 100;
-    }
-
-    .formula em,
-    .variables em,
-    .variable {
-        font-weight: bold;
-    }
-	    .article-block .formula table {
-	        border-spacing: 0;
-	        border: 0;
-	        border-radius: 0px;
-	        border-collapse: separate;
-	        margin: auto;
-	        padding:0;
-	    }
-	    .article-block .formula tr,
-	    .article-block .formula td {
-	        vertical-align: central;
-	        margin:0;
-	        padding: 3px 5px;
-	        border: 0;
-	    }
+        #calculator input[type='checkbox']:checked + label:after {
+            left: 26px;
+            box-shadow: 0 0 0 3px rgba(9,177,9,.1);
+        }
 </style>
 
 
@@ -227,13 +63,14 @@
     <ol class="content-art">
         <li><a href="" ng-click="gotoAnchor(1)">Категорії і групи інвалідності в Україні</a></li>
         <li><a href="" ng-click="gotoAnchor(2)">Як отримати посвідчення інваліда</a></li>
-        <li><a href="" ng-click="gotoAnchor(3)">Як інваліди та особи, які про них піклуються, отримують грошові виплати від держави</a>
-        	<ol>
-        		<li><a href="" ng-click="gotoAnchor(4)">Допомога інвалідам з дитинства та дітям-інвалідам та надбавка на догляд за інвалідом з дитинства та дитиною-інвалідом</a></li>
-        		<li><a href="" ng-click="gotoAnchor(5)">Допомога малозабезпеченій особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу, який потребує постійного догляду</a></li>
-        		<li><a href="" ng-click="gotoAnchor(6)">Допомога особам, які не мають права на пенсію, та інвалідам</a></li>
-        		<li><a href="" ng-click="gotoAnchor(7)">Виплати непрацюючій особі, яка доглядає інваліда 1 групи або особу 80 років та старше</a></li>
-           	</ol>
+        <li>
+            <a href="" ng-click="gotoAnchor(3)">Як інваліди та особи, які про них піклуються, отримують грошові виплати від держави</a>
+            <ol>
+                <li><a href="" ng-click="gotoAnchor(4)">Допомога інвалідам з дитинства та дітям-інвалідам та надбавка на догляд за інвалідом з дитинства та дитиною-інвалідом</a></li>
+                <li><a href="" ng-click="gotoAnchor(5)">Допомога малозабезпеченій особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу, який потребує постійного догляду</a></li>
+                <li><a href="" ng-click="gotoAnchor(6)">Допомога особам, які не мають права на пенсію, та інвалідам</a></li>
+                <li><a href="" ng-click="gotoAnchor(7)">Виплати непрацюючій особі, яка доглядає інваліда 1 групи або особу 80 років та старше</a></li>
+            </ol>
         </li>
         <li><a href="" ng-click="gotoAnchor(8)">Додаткова адресна допомога внутрішньо переміщеним особам-інвалідам</a></li>
         <li><a href="" ng-click="gotoAnchor(9)">Он-лайн калькулятор для розрахунку розміру допомоги</a></li>
@@ -254,7 +91,7 @@
             <li>порушення функцій зору (сліпі та слабозорі);</li>
             <li>порушення роботи внутрішніх органів, тобто інваліди по "загальному" захворюванню (цукровий діабет, бронхіальна астма, онкозахворювання та інше).</li>
         </ol>
-        <b>Дорослі</b><br> 
+        <b>Дорослі</b><br>
         Залежно від ступеня втрати здоров'я дорослим встановлюється одна з трьох груп інвалідності:
         <ul>
             <li>I група інвалідності - особа, яка повністю втратила працездатність і вимагає постійної опіки;</li>
@@ -301,7 +138,7 @@
         <b>Хто яку допомогу отримує:</b><br>
     </p>
 
-   
+
     <table class="small-text ta-c va-c">
         <colgroup>
             <col width="36%">
@@ -317,7 +154,7 @@
             <col width="6%">
         </colgroup>
 
-        
+
         <tr>
             <th rowspan="2"></th>
             <th rowspan="2">Діти-інваліди</th>
@@ -388,7 +225,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td></td>        
+            <td></td>
         </tr>
         <tr>
             <td class="ta-l">Щомісячна грошова допомога малозабезпеченій особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу, який за висновком лікарської комісії медичного закладу потребує постійного стороннього догляду, на догляд за ним</td>
@@ -404,200 +241,412 @@
             <td>&#10004</td>
         </tr>
     </table>
-*Одинокі інваліди з дитинства II і III групи, які за висновком лікарсько-консультативної комісії лікувально-профілактичного закладу потребують постійного стороннього догляду.<br>
-<br>Розглянемо кожний вид допомоги більш детально.<br>
+    *Одинокі інваліди з дитинства II і III групи, які за висновком лікарсько-консультативної комісії лікувально-профілактичного закладу потребують постійного стороннього догляду.<br>
+    <br>Розглянемо кожний вид допомоги більш детально.<br>
 
     <h3 id="anchor4">3.1. Допомога інвалідам з дитинства та дітям-інвалідам та надбавка на догляд за інвалідом з дитинства та дитиною-інвалідом</h3>
     <p>
-Інвалідам з дитинства та дітям-інвалідам держава може надати <a href="https://igov.org.ua/service/767/general" target="_blank">соціальну допомогу</a>,
- а людям, які піклуються про інвалідів - <a href="https://igov.org.ua/service/787/general" target="_blank">надбавку на догляд</a> за ними.
-Надбавка на догляд призначається на кожну дитину-інваліда, на яку призначена державна соціальна допомога.
-   </p>
-   <p>
-Якщо інвалід має право на отримання двох видів допомоги: державна соціальна допомога (згідно Закону України 2109-14) та пенсія або допомога (згідно Закону України 1727-15),
-призначається тільки одна з них - на вибір інваліда або його представника. При цьому, якщо інвалід має право на пенсію у зв'язку з втратою годувальника і державну
-соціальну допомогу, ці виплати призначаються одночасно.
-  </p>
-   <p>
-Під пенсією в разі втрати годувальника розуміються щомісячні виплати з Пенсійного фонду,
-які призначаються у зв'язку зі втратою годувальника непрацездатним членам сім'ї, що перебували на його утриманні.
-Під терміном «втрата годувальника» розуміється смерть, безвісна відсутність чи пропажа громадянина без звістки, що засвідчено у 
- встановленому порядку органами ДРАЦСу, судом чи іншими органами.
-  </p>
-  <p>
-Якщо щомісячні пенсійні виплати, державна соціальна допомога інвалідам не досягає прожиткового мінімуму, встановленого законом для осіб,
-які втратили працездатність, їм надається щомісячна державна адресна допомога у сумі, якої не вистачає до зазначеного прожиткового мінімуму.
-  </p>
-
-<h3 id="anchor5">3.2. Допомога малозабезпеченій особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу, який потребує постійного догляду.</h3>
-      <p>
-     Щомісячна <a href="https://igov.org.ua/service/777/general" target="_blank">грошова допомога на догляд</a> надається дієздатній особі,
-     яка зареєстрована або постійно проживає на одній житловій площі з інвалідом I чи II групи внаслідок психічного розладу,
-     який за висновком лікарської комісії медичного закладу потребує постійного стороннього догляду, та здійснює догляд за ним. 
+        Інвалідам з дитинства та дітям-інвалідам держава може надати <a href="https://igov.org.ua/service/767/general" target="_blank">соціальну допомогу</a>,
+        а людям, які піклуються про інвалідів - <a href="https://igov.org.ua/service/787/general" target="_blank">надбавку на догляд</a> за ними.
+        Надбавка на догляд призначається на кожну дитину-інваліда, на яку призначена державна соціальна допомога.
     </p>
-<h3 id="anchor6">3.3. Допомога особам, які не мають права на пенсію, та інвалідам.</h3>
-   <p>
-   <a href="https://igov.org.ua/service/778/general" target="_blank">Державна соціальна допомога особам, які не мають права на пенсію, та інвалідам</a> надається, коли одночасно дотримані такі умови:
-   <ul>
-        <li>особи визнані інвалідами в установленому порядку;</li>
-        <li>особи не одержують пенсію або соціальні виплати, що призначаються для відшкодування збитку, заподіяного ушкодженням здоров’я на виробництві, та допомогу інвалідам з дитинства та дітям-інвалідам;</li>
-        <li>особи є малозабезпеченими (крім інвалідів I групи);</li>
-        <li>особи є інвалідами I групи, середньомісячний сукупний дохід яких за останні шість календарних місяців або два квартали, що передують місяцю звернення за призначенням допомоги, не перевищує 115 відсотків прожиткового мінімуму для осіб, які втратили працездатність.</li>
-   </ul>
-   </p>
-   
-<h3 id="anchor7">3.4. Виплати непрацюючій особі, яка доглядає інваліда 1 групи або особу 80 років та старше</h3>   
-   <p>
-        Право на <a href="https://igov.org.ua/service/759/general" target="_blank">щомісячні компенсаційні виплати</a> 
-         має непрацююча працездатна особа, яка здійснює догляд за інвалідом 1 групи або за особою, яка досягла 80 років. 
+    <p>
+        Якщо інвалід має право на отримання двох видів допомоги: державна соціальна допомога (згідно Закону України 2109-14) та пенсія або допомога (згідно Закону України 1727-15),
+        призначається тільки одна з них - на вибір інваліда або його представника. При цьому, якщо інвалід має право на пенсію у зв'язку з втратою годувальника і державну
+        соціальну допомогу, ці виплати призначаються одночасно.
+    </p>
+    <p>
+        Під пенсією в разі втрати годувальника розуміються щомісячні виплати з Пенсійного фонду,
+        які призначаються у зв'язку зі втратою годувальника непрацездатним членам сім'ї, що перебували на його утриманні.
+        Під терміном «втрата годувальника» розуміється смерть, безвісна відсутність чи пропажа громадянина без звістки, що засвідчено у
+        встановленому порядку органами ДРАЦСу, судом чи іншими органами.
+    </p>
+    <p>
+        Якщо щомісячні пенсійні виплати, державна соціальна допомога інвалідам не досягає прожиткового мінімуму, встановленого законом для осіб,
+        які втратили працездатність, їм надається щомісячна державна адресна допомога у сумі, якої не вистачає до зазначеного прожиткового мінімуму.
+    </p>
+
+    <h3 id="anchor5">3.2. Допомога малозабезпеченій особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу, який потребує постійного догляду.</h3>
+    <p>
+        Щомісячна <a href="https://igov.org.ua/service/777/general" target="_blank">грошова допомога на догляд</a> надається дієздатній особі,
+        яка зареєстрована або постійно проживає на одній житловій площі з інвалідом I чи II групи внаслідок психічного розладу,
+        який за висновком лікарської комісії медичного закладу потребує постійного стороннього догляду, та здійснює догляд за ним.
+    </p>
+    <h3 id="anchor6">3.3. Допомога особам, які не мають права на пенсію, та інвалідам.</h3>
+    <p>
+        <a href="https://igov.org.ua/service/778/general" target="_blank">Державна соціальна допомога особам, які не мають права на пенсію, та інвалідам</a> надається, коли одночасно дотримані такі умови:
+        <ul>
+            <li>особи визнані інвалідами в установленому порядку;</li>
+            <li>особи не одержують пенсію або соціальні виплати, що призначаються для відшкодування збитку, заподіяного ушкодженням здоров’я на виробництві, та допомогу інвалідам з дитинства та дітям-інвалідам;</li>
+            <li>особи є малозабезпеченими (крім інвалідів I групи);</li>
+            <li>особи є інвалідами I групи, середньомісячний сукупний дохід яких за останні шість календарних місяців або два квартали, що передують місяцю звернення за призначенням допомоги, не перевищує 115 відсотків прожиткового мінімуму для осіб, які втратили працездатність.</li>
+        </ul>
+    </p>
+
+    <h3 id="anchor7">3.4. Виплати непрацюючій особі, яка доглядає інваліда 1 групи або особу 80 років та старше</h3>
+    <p>
+        Право на <a href="https://igov.org.ua/service/759/general" target="_blank">щомісячні компенсаційні виплати</a>
+        має непрацююча працездатна особа, яка здійснює догляд за інвалідом 1 групи або за особою, яка досягла 80 років.
     </p>
     <h1 id="anchor8">4. Додаткова адресна допомога внутрішньо переміщеним особам-інвалідам</h1>
     <p>
-       Інвалід може отримати додаткову адресну допомогу, якщо він є внутрішньо переміщеною особою. Детальніше про умови отримання такої допомоги можна ознайомитись за <a href="https://igov.org.ua/subcategory/1/32/situation/48" target="_blank"> посиланням</a>.
+        Інвалід може отримати додаткову адресну допомогу, якщо він є внутрішньо переміщеною особою. Детальніше про умови отримання такої допомоги можна ознайомитись за <a href="https://igov.org.ua/subcategory/1/32/situation/48" target="_blank"> посиланням</a>.
 
     </p>
-   
+
     <h1 id="anchor9">Он-лайн калькулятор для розрахунку розміру допомоги</h1>
-   
-  
-    <!-- Описание сущностей -->
 
-    <script>
-        //класс Платеж
-        function PayDate(startDatePr, payPr, endDatePr) {
-            this.startDate = startDatePr;
-            this.pay = payPr;
-            this.endDate = endDatePr;
-        }
-        //Класс социальный платеж
-        function SocialPay() {
-            this.Pays = new Array();
-            for (var i = 0; i < arguments.length; i += 2) {
-                var masStartDate = (arguments[i] != null) ? arguments[i].split(".") : null;
-                var masEndDate = (arguments[i + 2] != null) ? arguments[i + 2].split(".") : null;
-                var startDate = masStartDate != null ? masStartDate.length == 3 ? new Date(masStartDate[2], masStartDate[1] - 1, masStartDate[0]) : null : null;
-                var endDate = masEndDate != null ? (masEndDate.length == 3) ? new Date(masEndDate[2], masEndDate[1] - 1, masEndDate[0]) : null : null;
-                if (endDate) { endDate.setDate(endDate.getDate() - 1); }
+    <div>
+        <p>В приведеному нижче калькуляторі можна дізнатись суму соціальної допомоги.</p>
+        <div class="row" id="calculator">
+            <div class="col-md-12">
+                <div class="highlight">
 
-                if (arguments[i + 1] != null && startDate != null) {
-                    this.Pays.push(new PayDate(startDate, arguments[i + 1], endDate));
-                } else {
-                    console.log("проверьте входные данные");
-                    break;
-                }
-            }
-        }
-        //метод текущие выплата
-        SocialPay.prototype.CurPay = function () {
-            var nDate = new Date();
-            for (var i = 0; i < this.Pays.length; i++) {
-                if (this.Pays[i].endDate == null) {
-                    return this.Pays[i].pay;
-                } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() >= nDate.getTime()) {
-                    return this.Pays[i].pay;
-                }
-            }
-            return 0;
-            console.log("проблема со структурой входних данных");
-        }
-        //метод отображающий текущий период
-        SocialPay.prototype.Period = function () {
-            var nDate = new Date();
-            for (var i = 0; i < this.Pays.length; i++) {
-                if (this.Pays[i].endDate == null) {
-                    return "з " + formatDate(this.Pays[i].startDate);
-                } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() >= nDate.getTime()) {
-                    return "з " + formatDate(this.Pays[i].startDate) + " по " + formatDate(this.Pays[i].endDate);
-                }
-            }
-            return 0;
-            console.log("проблема со структурой входних данных");
-        }
-        //преобразование даты в строку
-        function formatDate(d) {
-            var curr_date = (d.getDate() <= 9) ? '0' + d.getDate() : d.getDate();
-            var curr_month = ((d.getMonth() + 1) <= 9) ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1);
-            var curr_year = d.getFullYear();
-            return curr_date + "." + curr_month + "." + curr_year;
-        }
-
-        //класс надбавки
-        function Allowance(sum, percent, inf) {
-            this.sum = (sum === undefined) ? 0 : sum;
-            this.percent = (percent === undefined) ? 0 : percent;
-            this.inf = (inf === undefined) ? "" : inf;
-        }
-        Allowance.prototype.Money = function () {
-            return +(this.sum * (this.percent / 100)).toFixed(2);
-        }
-        Allowance.prototype.Info = function () {
-            return (this.percent).toString() + this.inf;
-        }
-    </script>
-
-    <!-- Доп функционал на форме-->
-    <script>
-        //тестирование работы функционала
-        function Diagnostic() {
-            console.log("категория інвалидности - ", invalidCategory[invalidCategory.selectedIndex].value);
-            for (var i = 0; i < invalidGroup.length; i++) {
-                if (invalidGroup[i].checked) {
-                    console.log("Группа інвалидности - ", i);
-                    break;
-                }
-            }
-            console.log("постраждали ЧАЕС - ", invalidCHAES.checked);
-            console.log("Надбавка за догляд - ", SurchargeCare.checked);
-            console.log("Лица, утратившие трудоспособность - ", PayAbilityWork.CurPay());
-            console.log("Дети в возрасте до 6 лет - ", PayChildUnder6Yar.CurPay());
-            console.log("Дети в возрасте от 6 до 18 лет - ", PayChildOver6Yar.CurPay());
-        }
-        //вписать текст в блок
-        function TextBlock(id, text, flag) {
-            this.flag = (flag === undefined) ? false : flag;
-            if (flag) {
-                document.getElementById(id).innerHTML += text;
-            } else {
-                document.getElementById(id).innerHTML = text;
-            }
-        }
-        //отобразить/спрятать блок
-        function VisionBlock(id, flag, disp) {
-            this.flag = (flag === undefined) ? true : flag;
-            this.disp = (disp === undefined) ? true : disp;
-            if (document.getElementById(id) !== null) {
-                var obj = document.getElementById(id).style;
-                if (this.disp) {
-                    if (this.flag) { obj.display = 'block'; }
-                    else { obj.display = 'none'; }
-                } else {
-                    if (this.flag) { obj.visibility = 'visible'; }
-                    else { obj.visibility = 'hidden'; }
-                }
-            } else {
-                console.log("проверьте ID - ", id);
-            }
-        }
-    </script>
+                    <div class="row">
+                        <div class="col-md-5">
+                            Категорія:
+                        </div>
+                        <div class="col-md-3">
+                            <select id="invalidCategory" name="invalidCategory" class="form-control" onchange="chCategory()" onclick="cl()">
+                                <option value="under18">дитина-інвалід</option>
+                                <option value="over18">інвалід з дитинства</option>
+                            </select>
+                            <br />
+                        </div>
+                    </div>
 
 
-    <!-- События на форме-->
-    <script>
-        //константы, 
+                    <div class="row">
+                        <div class="col-md-5">
+                            Група інвалідності:
+                        </div>
+                        <div class="col-md-5">
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="invalidGroup" id="1A" value="1A" onclick="cl()" checked="checked">1 А
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="invalidGroup" id="1B" value="1B" onclick="cl()">1 Б
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="invalidGroup" id="2" value="2" onclick="cl()">2
+                                </label>
+                            </div>
+                            <div class="radio-inline">
+                                <label>
+                                    <input type="radio" name="invalidGroup" id="3" value="3" onclick="cl()">3
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row" id="rInvalidChildAge">
+                        <div class="col-md-5">
+                            Вік дитини:
+                            <br />
+                        </div>
+                        <div class="col-md-3">
+                            <select id="invalidChildAge" name="invalidChildAge" class="form-control" onclick="cl()">
+                                <option value="under6">до 6 років</option>
+                                <option value="over6">від 6 до 18 років</option>
+                            </select>
+                            <br />
+                        </div>
+                    </div>
+
+
+                    <div class="row" id="rInvalidCHAES">
+                        <div class="col-md-5">
+                            Інвалідність пов'язана з катастрофою на ЧАЕС:
+                        </div>
+                        <div class="col-md-3">
+                            <input type="checkbox" id="invalidCHAES" value="yes" onclick="cl()">
+                            <label for="invalidCHAES"></label>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            Надбавка на догляд:
+                        </div>
+                        <div class="col-md-3">
+                            <input type="checkbox" id="SurchargeCare" value="yes" onclick="cl()">
+                            <label for="SurchargeCare"></label>
+                        </div>
+                    </div>
+                    <br />
+                    <!--  Інформаційний блок  -->
+                    <div id="resFin" style="display:none;">
+                        <hr />
+                        <div class="row">
+                            <div id="validRow">
+
+                            </div>
+                            <br />
+                        </div>
+
+                        <div class="row" id="rInfoPeriod">
+                            <div class="col-md-5">
+                                Період:
+                                <span class="help-block" id="infoPeriodDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-5" id="infoPeriod">
+                            </div>
+                        </div>
+
+                        <div class="row" id="rInfoSocHelp">
+                            <div class="col-md-5">
+                                Соціальна допомога:
+                                <span class="help-block" id="infoSocHelpDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoSocHelp">
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="rInfoInvalidCHAES">
+                            <div class="col-md-5">
+                                Якщо захворювання пов’язане з катастрофою на ЧАЕС:
+                                <span class="help-block" id="infoInvalidCHAESDescr">соціальна допомога збільшується на 50%</span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoInvalidCHAES">
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="rInfoSurchargeCare">
+                            <div class="col-md-5">
+                                Надбавка на догляд:
+                                <span class="help-block" id="infoSurchargeCareDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoSurchargeCare">
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="rInfoAllow">
+                            <div class="col-md-5">
+                                Доплата:
+                                <span class="help-block" id="infoAllowDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoAllow">
+                            </div>
+                        </div>
+
+                        <div class="row" style="border-top: solid 1px black" id="rInfoSumSocHelp">
+                            <div class="col-md-5">
+                                Всього:
+                                <span class="help-block" id="infoSumSocHelpDescr"></span>
+                                <br />
+                            </div>
+                            <div class="col-md-3" id="infoSumSocHelp">
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="rInfoCareAboutChild">
+                            <div class="attention-block attention-block-info">
+                                <h4>Зверніть увагу!</h4>
+                                <p>
+                                    Надбавка призначається у разі якщо дитина-інвалід потребує домашнього догляду одному з батьків (усиновителів, опікуну, піклувальнику),
+                                    і вони фактично здійснюють догляд за дитиною-інвалідом, при цьому:
+                                </p>
+                                <ul style="margin-top: -10px;">
+                                    <li>не працюють;</li>
+                                    <li>не навчаються (крім заочної форми навчання);</li>
+                                    <li>не проходять службу;</li>
+                                    <li>не займають виборну посаду;</li>
+                                    <li>
+                                        перебувають у відпустці:
+                                        <ul>
+                                            <li>по догляду за дитиною до досягнення нею трирічного віку;</li>
+                                            <li>без збереження заробітної плати;</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <p>
+                                    <strong>Це обмеження буде знято з 01.01.2017 року згідно прийнятого <a href='http://zakon0.rada.gov.ua/laws/show/1369-19' title='Про внесення змін до деяких законів України щодо посилення соціального захисту осіб, які доглядають за дітьми-інвалідами та інвалідами I групи' target='_blank'>Закону України</a> </strong>
+                                </p>
+                                <br />
+                                <p>
+                                    Одинокій матері (одинокому батьку) надбавка на догляд за дитиною-інвалідом призначається незалежно від факту роботи, навчання, служби.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row" id="rInfo">
+                            <div class="attention-block attention-block-info">
+                                <p>
+                                    Даний калькулятор розраховує соціальну допомогу для дітей-інвалідів та інвалідів з дитинства згідно <a href='http://zakon0.rada.gov.ua/laws/show/2109-14' title='Про державну соціальну допомогу інвалідам з дитинства та дітям-інвалідам' target="_blank">Закону України</a>. <br />
+                                    Якщо ви маєте сумніви, щодо правильності розрахунку, ви можете замовити <em>"Довідку про вид та розмір державної соціальної допомоги малозабезпеченим сім’ям"</em> через портал iGov.org.ua за <a href='https://igov.org.ua/service/1437/general' target="_blank">посиланням</a>, чи звернутись до відділу управління праці та соціального захисту населення за місцем проживання.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <h1 id="anchor10">Посилання на законодавство</h1>
+    <ul>
+        <li><a href="http://zakon2.rada.gov.ua/laws/show/2109-14" target="_blank">Про державну соціальну допомогу інвалідам з дитинства та дітям-інвалідам</a></li>
+        <li><a href="http://zakon3.rada.gov.ua/laws/show/1192-2000-%D0%BF" target="_blank">Про надання щомісячної грошової допомоги особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу, який за висновком лікарської комісії медичного закладу потребує постійного стороннього догляду, на догляд за ним</a></li>
+        <li><a href="http://zakon2.rada.gov.ua/laws/show/1727-15" target="_blank">Про державну соціальну допомогу особам, які не мають права на пенсію, та інвалідам</a></li>
+        <li><a href="http://zakon0.rada.gov.ua/laws/show/832-96-%D0%BF" target="_blank">Про підвищення розмірів державної допомоги окремим категоріям громадян </a></li>
+    </ul>
+
+</article>
+
+  <!-- Описание сущностей -->
+
+  <script>
+      //класс Платеж
+      function PayDate(startDatePr, payPr, endDatePr) {
+          this.startDate = startDatePr;
+          this.pay = payPr;
+          this.endDate = endDatePr;
+      }
+      //Класс социальный платеж
+      function SocialPay() {
+          this.Pays = new Array();
+          for (var i = 0; i < arguments.length; i += 2) {
+              var masStartDate = (arguments[i] != null) ? arguments[i].split(".") : null;
+              var masEndDate = (arguments[i + 2] != null) ? arguments[i + 2].split(".") : null;
+              var startDate = masStartDate != null ? masStartDate.length == 3 ? new Date(masStartDate[2], masStartDate[1] - 1, masStartDate[0]) : null : null;
+              var endDate = masEndDate != null ? (masEndDate.length == 3) ? new Date(masEndDate[2], masEndDate[1] - 1, masEndDate[0]) : null : null;
+              if (endDate) { endDate.setDate(endDate.getDate() - 1); }
+
+              if (arguments[i + 1] != null && startDate != null) {
+                  this.Pays.push(new PayDate(startDate, arguments[i + 1], endDate));
+              } else {
+                  console.log("проверьте входные данные");
+                  break;
+              }
+          }
+      }
+      //метод текущие выплата
+      SocialPay.prototype.CurPay = function () {
+          var nDate = new Date();
+          for (var i = 0; i < this.Pays.length; i++) {
+              if (this.Pays[i].endDate == null) {
+                  return this.Pays[i].pay;
+              } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() >= nDate.getTime()) {
+                  return this.Pays[i].pay;
+              }
+          }
+          return 0;
+          console.log("проблема со структурой входних данных");
+      }
+      //метод отображающий текущий период
+      SocialPay.prototype.Period = function () {
+          var nDate = new Date();
+          for (var i = 0; i < this.Pays.length; i++) {
+              if (this.Pays[i].endDate == null) {
+                  return "з " + formatDate(this.Pays[i].startDate);
+              } else if (this.Pays[i].startDate.getTime() <= nDate.getTime() && this.Pays[i].endDate.getTime() >= nDate.getTime()) {
+                  return "з " + formatDate(this.Pays[i].startDate) + " по " + formatDate(this.Pays[i].endDate);
+              }
+          }
+          return 0;
+          console.log("проблема со структурой входних данных");
+      }
+      //преобразование даты в строку
+      function formatDate(d) {
+          var curr_date = (d.getDate() <= 9) ? '0' + d.getDate() : d.getDate();
+          var curr_month = ((d.getMonth() + 1) <= 9) ? '0' + (d.getMonth() + 1) : (d.getMonth() + 1);
+          var curr_year = d.getFullYear();
+          return curr_date + "." + curr_month + "." + curr_year;
+      }
+
+      //класс надбавки
+      function Allowance(sum, percent, inf) {
+          this.sum = (sum === undefined) ? 0 : sum;
+          this.percent = (percent === undefined) ? 0 : percent;
+          this.inf = (inf === undefined) ? "" : inf;
+      }
+      Allowance.prototype.Money = function () {
+          return +(this.sum * (this.percent / 100)).toFixed(2);
+      }
+      Allowance.prototype.Info = function () {
+          return (this.percent).toString() + this.inf;
+      }
+  </script>
+
+  <!-- Доп функционал на форме-->
+  <script>
+      //тестирование работы функционала
+      function Diagnostic() {
+          console.log("категория інвалидности - ", invalidCategory[invalidCategory.selectedIndex].value);
+          for (var i = 0; i < invalidGroup.length; i++) {
+              if (invalidGroup[i].checked) {
+                  console.log("Группа інвалидности - ", i);
+                  break;
+              }
+          }
+          console.log("постраждали ЧАЕС - ", invalidCHAES.checked);
+          console.log("Надбавка за догляд - ", SurchargeCare.checked);
+          console.log("Лица, утратившие трудоспособность - ", PayAbilityWork.CurPay());
+          console.log("Дети в возрасте до 6 лет - ", PayChildUnder6Yar.CurPay());
+          console.log("Дети в возрасте от 6 до 18 лет - ", PayChildOver6Yar.CurPay());
+      }
+      //вписать текст в блок
+      function TextBlock(id, text, flag) {
+          this.flag = (flag === undefined) ? false : flag;
+          if (flag) {
+              document.getElementById(id).innerHTML += text;
+          } else {
+              document.getElementById(id).innerHTML = text;
+          }
+      }
+      //отобразить/спрятать блок
+      function VisionBlock(id, flag, disp) {
+          this.flag = (flag === undefined) ? true : flag;
+          this.disp = (disp === undefined) ? true : disp;
+          if (document.getElementById(id) !== null) {
+              var obj = document.getElementById(id).style;
+              if (this.disp) {
+                  if (this.flag) { obj.display = 'block'; }
+                  else { obj.display = 'none'; }
+              } else {
+                  if (this.flag) { obj.visibility = 'visible'; }
+                  else { obj.visibility = 'hidden'; }
+              }
+          } else {
+              console.log("проверьте ID - ", id);
+          }
+      }
+  </script>
+
+
+  <!-- События на форме-->
+  <script>
+        //константы,
         // *******************************************************************************
         // ***                                                                         ***
         // ***       через запятую надо просто добавлять дату и положенну выплату      ***
         // ***                                                                         ***
         // *******************************************************************************
-        
+
         //Особи, які втратили працездатність
-        var PayAbilityWork = new SocialPay("01.12.2016", 1208, "01.01.2017", 1247, "01.05.2017", 1312, "01.12.2017", 1373 );
+        var PayAbilityWork = new SocialPay("01.12.2016", 1208, "01.01.2017", 1247, "01.05.2017", 1312, "01.12.2017", 1373);
         //до 6 років
-        var PayChildUnder6Yar = new SocialPay("01.12.2016", 1313, "01.01.2017", 1355, "01.05.2017", 1426, "01.12.2017", 1492 );        		
+        var PayChildUnder6Yar = new SocialPay("01.12.2016", 1313, "01.01.2017", 1355, "01.05.2017", 1426, "01.12.2017", 1492);
         //від 6 до 18 років
-        var PayChildOver6Yar = new SocialPay("01.12.2016", 1637, "01.01.2017", 1689, "01.05.2017", 1777, "01.12.2017", 1860 );
-        
-        
+        var PayChildOver6Yar = new SocialPay("01.12.2016", 1637, "01.01.2017", 1689, "01.05.2017", 1777, "01.12.2017", 1860);
+
+
         //проверка на выбор категории
         function chCategory() {
             var flag = (invalidCategory[invalidCategory.selectedIndex].value == "under18");
@@ -732,233 +781,11 @@
         }
     </script>
 
-   <div>
 
-        <p>
-            В приведеному нижче калькуляторі можна дізнатись суму соціальної допомоги.
-        </p>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="highlight">
-
-                    <div class="row">
-                        <div class="col-md-5">
-                            Категорія:
-                        </div>
-                        <div class="col-md-3">
-                            <select id="invalidCategory" name="invalidCategory" class="form-control" onchange="chCategory()" onclick="cl()">
-                                <option value="under18">дитина-інвалід</option>
-                                <option value="over18">інвалід з дитинства</option>
-                            </select>
-                            <br />
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col-md-5">
-                            Група інвалідності:
-                        </div>
-                        <div class="col-md-5">
-                            <div class="radio-inline">
-                                <label>
-                                    <input type="radio" name="invalidGroup" id="1A" value="1A" onclick="cl()">1 А
-                                </label>
-                            </div>
-                            <div class="radio-inline">
-                                <label>
-                                    <input type="radio" name="invalidGroup" id="1B" value="1B" onclick="cl()">1 Б
-                                </label>
-                            </div>
-                            <div class="radio-inline">
-                                <label>
-                                    <input type="radio" name="invalidGroup" id="2" value="2" onclick="cl()">2
-                                </label>
-                            </div>
-                            <div class="radio-inline">
-                                <label>
-                                    <input type="radio" name="invalidGroup" id="3" value="3" onclick="cl()">3
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-
-                    <div class="row" id="rInvalidChildAge">
-                        <div class="col-md-5">
-                            Вік дитини:
-                            <br />
-                        </div>
-                        <div class="col-md-3">
-                            <select id="invalidChildAge" name="invalidChildAge" class="form-control" onclick="cl()">
-                                <option value="under6">до 6 років</option>
-                                <option value="over6">від 6 до 18 років</option>
-                            </select>
-                            <br />
-                        </div>
-                    </div>
-
-
-                    <div class="row" id="rInvalidCHAES">
-                        <div class="col-md-5">
-                            Інвалідність пов'язана з катастрофою на ЧАЕС:
-                        </div>
-                        <div class="col-md-3">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="invalidCHAES" value="yes" onclick="cl()">
-                            </label>
-                        </div>
-                    </div>
-                    <br />
-
-                    <div class="row">
-                        <div class="col-md-5">
-                            Надбавка на догляд:
-                        </div>
-                        <div class="col-md-3">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="SurchargeCare" value="yes" onclick="cl()">
-                            </label>
-                        </div>
-                    </div>
-                    <br />
-                    <!--  Інформаційний блок  -->
-                    <div id="resFin" style="display:none;">
-                        <hr />
-                        <div class="row">
-                            <div id="validRow">
-
-                            </div>
-                            <br />
-                        </div>
-
-                        <div class="row" id="rInfoPeriod">
-                            <div class="col-md-5">
-                                Період:
-                                <span class="help-block" id="infoPeriodDescr"></span>
-                                <br />
-                            </div>
-                            <div class="col-md-5" id="infoPeriod">
-                            </div>
-                        </div>
-
-                        <div class="row" id="rInfoSocHelp">
-                            <div class="col-md-5">
-                                Соціальна допомога:
-                                <span class="help-block" id="infoSocHelpDescr"></span>
-                                <br />
-                            </div>
-                            <div class="col-md-3" id="infoSocHelp">
-                            </div>
-                        </div>
-
-
-                        <div class="row" id="rInfoInvalidCHAES">
-                            <div class="col-md-5">
-                                Якщо захворювання пов’язане з катастрофою на ЧАЕС:
-                                <span class="help-block" id="infoInvalidCHAESDescr">соціальна допомога збільшується на 50%</span>
-                                <br />
-                            </div>
-                            <div class="col-md-3" id="infoInvalidCHAES">
-                            </div>
-                        </div>
-
-
-                        <div class="row" id="rInfoSurchargeCare">
-                            <div class="col-md-5">
-                                Надбавка на догляд:
-                                <span class="help-block" id="infoSurchargeCareDescr"></span>
-                                <br />
-                            </div>
-                            <div class="col-md-3" id="infoSurchargeCare">
-                            </div>
-                        </div>
-
-
-                        <div class="row" id="rInfoAllow">
-                            <div class="col-md-5">
-                                Доплата:
-                                <span class="help-block" id="infoAllowDescr"></span>
-                                <br />
-                            </div>
-                            <div class="col-md-3" id="infoAllow">
-                            </div>
-                        </div>
-
-                        <div class="row" style="border-top: solid 1px black" id="rInfoSumSocHelp">
-                            <div class="col-md-5">
-                                Всього:
-                                <span class="help-block" id="infoSumSocHelpDescr"></span>
-                                <br />
-                            </div>
-                            <div class="col-md-3" id="infoSumSocHelp">
-                            </div>
-                        </div>
-
-
-                        <div class="row" id="rInfoCareAboutChild">
-                            <div class="attention-block attention-block-info">
-                                <h4>Зверніть увагу!</h4>
-                                <p>
-                                    Надбавка призначається у разі якщо дитина-інвалід потребує домашнього догляду одному з батьків (усиновителів, опікуну, піклувальнику),
-                                    і вони фактично здійснюють догляд за дитиною-інвалідом, при цьому:
-                                </p>
-                                <ul style="margin-top: -10px;">
-                                    <li>не працюють;</li>
-                                    <li>не навчаються (крім заочної форми навчання);</li>
-                                    <li>не проходять службу;</li>
-                                    <li>не займають виборну посаду;</li>
-                                    <li>
-                                        перебувають у відпустці:
-                                        <ul>
-                                            <li>по догляду за дитиною до досягнення нею трирічного віку;</li>
-                                            <li>без збереження заробітної плати;</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <p>
-                                    <strong>Це обмеження буде знято з 01.01.2017 року згідно прийнятого <a href='http://zakon0.rada.gov.ua/laws/show/1369-19' title='Про внесення змін до деяких законів України щодо посилення соціального захисту осіб, які доглядають за дітьми-інвалідами та інвалідами I групи' target='_blank'>Закону України</a> </strong>
-                                </p>
-                                <br />
-                                <p>
-                                    Одинокій матері (одинокому батьку) надбавка на догляд за дитиною-інвалідом призначається незалежно від факту роботи, навчання, служби.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="row" id="rInfo">
-                            <div class="attention-block attention-block-info">
-                                <p>
-                                    Даний калькулятор розраховує соціальну допомогу для дітей-інвалідів та інвалідів з дитинства згідно <a href='http://zakon0.rada.gov.ua/laws/show/2109-14' title='Про державну соціальну допомогу інвалідам з дитинства та дітям-інвалідам' target="_blank">Закону України</a>. <br />
-                                    Якщо ви маєте сумніви, щодо правильності розрахунку, ви можете замовити <em>"Довідку про вид та розмір державної соціальної допомоги малозабезпеченим сім’ям"</em> через портал iGov.org.ua за <a href='https://igov.org.ua/service/1437/general' target="_blank">посиланням</a>, чи звернутись до відділу управління праці та соціального захисту населення за місцем проживання.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <script>
-        var invalidCategory = document.getElementById("invalidCategory");
-        var invalidGroup = document.getElementsByName("invalidGroup");
-        var invalidCHAES = document.getElementById("invalidCHAES");
-        var SurchargeCare = document.getElementById("SurchargeCare");
-        chCategory();
-    </script>
-
-  	<h1 id="anchor10">Посилання на законодавство</h1>
-    <ul>
-        <li><a href="http://zakon2.rada.gov.ua/laws/show/2109-14" target="_blank">Про державну соціальну допомогу інвалідам з дитинства та дітям-інвалідам</a></li>
-        <li><a href="http://zakon3.rada.gov.ua/laws/show/1192-2000-%D0%BF" target="_blank">Про надання щомісячної грошової допомоги особі, яка проживає разом з інвалідом I чи II групи внаслідок психічного розладу, який за висновком лікарської комісії медичного закладу потребує постійного стороннього догляду, на догляд за ним</a></li>
-        <li><a href="http://zakon2.rada.gov.ua/laws/show/1727-15" target="_blank">Про державну соціальну допомогу особам, які не мають права на пенсію, та інвалідам</a></li>
-        <li><a href="http://zakon0.rada.gov.ua/laws/show/832-96-%D0%BF" target="_blank">Про підвищення розмірів державної допомоги окремим категоріям громадян </a></li>
-    </ul>
-
-</article>    
-    
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+  <script>
+      var invalidCategory = document.getElementById("invalidCategory");
+      var invalidGroup = document.getElementsByName("invalidGroup");
+      var invalidCHAES = document.getElementById("invalidCHAES");
+      var SurchargeCare = document.getElementById("SurchargeCare");
+      chCategory();
+  </script>
