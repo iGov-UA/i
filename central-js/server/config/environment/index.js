@@ -257,8 +257,8 @@ var all = {
   },
 
   masterpass: {
-    login: processProps.MasterPass_sLogin ? processProps.MasterPass_sLogin : process.env.MasterPass_sLogin,
-    token: processProps.MasterPass_sSecret ? processProps.MasterPass_sSecret : process.env.MasterPass_sSecret
+    login: processProps.Back_Central.MasterPass_sLogin ? processProps.Back_Central.MasterPass_sLogin : process.env.Back_Central.MasterPass_sLogin,
+    token: processProps.Back_Central.MasterPass_sSecret ? processProps.Back_Central.MasterPass_sSecret : process.env.Back_Central.MasterPass_sSecret
   }
 };
 
