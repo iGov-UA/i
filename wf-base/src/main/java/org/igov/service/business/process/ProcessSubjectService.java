@@ -396,7 +396,7 @@ public class ProcessSubjectService {
         }
         LOG.info("removeProcessSubject: before get tree");
 
-        List<ProcessSubjectTree> aProcessSubjectTreeToDelete = processSubjectTreeDao.findAllBy("processSubject_Child", processSubject);
+        List<ProcessSubjectTree> aProcessSubjectTreeToDelete = processSubjectTreeDao.findAllBy("nID_ProcessSubject_Child", processSubject.getId());
             
         if(!aProcessSubjectTreeToDelete.isEmpty()){
             
@@ -985,29 +985,4 @@ public class ProcessSubjectService {
         
         return oProcessSubject;
     }
-    /*
-    public boolean oblyDeleteProcessSubject(String snID_Process_Activiti, String snID_Task_Activiti, boolean bOnlyDelete) {
-        
-        boolean bResult = false;
-        
-        List<ProcessSubject> aProcessSubject = processSubjectDao.findAllBy("snID_Task_Activiti", snID_Task_Activiti);
-        
-        if (bOnlyDelete) {
-            for (ProcessSubject oProcessSubject : aProcessSubject) {
-                processSubjectDao.delete(oProcessSubject);
-            }
-            
-            bResult = true;
-         
-        } else {
-        
-            for (ProcessSubject oProcessSubject : aProcessSubject) {
-                removeProcessSubject(oProcessSubject);
-            }
-            
-            bResult = true;
-        }
-        
-        return bResult;
-    }*/
 }
