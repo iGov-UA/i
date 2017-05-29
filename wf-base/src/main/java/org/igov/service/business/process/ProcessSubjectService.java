@@ -980,4 +980,29 @@ public class ProcessSubjectService {
         
         return oProcessSubject;
     }
+    
+    public boolean oblyDeleteProcessSubject(String snID_Process_Activiti, String snID_Task_Activiti, boolean bOnlyDelete) {
+        
+        boolean bResult = false;
+        
+        List<ProcessSubject> aProcessSubject = processSubjectDao.findAllBy("snID_Task_Activiti", snID_Task_Activiti);
+        
+        if (bOnlyDelete) {
+            for (ProcessSubject oProcessSubject : aProcessSubject) {
+                processSubjectDao.delete(oProcessSubject);
+            }
+            
+            bResult = true;
+         
+        } else {
+        
+            for (ProcessSubject oProcessSubject : aProcessSubject) {
+                removeProcessSubject(oProcessSubject);
+            }
+            
+            bResult = true;
+        }
+        
+        return bResult;
+    }
 }

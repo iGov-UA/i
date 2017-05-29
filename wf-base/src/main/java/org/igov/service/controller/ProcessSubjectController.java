@@ -213,4 +213,18 @@ public class ProcessSubjectController {
     
         return processSubjectService.syncProcessSubject(snID_Process_Activiti, snID_Task_Activiti, sLogin);
     }
+    
+    @ApiOperation(value = "Удалить ProcessSubject", notes = "Пример вызова:"
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/deleteProcessSubject?snID_Process_Activiti=свое значение&snID_Task_Activiti=свое значение")
+    @RequestMapping(value = "/syncProcessSubject", method = RequestMethod.GET)
+    @ResponseBody
+    public Boolean deleteProcessSubject(
+                @ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
+                @ApiParam(value = "ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
+                @ApiParam(value = "Только удалить запись", required = false) @RequestParam(value = "sOnlyDelete", required = false) Boolean bOnlyDelete
+    ) {
+            
+        return processSubjectService.oblyDeleteProcessSubject(snID_Process_Activiti, snID_Task_Activiti, bOnlyDelete);
+    }
+    
 }
