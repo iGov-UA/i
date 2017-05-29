@@ -38,6 +38,7 @@ import org.igov.model.process.ProcessUser;
 import org.igov.service.conf.AttachmetService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.exception.EntityNotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -384,7 +385,7 @@ public class ProcessSubjectService {
     }
 
     public void removeProcessSubject(ProcessSubject processSubject) {
-        LOG.info("removeProcessSubject started...");
+        LOG.info("removeProcessSubject started...");/*
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processSubject.getSnID_Process_Activiti()).singleResult();
         LOG.info("processInstance {}", processInstance);
         if (processInstance != null) {
@@ -402,11 +403,11 @@ public class ProcessSubjectService {
             LOG.info("processSubjectTree is null");
             }
         
-        } catch (Exception oException) {
+        } catch (EntityNotFoundException oException) {
             
-            LOG.info("removeProcessSubject: Exception={}", oException);
+            LOG.info("removeProcessSubject: Exception={}", oException.getMessage());
         } 
-        
+        */
         processSubjectDao.delete(processSubject);
         LOG.info("removeProcessSubject ended...");
     }
