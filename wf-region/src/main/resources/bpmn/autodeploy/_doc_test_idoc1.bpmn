@@ -9,10 +9,11 @@
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId = execution.getProcessInstanceId();
-execution.setVariable('processInstanceId', processInstanceId)
+execution.setVariable('processInstanceId', processInstanceId);
+var processInstanceIdToLong = parseFloat(processInstanceId);
+var sID_Order= generalConfig.getOrderId_ByProcess(processInstanceIdToLong);
+execution.setVariable('sID_Order', sID_Order)
 
-var sidorder = generalConfig.getOrderId_ByProcess(processInstanceId);
-execution.setVariable('sidorder', sidorder)
 
 </script>
     </scriptTask>
@@ -20,7 +21,7 @@ execution.setVariable('sidorder', sidorder)
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sidorder" name="sidorder" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order" name="sID_Order" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
