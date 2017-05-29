@@ -396,10 +396,15 @@ public class ProcessSubjectService {
         }
         LOG.info("removeProcessSubject: before get tree");
 
-        ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubject_Child", processSubject);
+        List<ProcessSubjectTree> aProcessSubjectTreeToDelete = processSubjectTreeDao.findAllBy("processSubject_Child", processSubject);
             
-        if(processSubjectTreeToDelete != null){
-            processSubjectTreeDao.delete(processSubjectTreeToDelete);
+        if(!aProcessSubjectTreeToDelete.isEmpty()){
+            
+            for (ProcessSubjectTree oProcessSubjectTree : aProcessSubjectTreeToDelete) {
+                
+                processSubjectTreeDao.delete(oProcessSubjectTree);
+            }
+          
         } else {
             LOG.info("processSubjectTree is null");
         }
