@@ -18,6 +18,7 @@ angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'mod
 
         scope.checkoutSpinner = false;
         scope.checkoutConfirm = {status: 'checkout'};
+        scope.selectedCard = {index: null, alias: null};
 
         scope.selectCard = function (index, info) {
           if(scope.checkoutConfirm.status === 'checkout')
