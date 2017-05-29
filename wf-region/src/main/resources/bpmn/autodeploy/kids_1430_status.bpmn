@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_264" name="Встановлення статусу батьків та дитини з багатодітної сім’ї" isExecutable="true">
+  <process id="kids_1430_status" name="Встановлення статусу батьків та дитини з багатодітної сім’ї" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/150</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -21,13 +21,13 @@
         <activiti:formProperty id="passport_mother" name="Копія паспорту матері (1, 2, 10, 11-13 стор.); ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей;завантажте єдиним архівом усі свідоцтва;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="family" name="Довідка про склад сім’ї; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dovidka" name="Довідка про те, що за місцем реєстрації батька або матері посвідчення структурним підрозділом не видавалися; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Довідка про те, що за місцем реєстрації батька або матері посвідчення структурним підрозділом не видавалися; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="маркер в різних районах" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;together&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="електронна пошта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask7" name="лист заявнику" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -54,7 +54,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 			<p>
-			Ваше звернення №[sID_Order] щодо Встановлення статусу батьків та дитини з багатодітної сім’ї успішно зареєстроване.<br />
+			Ваше звернення щодо встановлення статусу батьків та дитини з багатодітної сім’ї успішно зареєстроване.<br />
 			Ви отримаєте відповідь протягом найближчого часу.
 			</p>
 			<p>Контакти підрозділу, яке буде займатися обробкою Вашого звернення:</p>
@@ -99,7 +99,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        		<activiti:formProperty id="passport_father" name="Копія паспорту батька; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="passport_father" name="Копія паспорту батька; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="passport_mother" name="Копія паспорту матері; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="passport_children" name="Копії свідоцтв про народження усіх дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="family" name="Довідка про склад сім’ї; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -111,8 +111,9 @@
         <activiti:formProperty id="date_visit" name="Укажіть дату і час - коли прийти громадянину" type="string"></activiti:formProperty>
         <activiti:formProperty id="room" name="Укажіть кабінет, або інші додаткові відомості щодо візиту громадянина" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_264_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_264_print.html] ; ;bVisible=false,bPrintForm=true" type="string" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/kids_1430_status.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/kids_1430_status.html] ; ;bVisible=false,bPrintForm=true" type="string" default="заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="mark_req" name="Маркер_1" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCondit&quot;:&quot;decide&quot;},&quot;sCondition&quot;:&quot;[sCondit]=='accept'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -211,8 +212,8 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow46" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_264">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_264" id="BPMNPlane_dnepr_cnap_264">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_kids_1430_status">
+    <bpmndi:BPMNPlane bpmnElement="kids_1430_status" id="BPMNPlane_kids_1430_status">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

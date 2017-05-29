@@ -8,6 +8,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumTypeDocument" name="Тип документа, що Вас посвідчує" type="enum" default="sEnumElement_Passport" required="true">
           <activiti:value id="sEnumElement_Passport" name="Паспорт"></activiti:value>
           <activiti:value id="sEnumElement_ID_Passport" name="ID-карта (паспорт)"></activiti:value>
@@ -26,6 +27,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDocPredstavnika" name="Документ, що підтверджує статус законного представника особи; Серія та номер документу, дата і орган, що його видав" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_DocPredstavnika" name="Документ, що підтверджує статус законного представника особи; Наприклад, свідоцтво про народження (для батьків) або оформлена довіреність. Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPIB_osoba2" name="Прізвище, ім'я, по батькові другого з батьків / іншого законного представника особи" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateBirth_osoba2" name="Дата народження другого з батьків / іншого законного представника особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTargetGetDovidka" name="Мета отримання довідки" type="enum" required="true">
           <activiti:value id="sEnum_GetPassport_First" name="Вперше оформлення паспорта (ID-картки)"></activiti:value>
           <activiti:value id="sEnum_EchangePassport" name="Обмін паспорта (замість втраченого або вкраденого)"></activiti:value>
@@ -187,7 +190,6 @@
           <activiti:value id="sEnum_AnotheReason" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameAnotheReason_GetDovidka" name="Вкажіть мету отримання довідки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="lable2" name=" " type="label" default=" === Дані про особу, якій буде видано довідку === "></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
@@ -203,9 +205,12 @@
         <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_osoba2" name="Прізвище, ім'я, по батькові другого з батьків / іншого законного представника особи" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateBirth_osoba2" name="Дата народження другого з батьків / іншого законного представника особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioClerk_SignDovidka" name="посада та П.І.Б. посадової особи, яка підписує довідку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -231,6 +236,7 @@
         <activiti:formProperty id="sBody_3" name="[pattern/print/skv/rada_0024_Dovidka_perebuvannya.html] ; ;bVisible=false ,bPrintform=true" type="string" default="ДОВІДКА про реєстрацію місця перебування особи"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/skv/rada_0024_Zaput_Adres_Buro.html] ; ;bVisible=false ,bPrintform=true" type="string" default="ЗАПИТ до адресного бюро"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="tune print" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="tune print" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_LinesST.json')}"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyPassportZ" name="Паспорт (інший документ), що посвідчує заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DocPredstavnika" name="Документ, що підтверджує статус законного представника особи; Наприклад, свідоцтво про народження (для батьків) або оформлена довіреність. Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyPassport" name="Паспорт (інший документ), що посвідчує особу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -462,7 +468,6 @@
           <activiti:value id="sEnum_AnotheReason" name="Інше"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNameAnotheReason_GetDovidka" name="Вкажіть мету отримання довідки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="lable2" name=" " type="label" default=" === Дані про особу, якій буде видано довідку === "></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові особи; ;writable=false" type="string"></activiti:formProperty>
@@ -478,9 +483,12 @@
         <activiti:formProperty id="sCommentOsoba" name="Коментарі щодо наданих документів або отримання довідки; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAreabirth" name="Місце народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNationality" name="Громадянство" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_osoba2" name="Прізвище, ім'я, по батькові другого з батьків / іншого законного представника особи" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateBirth_osoba2" name="Дата народження другого з батьків / іншого законного представника особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioClerk_SignDovidka" name="посада та П.І.Б. посадової особи, яка підписує довідку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює реєстрацію" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateVizite" name="Чекаємо Вас забрати виготовлену довідку після ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -508,6 +516,7 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0024_Zayava_na_Dovidku_Person.html,sFileName=Zayava_pro_vydachu_dovidky,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/rada_0024_Zayava_na_Dovidku_Another_Person.html,sFileName=Zayava_pro_vydachu_dovidky_vid_zakonnoho_predstavnyka,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="tune print" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers22" name="tune Line" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_LinesST.json')}"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyPassportZ" name="Паспорт (інший документ), що посвідчує заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_DocPredstavnika" name="Документ, що підтверджує статус законного представника особи; Наприклад, свідоцтво про народження (для батьків) або оформлена довіреність. Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_CopyPassport" name="Паспорт (інший документ), що посвідчує особу; ;bNew=true" type="file" writable="false"></activiti:formProperty>

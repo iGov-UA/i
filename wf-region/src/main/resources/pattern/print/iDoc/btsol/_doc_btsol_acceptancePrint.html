@@ -509,7 +509,7 @@
         <br />
 
         <div class="b ta-c fs14">
-            [sTitleDoc] №____ від «____» ____________20____ р.<br />
+            НАКАЗ (РОЗПОРЯДЖЕННЯ) №____ від «____» ____________20____ р.<br />
             <span class="fs10">про прийняття на роботу</span>
         </div>
 
@@ -522,7 +522,7 @@
 
         <div class="layout ta-j w100p">
             <div class="w60p l b ta-l  va-c">
-                Прийняти на роботу з <span id="spansDateStart"></span>
+                Прийняти на роботу з <span id="spansDateStart">[sDateStart]</span>
             </div>
 
             <div class="r ta-c">
@@ -534,9 +534,10 @@
         </div>
 
         <div class="w100p ta-c">
-            до «<em id="emsDateContract_date">&#160;&#160;&#160;&#160;</em>»
-            <em id="emsDateContract_month">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</em>
-            20<em id="emsDateContract_year">&#160;&#160;&#160;&#160;</em> р.
+         <!-- до  [sDateContract]  --> 
+         	до «<em id="emsDateContract_date">&#160;&#160;&#160;&#160;</em>»
+           <em id="emsDateContract_month">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</em>
+           20<em id="emsDateContract_year">&#160;&#160;&#160;&#160;</em> р. 
         </div>
         <div class="w100p ta-c smallText">(заповнюється у разі строкового трудового договору (контракту))</div>
 
@@ -570,10 +571,10 @@
                     на конкурсній основі<br />
 
                     <span class="check_box"><span id="spanbConditions_2">&#10004;</span></span>
-                    за умовами контракту до <em id="emsDateContract">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</em> у разі необхідності вказати дату (дд.мм.рррр.)<br />
+                    за умовами контракту до <em id="emsDateContract">[sDateContract]</em> у разі необхідності вказати дату (дд.мм.рррр.)<br />
 
                     <span class="check_box"><span id="spanbConditions_3">&#10004;</span></span>
-                    зі строком випробування <em>[sProbation]</em> місяців<br />
+                    зі строком випробування <em id="emsProbation">[sProbation]</em> місяців<br />
 
                     <span class="check_box"><span id="spanbConditions_4">&#10004;</span></span>
                     на час виконання певної роботи<br />
@@ -854,60 +855,69 @@
 
 
     <script>
-        //галочки
-
-        function getMonthText(month) {
-            var months = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
-            return months[month];
-        }       
-
-
-        if ("[bConditions_1]" == "yes") {
-            document.getElementById('spanbConditions_1').style.visibility = 'visible';
-        }
-        if ("[bConditions_2]" == "yes") {
-            document.getElementById('spanbConditions_2').style.visibility = 'visible';
-
-            var dateContract = Date.parse("[sDateContract]");
-
-            document.getElementById('emsDateContract').innerText = dateContract.toString();
-
-            document.getElementById('emsDateContract_date').innerText = dateContract.getDate();
-            document.getElementById('emsDateContract_month').innerText = getMonthText(dateContract.getMonth());
-            document.getElementById('emsDateContract_year').innerText = dateContract.getFullYear() - 2000;
-
-        }
-        if ("[bConditions_3]" == "yes") {
-            document.getElementById('spanbConditions_3').style.visibility = 'visible';
-        }
-        if ("[bConditions_4]" == "yes") {
-            document.getElementById('spanbConditions_4').style.visibility = 'visible';
-        }
-        if ("[bConditions_5]" == "yes") {
-            document.getElementById('spanbConditions_5').style.visibility = 'visible';
-        }
-        if ("[bConditions_6]" == "yes") {
-            document.getElementById('spanbConditions_6').style.visibility = 'visible';
-        }
-        if ("[bConditions_7]" == "yes") {
-            document.getElementById('spanbConditions_7').style.visibility = 'visible';
-        }
-        if ("[bConditions_8]" == "yes") {
-            document.getElementById('spanbConditions_8').style.visibility = 'visible';
-        }
-
-
-        var asTypeJob = "[asTypeJob]";
-
-        if (asTypeJob == "sEnumBasic") {
-            document.getElementById('spanEnumBasic').style.visibility = 'visible';
-        } else if (asTypeJob == "sEnumSameTime") {
-            document.getElementById('spanEnumSameTime').style.visibility = 'visible';
-        } 
-        
-        var dateStart = Date.parse("[sDateStart]");
-        document.getElementById('emsDateContract_date').innerText = "«" + dateContract.getDate() + "» " + getMonthText(dateContract.getMonth()) + "  " + dateContract.getFullYear() + " р.";
-
+	    //галочки
+	
+	    function getMonthText(month) {
+	        var months = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
+	        return months[month];
+	    }
+	
+	    function parseDateiGov(str) {
+	        var date = new Date();
+	        date.setTime(Date.parse(str.replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3')));
+	        return date;
+	    }
+	
+	
+	    if ("[bConditions_1]" == "yes") {
+	        document.getElementById('spanbConditions_1').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_2]" == "yes") {
+	        document.getElementById('spanbConditions_2').style.visibility = 'visible';
+	
+	        var dateContract = parseDateiGov("[sDateContract]");
+	
+	        document.getElementById('emsDateContract').innerHTML = dateContract.getDate() + "." + (dateContract.getMonth() + 1) + "." + dateContract.getFullYear();            
+	
+	        document.getElementById('emsDateContract_date').innerText = dateContract.getDate();
+	        document.getElementById('emsDateContract_month').innerText = getMonthText(dateContract.getMonth());
+	        document.getElementById('emsDateContract_year').innerText = dateContract.getFullYear() - 2000;
+	    }
+	    if ("[bConditions_3]" == "yes") {
+	        document.getElementById('spanbConditions_3').style.visibility = 'visible';
+	        document.getElementById('emsProbation').innerText = "[sProbation]";
+	    } else {
+	        document.getElementById('emsProbation').innerText = "";
+	    }
+	    if ("[bConditions_4]" == "yes") {
+	        document.getElementById('spanbConditions_4').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_5]" == "yes") {
+	        document.getElementById('spanbConditions_5').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_6]" == "yes") {
+	        document.getElementById('spanbConditions_6').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_7]" == "yes") {
+	        document.getElementById('spanbConditions_7').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_8]" == "yes") {
+	        document.getElementById('spanbConditions_8').style.visibility = 'visible';
+	    }
+	
+	
+	    var asTypeJob = "[asTypeJob]";
+	
+	    if (asTypeJob == "sEnumBasic") {
+	        document.getElementById('spanEnumBasic').style.visibility = 'visible';
+	    } else if (asTypeJob == "sEnumSameTime") {
+	        document.getElementById('spanEnumSameTime').style.visibility = 'visible';
+	    } 
+	    
+	    var dateStart = Date.parse("[sDateStart]");
+	    if (dateStart) {
+	        document.getElementById('spansDateStart').innerText = "«" + dateContract.getDate() + "» " + getMonthText(dateContract.getMonth()) + "  " + dateContract.getFullYear() + " р.";
+	    }     
     </script>
 </body>
 </html>
