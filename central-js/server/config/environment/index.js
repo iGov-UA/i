@@ -254,6 +254,11 @@ var all = {
 
   databot: {
     key: processProps.sDataBotApiKey ? processProps.sDataBotApiKey : process.env.sDataBotApiKey
+  },
+
+  masterpass: {
+    login: processProps.MasterPass_sLogin ? processProps.MasterPass_sLogin : process.env.MasterPass_sLogin,
+    token: processProps.MasterPass_sSecret ? processProps.MasterPass_sSecret : process.env.MasterPass_sSecret
   }
 };
 
