@@ -1108,7 +1108,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     }
     
     private boolean isSetProcessSubjectStatus(HttpServletRequest oRequest) {
-    LOG.info("isSetProcessSubjectStatus: interceptor catch");
+
         return (oRequest != null && oRequest.getRequestURL().toString().indexOf(SERVICE_SUBJECT_PROCESS_SET_PROCESS_SUBJECT_STATUS) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
@@ -1130,9 +1130,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             String sLoginExecutor = mRequestParam.get("sLoginExecutor");
             String sID_ProcessSubjectStatus = mRequestParam.get("sID_ProcessSubjectStatus");
             
-            LOG.info("All params: snID_Task_Activiti={}, sLoginController={}, sLoginExecutor={}, sID_ProcessSubjectStatus={}",
-                    snID_Task_Activiti, sLoginController, sLoginExecutor, sID_ProcessSubjectStatus);
-            
             if (sLoginController != null || sLoginExecutor != null) {
             
                 /**
@@ -1147,10 +1144,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 } 
                 
                 String snID_Process_Activiti = actionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
-                LOG.info("iterceptor: snID_Process_Activiti={}", snID_Process_Activiti);
                 
                 ProcessSubject oProcessSubjectMain = oProcessSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
-                LOG.info("iterceptor: oProcessSubjectMain={}", oProcessSubjectMain);
                 
                 String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
                 
@@ -1190,6 +1185,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     
     private void processSubjectStatusHistoryWritingPostHandle(HttpServletRequest oRequest) throws Exception {
                     
+                if (isSetProcessSubjectStatus(oRequest)) {
+        
                     Map<String, Object> mRequestAttribute = new HashMap<>();
                     Enumeration<String> aAttributeName = oRequest.getAttributeNames();
 
@@ -1197,7 +1194,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         String sKey = (String) aAttributeName.nextElement();
                         mRequestAttribute.put(sKey, oRequest.getAttribute(sKey));
                     }
-                    /*
+                    
                     JSONObject oTransportObject = (JSONObject) mRequestAttribute.get("oTransportObject");
                     
                     String sLoginRole = (String) oTransportObject.get("sLoginRole");
@@ -1248,7 +1245,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 28L);
                     
-                    }*/
+                    }
+        }
     }
     
 }
