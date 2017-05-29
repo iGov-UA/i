@@ -36,6 +36,13 @@
         width: 620px;
       }
     }
+
+    .card-list-disabled {
+      color: #AAAAAA !important;
+      cursor: default;
+      pointer-events: none;
+      text-decoration: none;
+    }
   </style>
 
   <div class="list-group-item disabled" ng-if="!spinner">
@@ -487,17 +494,26 @@
                 <input ng-switch-when="string"
                        type="text"
                        name="{{property.id}}"
-                       ng-hide="property.id==='resident' || property.id === 'sCountry' || property.id.indexOf('sCurrency') === 0 || property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
+                       ng-hide="property.id==='resident' || property.id === 'sCountry' || property.id.indexOf('sCurrency') === 0 || property.id === 'sID_Merchant' || (property.id.indexOf('sID_Merchant') === 0 && property.id.indexOf('sID_Merchant_MasterPass') !== 0)"
                        ng-model="data.formData.params[property.id].value"
                        ng-required="isFieldRequired(property)"
                        ng-class="getBpAndFieldID(property)"
                        class="form-control"
-                       ng-if="!isOKPOField(property.id)"
+                       ng-if="!isOKPOField(property.id) && !isMPassField(property.id)"
                        value="">
 
+                <!--masterpass button start-->
+                <img ng-switch-when="string"
+                     src="../../../../assets/images/masterpass.jpg"
+                     ng-hide="property.id==='resident' || property.id === 'sCountry' || property.id.indexOf('sCurrency') === 0 || property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
+                     ng-if="isMPassField(property.id)"
+                     style="width: 160px;"
+                     ng-click="authorizeCheckout()">
+                <!--masterpass button end-->
+
                 <!--field for OKPO search start-->
-                <div ng-switch-when="string" ng-if="isOKPOField(property.id)">
-                  <div class="okpo" ng-if="isOKPOField(property.id)">
+                <div ng-switch-when="string" ng-if="isOKPOField(property.id) && !isMPassField(property.id)">
+                  <div class="okpo">
                     <input type="text"
                            name="{{property.id}}"
                            ng-model="data.formData.params[property.id].value"
@@ -516,7 +532,7 @@
                 <button ng-switch-when="string"
                         type="button"
                         name="{{property.id}}"
-                        ng-if="property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
+                        ng-if="property.id === 'sID_Merchant' || (property.id.indexOf('sID_Merchant') === 0 && property.id.indexOf('sID_Merchant_MasterPass') !== 0)"
                         ng-model="data.formData.params[property.id].value"
                         ng-disabled="!data.formData.params[property.id].value"
                         ng-required="isFieldRequired(property)"
@@ -851,6 +867,10 @@
             <div class="row col-md-12 igov-info-label" ng-if="!isSignNeeded">
               Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність
             </div>
+
+            <div class="row" ng-if="isOpenedCheckout">
+              <masterpass-checkout></masterpass-checkout>
+             </div>
 
             <div class="row">
               <div class="col-md-3" ng-class="{'col-md-5': isSignNeededRequired || !isSignNeeded}"></div>

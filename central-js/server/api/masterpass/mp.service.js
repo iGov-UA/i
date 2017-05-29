@@ -1,0 +1,41 @@
+'use strict';
+var md5 = require('md5'),
+    config = require('../../config/environment');
+
+module.exports.getUserAuth = function () {
+  var date = new Date();
+  var secret = config.masterpass.token;
+
+  var year = date.getFullYear(),
+    month = date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1),
+    day = date.getDate() >= 10 ? date.getDate() : '0' + date.getDate(),
+    hours = date.getHours() >= 10 ? date.getHours() : '0' + date.getHours(),
+    minutes = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes(),
+    seconds = date.getSeconds() >= 10 ? date.getSeconds() : '0' + date.getSeconds();
+
+  var formattedDate = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+
+  var sign = md5(formattedDate + secret);
+
+  return {
+    "login" : config.masterpass.login,
+    "time" : formattedDate,
+    "sign" : sign
+  };
+};
+
+module.exports.createGuid = function () {
+  function guid() {
+    return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
+  }
+
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+
+  var guidParam = guid();
+
+  return guidParam ? guidParam : guid();
+};
