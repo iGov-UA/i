@@ -390,7 +390,7 @@ public class ProcessSubjectService {
         if (processInstance != null) {
             runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         }
-
+        LOG.info("removeProcessSubject: before get tree");
         ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
         
         if(processSubjectTreeToDelete != null){
@@ -943,10 +943,7 @@ public class ProcessSubjectService {
                 
                 processSubjectDao.saveOrUpdate(oProcessSubjectExecutor);
                
-            }
-            
-            //Закрытие задания контролирующим 
-            if ((sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
+            } else if ((sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
                 || sID_ProcessSubjectStatus.equals("unactual")) && sLoginRoleMain.equals("Controller")) {
                 
                 LOG.info("setProcessSubjectStatus: last case");
