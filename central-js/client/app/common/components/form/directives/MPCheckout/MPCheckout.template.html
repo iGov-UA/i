@@ -1,0 +1,75 @@
+<div class="col-md-12 checkout-block">
+  <div ng-if="!paymentStatus">
+    <div class="col-md-7">
+      <h3 style="font-weight: normal">Оберіть карту для оплати</h3>
+
+      <span class="checkout-block-description">
+        <span ng-if="!userCards">
+          Список карт для оплати пустий. Ви можете <a href="{{registerLink}}" target="_blank">додати Вашу карту</a>
+          або <a ng-click="authorizeCheckout()">оновити список</a>, якщо карта була додана раніше.
+        </span>
+        <span ng-if="userCards">
+          <a ng-click="authorizeCheckout()">Оновіть список</a>, якщо якщо відсутня карта, що була додана раніше.
+        </span>
+      </span>
+
+      <div class="list-group card-list-block" ng-if="userCards && !userCards.error">
+        <a class="list-group-item list-group-item-action checkout-list-card"
+           ng-repeat="card in userCards"
+           ng-click="selectCard($index, card.card_alias)"
+           ng-class="{'checkout-selected-card': isSelectedCard($index), 'card-list-disabled': checkoutConfirm.status === 'confirm'}">
+          <span>{{card.card_alias}}</span><br>
+          <span>{{card.mask}}</span>
+          <button class="btn btn-link checkout-remove-card" ng-click="removeCardFromWallet(card.card_alias)">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        </a>
+      </div>
+      <h4 ng-if="userCards && !userCards.error" class="checkout-add-card">
+        <a ng-click="addNewCardToWallet()">+ Додати карту</a>
+      </h4>
+    </div>
+
+    <div class="col-md-5 checkout-right-side" ng-if="checkoutConfirm.status === 'checkout' && !checkoutSpinner">
+      <div class="checkout-price-and-pay">
+        <h3>Сума до сплати</h3>
+        <h3 ng-bind="::getPrice() + ' грн'"></h3>
+        <div class="checkout-btn-block">
+          <button class="btn btn-xl btn-default checkout-confirm"
+                  ng-click="createPayment()"
+                  ng-disabled="!selectedCard.alias">Сплатити</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5 checkout-right-side" ng-if="checkoutConfirm.status === 'confirm' && !checkoutSpinner">
+      <div class="checkout-price-and-pay">
+        <h3 style="font-weight: normal">Введiть SMS-пароль</h3>
+        <input type="text" class="form-control checkout-otp" ng-model="checkoutData.payment.verify_code">
+        <div class="checkout-btn-block">
+          <button class="btn btn-xl btn-default checkout-confirm"
+                  ng-click="otpConfirmPayment()"
+                  ng-disabled="!selectedCard.alias">Пiдтвердити</button>
+          <a class="checkout-choose-another-card" ng-click="chooseAnotherCard()">Обрати iншу карту</a>
+        </div>
+      </div>
+    </div>
+
+    <div ng-if="checkoutSpinner" class="col-md-5 checkout-right-side checkout-spinner">
+      <img src="/assets/images/checkout-spinner.gif" alt="опрацювання">
+    </div>
+  </div>
+
+  <div class="col-xs-12 checkout-error" ng-if="paymentStatus && paymentStatus == 4">
+    <img src="/assets/images/checkout-fail.png" alt="Помилка">
+    <h3>Сталась помилка, спробуйте пiзнiше</h3>
+    <a ng-click="authorizeCheckout()"><h4>Оновити</h4></a>
+  </div>
+
+  <div class="col-xs-12 checkout-success" ng-if="paymentStatus && paymentStatus == 5">
+    <img src="/assets/images/checkout-success.png" alt="Успiх">
+    <h3>Платiж успiшний</h3>
+    <h3 style="font-weight: normal">{{'ID  ' + checkoutData.payment.result}}</h3>
+  </div>
+
+</div>

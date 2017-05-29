@@ -254,6 +254,11 @@ var all = {
 
   databot: {
     key: processProps.sDataBotApiKey ? processProps.sDataBotApiKey : process.env.sDataBotApiKey
+  },
+
+  masterpass: {
+    login: processProps.Back_Central.MasterPass_sLogin ? processProps.Back_Central.MasterPass_sLogin : process.env.Back_Central.MasterPass_sLogin,
+    token: processProps.Back_Central.MasterPass_sSecret ? processProps.Back_Central.MasterPass_sSecret : process.env.Back_Central.MasterPass_sSecret
   }
 };
 
