@@ -22,7 +22,7 @@
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер наказу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameDoc" name="Назва наказу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" variable="unixdate" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" required="true"></activiti:formProperty>
@@ -96,7 +96,7 @@ var m = updatedDate.getMonth() + 1;
 if (m &lt; 10) m = "0"+m;
 var sNewDate = (d + "/" + m + "/" + updatedDate.getFullYear());
 execution.setVariable('sDateExecution', sNewDate)
-var unixdate= Math.round((new Date()).getTime())
+
 
 //3. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
@@ -123,7 +123,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow59" sourceRef="scripttask1" targetRef="usertask4"></sequenceFlow>
+    <sequenceFlow id="flow59" sourceRef="scripttask1" targetRef="scripttask4"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <userTask id="usertask5" name="Ознайомлення з наказом">
       <extensionElements>
@@ -272,6 +272,10 @@ ${sEmail}
     </serviceTask>
     <sequenceFlow id="flow68" sourceRef="usertask4" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow69" sourceRef="servicetask2" targetRef="scripttask2"></sequenceFlow>
+    <scriptTask id="scripttask4" name="сегодняшняя дата по умолчанию" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('sDateRegistration', new Date().format("dd.MM.yyyy").toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow70" sourceRef="scripttask4" targetRef="usertask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_31">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_31" id="BPMNPlane__doc_justice_31">
@@ -308,6 +312,9 @@ ${sEmail}
       <bpmndi:BPMNShape bpmnElement="mailtask1" id="BPMNShape_mailtask1">
         <omgdc:Bounds height="55.0" width="105.0" x="930.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="161.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="65.0" y="92.0"></omgdi:waypoint>
         <omgdi:waypoint x="86.0" y="93.0"></omgdi:waypoint>
@@ -317,8 +324,8 @@ ${sEmail}
         <omgdi:waypoint x="232.0" y="92.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="353.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="396.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="292.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="292.0" y="161.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
         <omgdi:waypoint x="521.0" y="202.0"></omgdi:waypoint>
@@ -354,6 +361,10 @@ ${sEmail}
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
         <omgdi:waypoint x="620.0" y="120.0"></omgdi:waypoint>
         <omgdi:waypoint x="460.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
+        <omgdi:waypoint x="292.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="461.0" y="134.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
