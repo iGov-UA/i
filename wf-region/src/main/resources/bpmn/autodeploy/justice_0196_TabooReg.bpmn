@@ -14,8 +14,8 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
 	  
-		<activiti:formProperty id="markerAddressFactual" name="для правки bankIdAddressFactual; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_IdAddressFactual&quot;:{&quot;aField_ID&quot;:[&quot;bankIdAddressFactual&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdAddressFactual&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty>
-		<activiti:formProperty id="markerPassport" name="для правки bankIdPassport; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Passport&quot;:{&quot;aField_ID&quot;:[&quot;bankIdPassport&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdPassport&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="markerAddressFactual" name="для правки bankIdAddressFactual; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_IdAddressFactual&quot;:{&quot;aField_ID&quot;:[&quot;bankIdAddressFactual&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdAddressFactual&quot;},&quot;sCondition&quot;:&quot;[sOverload] !='.'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="markerPassport" name="для правки bankIdPassport			  ; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Passport&quot;:{&quot;aField_ID&quot;:[&quot;bankIdPassport&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdPassport&quot;},&quot;sCondition&quot;:&quot;[sOverload] !='.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
 
         <activiti:formProperty id="markers_Hide_st_01_01" name="показать asSelectTypeApplicant если ФИО правильно				   			  ; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_st_01_01&quot;:{&quot;aField_ID&quot;:[&quot;InfoStart0000&quot;,&quot;asSelectTypeApplicant&quot;,&quot;InfoStart&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
@@ -79,7 +79,7 @@
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника;або уповноваженої особи" type="string"></activiti:formProperty>
 
 <!-- блок для ввода если всё норм -->
 
@@ -100,11 +100,11 @@
           <activiti:value id="t_012" name="Інше"></activiti:value>
         </activiti:formProperty>
 
-        <activiti:formProperty id="sVarTypeObjOther" name="Введіть тип об`єкта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarTypeObjOther" name="Введіть тип об`єкта" type="string" default=" "></activiti:formProperty>
 
         <activiti:formProperty id="sVarRegNumObj" name="Реєстраційний номер" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="sVarCadNumObj" name="Кадастровий номер" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarCadNumObj" name="Кадастровий номер" type="string" default=" "></activiti:formProperty>
 
 <!-- введіть адресу об’єкта нерухомого майна або його складової частини -->
         <activiti:formProperty id="markers_03" name="Адреса об’єкта нерухомого майна або його складової частини" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;asSelectOblNam&quot;],&quot;sValue&quot;:&quot;Адреса&quot;}}}"></activiti:formProperty>
@@ -240,7 +240,7 @@
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="Уповноважена особа; ;writable=false" type="string"></activiti:formProperty>
 		<activiti:formProperty id="asSelectTypeObj" name="Тип об’єкта; ;writable=false" type="enum">
           <activiti:value id="t_001" name="Будівля"></activiti:value>
 		  <activiti:value id="t_002" name="Житлове приміщення"></activiti:value>
@@ -412,10 +412,8 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
-Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
 
 [pattern/mail/new_design/_common_content_end.html]
@@ -444,12 +442,8 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
-Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
-&lt;br /&gt;
-Вам обов'язково треба звернутися на протязі 10 діб до Вашої податкової інспекції згідно реєстрації. Там треба подати ліквідаційні звіти та виконати інші дії для завершення закриття Вашого ФОП.
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
@@ -496,12 +490,8 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.
-&lt;br /&gt;
-Вам обов'язково треба звернутися на протязі 10 діб до Вашої податкової інспекції згідно реєстрації. Там треба подати ліквідаційні звіти та виконати інші дії для завершення закриття Вашого ФОП.
-
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
@@ -526,10 +516,8 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
-Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.
 
 
 [pattern/mail/new_design/_common_content_end.html]
@@ -556,7 +544,7 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})
 
 
@@ -583,7 +571,7 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в державній реєстрації заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
 
@@ -614,11 +602,8 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
-&lt;br /&gt;
-Вам обов'язково треба звернутися на протязі 10 діб до Вашої податкової інспекції згідно реєстрації. Там треба подати ліквідаційні звіти та виконати інші дії для завершення закриття Вашого ФОП.
-
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
@@ -646,10 +631,7 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію припинення підприємницької діяльності.
-&lt;br /&gt;
-Вам обов'язково треба звернутися на протязі 10 діб до Вашої податкової інспекції згідно реєстрації. Там треба подати ліквідаційні звіти та виконати інші дії для завершення закриття Вашого ФОП.
-
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
