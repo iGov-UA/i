@@ -1130,6 +1130,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             String sLoginExecutor = mRequestParam.get("sLoginExecutor");
             String sID_ProcessSubjectStatus = mRequestParam.get("sID_ProcessSubjectStatus");
             
+            LOG.info("All params: snID_Task_Activiti={}, sLoginController={}, sLoginExecutor={}, sID_ProcessSubjectStatus={}",
+                    snID_Task_Activiti, sLoginController, sLoginExecutor, sID_ProcessSubjectStatus);
+            
             if (sLoginController != null || sLoginExecutor != null) {
             
                 /**
@@ -1144,8 +1147,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 } 
                 
                 String snID_Process_Activiti = actionTaskService.getProcessInstanceIDByTaskID(snID_Task_Activiti);
-            
+                LOG.info("iterceptor: snID_Process_Activiti={}", snID_Process_Activiti);
+                
                 ProcessSubject oProcessSubjectMain = oProcessSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
+                LOG.info("iterceptor: oProcessSubjectMain={}", oProcessSubjectMain);
                 
                 String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
                 
