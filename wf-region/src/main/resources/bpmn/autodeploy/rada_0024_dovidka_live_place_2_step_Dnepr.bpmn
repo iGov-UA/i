@@ -8,6 +8,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumTypeDocument" name="Тип документа, що Вас посвідчує" type="enum" default="sEnumElement_Passport" required="true">
           <activiti:value id="sEnumElement_Passport" name="Паспорт"></activiti:value>
           <activiti:value id="sEnumElement_ID_Passport" name="ID-карта (паспорт)"></activiti:value>
@@ -26,6 +27,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDocPredstavnika" name="Документ, що підтверджує статус законного представника особи; Серія та номер документу, дата і орган, що його видав" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFile_DocPredstavnika" name="Документ, що підтверджує статус законного представника особи; Наприклад, свідоцтво про народження (для батьків) або оформлена довіреність. Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sPIB_osoba2" name="Прізвище, ім'я, по батькові другого з батьків / іншого законного представника особи" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateBirth_osoba2" name="Дата народження другого з батьків / іншого законного представника особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTargetGetDovidka" name="Мета отримання довідки" type="enum" required="true">
           <activiti:value id="sEnum_GetPassport_First" name="Вперше оформлення паспорта (ID-картки)"></activiti:value>
           <activiti:value id="sEnum_EchangePassport" name="Обмін паспорта (замість втраченого або вкраденого)"></activiti:value>
@@ -167,6 +170,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumTypeDocument" name="Тип документа, що посвідчує заявника" type="enum" writable="false">
           <activiti:value id="sEnumElement_Passport" name="Паспорт"></activiti:value>
           <activiti:value id="sEnumElement_ID_Passport" name="ID-карта (паспорт)"></activiti:value>
@@ -217,6 +221,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCommentForAdressBuro" name="Текст, який буде додано до запиту в адресне бюро" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_osoba2" name="Прізвище, ім'я, по батькові другого з батьків / іншого законного представника особи" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateBirth_osoba2" name="Дата народження другого з батьків / іншого законного представника особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган надання послуги ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs_Another_Person" name="Перелік додатків файлів-додатков для довіреної особи ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -442,6 +448,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnumTypeDocument" name="Тип документа, що посвідчує заявника" type="enum" writable="false">
           <activiti:value id="sEnumElement_Passport" name="Паспорт"></activiti:value>
           <activiti:value id="sEnumElement_ID_Passport" name="ID-карта (паспорт)"></activiti:value>
@@ -492,6 +499,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment" name="Коментар до рішення: наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу реєстрації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCommentForAdressBuro" name="Текст, який буде додано до запиту в адресне бюро" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sPIB_osoba2" name="Прізвище, ім'я, по батькові другого з батьків / іншого законного представника особи" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDateBirth_osoba2" name="Дата народження другого з батьків / іншого законного представника особи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Орган надання послуги ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs" name="Перелік додатків файлів-додатков ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdd_SpisokDocs_Another_Person" name="Перелік додатків файлів-додатков для довіреної особи ; ;bVisible=false" type="string"></activiti:formProperty>
