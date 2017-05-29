@@ -385,28 +385,24 @@ public class ProcessSubjectService {
     }
 
     public void removeProcessSubject(ProcessSubject processSubject) {
+        
         LOG.info("removeProcessSubject started...");
+        
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processSubject.getSnID_Process_Activiti()).singleResult();
         LOG.info("processInstance {}", processInstance);
+        
         if (processInstance != null) {
             runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         }
         LOG.info("removeProcessSubject: before get tree");
-        
-        try {
+
+        ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
             
-            ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubjectChild", processSubject);
-            
-            if(processSubjectTreeToDelete != null){
-                processSubjectTreeDao.delete(processSubjectTreeToDelete);
-            } else {
-            LOG.info("processSubjectTree is null");
-            }
-        
-        } catch (EntityNotFoundException oException) {
-            
-            LOG.info("removeProcessSubject: Exception={}", oException.getMessage());
-        } 
+        if(processSubjectTreeToDelete != null){
+            processSubjectTreeDao.delete(processSubjectTreeToDelete);
+        } else {
+        LOG.info("processSubjectTree is null");
+        }
         
         processSubjectDao.delete(processSubject);
         LOG.info("removeProcessSubject ended...");
