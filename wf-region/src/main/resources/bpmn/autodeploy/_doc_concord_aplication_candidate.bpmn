@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_doc_concord_aplication_candidate" name="Заявка на подбор персонала" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdemail" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?" type="enum" default="yes" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual1" name="Адреса фактичного місця проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saChangeName" name="Чи змінювали раніше прізвище, власне ім’я, по батькові?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCause" name="Причина зміни прізвища, ім’я, по батькові" type="enum" required="true">
+          <activiti:value id="At_will" name="За власним бажанням"></activiti:value>
+          <activiti:value id="Marriage" name="Шлюб (реєстрація, розірвання, скасування)"></activiti:value>
+          <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
+          <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asMilitary" name="Відношення до військової служби" type="enum" required="true">
+          <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
+          <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
+          <activiti:value id="yesMilitary" name="перебуваю на військовій службі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sComposition" name="Склад військ (командний, технічний і т.д.)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCorps" name="Рід військ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="saInvestigation" name="Чи притягалися Ви або Ваші близькі родичі до кримінальної відповідальності?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCrime" name="Коли і за що притягалися до відповідальності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="Якщо притягалися до відповідальності" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Трудова діяльність лінія" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sTable1&quot;],&quot;sValue&quot;:&quot;Трудова діяльність(включаючи військову службу, роботу за сумісництвом та ін.)&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Близькі родичі" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;Ваші близькі родичі&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Освіта; ;bNew=true" type="table" default="${markerService.loadFromFile('table/_doc_concord_aplication_candidate_table_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Освіта" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sTable3&quot;],&quot;sValue&quot;:&quot;Освіта&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="info2" name="; ;labelType=info" type="label" default="Я даю свою згоду на:1. Перевірку, обробку та зберігання моїх персональних даних, зазначених у цій Анкеті, з використанням засобів автоматизації та/або без використання таких засобів (в рамках Закону України «Про захист персональних даних» від 1  червня 2010 року, № 2297-VІ»).2. Перевірку свого паспорта, в базі даних втрачених паспортів Міністерства внутрішніх справ України,3. Одноразове отримання Банком моєї кредитної історії у вигляді кредитного звіту* у будь якому Бюро кредитних історій з яким Банком укладено відповідний договір згідно чинного законодавства України.* - Кандидат підтверджує, що зазначена згода надається ним з використанням термінів та понять, які передбачені Законом України «Про організацію формування та обігу кредитних історій» та з усвідомленням ним змісту вказаних термінів та понять. &quot;Кредитна історія&quot; - це сукупність інформації про юридичну або фізичну особу, яка її  ідентифікує, відомостей про виконання ним зобов'язань по кредитних операціях, і іншій  відкритій інформації. Кредитна історія складається з:- інформації, що ідентифікує суб'єкта кредитної історії;- інформації про суб'єкта кредитної історії, яка складається з сукупності документованої інформації з державних реєстрів, інших баз даних прилюдного користування;&quot;Кредитний звіт&quot; - сукупність інформації про суб'єкта кредитної історії, яка є повним або частковим відображенням його кредитної історії." writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//1 получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+
+//2 получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
+</script>
+    </scriptTask>
+    <userTask id="usertask1" name="Співбесіда з кандидатом" activiti:candidateGroups="OE_">
+      <extensionElements>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина виникнення вакансії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFilia" name="Відділ" type="enum" required="true">
+          <activiti:value id="sEnumFilia1" name="Відділ №1"></activiti:value>
+          <activiti:value id="sEnumFilia2" name="Відділ №2"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asDepartment" name="Департамент" type="enum" required="true">
+          <activiti:value id="sEnumDepartment1" name="Департамент №1"></activiti:value>
+          <activiti:value id="sEnumDepartment2" name="Департамент №2"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubordination" name="Кому підпорядковується (тут будет селект из дерева)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Ким керує (кількість, посади, ПІБ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sExpDuration" name="Досвід роботи: тривалість" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sExpPost" name="Досвід роботи: посада" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sExpActivity" name="Досвід роботи: напрям діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCompetence" name="Необхідні професійні навички, вміння, знання" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sEducationMain" name="Основна освіта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEducationExtra" name="Додаткова освіта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Володіння іноземними мовами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_concord_aplication_candidate.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_concord_aplication_candidate.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sPersonal" name="Особисті якості та характеристики, необходні для ефективного виконання функціональних обов’язків" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sAge" name="Вік" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
+          <activiti:value id="sEnumMale" name="Чоловік"></activiti:value>
+          <activiti:value id="sEnumFemale" name="Жінка"></activiti:value>
+          <activiti:value id="sEnumBoth" name="Чоловік або жінка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sFamily" name="Сімейний стан, діти" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asCar" name="Наявність авто; ;sID_CheckboxTrue=sEnumCarYes" type="enum" default="sEnumCarNo">
+          <activiti:value id="sEnumCarNo" name="відсутнє"></activiti:value>
+          <activiti:value id="sEnumCarYes" name="є авто"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asLicense" name="Наявність водійського посвідчення; ;sID_CheckboxTrue=sEnumLicYes" type="enum" default="sEnumLicNo">
+          <activiti:value id="sEnumLicNo" name="відсутнє"></activiti:value>
+          <activiti:value id="sEnumLicYes" name="є посвідчення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sExpExtra" name="Додаткові бажані навички, досвід" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Вакантна позиція" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Вакантна позиція&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTasks" name="Основні задачі" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sFunctions" name="Основні функціональні обов'язки" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sResults" name="Очікувані результати в випробувальний період" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період (тут будет селект из дерева)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sWorkPlace" name="Робоче місце" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSalary" name="Заробітна плата: оклад (ставка, грн)" type="string" default="Нижня: , Середня: , Вища: ."></activiti:formProperty>
+        <activiti:formProperty id="sBonus" name="Змінна складова (грн або %, періодичність виплати)" type="string" default="Премії: , Бонуси: "></activiti:formProperty>
+        <activiti:formProperty id="asRefundMobile" name="Компенсація мобільного зв'язку; ;sID_CheckboxTrue=sEnumRefundMobileYes" type="enum" default="sEnumRefundMobileNo">
+          <activiti:value id="sEnumRefundMobileNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefundMobile" name="Компенсація мобільного зв'язку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asRefundGas" name="Компенсація бензину; ;sID_CheckboxTrue=sEnumRefundGasYes" type="enum" default="sEnumRefundGasNo">
+          <activiti:value id="sEnumRefundGasNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefundGas" name="Компенсація бензину" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asRefundDeprec" name="Компенсація амортизації авто; ;sID_CheckboxTrue=sEnumRefundDeprecYes" type="enum" default="sEnumRefundDeprecNo">
+          <activiti:value id="sEnumRefundDeprecNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefundDeprec" name="Компенсація амортизації авто" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asRefundOther" name="Компенсація інше; ;sID_CheckboxTrue=sEnumRefundOtherYes" type="enum" default="sEnumRefundOtherNo">
+          <activiti:value id="sEnumRefundOtherNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefundOther" name="Компенсація інше" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTestTerm" name="Тривалість випробувального терміну" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTestSalary" name="Зарплата на час випробувального терміну" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sJobTime" name="Робочий час" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLunchTime" name="Перерва на обід" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOffTime" name="Вихідні дні" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTripTime" name="Процент відряджень (по відношенню до робочого часу)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFind" name="Способи пошуку кандидатів" type="enum">
+          <activiti:value id="sEnumFindNo" name="відкритий"></activiti:value>
+          <activiti:value id="sEnumFindYes" name="закритий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sFindMoney" name="Бюджет на пошук" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFindPlace" name="Масштаб пошуку" type="string" default="Місто: , Регіон: , Країна: ."></activiti:formProperty>
+        <activiti:formProperty id="sFindCompany" name="Компанії, в яких може працювати кандидат (назва та сфера діяльності)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNotCompany" name="Компанії, з яких не бажано брати кандидатів. Чому?" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_Author]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask2" name="Перевірка кандидата СБ"></userTask>
+    <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Step_2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//1 получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+
+//2 получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow5" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow19" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <scriptTask id="scripttask7" name="Step_3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//1 получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+
+//2 получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask7"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="exclusivegateway2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow27" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow28" sourceRef="exclusivegateway3" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="exclusivegateway3" targetRef="scripttask2"></sequenceFlow>
+    <userTask id="usertask3" name="Професійна співбесіда"></userTask>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow30" sourceRef="usertask3" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="scripttask7" targetRef="usertask3"></sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="flow32" sourceRef="exclusivegateway4" targetRef="servicetask4"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow33" sourceRef="exclusivegateway4" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow34" sourceRef="servicetask2" targetRef="endevent3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow35" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow36" sourceRef="servicetask4" targetRef="endevent4"></sequenceFlow>
+    <userTask id="usertask4" name="Підготовка документів для оформлення"></userTask>
+    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow37" sourceRef="servicetask1" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="exclusivegateway5" targetRef="scripttask8"></sequenceFlow>
+    <endEvent id="endevent5" name="End"></endEvent>
+    <sequenceFlow id="flow39" sourceRef="exclusivegateway5" targetRef="endevent5"></sequenceFlow>
+    <endEvent id="endevent6" name="End"></endEvent>
+    <sequenceFlow id="flow40" sourceRef="usertask4" targetRef="endevent6"></sequenceFlow>
+    <scriptTask id="scripttask8" name="Step_4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//1 получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+
+//2 получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow41" sourceRef="scripttask8" targetRef="usertask4"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_concord_aplication_candidate">
+    <bpmndi:BPMNPlane bpmnElement="_doc_concord_aplication_candidate" id="BPMNPlane__doc_concord_aplication_candidate">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="660.0" y="47.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="720.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="663.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="361.0" y="47.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="364.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="851.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="971.0" y="47.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="974.0" y="199.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="1056.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="329.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="628.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="939.0" y="119.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="1371.0" y="42.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
+        <omgdc:Bounds height="40.0" width="40.0" x="1185.0" y="49.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="1188.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
+        <omgdc:Bounds height="35.0" width="35.0" x="1500.0" y="51.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="1250.0" y="42.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="205.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="525.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="645.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="700.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="680.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="120.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="65.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="335.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="361.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="381.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="120.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="401.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="956.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="971.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="825.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="991.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="991.0" y="119.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="1011.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1056.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="381.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="200.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="680.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="200.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="991.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="991.0" y="199.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="1161.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1185.0" y="69.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="1225.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1250.0" y="69.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="1205.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1205.0" y="200.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="1476.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1500.0" y="68.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="1355.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1371.0" y="69.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

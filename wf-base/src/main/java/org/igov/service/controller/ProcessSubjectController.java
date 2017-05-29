@@ -136,7 +136,7 @@ public class ProcessSubjectController {
         }
         return processSubjectResult;
     }
-
+    /*
     @ApiOperation(value = "Задать статус процесса", notes = "##### Пример:\n"
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectStatus?snID_Process_Activiti=MJU_Dnipro&nID_ProcessSubjectStatus=1 \n")
     @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.GET)
@@ -152,7 +152,7 @@ public class ProcessSubjectController {
             LOG.error("FAIL: ", e);
         }
         return processSubjectResult;
-    }
+    }*/
 
     @ApiOperation(value = "Сохранить процесс", notes = "##### Пример:\n"
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectDatePlan?snID_Process_Activiti=MJU_Dnipro&sDatePlan=2016-11-19 \n")
@@ -181,7 +181,6 @@ public class ProcessSubjectController {
         return oProcessSubjectTaskService.getProcessSubjectLoginsWithoutTask(snID_Process_Activiti, sFilterLoginRole);
     }
     
-    /*
     @ApiOperation(value = "Задать статус процесса ", notes = "##### Пример:\n" 
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectStatus?nID_ProcessSubjectStatus=1&snID_Task_Activiti=33042597&sLogin=justice_common \n")
     @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.GET)
@@ -189,19 +188,21 @@ public class ProcessSubjectController {
     public ProcessSubject setProcessSubjectStatus(
                 @ApiParam(value = "Статус", required = true) @RequestParam(value = "sID_ProcessSubjectStatus", required = true) String sID_ProcessSubjectStatus,
                 @ApiParam(value = "Ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
-                @ApiParam(value = "Логин того, кто вызвал сервис", required = true) @RequestParam(value = "sLoginMain", required = true) String sLoginMain,
-                @ApiParam(value = "Логин исполнителя, нужен в некоторых кейсах, когда сервис вызывает контролирующий", required = false)
-                @RequestParam(value = "sLoginSecondary", required = false) String sLoginSecondary,
+                @ApiParam(value = "Логин контролирующего", required = false) @RequestParam(value = "sLoginController", required = false) String sLoginController,
+                @ApiParam(value = "Логин исполнителя", required = false) @RequestParam(value = "sLoginExecutor", required = false) String sLoginExecutor,
                 @ApiParam(value = "Текстовое поле", required = false) @RequestParam(value = "sText", required = false) String sText,
                 @ApiParam(value = "Дата на которую нужно перенести срок", required = false) @RequestParam(value = "sDatePlaneNew", required = false) String sDatePlaneNew
     ) {
+        if (sLoginController == null && sLoginExecutor == null) {
         
-        DateTime dtDatePlaneNew = DateTime.parse(sDatePlaneNew, DateTimeFormat.forPattern("yyyy-MM-dd"));
-
-        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginSecondary, sLoginMain, sText, dtDatePlaneNew);
-    }*/
+            throw new RuntimeException("Impossible to set status, because login is absent");
+        }
+                
+        return processSubjectService.setProcessSubjectStatus(sID_ProcessSubjectStatus, snID_Task_Activiti, sLoginController, sLoginExecutor, sText, sDatePlaneNew);
+    }
     
-    @ApiOperation(value = "Синхронизировать ProcessSubject ", notes = "")
+    @ApiOperation(value = "Синхронизировать ProcessSubject", notes = "Пример вызова:"
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/syncProcessSubject?snID_Process_Activiti=свое значение&snID_Task_Activiti=свое значение&sLogin=свое значение")
     @RequestMapping(value = "/syncProcessSubject", method = RequestMethod.GET)
     @ResponseBody
     public ProcessSubject syncProcessSubject(
@@ -210,6 +211,7 @@ public class ProcessSubjectController {
                 @ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin", required = true) String sLogin
     ) {
     
-        return processSubjectService.syncProcessSubjectController(snID_Process_Activiti, snID_Task_Activiti, sLogin);
+        return processSubjectService.syncProcessSubject(snID_Process_Activiti, snID_Task_Activiti, sLogin);
     }
+       
 }

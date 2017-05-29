@@ -21,4 +21,9 @@ public class ProcessSubjectStatus extends NamedEntity {
         this.sID = sID;
     }
 
+    @Override
+    public String toString() {
+        return "ProcessSubjectStatus{" + "sID=" + sID + '}';
+    }
+
 }

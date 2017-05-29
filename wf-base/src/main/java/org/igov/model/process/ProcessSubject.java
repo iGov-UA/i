@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
+import javax.persistence.FetchType;
 import javax.persistence.Transient;
 
 @javax.persistence.Entity
@@ -87,10 +88,14 @@ public class ProcessSubject extends AbstractEntity {
     @Column
     private String sLoginRole;
     
-    @JsonProperty(value = "oProcessSubjectTask")
-    @ManyToOne(targetEntity = ProcessSubjectTask.class)
+    @JsonProperty(value = "nID_ProcessSubjectTask")
+    @Column
+    private Long nID_ProcessSubjectTask;
+    
+    /*@JsonProperty(value = "oProcessSubjectTask")
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = ProcessSubjectTask.class)
     @JoinColumn(name = "nID_ProcessSubjectTask")
-    private ProcessSubjectTask oProcessSubjectTask;
+    private ProcessSubjectTask oProcessSubjectTask;*/
     
     @JsonProperty(value = "snID_Task_Activiti")
     @Column
@@ -184,16 +189,24 @@ public class ProcessSubject extends AbstractEntity {
         return sTextType;
     }
 
-    public ProcessSubjectTask getoProcessSubjectTask() {
-        return oProcessSubjectTask;
-    }
-
     public void setsTextType(String sTextType) {
         this.sTextType = sTextType;
+    }
+    
+    /*public ProcessSubjectTask getoProcessSubjectTask() {
+        return oProcessSubjectTask;
     }
 
     public void setoProcessSubjectTask(ProcessSubjectTask oProcessSubjectTask) {
         this.oProcessSubjectTask = oProcessSubjectTask;
+    }*/
+
+    public Long getnID_ProcessSubjectTask() {
+        return nID_ProcessSubjectTask;
+    }
+
+    public void setnID_ProcessSubjectTask(Long nID_ProcessSubjectTask) {
+        this.nID_ProcessSubjectTask = nID_ProcessSubjectTask;
     }
 
     public DateTime getsDatePlanNew() {
@@ -216,34 +229,32 @@ public class ProcessSubject extends AbstractEntity {
         this.sDateFact = sDateFact;
     }
 
-    public String getsnID_Task_Activiti() {
+    public String getSnID_Task_Activiti() {
         return snID_Task_Activiti;
     }
 
-    public void setsnID_Task_Activiti(String snID_Task_Activiti) {
+    public void setSnID_Task_Activiti(String snID_Task_Activiti) {
         this.snID_Task_Activiti = snID_Task_Activiti;
     }
     
    
-    @Override
-    public String toString() {
-        return "ProcessSubject{" + "id=" + getId()
-                + ", snID_Process_Activiti=" + snID_Process_Activiti
-                + ", sText=" + sText
-                + ", oProcessSubjectStatus=" + oProcessSubjectStatus
-                + ", nOrder=" + nOrder
-                + ", sLogin=" + sLogin
-                + ", sDateFact=" + sDateFact
-                + ", sDateEdit=" + sDateEdit
-                + ", sDatePlan=" + sDatePlan
-                + ", sDatePlanNew=" + sDatePlanNew
-                + ", aUser=" + aUser
-                + ", aProcessSubjectChild=" + aProcessSubjectChild
-                + ", sTextType=" + sTextType
-                + ", sLoginRole=" + sLoginRole
-                + ", oProcessSubjectTask=" + oProcessSubjectTask
-                + ", snID_Task_Activiti=" + snID_Task_Activiti + '}';
-    }
+    /* @Override
+     public String toString() {
+         return "ProcessSubject{" + "id=" + getId()
+                 + ", snID_Process_Activiti=" + snID_Process_Activiti
+                 + ", sText=" + sText
+                 + ", oProcessSubjectStatus=" + oProcessSubjectStatus
+                 + ", nOrder=" + nOrder
+                 + ", sLogin=" + sLogin
+                 + ", sDateFact=" + sDateFact
+                 + ", sDateEdit=" + sDateEdit
+                 + ", sDatePlan=" + sDatePlan
+                 + ", sDatePlanNew=" + sDatePlanNew
+                 + ", aUser=" + aUser
+                 + ", sTextType=" + sTextType
+                 + ", sLoginRole=" + sLoginRole
+                 + ", snID_Task_Activiti=" + snID_Task_Activiti + '}';
+     }*/
     
         
 }

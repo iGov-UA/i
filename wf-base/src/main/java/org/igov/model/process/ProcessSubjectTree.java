@@ -42,14 +42,14 @@ public class ProcessSubjectTree extends AbstractEntity {
         this.processSubjectParent = processSubjectParent;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "ProcessSubjectTree{" + 
                 "id = " + getId() +
                 ", processSubjectChild=" + processSubjectChild + 
                 ", processSubjectParent=" + processSubjectParent + 
                 '}';
-    }
+    }*/
     
     
 

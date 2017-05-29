@@ -7,18 +7,19 @@ package org.igov.analytic.model.attribute;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.model.core.NamedEntity;
 
 /**
- *
  * @author olga
  */
 @javax.persistence.Entity
@@ -32,8 +33,8 @@ public class Attribute extends NamedEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_AttributeType")
     private AttributeType oAttributeType;
-    
-    
+
+
     @JsonProperty(value = "oAttributeName")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_AttributeName")
@@ -44,7 +45,7 @@ public class Attribute extends NamedEntity {
     @JoinColumn(name = "nID_AttributeTypeCustom")
     private AttributeTypeCustom oAttributeTypeCustom;
 
-	@JsonIgnore
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "nID_Process")
     private Process oProcess;
@@ -55,32 +56,37 @@ public class Attribute extends NamedEntity {
     private ProcessTask oProcessTask;
 
     @JsonProperty(value = "oAttribute_Boolean")
-    @OneToOne(mappedBy="oAttribute")
-    Attribute_Boolean oAttribute_Boolean;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Boolean oAttribute_Boolean;
 
     @JsonProperty(value = "oAttribute_Date")
-    @OneToOne(mappedBy="oAttribute")
-    Attribute_Date oAttribute_Date;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Date oAttribute_Date;
 
     @JsonProperty(value = "oAttribute_Float")
-    @OneToOne(mappedBy="oAttribute")
-    Attribute_Float oAttribute_Float;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Float oAttribute_Float;
 
     @JsonProperty(value = "oAttribute_Integer")
-    @OneToOne(mappedBy="oAttribute")
-    Attribute_Integer oAttribute_Integer;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Integer oAttribute_Integer;
 
     @JsonProperty(value = "oAttribute_StringShort")
-    @OneToOne(mappedBy="oAttribute")
-    Attribute_StringShort oAttribute_StringShort;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_StringShort oAttribute_StringShort;
 
     @JsonProperty(value = "oAttribute_StringLong")
-    @OneToOne(mappedBy="oAttribute")
-    Attribute_StringLong oAttribute_StringLong;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_StringLong oAttribute_StringLong;
 
     @JsonProperty(value = "oAttribute_File")
-    @OneToOne(mappedBy="oAttribute")
-    Attribute_File oAttribute_File;
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_File oAttribute_File;
+
+    @JsonProperty
+    @OneToOne(mappedBy = "oAttribute", cascade = CascadeType.ALL)
+    private Attribute_Long oAttribute_Long;
+
 
     public String getsID_() {
         return sID_;
@@ -177,14 +183,38 @@ public class Attribute extends NamedEntity {
     public void setoAttribute_File(Attribute_File oAttribute_File) {
         this.oAttribute_File = oAttribute_File;
     }
-    
+
     public AttributeName getoAttributeName() {
-  		return oAttributeName;
-  	}
+        return oAttributeName;
+    }
 
-  	public void setoAttributeName(AttributeName oAttributeName) {
-  		this.oAttributeName = oAttributeName;
-  	}
+    public void setoAttributeName(AttributeName oAttributeName) {
+        this.oAttributeName = oAttributeName;
+    }
+
+    public Attribute_Long getoAttribute_Long() {
+        return oAttribute_Long;
+    }
+
+    public void setoAttribute_Long(Attribute_Long oAttribute_Long) {
+        this.oAttribute_Long = oAttribute_Long;
+    }
 
 
+    @Override
+    public String toString() {
+        return "Attribute{" +
+                "sID_='" + sID_ + '\'' +
+                ", oAttributeType=" + oAttributeType +
+                ", oAttributeName=" + oAttributeName +
+                ", oAttributeTypeCustom=" + oAttributeTypeCustom +
+                ", oAttribute_Boolean=" + oAttribute_Boolean +
+                ", oAttribute_Date=" + oAttribute_Date +
+                ", oAttribute_Float=" + oAttribute_Float +
+                ", oAttribute_Integer=" + oAttribute_Integer +
+                ", oAttribute_StringShort=" + oAttribute_StringShort +
+                ", oAttribute_StringLong=" + oAttribute_StringLong +
+                ", oAttribute_File=" + oAttribute_File +
+                '}';
+    }
 }

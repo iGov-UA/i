@@ -43,7 +43,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
     public void afterPropertiesSet() throws Exception {
         addEscalationJob(scheduler);
         addFeedBackJob(scheduler);
-        addBuilderFlowSlotsJob(scheduler);
+        //addBuilderFlowSlotsJob(scheduler);
     }
 
     private void addEscalationJob(Scheduler scheduler) throws SchedulerException {
@@ -100,22 +100,17 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
 
         CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep",
                 "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup");
-        try {
+       
             LOG.info("oCronExpression__EveryNight_Deep...");
-            CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0/30 6-7 1/1 * ?"); 
+        try { 
+         CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 0 6 1/1 * ?"); //раз в сутки в 6-00
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
         } catch (Exception oException) {
             LOG.error("FAIL: ", oException.getMessage());
             LOG.debug("FAIL: ", oException);
         }
-        //TODO:раскомментировать после тестирования
-        //if (true || !generalConfig.isSelfTest()) {
-            LOG.info("scheduleJob...");
-            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
-        /*} else {
-            LOG.info("scheduleJob... SKIPED(test)!");
-        }*/
+        scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
     }
     
     private void addPaymentProcessorJob(Scheduler scheduler) throws SchedulerException {

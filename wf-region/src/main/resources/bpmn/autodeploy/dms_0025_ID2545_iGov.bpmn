@@ -11,7 +11,6 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable3" name=" ; ;labelType=danger" type="label" default="&lt;b&gt;Дана послуга доступна лише за місцем реєстрації. Якщо Ви зробите вибір району не за місцем реєстрації, у наданні послуги Вам буде відмовлено в момент відвідування.&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби;виключно за місцем своєї реєстрації" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lablepos" name=" ; ;labelType=info" type="label" default="Необхідним документом для отримання паспорта громадянина України у формі ID-картки є довідка про реєстрацію місця проживання/перебування особи. Її можна отримати особисто у органах реєстрації місця проживання або &lt;a href=&quot;https://igov.org.ua/service/24/general&quot; target=&quot;_blank&quot;&gt;оформити цю довідку через iGov&lt;/a&gt; (працює не для всіх регіонів). Строк надання послуги через iGov - 10 календарних днів."></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay1" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay1" name="Департамент; ;bVisible=false" type="string"></activiti:formProperty>
@@ -38,41 +37,40 @@
     <sequenceFlow id="flow23" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="exclusivegateway6"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('date_of_visit')
-var year=src.substr(0,4)
-var month=src.substr(5,2)
-var day=src.substr(8,2)
-var hour=src.substr(11,2)
-var minutes=src.substr(14,2)
-var seconds='00'
-var delta=1
-var day1=day
-var month1=month
-if (day!='01')
-    {
-        day1=+day-delta
-    }
-else
-    {
-        if ((month!='01')&amp;&amp;(month!='03'))
-          {
-              month1=+month-1
-              day1=30
-          }
-        else
-          {
-            if (month=='03')
-            {
-              month1='02'
-              day1='28'
-            }            
-          }
-     }
-var timer=year+'-'+month1+'-'+day1+'T'+hour+':'+minutes+':'+seconds
-execution.setVariable('sNotification_day', timer)
-var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
-execution.setVariable('sEndDay', timerEnd)</script>
+    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>//подключаем библиотеку для форматирования даты под конкретую локаль
+import java.text.SimpleDateFormat
+
+//задаем украинский язык и регион Украина соответственно
+Locale locate  = new Locale("UK", "UA")
+
+//Настраиваем формат для парсера получаемой даты 'date_of_visit'
+def dateStartFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", locate)  
+
+String strDate = execution.getVariable('date_of_visit')
+//парсим строку по ранее указанному шаблону для преобразования в дату
+Date date_of_visit = dateStartFormat.parse(strDate)
+
+//настраиваем нужный формат даты и используем заданную локаль
+def dateFormat = new SimpleDateFormat("dd MMMM yyyy, HH:mm", locate)
+
+//форматируем дату под указанный формат
+def format_date_of_visit = dateFormat.format(date_of_visit)
+
+execution.setVariable('format_date_of_visit', format_date_of_visit)
+
+//отнимаем от нужной даты одни сутки в милисекундах 
+Date startDate = new Date(date_of_visit.getTime() - 1000*60*60*24)
+
+//форматируем под таймер дату, использовать букву "Т" и другой текст, не относяшийся к форматированию стоит помещать в одинарные кавычки
+def timerStartFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locate)
+def formatTimerStart = timerStartFormat.format(startDate)
+execution.setVariable('sNotification_day', formatTimerStart)
+
+//форматируем под таймер дату, время указываем жестко 
+def timerEndFormat = new SimpleDateFormat("yyyy-MM-dd'T19:00:00'", locate)
+def formatTimerEnd = timerStartFormat.format(date_of_visit)
+execution.setVariable('sEndDay', formatTimerEnd)</script>
     </scriptTask>
     <sequenceFlow id="flow28" sourceRef="scripttask1" targetRef="parallelgateway1"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
@@ -114,7 +112,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 	для отримання ID-картки замість вклеювання фотокарток при досягненні особою віку 25 або 45 років
 </p>
 <p>
-	Дата та час візиту: ${date_of_visit}.
+	Дата та час візиту:  ${format_date_of_visit}.
 </p>
 <p>
 	Реквізити для сплати адмінсбору за оформлення ID-картки доступні за <a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a>.<br>
@@ -123,7 +121,6 @@ execution.setVariable('sEndDay', timerEnd)</script>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
 	<ul>
-		<li>довідка про реєстрацію місця проживання (Її можна отримати особисто у органах реєстрації  місця проживання або замовити через <a href="https://igov.org.ua/service/24/general" target="_blank">iGov</a> (працює не для всіх регіонів). Строк надання послуги через iGov - 10 календарних днів;</li>
 		<li>паспорт, що підлягає обміну;</li>
 		<li>оригінал та копію ІПН;</li>
 		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
@@ -168,7 +165,7 @@ ${sNameOrgan},<br>
 	для отримання ID-картки замість вклеювання фотокарток при досягненні особою віку 25 або 45 років
 </p>
 <p>
-	Дата та час візиту: ${date_of_visit}.
+	Дата та час візиту:  ${format_date_of_visit}.
 </p>
 <p>
 	Реквізити для сплати адмінсбору за оформлення ID-картки доступні за <a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a>.<br>
@@ -177,7 +174,6 @@ ${sNameOrgan},<br>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
 	<ul>
-<li>довідка про реєстрацію місця проживання (Її можна отримати особисто у органах реєстрації  місця проживання або замовити через <a href="https://igov.org.ua/service/24/general" target="_blank">iGov</a> (працює не для всіх регіонів). Строк надання послуги через iGov - 10 календарних днів;</li>
 		<li>паспорт, що підлягає обміну;</li>
 		<li>оригінал та копію ІПН;</li>
 		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
@@ -396,7 +392,6 @@ execution.setVariable('sEndDay', timerEnd)</script>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
 	<ul>
-		<li>довідка про реєстрацію місця проживання (Її можна отримати особисто у органах реєстрації  місця проживання або замовити через <a href="https://igov.org.ua/service/24/general" target="_blank">iGov</a> (працює не для всіх регіонів). Строк надання послуги через iGov - 10 календарних днів;</li>
 		<li>паспорт, що підлягає обміну;</li>
 		<li>оригінал та копію ІПН;</li>
 		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>

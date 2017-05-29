@@ -3,22 +3,22 @@
   <process id="_doc_btsol_acceptance" name="Приказ о приеме на работу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ид процесса ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Создание документа">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ; bVisible=false" type="string" default="btsol_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ; bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ;bVisible=false" type="string" default="btsol_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ о приеме на работу" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Замечание при согласовании" type="string" writable="false"></activiti:formProperty>
@@ -28,12 +28,60 @@
         <activiti:formProperty id="sHiredPersonFirstName" name="Имя" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonMiddleName" name="Отчество" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonPosition" name="Должность" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Департамент; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_acceptance.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_Department" name="Департамент (структурое подразделение); ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Принять с" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="линия условия принятия на работу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;bConditions_1&quot;],&quot;sValue&quot;:&quot;Условия принятия на работу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bConditions_1" name="На конкурсной основе; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_2" name="На условиях контракта; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateContract" name="Контракт до" type="date"></activiti:formProperty>
+        <activiti:formProperty id="bConditions_3" name="На испытательный срок; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sProbation" name="Испытательный срок (мес.)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bConditions_4" name="На время выполнения определенной работы; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_5" name="На период отсутствия основного работника; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_6" name="Из кадрового резерва; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_7" name="По результатам успешной стажировки; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_8" name="Перевод; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="линия условия работы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asTypeJob&quot;],&quot;sValue&quot;:&quot;Условия работы&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asTypeJob" name="Работа" type="enum">
+          <activiti:value id="sEnumBasic" name="основная"></activiti:value>
+          <activiti:value id="sEnumSameTime" name="по совместительству"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkingConditions" name="Условия работы (согласно атестации рабочего места)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkingHours" name="Продолжительность рабочего дня" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSalary" name="Оклад (тарифная ставка)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_4" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2 ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2 ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если На условиях контракта" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateContract&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bConditions_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="если На испытательный срок" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sProbation&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bConditions_3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -46,26 +94,73 @@
     </userTask>
     <userTask id="usertask2" name="Согласование приказа о приеме на работу">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Данные нового сотрудника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonFullName" name="ФИО нового сотрудника" type="string" default="${sHiredPersonLastName} ${sHiredPersonFirstName} ${sHiredPersonMiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonPosition" name="Должность" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Принять с" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Департамент; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_Department" name="Департамент (структурое подразделение); ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="линия условия принятия на работу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;bConditions_1&quot;],&quot;sValue&quot;:&quot;Условия принятия на работу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bConditions_1" name="На конкурсной основе; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_2" name="На условиях контракта; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateContract" name="Контракт до" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bConditions_3" name="На испытательный срок; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sProbation" name="Испытательный срок (мес.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bConditions_4" name="На время выполнения определенной работы; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_5" name="На период отсутствия основного работника; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_6" name="Из кадрового резерва; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_7" name="По результатам успешной стажировки; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_8" name="Перевод; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="линия условия работы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asTypeJob&quot;],&quot;sValue&quot;:&quot;Условия работы&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asTypeJob" name="Работа" type="enum" writable="false">
+          <activiti:value id="sEnumBasic" name="основная"></activiti:value>
+          <activiti:value id="sEnumSameTime" name="по совместительству"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkingConditions" name="Условия работы (согласно атестации рабочего места)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWorkingHours" name="Продолжительность рабочего дня" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSalary" name="Оклад (тарифная ставка)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -132,26 +227,72 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <userTask id="usertask4" name="Утверждение приказа">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ; bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ; bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ; bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Данные нового сотрудника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonFullName" name="ФИО нового сотрудника" type="string" default="${sHiredPersonLastName} ${sHiredPersonFirstName} ${sHiredPersonMiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonPosition" name="Должность" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Принять с" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Департамент; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_Department" name="Департамент (структурое подразделение); ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="линия условия принятия на работу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;bConditions_1&quot;],&quot;sValue&quot;:&quot;Условия принятия на работу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bConditions_1" name="На конкурсной основе; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_2" name="На условиях контракта; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateContract" name="Контракт до" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bConditions_3" name="На испытательный срок; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sProbation" name="Испытательный срок (мес.)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bConditions_4" name="На время выполнения определенной работы; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_5" name="На период отсутствия основного работника; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_6" name="Из кадрового резерва; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_7" name="По результатам успешной стажировки; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bConditions_8" name="Перевод; ;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="линия условия работы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;asTypeJob&quot;],&quot;sValue&quot;:&quot;Условия работы&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asTypeJob" name="Работа" type="enum" writable="false">
+          <activiti:value id="sEnumBasic" name="основная"></activiti:value>
+          <activiti:value id="sEnumSameTime" name="по совместительству"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sWorkingConditions" name="Условия работы (согласно атестации рабочего места)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sWorkingHours" name="Продолжительность рабочего дня" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSalary" name="Оклад (тарифная ставка)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentUT4" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -224,7 +365,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="496.0" y="330.0"></omgdi:waypoint>
         <omgdi:waypoint x="496.0" y="258.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="562.0" y="310.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="55.0" x="562.0" y="310.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
@@ -260,7 +401,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="496.0" y="579.0"></omgdi:waypoint>
         <omgdi:waypoint x="496.0" y="258.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="549.0" y="561.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="55.0" x="549.0" y="561.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

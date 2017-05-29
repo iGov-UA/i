@@ -24,6 +24,7 @@ import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 import org.igov.service.ArchiveServiceImpl;
+import org.igov.service.migration.MigrationService;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -38,9 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author olga
@@ -80,11 +79,22 @@ public class ProcessController {
     @Autowired
     HistoryService historyService;
 
+    @Autowired
+    private MigrationService migrationService;
+
+    @ApiOperation(value = "/migration", notes = "#### Migration - миграция закрытых данных с активной БД в аналитическую")
+    @RequestMapping(value = "/migration", method = RequestMethod.GET)
+    public void migrate() {
+        LOG.info("Inside /migration service");
+        migrationService.migrateOldRecords();
+    }
+
+
     @ApiOperation(value = "/backup", notes = "##### Process - сохранение процесса #####\n\n")
     @RequestMapping(value = "/backup", method = RequestMethod.GET)
     public
     @ResponseBody
-    void backup() throws ParseException, Exception {
+    void backup() throws Exception {
         LOG.info("/backup!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :)");
         archiveService.archiveData();
         LOG.info("/backup ok!!!");
@@ -214,10 +224,10 @@ public class ProcessController {
         processTask.setoDateStart(new DateTime());
         processTask.setoDateFinish(new DateTime());
         processTask.setsID_("test");
-        List<AccessGroup> accessGroups = new ArrayList();
+        Set<AccessGroup> accessGroups = new HashSet<>();
         accessGroups.add(accessGroup);
         processTask.setaAccessGroup(accessGroups);
-        List<AccessUser> accessUsers = new ArrayList();
+        Set<AccessUser> accessUsers = new HashSet<>();
         accessUsers.add(accessUser);
         processTask.setaAccessUser(accessUsers);
         //------------------------------

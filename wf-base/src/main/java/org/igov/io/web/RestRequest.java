@@ -30,7 +30,6 @@ public class RestRequest {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setErrorHandler(new ResponseErrHandler());
         restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
-
         httpHeaders = httpHeaders == null ? new HttpHeaders() : httpHeaders;
         if (contentType != null) {
             httpHeaders.setContentType(contentType);
@@ -66,6 +65,10 @@ public class RestRequest {
                 super.prepareConnection(connection, httpMethod);
                 connection.setInstanceFollowRedirects(false);
                 connection.setRequestMethod(httpMethod);
+               // connection.setConnectTimeout(5000);//add
+               // connection.setReadTimeout(5000);
+                
+                
             }
         };
         RestTemplate restTemplate = new RestTemplate();
@@ -110,6 +113,8 @@ public class RestRequest {
                 super.prepareConnection(connection, httpMethod);
                 connection.setInstanceFollowRedirects(false);
                 connection.setRequestMethod(httpMethod);
+               // connection.setConnectTimeout(5000);//add
+               // connection.setReadTimeout(5000);
             }
         };
         RestTemplate restTemplate = new RestTemplate();

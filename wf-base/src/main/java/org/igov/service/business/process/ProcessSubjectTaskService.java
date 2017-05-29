@@ -1,11 +1,14 @@
 package org.igov.service.business.process;
 
 
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.Map;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -16,6 +19,7 @@ import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
+import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectStatus;
 import org.igov.model.process.ProcessSubjectStatusDao;
 
@@ -131,150 +135,91 @@ public class ProcessSubjectTaskService {
     
     public void synctProcessSubjectTask(JSONArray oaProcessSubjectTask, String snId_Task){
         try{
-            LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", oaProcessSubjectTask.toJSONString());
+            //LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", oaProcessSubjectTask.toJSONString());
             for(Object oJsonProcessSubjectTask :  oaProcessSubjectTask){
                 
-                String sActionType = (String)((JSONObject)oJsonProcessSubjectTask).get("sBody");
+                String sActionType = (String)((JSONObject)oJsonProcessSubjectTask).get("sActionType");
                 JSONArray aJsonProcessSubject =  (JSONArray) ((JSONObject)oJsonProcessSubjectTask).get("aProcessSubject");
-                LOG.info("oJsonProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
+                //LOG.info("oJsonProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
                 String sKey = oBytesDataInmemoryStorage.putBytes(((JSONObject)oJsonProcessSubjectTask).toJSONString().getBytes());
                 LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
 
                 if(sActionType.equals("set")){
-                    ProcessSubjectTask oProcessSubjectTask = new ProcessSubjectTask();
-                    oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
-                    oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
-                    oProcessSubjectTask.setsHead((String)((JSONObject)oJsonProcessSubjectTask).get("sHead"));
-                    oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
-                    LOG.info("oProcessSubjectTask in synctProcessSubjectTask: {}", oProcessSubjectTask);
-                    Map<String, Object> mParamTask = new HashMap<>();
-                    
-                    mParamTask.put("sID_File_StorateTemp", sKey); 
-                    mParamTask.put("sID_Order_Document", oGeneralConfig.
-                                getOrderId_ByProcess((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));
-            
-                    ProcessInstance oProcessInstance = oRuntimeService.startProcessInstanceByKey((String) ((JSONObject)oJsonProcessSubjectTask).get("sID_BP"), mParamTask); 
-                    
-                    List<ProcessSubject> aProcessSubject = 
-                            setProcessSubjectList(aJsonProcessSubject, (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, oProcessInstance.getId(), null);
-                    LOG.info("aProcessSubject in synctProcessSubjectTask: {}", aProcessSubject);
-                
+                    setProcessSubjectTask(oJsonProcessSubjectTask, aJsonProcessSubject, sKey);
                 }else if (sActionType.equals("edit")){
-                    
-                    ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
-                            Long.parseLong((String)((JSONObject)oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
-                    
-                    ProcessSubject oProcessSubjectController = getProcessSubjectByTask(snId_Task);
-                    
-                    List<ProcessSubject> aProcessSubject_saved = 
-                            oProcessSubjectDao.findAllBy("snID_Process_Activiti", oProcessSubjectController.getSnID_Process_Activiti());
-                    
-                    List<String> aNewLogin = new ArrayList<>();
-                    
-                    for (Object oJsonProcessSubject : aJsonProcessSubject) {
-                        aNewLogin.add((String)((JSONObject)oJsonProcessSubject).get("sLogin"));
-                    }
-                    
-                    List<ProcessSubject> aProcessSubject_ToUpdate = new ArrayList<>();
-                    
-                    for(ProcessSubject oProcessSubject : aProcessSubject_saved){
-                        if(!aNewLogin.contains(oProcessSubject.getsLogin())){
-                           oProcessSubjectService.removeProcessSubjectDeep(oProcessSubject);
-                           LOG.info("Login to delete in new task setting schema is {}", aNewLogin);
-                        }
-                        else{
-                            LOG.info("Login to update in new task setting schema is {}", aNewLogin);
-                            aProcessSubject_ToUpdate.add(oProcessSubject);
-                        }
-                    }
-                    
-                    oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
-                            (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
-                            oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));
-                    
-                    oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
-                    oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
-                    oProcessSubjectTask.setsHead((String)((JSONObject)oJsonProcessSubjectTask).get("sHead"));
-
-                    oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
-                    
-                    oRuntimeService.setVariable(oProcessSubjectController.getSnID_Process_Activiti(), 
-                            "sID_File_StorateTemp", sKey);
-                    
+                    editProcessSubject(oJsonProcessSubjectTask, aJsonProcessSubject, sKey, snId_Task);
                 }else if (sActionType.equals("delegate")){
-                    
+                    LOG.info("delegating started...");
+
                     ProcessSubject oProcessSubjectController = getProcessSubjectByTask(snId_Task);
+                    LOG.info("oProcessSubjectController is {}", oProcessSubjectController.getsLogin());
+                    
                     List<ProcessSubjectTree> aProcessSubjectTree =
                             oProcessSubjectTreeDao.findChildren(oProcessSubjectController.getSnID_Process_Activiti());
                     
-                    if(aProcessSubjectTree == null){
-                        //this is first delegating
-                        ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
-                            Long.parseLong((String)((JSONObject)oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
-
-                        Map<String, Object> mParamTask = new HashMap<>();
+                    //TODO: remove logs after testing
+                    for(ProcessSubjectTree oProcessSubjectTree : aProcessSubjectTree){
+                        LOG.info("aProcessSubjectTree parent is {}", oProcessSubjectTree.getProcessSubjectParent().getsLogin());
+                        LOG.info("aProcessSubjectTree children is {}", oProcessSubjectTree.getProcessSubjectChild().getsLogin());
+                    }
                     
-                        mParamTask.put("sID_File_StorateTemp", sKey); 
-                        mParamTask.put("sID_Order_Document", oGeneralConfig.
-                                getOrderId_ByProcess((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));
-            
-                        ProcessInstance oProcessInstance = oRuntimeService.startProcessInstanceByKey((String) ((JSONObject)oJsonProcessSubjectTask).get("sID_BP"), mParamTask); 
-                        
-                        oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
-                        oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
-                        oProcessSubjectTask.setsHead((String)((JSONObject)oJsonProcessSubjectTask).get("sHead"));
-                        
-                        oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
-                        
-                        List<ProcessSubject> aProcessSubject = 
-                            setProcessSubjectList(aJsonProcessSubject, (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, oProcessInstance.getId(), null);
-                        
-                        ProcessSubject ProcessSubjectController = null;
-                        
-                        for(ProcessSubject oProcessSubject : aProcessSubject){
-                            if(oProcessSubject.getsLoginRole().equals("Controller")){
-                                ProcessSubjectController = oProcessSubject;
-                                break;
-                            }
-                        }
-                        
-                        for(ProcessSubject oProcessSubject : aProcessSubject){
-                            if(oProcessSubject.getsLoginRole().equals("Executor")){
-                                saveProcessSubjectTree(ProcessSubjectController, oProcessSubject);
-                            }
-                        }
+                    if(aProcessSubjectTree.isEmpty()){
+                        firstDelegateProcessSubject(oProcessSubjectController, oJsonProcessSubjectTask, 
+                                aJsonProcessSubject, sKey);
                     }
                     else{
+                        LOG.info("second delegating started...");
                         //this isn't first delegating
                         ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
                             Long.parseLong((String)((JSONObject)oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
+                        
+                        LOG.info("snID_Process_Activiti from child is: {}",  
+                                aProcessSubjectTree.get(0).getProcessSubjectChild().getSnID_Process_Activiti());
                         
                         List<ProcessSubject> aProcessSubject_saved = 
                             oProcessSubjectDao.findAllBy("snID_Process_Activiti", 
                                     aProcessSubjectTree.get(0).getProcessSubjectChild().getSnID_Process_Activiti());
 
-                        List<String> aNewLogin = new ArrayList<>();
+                        LongSummaryStatistics summaryStatistics = aProcessSubject_saved.stream()
+                            .mapToLong(ProcessSubject::getnOrder)
+                            .summaryStatistics();
                     
+                        LOG.info("aProcessSubject_saved is {}", aProcessSubject_saved);
+                        
+                        //TODO: remove logs after testing
+                        for(ProcessSubject oProcessSubject : aProcessSubject_saved){
+                            LOG.info("oProcessSubject_saved is {}", oProcessSubject.getsLogin());
+                        }
+
+                        List<String> aNewLogin = new ArrayList<>();
+
                         for (Object oJsonProcessSubject : aJsonProcessSubject) {
                             aNewLogin.add((String)((JSONObject)oJsonProcessSubject).get("sLogin"));
                         }
+
+                        LOG.info("aNewLogin is {}", aNewLogin);
 
                         List<ProcessSubject> aProcessSubject_ToUpdate = new ArrayList<>();
 
                         for(ProcessSubject oProcessSubject : aProcessSubject_saved){
                             if(!aNewLogin.contains(oProcessSubject.getsLogin())){
-                               oProcessSubjectService.removeProcessSubjectDeep(oProcessSubject);
-                               LOG.info("Login to delete in new task setting schema is {}", aNewLogin);
+                               LOG.info("Login to delete in new task setting schema is {}", oProcessSubject.getsLogin());
+                               removeProcessSubjectDeep(oProcessSubject);
                             }
                             else{
-                                LOG.info("Login to update in new task setting schema is {}", aNewLogin);
+                                LOG.info("Login to update in new task setting schema is {}", oProcessSubject.getsLogin());
                                 aProcessSubject_ToUpdate.add(oProcessSubject);
                             }
                         }
 
-                        oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
+                        /*oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
                                 (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
-                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));
+                                oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));*/
+
+                        setProcessSubjectList(aJsonProcessSubject, 
+                                (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
+                                aProcessSubjectTree.get(0).getProcessSubjectChild().getSnID_Process_Activiti(),
+                                aProcessSubject_ToUpdate, summaryStatistics.getMax() + 1);
 
                         oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
                         oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
@@ -296,15 +241,125 @@ public class ProcessSubjectTaskService {
         }
     }
     
+    private void editProcessSubject(Object oJsonProcessSubjectTask, JSONArray aJsonProcessSubject, String sKey, String snId_Task) throws Exception {
+            
+                    LOG.info("editing started....");
+                    
+                    ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
+                            Long.parseLong((String)((JSONObject)oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
+                       
+                    ProcessSubject oProcessSubjectController = getProcessSubjectByTask(snId_Task);
+                    
+                    List<ProcessSubject> aProcessSubject_saved = 
+                            oProcessSubjectDao.findAllBy("snID_Process_Activiti", oProcessSubjectController.getSnID_Process_Activiti());
+                    
+                    LongSummaryStatistics summaryStatistics = aProcessSubject_saved.stream()
+                            .mapToLong(ProcessSubject::getnOrder)
+                            .summaryStatistics();
+                    
+                    LOG.info("aProcessSubject_saved is {}", aProcessSubject_saved);
+                    
+                    List<String> aNewLogin = new ArrayList<>();
+                    
+                    for (Object oJsonProcessSubject : aJsonProcessSubject) {
+                        aNewLogin.add((String)((JSONObject)oJsonProcessSubject).get("sLogin"));
+                    }
+                    
+                    LOG.info("aNewLogin is {}", aNewLogin);
+                    
+                    List<ProcessSubject> aProcessSubject_ToUpdate = new ArrayList<>();
+                    
+                    for(ProcessSubject oProcessSubject : aProcessSubject_saved){
+                        if(!aNewLogin.contains(oProcessSubject.getsLogin())){
+                           LOG.info("Login to delete in new task setting schema is {}", oProcessSubject.getsLogin());
+                           removeProcessSubjectDeep(oProcessSubject);
+                        }
+                        else{
+                            LOG.info("Login to update in new task setting schema is {}", oProcessSubject.getsLogin());
+                            aProcessSubject_ToUpdate.add(oProcessSubject);
+                        }
+                    }
+                    
+                    /*oProcessSubjectTask.setaProcessSubject(setProcessSubjectList(aJsonProcessSubject, 
+                            (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
+                            oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate));*/
+                    
+                    setProcessSubjectList(aJsonProcessSubject, 
+                            (JSONObject)oJsonProcessSubjectTask, oProcessSubjectTask, 
+                            oProcessSubjectController.getSnID_Process_Activiti(), aProcessSubject_ToUpdate, summaryStatistics.getMax() + 1);
+                    
+                    oProcessSubjectTask.setSnID_Process_Activiti_Root((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
+                    oProcessSubjectTask.setsBody((String)((JSONObject)oJsonProcessSubjectTask).get("sBody"));
+                    oProcessSubjectTask.setsHead((String)((JSONObject)oJsonProcessSubjectTask).get("sHead"));
+
+                    oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
+                    
+                    oRuntimeService.setVariable(oProcessSubjectController.getSnID_Process_Activiti(), 
+                            "sID_File_StorateTemp", sKey);
+                    
+    }
+    
+    private void setProcessSubjectTask(Object oJsonProcessSubjectTask, JSONArray aJsonProcessSubject, String sKey) throws Exception {
+        
+        ProcessSubjectTask oProcessSubjectTask = new ProcessSubjectTask();
+        oProcessSubjectTask.setSnID_Process_Activiti_Root((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
+        oProcessSubjectTask.setsBody((String) ((JSONObject) oJsonProcessSubjectTask).get("sBody"));
+        oProcessSubjectTask.setsHead((String) ((JSONObject) oJsonProcessSubjectTask).get("sHead"));
+        oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
+        LOG.info("oProcessSubjectTask in synctProcessSubjectTask: {}", oProcessSubjectTask);
+        Map<String, Object> mParamTask = new HashMap<>();
+
+        mParamTask.put("sID_File_StorateTemp", sKey);
+        mParamTask.put("sID_Order_Document", oGeneralConfig.
+                getOrderId_ByProcess((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));
+
+        ProcessInstance oProcessInstance = oRuntimeService.startProcessInstanceByKey((String) ((JSONObject) oJsonProcessSubjectTask).get("sID_BP"), mParamTask);
+
+        List<ProcessSubject> aProcessSubject
+                = setProcessSubjectList(aJsonProcessSubject, 
+                        (JSONObject) oJsonProcessSubjectTask, oProcessSubjectTask, oProcessInstance.getId(), null, 0L);
+        LOG.info("aProcessSubject in synctProcessSubjectTask: {}", aProcessSubject);
+    }
+    
+    private void firstDelegateProcessSubject(ProcessSubject oProcessSubjectController, Object oJsonProcessSubjectTask, 
+            JSONArray aJsonProcessSubject, String sKey) throws Exception {
+        LOG.info("this is first delegating");
+        ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(
+                Long.parseLong((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_ProcessSubjectTask")));
+
+        LOG.info("oProcessSubjectTask is {}", oProcessSubjectTask);
+
+        Map<String, Object> mParamTask = new HashMap<>();
+
+        mParamTask.put("sID_File_StorateTemp", sKey);
+        mParamTask.put("sID_Order_Document", oGeneralConfig.
+                getOrderId_ByProcess((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));
+
+        ProcessInstance oProcessInstance = oRuntimeService.startProcessInstanceByKey((String) ((JSONObject) oJsonProcessSubjectTask).get("sID_BP"), mParamTask);
+        LOG.info("oProcessSubjectTask is {}", oProcessSubjectTask);
+        
+        List<ProcessSubject> aProcessSubject
+                = setProcessSubjectList(aJsonProcessSubject, (JSONObject) oJsonProcessSubjectTask, 
+                        oProcessSubjectTask, oProcessInstance.getId(), null, 0L);
+        LOG.info("aProcessSubject is {}", aProcessSubject);
+        
+        for (ProcessSubject oProcessSubject : aProcessSubject) {
+            LOG.info("oProcessSubject is {}", aProcessSubject);
+            saveProcessSubjectTree(oProcessSubjectController, oProcessSubject);
+        }
+    }
     
     private List<ProcessSubject> setProcessSubjectList(JSONArray aJsonProcessSubject, JSONObject oJsonProcessSubjectTask,
-            ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti, List<ProcessSubject> aProcessSubject_ToUpdate) throws ParseException, Exception 
+            ProcessSubjectTask oProcessSubjectTask, String snID_Process_Activiti, 
+            List<ProcessSubject> aProcessSubject_ToUpdate, Long nStartOrder) throws ParseException, Exception 
     {
+        LOG.info("setProcessSubjectList started..");
+        LOG.info("nStartOrder is {}", nStartOrder);
         ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(1L);
         
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
         
-        Long nOrder = 0L;
+        Long nOrder = nStartOrder;
         
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             
@@ -315,6 +370,12 @@ public class ProcessSubjectTaskService {
                 for(ProcessSubject oProcessSubject_ToUpdate : aProcessSubject_ToUpdate){
                     if(oProcessSubject_ToUpdate.getsLogin().equals((String) ((JSONObject)oJsonProcessSubject).get("sLogin"))){
                         oProcessSubject = oProcessSubject_ToUpdate;
+                        LOG.info("oProcessSubject to update is {}", oProcessSubject);
+                        if (((JSONObject)oJsonProcessSubject).get("sDatePlan") != null) {
+                            DateTime datePlan = new DateTime(oProcessSubjectService.parseDate(
+                                    (String) ((JSONObject)oJsonProcessSubject).get("sDatePlan")));
+                            oProcessSubject_ToUpdate.setsDatePlan(datePlan);
+                        }
                         break;
                     }
                 }
@@ -325,15 +386,16 @@ public class ProcessSubjectTaskService {
                 oProcessSubject = new ProcessSubject();
             }
             
-            LOG.info("mProcessSubject in setProcessSubjectList: {}", ((JSONObject)oJsonProcessSubject).toJSONString());
+            LOG.info("oJsonProcessSubject in setProcessSubjectList: {}", ((JSONObject)oJsonProcessSubject).toJSONString());
             
             oProcessSubject.setsTextType((String) ((JSONObject)oJsonProcessSubjectTask).get("sTextType"));
             oProcessSubject.setsLogin((String) ((JSONObject)oJsonProcessSubject).get("sLogin"));
-            oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("‘sLoginRole"));
-            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
+            oProcessSubject.setsLoginRole((String) ((JSONObject)oJsonProcessSubject).get("sLoginRole"));
+//            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
+            oProcessSubject.setnID_ProcessSubjectTask(oProcessSubjectTask.getId());
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
-            oProcessSubject.setnOrder(nOrder);
+            oProcessSubject.setnOrder(nOrder);  
             
             nOrder = nOrder + 1L;
             oProcessSubject.setSnID_Process_Activiti(snID_Process_Activiti);                                                                                   
@@ -357,6 +419,55 @@ public class ProcessSubjectTaskService {
         return oProcessSubjectDao.saveOrUpdate(aProcessSubject);
     }
     
+    public void removeProcessSubject(ProcessSubject processSubject, boolean closeTaskFlag) {
+        LOG.info("removeProcessSubject started...");
+        
+        if (closeTaskFlag) {
+            if (processSubject.getSnID_Task_Activiti() != null) {
+                LOG.info("TaskInstance to remove is {}", processSubject.getSnID_Task_Activiti());
+                oTaskService.complete(processSubject.getSnID_Task_Activiti());
+            }
+        } else {
+            LOG.info("ProcessInstance is to delete {}", processSubject.getSnID_Process_Activiti());
+            ProcessInstance processInstance = oRuntimeService.createProcessInstanceQuery().processInstanceId(processSubject.getSnID_Process_Activiti()).singleResult();
+            if (processInstance != null) {
+                oRuntimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
+            }
+        }
+        
+        LOG.info("TaskInstance deleted..");
+        Optional<ProcessSubjectTree> processSubjectTreeToDelete = oProcessSubjectTreeDao.findBy("processSubjectChild", processSubject);
+        
+        if(processSubjectTreeToDelete.isPresent()){
+            LOG.info("processSubjectTreeToDelete {}", processSubjectTreeToDelete.get());
+            oProcessSubjectTreeDao.delete(processSubjectTreeToDelete.get());
+        }
+        else{
+            LOG.info("processSubjectTree is null");
+        }
+        
+        LOG.info("deleted processSubject Id is {}", processSubject.getId());
+        oProcessSubjectDao.delete(processSubject);
+        LOG.info("removeProcessSubject ended...");
+    }
+
+    public void removeProcessSubjectDeep(ProcessSubject processSubject) {
+        LOG.info("removeProcessSubjectDeep started...");
+        ProcessSubjectResult processSubjectResult = oProcessSubjectService.getCatalogProcessSubject(processSubject.getSnID_Process_Activiti(), 0L, null);
+        
+        LOG.info("processSubjectResult {}", processSubjectResult.getaProcessSubject());
+        List<ProcessSubject> aProcessSubject = processSubjectResult.getaProcessSubject();
+        List<ProcessSubject> aReverseProcessSubject = Lists.reverse(aProcessSubject);
+        
+        for (ProcessSubject oProcessSubject : aReverseProcessSubject) {
+            LOG.info("oProcessSubject catalog user is {}", oProcessSubject.getaUser());
+            LOG.info("processSubject id to delete {}", oProcessSubject.getId());
+            removeProcessSubject(oProcessSubject, false);
+        }
+
+        removeProcessSubject(processSubject, true);
+        LOG.info("removeProcessSubjectDeep ended...");
+    }
     
     /**
      * Получение ProcessSubject 
@@ -386,6 +497,7 @@ public class ProcessSubjectTaskService {
         ProcessSubjectTree oProcessSubjectTreeParent = new ProcessSubjectTree();
         oProcessSubjectTreeParent.setProcessSubjectParent(oProcessSubjectParent);
         oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
+        LOG.info("oProcessSubjectTreeParent is {}", oProcessSubjectTreeParent);
         oProcessSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
     }
 }

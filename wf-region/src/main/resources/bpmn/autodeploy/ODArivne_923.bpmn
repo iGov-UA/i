@@ -55,7 +55,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression>${sMailClerk_agro}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>Нова заявка про ${sPosluga_name}</activiti:expression>
@@ -121,7 +121,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="sKilk_plem_res" name="Кількість племінних ресурсів; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPovne_Imja" name="Повна назва заявника; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заяву прийнято, видати сертифікат племінних ресурсів"></activiti:value>
           <activiti:value id="reject" name="Заявка оформлена НЕ вірно, відмова"></activiti:value>
@@ -243,7 +243,7 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:value id="sEnamVud_ok" name="Сертифікат надано заявнику"></activiti:value>
           <activiti:value id="sEnamVud_bad" name="Заяник не з'явився, надіслати лист нагадування"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/AK/ODA/serteficat_hudoba_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>

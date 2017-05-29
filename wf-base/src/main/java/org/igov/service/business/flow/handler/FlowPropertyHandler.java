@@ -11,6 +11,6 @@ public interface FlowPropertyHandler<T> {
 
     Class<T> getTargetObjectClass();
 
-    List<T> generateObjects(String sData);
+    List<T> generateObjects(String sData) throws java.text.ParseException;
 
 }

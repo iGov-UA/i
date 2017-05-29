@@ -319,7 +319,7 @@ public class DocumentStepService {
                         oDocumentStepSubjectRight);
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
                 oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
-                LOG.info("right for step: {}", oDocumentStepSubjectRight);
+                //LOG.info("right for step: {}", oDocumentStepSubjectRight);
                 aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
             }
         }
@@ -1383,7 +1383,7 @@ public class DocumentStepService {
             byte[] aByteDocument = getFileData_Pattern(sPath);
             if (aByteDocument != null && aByteDocument.length > 0) {
                 String soJSON = soJSON = Tool.sData(aByteDocument);
-                LOG.info("soJSON={}", soJSON);
+                //LOG.info("soJSON={}", soJSON);
 
                 List<DocumentStep> aDocumentStep = setDocumentSteps(snID_Process_Activiti, soJSON);
                 if (aDocumentStep != null && aDocumentStep.size() > 1) {
