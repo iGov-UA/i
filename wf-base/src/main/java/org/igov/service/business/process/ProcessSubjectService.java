@@ -387,7 +387,7 @@ public class ProcessSubjectService {
     public void removeProcessSubject(ProcessSubject processSubject) {
         
         LOG.info("removeProcessSubject started...");
-        
+        /*
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processSubject.getSnID_Process_Activiti()).singleResult();
         LOG.info("processInstance {}", processInstance);
         
@@ -405,7 +405,7 @@ public class ProcessSubjectService {
           
         } else {
             LOG.info("processSubjectTree is null");
-        }
+        }*/
         
         processSubjectDao.delete(processSubject);
         LOG.info("removeProcessSubject ended...");
