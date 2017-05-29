@@ -10,18 +10,6 @@
 <body style="font-size: 14px;">
 
 
-<div id=test>
-</div>
-<script type="text/javascript">
- var ScrOsoba1 = "[asOsoba]";
- var ScrKilkFiz1 = "[asKilkFiz]";
- var ScrZemKilk1 = "[asZemKilk]";
-
- document.getElementById("test").innerHTML += "Получено ScrOsoba = " + ScrOsoba1 + "  ScrKilkFiz = " 
- ScrKilkFiz1 + "  ScrZemKilk = " + ScrZemKilk1 + "<br>";
-</script>
-
-
 <table style="width: 100%; border-collapse: collapse;">
     <tbody>
     <tr>
@@ -77,7 +65,7 @@
                             </tr>
                             <tr>
                                 <td></td>
-                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;">[clFio]</td>
+                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;"><div id=clFio> </div></td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -148,7 +136,7 @@
                             </tr>
                             <tr>
                                 <td></td>
-                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;">Представник: [clFio]</td>
+                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;">Представник: <div id=clFio> </div></td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -156,7 +144,7 @@
                             </tr>
                             <tr>
                                 <td></td>
-                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;">[bankIdPassport ]</td>
+                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;">[bankIdPassport]</td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -1110,13 +1098,8 @@
   var ScrKilkFiz = "[asKilkFiz]";
   var ScrZemKilk = "[asZemKilk]";
 
-
-document.getElementById("test").innerHTML += "Получено ScrOsoba = " + ScrOsoba + "  ScrKilkFiz = " 
-ScrKilkFiz + "  ScrZemKilk = " + ScrZemKilk + "<br>";
-document.getElementById("sEnamFiz").inn
-
-
-
+  var ScrclFio = "[bankIdlastName]";
+  document.getElementById("clFio").innerHTML += ScrclFio;
 
   switch(ScrOsoba) {
     case "Фізична особа (особисто)":
@@ -1124,86 +1107,64 @@ document.getElementById("sEnamFiz").inn
         document.getElementById("sEnamFizP").style.display = 'none';
         document.getElementById("sEnamUrK").style.display = 'none';
         document.getElementById("sEnamUrP").style.display = 'none';
-
-        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "sEnamFiz" + "<br>";
         break;
     case "Фізична особа (представник)":
         document.getElementById("sEnamFiz").style.display = 'none';
         document.getElementById("sEnamFizP").style.display = 'table';
         document.getElementById("sEnamUrK").style.display = 'none';
         document.getElementById("sEnamUrP").style.display = 'none';
-
-        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "sEnamFizP" + "<br>";
         break;
     case "Юридична особа (подає керівник)":
         document.getElementById("sEnamFiz").style.display = 'none';
         document.getElementById("sEnamFizP").style.display = 'none';
         document.getElementById("sEnamUrK").style.display = 'table';
         document.getElementById("sEnamUrP").style.display = 'none';
-
-        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "sEnamUrK" + "<br>";
         break;
     case "Юридична особа (подає представник)":
         document.getElementById("sEnamFiz").style.display = 'none';
         document.getElementById("sEnamFizP").style.display = 'none';
         document.getElementById("sEnamUrK").style.display = 'none';
         document.getElementById("sEnamUrP").style.display = 'table';
-
-        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "sEnamUrP" + "<br>";
         break;
     default:
         document.getElementById("sEnamFiz").style.display = 'table';
         document.getElementById("sEnamFizP").style.display = 'none';
         document.getElementById("sEnamUrK").style.display = 'none';
         document.getElementById("sEnamUrP").style.display = 'none';
-
-        document.getElementById("test").innerHTML += "Сработал ScrOsoba - " + "default" + "<br>";
     }
   
   if(ScrOsoba == 'sEnamFiz'||ScrOsoba == 'sEnamFizP'||ScrOsoba == 'Фізична особа (особисто)'||ScrOsoba == 'Фізична особа (представник)'){
 
-    document.getElementById("test").innerHTML += "Фізична особа" + "<br>";
-
     switch(ScrKilkFiz) {
-        case "sEnam2":
+        case "Два":
           document.getElementById("sEnam2").style.display = 'table';
           document.getElementById("sEnam3").style.display = 'none';
           document.getElementById("sEnam4").style.display = 'none';
           document.getElementById("sEnam5").style.display = 'none';
-
-          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "sEnam2" + "<br>";
           break;
-        case "sEnam3":
+        case "Три":
           document.getElementById("sEnam2").style.display = 'table';
           document.getElementById("sEnam3").style.display = 'table';
           document.getElementById("sEnam4").style.display = 'none';
           document.getElementById("sEnam5").style.display = 'none';
-
-          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "sEnam3" + "<br>";
           break;
-        case "sEnam4":
+        case "Чотири":
           document.getElementById("sEnam2").style.display = 'table';
           document.getElementById("sEnam3").style.display = 'table';
           document.getElementById("sEnam4").style.display = 'table';
           document.getElementById("sEnam5").style.display = 'none';
-
-          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "sEnam4" + "<br>";
           break;
-        case "sEnam5":
+        case "П'ять":
           document.getElementById("sEnam2").style.display = 'table';
           document.getElementById("sEnam3").style.display = 'table';
           document.getElementById("sEnam4").style.display = 'table';
           document.getElementById("sEnam5").style.display = 'table';
-
-          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "sEnam5" + "<br>";
           break;
         default:
           document.getElementById("sEnam2").style.display = 'none';
           document.getElementById("sEnam3").style.display = 'none';
           document.getElementById("sEnam4").style.display = 'none';
           document.getElementById("sEnam5").style.display = 'none';
-
-          document.getElementById("test").innerHTML += "Сработал ScrKilkFiz - " + "default" + "<br>";
     }
   } 
   else {
@@ -1211,28 +1172,20 @@ document.getElementById("sEnamFiz").inn
     document.getElementById("sEnam3").style.display = 'none';
     document.getElementById("sEnam4").style.display = 'none';
     document.getElementById("sEnam5").style.display = 'none';
-
-    document.getElementById("test").innerHTML += "Юридична особа" + "<br>";
   }
 
   switch(ScrZemKilk) {
-    case "sEnamZem2":
+    case "Дві":
         document.getElementById("sEnamZem2").style.display = 'table';
         document.getElementById("sEnamZem3").style.display = 'none';
-
-        document.getElementById("test").innerHTML += "Сработал ScrZemKilk - " + "sEnamZem2" + "<br>";
         break;
-    case "sEnamZem3":
+    case "Три":
         document.getElementById("sEnamZem2").style.display = 'table';
         document.getElementById("sEnamZem3").style.display = 'table';
-
-        document.getElementById("test").innerHTML += "Сработал ScrZemKilk - " + "sEnamZem3" + "<br>";
         break;
     default:
         document.getElementById("sEnamZem2").style.display = 'none';
         document.getElementById("sEnamZem3").style.display = 'none';
-
-        document.getElementById("test").innerHTML += "Сработал ScrZemKilk - " + "default" + "<br>";
     }
 
 </script> 
