@@ -108,7 +108,7 @@ public class MigrationServiceImpl implements MigrationService {
 
     private String composeSql(DateTime startTime) {
         DateTime endTime = startTime.plusDays(3);
-        return "SELECT * from act_hi_procinst where proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'27065001\'";
+        return "SELECT * from act_hi_procinst where proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'27110001\'";
 //        return "SELECT * from act_hi_procinst where start_time_ > TIMESTAMP \' "
 //               + startTime.toString("yyyy-MM-dd HH:mm:ss")
 //                + "\' AND start_time_ < TIMESTAMP \'" + endTime.toString("yyyy-MM-dd HH:mm:ss") + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
