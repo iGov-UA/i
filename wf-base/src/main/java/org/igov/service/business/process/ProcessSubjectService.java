@@ -387,14 +387,14 @@ public class ProcessSubjectService {
     public void removeProcessSubject(ProcessSubject processSubject) {
         
         LOG.info("removeProcessSubject started...");
-        /*
+        
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processSubject.getSnID_Process_Activiti()).singleResult();
         LOG.info("processInstance {}", processInstance);
         
         if (processInstance != null) {
             runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         }
-        
+        /*
         LOG.info("removeProcessSubject: before get tree");
 
         ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubject_Child", processSubject);
