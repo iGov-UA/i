@@ -395,22 +395,15 @@ public class ProcessSubjectService {
             runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         }
         
-        LOG.info("removeProcessSubject: before get tree");
-
-        //ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubject_Child.id", processSubject.getId());
-        
-        List<ProcessSubjectTree> processSubjectTreeToDelete = processSubjectTreeDao.findAll();
-        
-        LOG.info("processSubjectTreeToDelete={}",processSubjectTreeToDelete);
-        
-        if(processSubjectTreeToDelete != null){
+        /*ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubject_Child", processSubject);
+        if(oProcessSubjectTreeToDelete != null){
             
-            processSubjectTreeDao.delete(processSubjectTreeToDelete);
+            processSubjectTreeDao.delete(oProcessSubjectTreeToDelete);
           
         } else {
             LOG.info("processSubjectTree is null");
-        }
-        
+        }*/
+
         processSubjectDao.delete(processSubject);
         LOG.info("removeProcessSubject ended...");
     }
