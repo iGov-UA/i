@@ -213,7 +213,7 @@ public class ProcessSubjectController {
     
         return processSubjectService.syncProcessSubject(snID_Process_Activiti, snID_Task_Activiti, sLogin);
     }
-    
+    /*
     @ApiOperation(value = "Удалить ProcessSubject", notes = "Пример вызова:"
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/deleteProcessSubject?snID_Process_Activiti=свое значение&snID_Task_Activiti=свое значение")
     @RequestMapping(value = "/syncProcessSubject", method = RequestMethod.GET)
@@ -225,6 +225,6 @@ public class ProcessSubjectController {
     ) {
             
         return processSubjectService.oblyDeleteProcessSubject(snID_Process_Activiti, snID_Task_Activiti, bOnlyDelete);
-    }
+    }*/
     
 }

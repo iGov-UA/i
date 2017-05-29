@@ -985,7 +985,7 @@ public class ProcessSubjectService {
         
         return oProcessSubject;
     }
-    
+    /*
     public boolean oblyDeleteProcessSubject(String snID_Process_Activiti, String snID_Task_Activiti, boolean bOnlyDelete) {
         
         boolean bResult = false;
@@ -1009,5 +1009,5 @@ public class ProcessSubjectService {
         }
         
         return bResult;
-    }
+    }*/
 }
