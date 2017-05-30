@@ -9,7 +9,8 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -23,16 +24,16 @@
         </activiti:formProperty>
         <activiti:formProperty id="change_name" name="Внесіть в це поле змінене прізвище (ім'я, по батькові) дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text_zayava" name="Опишіть обгрунтування для внесення змін" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc_divorce" name="Копія документа про розлучення батьків; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="agree_father" name="Відмова батька на зміну прізвища (ім'я, по батькові) дитини; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="passport_children" name="Копія свідоцтва про народження дитини; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc_registration" name="Довідка про реєстрацію; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc_divorce" name="Копія документа про розлучення батьків" type="file"></activiti:formProperty>
+        <activiti:formProperty id="agree_father" name="Відмова батька на зміну прізвища (ім'я, по батькові) дитини" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="passport_children" name="Копія свідоцтва про народження дитини" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc_registration" name="Довідка про реєстрацію" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameArea" name="назва населеного пункту ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="назва адміністартивного органу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта посадовця ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPost" name="пошта посадовця ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адм.органу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneUnit" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="rchange" name="зміни для принтформи ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="перефразування для принтформи прізвища" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_112&quot;:{&quot;aField_ID&quot;:[&quot;rchange&quot;],&quot;sValue&quot;:&quot;прізвище&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;change&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'last_name'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="перефразування для принтформи імені" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_113&quot;:{&quot;aField_ID&quot;:[&quot;rchange&quot;],&quot;sValue&quot;:&quot;ім'я&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;change&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'first_name'&quot;}}}"></activiti:formProperty>
@@ -41,10 +42,10 @@
     </startEvent>
     <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sNameArea" name="назва населеного пункту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameArea" name="назва населеного пункту" type="string" writable="false"></activiti:formProperty> <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -63,23 +64,22 @@
           <activiti:value id="reject" name="відмовлено у прийнятті рішення щодо зміни"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови у прийнятті змін внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію документа; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="doc_divorce" name="Копія документа про розлучення батьків; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="agree_father" name="Відмова батька на зміну прізвища (ім'я, по батькові) дитини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="passport_children" name="Копія свідоцтва про народження дитини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="doc_registration" name="Довідка про реєстрацію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію документа" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_246_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_246_print.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rchange" name="зміни для принтформи ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-
+        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression>${bankId_scan_passport},${doc_divorce},${agree_father},${passport_children},${doc_registration}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression>${sPost}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -88,14 +88,20 @@
           <activiti:string><![CDATA[Нове  звернення. Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+У черзі на обробку зареєстровано нове звернення.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
+Опрацюйте це звернення на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
+[pattern/mail/_common_signature.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask3" name="Повідомлення громадянина про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -104,57 +110,55 @@
           <activiti:string><![CDATA[Звернення на тему: Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-Ваше звернення про прийняття рішення щодо зміни enum{[change]} дитини отримано та буде опрацьовано протягом 30 робочих днів.<br />
-Ви отримаєте додаткове повідомлення за результатами розгляду звернення.<br />
-<br />
-Телефон для довідок:${sPhoneOrgan}<br />
-
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}<br />
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення про прийняття рішення щодо зміни enum{[change]} дитини отримано та буде опрацьовано протягом 30 робочих днів.&lt;br /&gt;
+Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
+&lt;br /&gt;
+Телефон для довідок:${sPhoneUnit}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameUnit}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name="повідомлення громадянина про рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+          <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Прийняття рішення щодо зміни прізвища, імені та по батькові дитини]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${rishen},${PrintForm_1}]]></activiti:expression>
+          <activiti:expression>${rishen},${PrintForm_1}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-Отримано відповідь щодо Вашого зверенення - enum{[decision_1]} enum{[change]} дитини.<br />
-${comment_1}<br />
-Копія рішення знаходиться у додатку до листа.<br />
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис за адресою:${sAddress}.<br />
-При собі треба мати:<br />
-1. Документ, що посвідчує особу.<br />
-2. Для уповоноваженої особи - довіренність.<br />
-3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.<br />
-4. Копію документа про розлучення батьків;<br />
-5. Відмову батька на зміну прізвища (ім'я, по батькові) дитини;<br />
-6. Копію свідоцтва про народження дитини;<br />
-7. Довідку про реєстрацію;<br /><br />
-Графік роботи:${sWorkTime}<br />
-Телефон для довідок:${sPhoneOrgan}<br />
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}<br />
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;b&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
+Отримано відповідь щодо Вашого зверенення - enum{[decision_1]} enum{[change]} дитини.&lt;br /&gt;
+${comment_1}&lt;br /&gt;
+Копія рішення знаходиться у додатку до листа.&lt;br /&gt;
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис за адресою:${sAddress}.&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
+3. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходиться у додатку до листа), засвідчену особистим підписом.&lt;br /&gt;
+4. Копію документа про розлучення батьків;&lt;br /&gt;
+5. Відмову батька на зміну прізвища (ім'я, по батькові) дитини;&lt;br /&gt;
+6. Копію свідоцтва про народження дитини;&lt;br /&gt;
+7. Довідку про реєстрацію;&lt;br /&gt;&lt;br /&gt;
+Графік роботи:${sWorkTime}&lt;br /&gt;
+Телефон для довідок:${sPhoneUnit}&lt;br /&gt;
+[pattern/mail/_common_signature_start.html]
+${sNameUnit}&lt;br /&gt;
+[pattern/mail/_common_signature_end.html]   
+[pattern/mail/_common_feedback.html]
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -208,11 +212,17 @@ execution.setVariable('sPhoneUnit', per6)
     </scriptTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow19" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow25" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_246">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_246" id="BPMNPlane_dnepr_cnap_246">
@@ -220,46 +230,60 @@ execution.setVariable('sPhoneUnit', per6)
         <omgdc:Bounds height="35.0" width="35.0" x="59.0" y="36.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="190.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="179.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="345.0" y="179.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="345.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="345.0" y="102.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="330.0" y="190.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="179.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="26.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="345.0" y="26.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="160.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="135.0" y="112.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="181.0" x="110.0" y="26.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="130.0" y="54.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="330.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="195.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="179.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="450.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="397.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="397.0" y="179.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="592.0" y="81.0"></omgdi:waypoint>
-        <omgdi:waypoint x="592.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="345.0" y="206.0"></omgdi:waypoint>
+        <omgdi:waypoint x="325.0" y="206.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="245.0" y="53.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="94.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="110.0" y="53.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="145.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="291.0" y="53.0"></omgdi:waypoint>
         <omgdi:waypoint x="345.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="540.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="435.0" y="217.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="397.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="397.0" y="102.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="94.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="140.0" y="53.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="220.0" y="206.0"></omgdi:waypoint>
+        <omgdi:waypoint x="205.0" y="206.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
