@@ -853,6 +853,7 @@ public class ProcessSubjectService {
         ProcessSubject oProcessSubjectMain = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
                   
         String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
+        LOG.info("sLoginRoleMain={}", sLoginRoleMain);
         
         if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
 
@@ -956,13 +957,11 @@ public class ProcessSubjectService {
                 List<ProcessSubject> aListOfOrocessSubjectToRemove = processSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
                 LOG.info("aListOfOrocessSubjectToRemove={}", aListOfOrocessSubjectToRemove);
                 
-                for (ProcessSubject oProcessSubject : aListOfOrocessSubjectToRemove) {
-                                        
-                    removeProcessSubjectDeep(oProcessSubject);
-                                           
+                for (ProcessSubject oProcessSubject : aListOfOrocessSubjectToRemove) {                                       
+                    removeProcessSubjectDeep(oProcessSubject);                                           
                 }
             }
-                                
+            LOG.info("Setting a status complete.");
             
         } else {
         
