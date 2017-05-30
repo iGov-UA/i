@@ -229,6 +229,7 @@ public class SubjectGroupTreeService {
 
             // Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
             // достаем ид sID_Group_Activiti которое на вход
+            LOG.info("sID_Group_Activiti for tree is {}", sID_Group_Activiti);
             Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti);
             LOG.info("sID_Group_Activiti index: " + groupFiltr);
             // детей его детей
