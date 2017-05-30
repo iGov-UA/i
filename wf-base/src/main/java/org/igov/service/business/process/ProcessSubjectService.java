@@ -953,13 +953,18 @@ public class ProcessSubjectService {
                
             } else if ((sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
                 || sID_ProcessSubjectStatus.equals("unactual")) && sLoginRoleMain.equals("Controller")) {
-                                
+                
+                LOG.info("setProcessSubjectStatus: last case");
+                
                 List<ProcessSubject> aListOfOrocessSubjectToRemove = processSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+                LOG.info("aListOfOrocessSubjectToRemove={}", aListOfOrocessSubjectToRemove);
                 
                 for (ProcessSubject oProcessSubject : aListOfOrocessSubjectToRemove) {
                     
+                    if(oProcessSubject.getsLoginRole().equals("Executor")) {
+                    
                      oProcessSubjectTaskService.removeProcessSubjectDeep(oProcessSubject);
-                                  
+                    }                        
                 }
             }
                                 
