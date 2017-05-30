@@ -50,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -399,13 +400,11 @@ public class ProcessSubjectService {
             runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         }
         
-        ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubject_Child", processSubject);
-        if(processSubjectTreeToDelete != null){
-            
-            processSubjectTreeDao.delete(processSubjectTreeToDelete);
-          
-        } else {
-            LOG.info("processSubjectTree is null");
+        Optional<ProcessSubjectTree> processSubjectTreeToDelete = processSubjectTreeDao.findBy("processSubjectChild", processSubject);
+        
+        if(processSubjectTreeToDelete.isPresent()){
+            LOG.info("processSubjectTreeToDelete {}", processSubjectTreeToDelete.get());
+            processSubjectTreeDao.delete(processSubjectTreeToDelete.get());
         }
 
         processSubjectDao.delete(processSubject);
@@ -854,6 +853,7 @@ public class ProcessSubjectService {
         ProcessSubject oProcessSubjectMain = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginMain);
                   
         String sLoginRoleMain = oProcessSubjectMain.getsLoginRole();
+        LOG.info("sLoginRoleMain={}", sLoginRoleMain);
         
         if (sLoginRoleMain.equals("Executor") || sLoginRoleMain.equals("Controller")) {
 
@@ -955,14 +955,13 @@ public class ProcessSubjectService {
                 || sID_ProcessSubjectStatus.equals("unactual")) && sLoginRoleMain.equals("Controller")) {
                                 
                 List<ProcessSubject> aListOfOrocessSubjectToRemove = processSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+                LOG.info("aListOfOrocessSubjectToRemove={}", aListOfOrocessSubjectToRemove);
                 
-                for (ProcessSubject oProcessSubject : aListOfOrocessSubjectToRemove) {
-                    
-                     oProcessSubjectTaskService.removeProcessSubjectDeep(oProcessSubject);
-                                  
+                for (ProcessSubject oProcessSubject : aListOfOrocessSubjectToRemove) {                                       
+                    removeProcessSubjectDeep(oProcessSubject);                                           
                 }
             }
-                                
+            LOG.info("Setting a status complete.");
             
         } else {
         
