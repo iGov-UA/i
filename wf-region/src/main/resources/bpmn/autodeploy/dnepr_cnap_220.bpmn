@@ -61,7 +61,7 @@
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerkSes" name="Пошта СЕС; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker1" name="Видимість полів" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_220.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Видимість полів" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_220_ST.json')}"></activiti:formProperty>
 </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -143,7 +143,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист; ;bVisible=false" type="string"></activiti:formProperty>
@@ -157,6 +157,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Per3" name="Перевірте подані громадянином дані, заповніть всі необхідні поля (П.І.Б адміністратора, дату реєстрації, реєстраційний номер та рішення про надання послуги) - потім роздрукуйте форму заяви." type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="Видимість полів" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_220_UT.json')}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
@@ -207,12 +208,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="status2" name="Статус висновку" type="enum" required="true">
           <activiti:value id="attr3_finish" name="Висновок (або рішення) готове, запросити громадянина"></activiti:value>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держпродспоживслужбой"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="Видимість полів" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_220_UT.json')}"></activiti:formProperty>
         <activiti:formProperty id="nFile_10" name="Завантажте скановану копию висновку (або рішення) держпродспоживслужби" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -518,10 +520,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSesFio" name="П.І.Б. працівника СЕС, який прийняв заяву" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_ses" name="Реєстраційний номер у відповідності до внутрішньої документації СЕС" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion_ses" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion_ses" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="status2" name="Статус висновку" type="enum" required="true">
           <activiti:value id="attr3_finish" name="Висновок (або рішення) готове"></activiti:value>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку"></activiti:value>
@@ -531,6 +533,7 @@
         <activiti:formProperty id="nFile_10" name="Завантажте скановану копию висновку (або рішення) держпродспоживслужби" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу; ;bVisible=false" type="string" default="висновок державної санітарно-епідеміологічної експертизи діючих об’єктів"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="Видимість полів" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_220_UT.json')}"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file" writable="false"></activiti:formProperty>
@@ -599,12 +602,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="status2" name="Статус висновку" type="enum" writable="false">
           <activiti:value id="attr3_finish" name="Висновок (або рішення) готове"></activiti:value>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="ses_decisionComment" name="Коментар СЕС" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="Видимість полів" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_220_UT.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="usertask4"></sequenceFlow>
