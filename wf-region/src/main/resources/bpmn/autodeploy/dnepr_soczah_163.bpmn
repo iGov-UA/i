@@ -52,7 +52,7 @@
         <activiti:formProperty id="nArea" name="номер органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sMailCler1k" name="Пошта ; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
 
@@ -99,7 +99,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Будь ласка, вкажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
 
-        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html] ; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cc_1_3" name="Галка на прінтформі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_163_user.json')}"></activiti:formProperty>
 
@@ -142,7 +142,7 @@
         <activiti:formProperty id="sComment2" name="Будь ласка, вкажіть причину відмови" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="nFileDecision" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html] ; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cc_1_3" name="Галка на прінтформі ; ;bVisible=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="markersUser2" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_163_user2.json')}"></activiti:formProperty>        
@@ -152,7 +152,7 @@
     <serviceTask id="servicetask5" name="Повідомлення співробітника соц.захисту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailCler1k}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
