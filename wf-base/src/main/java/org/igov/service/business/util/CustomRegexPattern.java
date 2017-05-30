@@ -31,7 +31,7 @@ public interface CustomRegexPattern {
     static final String PATTERN_SUM = "sSum%s";
     static final String PATTERN_CURRENCY_ID = "sID_Currency%s";
     static final String PATTERN_DESCRIPTION = "sDescription%s";
-    static final String PATTERN_EXPIRED_PERIOD_HOUR  = "nExpired_Period_Hour%m";
+    static final String PATTERN_EXPIRED_PERIOD_HOUR  = "nExpired_Period_Hour%s";
     static final String PATTERN_SUBJECT_ID = "nID_Subject%s";
     static final Pattern TAG_PATTERN_JSON_BRACKET = Pattern
             .compile("\\{.*?\\}");

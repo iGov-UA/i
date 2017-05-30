@@ -125,6 +125,7 @@ public class Liqpay {
         params.put("result_url", sURL_CallbackPaySuccess);
         params.put("public_key", sPublicKey);
         if (nExpired_Period_Hour != null) 
+        	
         LOG.info("nExpired_Period_Hour", nExpired_Period_Hour);
         {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
