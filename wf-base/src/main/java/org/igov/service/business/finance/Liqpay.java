@@ -124,11 +124,14 @@ public class Liqpay {
         params.put("server_url", sURL_CallbackStatusNew);
         params.put("result_url", sURL_CallbackPaySuccess);
         params.put("public_key", sPublicKey);
-        if (nExpired_Period_Hour != null) {
+        if (nExpired_Period_Hour != null) 
+        LOG.info("nExpired_Period_Hour", nExpired_Period_Hour);
+        {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             Date oExriredDate = org.igov.service.business.util.Date.diff(null, nExpired_Period_Hour, Calendar.MINUTE);
             LOG.info("oExriredDate: " + oExriredDate);
             params.put("expired_date", sdf.format(oExriredDate));
+            
         }
 
         if (bTest) {
