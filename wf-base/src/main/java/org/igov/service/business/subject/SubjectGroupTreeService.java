@@ -91,7 +91,7 @@ public class SubjectGroupTreeService {
     public SubjectGroupResultTree getCatalogSubjectGroupsTree(String sID_Group_Activiti,
             Long deepLevel, String sFind, Boolean bIncludeRoot, Long deepLevelWidth,
             String sSubjectType) {
-
+        
         /**
          * Лист для ид Subject ORGAN или HUMAN для последующего анализа
          */
@@ -535,7 +535,7 @@ public class SubjectGroupTreeService {
      * @return
      */
     public List<SubjectUser> getUsersByGroupSubject(String sID_Group_Activiti) {
-
+        LOG.info("sID_Group_Activiti in getUsersByGroupSubject {}", sID_Group_Activiti);
         List<SubjectUser> amsUsers = new ArrayList<>();
         List<User> aoUsers = sID_Group_Activiti != null
                 ? identityService.createUserQuery().memberOfGroup(sID_Group_Activiti).list()
