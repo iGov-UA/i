@@ -221,7 +221,7 @@
                             </tr>
                             <tr>
                                 <td></td>
-                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;">[clFio]</td>
+                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;"><div id="clFio"> </div></td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -289,7 +289,7 @@
                             </tr>
                             <tr>
                                 <td></td>
-                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;">[clFio]</td>
+                                <td style="text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;"><div id="clFio"> </div></td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -640,7 +640,7 @@
     <tbody>
     <tr>
         <td style="width: 68%; text-align: left;font-size: 15px;">Будівельний   паспорт (у  разі    будівництва за  будівельним паспортом)</td>
-        <td  style="width: 32%;text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;">[sPaspN]</td>
+        <td  style="width: 32%;text-align: left; font-size: 14px;text-align: left; border-bottom: 1px solid #000000;"><div id="sPaspN"> </div></td>
     </tr>
     <tr>
         <td style="width: 68%;"></td>
@@ -653,13 +653,13 @@
     <tbody>
     <tr>
         <td style="width: 50px; text-align: left;font-size: 16px;">Виданий</td>
-        <td style="text-align: left; font-size: 15px;text-align: left; border-bottom: 1px solid #000000;">[sPaspOrg]</td>
+        <td style="text-align: left; font-size: 15px;text-align: left; border-bottom: 1px solid #000000;"><div id="sPaspOrg"> </div></td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">найменування органу, який його видав,</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px;height: 15px; border-bottom: 1px solid #000000;">[PaspData]</td>
+        <td colspan="2" style="text-align: left; font-size: 15px;height: 15px; border-bottom: 1px solid #000000;"><div id="PaspData"> </div></td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">дата видачі)</td>
@@ -668,7 +668,7 @@
         <td colspan="2" style="text-align: left;font-size: 15px; padding-bottom: 7px; padding-top: 7px;">Проектна документація (у разі розроблення проекту на підставі будівельного паспорта)розроблена </td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; text-align: left; border-bottom: 1px solid #000000;">код [sID_SubjectOrgan_OKPO_02], [sFullName_SubjectOrgan_02]</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; text-align: left; border-bottom: 1px solid #000000;">код <div id="sID_SubjectOrgan_OKPO_02"> </div>, <div id="sFullName_SubjectOrgan_02"> </div></td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">(найменування проектувальника, код згідно з ЄДРПОУ)</td>
@@ -1017,7 +1017,7 @@
     <tbody>
     <tr>
         <td style="width: 2%; text-align: left;font-size: 16px;"> я,</td>
-        <td style="width: 98%; text-align: left; font-size: 14px;height: 15px; border-bottom: 1px solid #000000;">[clFio]</td>
+        <td style="width: 98%; text-align: left; font-size: 14px;height: 15px; border-bottom: 1px solid #000000;"><div id="clFio"> </div></td>
         <td>,</td>
     </tr>
     <tr>
@@ -1097,9 +1097,6 @@
   var ScrOsoba = "[asOsoba]";
   var ScrKilkFiz = "[asKilkFiz]";
   var ScrZemKilk = "[asZemKilk]";
-
-  var ScrclFio = "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]";
-  document.getElementById("clFio").innerHTML += ScrclFio;
 
   switch(ScrOsoba) {
     case "Фізична особа (особисто)":
@@ -1187,6 +1184,72 @@
         document.getElementById("sEnamZem2").style.display = 'none';
         document.getElementById("sEnamZem3").style.display = 'none';
     }
+
+  var ScrclFio = "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]";
+  document.getElementById("clFio").innerHTML += ScrclFio;
+
+   var ScrBudDok1 = "[sPaspN]";
+   var ScrBudDok2 = "[sPaspOrg]";
+   var ScrBudDok3 = "[PaspData]";
+   var ScrBudDok4 = "[sID_SubjectOrgan_OKPO_02]";
+   var ScrBudDok5 = "[sFullName_SubjectOrgan_02]";
+   var ScrBudDok7 = "[sProgOsPos]";
+   var ScrBudDok8 = "[sProgOsPIB]";
+   var ScrBudDok9 = "[sProgOsKvalS]";
+   var ScrBudDok10 = "[sAvtNagPIB]";
+   var ScrBudDok11 = "[sAvtNak]";
+   var ScrBudDok12 = "[sID_SubjectOrgan_OKPO_03]";
+   var ScrBudDok13 = "[sFullName_SubjectOrgan_03]";
+   var ScrBudDok15 = "[sEkspPIB]";
+
+
+
+if(asBudDok == 'sEnamPasport'||asBudDok == 'Будівельний паспорт'){
+  document.getElementById("sPaspN").innerHTML += ScrBudDok1;
+  document.getElementById("sPaspOrg").innerHTML += ScrBudDok2;
+  document.getElementById("PaspData").innerHTML += ScrBudDok3;
+  document.getElementById("sID_SubjectOrgan_OKPO_02").innerHTML += "_";
+  document.getElementById("sFullName_SubjectOrgan_02").innerHTML += "_";
+  document.getElementById("sProgOsPos").innerHTML += "_";
+  document.getElementById("sProgOsPIB").innerHTML += "_";
+  document.getElementById("sProgOsKvalS").innerHTML += "_";
+  document.getElementById("sAvtNagPIB").innerHTML += "_";
+  document.getElementById("sAvtNak").innerHTML += "_";
+  document.getElementById("sID_SubjectOrgan_OKPO_03").innerHTML += "_";
+  document.getElementById("sFullName_SubjectOrgan_03").innerHTML += "_";
+  document.getElementById("sEkspPIB").innerHTML += "_";
+
+}
+else {
+  document.getElementById("sPaspN").innerHTML += "_";
+  document.getElementById("sPaspOrg").innerHTML += "_";
+  document.getElementById("PaspData").innerHTML += "_";
+  document.getElementById("sID_SubjectOrgan_OKPO_02").innerHTML += ScrBudDok4;
+  document.getElementById("sFullName_SubjectOrgan_02").innerHTML += ScrBudDok5;
+  document.getElementById("sProgOsPos").innerHTML += ScrBudDok7;
+  document.getElementById("sProgOsPIB").innerHTML += ScrBudDok8;
+  document.getElementById("sProgOsKvalS").innerHTML += ScrBudDok9;
+  
+  if(chekTexNag == 'yes'||chekTexNag == 'так'){
+  document.getElementById("sAvtNagPIB").innerHTML += ScrBudDok8;
+  document.getElementById("sAvtNak").innerHTML += "_";
+  }
+  else {
+  document.getElementById("sAvtNagPIB").innerHTML += ScrBudDok10;
+  document.getElementById("sAvtNak").innerHTML += ScrBudDok11;
+  }
+  
+  if(chekPrEksp == 'yes'||chekPrEksp == 'так'){
+  document.getElementById("sID_SubjectOrgan_OKPO_03").innerHTML += ScrBudDok12;
+  document.getElementById("sFullName_SubjectOrgan_03").innerHTML += ScrBudDok13;
+  document.getElementById("sEkspPIB").innerHTML += ScrBudDok15;
+  }
+  else {
+  document.getElementById("sID_SubjectOrgan_OKPO_03").innerHTML += "_";
+  document.getElementById("sFullName_SubjectOrgan_03").innerHTML += "_";
+  document.getElementById("sEkspPIB").innerHTML += "_";
+  }
+}
 
 </script> 
   
