@@ -9,16 +9,19 @@
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId = execution.getProcessInstanceId();
-execution.setVariable('processInstanceId', processInstanceId)
+execution.setVariable('processInstanceId', processInstanceId);
+var processInstanceIdToLong = parseFloat(processInstanceId);
+var sID_Order= generalConfig.getOrderId_ByProcess(processInstanceIdToLong);
+execution.setVariable('sID_Order', sID_Order)
 
-var  sIDOrder = execution.getOrderId_ByProcess(Long.parseLong(processInstanceId));
-execution.setVariable('sIDOrder', sIDOrder)</script>
+
+</script>
     </scriptTask>
     <userTask id="usertask1" name="крок 1">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIDOrder" name="sIDOrder" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order" name="sID_Order" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -29,10 +32,10 @@ execution.setVariable('sIDOrder', sIDOrder)</script>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_idoc1">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_idoc1" id="BPMNPlane__doc_test_idoc1">
@@ -48,10 +51,6 @@ execution.setVariable('sIDOrder', sIDOrder)</script>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="390.0" y="101.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="225.0" y="118.0"></omgdi:waypoint>
-        <omgdi:waypoint x="250.0" y="118.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="85.0" y="118.0"></omgdi:waypoint>
         <omgdi:waypoint x="120.0" y="118.0"></omgdi:waypoint>
@@ -59,6 +58,10 @@ execution.setVariable('sIDOrder', sIDOrder)</script>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="355.0" y="118.0"></omgdi:waypoint>
         <omgdi:waypoint x="390.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="225.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
