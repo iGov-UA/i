@@ -953,26 +953,14 @@ public class ProcessSubjectService {
                
             } else if ((sID_ProcessSubjectStatus.equals("executed") || sID_ProcessSubjectStatus.equals("notExecuted") 
                 || sID_ProcessSubjectStatus.equals("unactual")) && sLoginRoleMain.equals("Controller")) {
+                                
+                List<ProcessSubject> aListOfOrocessSubjectToRemove = processSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
                 
-                if (sLoginExecutor == null) {                
-                    throw new RuntimeException("Did not send an executor login. To set this status you must to send executor's login besides controller's.");
+                for (ProcessSubject oProcessSubject : aListOfOrocessSubjectToRemove) {
+                    
+                     oProcessSubjectTaskService.removeProcessSubjectDeep(oProcessSubject);
+                                  
                 }
-                
-                LOG.info("setProcessSubjectStatus: last case");
-                
-                //вносим изменения в контролера
-                if (sText != null) {                          
-                    oProcessSubjectMain.setsText(sText);
-                }
-                oProcessSubjectMain.setsDateEdit(dtCurrentDate);
-                oProcessSubjectMain.setoProcessSubjectStatus(oProcessSubjectStatus);
-                
-                processSubjectDao.saveOrUpdate(oProcessSubjectMain);
-                
-                //находим исполнителя, чтобы его передать в сервис, который закроет все делегированные задачи
-                ProcessSubject oProcessSubjectExecutor = processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLoginExecutor);
-                
-                oProcessSubjectTaskService.removeProcessSubjectDeep(oProcessSubjectExecutor);
             }
                                 
             
