@@ -1182,6 +1182,7 @@ digit3 - переменная, куда присвоится результат 
 1. [Получение ИД БП](#obtainingbpid)  
 1. [Получение логина и ФИО основного исполнителя](#gettingloginandname)  
 1. [Получение имени департамента](#obtainingdepartmentname)
+1. [Получение номера заявки](#getsidorder)
 
 
 
@@ -1424,6 +1425,16 @@ var sNameDepart = " ";
 var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
 var obj1 = subjectGroupTreeService.getDeparByGroup_Activiti(sID_Group_Activiti);
 execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
+```
+
+ ###### getsidorder   
+ ### Получение номера заявки   
+ ```javaScript 
+ var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId);
+var processInstanceIdToLong = parseFloat(processInstanceId);
+var sID_Order= generalConfig.getOrderId_ByProcess(processInstanceIdToLong);
+execution.setVariable('sID_Order', sID_Order)
 ```
 
 ###### configurationfiles
