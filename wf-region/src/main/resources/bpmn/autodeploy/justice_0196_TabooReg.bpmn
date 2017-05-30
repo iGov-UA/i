@@ -2,14 +2,15 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="justice_0196_TabooReg" name="Заборона вчинення реєстраційних дій щодо власного об`єкта нерухомого майна" isExecutable="true">
     <documentation>
-		AGVersion: 2017.05.19
-		- файлы по новой схеме
-		- цветные метки
-		- линии разделительные
-		- bVisible
-		- автозавершение по таймеру с корректировкой статуса в журнале гражданина
-		- новый дизайн писем
+		AGVersion: 2017.05.29
+		+ файлы по новой схеме
+		+ цветные метки
+		+ линии разделительные
+		+ bVisible
+		+ автозавершение по таймеру с корректировкой статуса в журнале гражданина
+		+ новый дизайн писем
 		- смс в письмах
+		+ ссылка на ЭЦП в лейбл вставлена в текст
 	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -79,7 +80,7 @@
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника;або уповноваженої особи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string"></activiti:formProperty>
 
 <!-- блок для ввода если всё норм -->
 
@@ -214,7 +215,7 @@
         <activiti:formProperty id="markers_Req_st_01" name="обов'язково ЕЦП якщо ПІБ правильно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_st_01&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
 		<activiti:formProperty id="markers_Hide_st_01" name="показати ЕЦП якщо ПІБ правильно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_st_01&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         
-        <activiti:formProperty id="InfoStart0000" name="; ;labelType=info" type="label" default="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує). &lt;/br&gt; Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="InfoStart0000" name="; ;labelType=info" type="label" default="Для замовлення цієї послуги Вам потрібно скористатися &lt;a href=&quot;https://goo.gl/OBWqFe&quot; target=&quot;_blank&quot;&gt;електронно-цифровим підписом (ЕЦП)&lt;/a&gt; (наприклад податкової або банку, що Вас обслуговує)."></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true, bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/justice/justice_0196_TabooReg_print_20170519.html"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги; ;bVisible=false" type="string" default="Заборона вчинення реєстраційних дій щодо власного об`єкта нерухомого майна"></activiti:formProperty>
@@ -240,7 +241,7 @@
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="Уповноважена особа; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
 <!--		<activiti:formProperty id="asSelectTypeObj" name="Тип об’єкта; ;writable=false" type="string"> -->
 		<activiti:formProperty id="asSelectTypeObj" name="Тип об’єкта; ;writable=false" type="enum">
           <activiti:value id="t_001" name="Будівля"></activiti:value>
@@ -256,9 +257,9 @@
           <activiti:value id="t_011" name="Єдиний майновий комплекс"></activiti:value>
           <activiti:value id="t_012" name="Інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVarTypeObjOther" name="Введіть тип об`єкта; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarTypeObjOther" name="Введіть тип об`єкта; ;writable=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVarRegNumObj" name="Реєстраційний номер; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sVarCadNumObj" name="Кадастровий номер; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVarCadNumObj" name="Кадастровий номер; ;writable=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="asSelectOblNam" name="Область; ;writable=false" type="string">
 <!--        <activiti:formProperty id="asSelectOblNam" name="Область; ;writable=false" type="enum">
           <activiti:value id="tf101" name="Вінницька область"></activiti:value>
@@ -351,12 +352,12 @@
 <!--        <activiti:formProperty id="markers_Set_ut01_01" name="встановити значення наявності файлу (пусто) якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_Set_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty> -->
 <!--        <activiti:formProperty id="markers155_1" name="зробити sVarUstDoc = Статут; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_155_1&quot;:																			 {&quot;aField_ID&quot;:[&quot;sVarUstDoc&quot;]		,&quot;asID_Field_sValue&quot;:[&quot;Статут&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectUstDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'tf001'&quot;}}}"></activiti:formProperty> -->
 
-        <activiti:formProperty id="asHaveDecisionFile" name="Наявність скана копії рішення: " type="enum" default="noDecisionFile">
+        <activiti:formProperty id="asHaveDecisionFile" name="Наявність скана копії рішення; ;bVisible=false" type="enum" default="yesDecisionFile">
           <activiti:value id="yesDecisionFile" name="Так - є скан копії рішення про реєстрацію"></activiti:value>
           <activiti:value id="noDecisionFile" name="Ні - скан копії рішення про реєстрацію відсутній"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
+        <activiti:formProperty id="fDecisionDoc" name="Копія витягу для заявника; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер); ;bVisible=false" type="string" default="_"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/justice/justice_0196_TabooReg_print_20170519.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
@@ -453,7 +454,7 @@
 		[pattern/mail/new_design/_common_content_start.html]
 
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).
+Вам направлена копія витягу (додаток до листа).
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
@@ -613,7 +614,7 @@
 		[pattern/mail/new_design/_common_content_start.html]
 
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
-Вам направлена копія рішення (додаток до листа).
+Вам направлена копія витягу (додаток до листа).
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
