@@ -2,14 +2,15 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="justice_0196_TabooReg" name="Заборона вчинення реєстраційних дій щодо власного об`єкта нерухомого майна" isExecutable="true">
     <documentation>
-		AGVersion: 2017.05.19
-		- файлы по новой схеме
-		- цветные метки
-		- линии разделительные
-		- bVisible
-		- автозавершение по таймеру с корректировкой статуса в журнале гражданина
-		- новый дизайн писем
+		AGVersion: 2017.05.29
+		+ файлы по новой схеме
+		+ цветные метки
+		+ линии разделительные
+		+ bVisible
+		+ автозавершение по таймеру с корректировкой статуса в журнале гражданина
+		+ новый дизайн писем
 		- смс в письмах
+		+ ссылка на ЭЦП в лейбл вставлена в текст
 	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -214,7 +215,7 @@
         <activiti:formProperty id="markers_Req_st_01" name="обов'язково ЕЦП якщо ПІБ правильно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_st_01&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
 		<activiti:formProperty id="markers_Hide_st_01" name="показати ЕЦП якщо ПІБ правильно; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_st_01&quot;:{&quot;aField_ID&quot;:[&quot;form_signed&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asSelectFIOCheck&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         
-        <activiti:formProperty id="InfoStart0000" name="; ;labelType=info" type="label" default="Для замовлення цієї послуги Вам потрібно скористатися електронно-цифровим підписом (ЕЦП) (наприклад податкової або банку, що Вас обслуговує). &lt;/br&gt; Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
+        <activiti:formProperty id="InfoStart0000" name="; ;labelType=info" type="label" default="Для замовлення цієї послуги Вам потрібно скористатися &lt;a href=&quot;https://goo.gl/OBWqFe&quot; target=&quot;_blank&quot;&gt;електронно-цифровим підписом (ЕЦП)&lt;/a&gt; (наприклад податкової або банку, що Вас обслуговує)."></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true, bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/justice/justice_0196_TabooReg_print_20170519.html"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="Найменування замовленої послуги; ;bVisible=false" type="string" default="Заборона вчинення реєстраційних дій щодо власного об`єкта нерухомого майна"></activiti:formProperty>
