@@ -1186,6 +1186,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               if(res.url) {
                 $scope.userCards = null;
                 $scope.registerLink = res.url;
+              } else if(res.error) {
+                $scope.paymentStatus = 4;
+                console.error(res.error);
               } else {
                 $scope.userCards = res;
                 $scope.registerLink = null;
