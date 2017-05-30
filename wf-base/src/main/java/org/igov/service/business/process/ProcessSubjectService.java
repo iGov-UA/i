@@ -964,8 +964,12 @@ public class ProcessSubjectService {
                     if(oProcessSubject.getsLoginRole().equals("Executor")) {
                     
                      oProcessSubjectTaskService.removeProcessSubjectDeep(oProcessSubject);
-                    }                        
+                    }    
+                LOG.info("setProcessSubjectStatus: Executors are removed.");
                 }
+                LOG.info("setProcessSubjectStatus: try to remove controller");
+                oProcessSubjectTaskService.removeProcessSubjectDeep(oProcessSubjectMain);
+                LOG.info("setProcessSubjectStatus: controller are removed.");
             }
                                 
             
