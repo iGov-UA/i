@@ -22,9 +22,8 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
+
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
@@ -38,23 +37,25 @@ import org.igov.model.process.ProcessUser;
 import org.igov.service.conf.AttachmetService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.exception.EntityNotFoundException;
+import org.igov.io.GeneralConfig;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired; 
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-import org.igov.io.GeneralConfig;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 /**
  *
@@ -98,6 +99,9 @@ public class ProcessSubjectService {
     
     @Autowired
     private ActionTaskService oActionTaskService;
+    
+    @Autowired
+    private ProcessSubjectTaskService oProcessSubjectTaskService;
 
     public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel, String sFind) {
 
@@ -395,14 +399,14 @@ public class ProcessSubjectService {
             runtimeService.deleteProcessInstance(processSubject.getSnID_Process_Activiti(), "deleted");
         }
         
-        /*ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubject_Child", processSubject);
-        if(oProcessSubjectTreeToDelete != null){
+        ProcessSubjectTree processSubjectTreeToDelete = processSubjectTreeDao.findByExpected("processSubject_Child", processSubject);
+        if(processSubjectTreeToDelete != null){
             
-            processSubjectTreeDao.delete(oProcessSubjectTreeToDelete);
+            processSubjectTreeDao.delete(processSubjectTreeToDelete);
           
         } else {
             LOG.info("processSubjectTree is null");
-        }*/
+        }
 
         processSubjectDao.delete(processSubject);
         LOG.info("removeProcessSubject ended...");
@@ -956,7 +960,7 @@ public class ProcessSubjectService {
                 
                 for (ProcessSubject oProcessSubject : aListOfOrocessSubjectToRemove) {
               
-                        removeProcessSubjectDeep(oProcessSubject);
+                        oProcessSubjectTaskService.removeProcessSubjectDeep(oProcessSubject);
                         
                     }
                 }
