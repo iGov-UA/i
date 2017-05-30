@@ -184,7 +184,7 @@ public class SubjectGroupTreeService {
             for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 
                 SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
-                LOG.info("SubjectGroup parent" + parent);
+                LOG.info("SubjectGroup parent is: " + parent.getsID_Group_Activiti());
 
                 if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
                     LOG.info("SubjectGroup parent" + parent.getsID_Group_Activiti());
