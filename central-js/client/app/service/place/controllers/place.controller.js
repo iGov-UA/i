@@ -183,6 +183,11 @@ angular.module('app').controller('PlaceController',
           arr[keyInd] = '#' + arr[keyInd];
         }
       }
+      if(angular.isArray(arr) && arr.length > 0){
+        while (arr.indexOf('#') >= 0){
+          arr.splice(arr.indexOf('#'), 1);
+        }
+      }
       return arr;
     }
 

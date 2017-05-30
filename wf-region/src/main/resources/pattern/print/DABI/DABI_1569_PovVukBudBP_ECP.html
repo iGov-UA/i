@@ -761,10 +761,10 @@
         <td style="border: 1px solid #000000; text-align: center; padding: 10px;">Нежитлова площа,кв. метрів</td>
     </tr>
     <tr>
-        <td style="border: 1px solid #000000; text-align: center; padding: 10px;">[lPov]</td>
-        <td style="border: 1px solid #000000; text-align: center; padding: 10px;">[dZagPlosh]</td>
-        <td style="border: 1px solid #000000; text-align: center; padding: 10px;">[dZtPlosh]</td>
-        <td style="border: 1px solid #000000; text-align: center; padding: 10px;">[dNZtPlosh]</td>
+        <td style="border: 1px solid #000000; text-align: center; padding: 10px;"><div id="lPov"></td>
+        <td style="border: 1px solid #000000; text-align: center; padding: 10px;"><div id="dZagPlosh"></td>
+        <td style="border: 1px solid #000000; text-align: center; padding: 10px;"><div id="dZtPlosh"></td>
+        <td style="border: 1px solid #000000; text-align: center; padding: 10px;"><div id="dNZtPlosh"></td>
     </tr>
     </tbody>
 </table>
@@ -952,19 +952,20 @@
         <td colspan="2" style="text-align: center;font-size: 17px;">Інформація про генерального підрядника (підрядника - у разі, коли будівельні роботи виконуються без залучення субпідрядників)</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">_[ScrGPodr1]</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;"><div id="sID_SubjectOrgan_OKPO_011"></td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">(прізвище, ім’я та по батькові фізичної особи,</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">_[ScrGPodr2]</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;"><div id="sFullName_SubjectOrgan_011"></td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">серія і номер паспорта, ким і коли виданий, місце проживання, номер облікової картки платника</td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;">_[ScrGPodr3]</td>
+        <td colspan="2" style="text-align: left; font-size: 15px; border-bottom: 1px solid #000000;"><div id="sLocation_SubjectOrgan_011">
+</td>
     </tr>
     <tr>
         <td colspan="2" style="text-align: center;font-size: 13px;">податків (не зазначається фізичними особами, які через свої релігійні переконання відмовляються</td>
@@ -1204,54 +1205,18 @@
    var ScrBudDok13 = "[sFullName_SubjectOrgan_03]";
    var ScrBudDok15 = "[sEkspPIB]";
 
+   var ScrBudDok16 = "[lPov]";
+   var ScrBudDok17 = "[dZagPlosh]";
+   var ScrBudDok18 = "[dZtPlosh]";
+   var ScrBudDok19 = "[dNZtPlosh]";
+
    var asBudDok = "[asBudDok]";
    var chekTexNag = "[chekTexNag]";
    var chekPrEksp = "[chekPrEksp]";
 
 
-if(asBudDok == 'sEnamPasport'||asBudDok == 'Будівельний паспорт'){
-  document.getElementById("sPaspN").innerHTML += ScrBudDok1;
-  document.getElementById("sPaspOrg").innerHTML += ScrBudDok2;
-  document.getElementById("PaspData").innerHTML += ScrBudDok3;
-  document.getElementById("sID_SubjectOrgan_OKPO_02").innerHTML += "_";
-  document.getElementById("sFullName_SubjectOrgan_02").innerHTML += "_";
-  document.getElementById("sProgOsPos").innerHTML += "_";
-  document.getElementById("sProgOsPIB").innerHTML += "_";
-  document.getElementById("sProgOsKvalS").innerHTML += "_";
-  document.getElementById("sAvtNagPIB").innerHTML += "_";
-  document.getElementById("sID_SubjectOrgan_OKPO_03").innerHTML += "_";
-  document.getElementById("sFullName_SubjectOrgan_03").innerHTML += "_";
-  document.getElementById("sEkspPIB").innerHTML += "_";
 
-}
-else {
-  document.getElementById("sPaspN").innerHTML += "_";
-  document.getElementById("sPaspOrg").innerHTML += "_";
-  document.getElementById("PaspData").innerHTML += "_";
-  document.getElementById("sID_SubjectOrgan_OKPO_02").innerHTML += ScrBudDok4;
-  document.getElementById("sFullName_SubjectOrgan_02").innerHTML += ScrBudDok5;
-  document.getElementById("sProgOsPos").innerHTML += ScrBudDok7;
-  document.getElementById("sProgOsPIB").innerHTML += ScrBudDok8;
-  document.getElementById("sProgOsKvalS").innerHTML += ScrBudDok9;
-  
-  if(chekTexNag == 'yes'||chekTexNag == 'так'){
-  document.getElementById("sAvtNagPIB").innerHTML += ScrBudDok8;
-  }
-  else {
-  document.getElementById("sAvtNagPIB").innerHTML += ScrBudDok10;
-  }
-  
-  if(chekPrEksp == 'yes'||chekPrEksp == 'так'){
-  document.getElementById("sID_SubjectOrgan_OKPO_03").innerHTML += ScrBudDok12;
-  document.getElementById("sFullName_SubjectOrgan_03").innerHTML += ScrBudDok13;
-  document.getElementById("sEkspPIB").innerHTML += ScrBudDok15;
-  }
-  else {
-  document.getElementById("sID_SubjectOrgan_OKPO_03").innerHTML += "_";
-  document.getElementById("sFullName_SubjectOrgan_03").innerHTML += "_";
-  document.getElementById("sEkspPIB").innerHTML += "_";
-  }
-}
+
 
 </script> 
   
