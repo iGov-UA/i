@@ -348,7 +348,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             String pattern_expired_period_hour = String.format(PATTERN_EXPIRED_PERIOD_HOUR, prefix);
             Integer nExpired_Period_Hour = execution.getVariable(pattern_expired_period_hour) != null 
                     ? ((Long)execution.getVariable(pattern_expired_period_hour)).intValue() : null;
-            LOG.info("nExpired_Period_Hour = ", ((Long)execution.getVariable(pattern_expired_period_hour)).intValue());
+
             String sID_Order = "TaskActiviti_" + execution.getId().trim()
                     + prefix;
             String sURL_CallbackStatusNew = String.format(LIQPAY_CALLBACK_URL,
