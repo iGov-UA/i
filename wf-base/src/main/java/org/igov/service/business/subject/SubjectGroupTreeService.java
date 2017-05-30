@@ -540,8 +540,9 @@ public class SubjectGroupTreeService {
         List<User> aoUsers = sID_Group_Activiti != null
                 ? identityService.createUserQuery().memberOfGroup(sID_Group_Activiti).list()
                 : identityService.createUserQuery().list();
-
+        
         for (User oUser : aoUsers) {
+            LOG.info("oUser Id in getUsersByGroupSubject: {}", oUser.getId());
             SubjectUser subjectUser = SubjectUser.BuilderHelper.buildSubjectUser(
                     oUser.getId() == null ? "" : oUser.getId(),
                     oUser.getFirstName() == null ? "" : oUser.getFirstName(),
