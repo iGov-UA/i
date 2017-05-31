@@ -1087,27 +1087,26 @@ public class ActionTaskService {
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
-        List<ProcessInstance> aProcessInstance = oRuntimeService.createNativeProcessInstanceQuery().sql(
-                "Select * from act_hi_identitylink where user_id_ = 'MJU_Dnipro_Top1_Dep1' and proc_inst_id_ != 'null'"
+        List<HistoricProcessInstance> aProcessInstance = oHistoryService.createNativeHistoricProcessInstanceQuery().sql(
+                "Select * from act_hi_identitylink where user_id_ = 'MJU_Dnipro_Top1_Dep1_Exec2' and proc_inst_id_ != 'null'"
                 ).list();
         LOG.info("NativeProcessInstanceQuery={}", aProcessInstance);
         StringBuilder sAllProcesses = null;
-        for(ProcessInstance oProcessInstance: aProcessInstance) {
-            sAllProcesses.append(oProcessInstance.getId()).append(" ").append(oProcessInstance.getActivityId());
+        for(HistoricProcessInstance oProcessInstance: aProcessInstance) {
+            sAllProcesses.append(oProcessInstance.getId()).append(" ").append(oProcessInstance.getProcessDefinitionId());
         }
         LOG.info("All ProcessInstance: {}", sAllProcesses);
-        
+              
+        List<Map<String, String>> amPropertyBP = new LinkedList<>();/*
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
                 sLogin, bDocOnly, sProcessDefinitionId);
-
-        List<Map<String, String>> amPropertyBP = new LinkedList<>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
             Map<String, String> mPropertyBP = new HashMap<>();
             mPropertyBP.put("sID", oProcessDefinition.getKey());
             mPropertyBP.put("sName", oProcessDefinition.getName());
             LOG.debug("Added record to response {}", mPropertyBP);
             amPropertyBP.add(mPropertyBP);
-        }
+        }*/
 
         return amPropertyBP;
     }
