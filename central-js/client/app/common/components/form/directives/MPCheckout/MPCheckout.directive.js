@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'modalService', '$location', function (MasterPassService, modalService, $location) {
+angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'modalService', '$location', '$window',
+  function (MasterPassService, modalService, $location, $window) {
   return {
     restrict: 'EA',
     templateUrl: 'app/common/components/form/directives/MPCheckout/MPCheckout.template.html',
@@ -64,9 +65,10 @@ angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'mod
           var phoneNumber = MasterPassService.searchValidPhoneNumber(scope.data.formData.params);
 
           if(phoneNumber && phoneNumber.length === 12) {
+            var win = $window.open();
             MasterPassService.addCard(phoneNumber, 'ua').then(function (url) {
               if(url)
-                window.open(url);
+                win.document.location = url;
             });
           }
         };
