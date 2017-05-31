@@ -5,11 +5,13 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -384,7 +386,14 @@ public class ProcessSubjectTaskService {
             if (aByteDocument != null && aByteDocument.length > 0) {
                 String soJSON = soJSON = Tool.sData(aByteDocument);
                 LOG.info("soJSON in ProcessSubjectTask is: {}", soJSON);
+                org.activiti.engine.impl.util.json.JSONObject oJSON = new org.activiti.engine.impl.util.json.JSONObject(soJSON);
+                List<String> asKey_Step = Arrays.asList(org.activiti.engine.impl.util.json.JSONObject.getNames(oJSON));
+                List<String> asKey_Step_ExcludeCommon = asKey_Step.stream().filter(sKey_Step -> !"_".equals(sKey_Step))
+                .collect(Collectors.toList());
+
+                LOG.info("List of steps in ProcessSubjectTask is: {}", asKey_Step_ExcludeCommon);
         }
+            
         
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             
