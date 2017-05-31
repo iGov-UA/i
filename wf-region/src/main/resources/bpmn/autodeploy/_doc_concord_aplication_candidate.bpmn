@@ -126,12 +126,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="якщо відповідає" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Conkord_manager_HR]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>Conkord_manager_HR</activiti:expression>
+            <activiti:expression><![CDATA[Conkord_manager_HR]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -194,6 +195,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </activiti:formProperty>
         <activiti:formProperty id="markers6" name="якщо пройшов" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_6.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Висновок" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -324,6 +326,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Висновок" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -340,13 +343,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Результат співбесіди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Шановна(ий) ${bankIdfirstName}! Вітаємо! Ви успішно пройшли всі етапи співбесід. Найближчим часом з Вами зв'яжеться наш менеджер</activiti:expression>
+          <activiti:expression><![CDATA[Шановна(ий) ${bankIdfirstName}! Вітаємо! Ви успішно пройшли всі етапи співбесід. Найближчим часом з Вами зв'яжеться наш менеджер]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -359,13 +362,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Результат співбесіди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Шановна(ий) ${bankIdfirstName}! Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансії і участь в процедурі співбесіди. Змушені повідомити, що керівництвом було прийнято рішення на користь іншого кандидата. Ми зберегли резюме і зв'яжемося з Вами в разі відкриття нових вакансій (за умови актуальності вакансії для Вас)</activiti:expression>
+          <activiti:expression><![CDATA[Шановна(ий) ${bankIdfirstName}! Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансії і участь в процедурі співбесіди. Змушені повідомити, що керівництвом було прийнято рішення на користь іншого кандидата. Ми зберегли резюме і зв'яжемося з Вами в разі відкриття нових вакансій (за умови актуальності вакансії для Вас)]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -376,13 +379,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Результат перевірки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Шановна(ий) ${bankIdfirstName}! На жаль, Ви не пройшли перевірку службою безпеки. Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансію і участь в процедурі співбесіди.</activiti:expression>
+          <activiti:expression><![CDATA[Шановна(ий) ${bankIdfirstName}! На жаль, Ви не пройшли перевірку службою безпеки. Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансію і участь в процедурі співбесіди.]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -393,13 +396,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Результат співбесіди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Шановна(ий) ${bankIdfirstName}! Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансії і участь в процедурі співбесіди. Змушені повідомити, що керівництвом було прийнято рішення на користь іншого кандидата. Ми зберегли резюме і зв'яжемося з Вами в разі відкриття нових вакансій (за умови актуальності вакансії для Вас)</activiti:expression>
+          <activiti:expression><![CDATA[Шановна(ий) ${bankIdfirstName}! Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансії і участь в процедурі співбесіди. Змушені повідомити, що керівництвом було прийнято рішення на користь іншого кандидата. Ми зберегли резюме і зв'яжемося з Вами в разі відкриття нових вакансій (за умови актуальності вакансії для Вас)]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -458,6 +461,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="документ" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -554,6 +558,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
