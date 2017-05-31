@@ -457,7 +457,7 @@ public class ProcessSubjectTaskService {
                 
                 LOG.info("nId_Task_Root is {}", nId_Task_Root);
                 LOG.info("sLogin is {}", (String)((JSONObject)oJsonProcessSubject).get("sLogin"));
-                oTaskService.addCandidateGroup(nId_Task_Root, (String)((JSONObject)oJsonProcessSubject).get("sLogin"));
+                oTaskService.addCandidateUser(nId_Task_Root, (String)((JSONObject)oJsonProcessSubject).get("sLogin"));
                 
                 }
             }
