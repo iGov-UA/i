@@ -444,7 +444,7 @@ public class ProcessSubjectTaskService {
             aProcessSubject.add(oProcessSubject);
             LOG.info("oProcessSubject in setProcessSubjectList: {}", oProcessSubject);
 
-            if((JSONObject)oJsonProcessSubjectTask.get("sKey_GroupPostfix") != null){
+            if(((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix") != null){
                 
                 for(String step : asKey_Step){
                 
