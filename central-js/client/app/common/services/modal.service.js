@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('app').service('modalService', ['$modal', function ($modal) {
 
     var modalDefaults = {

@@ -1,6 +1,21 @@
 'use strict';
 var md5 = require('md5'),
-    config = require('../../config/environment');
+    config = require('../../config/environment'),
+    NodeCache = require("node-cache");
+
+
+var cache = new NodeCache();
+var cacheTtl = 1800; // 30min
+
+var buildKey = function (params) {
+  var key = 'MP';
+  if (params) {
+    for (var k in params) {
+      key += '&' + k + '=' + params[k];
+    }
+  }
+  return key;
+};
 
 module.exports.getUserAuth = function () {
   var date = new Date();
@@ -25,6 +40,8 @@ module.exports.getUserAuth = function () {
 };
 
 module.exports.createGuid = function () {
+  var result;
+
   function guid() {
     return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
   }
@@ -35,7 +52,15 @@ module.exports.createGuid = function () {
       .substring(1);
   }
 
-  var guidParam = guid();
+  cache.get(buildKey('guid'), function (error, value) {
+    if (value) {
+      result = value;
+    } else {
+      var guidkey = guid();
+      cache.set(buildKey('guid'), guidkey, cacheTtl);
+      result = guidkey;
+    }
+  });
 
-  return guidParam ? guidParam : guid();
+  return result;
 };

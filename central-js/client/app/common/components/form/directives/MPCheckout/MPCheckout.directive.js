@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'modalService', '$location', function (MasterPassService, modalService, $location) {
   return {
     restrict: 'EA',

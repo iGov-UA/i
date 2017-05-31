@@ -5,7 +5,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
               ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService,
-              MasterPassService, modalService) {
+              MasterPassService) {
 
       'use strict';
 

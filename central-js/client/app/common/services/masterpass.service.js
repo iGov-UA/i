@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('app').service('MasterPassService', ['$http', '$location', '$window', 'modalService', function ($http, $location, $window, modalService) {
 
     var deleteCardModal = {
