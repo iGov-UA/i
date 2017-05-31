@@ -10,8 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
@@ -78,6 +82,9 @@ public class ProcessSubjectTaskService {
     
     @Autowired
     private DocumentStepService oDocumentStepService;
+    
+    @Autowired
+    private HistoryService oHistoryService;       
     
     @Autowired
     private ProcessSubjectStatusDao oProcessSubjectStatusDao;
@@ -361,6 +368,12 @@ public class ProcessSubjectTaskService {
         
         Long nOrder = nStartOrder;
         
+        HistoricProcessInstance oHistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
+                processInstanceId((String)((JSONObject)oJsonProcessSubjectTask)
+                .get("snID_Process_Activiti_Root")).singleResult();
+                
+        LOG.info("oProcessDefinition is {}", oHistoricProcessInstance.getProcessDefinitionId());
+
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             
             ProcessSubject oProcessSubject = null;
@@ -409,7 +422,7 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setsDatePlan(datePlan);
             aProcessSubject.add(oProcessSubject);
             LOG.info("oProcessSubject in setProcessSubjectList: {}", oProcessSubject);
-            
+
             /*if((JSONObject)oJsonProcessSubjectTask.get("sKey_GroupPostfix") != null){
                 oDocumentStepService.cloneDocumentStepSubject((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
                     (String)((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject)oJsonProcessSubject).get("sLogin"), "_", false);
