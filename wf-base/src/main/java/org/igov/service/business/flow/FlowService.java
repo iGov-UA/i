@@ -1057,26 +1057,13 @@ public class FlowService implements ApplicationContextAware {
         Long nID_ServiceData = oFlow.getnID_ServiceData();   //nID_ServiceData = 358  _test_queue_cancel, nID_ServiceData = 63L Видача/заміна паспорта громадянина для виїзду за кордон
         Long nCountAutoGenerate = oFlow.getnCountAutoGenerate(); // nCountAutoGenerate данным параметром задаваем количество дней на которое генерируем
         Long nID_SubjectOrganDepartment = oFlow.getnID_SubjectOrganDepartment();
-        //TODO: uncoment. Выполняется только заполнение колекции с исключениями. Не происходит работы с ней
-        /*List<FlowProperty> aExcludeFlowProperty = new ArrayList<>();
-        for (FlowProperty flowProperty : oFlow.getFlowProperties()) {
-            if (flowProperty.getbExclude()) {
-                if ((oFlow.getsGroup() != null && oFlow.getsGroup().equals(flowProperty.getsGroup()))
-                        || (oFlow.getnID_ServiceData().longValue() == flowProperty.getId().longValue())) {
-                    aExcludeFlowProperty.add(flowProperty);
-                }
-            }
-        }*/
-
         int nStartDay = 0;
         DateTime oDateTimeStart = oDateStart.plusDays(nStartDay);// = oDateStart.plusDays(0); //maxline: todo удалить комментарий после тестирования
         int сountAutoGenerate = toIntExact(nCountAutoGenerate);
         DateTime oDateTimeEnd = oDateStart.plusDays(сountAutoGenerate);
         LOG.info("!*!*!* nCountAutoGenerate = {} nID_Flow = {}, nID_ServiceData = {}, nID_SubjectOrganDepartment = {}, dateStart = {}, dateEnd = {}",
                 nCountAutoGenerate, nID_Flow, nID_ServiceData, nID_SubjectOrganDepartment, oDateTimeStart, oDateTimeEnd);
-        List<FlowSlotVO> resFlowSlotVO = buildFlowSlots(nID_Flow, oDateTimeStart, oDateTimeEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
-        LOG.info("!*!*!* resFlowSlotVO.size() = {}", resFlowSlotVO.size());
-
+        buildFlowSlots(nID_Flow, oDateTimeStart, oDateTimeEnd); // строит четко на месяц вперед (точнее dateStart - dateEnd) независимо от рабочих или нерабочих дней
         nStartDay += DAYS_IN_MONTH;
         boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
         LOG.info(" bEnoughFreeDays = {}", bEnoughFreeDays);
