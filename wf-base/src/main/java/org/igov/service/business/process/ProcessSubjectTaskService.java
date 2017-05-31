@@ -10,9 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -82,7 +84,7 @@ public class ProcessSubjectTaskService {
     private DocumentStepService oDocumentStepService;
     
     @Autowired
-    private RepositoryService oRepositoryService;        
+    private HistoryService oHistoryService;       
     
     @Autowired
     private ProcessSubjectStatusDao oProcessSubjectStatusDao;
@@ -366,10 +368,11 @@ public class ProcessSubjectTaskService {
         
         Long nOrder = nStartOrder;
         
-        ProcessDefinition oProcessDefinition = oRepositoryService.createProcessDefinitionQuery()
-                .processDefinitionId((String)((JSONObject)oJsonProcessSubjectTask)
-                .get("snID_Process_Activiti_Root")).active().singleResult();
-        LOG.info("oProcessDefinition is {}", oProcessDefinition.getId());
+        HistoricProcessInstance oHistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
+                processInstanceId((String)((JSONObject)oJsonProcessSubjectTask)
+                .get("snID_Process_Activiti_Root")).singleResult();
+                
+        LOG.info("oProcessDefinition is {}", oHistoricProcessInstance.getProcessDefinitionId());
 
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             
