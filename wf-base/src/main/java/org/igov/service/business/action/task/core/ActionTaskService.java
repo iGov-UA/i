@@ -1098,6 +1098,7 @@ public class ActionTaskService {
         for (ProcessInstance oProcessInstance : aProcessInstance) {
             
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
+            LOG.info("getBusinessProcessesOfLogin oProcessDefinition={}", oProcessDefinition);
             
             if (bDocOnly && oProcessInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 aProcessDefinition_Return.add(oProcessDefinition);
