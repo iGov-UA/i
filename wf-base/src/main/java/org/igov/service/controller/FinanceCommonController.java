@@ -260,6 +260,8 @@ public class FinanceCommonController {
         @ApiParam(value = "количество часов актуальности платежа", required = false) @RequestParam Integer sExpired_Period_Hour
     ) throws Exception {
 
+    	LOG.info("sExpired_Period_Hour in fcc = >>>>>", sExpired_Period_Hour );
+    	
         if (sSum != null) {
             sSum = sSum.replaceAll(",", ".");
         }else{
