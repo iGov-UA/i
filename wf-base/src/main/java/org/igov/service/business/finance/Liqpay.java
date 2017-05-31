@@ -150,13 +150,16 @@ public class Liqpay {
                 sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour);
 
         String sHTML = getForm(mParam, privateKey, oLanguage);
+        LOG.info("mParam in getPayButtonHTML_LiqPay  = {}", mParam);
         LOG.info("ok! (sHTML={})", sHTML);
         return sHTML;
     }
 
     private String getForm(Map<String, String> mParam, String sPrivateKey, Language oLanguage) {
         String sData = base64_encode(JSONObject.toJSONString(mParam));
+        LOG.info("sData in getForm >>>>>>>>= ", sData);
         String sSignature = getSignature(sData, sPrivateKey);
+        LOG.info("sSignature in getForm >>>>>>>>= ", sSignature);
         return String.format(sHTML_PayButton, sData, sSignature, oLanguage.getShortName());
     }
 
