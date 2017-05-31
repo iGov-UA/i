@@ -22,7 +22,7 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.*;
-import org.activiti.engine.runtime.NativeProcessInstanceQuery;
+import org.activiti.engine.runtime.ProcessInstance;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -1080,16 +1080,16 @@ public class ActionTaskService {
     /**
      * Получение списка бизнес процессов к которым у пользователя есть доступ
      *
-     * @param sLogin - Логин пользователя
+     * @param sLogin - Логин. пользователя
      * @param bDocOnly Выводить только список БП документов
      * @param sProcessDefinitionId - выводить только из этого процесса
      * @return
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
-        NativeProcessInstanceQuery aProcessInstance = oRuntimeService.createNativeProcessInstanceQuery().sql(
+        List<ProcessInstance> aProcessInstance = oRuntimeService.createNativeProcessInstanceQuery().sql(
                 "Select * from act_hi_identitylink where group_id_ = 'MJU_Dnipro_Top1_Dep1'"
-                );
+                ).list();
         LOG.info("NativeProcessInstanceQuery={}", aProcessInstance);
         
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
