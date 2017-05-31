@@ -376,8 +376,8 @@ public class ProcessSubjectTaskService {
                 processInstanceId((String)((JSONObject)oJsonProcessSubjectTask)
                 .get("snID_Process_Activiti_Root")).singleResult();
         
-        String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
-                    active().singleResult().getId();
+        String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId((String)((JSONObject)oJsonProcessSubjectTask)
+                .get("snID_Process_Activiti_Root")).active().singleResult().getId();
             
         LOG.info("oProcessDefinition is {}", oHistoricProcessInstance.getProcessDefinitionId());
         
