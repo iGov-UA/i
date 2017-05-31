@@ -150,6 +150,7 @@ public class Liqpay {
                 sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour);
 
         String sHTML = getForm(mParam, privateKey, oLanguage);
+        LOG.info("mParam in getPayButtonHTML_LiqPay  = {}", mParam);
         LOG.info("ok! (sHTML={})", sHTML);
         return sHTML;
     }
