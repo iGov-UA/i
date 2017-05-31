@@ -226,6 +226,12 @@ public class ProcessSubjectTaskService {
                             if(!aNewLogin.contains(oProcessSubject.getsLogin())){
                                LOG.info("Login to delete in new task setting schema is {}", oProcessSubject.getsLogin());
                                removeProcessSubjectDeep(oProcessSubject);
+                               
+                                if(((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix") != null){
+                                    String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId((String)((JSONObject)oJsonProcessSubjectTask)
+                                                      .get("snID_Process_Activiti_Root")).active().singleResult().getId();
+                                    oTaskService.deleteCandidateGroup(nId_Task_Root, oProcessSubject.getsLogin());
+                                }
                             }
                             else{
                                 LOG.info("Login to update in new task setting schema is {}", oProcessSubject.getsLogin());
@@ -294,6 +300,11 @@ public class ProcessSubjectTaskService {
                         if(!aNewLogin.contains(oProcessSubject.getsLogin())){
                            LOG.info("Login to delete in new task setting schema is {}", oProcessSubject.getsLogin());
                            removeProcessSubjectDeep(oProcessSubject);
+                           if(((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix") != null){
+                                    String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId((String)((JSONObject)oJsonProcessSubjectTask)
+                                                      .get("snID_Process_Activiti_Root")).active().singleResult().getId();
+                                    oTaskService.deleteCandidateGroup(nId_Task_Root, oProcessSubject.getsLogin());
+                                }
                         }
                         else{
                             LOG.info("Login to update in new task setting schema is {}", oProcessSubject.getsLogin());
@@ -405,9 +416,7 @@ public class ProcessSubjectTaskService {
                 asKey_Step = Arrays.asList(org.activiti.engine.impl.util.json.JSONObject.getNames(oJSON));
                 
                 LOG.info("List of steps in ProcessSubjectTask is: {}", asKey_Step);
-                
         }
-            
         
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             
