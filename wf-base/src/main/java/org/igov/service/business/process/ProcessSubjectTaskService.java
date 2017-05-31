@@ -388,10 +388,8 @@ public class ProcessSubjectTaskService {
                 LOG.info("soJSON in ProcessSubjectTask is: {}", soJSON);
                 org.activiti.engine.impl.util.json.JSONObject oJSON = new org.activiti.engine.impl.util.json.JSONObject(soJSON);
                 List<String> asKey_Step = Arrays.asList(org.activiti.engine.impl.util.json.JSONObject.getNames(oJSON));
-                List<String> asKey_Step_ExcludeCommon = asKey_Step.stream().filter(sKey_Step -> !"_".equals(sKey_Step))
-                .collect(Collectors.toList());
-
-                LOG.info("List of steps in ProcessSubjectTask is: {}", asKey_Step_ExcludeCommon);
+                
+                LOG.info("List of steps in ProcessSubjectTask is: {}", asKey_Step);
         }
             
         
