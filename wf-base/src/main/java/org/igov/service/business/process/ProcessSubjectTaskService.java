@@ -10,8 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
+import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
@@ -78,6 +80,9 @@ public class ProcessSubjectTaskService {
     
     @Autowired
     private DocumentStepService oDocumentStepService;
+    
+    @Autowired
+    private RepositoryService oRepositoryService;        
     
     @Autowired
     private ProcessSubjectStatusDao oProcessSubjectStatusDao;
@@ -361,6 +366,11 @@ public class ProcessSubjectTaskService {
         
         Long nOrder = nStartOrder;
         
+        ProcessDefinition oProcessDefinition = oRepositoryService.createProcessDefinitionQuery()
+                .processDefinitionId((String)((JSONObject)oJsonProcessSubjectTask)
+                .get("snID_Process_Activiti_Root")).active().singleResult();
+        LOG.info("oProcessDefinition is {}", oProcessDefinition.getId());
+
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             
             ProcessSubject oProcessSubject = null;
@@ -409,7 +419,7 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setsDatePlan(datePlan);
             aProcessSubject.add(oProcessSubject);
             LOG.info("oProcessSubject in setProcessSubjectList: {}", oProcessSubject);
-            
+
             /*if((JSONObject)oJsonProcessSubjectTask.get("sKey_GroupPostfix") != null){
                 oDocumentStepService.cloneDocumentStepSubject((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
                     (String)((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject)oJsonProcessSubject).get("sLogin"), "_", false);
