@@ -475,9 +475,10 @@ public class ProcessSubjectTaskService {
                         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
                         for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
                             if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals((String)((JSONObject)oJsonProcessSubject).get("sLogin"))){
-                                oDocumentStepSubjectRight.setbWrite(false);
-                                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                                break;
+                               LOG.info("sKey_GroupPostfix in processSubjectTaskService is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix()); 
+                               oDocumentStepSubjectRight.setbWrite(false);
+                               oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                               break;
                             }
                         }
                     }
