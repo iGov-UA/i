@@ -149,7 +149,6 @@ angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'mod
                   }
                 })
               }
-              scope.checkoutConfirm.status = 'checkout';
               scope.checkoutSpinner = false;
             })
           } else {
