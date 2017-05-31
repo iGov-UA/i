@@ -1,4 +1,10 @@
-angular.module('app').controller('ServiceBuiltInBankIDController',
+angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$state', '$stateParams', '$scope', '$timeout',
+    '$location', '$window', '$rootScope', '$http', '$filter', 'FormDataFactory', 'ActivitiService', 'ValidationService',
+    'ServiceService', 'oService', 'oServiceData', 'BankIDAccount', 'activitiForm', 'formData', 'allowOrder', 'countOrder',
+    'selfOrdersCount', 'AdminService', 'PlacesService', 'uiUploader', 'FieldAttributesService', 'iGovMarkers', 'service',
+    'FieldMotionService', 'ParameterFactory', '$modal', 'FileFactory', 'DatepickerFactory', 'autocompletesDataFactory',
+    'ErrorsFactory', 'taxTemplateFileHandler', 'taxTemplateFileHandlerConfig', 'SignFactory', 'TableService', 'LabelService',
+    'MasterPassService',
     function ($sce, $state, $stateParams, $scope, $timeout, $location, $window, $rootScope, $http, $filter,
               FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
@@ -1222,4 +1228,4 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         }
       }
       /*MasterPass Checkout end*/
-});
+}]);
