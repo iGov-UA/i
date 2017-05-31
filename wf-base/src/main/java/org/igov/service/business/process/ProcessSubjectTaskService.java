@@ -24,6 +24,10 @@ import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import org.igov.model.document.DocumentStep;
+import org.igov.model.document.DocumentStepDao;
+import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
 import org.igov.model.process.ProcessSubjectResult;
@@ -62,6 +66,12 @@ public class ProcessSubjectTaskService {
     
     @Autowired
     private ProcessSubjectTaskDao oProcessSubjectTaskDao;
+    
+    @Autowired
+    private DocumentStepDao oDocumentStepDao;
+    
+    @Autowired
+    private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
     
     @Autowired
     private ProcessSubjectDao oProcessSubjectDao;
@@ -459,10 +469,23 @@ public class ProcessSubjectTaskService {
                 for(String step : asKey_Step){
                     oDocumentStepService.cloneDocumentStepSubject((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
                         (String)((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject)oJsonProcessSubject).get("sLogin"), step, true);
+                
+                    List<DocumentStep> aDocumentStep = oDocumentStepDao.getRightsByStep((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), step);
+                    for(DocumentStep oDocumentStep : aDocumentStep){
+                        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
+                        for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
+                            if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals((String)((JSONObject)oJsonProcessSubject).get("sLogin"))){
+                                oDocumentStepSubjectRight.setbWrite(false);
+                                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
-
+        
+        
         return oProcessSubjectDao.saveOrUpdate(aProcessSubject);
     }
     
