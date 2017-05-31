@@ -376,6 +376,9 @@ public class ProcessSubjectTaskService {
                 processInstanceId((String)((JSONObject)oJsonProcessSubjectTask)
                 .get("snID_Process_Activiti_Root")).singleResult();
         
+        String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
+                    active().singleResult().getId();
+            
         LOG.info("oProcessDefinition is {}", oHistoricProcessInstance.getProcessDefinitionId());
         
         String sPath = "document/" + 
@@ -392,6 +395,7 @@ public class ProcessSubjectTaskService {
                 asKey_Step = Arrays.asList(org.activiti.engine.impl.util.json.JSONObject.getNames(oJSON));
                 
                 LOG.info("List of steps in ProcessSubjectTask is: {}", asKey_Step);
+                
         }
             
         
@@ -449,7 +453,10 @@ public class ProcessSubjectTaskService {
                 for(String step : asKey_Step){
                 
                 oDocumentStepService.cloneDocumentStepSubject((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
-                    (String)((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject)oJsonProcessSubject).get("sLogin"), step, false);
+                    (String)((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject)oJsonProcessSubject).get("sLogin"), step, true);
+                
+                oTaskService.addCandidateGroup(nId_Task_Root, (String)((JSONObject)oJsonProcessSubject).get("sLogin"));
+                
                 }
             }
         }
