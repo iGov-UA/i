@@ -21,7 +21,6 @@
         <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
@@ -48,17 +47,14 @@
         <activiti:formProperty id="nFile_8" name="Бланк документу дозвільного характеру, який непридатний для використання" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_9" name="Документ дозвільного характеру, який підлягає анулюванню" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="region" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="anVibor_performer" name="Техническая переменная, для работы sShapka220, не удалять!; ;bVisible=false" type="string" default="1" ></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Видача висновку" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;info&quot;,&quot;scope&quot;,&quot;article&quot;,&quot;country_origin&quot;,&quot;producer&quot;,&quot;requisites_produser&quot;,&quot;data_contract&quot;,&quot;name_applicant&quot;,&quot;country_applicant&quot;,&quot;requisites_applicant&quot;,&quot;contract&quot;,&quot;nFile_1&quot;,&quot;nFile_3&quot;,&quot;nFile_4&quot;,&quot;nFile_5&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;vibor_service&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'issue'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Переоформлення висновку" type="markers" default="{&quot;motion&quot; : {&quot;ShowFieldsOnCondition_2&quot; : {&quot;aField_ID&quot; : [&quot;nFile_2&quot;,&quot;nFile_7&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot; : &quot;vibor_service&quot;},&quot;sCondition&quot; : &quot;[sClient] == 'restructuring'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="Видача дублікату висновку" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;nFile_8&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'duplicate'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="Анулювання висновку" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;nFile_9&quot;],&quot;asID_Field&quot; : {&quot;sClient&quot;: &quot;vibor_service&quot;}, &quot;sCondition&quot; : &quot;[sClient] == 'cansel'&quot; }}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Видимість полів" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_221_ST.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
@@ -71,84 +67,96 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script  pulling data" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = 'region'
-var per2 = 'clerkPost'
-var per3 = 'sShapka220'
-var per4 = 'substance'
-var per5 = 'substance_2'
-var per6 = 'substance_3'
-var per7 ='term'
-if (execution.getVariable('vibor') == 'prav'){
-per1 = '23'
-per2 = 'woobraja@mail.ru'
-per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
-}
-if (execution.getVariable('vibor') == 'lev'){
-per1 = '24'
-per2 = 'Luda17_@ukr.net'
-per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
-}
-if (execution.getVariable('vibor_service') == 'issue'){
-per4 = 'видати'
-per5 = 'Ваш висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки - готовий'
-per6 = 'видачі'
-per7 = 'тридцяти календарних днів'
-}
-if (execution.getVariable('vibor_service') == 'restructuring'){
-per4 = 'переоформити'
-per5 = 'Ваш переоформлений висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки - готовий'
-per6 = 'переоформлення'
-per7 = 'двох робочих днів'
-}
-if (execution.getVariable('vibor_service') == 'duplicate'){
-per4 = 'видати дублікат'
-per5 = 'Ваш дублікат висновку державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки - готовий'
-per6 = 'видачі дублікату'
-per7 = 'двох робочих днів'
-}
-if (execution.getVariable('vibor_service') == 'cansel'){
-per4 = 'анулювати'
-per5 = 'Рішення про анулювання документа дозвільного характеру - готове'
-per6 = 'анулювання'
-per7 = 'п`яти робочих днів'
-}
-execution.setVariable('region', per1)
-execution.setVariable('clerkPost', per2)
-execution.setVariable('sShapka220', per3)
-execution.setVariable('substance', per4)
-execution.setVariable('substance_2', per5)
-execution.setVariable('substance_3', per6)
-execution.setVariable('term', per7)</script>
+      <script>
+      	var per1 = 'region'
+		var per2 = 'sMailClerk'
+		var per3 = 'sShapka220'
+		var per4 = 'substance'
+		var per5 = 'substance_2'
+		var per6 = 'substance_3'
+		var per7 ='term'
+		if (execution.getVariable('vibor') == 'prav')
+		{
+		per1 = '23'
+		per2 = 'woobraja@mail.ru'
+		per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
+		}
+		if (execution.getVariable('vibor') == 'lev')
+		{
+		per1 = '24'
+		per2 = 'Luda17_@ukr.net'
+		per3 = 'Головному державному санітарному лікарю Дніпропетровської області'
+		}
+		if (execution.getVariable('vibor_service') == 'issue')
+		{
+		per4 = 'видати'
+		per5 = 'Ваш висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки - готовий'
+		per6 = 'видачі'
+		per7 = 'тридцяти календарних днів'
+		}
+		if (execution.getVariable('vibor_service') == 'restructuring')
+		{
+		per4 = 'переоформити'
+		per5 = 'Ваш переоформлений висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки - готовий'
+		per6 = 'переоформлення'
+		per7 = 'двох робочих днів'
+		}
+		if (execution.getVariable('vibor_service') == 'duplicate')
+		{
+		per4 = 'видати дублікат'
+		per5 = 'Ваш дублікат висновку державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки - готовий'
+		per6 = 'видачі дублікату'
+		per7 = 'двох робочих днів'
+		}
+		if (execution.getVariable('vibor_service') == 'cansel')
+		{
+		per4 = 'анулювати'
+		per5 = 'Рішення про анулювання документа дозвільного характеру - готове'
+		per6 = 'анулювання'
+		per7 = 'п`яти робочих днів'
+		}
+		execution.setVariable('region', per1)
+		execution.setVariable('sMailClerk', per2)
+		execution.setVariable('sShapka220', per3)
+		execution.setVariable('substance', per4)
+		execution.setVariable('substance_2', per5)
+		execution.setVariable('substance_3', per6)
+		execution.setVariable('term', per7)</script>
     </scriptTask>
     <scriptTask id="scripttask2" name="Script list_documents" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var per1 = ' '
-var per2 = ' '
-var per3 = ' '
-var per4 = ' '
-var per5 = ' '
-var per6 = ' '
-var res = 'res'
-if (execution.getVariable('vibor_service') == 'issue') {
-per1 = '&lt;li&gt;Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи.&lt;/li&gt;'
-per2 = "&lt;li&gt;Пректні матеріали, у яких обгрунтовується зменшення розмірів санітарно-захисної зони об'єктів IV, V класів небезпеки.&lt;/li&gt;"
-per3 = "&lt;li&gt;Акт обстеження (інспектування) об'єкта отримання документу дозвільного характеру для потреб державної санітарно-епідеміологічної експертизи.&lt;/li&gt;"
-per4 = "&lt;li&gt;Копії звіту (звітів) про результати робіт для потреб державної санітарно-епідеміологічної експертизи.&lt;/li&gt;"
-res = '&lt;ol&gt;'+per1+per2+per3+per4+'&lt;/ol&gt;'
-}
-if (execution.getVariable('vibor_service') == 'restructuring') {
-per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає переоформленню.&lt;/li&gt;'
-per2 = '&lt;li&gt;Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру.&lt;/li&gt;'
-res = '&lt;ol&gt;'+per1+per2+'&lt;/ol&gt;'
-}
-if (execution.getVariable('vibor_service') == 'duplicate') {
-per1 = '&lt;li&gt;Бланк документу дозвільного характеру, який непридатний для використання.&lt;/li&gt;'
-res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
-}
-if (execution.getVariable('vibor_service') == 'cansel') {
-per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає анулюванню.&lt;/li&gt;'
-res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
-}
-execution.setVariable('list_documents', res)</script>
+      <script>
+      	var per1 = ' '
+		var per2 = ' '
+		var per3 = ' '
+		var per4 = ' '
+		var per5 = ' '
+		var per6 = ' '
+		var res = 'res'
+		if (execution.getVariable('vibor_service') == 'issue') 
+		{
+		per1 = '&lt;li&gt;Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи.&lt;/li&gt;'
+		per2 = "&lt;li&gt;Пректні матеріали, у яких обгрунтовується зменшення розмірів санітарно-захисної зони об'єктів IV, V класів небезпеки.&lt;/li&gt;"
+		per3 = "&lt;li&gt;Акт обстеження (інспектування) об'єкта отримання документу дозвільного характеру для потреб державної санітарно-епідеміологічної експертизи.&lt;/li&gt;"
+		per4 = "&lt;li&gt;Копії звіту (звітів) про результати робіт для потреб державної санітарно-епідеміологічної експертизи.&lt;/li&gt;"
+		res = '&lt;ol&gt;'+per1+per2+per3+per4+'&lt;/ol&gt;'
+		}
+		if (execution.getVariable('vibor_service') == 'restructuring') 
+		{
+		per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає переоформленню.&lt;/li&gt;'
+		per2 = '&lt;li&gt;Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру.&lt;/li&gt;'
+		res = '&lt;ol&gt;'+per1+per2+'&lt;/ol&gt;'
+		}
+		if (execution.getVariable('vibor_service') == 'duplicate') 
+		{
+		per1 = '&lt;li&gt;Бланк документу дозвільного характеру, який непридатний для використання.&lt;/li&gt;'
+		res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
+		}
+		if (execution.getVariable('vibor_service') == 'cansel') 
+		{
+		per1 = '&lt;li&gt;Документ дозвільного характеру, який підлягає анулюванню.&lt;/li&gt;'
+		res = '&lt;ol&gt;'+per1+'&lt;/ol&gt;'
+		}
+		execution.setVariable('list_documents', res)</script>
     </scriptTask>
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="cnap_${vibor}">
       <extensionElements>
@@ -163,7 +171,6 @@ execution.setVariable('list_documents', res)</script>
           <activiti:value id="duplicate" name="Видача дублікату висновку"></activiti:value>
           <activiti:value id="cansel" name="Анулювання висновку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
@@ -200,16 +207,11 @@ execution.setVariable('list_documents', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Per3" name="Перевірте подані громадянином дані, заповніть всі необхідні поля (П.І.Б адміністратора, дату реєстрації, реєстраційний номер та рішення про надання послуги), заповніть в полі нижче перелік документів, які прислав громадянин - потім роздрукуйте форму заяви." type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 2" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина 2" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile_1},${nFile_2},${nFile_3},${nFile_4},${nFile_5},${nFile_7},${nFile_8},${nFile_9}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -234,7 +236,6 @@ execution.setVariable('list_documents', res)</script>
           <activiti:value id="duplicate" name="Видача дублікату висновку"></activiti:value>
           <activiti:value id="cansel" name="Анулювання висновку"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подачи заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
@@ -276,13 +277,13 @@ execution.setVariable('list_documents', res)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+          <activiti:expression>alexander.polovenko@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -307,16 +308,19 @@ execution.setVariable('list_documents', res)</script>
           <activiti:string><![CDATA[Висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення №[sID_Order] щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p> 
+				Ваше звернення №[sID_Order] щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки було зареєстровано у системі.<br>
+				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
+			</p>
+			${sPhoneOrgan}<br>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -341,19 +345,21 @@ execution.setVariable('list_documents', res)</script>
           <activiti:string><![CDATA[Висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: 
-                                    &lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				На жаль, Ваше звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки було відхилено.
+				Причина в наступному:<br> 
+				${decisionComment}<br>
+				За необхідності Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			</p>
+			${sPhoneOrgan}<br>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -379,18 +385,20 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:string><![CDATA[Висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки - відправлене в держсанепідслужбу.&lt;br /&gt;
-Спеціалісти повинні дати відповідь протягом тридцяти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${number_cnap}&lt;/p&gt;.
-&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;br /&gt; 
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				Ваше звернення щодо ${substance_3} висновоку державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки - відправлене в держсанепідслужбу.<br>
+				Спеціалісти повинні дати відповідь протягом тридцяти календарних днів з дня реєстрації заяви.<br> 
+				Номер Вашого замовлення: ${number_cnap}.<br>
+			</p>
+			${sPhoneOrgan}<br>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -412,29 +420,26 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:string><![CDATA[Висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-${substance_2}.&lt;br /&gt;
-&lt;/p&gt;
-&lt;p&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
-&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5],&lt;br /&gt;
-&lt;br /&gt;
-Графік роботи ЦНАП-у:&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4],&lt;br /&gt;
-&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2],&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				${substance_2}.<br>
+				Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.<br> 
+				При собі треба мати:<br>
+				1. Документ, що посвідчує особу.<br>
+				2. Для уповоноваженої особи - довіренність.<br>
+				3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br>
+				4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.<br>
+			</p>
+			${sPhoneOrgan}<br>
+			${sWorkTime}<br>
+			${sAddress}<br>
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan},<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]>
+		  </activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${nFile_10},${PrintForm_1},${PrintForm_2}</activiti:expression>
