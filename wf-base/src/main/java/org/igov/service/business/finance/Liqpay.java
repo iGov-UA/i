@@ -172,7 +172,7 @@ public class Liqpay {
                 oID_Currency, oLanguage, sDescription,
                 sID_Order, sURL_CallbackStatusNew,
                 sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour);
-
+        LOG.info("mParam in >>>>>>>>>>>>> = {}", mParam);
         //String result = getForm(mParam, privateKey, oLanguage);
         String sData = base64_encode(JSONObject.toJSONString(mParam));
         String sSignature = getSignature(sData, privateKey);

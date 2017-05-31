@@ -259,9 +259,9 @@ public class FinanceCommonController {
         @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam Long nID_Subject,
         @ApiParam(value = "количество часов актуальности платежа", required = false) @RequestParam Integer sExpired_Period_Hour
     ) throws Exception {
-
+if(sExpired_Period_Hour!=0){
     	LOG.info("sExpired_Period_Hour in fcc = >>>>>", sExpired_Period_Hour );
-    	
+}else   LOG.info("sExpired_Period_Hour in fcc = >>>>> is 0");
         if (sSum != null) {
             sSum = sSum.replaceAll(",", ".");
         }else{
