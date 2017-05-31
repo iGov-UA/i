@@ -382,12 +382,14 @@ public class ProcessSubjectTaskService {
                 oHistoricProcessInstance.getProcessDefinitionId().split(":")[0] + ".json";
         LOG.info("sPath={}", sPath);
         
+        List<String> asKey_Step = null;
+        
         byte[] aByteDocument = getFileData_Pattern(sPath);
             if (aByteDocument != null && aByteDocument.length > 0) {
                 String soJSON = soJSON = Tool.sData(aByteDocument);
                 LOG.info("soJSON in ProcessSubjectTask is: {}", soJSON);
                 org.activiti.engine.impl.util.json.JSONObject oJSON = new org.activiti.engine.impl.util.json.JSONObject(soJSON);
-                List<String> asKey_Step = Arrays.asList(org.activiti.engine.impl.util.json.JSONObject.getNames(oJSON));
+                asKey_Step = Arrays.asList(org.activiti.engine.impl.util.json.JSONObject.getNames(oJSON));
                 
                 LOG.info("List of steps in ProcessSubjectTask is: {}", asKey_Step);
         }
@@ -442,10 +444,14 @@ public class ProcessSubjectTaskService {
             aProcessSubject.add(oProcessSubject);
             LOG.info("oProcessSubject in setProcessSubjectList: {}", oProcessSubject);
 
-            /*if((JSONObject)oJsonProcessSubjectTask.get("sKey_GroupPostfix") != null){
+            if((JSONObject)oJsonProcessSubjectTask.get("sKey_GroupPostfix") != null){
+                
+                for(String step : asKey_Step){
+                
                 oDocumentStepService.cloneDocumentStepSubject((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
-                    (String)((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject)oJsonProcessSubject).get("sLogin"), "_", false);
-            }*/
+                    (String)((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject)oJsonProcessSubject).get("sLogin"), step, false);
+                }
+            }
         }
 
         return oProcessSubjectDao.saveOrUpdate(aProcessSubject);
