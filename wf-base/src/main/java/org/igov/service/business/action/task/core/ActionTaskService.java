@@ -1089,17 +1089,25 @@ public class ActionTaskService {
         
         List<ProcessInstance> aProcessInstance = oRuntimeService.createNativeProcessInstanceQuery().sql(
             "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
-                    + "                                                        and link.user_id_ = 'MJU_Dnipro_Top1_Dep1_Exec2'"
-                ).list();
+                    + "                                                        and link.user_id_ = '" + sLogin + "'"
+            ).list();
         LOG.info("NativeProcessInstanceQuery={}", aProcessInstance);
         
+        List<ProcessDefinition> aProcessDefinition_Return = new ArrayList();
+        
         for (ProcessInstance oProcessInstance : aProcessInstance) {
-            LOG.info("oProcessInstance={}, ProcessDefinitionId={}", oProcessInstance.getId(), oProcessInstance.getProcessDefinitionId());
+            
+            ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
+            LOG.info("getBusinessProcessesOfLogin oProcessDefinition={}", oProcessDefinition);
+            
+            if (bDocOnly && oProcessInstance.getProcessDefinitionId().startsWith("_doc_")) {
+                aProcessDefinition_Return.add(oProcessDefinition);
+            }
         }
+        LOG.info("aProcessDefinition_Return={}", aProcessDefinition_Return);
               
         List<Map<String, String>> amPropertyBP = new LinkedList<>();/*
-        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
-                sLogin, bDocOnly, sProcessDefinitionId);
+         
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
             Map<String, String> mPropertyBP = new HashMap<>();
             mPropertyBP.put("sID", oProcessDefinition.getKey());
