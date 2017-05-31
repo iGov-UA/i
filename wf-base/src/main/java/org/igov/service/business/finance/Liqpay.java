@@ -157,9 +157,9 @@ public class Liqpay {
 
     private String getForm(Map<String, String> mParam, String sPrivateKey, Language oLanguage) {
         String sData = base64_encode(JSONObject.toJSONString(mParam));
-        LOG.info("sData in getForm >>>>>>>>= ", sData);
+        LOG.info("sData in getForm >>>>>>>>={} ", sData);
         String sSignature = getSignature(sData, sPrivateKey);
-        LOG.info("sSignature in getForm >>>>>>>>= ", sSignature);
+        LOG.info("sSignature in getForm >>>>>>>>= {}", sSignature);
         return String.format(sHTML_PayButton, sData, sSignature, oLanguage.getShortName());
     }
 
@@ -172,7 +172,7 @@ public class Liqpay {
                 oID_Currency, oLanguage, sDescription,
                 sID_Order, sURL_CallbackStatusNew,
                 sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour);
-
+        LOG.info("mParam in >>>>>>>>>>>>> = {}", mParam);
         //String result = getForm(mParam, privateKey, oLanguage);
         String sData = base64_encode(JSONObject.toJSONString(mParam));
         String sSignature = getSignature(sData, privateKey);
