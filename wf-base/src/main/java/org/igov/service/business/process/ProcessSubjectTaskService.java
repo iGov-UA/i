@@ -449,6 +449,7 @@ public class ProcessSubjectTaskService {
             LOG.info("oProcessSubject in setProcessSubjectList: {}", oProcessSubject);
 
             if(((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix") != null){
+                oTaskService.addCandidateGroup(nId_Task_Root, (String)((JSONObject)oJsonProcessSubject).get("sLogin"));
                 
                 for(String step : asKey_Step){
                 
@@ -457,8 +458,6 @@ public class ProcessSubjectTaskService {
                 
                 LOG.info("nId_Task_Root is {}", nId_Task_Root);
                 LOG.info("sLogin is {}", (String)((JSONObject)oJsonProcessSubject).get("sLogin"));
-                oTaskService.addCandidateUser(nId_Task_Root, (String)((JSONObject)oJsonProcessSubject).get("sLogin"));
-                
                 }
             }
         }
