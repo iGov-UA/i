@@ -82,7 +82,7 @@
         <activiti:formProperty id="sAdress5" name="Адреса реєстрації п'ятого власника" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_2" name="Інформація про об’єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sNameBud&quot;],&quot;sValue&quot;:&quot;Інформація про об’єкт&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sNameBud" name="Найменування об'єкта;(назва відповідно будівельного паспорту або проекту)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameBud" name="Найменування об'єкта;(назва відповідно будівельного паспорту)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdresBud" name="Будівельна адреса об'єкта;(адреса об'єкта на момент початку будівництва, та що зазначалась при подачі повідомлення про початок будівництва)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdresZakinch" name="Адреса новозбудованого об'єкта;(нова адреса яка присвоєна будинку після закінчення будівництва)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Adress" name="Документ про присвоєння адреси; ;bNew=true" type="file" required="true"></activiti:formProperty>
@@ -145,12 +145,10 @@
         <activiti:formProperty id="ZemPl3" name="Площа ділянки №3 (кв.м)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerZem" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIZem.json')}"></activiti:formProperty>
         
-        
         <activiti:formProperty id="markersLine_5" name="Інформація про технічний паспорт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sTP_Osoba&quot;],&quot;sValue&quot;:&quot;Інформація про технічний паспорт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTP_Osoba" name="ПІБ особи, що провела технічну інвентаризацію" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dTP_Date" name="Дата виготовлення паспорта технічної інвентаризації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTP_ReestrN" name="Номер паспорта технічної інвентаризації" type="string" required="true"></activiti:formProperty>
-        
         
         <activiti:formProperty id="markersLine_6" name="Характеристики будинку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;lPov&quot;],&quot;sValue&quot;:&quot;Характеристики будинку&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lPov" name="Кількість поверхів" type="long" required="true"></activiti:formProperty>
@@ -163,7 +161,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="dGospPlosh" name="Загальна площа окремих господарських будівель (кв.м)" type="double" required="true"></activiti:formProperty>
-        <activiti:formProperty id="tGospBud" name="Перелік господарських будівель;(зазначте найменування кожної будівлі окремо)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="tGospBud" name="Перелік господарських будівель;(зазначте найменування кожної будівлі окремо)" type="textArea" required="true" default=" "></activiti:formProperty>
         <activiti:formProperty id="markerHar" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIHar.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
@@ -629,8 +627,8 @@ ${sNameOrgan}<br />
           <activiti:value id="accept" name="Заяву задоволено"></activiti:value>
           <activiti:value id="reject" name="УДАБК відмовив в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="commentCN" name="Вкажіть причину відмови" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileVidpov" name="Завантажте відповідь ДАБІ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="commentCN" name="Вкажіть причину відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="fileVidpov" name="Завантажте відповідь ДАБІ" type="file"></activiti:formProperty>
         <activiti:formProperty id="markerCN2" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekdashCnap.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -735,7 +733,7 @@ ${sNameOrgan}<br />
 [pattern/mail/new_design/_common_content_start.html]
 
 По вашому зверненню №[sID_Order] винесено позитивне рішення.<br />
-УДАБК успішно обробив вашу заяву.<br />
+УДАБК успішно обробив вашу заяву і зареєстрував декларацію.<br />
 Отриманйте відповідь в ЦНАПі.<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
@@ -776,7 +774,7 @@ ${sNameOrgan}<br/>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 По вашому зверненню №[sID_Order] винесено позитевне рішення.<br />
-Відповідь готова і передана в ЦНАП.<br /><br />
+Декларація зареєстрована. Відповідь готова і передана в ЦНАП.<br /><br />
 При замовленні послуги, ви обрали доставку відповіді поштою.<br /> 
 Для того щоб закінчити процедуру, необхідно протягом 48 годин(2х діб) сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)
 [paymentButton_LiqPay]
