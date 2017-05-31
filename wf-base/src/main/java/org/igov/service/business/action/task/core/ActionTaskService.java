@@ -1091,7 +1091,7 @@ public class ActionTaskService {
                 "Select * from act_hi_identitylink where user_id_ = 'MJU_Dnipro_Top1_Dep1' and proc_inst_id_ != 'null'"
                 ).list();
         LOG.info("NativeProcessInstanceQuery={}", aProcessInstance);
-        LOG.info("NativeProcessInstanceQuery procesDefinition={}", aProcessInstance.get(1).getActivityId());
+        LOG.info("NativeProcessInstanceQuery procesDefinition={}", aProcessInstance.get(1).getProcessInstanceId());
         
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
                 sLogin, bDocOnly, sProcessDefinitionId);
