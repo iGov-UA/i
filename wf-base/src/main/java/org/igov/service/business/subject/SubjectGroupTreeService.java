@@ -91,7 +91,7 @@ public class SubjectGroupTreeService {
     public SubjectGroupResultTree getCatalogSubjectGroupsTree(String sID_Group_Activiti,
             Long deepLevel, String sFind, Boolean bIncludeRoot, Long deepLevelWidth,
             String sSubjectType) {
-
+        
         /**
          * Лист для ид Subject ORGAN или HUMAN для последующего анализа
          */
@@ -184,7 +184,7 @@ public class SubjectGroupTreeService {
             for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
 
                 SubjectGroup parent = subjectGroupRelation.getoSubjectGroup_Parent();
-                LOG.info("SubjectGroup parent" + parent);
+                LOG.info("SubjectGroup parent is: " + parent.getsID_Group_Activiti());
 
                 if (parent.getId() != FAKE_ROOT_SUBJECT_ID) {
                     LOG.info("SubjectGroup parent" + parent.getsID_Group_Activiti());
@@ -229,6 +229,7 @@ public class SubjectGroupTreeService {
 
             // Map<Long, List<SubjectGroup>> subjToNodeMapFiltr = new HashMap<>();
             // достаем ид sID_Group_Activiti которое на вход
+            LOG.info("sID_Group_Activiti for tree is {}", sID_Group_Activiti);
             Long groupFiltr = mapGroupActiviti.get(sID_Group_Activiti);
             LOG.info("sID_Group_Activiti index: " + groupFiltr);
             // детей его детей
@@ -535,13 +536,14 @@ public class SubjectGroupTreeService {
      * @return
      */
     public List<SubjectUser> getUsersByGroupSubject(String sID_Group_Activiti) {
-
+        LOG.info("sID_Group_Activiti in getUsersByGroupSubject {}", sID_Group_Activiti);
         List<SubjectUser> amsUsers = new ArrayList<>();
         List<User> aoUsers = sID_Group_Activiti != null
                 ? identityService.createUserQuery().memberOfGroup(sID_Group_Activiti).list()
                 : identityService.createUserQuery().list();
-
+        
         for (User oUser : aoUsers) {
+            LOG.info("oUser Id in getUsersByGroupSubject: {}", oUser.getId());
             SubjectUser subjectUser = SubjectUser.BuilderHelper.buildSubjectUser(
                     oUser.getId() == null ? "" : oUser.getId(),
                     oUser.getFirstName() == null ? "" : oUser.getFirstName(),
