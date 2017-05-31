@@ -305,7 +305,7 @@ public class ProcessSubjectTaskService {
                                                       .get("snID_Process_Activiti_Root")).active().singleResult().getId();
                                     oTaskService.deleteCandidateGroup(nId_Task_Root, oProcessSubject.getsLogin());
                                     LOG.info("user to delete is {}", oProcessSubject.getsLogin());
-                                    LOG.info("nId_Task_Root to delete is {}", oProcessSubject.getsLogin());
+                                    LOG.info("nId_Task_Root to delete is {}", nId_Task_Root);
                                 }
                         }
                         else{
