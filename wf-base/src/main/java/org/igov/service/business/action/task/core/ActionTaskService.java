@@ -1087,15 +1087,11 @@ public class ActionTaskService {
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
-        List<HistoricProcessInstance> aProcessInstance = oHistoryService.createNativeHistoricProcessInstanceQuery().sql(
-                "Select * from act_hi_identitylink where user_id_ = 'MJU_Dnipro_Top1_Dep1_Exec2' and proc_inst_id_ != 'null'"
-                ).list();
-        LOG.info("NativeProcessInstanceQuery={}", aProcessInstance);
-        StringBuilder sAllProcesses = null;
-        for(HistoricProcessInstance oProcessInstance: aProcessInstance) {
-            sAllProcesses.append(oProcessInstance.getId()).append(" ").append(oProcessInstance.getProcessDefinitionId());
-        }
-        LOG.info("All ProcessInstance: {}", sAllProcesses);
+        List<IdentityLink> aIdentityLink = oRepositoryService.getIdentityLinksForProcessDefinition(sProcessDefinitionId);
+        LOG.info("aIdentityLink={}", aIdentityLink);
+        
+        ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(sProcessDefinitionId);
+        LOG.info("oProcessDefinition={}", oProcessDefinition);
               
         List<Map<String, String>> amPropertyBP = new LinkedList<>();/*
         List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
