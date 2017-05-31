@@ -263,7 +263,7 @@ execution.setVariable('sSum', sum);
 Спочатку вашу заяву перевірить ЦНАП.<br />
 Потім звернення надійде до Управління державного архітектурно-будівельного контролю(УДАБК) і буде ним оброблене.<br />
 Якщо помилки будуть критичні, в наданні послуги буде відмовлено.<br /><br />
-Після обробки в УДАБК відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br />
+Після обробки в УДАБК, відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -307,7 +307,7 @@ ${sNameOrgan}<br />
 Спочатку вашу заяву перевірить ЦНАП.<br />
 Потім звернення надійде до Управління державного архітектурно-будівельного контролю(УДАБК) і буде ним оброблене.<br />
 Якщо помилки будуть критичні, в наданні послуги буде відмовлено.<br /><br />
-Після обробки в УДАБК відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br /><br />
+Після обробки в УДАБК, відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br /><br />
 У випадку позитивного результату обробки в листі буде посилання для оплати доставки поштою.<br />
 На оплату буде надано 48 годин.<br />
 У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь особисто в ЦНАПі.<br /> 
@@ -682,8 +682,8 @@ ${sNameOrgan}<br />
           <activiti:value id="accept" name="Заяву задоволено"></activiti:value>
           <activiti:value id="reject" name="УДАБК відмовив в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="commentCN" name="Вкажіть причину відмови" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileVidpov" name="Завантажте відповідь ДАБІ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="commentCN" name="Вкажіть причину відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="fileVidpov" name="Завантажте відповідь ДАБІ" type="file"></activiti:formProperty>
         <activiti:formProperty id="markerCN2" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekdashCnap.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -789,7 +789,7 @@ ${sNameOrgan}<br />
 [pattern/mail/new_design/_common_content_start.html]
 
 По вашому зверненню №[sID_Order] винесено позитивне рішення.<br />
-УДАБК успішно обробив вашу заяву.<br />
+УДАБК успішно обробив вашу заяву і зареєстрував повідомлення.<br />
 Отриманйте відповідь в ЦНАПі.<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
@@ -831,7 +831,7 @@ ${sNameOrgan}<br/>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 По вашому зверненню №[sID_Order] винесено позитевне рішення.<br />
-Відповідь готова і передана в ЦНАП.<br /><br />
+Повідомлення зареєстроване. Відповідь готова і передана в ЦНАП.<br /><br />
 При замовленні послуги, ви обрали доставку відповіді поштою.<br /> 
 Для того щоб закінчити процедуру, необхідно протягом 48 годин(2х діб) сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)
 [paymentButton_LiqPay]
