@@ -303,7 +303,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher matcher = TAG_PAYMENT_BUTTON_LIQPAY.matcher(textStr);
-        while (matcher.find()) {
+        if (matcher.find()) {
 
             String tag_Payment_Button_Liqpay = matcher.group();
             String prefix = "";
