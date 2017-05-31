@@ -455,6 +455,8 @@ public class ProcessSubjectTaskService {
                 oDocumentStepService.cloneDocumentStepSubject((String)((JSONObject)oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
                     (String)((JSONObject)oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject)oJsonProcessSubject).get("sLogin"), step, true);
                 
+                LOG.info("nId_Task_Root is {}", nId_Task_Root);
+                LOG.info("sLogin is {}", (String)((JSONObject)oJsonProcessSubject).get("sLogin"));
                 oTaskService.addCandidateGroup(nId_Task_Root, (String)((JSONObject)oJsonProcessSubject).get("sLogin"));
                 
                 }
