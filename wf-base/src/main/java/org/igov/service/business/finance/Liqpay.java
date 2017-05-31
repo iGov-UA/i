@@ -160,6 +160,8 @@ public class Liqpay {
     }
 
     private String getForm(Map<String, String> mParam, String sPrivateKey, Language oLanguage) {
+    	LOG.info("sData in getForm before base64_encode>>>>>>>>={} ", mParam);
+    	LOG.info("JSONObject.toJSONString(mParam)>>>>>>>>={} ", JSONObject.toJSONString(mParam));
         String sData = base64_encode(JSONObject.toJSONString(mParam));
         LOG.info("sData in getForm >>>>>>>>={} ", sData);
         String sSignature = getSignature(sData, sPrivateKey);
