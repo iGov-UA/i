@@ -21,6 +21,7 @@ import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
 import org.igov.model.process.ProcessSubjectResult;
@@ -33,6 +34,7 @@ import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessSubjectTreeDao;
 import org.igov.service.business.document.DocumentStepService;
 import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.Tool;
 import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -371,9 +373,19 @@ public class ProcessSubjectTaskService {
         HistoricProcessInstance oHistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
                 processInstanceId((String)((JSONObject)oJsonProcessSubjectTask)
                 .get("snID_Process_Activiti_Root")).singleResult();
-                
+        
         LOG.info("oProcessDefinition is {}", oHistoricProcessInstance.getProcessDefinitionId());
-
+        
+        String sPath = "document/" + 
+                oHistoricProcessInstance.getProcessDefinitionId().split(":")[0] + ".json";
+        LOG.info("sPath={}", sPath);
+        
+        byte[] aByteDocument = getFileData_Pattern(sPath);
+            if (aByteDocument != null && aByteDocument.length > 0) {
+                String soJSON = soJSON = Tool.sData(aByteDocument);
+                LOG.info("soJSON in ProcessSubjectTask is: {}", soJSON);
+        }
+        
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
             
             ProcessSubject oProcessSubject = null;
