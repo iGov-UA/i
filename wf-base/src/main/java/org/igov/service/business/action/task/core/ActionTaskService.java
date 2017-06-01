@@ -1110,7 +1110,7 @@ public class ActionTaskService {
                 aAllProcessDefinition.add(oProcessDefinition);
                 LOG.info("getBusinessProcessesOfLogin: second case");
                 
-            } else {                
+            } else if (!bDocOnly && sProcessDefinitionId == null) {                
                 aAllProcessDefinition.add(oProcessDefinition);
                 LOG.info("getBusinessProcessesOfLogin: third case");
             }          
