@@ -1087,15 +1087,27 @@ public class ActionTaskService {
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
-        List<ProcessInstance> aProcessInstance = oRuntimeService.createNativeProcessInstanceQuery().sql(
+        List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
             "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
                     + "                                                        and link.user_id_ = '" + sLogin + "'"
             ).list();
-        LOG.info("NativeProcessInstanceQuery={}", aProcessInstance);
+        LOG.info("NativeProcessInstanceQueryaHistory={}", aProcessInstanceHistory);
+        
+        List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_hi_procinst proc, act_ru_identitylink link where proc.id_ = link.proc_inst_id_"
+                    + "                                                        and link.user_id_ = '" + sLogin + "'"
+            ).list();
+        LOG.info("NativeProcessInstanceQueryaActive={}", aProcessInstanceActive);
+        
+        List<ProcessInstance> aAllProcessInstance = new ArrayList<>();
+        
+        aAllProcessInstance.addAll(aProcessInstanceHistory);
+        aAllProcessInstance.addAll(aProcessInstanceActive);
+        LOG.info("aAllProcessInstance={}", aAllProcessInstance);
         
         List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
         
-        for (ProcessInstance oProcessInstance : aProcessInstance) {   
+        for (ProcessInstance oProcessInstance : aAllProcessInstance) {   
             
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
             LOG.info("getBusinessProcessesOfLogin oProcessDefinition={}", oProcessDefinition);
