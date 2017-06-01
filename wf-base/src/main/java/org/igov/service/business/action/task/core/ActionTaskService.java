@@ -1108,6 +1108,8 @@ public class ActionTaskService {
             } else if (sProcessDefinitionId != null && oProcessInstance.getProcessDefinitionId().startsWith(sProcessDefinitionId)) {
                 aAllProcessDefinition.add(oProcessDefinition);
             }
+            
+            aAllProcessDefinition.add(oProcessDefinition);
         }
         LOG.info("aAllProcessDefinition={}", aAllProcessDefinition);
         
