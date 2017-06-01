@@ -1107,9 +1107,10 @@ public class ActionTaskService {
             //вернуть только заданный sProcessDefinitionId
             } else if (sProcessDefinitionId != null && oProcessInstance.getProcessDefinitionId().startsWith(sProcessDefinitionId)) {
                 aAllProcessDefinition.add(oProcessDefinition);
-            }
-            
-            aAllProcessDefinition.add(oProcessDefinition);
+                
+            } else {                
+                aAllProcessDefinition.add(oProcessDefinition);
+            }          
         }
         LOG.info("aAllProcessDefinition={}", aAllProcessDefinition);
         
