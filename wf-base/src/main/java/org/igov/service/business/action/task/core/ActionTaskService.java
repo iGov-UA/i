@@ -1095,18 +1095,26 @@ public class ActionTaskService {
         
         List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
         
-        for (ProcessInstance oProcessInstance : aProcessInstance) {            
+        for (ProcessInstance oProcessInstance : aProcessInstance) {   
+            
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
             LOG.info("getBusinessProcessesOfLogin oProcessDefinition={}", oProcessDefinition);
             
+            //вернуть только документы
             if (bDocOnly && oProcessInstance.getProcessDefinitionId().startsWith("_doc_")) {
+                aAllProcessDefinition.add(oProcessDefinition);
+            
+            //вернуть только заданный sProcessDefinitionId
+            } else if (sProcessDefinitionId != null && oProcessInstance.getProcessDefinitionId().startsWith(sProcessDefinitionId)) {
                 aAllProcessDefinition.add(oProcessDefinition);
             }
         }
-        LOG.info("aProcessDefinition_Return={}", aAllProcessDefinition);
+        LOG.info("aAllProcessDefinition={}", aAllProcessDefinition);
         
+        //Сет в который записываются ProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
         Set<String> aProcessDefinitionIdWithoutVersion = new HashSet<>();
-
+        
+        //Лист без дублей
         List<ProcessDefinition> aProcessDefinition_Return = new ArrayList<>();
 
         for (ProcessDefinition oProcessDefinition : aAllProcessDefinition) {
@@ -1121,15 +1129,17 @@ public class ActionTaskService {
         }
         LOG.info("aProcessDefinition_Return={}", aProcessDefinition_Return);
         
-        List<Map<String, String>> amPropertyBP = new LinkedList<>();/*
+        List<Map<String, String>> amPropertyBP = new LinkedList<>();
          
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
             Map<String, String> mPropertyBP = new HashMap<>();
+            
             mPropertyBP.put("sID", oProcessDefinition.getKey());
             mPropertyBP.put("sName", oProcessDefinition.getName());
-            LOG.debug("Added record to response {}", mPropertyBP);
+            
+            LOG.info("Added record to response {}", mPropertyBP);
             amPropertyBP.add(mPropertyBP);
-        }*/
+        }
 
         return amPropertyBP;
     }
