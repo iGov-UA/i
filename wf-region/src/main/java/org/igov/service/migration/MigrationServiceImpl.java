@@ -366,7 +366,8 @@ public class MigrationServiceImpl implements MigrationService {
             date_attr.setoAttribute(attribute);
             attribute.setoAttribute_Date(date_attr);
         }
-        if (clazz.getSimpleName().equalsIgnoreCase("float")) {
+        if (clazz.getSimpleName().equalsIgnoreCase("float")
+                || clazz.getSimpleName().equalsIgnoreCase("double")) {
             type = attributeTypeDao.findById(2L).get();
             Attribute_Float float_attr = new Attribute_Float();
             float_attr.setnValue((Double) obj);
