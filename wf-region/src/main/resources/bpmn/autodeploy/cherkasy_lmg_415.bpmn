@@ -24,7 +24,7 @@
         <activiti:formProperty id="sCityB" name="Місто/село народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспорт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sJobPlace" name="Місце роботи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sJob" name="Посада" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sJobAdressPhone" name="Адреса, телефон місця роботи" type="string" required="true"></activiti:formProperty>
@@ -291,8 +291,8 @@
         <activiti:formProperty id="sRegionB" name="Область народження ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDistrictB" name="Район народження ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCityB" name="Місто/село народження ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sJobPlace" name="Місце роботи ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sJob" name="Посада ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sJobAdressPhone" name="Адреса, телефон місця роботи ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
@@ -410,12 +410,10 @@
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/ULMG/cherkasy_lmg_415_z.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/ULMG/cherkasy_lmg_415_a.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Анкета мисливця; вкажіть альбомну орієнтацію паперу для друку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/ULMG/cherkasy_lmg_415_z.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Лист-відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -525,7 +523,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anType" name="Документ, за яким звертається громадянин:" type="enum" writable="false">
           <activiti:value id="1" name="Посвідчення мисливця"></activiti:value>
           <activiti:value id="2" name="Контрольна картка обліку добутої дичини та порушень правил полювання"></activiti:value>
@@ -541,12 +539,9 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="sShapka" name="шапка ; ;bVisible=false" type="string" default="Черкаському обласному управлінню лісового та мисливського господарства"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/ULMG/cherkasy_lmg_415_z.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/ULMG/cherkasy_lmg_415_z.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -621,7 +616,7 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <activiti:formProperty id="email" name="Адреса електронної пошти" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anType" name="Документ, за яким звертається громадянин:" type="enum" writable="false">
           <activiti:value id="1" name="Посвідчення мисливця"></activiti:value>
           <activiti:value id="2" name="Контрольна картка обліку добутої дичини та порушень правил полювання"></activiti:value>

@@ -141,7 +141,7 @@
 
 		<div class="line_col ta-c m-t-25">3. ЦІНА ТА УМОВИ ОПЛАТИ</div>
 
-		<div class="ta-l"><p>3.1. Ціна послуги з організації проведення державної реєстрації шлюбу складається з вартості послуг, що надаються Виконавцем, визначених Сторонами, і становить [sSumOrganizer]гривень, з урахуванням ПДВ.([vat]грн.)
+                <div class="ta-l"><p>3.1. Ціна послуги з організації проведення державної реєстрації шлюбу складається з вартості послуг, що надаються Виконавцем, визначених Сторонами, і становить [sSumOrganizer]гривень, з урахуванням ПДВ.(<span id="price">[sVat]</span>грн.)
 </p>
 		</div>
 
@@ -236,7 +236,9 @@
 	   </table>
 	   <script type="text/javascript">
 	   	var sumWithVAT = "[sSumOrganizer]";
-	   	var vat = sumWithVAT / 6;	
+	   	var vat = +sumWithVAT / 6;
+                var price = document.querySelector('#price');
+                price.innerHTML = vat;
 	   </script>
 	</section>
 </div>
