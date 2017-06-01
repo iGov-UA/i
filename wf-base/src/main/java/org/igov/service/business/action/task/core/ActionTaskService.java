@@ -1087,8 +1087,6 @@ public class ActionTaskService {
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
         
-        LOG.info("Arguments: bDocOnly={}, sProcessDefinitionId={}", bDocOnly, sProcessDefinitionId);
-        
         List<ProcessInstance> aProcessInstance = oRuntimeService.createNativeProcessInstanceQuery().sql(
             "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
                     + "                                                        and link.user_id_ = '" + sLogin + "'"
@@ -1105,15 +1103,16 @@ public class ActionTaskService {
             //вернуть только документы
             if (bDocOnly && oProcessInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 aAllProcessDefinition.add(oProcessDefinition);
-                LOG.info("вернуть только документы");
+                LOG.info("getBusinessProcessesOfLogin: first case");
             
             //вернуть только заданный sProcessDefinitionId
             } else if (sProcessDefinitionId != null && oProcessInstance.getProcessDefinitionId().startsWith(sProcessDefinitionId)) {
                 aAllProcessDefinition.add(oProcessDefinition);
-                LOG.info("вернуть только заданный sProcessDefinitionId");
+                LOG.info("getBusinessProcessesOfLogin: second case");
                 
             } else {                
                 aAllProcessDefinition.add(oProcessDefinition);
+                LOG.info("getBusinessProcessesOfLogin: third case");
             }          
         }
         LOG.info("aAllProcessDefinition={}", aAllProcessDefinition);
