@@ -125,10 +125,12 @@ public class Liqpay {
         params.put("result_url", sURL_CallbackPaySuccess);
         params.put("public_key", sPublicKey);
         if (nExpired_Period_Hour != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date oExriredDate = org.igov.service.business.util.Date.diff(null, nExpired_Period_Hour, Calendar.MINUTE);
             LOG.info("oExriredDate: " + oExriredDate);
+            LOG.info("sdf.format(oExriredDate): " + sdf.format(oExriredDate));
             params.put("expired_date", sdf.format(oExriredDate));
+            LOG.info("params>>>>getPayData>>: " + params);
         }
 
         if (bTest) {
@@ -143,9 +145,11 @@ public class Liqpay {
             Currency oID_Currency, Language oLanguage, String sDescription,
             String sID_Order, String sURL_CallbackStatusNew,
             String sURL_CallbackPaySuccess, Long nID_Subject, boolean bTest, Integer nExpired_Period_Hour) throws Exception {
+    	
+    	LOG.info("getPayButtonHTML_LiqPay >>>>> nExpired_Period_Hour" +nExpired_Period_Hour);
 
         Map<String, String> mParam = getPayData(sID_Merchant, sSum,
-                oID_Currency, oLanguage, sDescription,
+                oID_Currency, oLanguage, sDescription, 
                 sID_Order, sURL_CallbackStatusNew,
                 sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour);
 
@@ -156,6 +160,8 @@ public class Liqpay {
     }
 
     private String getForm(Map<String, String> mParam, String sPrivateKey, Language oLanguage) {
+    	LOG.info("sData in getForm before base64_encode>>>>>>>>={} ", mParam);
+    	LOG.info("JSONObject.toJSONString(mParam)>>>>>>>>={} ", JSONObject.toJSONString(mParam));
         String sData = base64_encode(JSONObject.toJSONString(mParam));
         LOG.info("sData in getForm >>>>>>>>={} ", sData);
         String sSignature = getSignature(sData, sPrivateKey);

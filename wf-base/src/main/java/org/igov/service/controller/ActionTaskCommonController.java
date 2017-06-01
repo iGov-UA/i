@@ -3142,7 +3142,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     ) throws Exception {
         LOG.info("updateProcess started...");
         //LOG.info("sJsonBody {}", sJsonBody);
-        
+        boolean isSubmitFlag = true;
         Map<String, Object> mParam = new HashMap<>();
         Map<String, Object> mReturn = new HashMap<>();
         Map<String, Object> mJsonBody;
@@ -3165,7 +3165,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     
                     /*org.json.simple.JSONObject oaProcessSubjectTask 
                             = (org.json.simple.JSONObject)mJsonBody.get("aProcessSubjectTask");*/
-                    oProcessSubjectTaskService.synctProcessSubjectTask((org.json.simple.JSONArray)((org.json.simple.JSONObject)
+                    isSubmitFlag = oProcessSubjectTaskService.syncProcessSubjectTask((org.json.simple.JSONArray)((org.json.simple.JSONObject)
                             parser.parse(sJsonBody)).get("aProcessSubjectTask"), taskId);
                 }
                 
@@ -3184,7 +3184,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             runtimeService.setVariable(executionId, (String) param.get("id"), param.get("value"));
                         }
 
-                        if (!bSaveOnly) {
+                        if (!bSaveOnly && isSubmitFlag) {
                             LOG.info("Submitting task");
                             taskService.complete(firstTask.getId());
                         }
