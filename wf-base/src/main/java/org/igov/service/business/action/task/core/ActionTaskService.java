@@ -1086,27 +1086,27 @@ public class ActionTaskService {
      * @return
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
-        
+               
         List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
             "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
                     + "                                                        and link.user_id_ = '" + sLogin + "'"
             ).list();
-        LOG.info("NativeProcessInstanceQueryaHistory={}", aProcessInstanceHistory);
+        LOG.info("NativeProcessInstanceQueryHistory={}", aProcessInstanceHistory);
         
         List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
-            "Select proc.* from act_hi_procinst proc, act_ru_identitylink link where proc.id_ = link.proc_inst_id_"
-                    + "                                                        and link.user_id_ = '" + sLogin + "'"
+            "Select proc.* from act_ru_identitylink link, act_hi_taskinst task, act_hi_procinst proc where link.task_id_ = task.id_"
+                    + "                                                        and task.proc_inst_id_ = proc.proc_inst_id_"
+                    + "                                                        and link.group_id_ = '" + sLogin + "'"
             ).list();
-        LOG.info("NativeProcessInstanceQueryaActive={}", aProcessInstanceActive);
+        LOG.info("NativeProcessInstanceQueryActive={}", aProcessInstanceActive);
         
         List<ProcessInstance> aAllProcessInstance = new ArrayList<>();
         
         aAllProcessInstance.addAll(aProcessInstanceHistory);
         aAllProcessInstance.addAll(aProcessInstanceActive);
-        LOG.info("aAllProcessInstance={}", aAllProcessInstance);
         
         List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
-        
+                
         for (ProcessInstance oProcessInstance : aAllProcessInstance) {   
             
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
@@ -1126,7 +1126,7 @@ public class ActionTaskService {
                 aAllProcessDefinition.add(oProcessDefinition);
                 LOG.info("getBusinessProcessesOfLogin: third case");
             }          
-        }
+        }  
         LOG.info("aAllProcessDefinition={}", aAllProcessDefinition);
         
         //Сет в который записываются ProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
