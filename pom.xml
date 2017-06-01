@@ -162,14 +162,14 @@
     <distributionManagement>
         <!-- XXX Replace localNexus to iGov_Nexus or something like that. And reconfigure Jenkins -->
         <repository>
-            <id>iDoc_Nexus</id>
+            <id>eGovUa_Nexus</id>
             <name>Internal Releases</name>
-            <url>https://nexus.tech.btsol.com.ua/nexus/content/repositories/releases/</url>
+            <url>https://nexus.tech.bts.com.ua/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
-            <id>iDoc_Nexus</id>
+            <id>eGovUa_Nexus</id>
             <name>Internal Snapshots</name>
-            <url>https://nexus.tech.btsol.com.ua/nexus/content/repositories/snapshots/</url>
+            <url>https://nexus.tech.bts.com.ua/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
     <repositories>
@@ -186,8 +186,8 @@
             <url>http://central.maven.org/maven2</url>
         </repository>
         <repository>
-            <id>iDoc_Nexus</id>
-            <url>https://nexus.tech.btsol.com.ua/nexus/content/groups/public/</url>
+            <id>eGovUa_Nexus</id>
+            <url>https://nexus.tech.bts.com.ua/nexus/content/groups/public/</url>
         </repository>
         <repository>
             <id>Activiti</id>
@@ -195,7 +195,7 @@
         </repository>
         <repository>
             <id>Activiti third party</id>
-            <url>http://maven.alfresco.com/nexuscontent/repositories/activiti-thirdparty/</url>
+            <url>http://maven.alfresco.com/nexus/content/repositories/activiti-thirdparty/</url>
         </repository>
         <repository>
             <id>jcenter-snapshots</id>
@@ -217,7 +217,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
@@ -607,6 +606,20 @@
                         </archive>
                     </configuration>
                 </plugin>
+  <plugin>
+  <groupId>org.zeroturnaround</groupId>
+  <artifactId>jrebel-maven-plugin</artifactId>
+  <version>1.1.7</version>
+  <executions>
+    <execution>
+      <id>generate-rebel-xml</id>
+      <phase>process-resources</phase>
+      <goals>
+        <goal>generate</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
