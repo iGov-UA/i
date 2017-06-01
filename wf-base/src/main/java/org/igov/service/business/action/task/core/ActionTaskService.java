@@ -1132,7 +1132,7 @@ public class ActionTaskService {
                 
                 LOG.info("Added record to response {}", mPropertyBP);
             }
-
+            /*
             Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
             
             for (FlowElement flowElement : elements) {
@@ -1153,7 +1153,7 @@ public class ActionTaskService {
                         LOG.info("Added record to response from user task {}", mPropertyBP);
                     }
                 }
-            }
+            }*/
         }
 
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
