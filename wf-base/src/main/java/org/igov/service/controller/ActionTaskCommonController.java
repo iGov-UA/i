@@ -2945,9 +2945,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
             @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value="sProcessDefinitionId", required = false) String sProcessDefinitionId
     ) throws IOException {
-        
-    	LOG.info("getBusinessProcessesFields. sLogin: {} bDocOnly: {} sProcessDefinitionId: {}", sLogin, bDocOnly, sProcessDefinitionId);
-    	
+            	
         return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
     }
 

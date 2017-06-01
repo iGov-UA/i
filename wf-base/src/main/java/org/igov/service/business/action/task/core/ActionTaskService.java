@@ -1116,25 +1116,35 @@ public class ActionTaskService {
         List<ProcessDefinition> aProcessDefinition_Return = getProcessDefinitionOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
         
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
+        
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
+            
             StartFormData formData = oFormService.getStartFormData(oProcessDefinition.getId());
+            
             for (FormProperty property : formData.getFormProperties()) {
+                
                 Map<String, String> mPropertyBP = new HashMap<String, String>();
+                
                 mPropertyBP.put("sID", property.getId());
                 mPropertyBP.put("sName", property.getName());
                 mPropertyBP.put("sID_Type", property.getType().getName());
                 amPropertyBP.put(mPropertyBP.get("sID"), mPropertyBP);
+                
                 LOG.info("Added record to response {}", mPropertyBP);
             }
 
             Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
-            //LOG.info("getBusinessProcessesFieldsOfLogin: Collection<FlowElement> elements = {} for oProcessDefinition = {}", elements, oProcessDefinition.getId());
             
             for (FlowElement flowElement : elements) {
+                
                 if (flowElement instanceof UserTask) {
+                    
                     LOG.info("Processing user task with ID {} name {} ", flowElement.getId(), flowElement.getName());
+                    
                     UserTask userTask = (UserTask) flowElement;
+                    
                     for (org.activiti.bpmn.model.FormProperty property : userTask.getFormProperties()) {
+                        
                         Map<String, String> mPropertyBP = new HashMap<String, String>();
                         mPropertyBP.put("sID", property.getId());
                         mPropertyBP.put("sName", property.getName());
@@ -1143,12 +1153,9 @@ public class ActionTaskService {
                         LOG.info("Added record to response from user task {}", mPropertyBP);
                     }
                 }
-
             }
-
         }
 
-        LOG.info("Total list of fields {}", amPropertyBP);
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
         res.addAll(amPropertyBP.values());
         return res;
