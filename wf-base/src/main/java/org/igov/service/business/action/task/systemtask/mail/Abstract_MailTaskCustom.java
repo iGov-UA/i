@@ -366,6 +366,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     sSum, oID_Currency, sLanguage, sDescription, sID_Order,
                     sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
                     nID_Subject, bTest, nExpired_Period_Hour==null?1:nExpired_Period_Hour);
+            LOG.info("htmlButton ==========>>>>>> ",htmlButton);
             matcher.appendReplacement(outputTextBuffer, htmlButton);
         }
         return matcher.appendTail(outputTextBuffer).toString();

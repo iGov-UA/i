@@ -130,7 +130,7 @@ public class Liqpay {
             LOG.info("oExriredDate: " + oExriredDate);
             LOG.info("sdf.format(oExriredDate): " + sdf.format(oExriredDate));
             params.put("expired_date", sdf.format(oExriredDate));
-            LOG.info("params>>>>getPayData>>: " + params);
+            LOG.info("params>>>>getPayData>>: " + params); //+
         }
 
         if (bTest) {
@@ -146,24 +146,24 @@ public class Liqpay {
             String sID_Order, String sURL_CallbackStatusNew,
             String sURL_CallbackPaySuccess, Long nID_Subject, boolean bTest, Integer nExpired_Period_Hour) throws Exception {
     	
-    	LOG.info("getPayButtonHTML_LiqPay >>>>> nExpired_Period_Hour" +nExpired_Period_Hour);
+    	LOG.info("getPayButtonHTML_LiqPay >>>>> nExpired_Period_Hour" +nExpired_Period_Hour); //10
 
         Map<String, String> mParam = getPayData(sID_Merchant, sSum,
                 oID_Currency, oLanguage, sDescription, 
                 sID_Order, sURL_CallbackStatusNew,
-                sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour);
+                sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour); 
 
         String sHTML = getForm(mParam, privateKey, oLanguage);
-        LOG.info("mParam in getPayButtonHTML_LiqPay  = {}", mParam);
-        LOG.info("ok! (sHTML={})", sHTML);
+        LOG.info("mParam in getPayButtonHTML_LiqPay  = {}", mParam); //+
+        LOG.info("ok! (sHTML={})", sHTML); //+
         return sHTML;
     }
 
     private String getForm(Map<String, String> mParam, String sPrivateKey, Language oLanguage) {
-    	LOG.info("sData in getForm before base64_encode>>>>>>>>={} ", mParam);
-    	LOG.info("JSONObject.toJSONString(mParam)>>>>>>>>={} ", JSONObject.toJSONString(mParam));
+    	LOG.info("sData in getForm before base64_encode>>>>>>>>={} ", mParam);// +
+    	LOG.info("JSONObject.toJSONString(mParam)>>>>>>>>={} ", JSONObject.toJSONString(mParam));//+
         String sData = base64_encode(JSONObject.toJSONString(mParam));
-        LOG.info("sData in getForm >>>>>>>>={} ", sData);
+        LOG.info("sData in getForm >>>>>>>>={} ", sData); // +
         String sSignature = getSignature(sData, sPrivateKey);
         LOG.info("sSignature in getForm >>>>>>>>= {}", sSignature);
         return String.format(sHTML_PayButton, sData, sSignature, oLanguage.getShortName());
