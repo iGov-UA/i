@@ -1103,10 +1103,12 @@ public class ActionTaskService {
             //вернуть только документы
             if (bDocOnly && oProcessInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 aAllProcessDefinition.add(oProcessDefinition);
+                LOG.info("вернуть только документы");
             
             //вернуть только заданный sProcessDefinitionId
             } else if (sProcessDefinitionId != null && oProcessInstance.getProcessDefinitionId().startsWith(sProcessDefinitionId)) {
                 aAllProcessDefinition.add(oProcessDefinition);
+                LOG.info("вернуть только заданный sProcessDefinitionId");
                 
             } else {                
                 aAllProcessDefinition.add(oProcessDefinition);
