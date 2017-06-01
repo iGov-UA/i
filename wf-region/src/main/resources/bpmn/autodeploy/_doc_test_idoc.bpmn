@@ -33,7 +33,7 @@
         <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_3" name="линия заключительные данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Внесение заключительных данных&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="линия заключительные данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNumber_442&quot;],&quot;sValue&quot;:&quot;Внесение заключительных данных&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNumber_442" name="Вх №442" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_442" name="Дата №442" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNumberResponseDoc" name="Исход № карточки (ответный документ)" type="string"></activiti:formProperty>
@@ -137,7 +137,7 @@ execution.setVariable('processInstanceId', processInstanceId)
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow72" sourceRef="usertask1" targetRef="scripttask10"></sequenceFlow>
+    <sequenceFlow id="flow72" sourceRef="usertask1" targetRef="servicetask1"></sequenceFlow>
     <userTask id="usertask2" name="Внесение заключительных данных">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -265,7 +265,23 @@ var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, '
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol', 'sTable4', 'step_4',false,'sLogin_Addressee')</script>
     </scriptTask>
     <sequenceFlow id="flow76" sourceRef="scripttask10" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow77" sourceRef="usertask2" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow77" sourceRef="usertask2" targetRef="servicetask2"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Transfer_DocumentARM" activiti:delegateExpression="#{Transfer_ARM}">
+      <extensionElements>
+        <activiti:field name="soData">
+          <activiti:string><![CDATA[sEnterpriseCustomer::value{[sEnterpriseCustomer]};;sAttributeApplication::value{[sAttributeApplication]};;asPriorityApplication::value{[asPriorityApplication]};;sNumberCard::value{[sNumberCard]};;sDateApprove::value{[sDateApprove]};;sNumber_441::value{[sNumber_441]};;sDate_441::value{[sDate_441]};;sNumberDep::value{[sNumberDep]};;asStatus::value{[asStatus]};;sNameObject::value{[sNameObject]};;sCodeProduction::value{[sCodeProduction]};;sNameProduct::value{[sNameProduct]};;sSubgroup::value{[sSubgroup]};;sTable1::value{[sTable1]};;sTable6::value{[sTable6]};;sPlannedDateEZ::value{[sPlannedDateEZ]};;sFactDateEZ::value{[sFactDateEZ]};;sNotesHead::value{[sNotesHead]};;sNumber_442::value{[sNumber_442]};;sDate_442::value{[sDate_442]};;sNumberResponseDoc::value{[sNumberResponseDoc]};;sNumberProtocolMeetings::value{[sNumberProtocolMeetings]};;sCorrectionDoc::value{[sCorrectionDoc]};;asFormBargaining::value{[asFormBargaining]};;sShortName_SubjectOrgan_01::value{[sShortName_SubjectOrgan_01]};;sID_SubjectOrgan_OKPO_01::value{[sID_SubjectOrgan_OKPO_01]};;phone::value{[phone]};;sStartSum::value{[sStartSum]};;sFinalSum::value{[sFinalSum]};;sSaveSum::value{[sSaveSum]};;sCurrency::value{[sCurrency]};;asPrefPay::value{[asPrefPay]};;sSpecialConditions::value{[sSpecialConditions]};;sBankProvider::value{[sBankProvider]};;sMeansFinancing::value{[sMeansFinancing]};;sAgreedEstimates::value{[sAgreedEstimates]};;sDateChange::value{[sDateChange]};;sNotes::value{[sNotes]};;sAcceptanceInformation::value{[sAcceptanceInformation]};;sArchive::value{[sArchive]}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow78" sourceRef="servicetask1" targetRef="scripttask10"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Transfer_DocumentARM" activiti:delegateExpression="#{Transfer_ARM}">
+      <extensionElements>
+        <activiti:field name="soData">
+          <activiti:string><![CDATA[sEnterpriseCustomer::value{[sEnterpriseCustomer]};;sAttributeApplication::value{[sAttributeApplication]};;asPriorityApplication::value{[asPriorityApplication]};;sNumberCard::value{[sNumberCard]};;sDateApprove::value{[sDateApprove]};;sNumber_441::value{[sNumber_441]};;sDate_441::value{[sDate_441]};;sNumberDep::value{[sNumberDep]};;asStatus::value{[asStatus]};;sNameObject::value{[sNameObject]};;sCodeProduction::value{[sCodeProduction]};;sNameProduct::value{[sNameProduct]};;sSubgroup::value{[sSubgroup]};;sTable1::value{[sTable1]};;sTable6::value{[sTable6]};;sPlannedDateEZ::value{[sPlannedDateEZ]};;sFactDateEZ::value{[sFactDateEZ]};;sNotesHead::value{[sNotesHead]};;sNumber_442::value{[sNumber_442]};;sDate_442::value{[sDate_442]};;sNumberResponseDoc::value{[sNumberResponseDoc]};;sNumberProtocolMeetings::value{[sNumberProtocolMeetings]};;sCorrectionDoc::value{[sCorrectionDoc]};;asFormBargaining::value{[asFormBargaining]};;sShortName_SubjectOrgan_01::value{[sShortName_SubjectOrgan_01]};;sID_SubjectOrgan_OKPO_01::value{[sID_SubjectOrgan_OKPO_01]};;phone::value{[phone]};;sStartSum::value{[sStartSum]};;sFinalSum::value{[sFinalSum]};;sSaveSum::value{[sSaveSum]};;sCurrency::value{[sCurrency]};;asPrefPay::value{[asPrefPay]};;sSpecialConditions::value{[sSpecialConditions]};;sBankProvider::value{[sBankProvider]};;sMeansFinancing::value{[sMeansFinancing]};;sAgreedEstimates::value{[sAgreedEstimates]};;sDateChange::value{[sDateChange]};;sNotes::value{[sNotes]};;sAcceptanceInformation::value{[sAcceptanceInformation]};;sArchive::value{[sArchive]}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow79" sourceRef="servicetask2" targetRef="endevent3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_idoc">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_idoc" id="BPMNPlane__doc_test_idoc">
@@ -279,13 +295,19 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Pro
         <omgdc:Bounds height="55.0" width="105.0" x="269.0" y="104.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="1150.0" y="115.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1140.0" y="118.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="920.0" y="104.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="840.0" y="108.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
-        <omgdc:Bounds height="55.0" width="105.0" x="780.0" y="104.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="700.0" y="108.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="560.0" y="108.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="980.0" y="108.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="374.0" y="131.0"></omgdi:waypoint>
@@ -297,15 +319,23 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Pro
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
         <omgdi:waypoint x="536.0" y="131.0"></omgdi:waypoint>
-        <omgdi:waypoint x="780.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
-        <omgdi:waypoint x="885.0" y="131.0"></omgdi:waypoint>
-        <omgdi:waypoint x="920.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="805.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="840.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow77" id="BPMNEdge_flow77">
-        <omgdi:waypoint x="1025.0" y="131.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1150.0" y="132.0"></omgdi:waypoint>
+        <omgdi:waypoint x="945.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="980.0" y="135.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
+        <omgdi:waypoint x="665.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="135.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
+        <omgdi:waypoint x="1085.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1140.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
