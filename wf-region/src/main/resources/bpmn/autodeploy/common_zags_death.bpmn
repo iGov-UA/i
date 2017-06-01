@@ -19,7 +19,7 @@
           <activiti:value id="sEnumRepression" name="повідомлення державного архіву або органів Служби безпеки України"></activiti:value>
           <activiti:value id="sEnumPrison" name="повідомлення установи виконання покарань або слідчого ізолятору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDocReason" name="Завантажте вищевказаний документ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocReason" name="Завантажте вищевказаний документ ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -60,12 +60,10 @@
           <activiti:value id="reject" name="заявник не з'явився"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDocReason" name="Завантажте вищевказаний документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDocReason}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Лист-запрошення до візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -180,13 +178,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow34" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
-    <serviceTask id="servicetask8" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow38" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="servicetask8" targetRef="servicetask2"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask8">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow40" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_death">
     <bpmndi:BPMNPlane bpmnElement="common_zags_death" id="BPMNPlane_common_zags_death">
@@ -213,12 +205,6 @@ ${sNameOrgan}<br />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="330.0" y="183.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="137.0" x="163.0" y="19.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="47.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="397.0" y="200.0"></omgdi:waypoint>
@@ -252,18 +238,9 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="471.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="471.0" y="89.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="122.0" y="46.0"></omgdi:waypoint>
-        <omgdi:waypoint x="163.0" y="46.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="300.0" y="46.0"></omgdi:waypoint>
         <omgdi:waypoint x="401.0" y="44.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="165.0" y="77.0"></omgdi:waypoint>
-        <omgdi:waypoint x="104.0" y="120.0"></omgdi:waypoint>
-        <omgdi:waypoint x="104.0" y="183.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
