@@ -1093,19 +1093,34 @@ public class ActionTaskService {
             ).list();
         LOG.info("NativeProcessInstanceQuery={}", aProcessInstance);
         
-        List<ProcessDefinition> aProcessDefinition_Return = new ArrayList();
+        List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
         
-        for (ProcessInstance oProcessInstance : aProcessInstance) {
-            
+        for (ProcessInstance oProcessInstance : aProcessInstance) {            
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
             LOG.info("getBusinessProcessesOfLogin oProcessDefinition={}", oProcessDefinition);
             
             if (bDocOnly && oProcessInstance.getProcessDefinitionId().startsWith("_doc_")) {
-                aProcessDefinition_Return.add(oProcessDefinition);
+                aAllProcessDefinition.add(oProcessDefinition);
             }
         }
+        LOG.info("aProcessDefinition_Return={}", aAllProcessDefinition);
+        
+        Set<String> aProcessDefinitionIdWithoutVersion = new HashSet<>();
+
+        List<ProcessDefinition> aProcessDefinition_Return = new ArrayList<>();
+
+        for (ProcessDefinition oProcessDefinition : aAllProcessDefinition) {
+            String sProcessDefinitionIdRoot = oProcessDefinition.getId().substring(0, oProcessDefinition.getId().indexOf(":"));
+
+            if (!aProcessDefinitionIdWithoutVersion.contains(sProcessDefinitionIdRoot)) {
+
+                aProcessDefinition_Return.add(oProcessDefinition);
+            }
+
+            aProcessDefinitionIdWithoutVersion.add(sProcessDefinitionIdRoot);
+        }
         LOG.info("aProcessDefinition_Return={}", aProcessDefinition_Return);
-              
+        
         List<Map<String, String>> amPropertyBP = new LinkedList<>();/*
          
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
