@@ -303,7 +303,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
         StringBuffer outputTextBuffer = new StringBuffer();
         Matcher matcher = TAG_PAYMENT_BUTTON_LIQPAY.matcher(textStr);
-        if (matcher.find()) {
+        while (matcher.find()) {
 
             String tag_Payment_Button_Liqpay = matcher.group();
             String prefix = "";
@@ -365,7 +365,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant,
                     sSum, oID_Currency, sLanguage, sDescription, sID_Order,
                     sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
-                    nID_Subject, bTest, nExpired_Period_Hour);
+                    nID_Subject, bTest, nExpired_Period_Hour==null?1:nExpired_Period_Hour);
             matcher.appendReplacement(outputTextBuffer, htmlButton);
         }
         return matcher.appendTail(outputTextBuffer).toString();
