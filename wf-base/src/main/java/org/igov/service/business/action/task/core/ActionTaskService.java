@@ -1086,14 +1086,9 @@ public class ActionTaskService {
      * @return
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
-        
-        long getBPstart = System.nanoTime();
-        
+                
         List<ProcessDefinition> aProcessDefinition_Return = getProcessDefinitionOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
-        
-        long getBPpoint1 = System.nanoTime();
-        LOG.info("/getBP 1 point:{}", getBPpoint1 - getBPstart);
-        
+                
         List<Map<String, String>> amPropertyBP = new LinkedList<>();
          
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
@@ -1105,10 +1100,7 @@ public class ActionTaskService {
             LOG.info("Added record to response {}", mPropertyBP);
             amPropertyBP.add(mPropertyBP);
         }
-        
-        long getBPpoint2 = System.nanoTime();
-        LOG.info("/getBP 2 point:{}", getBPpoint2 - getBPpoint1);
-        
+                
         return amPropertyBP;
     }
     /**
@@ -1120,13 +1112,8 @@ public class ActionTaskService {
      * @return  Лист полей, согласно запросу
      */
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
-        
-        long getFieldsStart = System.nanoTime();
-        
+
         List<ProcessDefinition> aProcessDefinition_Return = getProcessDefinitionOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
-        
-        long getFieldsStartPoint1 = System.nanoTime();
-        LOG.info("/getFields 1 point:{}", getFieldsStartPoint1 - getFieldsStart);
         
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
         
@@ -1171,9 +1158,6 @@ public class ActionTaskService {
             }
         }
         
-        long getFieldsStartPoint2 = System.nanoTime();
-        LOG.info("/getFields 2 point:{}", getFieldsStartPoint2 - getFieldsStartPoint1);
-
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
         res.addAll(amPropertyBP.values());
         
@@ -1244,18 +1228,13 @@ public class ActionTaskService {
         }
         
         LOG.info("getBusinessProcessesObjectsOfLogin: aProcessDefinition_Return = {}", aProcessDefinition_Return);*/
-        
-        long getProcessDefinitionStart = System.nanoTime();
-        
+                
         List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
             "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
                     + "                                                        and link.user_id_ = '" + sLogin + "'"
             ).list();
         LOG.info("NativeProcessInstanceQueryHistory={}", aProcessInstanceHistory);
-        
-        long getProcessDefinitionPoint1 = System.nanoTime();
-        LOG.info("/getProcessDefinition(hi) 1 point: {}", getProcessDefinitionPoint1 - getProcessDefinitionStart);
-        
+                
         List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
             "Select proc.* from act_ru_identitylink link, act_hi_taskinst task, act_hi_procinst proc where link.task_id_ = task.id_"
                     + "                                                        and task.proc_inst_id_ = proc.proc_inst_id_"
@@ -1263,38 +1242,28 @@ public class ActionTaskService {
             ).list();
         LOG.info("NativeProcessInstanceQueryActive={}", aProcessInstanceActive);
         
-        long getProcessDefinitionPoint2 = System.nanoTime();
-        LOG.info("/getProcessDefinition(ru) 1 point:{}", getProcessDefinitionPoint2 - getProcessDefinitionPoint1);
-        
         List<ProcessInstance> aAllProcessInstance = new ArrayList<>();
         
         aAllProcessInstance.addAll(aProcessInstanceHistory);
         aAllProcessInstance.addAll(aProcessInstanceActive);
         
         List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
-        
-        long getProcessDefinitionPoint3 = System.nanoTime();
-        LOG.info("/getProcessDefinition 2 point:{}", getProcessDefinitionPoint3 - getProcessDefinitionPoint2);
-                
-        for (ProcessInstance oProcessInstance : aAllProcessInstance) {   
-            
+                        
+        aAllProcessInstance.forEach((oProcessInstance) -> {
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
             
             //вернуть только документы
             if (bDocOnly && oProcessInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 aAllProcessDefinition.add(oProcessDefinition);
-            
-            //вернуть только заданный sProcessDefinitionId
+                
+                //вернуть только заданный sProcessDefinitionId
             } else if (sProcessDefinitionId != null && oProcessInstance.getProcessDefinitionId().startsWith(sProcessDefinitionId)) {
                 aAllProcessDefinition.add(oProcessDefinition);
                 
             } else if (!bDocOnly && sProcessDefinitionId == null) {                
                 aAllProcessDefinition.add(oProcessDefinition);
-            }          
-        }  
-        
-        long getProcessDefinitionPoint4 = System.nanoTime();
-        LOG.info("/getProcessDefinition 3 point:{}", getProcessDefinitionPoint4 - getProcessDefinitionPoint3);
+            }
+        });  
         
         //Сет в который записываются ProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
         Set<String> asProcessDefinitionIdWithoutVersion = new HashSet<>();
@@ -1314,9 +1283,6 @@ public class ActionTaskService {
             asProcessDefinitionIdWithoutVersion.add(sProcessDefinitionIdRoot);
         }
         LOG.info("aProcessDefinition_Return={}", aProcessDefinition_Return);
-        
-        long getProcessDefinitionPoint5 = System.nanoTime();
-        LOG.info("/getProcessDefinition 2 point:{}", getProcessDefinitionPoint5 - getProcessDefinitionPoint4);
         
         return aProcessDefinition_Return;
     }
