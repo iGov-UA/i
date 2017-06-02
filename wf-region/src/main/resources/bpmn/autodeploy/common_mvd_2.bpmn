@@ -6,9 +6,7 @@
         <activiti:formProperty id="markers00" name="extended_marker00" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_00.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers01" name="extended_marker01" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_4_01.json')}"></activiti:formProperty>
         <activiti:formProperty id="InfoStart01" name=" " type="label" default="&lt;a href=&quot;https://igov.org.ua/subcategory/1/5/situation/27&quot; target=&quot;_blank&quot;&gt;Ознайомтесь з порядком отримання послуги.&lt;/a&gt;"></activiti:formProperty>
-
         <activiti:formProperty id="sID_UA" name="sID_UA ; ;bVisible=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -16,7 +14,6 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Вкажіть Ваш контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть Вашу e-mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="asSelectWeapon_01" name="Тип зброї для оформлення" type="enum" default=" " required="true">
           <activiti:value id="tf_01" name="Мисливська нарізна зброя"></activiti:value>
           <activiti:value id="tf_02" name="Мисливська гладкоствольна"></activiti:value>
@@ -32,15 +29,12 @@
           <activiti:value id="tf_06" name="Чечелівський"></activiti:value>
           <activiti:value id="tf_07" name="Новокодацький"></activiti:value>
           <activiti:value id="tf_08" name="Самарський"></activiti:value>
-		</activiti:formProperty>
-
+        </activiti:formProperty>
         <activiti:formProperty id="Info_05" name="Прикріпіть скани документів" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="fDoc_01" name="Паспорт громадянина України; перша та друга сторінки паспорту, а також сторінки з реєстрацією" type="file" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="fDoc_02" name="Дублікат дозволу на придбання; з відміткою магазину про продаж зброї або з відміткою про її переоформлення" type="file" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="fDoc_03" name="Договір страхування; цивільної відповідальності власника зброї перед третіми особами" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_01" name="Паспорт громадянина України; перша та друга сторінки паспорту, а також сторінки з реєстрацією ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_02" name="Дублікат дозволу на придбання; з відміткою магазину про продаж зброї або з відміткою про її переоформлення ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_03" name="Договір страхування; цивільної відповідальності власника зброї перед третіми особами ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="Info_14" name="Завантажити квітанції для сплати" type="label" default="Ви можете скористатися наступним &lt;a href=&quot;https://drive.google.com/open?id=0B9UDkfHM4vkrbEhEQWtNdEFQbG8&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;."></activiti:formProperty>
-	
-<!-- -->
         <activiti:formProperty id="sWorkTime" name="Графік прийому громадян" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон обраного відділення для довідок" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sInvoice1" name=" Додаток 1(зразок)" type="label" default=" "></activiti:formProperty>
@@ -145,45 +139,33 @@
 
 		</script>
     </scriptTask>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="weapon_${sID_UA}_1122">
       <extensionElements>
         <activiti:formProperty id="sID_UA" name="sID_UA ; ;bVisible=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name=" e-mail заявника" type="string" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="sWorkTime" name="Графік прийому громадян" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон обраного відділення для довідок" type="label"></activiti:formProperty>
         <activiti:formProperty id="sInvoice1" name=" Додаток 1(зразок)" type="label"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса регіонального відділення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Підпис" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk" type="string" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="nUser" name="Users" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecisionMain" name="Результат надання послуги" type="enum" required="true">
           <activiti:value id="acceptMain" name="Зауваження відсутні (до наданих документів)"></activiti:value>
           <activiti:value id="rejectMain" name="Є зауваження (до наданих документів)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
-<!--        <activiti:formProperty id="sBody_1" name="[pattern/print/mvd/common_mvd_2_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява на придбання зброї" writable="false"></activiti:formProperty>-->
+         <activiti:formProperty id="fDoc_01" name="Паспорт громадянина України; ;bNew=true" type="file" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_02" name="Дублікат дозволу на придбання; ;bNew=true" type="file" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDoc_03" name="Договір страхування ;bNew=true" type="file" default=" " writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fDoc_03},${fDoc_02},${fDoc_01}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -195,50 +177,48 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Дозвіл на зберігання та носіння зброї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-		[pattern/mail/mvd/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/mvd/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
-<!--&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;-->
 
-Ви подавали заявку щодо Отримання дозволу на зберігання та носіння зброї. &lt;br/&gt;&lt;br/&gt;
-Співробітник МВС перевірив надані Вами документи и до них відсутні зауваження. &lt;br/&gt;&lt;br/&gt;
 
-Просимо підготувати наступний пакет документів:&lt;br/&gt;
-1. Дублікат дозволу на придбання з відміткою магазину про продаж зброї або з відміткою про її переоформлення&lt;br/&gt;
-2. Договір страхування цивільної відповідальності власника зброї перед третіми особами&lt;br/&gt;
-3. Ксерокопія паспорту громадянина України&lt;br/&gt;
-4. Платіжне доручення або квитанція (реквізити отримуйте або обов'язково перевіряйте в органах внутрішніх справ безпосередньо перед сплатою за послугу)&lt;br/&gt;
-5. 2 фотокартки 3х4&lt;br/&gt;
+Ви подавали заявку щодо Отримання дозволу на зберігання та носіння зброї. <br/><br/>
+Співробітник МВС перевірив надані Вами документи и до них відсутні зауваження. <br/><br/>
 
-              &lt;b&gt;Адреса обраного Вами регіонального відділення: &lt;/b&gt;&lt;br/&gt;
-               ${sRajAdress}&lt;br/&gt;
+Просимо підготувати наступний пакет документів:<br/>
+1. Дублікат дозволу на придбання з відміткою магазину про продаж зброї або з відміткою про її переоформлення<br/>
+2. Договір страхування цивільної відповідальності власника зброї перед третіми особами<br/>
+3. Ксерокопія паспорту громадянина України<br/>
+4. Платіжне доручення або квитанція (реквізити отримуйте або обов'язково перевіряйте в органах внутрішніх справ безпосередньо перед сплатою за послугу)<br/>
+5. 2 фотокартки 3х4<br/>
 
-              Прийомний час: &lt;br/&gt;
-               ${sRajTimeWork}&lt;br/&gt;
+              <b>Адреса обраного Вами регіонального відділення: </b><br/>
+               ${sRajAdress}<br/>
 
-			   Телефон для довідок: &lt;br/&gt;
+              Прийомний час: <br/>
+               ${sRajTimeWork}<br/>
+
+			   Телефон для довідок: <br/>
                ${sRajPhone}
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/mvd/new_design/_common_signature.html]
-[pattern/mail/new_design/_common_footer.html]
-</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -252,32 +232,29 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Дозвіл на зберігання та носіння зброї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>  
-		[pattern/mail/mvd/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/mvd/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
                                        
 Ваш запит успішно зареєстровано.
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/mvd/new_design/_common_signature.html]
-[pattern/mail/new_design/_common_footer.html]
-
-</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -291,34 +268,31 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Дозвіл на зберігання та носіння зброї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>  
-		  [pattern/mail/mvd/new_design/_common_header.html]
-<!--		[pattern/mail/new_design/_common_header.html]-->
+          <activiti:expression><![CDATA[[pattern/mail/mvd/new_design/_common_header.html]
+
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ви подавали заявку для оцінки якості надання послуги Отримання дозволу на зберігання та носіння зброї. &lt;br/&gt;&lt;br/&gt;
+Ви подавали заявку для оцінки якості надання послуги Отримання дозволу на зберігання та носіння зброї. <br/><br/>
 
-              &lt;b&gt;Адреса обраного Вами регіонального відділення: &lt;/b&gt;&lt;br/&gt;
-               ${sRajAdress}&lt;br/&gt;
+              <b>Адреса обраного Вами регіонального відділення: </b><br/>
+               ${sRajAdress}<br/>
 
-              Прийомний час: &lt;br/&gt;
-               ${sRajTimeWork}&lt;br/&gt;
+              Прийомний час: <br/>
+               ${sRajTimeWork}<br/>
 
-			   Телефон для довідок: &lt;br/&gt;
+			   Телефон для довідок: <br/>
                ${sRajPhone}
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/mvd/new_design/_common_signature.html]
-[pattern/mail/new_design/_common_footer.html]
-
-</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -344,46 +318,45 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Дозвіл на зберігання та носіння зброї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>  
-		[pattern/mail/mvd/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/mvd/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ви подавали заявку щодо Отримання дозволу на зберігання та носіння зброї. &lt;br/&gt;&lt;br/&gt;
-Зауваження до наданих документів наступні: ${sComment}&lt;br/&gt;&lt;br/&gt;
+Ви подавали заявку щодо Отримання дозволу на зберігання та носіння зброї. <br/><br/>
+Зауваження до наданих документів наступні: ${sComment}<br/><br/>
 
-              &lt;b&gt;Адреса обраного Вами регіонального відділення: &lt;/b&gt;&lt;br/&gt;
-               ${sRajAdress}&lt;br/&gt;
+              <b>Адреса обраного Вами регіонального відділення: </b><br/>
+               ${sRajAdress}<br/>
 
-              Прийомний час: &lt;br/&gt;
-               ${sRajTimeWork}&lt;br/&gt;
+              Прийомний час: <br/>
+               ${sRajTimeWork}<br/>
 
-			   Телефон для довідок: &lt;br/&gt;
+			   Телефон для довідок: <br/>
                ${sRajPhone}
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/mvd/new_design/_common_signature.html]
-[pattern/mail/new_design/_common_footer.html]
-</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
-	</serviceTask>
+    </serviceTask>
     <sequenceFlow id="flow22" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mvd_2">
     <bpmndi:BPMNPlane bpmnElement="common_mvd_2" id="BPMNPlane_common_mvd_2">
@@ -392,15 +365,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="65.0" width="105.0" x="428.0" y="170.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="73.0" width="149.0" x="212.0" y="69.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="320.0" y="68.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="269.0" y="13.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="65.0" width="191.0" x="385.0" y="370.0"></omgdc:Bounds>
@@ -432,18 +396,6 @@
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="507.0" y="546.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="145.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="212.0" y="105.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="361.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="460.0" y="105.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="335.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="286.0" y="48.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="480.0" y="435.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="460.0"></omgdi:waypoint>
@@ -453,7 +405,7 @@
         <omgdi:waypoint x="334.0" y="480.0"></omgdi:waypoint>
         <omgdi:waypoint x="334.0" y="530.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="238.0" y="477.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="238.0" y="477.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
@@ -465,14 +417,14 @@
         <omgdi:waypoint x="480.0" y="125.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="170.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="64.0" x="400.0" y="144.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="64.0" x="400.0" y="144.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="500.0" y="105.0"></omgdi:waypoint>
         <omgdi:waypoint x="600.0" y="105.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="68.0" x="496.0" y="85.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="68.0" x="496.0" y="85.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
@@ -488,7 +440,7 @@
         <omgdi:waypoint x="559.0" y="480.0"></omgdi:waypoint>
         <omgdi:waypoint x="559.0" y="546.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="510.0" y="480.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="510.0" y="480.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
@@ -503,6 +455,10 @@
         <omgdi:waypoint x="559.0" y="601.0"></omgdi:waypoint>
         <omgdi:waypoint x="559.0" y="667.0"></omgdi:waypoint>
         <omgdi:waypoint x="498.0" y="667.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="145.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="105.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
