@@ -133,9 +133,9 @@ public class Liqpay {
             LOG.info("params>>>>getPayData>>: " + params); //+
         }
 
-        if (bTest) {
+        /*if (bTest) {
             params.put("sandbox", sandbox);
-        }
+        }*/
 
         LOG.info("(params={},privateKey={})", params, privateKey);
         return params;
