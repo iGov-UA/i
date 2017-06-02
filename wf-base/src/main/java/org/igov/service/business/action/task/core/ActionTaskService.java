@@ -1290,9 +1290,12 @@ public class ActionTaskService {
         List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
                         
         for (ProcessInstance oProcessInstance : aAllProcessInstance) {   
-            
+            /*
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
-            aAllProcessDefinition.add(oProcessDefinition);
+            aAllProcessDefinition.add(oProcessDefinition);*/
+            String sDefName = oProcessInstance.getProcessDefinitionName();
+            String sDefId = oProcessInstance.getProcessDefinitionId();
+            LOG.info("ProcessDefinition field: {}, {}", sDefId, sDefName);
         }  
         
         //Сет в который записываются ProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
