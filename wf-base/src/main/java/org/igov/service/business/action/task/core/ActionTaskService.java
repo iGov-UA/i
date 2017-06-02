@@ -1286,16 +1286,13 @@ public class ActionTaskService {
             aAllProcessInstance.addAll(aProcessInstanceHistory);
             aAllProcessInstance.addAll(aProcessInstanceActive);
         }    
-        
-                
-
-        
+               
         List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
                         
         for (ProcessInstance oProcessInstance : aAllProcessInstance) {   
             
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
-        
+            aAllProcessDefinition.add(oProcessDefinition);
         }  
         
         //Сет в который записываются ProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
