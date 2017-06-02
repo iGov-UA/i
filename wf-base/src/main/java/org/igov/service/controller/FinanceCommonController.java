@@ -77,16 +77,15 @@ public class FinanceCommonController {
         String URI = request.getRequestURI() + "?" + request.getQueryString();
         //LOG.info("/setPaymentStatus_TaskActiviti");
 
-        LOG.info("(sID_Order={})", sID_Order);
-        LOG.info("(sID_PaymentSystem={})", sID_PaymentSystem);
-        LOG.info("(sData={})", sData);
-        LOG.info("(sPrefix={})", sPrefix);
+        LOG.info("(sID_Order=>>>>>>>>>>>>{})", sID_Order); //
+        LOG.info("(sID_PaymentSystem=>>>>>>>>>>>>{})", sID_PaymentSystem);
+        LOG.info("(sData=>>>>>>>>>>>>>)", sData);
+        LOG.info("(sPrefix={}>>>>>>>>>>>>)", sPrefix);
 
-        LOG.info("(data={})", data);
-        LOG.info("(signature={})", signature);
-        LOG.info("(URI={})", URI);
+        LOG.info("(data={}>>>>>>>>>>>>>>>)", data);
+        LOG.info("(signature={}>>>>>>>>>>>)", signature);
+        LOG.info("(URI={}>>>>>>>>>>.)", URI);
         String sDataDecoded = null;
-
         try {
             StringBuilder osRequestBody = new StringBuilder("");
             BufferedReader oReader = request.getReader();
@@ -105,7 +104,7 @@ public class FinanceCommonController {
                     sDataDecoded = sDataDecoded.substring(0, index + 1);
                 }
                 LOG.info("(sDataDecoded={})", sDataDecoded);
-            }
+           }
             oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
@@ -173,6 +172,7 @@ public class FinanceCommonController {
             throw oException;
         }
         return sData;
+        
     }
     
     private static String parseData(String data) {
@@ -259,9 +259,14 @@ public class FinanceCommonController {
         @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam Long nID_Subject,
         @ApiParam(value = "количество часов актуальности платежа", required = false) @RequestParam Integer sExpired_Period_Hour
     ) throws Exception {
-if(sExpired_Period_Hour!=0){
+
+    	LOG.info("sID_Merchant in fcc = >>>>>", sID_Merchant );
+    	LOG.info("sID_Order in fcc = >>>>>", sID_Order );
+    	LOG.info("sSum in fcc = >>>>>", sSum );
+    	LOG.info("sDescription in fcc = >>>>>", sDescription );
+    	LOG.info("sID_Currency in fcc = >>>>>", sID_Currency );
+    	LOG.info("nID_Subject in fcc = >>>>>", nID_Subject );
     	LOG.info("sExpired_Period_Hour in fcc = >>>>>", sExpired_Period_Hour );
-}else   LOG.info("sExpired_Period_Hour in fcc = >>>>> is 0");
         if (sSum != null) {
             sSum = sSum.replaceAll(",", ".");
         }else{

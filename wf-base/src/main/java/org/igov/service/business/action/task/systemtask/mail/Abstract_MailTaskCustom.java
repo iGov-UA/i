@@ -348,8 +348,9 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             String pattern_expired_period_hour = String.format(PATTERN_EXPIRED_PERIOD_HOUR, prefix);
             Integer nExpired_Period_Hour = execution.getVariable(pattern_expired_period_hour) != null 
                     ? ((Long)execution.getVariable(pattern_expired_period_hour)).intValue() : null;
+              LOG.info("nExpired_Period_Hour >>>>>>>>>>>>>>" + nExpired_Period_Hour);
 
-            String sID_Order = "TaskActiviti_" + execution.getId().trim()
+              String sID_Order = "TaskActiviti_" + execution.getId().trim()
                     + prefix;
             String sURL_CallbackStatusNew = String.format(LIQPAY_CALLBACK_URL,
                     sID_Order, "", prefix);
@@ -364,7 +365,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant,
                     sSum, oID_Currency, sLanguage, sDescription, sID_Order,
                     sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
-                    nID_Subject, bTest, nExpired_Period_Hour);
+                    nID_Subject, bTest, nExpired_Period_Hour==null?1:nExpired_Period_Hour);
+            LOG.info("htmlButton ==========>>>>>> ",htmlButton);
             matcher.appendReplacement(outputTextBuffer, htmlButton);
         }
         return matcher.appendTail(outputTextBuffer).toString();

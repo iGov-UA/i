@@ -2858,9 +2858,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     /**
      * Returns business processes which belong to a specified user
      *
-     * @param sLogin - login of user in user activity
-     * @param bDocOnly
-     * @return
+     * @param sLogin логин пользователя
+     * @param bDocOnly выводить только список БП документов
+     * @param sProcessDefinitionId ИД БП (без версионности)
+     * @return список бизнес процессов к которым у пользователя есть доступ
      */
     @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=userId\n\n"
@@ -2916,10 +2917,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     List<Map<String, String>> getBusinessProcesses(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "true") Boolean bDocOnly,
+            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
             @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value="sProcessDefinitionId", required = false) String sProcessDefinitionId
-    )
-            throws IOException {
+    ) throws IOException {
+        
          return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
     }
 
@@ -2944,9 +2945,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
             @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value="sProcessDefinitionId", required = false) String sProcessDefinitionId
     ) throws IOException {
-        
-    	LOG.info("getBusinessProcessesFields. sLogin: {} bDocOnly: {} sProcessDefinitionId: {}", sLogin, bDocOnly, sProcessDefinitionId);
-    	
+            	
         return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
     }
 
@@ -3142,7 +3141,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     ) throws Exception {
         LOG.info("updateProcess started...");
         //LOG.info("sJsonBody {}", sJsonBody);
-        
+        boolean isSubmitFlag = true;
         Map<String, Object> mParam = new HashMap<>();
         Map<String, Object> mReturn = new HashMap<>();
         Map<String, Object> mJsonBody;
@@ -3165,7 +3164,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     
                     /*org.json.simple.JSONObject oaProcessSubjectTask 
                             = (org.json.simple.JSONObject)mJsonBody.get("aProcessSubjectTask");*/
-                    oProcessSubjectTaskService.synctProcessSubjectTask((org.json.simple.JSONArray)((org.json.simple.JSONObject)
+                    isSubmitFlag = oProcessSubjectTaskService.syncProcessSubjectTask((org.json.simple.JSONArray)((org.json.simple.JSONObject)
                             parser.parse(sJsonBody)).get("aProcessSubjectTask"), taskId);
                 }
                 
@@ -3184,7 +3183,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             runtimeService.setVariable(executionId, (String) param.get("id"), param.get("value"));
                         }
 
-                        if (!bSaveOnly) {
+                        if (!bSaveOnly && isSubmitFlag) {
                             LOG.info("Submitting task");
                             taskService.complete(firstTask.getId());
                         }
