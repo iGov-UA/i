@@ -28,7 +28,7 @@ public class Liqpay {
 
     public static final Language DEFAULT_LANG = Language.RUSSIAN;
     private static final Logger LOG = LoggerFactory.getLogger(Liqpay.class);
-    private static final String sURL_Liqpay = "https://www.liqpay.com/api/checkout";
+    private static final String sURL_Liqpay = "https://www.liqpay.com/api/3/checkout";
     private static final String version = "3";
     private static final String sandbox = "1";
     private static final String sHTML_PayButton = new StringBuilder()
