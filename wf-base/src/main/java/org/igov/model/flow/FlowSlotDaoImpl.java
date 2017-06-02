@@ -11,14 +11,17 @@ import org.igov.util.db.QueryBuilder;
 
 import java.util.*;
 import org.igov.model.core.GenericEntityDao;
+import org.igov.service.business.flow.FlowService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * User: goodg_000
- * Date: 21.06.2015
- * Time: 15:43
+ * User: goodg_000 Date: 21.06.2015 Time: 15:43
  */
 @Repository
 public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements FlowSlotDao {
+
+    private static final Logger LOG = LoggerFactory.getLogger(FlowSlotDaoImpl.class);
 
     protected FlowSlotDaoImpl() {
         super(FlowSlot.class);
@@ -45,7 +48,7 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
 
     @Override
     public List<FlowSlot> findFlowSlotsByBP(String sID_BP, Long nID_SubjectOrganDepartment, DateTime startDate,
-                                            DateTime stopDate) {
+            DateTime stopDate) {
 
         Criteria criteria = createCriteria();
         criteria.add(Restrictions.ge("sDate", startDate));
@@ -84,10 +87,19 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
 
     @Override
     public int updateSlots(Long nID_Flow_ServiceData, Collection<DateTime> dates, String newDuration) {
+        LOG.info("updateSlots size ---->>>>>>>>>>>>>>>>" + dates.size());
+        List<DateTime> listDates = new ArrayList<>(dates);
+        for (DateTime dateTime : listDates) {
+            updateSlot(nID_Flow_ServiceData, dateTime, newDuration);
+        }
+        return 0;
+    }
+    
+    private int updateSlot(Long nID_Flow_ServiceData, DateTime dateTime, String newDuration) {
         QueryBuilder qb = new QueryBuilder(getSession(), "update FlowSlot s set ");
         qb.append("s.sDuration = :DURATION ", newDuration);
         qb.append("where s.flow.id = :FLOW_ID and ", nID_Flow_ServiceData);
-        qb.appendInSafe("s.sDate", "DATE", new ArrayList<>(dates));
+        qb.append("s.sDate = :DATE", dateTime);
         return qb.toQuery().executeUpdate();
     }
 
@@ -95,7 +107,7 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
         Criteria criteria = createCriteria();
         criteria.add(Restrictions.eq("flow", flow));
         criteria.add(Restrictions.eq("sDate", targetDateTime));
-        return (FlowSlot)criteria.uniqueResult();
+        return (FlowSlot) criteria.uniqueResult();
     }
 
     @Override
@@ -115,5 +127,13 @@ public class FlowSlotDaoImpl extends GenericEntityDao<Long, FlowSlot> implements
         }
 
         return res;
+    }
+
+    @Override
+    public void delete(FlowSlot entity) {
+        LOG.info("FlowSlot deleting started...");
+        LOG.info("FlowSlot deleted id {}", entity.getId());
+        LOG.info("FlowSlot deleted name {}", entity.getName());
+        super.delete(entity);
     }
 }
