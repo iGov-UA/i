@@ -4,7 +4,10 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/687</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info" name="Зверніть увагу:послуга надається тільки громадянам України; ;labelType=info" type="label"></activiti:formProperty>
+        <activiti:formProperty id="sText1" name="; ;labelType=info" type="label" default="Зверніть увагу: послуга надається тільки громадянам України" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ваше Ім'я; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відділ ДРАЦС згідно Вашого місця проживання" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="saChangeName" name="Чи міняли раніше прізвище, власне ім’я, по батькові?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -78,11 +81,10 @@
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText1" name="Про відповідальність за повідомлення завідомо неправдивих відомостей відділу державної реєстрації актів цивільного стану і про необхідність обміну паспорта громадянина України попереджений(а)" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sText2" name="; ;labelType=success" type="label" default="Про відповідальність за повідомлення завідомо неправдивих відомостей відділу державної реєстрації актів цивільного стану і про необхідність обміну паспорта громадянина України попереджений(а)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_name1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_name2.json')}"></activiti:formProperty>
-       
-        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers26" name="якщо раніше не змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_26&quot;:{&quot;aField_ID&quot;:[&quot;sSum&quot;,&quot;sDescription&quot;],&quot;asID_Field_sValue&quot;:[&quot;5.2&quot;,&quot;державне мито за державну реєстрацію зміни імені фізичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'||[sClient] == 'ні'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу ; ;bVisible=false" type="string"></activiti:formProperty>
