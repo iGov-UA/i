@@ -330,6 +330,10 @@ public class MigrationServiceImpl implements MigrationService {
         Class<?> clazz = obj.getClass();
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
+            if(string.startsWith("{") && string.contains("Mongo")) {
+
+            }
+
             if (string.length() < 255) {
                 type = attributeTypeDao.findById(3L).get();
                 Attribute_StringShort shortString = new Attribute_StringShort();
@@ -381,10 +385,6 @@ public class MigrationServiceImpl implements MigrationService {
             long_attr.setoAttribute(attribute);
             attribute.setoAttribute_Long(long_attr);
         }
-        if (clazz.getSimpleName().equalsIgnoreCase("file")) {
-
-        }
-
         return type;
     }
 }

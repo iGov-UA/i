@@ -21,6 +21,7 @@ import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
+import org.igov.io.db.kv.analytic.IBytesDataStorage;
 import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 import org.igov.service.ArchiveServiceImpl;
@@ -36,8 +37,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -45,7 +48,7 @@ import java.util.*;
  * @author olga
  */
 @Controller
-@Api(tags = { "ProcessController - процессы и задачи" })
+@Api(tags = {"ProcessController - процессы и задачи"})
 @RequestMapping(value = "/analytic/process")
 public class ProcessController {
 
@@ -68,8 +71,9 @@ public class ProcessController {
     @Autowired
     private Attribute_FileDao attribute_FileDao;
 
-    //@Autowired
-    //private IBytesDataStorage durableBytesDataStorage;
+    @Autowired
+    private IFileStorage analyticFileDataStorage;
+
     @Autowired
     private IFileStorage durableFileStorage;
 
@@ -104,11 +108,11 @@ public class ProcessController {
     @RequestMapping(value = "/duplicate", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseBody
     public String duplicate() {
-       StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
 
         List<HistoricProcessInstance> processInstances = historyService.createHistoricProcessInstanceQuery().finished().list();
 
-        for(HistoricProcessInstance instance: processInstances) {
+        for (HistoricProcessInstance instance : processInstances) {
             stringBuilder.append(createNewArchiveProcess(instance)).append("\n").append(createNewCustomArchiveProcess(instance)).append("\n-------------------");
 
         }
@@ -117,7 +121,7 @@ public class ProcessController {
 
     //TODO rewrite this method as it provides multiple objects each time it is called
     private Process createNewArchiveProcess(HistoricProcessInstance instance) {
-        Process archiveProcess = new  Process();
+        Process archiveProcess = new Process();
         SourceDB sourceDB = new SourceDB();
         sourceDB.setName("iGov");
         archiveProcess.setoSourceDB(sourceDB);
@@ -129,7 +133,6 @@ public class ProcessController {
         archiveProcess.setaAttribute(createAttributeForArchiveProcess(variablesList));
 
 
-
         return archiveProcess;
     }
 
@@ -137,7 +140,7 @@ public class ProcessController {
     private List<Attribute> createAttributeForArchiveProcess(List<HistoricVariableInstance> variableInstances) {
         List<Attribute> resultList = new LinkedList<>();
 
-        for(HistoricVariableInstance instance: variableInstances) {
+        for (HistoricVariableInstance instance : variableInstances) {
             Attribute attribute = new Attribute();
         }
         return null;
@@ -164,7 +167,7 @@ public class ProcessController {
 
     //http://localhost:8080/wf-region/service/analytic/process/getProcesses?sID_=1
     @ApiOperation(value = "/getProcesses", notes = "##### Process - получение процесса #####\n\n")
-    @RequestMapping(value = "/getProcesses", method = RequestMethod.GET, headers = { JSON_TYPE })
+    @RequestMapping(value = "/getProcesses", method = RequestMethod.GET, headers = {JSON_TYPE})
     public
     @ResponseBody
     List<Process> getProcesses(
@@ -271,7 +274,7 @@ public class ProcessController {
 
     //http://localhost:8080/wf-region/service/analytic/process/getFile?nID_Attribute_File=1
     @ApiOperation(value = "/getFile", notes = "##### File - получение контента файла #####\n\n")
-    @RequestMapping(value = "/getFile", method = RequestMethod.GET, headers = { JSON_TYPE })
+    @RequestMapping(value = "/getFile", method = RequestMethod.GET, headers = {JSON_TYPE})
     public
     @ResponseBody
     byte[] getFile(
@@ -308,4 +311,15 @@ public class ProcessController {
             return ("error: " + ex.getMessage()).getBytes();
         }
     }
+
+    @RequestMapping(value = "/saveFile", method = RequestMethod.PUT)
+    @ResponseBody
+    public String uploadFile(MultipartFile file) {
+        if (!file.isEmpty()) {
+            analyticFileDataStorage.saveFile(file.getName(), file);
+        }
+        return null;
+    }
+
+
 }
