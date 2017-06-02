@@ -1244,7 +1244,7 @@ public class ActionTaskService {
             "Select proc.* from act_ru_identitylink link, act_hi_taskinst task, act_hi_procinst proc where link.task_id_ = task.id_"
                     + "                                                        and task.proc_inst_id_ = proc.proc_inst_id_"
                     + "                                                        and link.group_id_ = '" + sLogin + "'"
-                    + "                                                        and proc.proc_def_id_ like '" + sProcessDefinitionId + "%'"
+                    + "                                                        and proc.proc_def_id_ like '_doc_%'"
             ).list();
             
             aAllProcessInstance.addAll(aProcessInstanceHistory);
