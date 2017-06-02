@@ -716,13 +716,7 @@ angular.module('about').controller('aboutController', function ($scope) {
           "sFbID":"1356206656",
           "sCity":"Дніпро"
         },
-        {
-          "sFIO":"Жиган Роман",
-          "sURL":"https://www.facebook.com/roman.zhigan.1",
-          "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-9/11891155_1482232562095454_7875554608302750847_n.jpg?oh=7e82d575c7dc3720330166f9b7504fe7&oe=58F31804",
-          "sFbID":"100009261725895",
-          "sCity":"Дніпро"
-        },
+        
         {
           "sFIO":"Грек Дар'я",
           "sURL":"https://www.facebook.com/darja.grek",
@@ -762,6 +756,7 @@ angular.module('about').controller('aboutController', function ($scope) {
           "sFIO":"Продан Юлія",
           "sURL":"https://www.facebook.com/klimkovichy",
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-9/10268438_1477001455911660_5539510016470161228_n.jpg?oh=0c197afc12912a629f8c8b20826ec4a3&oe=59232B51",
+          "sFbID":"100008054590134",
           "sCity":"Дніпро"
         },
         {
@@ -784,6 +779,39 @@ angular.module('about').controller('aboutController', function ($scope) {
           "sFbID":"100003563595723",
           "sCity":"Дніпро"
         },
+        {
+            "sFIO":"Легкий Антон",
+            "sURL":"https://github.com/antonlegkiy",
+            "sPhoto":"https://avatars3.githubusercontent.com/u/17439100?v=3&s=460",
+            "sCity":"Дніпро"
+          },
+        {
+            "sFIO":"Ковилін Єгор",
+            "sURL":"https://www.facebook.com/profile.php?id=100015027558838",
+            "sPhoto":"https://scontent.fhen1-1.fna.fbcdn.net/v/t1.0-1/p160x160/18557241_209910446186539_9158320520475994477_n.jpg?oh=9dae4a0a3201ef473b7f3f2103271351&oe=59AA8129",
+            "sFbID":"100015027558838",
+            "sCity":"Дніпро"
+          },
+        {
+            "sFIO":"Халіков Олексій",
+            "sURL":"https://www.facebook.com/aleksey.khalikov",
+            "sPhoto":"https://scontent.fhen1-1.fna.fbcdn.net/v/t1.0-1/p160x160/10308873_642748815833422_3678972944150390034_n.jpg?oh=438c059ca712160712200296c561e9e5&oe=59A59AEC",
+            "sFbID":"100002949270146",
+            "sCity":"Київ"
+         },
+         {
+             "sFIO":"Шебалденкова Олена",
+             "sURL":"https://www.facebook.com/elena.shebaldenkova",
+             "sPhoto":"https://scontent.fhen1-1.fna.fbcdn.net/v/t1.0-1/c0.8.160.160/p160x160/17191262_1369996553091968_5081380197533143516_n.jpg?oh=6458dfe2a209d5570cf1f5086b5a9fcc&oe=59E5B7AB",
+             "sFbID":"100002449087745",
+             "sCity":"Київ"
+          },
+          {
+              "sFIO":"Дащенко Інна",
+              "sURL":"https://github.com/Dashchenko-Inna",
+              "sPhoto":"https://avatars2.githubusercontent.com/u/10570898?v=3&s=460",
+              "sCity":"Дніпро"
+           },
         {
           "sID_Group":"dnipro.dnipro",
           "sFIO":"Корчагін Павло",
@@ -835,6 +863,14 @@ angular.module('about').controller('aboutController', function ($scope) {
           "sURL":"https://www.facebook.com/profile.php?id=100009085920321",
           "sCity":"Дніпро"
         },
+        {
+            "sFbID":"100009261725895",
+            "sID_Group":"dnipro.dnipro",
+            "sFIO":"Жиган Роман",
+            "sURL":"https://www.facebook.com/roman.zhigan.1",
+            "sCity":"Дніпро"
+          },
+        
         {
           "sID_Group":"dnipro.dnipro",
           "sFIO":"Будник Дмитро",
@@ -1772,6 +1808,14 @@ angular.module('about').controller('aboutController', function ($scope) {
           "sPhoto":"https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c170.49.619.619/s160x160/305556_110861075713255_980388014_n.jpg?oh=387932a3476d882494353f1d3add67e1&oe=584B19E7",
           "sCity":"Харків"
         },
+        {
+            "sFbID":"100006945317670",
+            "sID_Group":"kharkiv.kharkiv.rada",
+            "sFIO":"Семенов Антон",
+            "sURL":"https://www.facebook.com/semyenov.anton",
+            "sPhoto":"https://scontent.fhen1-1.fna.fbcdn.net/v/t1.0-1/p160x160/10418932_1558062307768598_1238085809328382757_n.jpg?oh=46be346b7c6e84b31a710106f075de91&oe=59A0AF94",
+            "sCity":"Харків"
+          },
 
         {
           "sFbID":"100004862344397",
