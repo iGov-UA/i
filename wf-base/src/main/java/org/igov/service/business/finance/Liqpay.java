@@ -148,10 +148,10 @@ public class Liqpay {
     	
     	LOG.info("getPayButtonHTML_LiqPay >>>>> nExpired_Period_Hour" +nExpired_Period_Hour); //10
 
-        Map<String, String> mParam = getPayData(sID_Merchant, sSum,
+        Map<String, String> mParam = getPayDataRequest(sID_Merchant, sSum,
                 oID_Currency, oLanguage, sDescription, 
                 sID_Order, sURL_CallbackStatusNew,
-                sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour); 
+                sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour); // =getPayData
 
         String sHTML = getForm(mParam, privateKey, oLanguage);
         LOG.info("mParam in getPayButtonHTML_LiqPay  = {}", mParam); //+
