@@ -1286,35 +1286,34 @@ public class ActionTaskService {
             aAllProcessInstance.addAll(aProcessInstanceHistory);
             aAllProcessInstance.addAll(aProcessInstanceActive);
         }    
-               
-        List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
-                        
-        for (ProcessInstance oProcessInstance : aAllProcessInstance) {   
-            /*
-            ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
-            aAllProcessDefinition.add(oProcessDefinition);*/
-            String sDefName = oProcessInstance.getProcessDefinitionName();
-            String sDefId = oProcessInstance.getProcessDefinitionId();
-            LOG.info("ProcessDefinition field: {}, {}", sDefId, sDefName);
-        }  
-        
-        //Сет в который записываются ProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
+                       
+        //Сет в который записываются sProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
         Set<String> asProcessDefinitionIdWithoutVersion = new HashSet<>();
         
         //Лист без дублей
-        List<ProcessDefinition> aProcessDefinition_Return = new ArrayList<>();
+        List<ProcessInstance> aProcessInstanceWithoutDuplicates = new ArrayList<>();
 
-        for (ProcessDefinition oProcessDefinition : aAllProcessDefinition) {
-            String sProcessDefinitionIdRoot = oProcessDefinition.getId().substring(0, oProcessDefinition.getId().indexOf(":"));
+        for (ProcessInstance oProcessInstance : aAllProcessInstance) {
+            
+            String sProcessDefinitionIdRoot = oProcessInstance.getProcessDefinitionId()
+                                                              .substring(0, oProcessInstance.getProcessDefinitionId().indexOf(":"));
 
             //если в сете уже лежит такой ProcessDefinitionId, то не кладем в итоговый лист
             if (!asProcessDefinitionIdWithoutVersion.contains(sProcessDefinitionIdRoot)) {
 
-                aProcessDefinition_Return.add(oProcessDefinition);
+                aProcessInstanceWithoutDuplicates.add(oProcessInstance);
             }
 
             asProcessDefinitionIdWithoutVersion.add(sProcessDefinitionIdRoot);
         }
+        
+        List<ProcessDefinition> aProcessDefinition_Return = new ArrayList<>();
+                        
+        for (ProcessInstance oProcessInstance : aProcessInstanceWithoutDuplicates) {   
+            
+            ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
+            aProcessDefinition_Return.add(oProcessDefinition);
+        }  
         LOG.info("aProcessDefinition_Return={}", aProcessDefinition_Return);
         
         return aProcessDefinition_Return;
