@@ -64,3 +64,19 @@ module.exports.createGuid = function () {
 
   return result;
 };
+
+module.exports.createAndCheckOTP = function (data) {
+  var response;
+  if( data.phone && !data.value ) {
+    var code = Math.floor(Math.random() * 1000000);
+    var string = code.toString();
+
+    cache.set(buildKey(data.phone), string, 600);
+    response = {phone: data.phone, code: string};
+  } else if( data.phone && data.value ) {
+    cache.get(buildKey(data.phone), function (error, value) {
+      response = !!(value && value === data.value);
+    });
+  }
+  return response;
+};

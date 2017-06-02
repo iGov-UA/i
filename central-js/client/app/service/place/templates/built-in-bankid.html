@@ -570,15 +570,38 @@
                        class="form-control"
                        value="">
 
-                <input ng-switch-when="tel"
-                       type="text"
-                       name="{{property.id}}"
-                       ng-model="data.formData.params[property.id].value"
-                       ng-tel-field="{defaultCountry:'ua', autoFormat:true, allowExtensions:false, preferredCountries:['ua'], autoPlaceholder:true}"
-                       ng-required="isFieldRequired(property)"
-                       ng-class="getBpAndFieldID(property)"
-                       class="form-control"
-                       value="">
+                <div ng-switch-when="tel">
+                  <input type="text"
+                         ng-disabled="phoneVerify.confirmed"
+                         name="{{property.id}}"
+                         ng-model="data.formData.params[property.id].value"
+                         ng-tel-field="{defaultCountry:'ua', autoFormat:true, allowExtensions:false, preferredCountries:['ua'], autoPlaceholder:true}"
+                         ng-required="isFieldRequired(property)"
+                         ng-class="getBpAndFieldID(property)"
+                         class="form-control"
+                         maxlength="16"
+                         value="">
+                  <div class="mp-phone-check" ng-if="isMPassField(null, true)">
+                    <div class="phone-check-dialog" ng-if="phoneVerify.dialog">
+                      <input type="text"
+                             class="form-control input-sm"
+                             placeholder="Введiть надiсланий SMS-пароль"
+                             ng-model="phoneVerify.otp">
+                      <input type="button"
+                             class="btn btn-default btn-sm"
+                             value="Пiдтвердити"
+                             ng-click="confirmOtp()">
+                    </div>
+                    <input type="button"
+                           class="btn btn-default btn-sm"
+                           value="Пiдтвердити номер"
+                           ng-if="data.formData.params[property.id].value.length === 16 && phoneVerify.showVerifyButton"
+                           ng-click="phoneVerifyStart()">
+                    <a ng-click="changePhone()"
+                       ng-if="!phoneVerify.showVerifyButton">Змiнити номер телефону</a>
+                  </div>
+                </div>
+
 
                 <p class="input-group datepicker-central"
                    ng-switch-when="date">
