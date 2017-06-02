@@ -321,5 +321,11 @@ public class ProcessController {
         return null;
     }
 
+    @RequestMapping(value = "/checkFile", method=RequestMethod.GET)
+    @ResponseBody
+    public Boolean isFilePresent(@RequestParam String fileName) {
+        boolean isPresent = analyticFileDataStorage.keyExists(fileName);
+        return isPresent;
+    }
 
 }
