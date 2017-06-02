@@ -1249,21 +1249,22 @@ public class ActionTaskService {
         
         List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
                         
-        aAllProcessInstance.forEach((oProcessInstance) -> {
+        for (ProcessInstance oProcessInstance : aAllProcessInstance) {   
+            
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
             
             //вернуть только документы
             if (bDocOnly && oProcessInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 aAllProcessDefinition.add(oProcessDefinition);
-                
-                //вернуть только заданный sProcessDefinitionId
+            
+            //вернуть только заданный sProcessDefinitionId
             } else if (sProcessDefinitionId != null && oProcessInstance.getProcessDefinitionId().startsWith(sProcessDefinitionId)) {
                 aAllProcessDefinition.add(oProcessDefinition);
                 
             } else if (!bDocOnly && sProcessDefinitionId == null) {                
                 aAllProcessDefinition.add(oProcessDefinition);
-            }
-        });  
+            }          
+        }  
         
         //Сет в который записываются ProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
         Set<String> asProcessDefinitionIdWithoutVersion = new HashSet<>();
