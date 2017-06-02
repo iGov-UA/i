@@ -118,12 +118,6 @@ public class Liqpay {
         params.put("version", version);
         params.put("amount", sSum);
         params.put("currency", oID_Currency.name());
-        params.put("language", oLanguage.getShortName());
-        params.put("description", sDescription);
-        params.put("order_id", sID_Order);
-        params.put("server_url", sURL_CallbackStatusNew);
-        params.put("result_url", sURL_CallbackPaySuccess);
-        params.put("public_key", sPublicKey);
         if (nExpired_Period_Hour != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date oExriredDate = org.igov.service.business.util.Date.diff(null, nExpired_Period_Hour, Calendar.MINUTE);
@@ -132,10 +126,16 @@ public class Liqpay {
             params.put("expired_date", sdf.format(oExriredDate));
             LOG.info("params>>>>getPayData>>: " + params); //+
         }
-
-        /*if (bTest) {
+        params.put("language", oLanguage.getShortName());
+        params.put("description", sDescription);
+        params.put("order_id", sID_Order);
+        params.put("server_url", sURL_CallbackStatusNew);
+        params.put("result_url", sURL_CallbackPaySuccess);
+        params.put("public_key", sPublicKey);
+        
+        if (bTest) {
             params.put("sandbox", sandbox);
-        }*/
+        }
 
         LOG.info("(params={},privateKey={})", params, privateKey);
         return params;
