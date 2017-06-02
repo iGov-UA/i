@@ -121,9 +121,16 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="Послуга є платною ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
+         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="marker_15" name="Рішення щодо прийняття заявки в роботу позитивне; ;bVisible=false" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_16" name="Рішення щодо прийняття заявки в роботу негативне; ;bVisible=false" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saDecisionType" name="Заявка приймається в роботу?; ;bVisible=false" type="enum" required="false">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefusal_Comments" name="Коментар; Надайте коментар щодо причин відмови ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сумма платежу за послугу;Вкажіть сумму в грн., яка буде направлена заявнику для оплати за замовлену послугу ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Попередній розгляд Інститутом" activiti:candidateGroups="ASO">
@@ -247,10 +254,17 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="Послуга є платною ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа ;Внесіть сумму, яка буде направлена завниму для оплати за замовлену послугу ;bVisible=true" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-      
+         <activiti:formProperty id="marker_15" name="Рішення щодо прийняття заявки в роботу позитивне; ;bVisible=false" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_16" name="Рішення щодо прийняття заявки в роботу негативне; ;bVisible=false" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="saDecisionType" name="Заявка приймається в роботу?" type="enum" required="true">
+          <activiti:value id="YES" name="Так"></activiti:value>
+          <activiti:value id="NO" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRefusal_Comments" name="Коментар; Надайте коментар щодо причин відмови" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сумма платежу за послугу;Вкажіть сумму в грн., яка буде направлена заявнику для оплати за замовлену послугу" type="string"></activiti:formProperty>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="exclusivegateway8"></sequenceFlow>
