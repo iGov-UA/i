@@ -1228,42 +1228,74 @@ public class ActionTaskService {
         }
         
         LOG.info("getBusinessProcessesObjectsOfLogin: aProcessDefinition_Return = {}", aProcessDefinition_Return);*/
+        
+        List<ProcessInstance> aAllProcessInstance = new ArrayList<>();
+        
+        //вернуть только документы
+        if (bDocOnly) {
+            
+            List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
+                    + "                                                        and link.user_id_ = '" + sLogin + "'"
+                    + "                                                        and proc.proc_def_id_ like '_doc_%'"
+            ).list();
                 
-        List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_ru_identitylink link, act_hi_taskinst task, act_hi_procinst proc where link.task_id_ = task.id_"
+                    + "                                                        and task.proc_inst_id_ = proc.proc_inst_id_"
+                    + "                                                        and link.group_id_ = '" + sLogin + "'"
+                    + "                                                        and proc.proc_def_id_ like '" + sProcessDefinitionId + "%'"
+            ).list();
+            
+            aAllProcessInstance.addAll(aProcessInstanceHistory);
+            aAllProcessInstance.addAll(aProcessInstanceActive);
+            
+        //вернуть только заданный sProcessDefinitionId
+        } else if (sProcessDefinitionId != null) {
+            
+            List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
+                    + "                                                        and link.user_id_ = '" + sLogin + "'"
+                    + "                                                        and proc.proc_def_id_ like '" + sProcessDefinitionId + "%'"
+            ).list();
+                
+            List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_ru_identitylink link, act_hi_taskinst task, act_hi_procinst proc where link.task_id_ = task.id_"
+                    + "                                                        and task.proc_inst_id_ = proc.proc_inst_id_"
+                    + "                                                        and link.group_id_ = '" + sLogin + "'"
+                    + "                                                        and proc.proc_def_id_ like '" + sProcessDefinitionId + "%'"
+            ).list();
+            
+            aAllProcessInstance.addAll(aProcessInstanceHistory);
+            aAllProcessInstance.addAll(aProcessInstanceActive);
+        
+        //вернуть все процессы для логина    
+        } else if (!bDocOnly && sProcessDefinitionId == null) { 
+            
+            List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
             "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
                     + "                                                        and link.user_id_ = '" + sLogin + "'"
             ).list();
-        LOG.info("NativeProcessInstanceQueryHistory={}", aProcessInstanceHistory);
                 
-        List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
             "Select proc.* from act_ru_identitylink link, act_hi_taskinst task, act_hi_procinst proc where link.task_id_ = task.id_"
                     + "                                                        and task.proc_inst_id_ = proc.proc_inst_id_"
                     + "                                                        and link.group_id_ = '" + sLogin + "'"
             ).list();
-        LOG.info("NativeProcessInstanceQueryActive={}", aProcessInstanceActive);
+            
+            aAllProcessInstance.addAll(aProcessInstanceHistory);
+            aAllProcessInstance.addAll(aProcessInstanceActive);
+        }    
         
-        List<ProcessInstance> aAllProcessInstance = new ArrayList<>();
-        
-        aAllProcessInstance.addAll(aProcessInstanceHistory);
-        aAllProcessInstance.addAll(aProcessInstanceActive);
+                
+
         
         List<ProcessDefinition> aAllProcessDefinition = new ArrayList();
                         
         for (ProcessInstance oProcessInstance : aAllProcessInstance) {   
             
             ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
-            
-            //вернуть только документы
-            if (bDocOnly && oProcessInstance.getProcessDefinitionId().startsWith("_doc_")) {
-                aAllProcessDefinition.add(oProcessDefinition);
-            
-            //вернуть только заданный sProcessDefinitionId
-            } else if (sProcessDefinitionId != null && oProcessInstance.getProcessDefinitionId().startsWith(sProcessDefinitionId)) {
-                aAllProcessDefinition.add(oProcessDefinition);
-                
-            } else if (!bDocOnly && sProcessDefinitionId == null) {                
-                aAllProcessDefinition.add(oProcessDefinition);
-            }          
+        
         }  
         
         //Сет в который записываются ProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
