@@ -4,14 +4,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
     'selfOrdersCount', 'AdminService', 'PlacesService', 'uiUploader', 'FieldAttributesService', 'iGovMarkers', 'service',
     'FieldMotionService', 'ParameterFactory', '$modal', 'FileFactory', 'DatepickerFactory', 'autocompletesDataFactory',
     'ErrorsFactory', 'taxTemplateFileHandler', 'taxTemplateFileHandlerConfig', 'SignFactory', 'TableService', 'LabelService',
-    'MasterPassService',
+    'MasterPassService', 'modalService',
     function ($sce, $state, $stateParams, $scope, $timeout, $location, $window, $rootScope, $http, $filter,
               FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
               ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService,
-              MasterPassService) {
+              MasterPassService, modalService) {
 
       'use strict';
 
@@ -43,6 +43,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
 
       $scope.checkoutData = {};
       $scope.isOpenedCheckout = false;
+      $scope.phoneVerify = {showVerifyButton: true, dialog: false, otp: '', confirmed: false};
 
       $scope.setFormScope = function (scope) {
         this.formScope = scope;
@@ -1176,8 +1177,33 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       };
 
       /*MasterPass Checkout start*/
-      $scope.isMPassField = function (id) {
-        return MasterPassService.isMasterPassButton(id);
+      $scope.isMPassField = function (id, all) {
+        if(id && !all)
+          return MasterPassService.isMasterPassButton(id, all);
+        if(!id && all)
+          return MasterPassService.isMasterPassButton(false, $scope.activitiForm.formProperties);
+      };
+
+      $scope.phoneVerifyStart = function () {
+        var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
+        MasterPassService.phoneCheck(phoneNumber, null, true).then(function (res) {
+          $scope.phoneVerify.otp = res;
+          $scope.phoneVerify.dialog = true;
+        });
+      };
+
+      $scope.confirmOtp = function () {
+        var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
+        MasterPassService.otpPhoneConfirm(phoneNumber, $scope.phoneVerify.otp).then(function (res) {
+          $scope.phoneVerify.dialog = $scope.phoneVerify.showVerifyButton = !res;
+          $scope.phoneVerify.confirmed = res;
+        });
+      };
+
+      $scope.changePhone = function () {
+        $scope.data.formData.params['phone'].value = '+380';
+        $scope.phoneVerify = {showVerifyButton: true, dialog: false, otp: '', confirmed: false};
+        $scope.isOpenedCheckout = false;
       };
 
       $scope.authorizeCheckout = function () {
@@ -1185,7 +1211,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         $scope.paymentStatus = null;
         var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
 
-        if (phoneNumber && phoneNumber.length === 12)
+        if (phoneNumber && phoneNumber.length === 12 && $scope.phoneVerify.confirmed) {
           MasterPassService.checkUser(phoneNumber, 'ua').then(function (res) {
             if(res) {
               $scope.isOpenedCheckout = true;
@@ -1203,6 +1229,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
             $scope.checkoutConfirm = {status: 'checkout'};
             $scope.checkoutSpinner = false;
           });
+        } else if (phoneNumber && phoneNumber.length === 12 && !$scope.phoneVerify.confirmed){
+          $scope.isOpenedCheckout = false;
+          var modalOptions = MasterPassService.messages('phone-is-not-verified');
+          modalService.showModal(modalOptions.defaults, modalOptions.modal)
+        } else {
+          $scope.isOpenedCheckout = false;
+        }
       };
 
       var checkLocation = $location.url();
