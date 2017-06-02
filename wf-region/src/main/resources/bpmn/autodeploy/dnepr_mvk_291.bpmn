@@ -48,8 +48,6 @@
         <activiti:formProperty id="response" name="текст подяки; ;bVisible=false" type="string" default="&lt;p&gt;Результати будуть спрямовані на Ваш e-mail.&lt;/p&gt;&lt;p&gt;За бажанням ви можете перейти на &lt;a href=&quot;http://dniprorada.gov.ua/zvernennja-gromadjan&quot; target=&quot;_self&quot;&gt;потрал міської ради&lt;/a&gt;.&lt;/p&gt;"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення канцелярію про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -62,47 +60,42 @@
           <activiti:string><![CDATA[Нове звернення. Управління житлового господарства міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення громадянина до Управління житлового господарства міської ради.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення громадянина до Управління житлового господарства міської ради.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку його звернення до канцелярії" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення до Управління житлового господарства міської ради було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-Телефон для довідок: (056) 745-10-49&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення до Управління житлового господарства міської ради було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+Телефон для довідок: (056) 745-10-49<br />
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+Канцелярія Дніпропетровської міської ради,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення у канцелярії міської ради" activiti:candidateGroups="dnepr_mvk_chancel">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -151,7 +144,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1}</activiti:expression>
+            <activiti:expression><![CDATA[${file1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -229,7 +222,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1}</activiti:expression>
+            <activiti:expression><![CDATA[${file1}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -243,23 +236,23 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення до Управління житлового господарства міської ради було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-Телефон для довідок: (056) 745-10-49&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення до Управління житлового господарства міської ради було відхилено.</p>
+<p>Причина в наступному:</p>
+<p>${decisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+Телефон для довідок: (056) 745-10-49<br />
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+Канцелярія Дніпропетровської міської ради,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -272,22 +265,22 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення до Управління житлового господарства міської ради - відправлене в профільний відділ.&lt;br /&gt;
-Спеціалісти повинні дати відповідь протягом тридцяти робочих днів з дня реєстрації заяви.&lt;br /&gt;
-&lt;/p&gt;
-Телефон для довідок: (056) 745-10-49&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення до Управління житлового господарства міської ради - відправлене в профільний відділ.<br />
+Спеціалісти повинні дати відповідь протягом тридцяти робочих днів з дня реєстрації заяви.<br />
+</p>
+Телефон для довідок: (056) 745-10-49<br />
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+Канцелярія Дніпропетровської міської ради,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -343,7 +336,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${answer}</activiti:expression>
+            <activiti:expression><![CDATA[${file1},${answer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -355,28 +348,28 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення до Управління житлового господарства міської ради.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваш запит до  Управління житлового господарства міської ради оброблений.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваш запит до  Управління житлового господарства міської ради оброблений.<br />
 Відповідь знаходиться у додатку до цього листа.
-&lt;/p&gt;
-&lt;p&gt;&lt;/p&gt;
-&lt;br /&gt;
+</p>
+<p></p>
+<br />
 [pattern/mail/_common_signature_start.html]
-Управління житлового господарства міської ради,&lt;br /&gt;
+Управління житлового господарства міської ради,<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${answerEDS}</activiti:expression>
+          <activiti:expression><![CDATA[${answerEDS}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -456,7 +449,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${answer}</activiti:expression>
+            <activiti:expression><![CDATA[${answer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -473,17 +466,12 @@
     <sequenceFlow id="flow18" sourceRef="exclusivegateway2" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='answer_bad'||status=='dep1'||status=='dep2'||status=='dep3'||status=='dep4'||status=='dep5'||status=='dep6'||status=='dep7'||status=='dep8'||status=='dep9'||status=='dep10'||status=='dep11'||status=='dep12'||status=='dep13'||status=='dep14'||status=='dep15'||status=='dep16'||status=='dep17'||status=='dep18'||status=='dep19'||status=='dep20'||status=='dep24'||status=='dep25'||status=='dep26'||status=='dep27'||status=='dep28'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_291">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_291" id="BPMNPlane_dnepr_mvk_291">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="140.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="91.0" width="131.0" x="170.0" y="112.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="240.0" y="172.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="91.0" width="121.0" x="330.0" y="112.0"></omgdc:Bounds>
@@ -524,21 +512,9 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="554.0" y="525.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="145.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="170.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="301.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="330.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="451.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="490.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="255.0" y="202.0"></omgdi:waypoint>
-        <omgdi:waypoint x="254.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="595.0" y="157.0"></omgdi:waypoint>
@@ -552,14 +528,14 @@
         <omgdi:waypoint x="682.0" y="284.0"></omgdi:waypoint>
         <omgdi:waypoint x="595.0" y="284.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="92.0" x="584.0" y="264.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="92.0" x="584.0" y="264.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="722.0" y="284.0"></omgdi:waypoint>
         <omgdi:waypoint x="790.0" y="284.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="711.0" y="239.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="711.0" y="239.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -590,7 +566,7 @@
         <omgdi:waypoint x="554.0" y="545.0"></omgdi:waypoint>
         <omgdi:waypoint x="475.0" y="545.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="485.0" y="487.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="485.0" y="487.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
@@ -598,6 +574,10 @@
         <omgdi:waypoint x="574.0" y="630.0"></omgdi:waypoint>
         <omgdi:waypoint x="841.0" y="630.0"></omgdi:waypoint>
         <omgdi:waypoint x="842.0" y="592.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="145.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
