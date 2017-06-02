@@ -42,9 +42,9 @@
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="svid1" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="pasp1" name="Паспорт одного з батьків; скан-копія всіх заповнених сторінок у форматі pdf" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="pasp2" name="Паспорт другого з батьків; скан-копія всіх заповнених сторінок у форматі pdf" type="file"></activiti:formProperty>
+        <activiti:formProperty id="svid1" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pasp1" name="Паспорт одного з батьків; скан-копія всіх заповнених сторінок у форматі pdf ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="pasp2" name="Паспорт другого з батьків; скан-копія всіх заповнених сторінок у форматі pdf ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -58,13 +58,6 @@
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
     <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
@@ -140,6 +133,10 @@ ${sNameOrgan},<br>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення. Наприклад, пояснення чому громадянину було відмовлено в наданні цієї послуги АБО додаткові деталі для закінчення процессу оформлення паспорта" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRecviziti" name="Реквізити для сплати держмита" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="svid1" name="Свідоцтво про народження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pasp1" name="Паспорт одного з батьків; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pasp2" name="Паспорт другого з батьків; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -308,11 +305,11 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sBody_6" name="[pattern/print/dms/zajava_reg16bk(dnepr).html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/dms/vidomist16Fr(dnepr).html] ; ;bVisible=false ,bPrintform=true" type="string" default="Відомості про реєстрацію лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/dms/vidomist16Bk(dnepr).html] ; ;bVisible=false ,bPrintform=true" type="string" default="Відомості про реєстрацію зворотня" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${svid1},${pasp1},${pasp2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+         <activiti:formProperty id="svid1" name="Свідоцтво про народження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pasp1" name="Паспорт одного з батьків; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="pasp2" name="Паспорт другого з батьків; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
@@ -350,21 +347,12 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
-    <sequenceFlow id="flow32" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dms_0028_noID">
     <bpmndi:BPMNPlane bpmnElement="dms_0028_noID" id="BPMNPlane_dms_0028_noID">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="81.0" width="115.0" x="96.0" y="107.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="210.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="170.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="81.0" width="105.0" x="380.0" y="107.0"></omgdc:Bounds>
@@ -399,14 +387,6 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="784.0" y="397.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="96.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="105.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="167.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="485.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="509.0" y="147.0"></omgdi:waypoint>
@@ -419,7 +399,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="588.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="782.0" y="230.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="597.0" y="187.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="597.0" y="187.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -434,7 +414,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="568.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="568.0" y="282.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="460.0" y="241.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="460.0" y="241.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -449,7 +429,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="737.0" y="424.0"></omgdi:waypoint>
         <omgdi:waypoint x="784.0" y="424.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="86.0" x="714.0" y="390.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="86.0" x="714.0" y="390.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -457,7 +437,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="717.0" y="482.0"></omgdi:waypoint>
         <omgdi:waypoint x="819.0" y="482.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="83.0" x="730.0" y="464.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="83.0" x="730.0" y="464.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
@@ -465,7 +445,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="836.0" y="465.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="211.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="205.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
