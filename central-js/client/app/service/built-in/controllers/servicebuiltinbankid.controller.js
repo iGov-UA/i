@@ -1203,6 +1203,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       $scope.changePhone = function () {
         $scope.data.formData.params['phone'].value = '+380';
         $scope.phoneVerify = {showVerifyButton: true, dialog: false, otp: '', confirmed: false};
+        $scope.isOpenedCheckout = false;
       };
 
       $scope.authorizeCheckout = function () {
