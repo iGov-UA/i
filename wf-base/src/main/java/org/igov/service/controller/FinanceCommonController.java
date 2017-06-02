@@ -77,16 +77,15 @@ public class FinanceCommonController {
         String URI = request.getRequestURI() + "?" + request.getQueryString();
         //LOG.info("/setPaymentStatus_TaskActiviti");
 
-        LOG.info("(sID_Order={})", sID_Order);
-        LOG.info("(sID_PaymentSystem={})", sID_PaymentSystem);
-        LOG.info("(sData={})", sData);
-        LOG.info("(sPrefix={})", sPrefix);
+        LOG.info("(sID_Order=>>>>>>>>>>>>{})", sID_Order); //
+        LOG.info("(sID_PaymentSystem=>>>>>>>>>>>>{})", sID_PaymentSystem);
+        LOG.info("(sData=>>>>>>>>>>>>>)", sData);
+        LOG.info("(sPrefix={}>>>>>>>>>>>>)", sPrefix);
 
-        LOG.info("(data={})", data);
-        LOG.info("(signature={})", signature);
-        LOG.info("(URI={})", URI);
+        LOG.info("(data={}>>>>>>>>>>>>>>>)", data);
+        LOG.info("(signature={}>>>>>>>>>>>)", signature);
+        LOG.info("(URI={}>>>>>>>>>>.)", URI);
         String sDataDecoded = null;
-
         try {
             StringBuilder osRequestBody = new StringBuilder("");
             BufferedReader oReader = request.getReader();
@@ -105,7 +104,7 @@ public class FinanceCommonController {
                     sDataDecoded = sDataDecoded.substring(0, index + 1);
                 }
                 LOG.info("(sDataDecoded={})", sDataDecoded);
-            }
+           }
             oLiqpayService.setPaymentStatus(sID_Order, sDataDecoded, sID_PaymentSystem, sPrefix);
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
@@ -173,6 +172,7 @@ public class FinanceCommonController {
             throw oException;
         }
         return sData;
+        
     }
     
     private static String parseData(String data) {
