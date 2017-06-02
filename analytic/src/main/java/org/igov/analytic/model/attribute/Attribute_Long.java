@@ -1,5 +1,6 @@
 package org.igov.analytic.model.attribute;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -19,7 +20,7 @@ public class Attribute_Long extends AbstractEntity {
     @JsonProperty
     private Long nValue;
 
-    @JsonProperty
+    @JsonIgnore
     @OneToOne
     @Cascade(CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "nID_Attribute")
