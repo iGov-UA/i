@@ -33,12 +33,11 @@ import javax.annotation.PostConstruct;
 public class FileStorage implements IFileStorage {
 
     private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
-    private GridFsTemplate oGridFsTemplate;
+    private GridFsTemplate gridTemplate;
 
     @Autowired
-    @Qualifier("gridTemplate")
-    public void setoGridFsTemplate(GridFsTemplate oGridFsTemplate) {
-        this.oGridFsTemplate = oGridFsTemplate;
+    public void setoGridFsTemplate(GridFsTemplate gridTemplate) {
+        this.gridTemplate = gridTemplate;
     }
 
     private static String getExtension(MultipartFile oFile) {
@@ -58,7 +57,7 @@ public class FileStorage implements IFileStorage {
     public boolean saveFile(String sKey, MultipartFile oFile) {
         GridFSFile oGridFSFile;
         try {
-            oGridFSFile = oGridFsTemplate.store(oFile.getInputStream(), sKey);
+            oGridFSFile = gridTemplate.store(oFile.getInputStream(), sKey);
             oGridFSFile.put("contentType", oFile.getContentType());
             oGridFSFile.put("originalName", oFile.getOriginalFilename());
             oGridFSFile.save();
@@ -75,7 +74,7 @@ public class FileStorage implements IFileStorage {
     }
 
     private GridFSDBFile findLatestEdition(String sKey) {
-        List<GridFSDBFile> aGridFSDBFile = oGridFsTemplate.find(
+        List<GridFSDBFile> aGridFSDBFile = gridTemplate.find(
                 getKeyQuery(sKey)
                 .with(new Sort(Direction.DESC, "uploadDate"))
                 .limit(1));
@@ -88,7 +87,7 @@ public class FileStorage implements IFileStorage {
     @Override
     public boolean remove(String sKey) {
         try {
-            oGridFsTemplate.delete(getKeyQuery(sKey));
+            gridTemplate.delete(getKeyQuery(sKey));
             return true;
         } catch (Exception e) {
             LOG.error("Can't remove content by this key: {} (sKey={})", e.getMessage(), sKey);
