@@ -324,6 +324,12 @@ public class DocumentStepService {
                     }
                 }
                 
+                JSONObject oPermitionAcceptor = oGroup.optJSONObject("oPermitions_AddAcceptor");
+                LOG.info("oPermitionAcceptor sKeyGroupe_Source is {}", oPermitionAcceptor.opt("sKeyGroupe_Source"));
+                
+                JSONObject oPermitionVisor = oGroup.optJSONObject("oPermitions_AddVisor");
+                LOG.info("oPermitionVisor sKeyGroupe_Source is {}", oPermitionVisor.opt("sKeyGroupe_Source"));
+                
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup,
                         oDocumentStepSubjectRight);
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
