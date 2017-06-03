@@ -10,7 +10,11 @@ public class FileStorage
         extends org.igov.io.db.kv.statical.impl.FileStorage 
         implements IFileStorage {
     
+    private final GridFsTemplate oGridFsTemplate;
+
     @Autowired
-    @Qualifier("gridAnalyticTemplate")
-    private GridFsTemplate oGridFsTemplate;
+    public FileStorage(@Qualifier("gridAnalyticTemplate") GridFsTemplate oGridFsTemplate) {
+        super(oGridFsTemplate);
+        this.oGridFsTemplate = oGridFsTemplate;
+    }
 }

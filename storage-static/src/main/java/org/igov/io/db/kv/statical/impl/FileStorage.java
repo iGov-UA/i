@@ -30,9 +30,12 @@ public class FileStorage implements IFileStorage {
 
     private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
 
+    private final GridFsTemplate oGridFsTemplate;
+
     @Autowired
-    @Qualifier("gridTemplate")
-    private GridFsTemplate oGridFsTemplate;
+    public FileStorage(@Qualifier("gridTemplate") GridFsTemplate oGridFsTemplate) {
+        this.oGridFsTemplate = oGridFsTemplate;
+    }
 
     private static String getExtension(MultipartFile oFile) {
         return FilenameUtils.getExtension(oFile.getOriginalFilename());
