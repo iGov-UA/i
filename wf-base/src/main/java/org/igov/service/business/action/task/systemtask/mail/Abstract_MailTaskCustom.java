@@ -287,15 +287,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                                 }
                             }
                         }
-                        
-                        if (formProperty != null) {
-                            String sType = formProperty.getType().getName();
-                            if ("queueData".equals(sType)) {
-                                if (formProperty.getValue() != null) {
-                                   LOG.info("queueData>>>>>> " + formProperty.getValue());
-                                }
-                            }
-                        }
                     }
                 }
                 matcher.appendReplacement(outputTextBuffer, replacement);
@@ -668,8 +659,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String sBodySource = getStringFromFieldExpression(text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
         
-        LOG.info("Mail_BaseFromTask sBody>>>>>> " + sBody);
-
         Mail oMail = context.getBean(Mail.class);
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
@@ -689,6 +678,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
      */
     public Mail sendToMailFromMongo(DelegateExecution oExecution)
             throws Exception {
+    	
+    	LOG.info("sNotification_day is >>>>> ", oExecution.getVariable("sNotification_day"));
 
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
@@ -722,7 +713,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	    //анализируем тело
 	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
 	    
-	    LOG.info("sBodyForMailResult is ", sJsonMongo);
+	    LOG.info("sBodyForMailResult is >>> ", sBodyForMailResult);
 	       
 	    //отправляем по емайлу
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
@@ -811,8 +802,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)
             throws Exception {
-    	
-    	LOG.info("sendMailOfTask ok!>>> "+ oMail.getBody());
     	//если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
     	if(generalConfig.isSelfTest()) {
     		LOG.info("generalConfig.isSelfTest()! " + generalConfig.isSelfTest());
