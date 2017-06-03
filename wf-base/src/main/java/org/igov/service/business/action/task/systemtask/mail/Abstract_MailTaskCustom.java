@@ -811,6 +811,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)
             throws Exception {
+    	
+    	LOG.info("sendMailOfTask ok!>>> "+ oMail.getBody());
     	//если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
     	if(generalConfig.isSelfTest()) {
     		LOG.info("generalConfig.isSelfTest()! " + generalConfig.isSelfTest());
