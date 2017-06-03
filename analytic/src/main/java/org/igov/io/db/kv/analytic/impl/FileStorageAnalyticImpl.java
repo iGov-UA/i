@@ -23,7 +23,7 @@ public class FileStorageAnalyticImpl
 
     @Autowired
     @Qualifier("gridAnalyticTemplate")
-    private GridFsTemplate oGridFsTemplate;
+    private GridFsTemplate gridAnalyticTemplate;
 
     @PostConstruct
     private void init() {
@@ -37,7 +37,7 @@ public class FileStorageAnalyticImpl
 
     @Override
     public boolean saveFile(String key, MultipartFile file) {
-        fileStorage.setoGridFsTemplate(oGridFsTemplate);
+        fileStorage.setoGridFsTemplate(gridAnalyticTemplate);
         return fileStorage.saveFile(key, file);
     }
 
