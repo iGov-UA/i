@@ -28,7 +28,7 @@
         <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/> <!--base-package="com.x.y.core.beans"-->
 		 
         <!-- MongoDB GridFS Template -->
-        <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+        <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate" scope="prototype">
             <constructor-arg ref="mongoDbFactory"/>
             <constructor-arg ref="converterAnalytic"/>
         </bean>
@@ -58,7 +58,7 @@
         <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/>
 		 
         <!-- MongoDB GridFS Template -->
-        <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+        <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate" scope="prototype">
             <constructor-arg ref="mongoDbFactory"/>
             <constructor-arg ref="converterAnalytic"/>
             <constructor-arg name="bucket" value="${mongodb.analytic.bucket}" />
@@ -88,7 +88,7 @@
         <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/>
 		 
         <!-- MongoDB GridFS Template -->
-        <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+        <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate" scope="prototype">
             <constructor-arg ref="mongoDbFactory"/>
             <constructor-arg ref="converterAnalytic"/>
             <constructor-arg name="bucket" value="${mongodb.analytic.bucket}" />
