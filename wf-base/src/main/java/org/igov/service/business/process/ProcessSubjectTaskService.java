@@ -395,32 +395,36 @@ public class ProcessSubjectTaskService {
         List<ProcessSubject> aProcessSubject = new ArrayList<>();
 
         Long nOrder = nStartOrder;
-
-        HistoricProcessInstance oHistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
-                processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask)
-                        .get("snID_Process_Activiti_Root")).singleResult();
-
-        String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask)
-                .get("snID_Process_Activiti_Root")).active().singleResult().getId();
-
-        LOG.info("oProcessDefinition is {}", oHistoricProcessInstance.getProcessDefinitionId());
-
-        String sPath = "document/"
-                + oHistoricProcessInstance.getProcessDefinitionId().split(":")[0] + ".json";
-        LOG.info("sPath={}", sPath);
-
+        
+        String nId_Task_Root = null;
         List<String> asKey_Step = null;
 
-        byte[] aByteDocument = getFileData_Pattern(sPath);
-        if (aByteDocument != null && aByteDocument.length > 0) {
-            String soJSON = soJSON = Tool.sData(aByteDocument);
-            LOG.info("soJSON in ProcessSubjectTask is: {}", soJSON);
-            org.activiti.engine.impl.util.json.JSONObject oJSON = new org.activiti.engine.impl.util.json.JSONObject(soJSON);
-            asKey_Step = Arrays.asList(org.activiti.engine.impl.util.json.JSONObject.getNames(oJSON));
+        if (((JSONObject) oJsonProcessSubjectTask).get("sKey_GroupPostfix") != null) {
+            HistoricProcessInstance oHistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
+                    processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask)
+                            .get("snID_Process_Activiti_Root")).singleResult();
 
-            LOG.info("List of steps in ProcessSubjectTask is: {}", asKey_Step);
+            nId_Task_Root = oTaskService.createTaskQuery().processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask)
+                    .get("snID_Process_Activiti_Root")).active().singleResult().getId();
+
+            LOG.info("oProcessDefinition is {}", oHistoricProcessInstance.getProcessDefinitionId());
+
+            String sPath = "document/"
+                    + oHistoricProcessInstance.getProcessDefinitionId().split(":")[0] + ".json";
+            LOG.info("sPath={}", sPath);
+
+            byte[] aByteDocument = getFileData_Pattern(sPath);
+            if (aByteDocument != null && aByteDocument.length > 0) {
+                String soJSON = soJSON = Tool.sData(aByteDocument);
+                LOG.info("soJSON in ProcessSubjectTask is: {}", soJSON);
+                org.activiti.engine.impl.util.json.JSONObject oJSON = new org.activiti.engine.impl.util.json.JSONObject(soJSON);
+                asKey_Step = Arrays.asList(org.activiti.engine.impl.util.json.JSONObject.getNames(oJSON));
+
+                LOG.info("List of steps in ProcessSubjectTask is: {}", asKey_Step);
+            }
+        
         }
-
+        
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
 
             ProcessSubject oProcessSubject = null;
@@ -470,7 +474,7 @@ public class ProcessSubjectTaskService {
             aProcessSubject.add(oProcessSubject);
             LOG.info("oProcessSubject in setProcessSubjectList: {}", oProcessSubject);
 
-            if (((JSONObject) oJsonProcessSubjectTask).get("sKey_GroupPostfix") != null) {
+            if (asKey_Step != null && nId_Task_Root != null) {
                 //CANDIDATE
                 /*oTaskService.addGroupIdentityLink(nId_Task_Root, 
                         (String)((JSONObject)oJsonProcessSubject).get("sLogin"), "CANDIDATE");*/
