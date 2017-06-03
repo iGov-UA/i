@@ -60,15 +60,14 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
       }
     },
 
-    phoneCheck: function (phone, value, isTestServer) {
+    phoneCheck: function (phone, value) {
       var params = {
         phone: phone,
-        value: value,
-        isTestServer: isTestServer
+        value: value
       };
 
       return $http.get('./api/masterpass/verifyPhoneNumber', {params: params}).then(function (res) {
-        return !!(res && res.data);
+        return !!(res);
       })
     },
 

@@ -210,7 +210,7 @@ module.exports.verifyPhoneNumber = function (req, res) {
 
     var callback = function(error, response, body) {
       if(!error) {
-        res.send(body);
+        res.send({message: body});
         res.end();
       } else {
         res.send(error);
@@ -218,23 +218,18 @@ module.exports.verifyPhoneNumber = function (req, res) {
       }
     };
 
-    if(req.query.isTestServer) {
-      res.send(verifyData.code);
-      res.end();
-    } else {
-      return request.get({
-        'url': url,
-        'auth': {
-          'username': options.username,
-          'password': options.password
-        },
-        'qs': {
-          'phone': verifyData.phone,
-          'message': verifyData.code,
-          'sID_Order': '1'
-        }
-      }, callback);
-    }
+    return request.get({
+      'url': url,
+      'auth': {
+        'username': options.username,
+        'password': options.password
+      },
+      'qs': {
+        'phone': verifyData.phone,
+        'message': verifyData.code,
+        'sID_Order': '1'
+      }
+    }, callback);
 };
 
 module.exports.confirmOtp = function (req, res) {

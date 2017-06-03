@@ -73,7 +73,7 @@ module.exports.createAndCheckOTP = function (data) {
     var string = '0000' ? '0000' : code.toString();
 
     cache.set(buildKey(data.phone), string, 600);
-    response = 'OTP was sent';
+    response = {phone: data.phone, code: string};
 
   } else if( data.phone && data.value ) {
     cache.get(buildKey(data.phone), function (error, value) {
