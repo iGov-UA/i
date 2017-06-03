@@ -75,6 +75,9 @@ public class ProcessController {
     private IFileStorage analyticFileDataStorage;
 
     @Autowired
+    private org.igov.io.db.kv.statical.IFileStorage realDataFileStorage;
+
+    @Autowired
     private IFileStorage durableFileStorage;
 
     @Autowired
@@ -317,6 +320,7 @@ public class ProcessController {
     public String uploadFile(MultipartFile file) {
         if (!file.isEmpty()) {
             analyticFileDataStorage.saveFile(file.getName(), file);
+            realDataFileStorage.saveFile(file.getName(), file);
         }
         return null;
     }
