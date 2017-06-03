@@ -28,6 +28,8 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSFile;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.annotation.PostConstruct;
+
 public class FileStorage implements IFileStorage {
 
     private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
@@ -35,6 +37,7 @@ public class FileStorage implements IFileStorage {
 
     @Autowired
     @Qualifier("gridTemplate")
+    @PostConstruct
     public void setoGridFsTemplate(GridFsTemplate oGridFsTemplate) {
         this.oGridFsTemplate = oGridFsTemplate;
     }
