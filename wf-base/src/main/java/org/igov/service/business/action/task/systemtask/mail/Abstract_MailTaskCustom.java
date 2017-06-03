@@ -287,6 +287,15 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                                 }
                             }
                         }
+                        
+                        if (formProperty != null) {
+                            String sType = formProperty.getType().getName();
+                            if ("queueData".equals(sType)) {
+                                if (formProperty.getValue() != null) {
+                                   LOG.info("queueData>>>>>> " + formProperty.getValue());
+                                }
+                            }
+                        }
                     }
                 }
                 matcher.appendReplacement(outputTextBuffer, replacement);
@@ -658,6 +667,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
         String sBody = replaceTags(sBodySource, oExecution);
+        
+        LOG.info("Mail_BaseFromTask sBody>>>>>> " + sBody);
 
         Mail oMail = context.getBean(Mail.class);
         
@@ -844,7 +855,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         Date d = dateTime.toDate();
         return getFormattedDate(d);
     }
-
+    
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
     }
