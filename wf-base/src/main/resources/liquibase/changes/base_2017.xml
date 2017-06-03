@@ -633,5 +633,30 @@
                </column>
            </addColumn>
         </changeSet>
-       
+    
+    <changeSet id="issue-1661-add-new-entity-and-colums" author="Kovylin Yegor">
+        
+        <createTable tableName="DocumentSubjectRightPermition">
+            <column name="nID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="nID_DocumentStepSubjectRight" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PermitionType" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sKeyGroupeSource" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        
+        <addForeignKeyConstraint constraintName="FK_DocumentSubjectRightPermition_DocumentStepSubjectRight" 
+                                 baseColumnNames="nID_DocumentStepSubjectRight" 
+                                 baseTableName="DocumentSubjectRightPermition"
+                                 referencedTableName="DocumentStepSubjectRight" 
+                                 referencedColumnNames="nID"/>
+        </changeSet>   
+          
+                
 </databaseChangeLog>
