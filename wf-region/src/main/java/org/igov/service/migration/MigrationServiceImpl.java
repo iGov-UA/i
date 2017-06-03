@@ -23,6 +23,7 @@ import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 
+import org.igov.io.db.kv.analytic.IFileStorage;
 import org.igov.service.business.action.task.form.ui.Form;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -79,6 +80,8 @@ public class MigrationServiceImpl implements MigrationService {
     @Autowired
     private RepositoryService repositoryService;
 
+    @Autowired
+    private IFileStorage fileStorage;
 
     @Autowired
     private FormService formService;//
@@ -331,7 +334,8 @@ public class MigrationServiceImpl implements MigrationService {
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
             if(string.startsWith("{") && string.contains("Mongo")) {
-
+                type = attributeTypeDao.findById(7L).get();
+                Attribute_File fileAttribute = new Attribute_File();
             }
 
             if (string.length() < 255) {
