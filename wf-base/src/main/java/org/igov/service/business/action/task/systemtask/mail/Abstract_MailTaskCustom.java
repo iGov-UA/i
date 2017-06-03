@@ -657,6 +657,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
+        LOG.info("Mail_BaseFromTask sBodySource >>>>> ", sBodySource);
+        
         String sBody = replaceTags(sBodySource, oExecution);
         
         Mail oMail = context.getBean(Mail.class);
@@ -684,7 +686,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
-        
+        LOG.info("sendToMailFromMongo sBodySource >>>>> ", sBodySource);
         Mail oMail = context.getBean(Mail.class);
         
         /**
