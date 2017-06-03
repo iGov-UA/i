@@ -302,7 +302,7 @@ public class DocumentStepService {
                     throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite. Probably your json is wrong");
                 }
                 oDocumentStepSubjectRight.setbWrite(bWrite);
-
+                
                 Object oNeedECP = oGroup.opt("bNeedECP");
                 boolean bNeedECP = false;
                 if (oNeedECP != null) {
@@ -314,7 +314,13 @@ public class DocumentStepService {
                 if (sName != null) {
                     oDocumentStepSubjectRight.setsName((String) sName);
                 }
-
+                
+                JSONArray aPermition = oGroup.optJSONArray("oPermitions_AddAcceptor");
+                
+                for(int i = 0; i < aPermition.length(); i++){
+                    LOG.info("Permition elem is {}", aPermition.getString(i));
+                }
+                
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup,
                         oDocumentStepSubjectRight);
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
