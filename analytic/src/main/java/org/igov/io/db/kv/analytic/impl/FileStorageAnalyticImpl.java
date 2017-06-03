@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
 import java.io.InputStream;
 
 public class FileStorageAnalyticImpl
@@ -22,6 +23,11 @@ public class FileStorageAnalyticImpl
     @Autowired
     @Qualifier("gridAnalyticTemplate")
     private GridFsTemplate oGridFsTemplate;
+
+    @PostConstruct
+    private void init() {
+        fileStorage.setoGridFsTemplate(oGridFsTemplate);
+    }
 
     @Override
     public String createFile(MultipartFile file) {

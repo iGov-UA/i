@@ -31,10 +31,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class FileStorage implements IFileStorage {
 
     private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
-    @Autowired
-    @Qualifier("gridTemplate")
     private GridFsTemplate oGridFsTemplate;
 
+    @Autowired
+    @Qualifier("gridTemplate")
+    public void setoGridFsTemplate(GridFsTemplate oGridFsTemplate) {
+        this.oGridFsTemplate = oGridFsTemplate;
+    }
 
     private static String getExtension(MultipartFile oFile) {
         return FilenameUtils.getExtension(oFile.getOriginalFilename());
