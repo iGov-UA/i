@@ -657,7 +657,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
-        LOG.info("Mail_BaseFromTask sBodySource >>>>> ", sBodySource);
+        LOG.info("Mail_BaseFromTask sBodySource >>>>> "+ sBodySource);
         
         String sBody = replaceTags(sBodySource, oExecution);
         
@@ -681,19 +681,19 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public Mail sendToMailFromMongo(DelegateExecution oExecution)
             throws Exception {
     	
-    	LOG.info("sNotification_day is >>>>> ", oExecution.getVariable("sNotification_day"));
+    	LOG.info("sNotification_day is >>>>> "+ oExecution.getVariable("sNotification_day"));
 
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
-        LOG.info("sendToMailFromMongo sBodySource >>>>> ", sBodySource);
+        LOG.info("sendToMailFromMongo sBodySource >>>>> "+ sBodySource);
         Mail oMail = context.getBean(Mail.class);
         
         /**
          * достаем json который приходит в тексте из шага в виде ключ значение из монги 
          */
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
-        LOG.info("sJsonMongo is ", sJsonMongo);
+        LOG.info("sJsonMongo is "+ sJsonMongo);
         /**
          * достаем оригинальный текст html из mongo
          */
@@ -715,7 +715,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	    //анализируем тело
 	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
 	    
-	    LOG.info("sBodyForMailResult is >>> ", sBodyForMailResult);
+	    LOG.info("sBodyForMailResult is >>> "+ sBodyForMailResult);
 	       
 	    //отправляем по емайлу
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
