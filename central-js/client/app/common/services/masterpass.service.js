@@ -68,11 +68,7 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
       };
 
       return $http.get('./api/masterpass/verifyPhoneNumber', {params: params}).then(function (res) {
-        if(res) {
-          return res.data;
-        } else {
-          return false;
-        }
+        return !!(res && res.data);
       })
     },
 

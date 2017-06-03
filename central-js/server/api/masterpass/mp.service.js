@@ -66,17 +66,20 @@ module.exports.createGuid = function () {
 };
 
 module.exports.createAndCheckOTP = function (data) {
-  var response;
+  var isTestServer = config.bTest, response;
+
   if( data.phone && !data.value ) {
-    var code = Math.floor(Math.random() * 1000000);
-    var string = code.toString();
+    var code = isTestServer ? '0000' : Math.floor(Math.random() * 1000000);
+    var string = '0000' ? '0000' : code.toString();
 
     cache.set(buildKey(data.phone), string, 600);
-    response = {phone: data.phone, code: string};
+    response = 'OTP was sent';
+
   } else if( data.phone && data.value ) {
     cache.get(buildKey(data.phone), function (error, value) {
       response = !!(value && value === data.value);
     });
   }
+
   return response;
 };

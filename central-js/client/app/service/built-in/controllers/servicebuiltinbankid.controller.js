@@ -1187,7 +1187,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       $scope.phoneVerifyStart = function () {
         var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
         MasterPassService.phoneCheck(phoneNumber, null, true).then(function (res) {
-          $scope.phoneVerify.otp = res;
           $scope.phoneVerify.dialog = true;
         });
       };
