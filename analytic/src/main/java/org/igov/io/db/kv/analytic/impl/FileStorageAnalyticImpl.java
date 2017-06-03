@@ -27,7 +27,7 @@ public class FileStorageAnalyticImpl
 
     @PostConstruct
     private void init() {
-        fileStorage.setoGridFsTemplate(oGridFsTemplate);
+
     }
 
     @Override
@@ -37,6 +37,7 @@ public class FileStorageAnalyticImpl
 
     @Override
     public boolean saveFile(String key, MultipartFile file) {
+        fileStorage.setoGridFsTemplate(oGridFsTemplate);
         return fileStorage.saveFile(key, file);
     }
 
