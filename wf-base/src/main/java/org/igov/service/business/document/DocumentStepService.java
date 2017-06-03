@@ -315,10 +315,13 @@ public class DocumentStepService {
                     oDocumentStepSubjectRight.setsName((String) sName);
                 }
                 
-                JSONArray aPermition = oGroup.optJSONArray("oPermitions_AddAcceptor");
+                JSONArray aPermition = oGroup.optJSONArray("aPermition");
+                LOG.info("aPermition is {}", aPermition);
                 
-                for(int i = 0; i < aPermition.length(); i++){
-                    LOG.info("Permition elem is {}", aPermition.getString(i));
+                if (aPermition != null){
+                    for(int i = 0; i < aPermition.length(); i++){
+                        LOG.info("Permition elem is {}", aPermition.getString(i));
+                    }
                 }
                 
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup,
