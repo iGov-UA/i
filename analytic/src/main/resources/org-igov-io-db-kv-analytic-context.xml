@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mongo="http://www.springframework.org/schema/data/mongo"
        xsi:schemaLocation="
@@ -17,7 +17,7 @@
     <beans profile="prod">
         <bean id="mongoAnalyticProps"
                       class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="location" value="file:${catalina.home}/conf/DB.NoSQL.Mongo.properties" />
+            <property name="location" value="file:${catalina.home}/conf/DB.NoSQL.Mongo.Analytic.properties" />
             <property name="ignoreUnresolvablePlaceholders" value="true" />
         </bean>
 	
@@ -47,13 +47,13 @@
     <beans profile="test">
         <bean id="mongoAnalyticProps"
                       class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="location" value="classpath:DB.NoSQL.Mongo.properties" />
+            <property name="location" value="classpath:DB.NoSQL.Mongo.Analytic.properties" />
             <property name="ignoreUnresolvablePlaceholders" value="true" />
         </bean>
 	
         <!-- Connection to MongoDB server -->
-        <mongo:db-factory id="mongoDbFactory" host="${mongodb.host}" port="${mongodb.port}" dbname="${mongodb.database}"
-                                  username="${mongodb.login}" password="${mongodb.password}" authentication-dbname="${mongodb.database}"/>
+        <mongo:db-factory id="mongoDbFactory" host="${mongodb.analytic.host}" port="${mongodb.analytic.port}" dbname="${mongodb.analytic.database}"
+                                  username="${mongodb.analytic.login}" password="${mongodb.analytic.password}" authentication-dbname="${mongodb.analytic.database}"/>
                 
         <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/>
 		 
@@ -77,14 +77,14 @@
     <beans profile="local,default">
         <bean id="mongoAnalyticProps"
                       class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-            <property name="location" value="classpath:DB.NoSQL.Mongo.properties" />
+            <property name="location" value="classpath:DB.NoSQL.Mongo.Analytic.properties" />
             <property name="ignoreUnresolvablePlaceholders" value="true" />
         </bean>
 	
         <!-- Connection to MongoDB server -->
-        <mongo:db-factory id="mongoDbFactory" host="${mongodb.host}" port="${mongodb.port}" dbname="${mongodb.database}"
-                                  username="${mongodb.login}" password="${mongodb.password}" authentication-dbname="${mongodb.database}"/>
-                
+        <mongo:db-factory id="mongoDbFactory" host="${mongodb.analytic.host}" port="${mongodb.analytic.port}" dbname="${mongodb.analytic.database}"
+                                  username="${mongodb.analytic.login}" password="${mongodb.analytic.password}" authentication-dbname="${mongodb.analytic.database}"/>
+
         <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/>
 		 
         <!-- MongoDB GridFS Template -->
