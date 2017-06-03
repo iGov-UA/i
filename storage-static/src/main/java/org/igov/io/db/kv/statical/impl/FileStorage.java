@@ -10,6 +10,8 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.query.Query;
@@ -29,13 +31,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class FileStorage implements IFileStorage {
 
     private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
-
-    private final GridFsTemplate oGridFsTemplate;
-
     @Autowired
-    public FileStorage(@Qualifier("gridTemplate") GridFsTemplate oGridFsTemplate) {
-        this.oGridFsTemplate = oGridFsTemplate;
-    }
+    @Qualifier("gridTemplate")
+    private GridFsTemplate oGridFsTemplate;
+
 
     private static String getExtension(MultipartFile oFile) {
         return FilenameUtils.getExtension(oFile.getOriginalFilename());
