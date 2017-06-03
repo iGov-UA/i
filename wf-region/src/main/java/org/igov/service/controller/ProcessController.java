@@ -21,8 +21,8 @@ import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
-import org.igov.io.db.kv.analytic.IBytesDataStorage;
-import org.igov.io.db.kv.analytic.IFileStorage;
+import org.igov.io.db.kv.analytic.FileStorageAnalytic;
+import org.igov.io.db.kv.statical.IFileStorage;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 import org.igov.service.ArchiveServiceImpl;
 import org.igov.service.migration.MigrationService;
@@ -31,7 +31,6 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,11 +72,10 @@ public class ProcessController {
     private Attribute_FileDao attribute_FileDao;
 
     @Autowired
-    private IFileStorage analyticFileDataStorage;
+    private FileStorageAnalytic analyticFileDataStorage;
 
     @Autowired
-    @Qualifier("durableFileStorage")
-    private org.igov.io.db.kv.statical.IFileStorage realDataFileStorage;
+    private IFileStorage realDataFileStorage;
 
     @Autowired
     private IFileStorage durableFileStorage;

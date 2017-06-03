@@ -20,7 +20,7 @@ import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 public class BytesDataStorageTest {
 
 	@Autowired
-	private IBytesDataStorage oStorage;
+	private BytesDataStorageAnalytic oStorage;
         //@Ignore
 	@Test(expected=RecordNotFoundException.class)
 	public void openStreamShouldThrowOnInexistentKey() throws RecordNotFoundException {

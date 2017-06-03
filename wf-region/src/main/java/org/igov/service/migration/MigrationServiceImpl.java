@@ -23,7 +23,7 @@ import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 
-import org.igov.io.db.kv.analytic.IFileStorage;
+import org.igov.io.db.kv.analytic.FileStorageAnalytic;
 import org.igov.service.business.action.task.form.ui.Form;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -81,7 +81,7 @@ public class MigrationServiceImpl implements MigrationService {
     private RepositoryService repositoryService;
 
     @Autowired
-    private IFileStorage fileStorage;
+    private FileStorageAnalytic fileStorage;
 
     @Autowired
     private FormService formService;//

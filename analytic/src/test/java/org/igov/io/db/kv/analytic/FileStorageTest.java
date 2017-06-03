@@ -25,7 +25,7 @@ import org.igov.io.db.kv.statical.model.UploadedFile;
 public class FileStorageTest {
 
 	@Autowired
-	private IFileStorage oStorage;
+	private FileStorageAnalytic oStorage;
 
 	
 	@Test(expected=RecordNotFoundException.class)
