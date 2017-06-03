@@ -18,6 +18,7 @@ public class FileStorageAnalyticImpl
         implements FileStorageAnalytic {
 
     @Autowired
+    @Qualifier("durableFileStorage")
     private FileStorage fileStorage;
 
     @Autowired
