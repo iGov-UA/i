@@ -37,7 +37,6 @@ public class FileStorage implements IFileStorage {
 
     @Autowired
     @Qualifier("gridTemplate")
-    @PostConstruct
     public void setoGridFsTemplate(GridFsTemplate oGridFsTemplate) {
         this.oGridFsTemplate = oGridFsTemplate;
     }
