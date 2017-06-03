@@ -721,6 +721,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	    
 	    //анализируем тело
 	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
+	    
+	    LOG.info("sBodyForMailResult is ", sJsonMongo);
 	       
 	    //отправляем по емайлу
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
