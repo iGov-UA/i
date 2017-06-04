@@ -1247,7 +1247,17 @@ public class DocumentStepService {
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active.getRights().stream()
                 .filter(o -> asID_Group.contains(o.getsKey_GroupPostfix())).collect(Collectors.toList());
         LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
-
+        
+        List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = new ArrayList<>();
+        
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight_Active : aDocumentStepSubjectRight_Active){
+            if(oDocumentStepSubjectRight_Active.getsKey_GroupPostfix().equals(sLogin)){
+                aDocumentSubjectRightPermition.addAll(oDocumentSubjectRightPermitionDao
+                        .findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight_Active.getId()));
+            }
+            break;
+        }
+       
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
@@ -1278,7 +1288,6 @@ public class DocumentStepService {
         LOG.info("total aDocumentStepSubjectRight size is: " + aDocumentStepSubjectRight.size());
 
         Map<String, boolean[]> resultMap = new HashMap<>();
-        List<DocumentSubjectRightPermition> aResultDocumentSubjectRightPermition = new ArrayList<>();
         for (FormProperty oProperty : aFormProperty) {
             groupSearch:
             {
@@ -1287,11 +1296,6 @@ public class DocumentStepService {
                     // List<String> asID_Field_Write_Temp = new LinkedList();
                     LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}",
                             oDocumentStepSubjectRight.getsKey_GroupPostfix());
-
-                    List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = 
-                            oDocumentSubjectRightPermitionDao.findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight.getId());
-                    
-                    aResultDocumentSubjectRightPermition.addAll(aDocumentSubjectRightPermition);
                     
                     long loopStartTime = System.nanoTime();
 
@@ -1423,7 +1427,7 @@ public class DocumentStepService {
         LOG.info(
                 "getDocumentStepRights 4th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
         
-        mReturn.put("aDocumentSubjectRightPermition", aResultDocumentSubjectRightPermition);
+        mReturn.put("aDocumentSubjectRightPermition", aDocumentSubjectRightPermition);
         
         return mReturn;
     }
