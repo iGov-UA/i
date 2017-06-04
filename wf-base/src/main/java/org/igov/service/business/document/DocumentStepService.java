@@ -47,6 +47,8 @@ import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.document.DocumentStepSubjectRightField;
 import org.igov.model.document.DocumentStepType;
+import org.igov.model.document.DocumentSubjectRightPermitionDao;
+import org.igov.model.document.DocumentSubjectRightPermition;
 import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.service.business.subject.SubjectGroupTreeService;
@@ -72,7 +74,7 @@ import org.activiti.engine.task.IdentityLinkType;
 public class DocumentStepService {
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentStepService.class);
-
+    
     @Autowired
     @Qualifier("documentStepDao")
     private GenericEntityDao<Long, DocumentStep> oDocumentStepDao;
@@ -112,7 +114,10 @@ public class DocumentStepService {
 
     @Autowired
     protected RepositoryService repositoryService;
-
+    
+    @Autowired
+    private DocumentSubjectRightPermitionDao oDocumentSubjectRightPermitionDao;
+    
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject oJSON = new JSONObject(soJSON);
         List<DocumentStep> aDocumentStep_Result = new ArrayList<>();
@@ -318,31 +323,39 @@ public class DocumentStepService {
                 JSONArray aPermition = oGroup.optJSONArray("aPermition");
                 LOG.info("aPermition is {}", aPermition);
                 
-                if (aPermition != null){
-                    for(int i = 0; i < aPermition.length(); i++){
-                        LOG.info("Permition elem is {}", aPermition.getString(i));
-                    }
-                }
-                
-                JSONObject oPermitionAcceptor = oGroup.optJSONObject("oPermitions_AddAcceptor");
-                LOG.info("oPermitionAcceptor is {}", oPermitionAcceptor);
-                
-                if(oPermitionAcceptor != null){
-                    LOG.info("oPermitionAcceptor sKeyGroupe_Source is {}", oPermitionAcceptor.get("sKeyGroupe_Source"));
-                }
-                
-                
-                JSONObject oPermitionVisor = oGroup.optJSONObject("oPermitions_AddVisor");
-                LOG.info("oPermitionVisor is {}", oPermitionVisor);
-                if(oPermitionVisor != null){
-                    LOG.info("oPermitionVisor sKeyGroupe_Source is {}", oPermitionVisor.get("sKeyGroupe_Source"));
-                }
-                
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup,
                         oDocumentStepSubjectRight);
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
                 oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
                 //LOG.info("right for step: {}", oDocumentStepSubjectRight);
+                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                
+                if (aPermition != null){
+                    for(int i = 0; i < aPermition.length(); i++){
+                        LOG.info("Permition elem is {}", aPermition.getString(i));
+                        DocumentSubjectRightPermition oDocumentSubjectRightPermition = new DocumentSubjectRightPermition();
+                        oDocumentSubjectRightPermition.setPermitionType(aPermition.getString(i));
+                        oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
+                        
+                        JSONObject oPermitionAcceptor = oGroup.optJSONObject("oPermitions_AddAcceptor");
+                        LOG.info("oPermitionAcceptor is {}", oPermitionAcceptor);
+                        
+                        if(oPermitionAcceptor != null && aPermition.getString(i).equals("AddAcceptor")){
+                            LOG.info("oPermitionAcceptor sKeyGroupe_Source is {}", oPermitionAcceptor.get("sKeyGroupe_Source"));
+                            oDocumentSubjectRightPermition.setsKeyGroupeSource((String)oPermitionAcceptor.get("sKeyGroupe_Source"));
+                        }
+                        
+                        JSONObject oPermitionVisor = oGroup.optJSONObject("oPermitions_AddVisor");
+                        LOG.info("oPermitionVisor is {}", oPermitionVisor);
+                        if(oPermitionVisor != null && aPermition.getString(i).equals("AddVisor")){
+                            LOG.info("oPermitionVisor sKeyGroupe_Source is {}", oPermitionVisor.get("sKeyGroupe_Source"));
+                            oDocumentSubjectRightPermition.setsKeyGroupeSource((String)oPermitionVisor.get("sKeyGroupe_Source"));
+                        }
+                        
+                        oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition);
+                    }
+                }
+                
                 aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
             }
         }
