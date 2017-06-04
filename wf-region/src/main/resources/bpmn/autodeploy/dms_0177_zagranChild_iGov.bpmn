@@ -46,7 +46,7 @@
     <sequenceFlow id="flow43" sourceRef="exclusivegateway6" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay != null}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('date_of_visit')
 var year=src.substr(0,4)
 var month=src.substr(5,2)
@@ -383,7 +383,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow44" sourceRef="exclusivegateway6" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay == null}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask3" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask3" name="Формировка даты" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('visitDay1')
 var date_of_visit=src.substr(src.indexOf('"sDate":"')+9,16);
 var tickNum=src.substr(src.indexOf('"ticket_number":"')+17,3);
