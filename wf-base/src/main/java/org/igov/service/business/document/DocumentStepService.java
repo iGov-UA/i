@@ -206,6 +206,12 @@ public class DocumentStepService {
                             if(oDocumentSubjectRightPermition.getsKeyGroup_Postfix().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
                                oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
                                oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition);
+                               LOG.info("oDocumentSubjectRightPermition saved is id: {} "
+                                       + "DocumentStepSubjectRight id: {} "
+                                       + "DocumentStepSubjectRight group: {}",
+                                       oDocumentSubjectRightPermition.getId(), 
+                                       oDocumentStepSubjectRight.getId(), 
+                                       oDocumentStepSubjectRight.getsKey_GroupPostfix());
                             }
                         }
                     }
@@ -1254,6 +1260,7 @@ public class DocumentStepService {
             if(oDocumentStepSubjectRight_Active.getsKey_GroupPostfix().equals(sLogin)){
                 aDocumentSubjectRightPermition.addAll(oDocumentSubjectRightPermitionDao
                         .findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight_Active.getId()));
+                LOG.info("try to find DocumentSubjectRightPermition by id: {}", oDocumentStepSubjectRight_Active.getId());
             }
             break;
         }
