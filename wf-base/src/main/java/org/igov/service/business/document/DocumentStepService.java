@@ -196,8 +196,22 @@ public class DocumentStepService {
 
         LOG.info("Result list of steps: {}", aDocumentStep_Result);
         
-        getDocumentSubjectRightPermitions(oStep_Common);
+        List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = getDocumentSubjectRightPermitions(oStep_Common);
         
+        if (aDocumentSubjectRightPermition != null){
+            for(DocumentStep oDocumentStep_Result : aDocumentStep_Result){
+                if(oDocumentStep_Result.getRights() != null){
+                    for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Result.getRights()){
+                        for(DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition){
+                            if(oDocumentSubjectRightPermition.getsKeyGroup_Postfix().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
+                               oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
+                               oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         /*for(DocumentStep oDocumentStep_Result : aDocumentStep_Result){
             if(oDocumentStep_Result.getRights()){
                 
@@ -328,9 +342,7 @@ public class DocumentStepService {
                             LOG.info("oPermitionVisor sKeyGroupe_Source is {}", oPermitionVisor.get("sKeyGroupe_Source"));
                             oDocumentSubjectRightPermition.setsKeyGroupeSource((String) oPermitionVisor.get("sKeyGroupe_Source"));
                         }
-                        
-                        LOG.info("oDocumentSubjectRightPermition is{}", oDocumentSubjectRightPermition);
-                        //oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition);
+                        aDocumentSubjectRightPermition.add(oDocumentSubjectRightPermition);
                     }
                 }
             }
