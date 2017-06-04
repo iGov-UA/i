@@ -80,7 +80,6 @@ angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'mod
             var modalOptions = MasterPassService.messages('remove'), modalDefaults = {};
 
             modalService.showModal(modalDefaults, modalOptions).then(function () {
-              scope.checkoutConfirm.status = 'confirm';
               scope.checkoutSpinner = true;
               MasterPassService.removeCard(phoneNumber, card).then(function (res) {
                 if(res.status === 'FAIL') {
@@ -120,7 +119,6 @@ angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'mod
           scope.checkoutData.card_alias = scope.selectedCard.alias;
 
           if(phoneNumber && phoneNumber.length === 12) {
-            scope.checkoutConfirm.status = 'confirm';
             MasterPassService.createPayment(phoneNumber, scope.checkoutData).then(function (res) {
               if(res.pmt_status == 4) {
                 scope.paymentStatus = 4;
