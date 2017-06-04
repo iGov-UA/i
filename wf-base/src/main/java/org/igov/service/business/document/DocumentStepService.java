@@ -1278,7 +1278,7 @@ public class DocumentStepService {
         LOG.info("total aDocumentStepSubjectRight size is: " + aDocumentStepSubjectRight.size());
 
         Map<String, boolean[]> resultMap = new HashMap<>();
-
+        List<DocumentSubjectRightPermition> aResultDocumentSubjectRightPermition = new ArrayList<>();
         for (FormProperty oProperty : aFormProperty) {
             groupSearch:
             {
@@ -1288,6 +1288,11 @@ public class DocumentStepService {
                     LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}",
                             oDocumentStepSubjectRight.getsKey_GroupPostfix());
 
+                    List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = 
+                            oDocumentSubjectRightPermitionDao.findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight.getId());
+                    
+                    aResultDocumentSubjectRightPermition.addAll(aDocumentSubjectRightPermition);
+                    
                     long loopStartTime = System.nanoTime();
 
                     for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight
@@ -1417,7 +1422,9 @@ public class DocumentStepService {
         stopTime = System.nanoTime();
         LOG.info(
                 "getDocumentStepRights 4th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
-
+        
+        mReturn.put("aDocumentSubjectRightPermition", aResultDocumentSubjectRightPermition);
+        
         return mReturn;
     }
 
