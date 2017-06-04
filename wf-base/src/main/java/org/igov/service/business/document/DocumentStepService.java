@@ -302,7 +302,7 @@ public class DocumentStepService {
                     throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite. Probably your json is wrong");
                 }
                 oDocumentStepSubjectRight.setbWrite(bWrite);
-
+                
                 Object oNeedECP = oGroup.opt("bNeedECP");
                 boolean bNeedECP = false;
                 if (oNeedECP != null) {
@@ -314,7 +314,30 @@ public class DocumentStepService {
                 if (sName != null) {
                     oDocumentStepSubjectRight.setsName((String) sName);
                 }
-
+                
+                JSONArray aPermition = oGroup.optJSONArray("aPermition");
+                LOG.info("aPermition is {}", aPermition);
+                
+                if (aPermition != null){
+                    for(int i = 0; i < aPermition.length(); i++){
+                        LOG.info("Permition elem is {}", aPermition.getString(i));
+                    }
+                }
+                
+                JSONObject oPermitionAcceptor = oGroup.optJSONObject("oPermitions_AddAcceptor");
+                LOG.info("oPermitionAcceptor is {}", oPermitionAcceptor);
+                
+                if(oPermitionAcceptor != null){
+                    LOG.info("oPermitionAcceptor sKeyGroupe_Source is {}", oPermitionAcceptor.get("sKeyGroupe_Source"));
+                }
+                
+                
+                JSONObject oPermitionVisor = oGroup.optJSONObject("oPermitions_AddVisor");
+                LOG.info("oPermitionVisor is {}", oPermitionVisor);
+                if(oPermitionVisor != null){
+                    LOG.info("oPermitionVisor sKeyGroupe_Source is {}", oPermitionVisor.get("sKeyGroupe_Source"));
+                }
+                
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup,
                         oDocumentStepSubjectRight);
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);

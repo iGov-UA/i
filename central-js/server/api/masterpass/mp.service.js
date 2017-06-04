@@ -69,7 +69,7 @@ module.exports.createAndCheckOTP = function (data) {
   var isTestServer = config.bTest, response;
 
   if( data.phone && !data.value ) {
-    var code = isTestServer ? '0000' : Math.floor(Math.random() * 1000000);
+    var code = isTestServer ? '0000' : Math.floor(1000 + Math.random() * 9000);
     var string = '0000' ? '0000' : code.toString();
 
     cache.set(buildKey(data.phone), string, 600);
