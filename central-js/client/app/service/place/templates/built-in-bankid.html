@@ -509,6 +509,15 @@
                      ng-if="isMPassField(property.id)"
                      style="width: 160px;"
                      ng-click="authorizeCheckout()">
+                <input ng-switch-when="string"
+                       type="text"
+                       name="{{property.id}}"
+                       ng-hide="true"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       class="form-control"
+                       ng-if="isMPassField(property.id)">
                 <!--masterpass button end-->
 
                 <!--field for OKPO search start-->
