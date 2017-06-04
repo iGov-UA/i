@@ -199,10 +199,16 @@ public class DocumentStepService {
         List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = getDocumentSubjectRightPermitions(oStep_Common);
         
         if (aDocumentSubjectRightPermition != null){
+            LOG.info("aDocumentSubjectRightPermition isn't null");
             for(DocumentStep oDocumentStep_Result : aDocumentStep_Result){
                 if(oDocumentStep_Result.getRights() != null){
+                    LOG.info("oDocumentStep_Result rights isn't null");
                     for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Result.getRights()){
+                        
                         for(DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition){
+                            LOG.info("oDocumentSubjectRightPermition.getsKeyGroup_Postfix() is {}", oDocumentSubjectRightPermition.getsKeyGroup_Postfix());
+                            LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix() is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                            
                             if(oDocumentSubjectRightPermition.getsKeyGroup_Postfix().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
                                oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
                                oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition);
