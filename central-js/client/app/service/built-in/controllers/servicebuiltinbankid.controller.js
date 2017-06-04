@@ -1240,6 +1240,35 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       };
 
       var checkLocation = $location.url();
+      var tempFiles = localStorage.getItem('temporaryForm');
+
+      function getTemporarySavedFields() {
+        var parsedFormData = JSON.parse(tempFiles).form;
+        var parsedActivitiForm = JSON.parse(tempFiles).activiti;
+
+        for( var param in parsedFormData ) {
+          if(parsedFormData.hasOwnProperty(param) && $scope.data.formData.params.hasOwnProperty(param)) {
+            $scope.data.formData.params[param].value = parsedFormData[param].value;
+          } else if(parsedFormData.hasOwnProperty(param) && $scope.data.formData.params.hasOwnProperty(param) && 'aRow' in parsedFormData[param]) {
+            $scope.data.formData.params[param].aRow = parsedFormData[param].aRow;
+          }
+        }
+
+        for( var i=0; i<parsedActivitiForm.length; i++ ) {
+          for( var j=0; j<$scope.activitiForm.formProperties.length; j++) {
+            if(parsedActivitiForm[i].id === $scope.activitiForm.formProperties[j].id) {
+              $scope.activitiForm.formProperties[j].value = parsedActivitiForm[i].value;
+            } else if(parsedActivitiForm[i].id === $scope.activitiForm.formProperties[j].id && parsedActivitiForm[i].aRow) {
+              $scope.activitiForm.formProperties[j].aRow = parsedActivitiForm[i].aRow;
+            }
+          }
+        }
+
+        $scope.phoneVerify.dialog = $scope.phoneVerify.showVerifyButton = false;
+        $scope.phoneVerify.confirmed = true;
+        localStorage.removeItem('temporaryForm');
+      }
+
       if(checkLocation.indexOf('pmt_id') > -1) {
         var parse = checkLocation.split('?')[1], data = parse.split('&'), paymentStatus = data[0].split('=')[1], paymentID = data[1].split('=')[1];
 
@@ -1248,19 +1277,19 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
 
         $scope.checkoutData.payment = {result: paymentID};
 
-        var tempFiles = localStorage.getItem('temporaryForm');
-        if (tempFiles) {
-          $scope.data.formData.params = JSON.parse(tempFiles).form;
-          $scope.activitiForm.formProperties = JSON.parse(tempFiles).activiti;
-          $scope.phoneVerify.dialog = $scope.phoneVerify.showVerifyButton = false;
-          $scope.phoneVerify.confirmed = true;
-          localStorage.removeItem('temporaryForm');
-        }
+        if (tempFiles)
+          getTemporarySavedFields();
 
         for(var field in $scope.data.formData.params) {
           if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
             $scope.data.formData.params[field].value = paymentID;
           }
+        }
+
+      } else if(checkLocation.indexOf('3DS') > -1 && checkLocation.indexOf('failed') > -1) {
+        if (tempFiles) {
+          getTemporarySavedFields();
+          $scope.authorizeCheckout();
         }
       }
       /*MasterPass Checkout end*/
