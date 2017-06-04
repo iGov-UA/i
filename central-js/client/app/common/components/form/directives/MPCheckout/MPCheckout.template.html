@@ -17,7 +17,7 @@
         <a class="list-group-item list-group-item-action checkout-list-card"
            ng-repeat="card in userCards"
            ng-click="selectCard($index, card.card_alias)"
-           ng-class="{'checkout-selected-card': isSelectedCard($index), 'card-list-disabled': checkoutConfirm.status === 'confirm'}">
+           ng-class="{'checkout-selected-card': isSelectedCard($index), 'card-list-disabled': checkoutConfirm.status === 'confirm' || checkoutSpinner}">
           <span>{{card.card_alias}}</span><br>
           <span>{{card.mask}}</span>
           <button class="btn btn-link checkout-remove-card" ng-click="removeCardFromWallet(card.card_alias)">

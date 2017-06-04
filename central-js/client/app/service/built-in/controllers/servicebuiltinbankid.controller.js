@@ -1176,14 +1176,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         return LabelService.isLabelHasClasses(field)
       };
 
-      /*MasterPass Checkout start*/
-      $scope.isMPassField = function (id, all) {
-        if(id && !all)
-          return MasterPassService.isMasterPassButton(id, all);
-        if(!id && all)
-          return MasterPassService.isMasterPassButton(false, $scope.activitiForm.formProperties);
-      };
-
+      /*verify phone number start*/
       $scope.phoneVerifyStart = function () {
         var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
         MasterPassService.phoneCheck(phoneNumber, null).then(function () {
@@ -1203,6 +1196,15 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         $scope.data.formData.params['phone'].value = '+380';
         $scope.phoneVerify = {showVerifyButton: true, dialog: false, otp: '', confirmed: false};
         $scope.isOpenedCheckout = false;
+      };
+      /*verify phone number end*/
+
+      /*MasterPass Checkout start*/
+      $scope.isMPassField = function (id, all) {
+        if(id && !all)
+          return MasterPassService.isMasterPassButton(id, all);
+        if(!id && all)
+          return MasterPassService.isMasterPassButton(false, $scope.activitiForm.formProperties);
       };
 
       $scope.authorizeCheckout = function () {
@@ -1250,6 +1252,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         if (tempFiles) {
           $scope.data.formData.params = JSON.parse(tempFiles).form;
           $scope.activitiForm.formProperties = JSON.parse(tempFiles).activiti;
+          $scope.phoneVerify.dialog = $scope.phoneVerify.showVerifyButton = false;
+          $scope.phoneVerify.confirmed = true;
           localStorage.removeItem('temporaryForm');
         }
 
