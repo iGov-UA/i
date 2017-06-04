@@ -171,7 +171,7 @@ module.exports.verify3DSCallback = function (req, res) {
         }
       });
     } else {
-      res.redirect(callbackUrl)
+      res.redirect(callbackUrl + '?status=' + result.response.error)
     }
   }
 };
