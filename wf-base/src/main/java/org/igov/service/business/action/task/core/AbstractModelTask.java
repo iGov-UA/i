@@ -755,6 +755,9 @@ public abstract class AbstractModelTask {
                             oFlowSlotTicketDao.saveOrUpdate(oFlowSlotTicket);
                             LOG.info("(JSON={})", JsonRestUtils
                                     .toJsonResponse(new SaveFlowSlotTicketResponse(oFlowSlotTicket.getId(), nSlots)));
+                           /* SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", new Locale("uk"));
+                	    	String dateOfvisit = dateFormat.format(sDate);
+                            oExecution.setVariable("date_of_visit", dateOfvisit);*/
                             oExecution.setVariable("date_of_visit", sDate);
                             LOG.info("(date_of_visit={})", sDate);
                         }
