@@ -328,7 +328,7 @@ public class DocumentStepService {
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
                 oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
                 //LOG.info("right for step: {}", oDocumentStepSubjectRight);
-                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                //oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
                 
                 if (aPermition != null){
                     for(int i = 0; i < aPermition.length(); i++){
