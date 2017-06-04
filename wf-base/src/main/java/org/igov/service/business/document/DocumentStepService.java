@@ -195,6 +195,15 @@ public class DocumentStepService {
         }
 
         LOG.info("Result list of steps: {}", aDocumentStep_Result);
+        
+        getDocumentSubjectRightPermitions(oStep_Common);
+        
+        /*for(DocumentStep oDocumentStep_Result : aDocumentStep_Result){
+            if(oDocumentStep_Result.getRights()){
+                
+            }
+        }*/
+        
         return aDocumentStep_Result;
     }
 
@@ -280,6 +289,55 @@ public class DocumentStepService {
 
     }
 
+    private List<DocumentSubjectRightPermition> getDocumentSubjectRightPermitions(Object oStep_JSON) {
+        List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = new ArrayList<>();
+
+        JSONObject oStep = (JSONObject) oStep_JSON;
+        LOG.info("try to parse step: {}", oStep);
+        if (oStep == null) {
+            return null;
+        }
+        
+        String[] asKey_Group = JSONObject.getNames(oStep);
+        if (asKey_Group != null) {
+            for (String sKey_Group : asKey_Group) {
+                
+                JSONObject oGroup = oStep.optJSONObject(sKey_Group);
+                JSONArray aPermition = oGroup.optJSONArray("aPermition");
+                LOG.info("aPermition is {}", aPermition);
+
+                if (aPermition != null) {
+                    for (int i = 0; i < aPermition.length(); i++) {
+                        LOG.info("Permition elem is {}", aPermition.getString(i));
+                        DocumentSubjectRightPermition oDocumentSubjectRightPermition = new DocumentSubjectRightPermition();
+                        oDocumentSubjectRightPermition.setPermitionType(aPermition.getString(i));
+                        oDocumentSubjectRightPermition.setsKeyGroup_Postfix(sKey_Group);
+                        //oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
+
+                        JSONObject oPermitionAcceptor = oGroup.optJSONObject("oPermitions_AddAcceptor");
+                        LOG.info("oPermitionAcceptor is {}", oPermitionAcceptor);
+
+                        if (oPermitionAcceptor != null && aPermition.getString(i).equals("AddAcceptor")) {
+                            LOG.info("oPermitionAcceptor sKeyGroupe_Source is {}", oPermitionAcceptor.get("sKeyGroupe_Source"));
+                            oDocumentSubjectRightPermition.setsKeyGroupeSource((String) oPermitionAcceptor.get("sKeyGroupe_Source"));
+                        }
+
+                        JSONObject oPermitionVisor = oGroup.optJSONObject("oPermitions_AddVisor");
+                        LOG.info("oPermitionVisor is {}", oPermitionVisor);
+                        if (oPermitionVisor != null && aPermition.getString(i).equals("AddVisor")) {
+                            LOG.info("oPermitionVisor sKeyGroupe_Source is {}", oPermitionVisor.get("sKeyGroupe_Source"));
+                            oDocumentSubjectRightPermition.setsKeyGroupeSource((String) oPermitionVisor.get("sKeyGroupe_Source"));
+                        }
+                        
+                        LOG.info("oDocumentSubjectRightPermition is{}", oDocumentSubjectRightPermition);
+                        //oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition);
+                    }
+                }
+            }
+        }
+        return aDocumentSubjectRightPermition;
+    }
+
     private DocumentStep mapToDocumentStep(Object oStep_JSON) {
         JSONObject oStep = (JSONObject) oStep_JSON;
         LOG.info("try to parse step: {}", oStep);
@@ -320,8 +378,6 @@ public class DocumentStepService {
                     oDocumentStepSubjectRight.setsName((String) sName);
                 }
                 
-                JSONArray aPermition = oGroup.optJSONArray("aPermition");
-                LOG.info("aPermition is {}", aPermition);
                 
                 List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField = mapToFields(oGroup,
                         oDocumentStepSubjectRight);
@@ -330,12 +386,15 @@ public class DocumentStepService {
                 //LOG.info("right for step: {}", oDocumentStepSubjectRight);
                 //oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
                 
+                /*JSONArray aPermition = oGroup.optJSONArray("aPermition");
+                LOG.info("aPermition is {}", aPermition);
+                
                 if (aPermition != null){
                     for(int i = 0; i < aPermition.length(); i++){
                         LOG.info("Permition elem is {}", aPermition.getString(i));
                         DocumentSubjectRightPermition oDocumentSubjectRightPermition = new DocumentSubjectRightPermition();
                         oDocumentSubjectRightPermition.setPermitionType(aPermition.getString(i));
-                        oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
+                        //oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
                         
                         JSONObject oPermitionAcceptor = oGroup.optJSONObject("oPermitions_AddAcceptor");
                         LOG.info("oPermitionAcceptor is {}", oPermitionAcceptor);
@@ -354,7 +413,7 @@ public class DocumentStepService {
                         
                         oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition);
                     }
-                }
+                }*/
                 
                 aDocumentStepSubjectRight.add(oDocumentStepSubjectRight);
             }

@@ -23,7 +23,18 @@ public class DocumentSubjectRightPermition extends AbstractEntity{
     @JsonProperty(value = "sKeyGroupeSource")
     @Column
     private String sKeyGroupeSource;
+    
+    @JsonProperty(value = "sKeyGroup_Postfix")
+    private String sKeyGroup_Postfix;
 
+    public void setsKeyGroup_Postfix(String sKeyGroup_Postfix) {
+        this.sKeyGroup_Postfix = sKeyGroup_Postfix;
+    }
+
+    public String getsKeyGroup_Postfix() {
+        return sKeyGroup_Postfix;
+    }
+            
     public Long getnID_DocumentStepSubjectRight() {
         return nID_DocumentStepSubjectRight;
     }
