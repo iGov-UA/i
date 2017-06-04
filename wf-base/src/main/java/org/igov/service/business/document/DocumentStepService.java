@@ -1264,8 +1264,12 @@ public class DocumentStepService {
         
         for(DocumentStepSubjectRight oDocumentStepSubjectRight_Active : aDocumentStepSubjectRight_Active){
             if(oDocumentStepSubjectRight_Active.getsKey_GroupPostfix().equals(sLogin)){
-                aDocumentSubjectRightPermition.addAll(oDocumentSubjectRightPermitionDao
-                        .findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight_Active.getId()));
+                
+                List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition_finded =
+                        oDocumentSubjectRightPermitionDao.findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight_Active.getId());
+                
+                LOG.info("aDocumentSubjectRightPermition_finded size is {}", aDocumentSubjectRightPermition_finded);
+                aDocumentSubjectRightPermition.addAll(aDocumentSubjectRightPermition_finded);
                 LOG.info("try to find DocumentSubjectRightPermition by id: {}", oDocumentStepSubjectRight_Active.getId());
                 break;
             }
