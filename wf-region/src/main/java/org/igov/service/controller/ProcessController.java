@@ -317,7 +317,6 @@ public class ProcessController {
     public String uploadFile(MultipartFile file) {
         if (!file.isEmpty()) {
             analyticFileDataStorage.saveFile(file.getName(), file);
-
             durableFileStorage.saveFile(file.getName(), file);
         }
         return null;
