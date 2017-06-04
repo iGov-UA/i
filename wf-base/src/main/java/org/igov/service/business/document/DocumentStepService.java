@@ -131,12 +131,12 @@ public class DocumentStepService {
         List<DocumentStepSubjectRight> aDocumentStepSubjectRightToSet_Common = new ArrayList<>();
 
         if (oStep_Common != null) {
-            DocumentStep oDocumentStep_Common = mapToDocumentStep(oStep_Common, "_", 0L, snID_Process_Activiti, oDocumentStepType);
-            //oDocumentStep_Common.setnOrder(0L);// common step with name "_" has
+            DocumentStep oDocumentStep_Common = mapToDocumentStep(oStep_Common);
+            oDocumentStep_Common.setnOrder(0L);// common step with name "_" has
             // order 0
-            //oDocumentStep_Common.setsKey_Step("_");
-            //oDocumentStep_Common.setSnID_Process_Activiti(snID_Process_Activiti);
-            //oDocumentStep_Common.setoDocumentStepType(oDocumentStepType);
+            oDocumentStep_Common.setsKey_Step("_");
+            oDocumentStep_Common.setSnID_Process_Activiti(snID_Process_Activiti);
+            oDocumentStep_Common.setoDocumentStepType(oDocumentStepType);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRightToSet = oDocumentStep_Common.getRights();
             if (aDocumentStepSubjectRightToSet != null) {
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRightToSet) {
@@ -166,11 +166,11 @@ public class DocumentStepService {
                 oDocumentStepType = oDocumentStepTypeDao.findByExpected("name", asKey_Step_Split[1]);
             }
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
-            DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step), asKey_Step_Split[0], i++, snID_Process_Activiti, oDocumentStepType);
-            //oDocumentStep.setnOrder(i++);
-            //oDocumentStep.setsKey_Step(asKey_Step_Split[0]);
-            //oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
-            //oDocumentStep.setoDocumentStepType(oDocumentStepType);
+            DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
+            oDocumentStep.setnOrder(i++);
+            oDocumentStep.setsKey_Step(asKey_Step_Split[0]);
+            oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
+            oDocumentStep.setoDocumentStepType(oDocumentStepType);
             LOG.info("before add: snID_Process_Activiti is: {} sKey_Step is: {} rights size is: {}",
                     oDocumentStep.getSnID_Process_Activiti(), oDocumentStep.getsKey_Step(),
                     oDocumentStep.getRights().size());
@@ -280,8 +280,7 @@ public class DocumentStepService {
 
     }
 
-    private DocumentStep mapToDocumentStep(Object oStep_JSON, String sKey_Step, Long nOrder, String snID_Process_Activiti,
-            DocumentStepType oDocumentStepType) {
+    private DocumentStep mapToDocumentStep(Object oStep_JSON) {
         JSONObject oStep = (JSONObject) oStep_JSON;
         LOG.info("try to parse step: {}", oStep);
         if (oStep == null) {
@@ -328,12 +327,8 @@ public class DocumentStepService {
                         oDocumentStepSubjectRight);
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
                 oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
-                oDocumentStep.setsKey_Step(sKey_Step);
-                oDocumentStep.setnOrder(nOrder);
-                oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
-                oDocumentStep.setoDocumentStepType(oDocumentStepType);
                 //LOG.info("right for step: {}", oDocumentStepSubjectRight);
-                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                //oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
                 
                 if (aPermition != null){
                     for(int i = 0; i < aPermition.length(); i++){
