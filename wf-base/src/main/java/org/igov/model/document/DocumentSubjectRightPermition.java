@@ -3,6 +3,7 @@ package org.igov.model.document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import org.igov.model.core.AbstractEntity;
 
 /**
@@ -24,7 +25,7 @@ public class DocumentSubjectRightPermition extends AbstractEntity{
     @Column
     private String sKeyGroupeSource;
     
-    @JsonProperty(value = "sKeyGroup_Postfix")
+    @Transient
     private String sKeyGroup_Postfix;
 
     public void setsKeyGroup_Postfix(String sKeyGroup_Postfix) {
