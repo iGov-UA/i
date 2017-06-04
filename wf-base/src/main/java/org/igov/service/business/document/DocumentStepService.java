@@ -1267,8 +1267,8 @@ public class DocumentStepService {
                 aDocumentSubjectRightPermition.addAll(oDocumentSubjectRightPermitionDao
                         .findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight_Active.getId()));
                 LOG.info("try to find DocumentSubjectRightPermition by id: {}", oDocumentStepSubjectRight_Active.getId());
+                break;
             }
-            break;
         }
        
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
