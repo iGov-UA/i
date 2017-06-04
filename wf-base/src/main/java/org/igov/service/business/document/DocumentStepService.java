@@ -1426,7 +1426,7 @@ public class DocumentStepService {
         stopTime = System.nanoTime();
         LOG.info(
                 "getDocumentStepRights 4th block time execution is: " + String.format("%,12d", (stopTime - startTime)));
-        
+        LOG.info("aDocumentSubjectRightPermition {}", aDocumentSubjectRightPermition);
         mReturn.put("aDocumentSubjectRightPermition", aDocumentSubjectRightPermition);
         
         return mReturn;
