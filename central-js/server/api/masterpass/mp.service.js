@@ -68,7 +68,7 @@ module.exports.createGuid = function () {
 module.exports.createAndCheckOTP = function (data) {
   var isTestServer = config.bTest, response;
 
-  if( data.phone && !data.value ) {
+  if( data.phone && !data.value && data.value !== "") {
     var code = isTestServer ? '0000' : Math.floor(1000 + Math.random() * 9000);
     var string = '0000' ? '0000' : code.toString();
 
