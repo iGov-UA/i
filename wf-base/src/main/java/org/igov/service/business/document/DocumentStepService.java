@@ -131,7 +131,7 @@ public class DocumentStepService {
         List<DocumentStepSubjectRight> aDocumentStepSubjectRightToSet_Common = new ArrayList<>();
 
         if (oStep_Common != null) {
-            DocumentStep oDocumentStep_Common = mapToDocumentStep(oStep_Common);
+            DocumentStep oDocumentStep_Common = mapToDocumentStep(oStep_Common, "_");
             oDocumentStep_Common.setnOrder(0L);// common step with name "_" has
             // order 0
             oDocumentStep_Common.setsKey_Step("_");
@@ -166,7 +166,7 @@ public class DocumentStepService {
                 oDocumentStepType = oDocumentStepTypeDao.findByExpected("name", asKey_Step_Split[1]);
             }
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
-            DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
+            DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step), asKey_Step_Split[0]);
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(asKey_Step_Split[0]);
             oDocumentStep.setSnID_Process_Activiti(snID_Process_Activiti);
@@ -280,7 +280,7 @@ public class DocumentStepService {
 
     }
 
-    private DocumentStep mapToDocumentStep(Object oStep_JSON) {
+    private DocumentStep mapToDocumentStep(Object oStep_JSON, String sKey_Step) {
         JSONObject oStep = (JSONObject) oStep_JSON;
         LOG.info("try to parse step: {}", oStep);
         if (oStep == null) {
@@ -327,8 +327,9 @@ public class DocumentStepService {
                         oDocumentStepSubjectRight);
                 oDocumentStepSubjectRight.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField);
                 oDocumentStepSubjectRight.setDocumentStep(oDocumentStep);
+                oDocumentStep.setsKey_Step(sKey_Step);
                 //LOG.info("right for step: {}", oDocumentStepSubjectRight);
-                //oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
                 
                 if (aPermition != null){
                     for(int i = 0; i < aPermition.length(); i++){
