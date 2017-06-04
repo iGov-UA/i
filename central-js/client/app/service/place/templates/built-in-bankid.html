@@ -509,6 +509,15 @@
                      ng-if="isMPassField(property.id)"
                      style="width: 160px;"
                      ng-click="authorizeCheckout()">
+                <input ng-switch-when="string"
+                       type="text"
+                       name="{{property.id}}"
+                       ng-hide="true"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       class="form-control"
+                       ng-if="isMPassField(property.id)">
                 <!--masterpass button end-->
 
                 <!--field for OKPO search start-->
@@ -584,12 +593,14 @@
                   <div class="mp-phone-check" ng-if="isMPassField(null, true)">
                     <div class="phone-check-dialog" ng-if="phoneVerify.dialog">
                       <input type="text"
+                             maxlength="4"
                              class="form-control input-sm confirm-field"
                              placeholder="Введiть надiсланий SMS-пароль"
                              ng-model="phoneVerify.otp">
                       <input type="button"
                              class="btn btn-default btn-sm confirm-button"
                              value="Пiдтвердити"
+                             ng-disabled="phoneVerify.otp.length < 4"
                              ng-click="confirmOtp()">
                     </div>
                     <input type="button"
