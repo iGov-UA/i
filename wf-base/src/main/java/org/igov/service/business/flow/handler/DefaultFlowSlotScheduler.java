@@ -99,7 +99,8 @@ public class DefaultFlowSlotScheduler extends BaseFlowSlotScheduler {
                         LOG.info("createNewSlot: slot.getId={} flow.getId={} getsDate={} getsDuration={}", slot.getId(), flow.getId(), slot.getsDate(), slot.getsDuration());
                     } else {
                         datesToUpdateSlotsIn.add(slot.getsDate());
-                        LOG.info("datesToUpdateSlotsIn: slot.getId={} flow.getId={} getsDate={} getsDuration={}", slot.getId(), flow.getId(), slot.getsDate(), slot.getsDuration());
+                        LOG.info("datesToUpdateSlotsIn: slot.getId={} flow.getId={} getsDate={} getsDuration={} datesToUpdateSlotsIn={}"
+                                , slot.getId(), flow.getId(), slot.getsDate(), slot.getsDuration(), datesToUpdateSlotsIn.size());
                     }
                 }
 

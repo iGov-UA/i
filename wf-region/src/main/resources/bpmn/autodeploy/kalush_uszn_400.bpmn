@@ -22,19 +22,19 @@
           <activiti:value id="aEnamEst_Dok" name="так"></activiti:value>
           <activiti:value id="aEnamNo_Dok" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_rob" name="Документ що засвідчує роботу в період другої світової" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_rob" name="Документ що засвідчує роботу в період другої світової ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSvidki" name="Чи є у вас свідчення свідків про вашу роботу у період війни?" type="enum" required="true">
           <activiti:value id="aEnamEst_Svid" name="Є, подати свідчення і документи свідків"></activiti:value>
           <activiti:value id="aEnamNo_Svid" name="Немає, подати клопотання щодо опитування свідків"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_klop" name="Kлопотання щодо опитування конкретних свідків" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_svidcenna" name="Свідчення двох  свідків про роботу заявника;(завантажте zip архівом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_svidok1" name="Копії посвідчення “Учасника війни”, паспорта (1,2,11 сторінки)  – свідка №1;(завантажте zip архівом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_svidok2" name="Копії посвідчення “Учасника війни”, паспорта (1,2,11 сторінки)  – свідка №2;(завантажте zip архівом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_gosp_knuga" name="Архівна довідка про відсутність погосподарських  книг за 1944-1945 рр.;(для зайнятих в індивідуальному господарстві)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file_peresel" name="Документ про факт переселення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_ato" name="Документ про безпосереднє залучення до виконання завдань АТО" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_ato_vidradj" name="Документ про направлення  (прибуття) у відрядження для безпосередньої участі в АТО" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_klop" name="Kлопотання щодо опитування конкретних свідків ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_svidcenna" name="Свідчення двох  свідків про роботу заявника;(завантажте zip архівом) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_svidok1" name="Копії посвідчення “Учасника війни”, паспорта (1,2,11 сторінки)  – свідка №1;(завантажте zip архівом) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_svidok2" name="Копії посвідчення “Учасника війни”, паспорта (1,2,11 сторінки)  – свідка №2;(завантажте zip архівом) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_gosp_knuga" name="Архівна довідка про відсутність погосподарських  книг за 1944-1945 рр.;(для зайнятих в індивідуальному господарстві) ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file_peresel" name="Документ про факт переселення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_ato" name="Документ про безпосереднє залучення до виконання завдань АТО ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_ato_vidradj" name="Документ про направлення  (прибуття) у відрядження для безпосередньої участі в АТО ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPrich" name="Вкажіть причину видачі посвідчення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_tip_osobu" name="tip_osobu" type="markers" default="${markerService.loadFromFile('soczah/kalush_upszn_400.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -45,7 +45,6 @@
         <activiti:formProperty id="nArea" name="Пароль ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="повідомлення чиновника про звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -55,13 +54,13 @@
           <activiti:string><![CDATA[${sMailClerk}]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо видачі посвідчення учасника війни.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення щодо видачі посвідчення учасника війни.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нова заява про отроимання посвідчення учасника війни]]></activiti:string>
@@ -74,37 +73,34 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Служба соціального захисту населення]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо отримання посвідчення учасника війни зареєстроване в системі.
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо отримання посвідчення учасника війни зареєстроване в системі.
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
+<br />
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка та перевірка документів" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
@@ -136,12 +132,18 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="Komment_rishenia" name="Коментар по рішенню.(Вкажіть дату отримання посвідчення, в разі відмови вкажіть причину відмови)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/kalush_uszn_400_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="v_komisiu" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;aEnamNo_Svid&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSvidki&quot;,&quot;sCond2&quot;:&quot;asWar_category&quot;,&quot;sCond3&quot;:&quot;asWW_Rob_Dok&quot;},&quot;sCondition&quot;:&quot;[sCond] == 'aEnamNo_Svid'&amp;&amp; [sCond2] == 'aEnamWw2'&amp;&amp; [sCond3] == 'aEnamNo_Dok'&quot;},&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;aEnamEst_Svid&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSvidki&quot;,&quot;sCond2&quot;:&quot;asWar_category&quot;,&quot;sCond3&quot;:&quot;asWW_Rob_Dok&quot;},&quot;sCondition&quot;:&quot;[sCond] == 'aEnamEst_Svid'&amp;&amp; [sCond2] == 'aEnamWw2'&amp;&amp; [sCond3] == 'aEnamNo_Dok'&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="file_rob" name="Документ що засвідчує роботу в період другої світової ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_klop" name="Kлопотання щодо опитування конкретних свідків ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_svidcenna" name="Свідчення двох  свідків про роботу заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_svidok1" name="Копії посвідчення “Учасника війни”, паспорта (1,2,11 сторінки)  – свідка №1; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_svidok2" name="Копії посвідчення “Учасника війни”, паспорта (1,2,11 сторінки)  – свідка №2; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_gosp_knuga" name="Архівна довідка про відсутність погосподарських  книг за 1944-1945 рр.; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_peresel" name="Документ про факт переселення ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_ato" name="Документ про безпосереднє залучення до виконання завдань АТО ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_ato_vidradj" name="Документ про направлення  (прибуття) у відрядження для безпосередньої участі в АТО ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file_rob},${file_klop},${file_svidcenna},${file_svidok1},${file_svidok2},${file_gosp_knuga},${file_peresel},${file_ato},${file_ato_vidradj}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -153,32 +155,32 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Висновок щодо надання посвідчення учасника війни</activiti:expression>
+          <activiti:expression><![CDATA[Висновок щодо надання посвідчення учасника війни]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-На жаль, ми змушені відмовити вам в видачі посвідчення учасника війни&lt;br/&gt; 
-Причина: ${Komment_rishenia}.&lt;br/&gt; 
-${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+На жаль, ми змушені відмовити вам в видачі посвідчення учасника війни<br/> 
+Причина: ${Komment_rishenia}.<br/> 
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+${sNameOrgan}<br />
+${sAddress}<br />
+${sWorkTime}<br />
+[pattern/mail/_common_signature_end.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -188,37 +190,37 @@ ${sWorkTime}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Висновок щодо можливості надання посвідчення учасника війни]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Посвідчення учасника війни Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис в УСЗН м. Калуша в будь який робочий день починаючи з ${Komment_rishenia}.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-4. Фото 3 на 4. Без фото посвідчення видане не буде!&lt;br/&gt;
-${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Посвідчення учасника війни Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис в УСЗН м. Калуша в будь який робочий день починаючи з ${Komment_rishenia}.<br/> 
+При собі треба мати:<br/> 
+1. Документ, що посвідчує особу.<br/> 
+2. Для уповоноваженої особи - довіренність.<br/>
+3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
+4. Фото 3 на 4. Без фото посвідчення видане не буде!<br/>
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+${sNameOrgan}<br />
+${sAddress}<br />
+${sWorkTime}<br />
+[pattern/mail/_common_signature_end.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -230,10 +232,6 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVariants == 'aEnamDok_bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask2" name="Видача документа" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -261,21 +259,21 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Оцініть якість наданої послуги]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
-Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Дякуємо що скористались нашою послугою онлайн.<br />
+Будь ласка оцініть якість наданої вам послуги. <br />
 [pattern/mail/_common_feedback.html]
-${sPhoneOrgan}&lt;br /&gt;
+${sPhoneOrgan}<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
-[pattern/mail/_common_signature_end.html]</activiti:expression>
+${sNameOrgan}<br />
+[pattern/mail/_common_signature_end.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -288,17 +286,12 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow17" name="${asVukonan == 'aEnamVuk_bad'}" sourceRef="parallelgateway1" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVukonan == 'aEnamVuk_bad'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kalush_uszn_400">
     <bpmndi:BPMNPlane bpmnElement="kalush_uszn_400" id="BPMNPlane_kalush_uszn_400">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="158.0" y="99.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="131.0" x="238.0" y="81.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="289.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="71.0" width="131.0" x="418.0" y="81.0"></omgdc:Bounds>
@@ -330,14 +323,6 @@ ${sNameOrgan}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="131.0" y="298.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="193.0" y="116.0"></omgdi:waypoint>
-        <omgdi:waypoint x="238.0" y="116.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="369.0" y="116.0"></omgdi:waypoint>
-        <omgdi:waypoint x="418.0" y="116.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="549.0" y="116.0"></omgdi:waypoint>
         <omgdi:waypoint x="598.0" y="116.0"></omgdi:waypoint>
@@ -354,23 +339,19 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="643.0" y="318.0"></omgdi:waypoint>
         <omgdi:waypoint x="549.0" y="318.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="96.0" x="549.0" y="317.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="96.0" x="549.0" y="317.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="663.0" y="298.0"></omgdi:waypoint>
         <omgdi:waypoint x="483.0" y="252.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="605.0" y="245.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="605.0" y="245.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="418.0" y="216.0"></omgdi:waypoint>
         <omgdi:waypoint x="321.0" y="216.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="304.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="303.0" y="199.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="418.0" y="318.0"></omgdi:waypoint>
@@ -388,15 +369,19 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="151.0" y="298.0"></omgdi:waypoint>
         <omgdi:waypoint x="151.0" y="252.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="72.0" y="254.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="72.0" y="254.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="151.0" y="298.0"></omgdi:waypoint>
         <omgdi:waypoint x="303.0" y="234.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="233.0" y="236.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="233.0" y="236.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="193.0" y="116.0"></omgdi:waypoint>
+        <omgdi:waypoint x="418.0" y="116.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

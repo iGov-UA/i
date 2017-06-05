@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -35,9 +35,9 @@
         <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default="+380"></activiti:formProperty>
-        <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються або реалізуються, за підписом заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються або реалізуються, за підписом заявника ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="район; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта району; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerkVet" name="пошта ветеринарів; ;bVisible=false" type="string"></activiti:formProperty>
@@ -50,11 +50,6 @@
         <activiti:formProperty id="markers" name="markers" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_54_55.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -99,13 +94,13 @@
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;sObject_pf&quot;,&quot;sObject_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sImya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpou_pf&quot;,&quot;sPib_ur_pf&quot;,&quot;sAdres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;sObject_pf&quot;,&quot;sObject_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sPib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява;Заява;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${doc_pidpriemci},${perelic_animals},${perelic_provender}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -146,11 +141,11 @@
           <activiti:value id="reject" name="відмовлено у наданні експлуатаційного дозволу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -300,9 +295,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow50" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow58" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask10" name="Лист до ветеринарної" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -383,21 +376,22 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sEndDateVet" name="Дата закінчення строку дії Експлуатаційного дозволу (у форматі ДД місяць РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDozvNumb" name="Номер Експлуатаційного дозволу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника ветеринарної служби" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55vet.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]; ;bVisible=false" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]; ;bVisible=false ,bPrintform=true" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_inn" name="показать инн" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_edrpo" name="показать едрпо" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_15&quot;:{&quot;aElement_ID&quot;:[&quot;edrpou&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${doc_pidpriemci},${perelic_animals},${perelic_provender},${PrintForm_1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow59" sourceRef="servicetask2" targetRef="exclusivegateway3"></sequenceFlow>
@@ -460,14 +454,12 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="perelic_text" name="Впишіть ассортимент продукції, відповідно до доданих заявником документів (прикріплених файлів); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55vet.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]; ;bVisible=false" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_55vet.html]; ;bVisible=false ,bPrintform=true" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${PrintForm_1},${rishen},${Printform_2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -526,17 +518,12 @@ execution.setVariable('sNameOrgan', per4)
 	  </script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="usertask4" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow66" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_54_55">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_54_55" id="BPMNPlane_dnepr_cnap_54_55">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="91.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="119.0" y="81.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
-        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="108.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="65.0" y="170.0"></omgdc:Bounds>
@@ -580,10 +567,6 @@ execution.setVariable('sNameOrgan', per4)
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="229.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="105.0" y="108.0"></omgdi:waypoint>
-        <omgdi:waypoint x="119.0" y="108.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="82.0" y="294.0"></omgdi:waypoint>
         <omgdi:waypoint x="82.0" y="205.0"></omgdi:waypoint>
@@ -614,17 +597,9 @@ execution.setVariable('sNameOrgan', per4)
         <omgdi:waypoint x="558.0" y="136.0"></omgdi:waypoint>
         <omgdi:waypoint x="558.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
-        <omgdi:waypoint x="135.0" y="138.0"></omgdi:waypoint>
-        <omgdi:waypoint x="82.0" y="170.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="437.0" y="108.0"></omgdi:waypoint>
         <omgdi:waypoint x="490.0" y="108.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="270.0" y="108.0"></omgdi:waypoint>
-        <omgdi:waypoint x="296.0" y="108.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="558.0" y="287.0"></omgdi:waypoint>
@@ -659,6 +634,10 @@ execution.setVariable('sNameOrgan', per4)
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
         <omgdi:waypoint x="82.0" y="371.0"></omgdi:waypoint>
         <omgdi:waypoint x="82.0" y="350.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="105.0" y="108.0"></omgdi:waypoint>
+        <omgdi:waypoint x="296.0" y="108.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -14,31 +14,16 @@
         <activiti:formProperty id="phone" name="Укажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="surname" name="Прізвище родини в родовому відмінку;наприклад, &quot;Іванових&quot;" type="string" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        
         <activiti:formProperty id="sNameAreaPrusl" name="назва району міста; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sGolovaFYS" name="ПІБ Начальнику управління у справах сім'ї, молоді та спорту; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-
-
-
-
-
         <activiti:formProperty id="sMailClerk1" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення співробітника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -62,14 +47,14 @@
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-		<activiti:field name="sText_SMS">
-			<activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
-		</activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -109,7 +94,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі надання довідки АБО відхилення зверення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_2.html]; ;bVisible=false ,bPrintform=true" type="string" default="заява" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sNameAreaPrusl" name="назва району міста; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGolovaFYS" name="ПІБ Начальнику управління у справах сім'ї, молоді та спорту; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
@@ -124,14 +108,14 @@
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-		<activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-		</activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -176,14 +160,14 @@
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-		<activiti:field name="sPhone_SMS">
-			<activiti:expression>${phone}</activiti:expression>
-		</activiti:field>
-		<activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-		</activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -220,17 +204,12 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zhytomyr_mvk_families-2">
     <bpmndi:BPMNPlane bpmnElement="zhytomyr_mvk_families-2" id="BPMNPlane_zhytomyr_mvk_families-2">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="157.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="121.0" x="210.0" y="30.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="200.0" y="72.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="197.0" y="135.0"></omgdc:Bounds>
@@ -253,18 +232,6 @@
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="61.0" width="184.0" x="332.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="192.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="57.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="215.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="214.0" y="135.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="331.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="390.0" y="57.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="580.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="650.0" y="57.0"></omgdi:waypoint>
@@ -282,7 +249,7 @@
         <omgdi:waypoint x="598.0" y="153.0"></omgdi:waypoint>
         <omgdi:waypoint x="516.0" y="152.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="551.0" y="136.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="60.0" x="551.0" y="136.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -294,13 +261,17 @@
         <omgdi:waypoint x="598.0" y="261.0"></omgdi:waypoint>
         <omgdi:waypoint x="516.0" y="260.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="551.0" y="269.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="48.0" x="551.0" y="269.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="332.0" y="260.0"></omgdi:waypoint>
         <omgdi:waypoint x="214.0" y="260.0"></omgdi:waypoint>
         <omgdi:waypoint x="214.0" y="170.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="192.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

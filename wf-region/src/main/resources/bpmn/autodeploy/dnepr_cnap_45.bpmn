@@ -12,7 +12,6 @@
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="posluga" name="Оберіть послугу" type="enum" required="true">
           <activiti:value id="pereoform" name="переоформлення ліцензії"></activiti:value>
           <activiti:value id="kopia" name="видача копії або дубліката ліцензії"></activiti:value>
@@ -78,7 +77,6 @@
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="select" writable="false"></activiti:formProperty>
-       
         <activiti:formProperty id="posluga" name="Оберіть послугу" type="enum" writable="false">
           <activiti:value id="pereoform" name="переоформлення ліцензії"></activiti:value>
           <activiti:value id="kopia" name="видача копії або дубліката ліцензії"></activiti:value>
@@ -134,8 +132,6 @@
     <sequenceFlow id="flow5" name="надання дозволу П" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&sID_Public_SubjectOrganJoin=='prav'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow15" name="надання дозволу Л" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='accept'&&sID_Public_SubjectOrganJoin=='lev'}]]></conditionExpression>
     </sequenceFlow>
@@ -215,11 +211,6 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow23" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask3" name="повідомлення громадянина про отримання ліцензії (Правобережний)" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
@@ -446,7 +437,6 @@
 		execution.setVariable('sSum', sum);     
 	  </script>
     </scriptTask>
-    <sequenceFlow id="flow42" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow43" name="ПРЯМО В ОРГАН" sourceRef="exclusivegateway4" targetRef="exclusivegateway5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Public_SubjectOrganJoin == 'lev' || sID_Public_SubjectOrganJoin == 'prav'}]]></conditionExpression>
@@ -458,7 +448,6 @@
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="select" writable="false"></activiti:formProperty>
-      
         <activiti:formProperty id="posluga" name="Оберіть послугу" type="enum" writable="false">
           <activiti:value id="pereoform" name="переоформлення ліцензії"></activiti:value>
           <activiti:value id="kopia" name="видача копії або дубліката ліцензії"></activiti:value>
@@ -682,9 +671,7 @@
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП у якому буде зручніше забрати оригінал документу" type="select" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="posluga" name="Оберіть послугу" type="enum" writable="false">
           <activiti:value id="pereoform" name="переоформлення ліцензії"></activiti:value>
           <activiti:value id="kopia" name="видача копії або дубліката ліцензії"></activiti:value>
@@ -967,6 +954,7 @@
     <sequenceFlow id="flow69" sourceRef="parallelgateway2" targetRef="endevent7"></sequenceFlow>
     <sequenceFlow id="flow70" sourceRef="servicetask16" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow71" sourceRef="servicetask15" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow72" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_45">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_45" id="BPMNPlane_dnepr_cnap_45">
@@ -985,12 +973,6 @@
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="901.0" y="531.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="80.0" y="61.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="48.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask6" id="BPMNShape_mailtask6">
         <omgdc:Bounds height="55.0" width="105.0" x="973.0" y="281.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -999,9 +981,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="57.0" width="191.0" x="826.0" y="362.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="117.0" y="0.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="74.0" width="105.0" x="1027.0" y="515.0"></omgdc:Bounds>
@@ -1122,10 +1101,6 @@
           <omgdc:Bounds height="48.0" width="97.0" x="1037.0" y="497.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="65.0" y="88.0"></omgdi:waypoint>
-        <omgdi:waypoint x="80.0" y="88.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="901.0" y="551.0"></omgdi:waypoint>
         <omgdi:waypoint x="815.0" y="552.0"></omgdi:waypoint>
@@ -1158,10 +1133,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="921.0" y="419.0"></omgdi:waypoint>
         <omgdi:waypoint x="921.0" y="447.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="135.0" y="48.0"></omgdi:waypoint>
-        <omgdi:waypoint x="134.0" y="35.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="375.0" y="88.0"></omgdi:waypoint>
@@ -1219,10 +1190,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
         <omgdi:waypoint x="315.0" y="88.0"></omgdi:waypoint>
         <omgdi:waypoint x="335.0" y="88.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="185.0" y="88.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="88.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="355.0" y="108.0"></omgdi:waypoint>
@@ -1373,6 +1340,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
         <omgdi:waypoint x="503.0" y="1149.0"></omgdi:waypoint>
         <omgdi:waypoint x="399.0" y="1180.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="65.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="88.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
