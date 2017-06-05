@@ -209,7 +209,9 @@ public class DocumentStepService {
                             LOG.info("oDocumentSubjectRightPermition.getsKeyGroup_Postfix() is {}", oDocumentSubjectRightPermition.getsKeyGroup_Postfix());
                             LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix() is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
                             
-                            if(oDocumentSubjectRightPermition.getsKeyGroup_Postfix().equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
+                            if((oDocumentSubjectRightPermition.getsKeyGroup_Postfix()
+                                    .equals(oDocumentStepSubjectRight.getsKey_GroupPostfix()) 
+                                    && (oDocumentSubjectRightPermition.getnID_DocumentStepSubjectRight() == null))){
                                oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
                                oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition);
                                LOG.info("oDocumentSubjectRightPermition saved is id: {} "
