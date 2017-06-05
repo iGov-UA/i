@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
 
-public class FileStorageAnalyticImpl extends SaveToMongoStorage {
+public class FileMongoStorageAnalytic extends SaveToMongoStorage {
 
     private final GridFsTemplate gridAnalyticTemplate;
 
     @Autowired
-    public FileStorageAnalyticImpl(GridFsTemplate gridAnalyticTemplate) {
+    public FileMongoStorageAnalytic(GridFsTemplate gridAnalyticTemplate) {
         this.gridAnalyticTemplate = gridAnalyticTemplate;
     }
 
