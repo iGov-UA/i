@@ -204,7 +204,7 @@ public class DocumentStepService {
             for(DocumentStep oDocumentStep_Result : aDocumentStep_Result){
                 LOG.info("oDocumentStep_Result sKey_Step {}", oDocumentStep_Result.getsKey_Step());
                 if(oDocumentStep_Result.getRights() != null){
-                    LOG.info("oDocumentStep_Result rights isn't null");
+                    LOG.info("oDocumentStep_Result rights is {}", oDocumentStep_Result.getRights());
                     for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Result.getRights()){
                         for(DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition){
                             LOG.info("oDocumentSubjectRightPermition.getsKeyGroup_Postfix() is {}", oDocumentSubjectRightPermition.getsKeyGroup_Postfix());
