@@ -197,7 +197,7 @@ public class DocumentStepService {
         LOG.info("Result list of steps: {}", aDocumentStep_Result);
         
         List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = getDocumentSubjectRightPermitions(oStep_Common);
-        
+        LOG.info("aDocumentSubjectRightPermition size is {}", aDocumentSubjectRightPermition.size());
         if (aDocumentSubjectRightPermition != null){
             LOG.info("aDocumentSubjectRightPermition isn't null");
             for(DocumentStep oDocumentStep_Result : aDocumentStep_Result){
