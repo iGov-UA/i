@@ -25,9 +25,9 @@ import java.util.UUID;
 /**
  * Created by dpekach on 05.06.17.
  */
-public abstract class SaveToMongoStorage implements IFileStorage{
+public abstract class SaveToMongoStorageFile implements IFileStorage {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SaveToMongoStorage.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SaveToMongoStorageFile.class);
 
     public abstract GridFsTemplate getGridTemplate();
 

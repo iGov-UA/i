@@ -1,13 +1,13 @@
 package org.igov.io.db.kv.analytic.impl;
 
 
-import org.igov.io.db.kv.analytic.SaveToMongoStorage;
+import org.igov.io.db.kv.analytic.SaveToMongoStorageFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
 
-public class FileMongoStorageAnalytic extends SaveToMongoStorage {
+public class FileMongoStorageAnalytic extends SaveToMongoStorageFile {
 
     private final GridFsTemplate gridAnalyticTemplate;
 

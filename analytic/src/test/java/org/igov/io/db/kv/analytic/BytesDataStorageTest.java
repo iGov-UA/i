@@ -1,5 +1,6 @@
 package org.igov.io.db.kv.analytic;
 
+import org.igov.io.db.kv.analytic.impl.BytesMongoStorageAnalytic;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -20,7 +21,7 @@ import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 public class BytesDataStorageTest {
 
 	@Autowired
-	private BytesDataStorageAnalytic oStorage;
+	private BytesMongoStorageAnalytic oStorage;
         //@Ignore
 	@Test(expected=RecordNotFoundException.class)
 	public void openStreamShouldThrowOnInexistentKey() throws RecordNotFoundException {
