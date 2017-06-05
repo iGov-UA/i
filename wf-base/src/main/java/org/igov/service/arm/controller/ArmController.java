@@ -1,9 +1,9 @@
-package org.igov.arm.controller;
+package org.igov.service.arm.controller;
 
 import java.util.List;
 
-import org.igov.arm.model.DboTkModel;
-import org.igov.arm.service.ArmService;
+import org.igov.service.arm.model.DboTkModel;
+import org.igov.service.arm.service.ArmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

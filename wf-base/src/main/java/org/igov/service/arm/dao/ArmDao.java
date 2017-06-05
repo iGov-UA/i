@@ -1,10 +1,10 @@
-package org.igov.arm.dao;
+package org.igov.service.arm.dao;
 
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.igov.arm.model.DboTkModel;
+import org.igov.service.arm.model.DboTkModel;
 
 public interface ArmDao {
 	
