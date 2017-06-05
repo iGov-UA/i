@@ -114,6 +114,9 @@ public class DboTkModel implements Serializable {
 	 @JsonProperty(value = "arhiv")
      private String arhiv;
 	 
+	 @JsonProperty(value = "createDate")
+	 private Date createDate;
+	 	 
 	 @JsonProperty(value = "zametki")
      private String zametki;
 	 
@@ -392,6 +395,14 @@ public class DboTkModel implements Serializable {
 
 	public String getArhiv() {
 		return arhiv;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 	public void setArhiv(String arhiv) {
