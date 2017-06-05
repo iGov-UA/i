@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -129,10 +130,79 @@ public class ArmDaoImpl implements ArmDao {
 
 	@Override
 	public void createDboTk(DboTkModel dboTkModel) {
-		/*jdbcTemplate.update(createDboTk,
-				new BeanPropertySqlParameterSource(dboTkModel));*/
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			dbConnection = getDBConnection();
+			preparedStatement = dbConnection.prepareStatement(createDboTk);
 
+			preparedStatement.setLong(1, dboTkModel.getId());
+			preparedStatement.setString(2, dboTkModel.getIndustry());
+			preparedStatement.setString(3, dboTkModel.getPriznak());
+			preparedStatement.setString(4, dboTkModel.getOut_number());
+			preparedStatement.setString(5, DateFormatUtils.format(dboTkModel.getData_out(), DATE_FORMAT));
+			preparedStatement.setString(6, dboTkModel.getDep_number());
+			preparedStatement.setLong(7, dboTkModel.getNumber_441());
+			preparedStatement.setString(8, DateFormatUtils.format(dboTkModel.getData_in(), DATE_FORMAT));
+			preparedStatement.setString(9,  dboTkModel.getState());
+			preparedStatement.setString(10, dboTkModel.getName_object());
+			preparedStatement.setString(11, dboTkModel.getKod());
+			preparedStatement.setString(12, dboTkModel.getGruppa());
+			preparedStatement.setString(13, dboTkModel.getUndergroup());
+			preparedStatement.setString(14, dboTkModel.getFinans());
+			preparedStatement.setString(15,  DateFormatUtils.format(dboTkModel.getData_out_raz(), DATE_FORMAT));
+			preparedStatement.setLong(16, dboTkModel.getNumber_442());
+			preparedStatement.setString(17, dboTkModel.getWinner());
+			preparedStatement.setString(18,  dboTkModel.getKod_okpo());
+			preparedStatement.setString(19, dboTkModel.getPhone());
+			preparedStatement.setString(20, dboTkModel.getSrok());
+			preparedStatement.setString(21,  dboTkModel.getExpert()); 
+			preparedStatement.setBigDecimal(22, dboTkModel.getSumma());
+			preparedStatement.setString(23, dboTkModel.getuAN());
+			preparedStatement.setString(24, dboTkModel.getIf_oplata());
+			preparedStatement.setString(25, dboTkModel.getUslovie()); 
+			preparedStatement.setString(26, dboTkModel.getBank());
+			preparedStatement.setString(27, dboTkModel.getSmeta());
+			preparedStatement.setString(28, DateFormatUtils.format(dboTkModel.getDataEZ(), DATE_FORMAT));
+			preparedStatement.setString(29, dboTkModel.getPrilog());
+			preparedStatement.setString(30, DateFormatUtils.format(dboTkModel.getUpdateData(), DATE_FORMAT));
+			preparedStatement.setLong(31, dboTkModel.getUpdOKBID());
+			preparedStatement.setString(32, dboTkModel.getNotes());
+			preparedStatement.setString(33, dboTkModel.getArhiv());
+			preparedStatement.setString(34, DateFormatUtils.format(new Date(), DATE_FORMAT));
+			preparedStatement.setString(35, dboTkModel.getZametki());
+			preparedStatement.setLong(36, dboTkModel.getId_corp());
+			preparedStatement.setString(37, DateFormatUtils.format(dboTkModel.getDataBB(), DATE_FORMAT));
+			preparedStatement.setString(38,  dboTkModel.getPriemka());
+			preparedStatement.setString(39, dboTkModel.getProckred()); 
+			preparedStatement.setBigDecimal(40, dboTkModel.getSumkred());
+			preparedStatement.setBigDecimal(41, dboTkModel.getSumzak());
+			preparedStatement.setString(42, dboTkModel.getAuctionForm());
+			preparedStatement.setString(43, dboTkModel.getProtocol_Number());
+			preparedStatement.setString(44,	dboTkModel.getCorrectionDoc());
+			preparedStatement.setString(45, dboTkModel.getPrioritet());
+			preparedStatement.setString(46, dboTkModel.getLongterm());
+			
+
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			LOG.error("FAIL: {}", e.getMessage());
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
+			} catch (SQLException e) {
+				LOG.error("FAIL: {}", e.getMessage());
+			}
+
+		}
 	}
+	
 
 	@Override
 	public void updateDboTk(DboTkModel dboTkModel) {
@@ -145,7 +215,50 @@ public class ArmDaoImpl implements ArmDao {
 
 			preparedStatement.setLong(1, dboTkModel.getId());
 			preparedStatement.setString(2, dboTkModel.getIndustry());
-
+			preparedStatement.setString(3, dboTkModel.getPriznak());
+			preparedStatement.setString(4, DateFormatUtils.format(dboTkModel.getData_out(), DATE_FORMAT));
+			preparedStatement.setString(5, dboTkModel.getDep_number());
+			preparedStatement.setLong(6, dboTkModel.getNumber_441());
+			preparedStatement.setString(7, DateFormatUtils.format(dboTkModel.getData_in(), DATE_FORMAT));
+			preparedStatement.setString(8,  dboTkModel.getState());
+			preparedStatement.setString(9, dboTkModel.getName_object());
+			preparedStatement.setString(10, dboTkModel.getKod());
+			preparedStatement.setString(11, dboTkModel.getGruppa());
+			preparedStatement.setString(12, dboTkModel.getUndergroup());
+			preparedStatement.setString(13, dboTkModel.getFinans());
+			preparedStatement.setString(14,  DateFormatUtils.format(dboTkModel.getData_out_raz(), DATE_FORMAT));
+			preparedStatement.setLong(15, dboTkModel.getNumber_442());
+			preparedStatement.setString(16, dboTkModel.getWinner());
+			preparedStatement.setString(17,  dboTkModel.getKod_okpo());
+			preparedStatement.setString(18, dboTkModel.getPhone());
+			preparedStatement.setString(19, dboTkModel.getSrok());
+			preparedStatement.setString(20,  dboTkModel.getExpert()); 
+			preparedStatement.setBigDecimal(21, dboTkModel.getSumma());
+			preparedStatement.setString(22, dboTkModel.getuAN());
+			preparedStatement.setString(23, dboTkModel.getIf_oplata());
+			preparedStatement.setString(24, dboTkModel.getUslovie()); 
+			preparedStatement.setString(25, dboTkModel.getBank());
+			preparedStatement.setString(26, dboTkModel.getSmeta());
+			preparedStatement.setString(27, DateFormatUtils.format(dboTkModel.getDataEZ(), DATE_FORMAT));
+			preparedStatement.setString(28, dboTkModel.getPrilog());
+			preparedStatement.setString(29, DateFormatUtils.format(dboTkModel.getUpdateData(), DATE_FORMAT));
+			preparedStatement.setLong(30, dboTkModel.getUpdOKBID());
+			preparedStatement.setString(31, dboTkModel.getNotes());
+			preparedStatement.setString(32, dboTkModel.getArhiv());
+			preparedStatement.setString(33, DateFormatUtils.format(new Date(), DATE_FORMAT));
+			preparedStatement.setString(34, dboTkModel.getZametki());
+			preparedStatement.setLong(35, dboTkModel.getId_corp());
+			preparedStatement.setString(36, DateFormatUtils.format(dboTkModel.getDataBB(), DATE_FORMAT));
+			preparedStatement.setString(37,  dboTkModel.getPriemka());
+			preparedStatement.setString(38, dboTkModel.getProckred()); 
+			preparedStatement.setBigDecimal(39, dboTkModel.getSumkred());
+			preparedStatement.setBigDecimal(40, dboTkModel.getSumzak());
+			preparedStatement.setString(41, dboTkModel.getAuctionForm());
+			preparedStatement.setString(42, dboTkModel.getProtocol_Number());
+			preparedStatement.setString(43,	dboTkModel.getCorrectionDoc());
+			preparedStatement.setString(44, dboTkModel.getPrioritet());
+			preparedStatement.setString(45, dboTkModel.getLongterm());
+			preparedStatement.setString(46, dboTkModel.getOut_number());
 			// execute update SQL stetement
 			preparedStatement.executeUpdate();
 
@@ -164,21 +277,7 @@ public class ArmDaoImpl implements ArmDao {
 			}
 
 		}
-		/*jdbcTemplate.update(updateDboTk,
-				dboTkModel.getId(),dboTkModel.getIndustry(),dboTkModel.getPriznak(),dboTkModel.getOut_number(),
-				DateFormatUtils.format(dboTkModel.getData_out(), DATE_FORMAT),dboTkModel.getDep_number(),
-				dboTkModel.getNumber_441(), DateFormatUtils.format(dboTkModel.getData_in(), DATE_FORMAT), dboTkModel.getState(), dboTkModel.getName_object(),
-				dboTkModel.getKod(), dboTkModel.getGruppa(), dboTkModel.getUndergroup(), dboTkModel.getFinans(), DateFormatUtils.format(dboTkModel.getData_out_raz(), DATE_FORMAT), dboTkModel.getNumber_442(),
-				dboTkModel.getWinner(), dboTkModel.getKod_okpo(), dboTkModel.getPhone(), dboTkModel.getSrok(), dboTkModel.getExpert(), dboTkModel.getSumma(),
-				dboTkModel.getuAN(), dboTkModel.getIf_oplata(), dboTkModel.getUslovie(), dboTkModel.getBank(), dboTkModel.getSmeta(),
-				DateFormatUtils.format(dboTkModel.getDataEZ(), DATE_FORMAT), dboTkModel.getPrilog(), DateFormatUtils.format(dboTkModel.getUpdateData(), DATE_FORMAT),
-				dboTkModel.getUpdOKBID(), dboTkModel.getNotes(), dboTkModel.getArhiv(), DateFormatUtils.format(new Date(), DATE_FORMAT), 
-				dboTkModel.getZametki(), dboTkModel.getId_corp(),DateFormatUtils.format(dboTkModel.getDataBB(), DATE_FORMAT),  dboTkModel.getPriemka(),
-				dboTkModel.getProckred(), dboTkModel.getSumkred(), dboTkModel.getSumzak(), dboTkModel.getAuctionForm(), dboTkModel.getProtocol_Number(),
-				dboTkModel.getCorrectionDoc(), dboTkModel.getPrioritet(), dboTkModel.getLongterm(),dboTkModel.getOut_number());*/
-				
 	}
-	
 	
 	private Connection getDBConnection() {
 		Connection dbConnection = null;
