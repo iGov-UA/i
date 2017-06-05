@@ -23,6 +23,7 @@ import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.impl.FileMongoStorageAnalytic;
+import org.igov.service.conf.AttachmetService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +83,10 @@ public class MigrationServiceImpl implements MigrationService {
     private FileMongoStorageAnalytic fileStorageAnalytic;
 
     @Autowired
-    private FormService formService;//
+    private AttachmetService attachmentService;
+
+    @Autowired
+    private FormService formService;
 
 
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
