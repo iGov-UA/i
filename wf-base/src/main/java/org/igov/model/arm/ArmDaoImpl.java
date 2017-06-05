@@ -61,16 +61,16 @@ public class ArmDaoImpl implements ArmDao {
 				dboTkModel.setIndustry(rs.getString("Industry"));
 				dboTkModel.setPriznak(rs.getString("Priznak"));
 				dboTkModel.setOut_number(rs.getString("Out_number"));
-				dboTkModel.setData_out(rs.getTimestamp("Data_out"));
+				dboTkModel.setData_out(rs.getDate("Data_out"));
 			    dboTkModel.setDep_number(rs.getString("Dep_number"));
-			    dboTkModel.setData_in(rs.getTimestamp("Data_in"));
+			    dboTkModel.setData_in(rs.getDate("Data_in"));
 			    dboTkModel.setState(rs.getString("State"));
 			    dboTkModel.setName_object(rs.getString("Name_object"));
 			    dboTkModel.setKod(rs.getString("Kod"));
 			    dboTkModel.setGruppa(rs.getString("Gruppa"));
 			    dboTkModel.setUndergroup(rs.getString("Undergroup"));
 			    dboTkModel.setFinans(rs.getString("Finans"));
-			    dboTkModel.setData_out_raz(rs.getTimestamp("Data_out_raz"));
+			    dboTkModel.setData_out_raz(rs.getDate("Data_out_raz"));
 			    dboTkModel.setNumber_442(rs.getInt("Number_442"));
 			    dboTkModel.setWinner(rs.getString("Winner"));
 			    dboTkModel.setKod_okpo(rs.getString("Kod_okpo"));
@@ -83,16 +83,16 @@ public class ArmDaoImpl implements ArmDao {
 			    dboTkModel.setUslovie(rs.getString("Uslovie"));
 			    dboTkModel.setBank(rs.getString("Bank"));
 			    dboTkModel.setSmeta(rs.getString("Smeta"));
-			    dboTkModel.setDataEZ(rs.getTimestamp("DataEZ"));
+			    dboTkModel.setDataEZ(rs.getDate("DataEZ"));
 			    dboTkModel.setPrilog(rs.getString("Prilog"));
-			    dboTkModel.setUpdateData(rs.getTimestamp("UpdateData"));;
+			    dboTkModel.setUpdateData(rs.getDate("UpdateData"));;
 			    dboTkModel.setUpdOKBID(rs.getInt("UpdOKBID"));
 			    dboTkModel.setNotes(rs.getString("Notes"));
 			    dboTkModel.setArhiv(rs.getString("Arhiv"));
-			    dboTkModel.setCreateDate(rs.getTimestamp("CreateDate"));
+			    dboTkModel.setCreateDate(rs.getDate("CreateDate"));
 			    dboTkModel.setZametki(rs.getString("Zametki"));
 			    dboTkModel.setId_corp(rs.getInt("Id_corp"));
-			    dboTkModel.setDataBB(rs.getTimestamp("DataBB"));
+			    dboTkModel.setDataBB(rs.getDate("DataBB"));
 			    dboTkModel.setPriemka(rs.getString("Priemka"));
 			    dboTkModel.setProckred(rs.getString("Prockred"));
 			    dboTkModel.setSumkred(rs.getBigDecimal("Sumkred"));
@@ -135,6 +135,34 @@ public class ArmDaoImpl implements ArmDao {
 
 	@Override
 	public void updateDboTk(DboTkModel dboTkModel) {
+		
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			dbConnection = getDBConnection();
+			preparedStatement = dbConnection.prepareStatement(updateDboTk);
+
+			preparedStatement.setLong(1, dboTkModel.getId());
+			preparedStatement.setString(2, dboTkModel.getIndustry());
+
+			// execute update SQL stetement
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			LOG.error("FAIL: {}", e.getMessage());
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
+			} catch (SQLException e) {
+				LOG.error("FAIL: {}", e.getMessage());
+			}
+
+		}
 		/*jdbcTemplate.update(updateDboTk,
 				dboTkModel.getId(),dboTkModel.getIndustry(),dboTkModel.getPriznak(),dboTkModel.getOut_number(),
 				DateFormatUtils.format(dboTkModel.getData_out(), DATE_FORMAT),dboTkModel.getDep_number(),

@@ -1,13 +1,11 @@
 package org.igov.model.arm;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DboTkModel implements Serializable {
 	
 	 /**
