@@ -331,11 +331,7 @@ public class DocumentStepService {
             return null;
         }
         
-        int stepCounter = 1;
-        
-        if(isCommonStep){
-            
-        }
+        int stepCounter = isCommonStep ? stepCount + 1 : 1;
         
         String[] asKey_Group = JSONObject.getNames(oStep);
         if (asKey_Group != null) {
@@ -346,28 +342,30 @@ public class DocumentStepService {
                 LOG.info("aPermition is {}", aPermition);
 
                 if (aPermition != null) {
-                    for (int i = 0; i < aPermition.length(); i++) {
-                        LOG.info("Permition elem is {}", aPermition.getString(i));
-                        DocumentSubjectRightPermition oDocumentSubjectRightPermition = new DocumentSubjectRightPermition();
-                        oDocumentSubjectRightPermition.setPermitionType(aPermition.getString(i));
-                        oDocumentSubjectRightPermition.setsKeyGroup_Postfix(sKey_Group);
-                        //oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
+                    for(int j = 0; j < stepCounter; j++){
+                        for (int i = 0; i < aPermition.length(); i++) {
+                            LOG.info("Permition elem is {}", aPermition.getString(i));
+                            DocumentSubjectRightPermition oDocumentSubjectRightPermition = new DocumentSubjectRightPermition();
+                            oDocumentSubjectRightPermition.setPermitionType(aPermition.getString(i));
+                            oDocumentSubjectRightPermition.setsKeyGroup_Postfix(sKey_Group);
+                            //oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
 
-                        JSONObject oPermitionAcceptor = oGroup.optJSONObject("oPermitions_AddAcceptor");
-                        LOG.info("oPermitionAcceptor is {}", oPermitionAcceptor);
+                            JSONObject oPermitionAcceptor = oGroup.optJSONObject("oPermitions_AddAcceptor");
+                            LOG.info("oPermitionAcceptor is {}", oPermitionAcceptor);
 
-                        if (oPermitionAcceptor != null && aPermition.getString(i).equals("AddAcceptor")) {
-                            LOG.info("oPermitionAcceptor sKeyGroupe_Source is {}", oPermitionAcceptor.get("sKeyGroupe_Source"));
-                            oDocumentSubjectRightPermition.setsKeyGroupeSource((String) oPermitionAcceptor.get("sKeyGroupe_Source"));
+                            if (oPermitionAcceptor != null && aPermition.getString(i).equals("AddAcceptor")) {
+                                LOG.info("oPermitionAcceptor sKeyGroupe_Source is {}", oPermitionAcceptor.get("sKeyGroupe_Source"));
+                                oDocumentSubjectRightPermition.setsKeyGroupeSource((String) oPermitionAcceptor.get("sKeyGroupe_Source"));
+                            }
+
+                            JSONObject oPermitionVisor = oGroup.optJSONObject("oPermitions_AddVisor");
+                            LOG.info("oPermitionVisor is {}", oPermitionVisor);
+                            if (oPermitionVisor != null && aPermition.getString(i).equals("AddVisor")) {
+                                LOG.info("oPermitionVisor sKeyGroupe_Source is {}", oPermitionVisor.get("sKeyGroupe_Source"));
+                                oDocumentSubjectRightPermition.setsKeyGroupeSource((String) oPermitionVisor.get("sKeyGroupe_Source"));
+                            }
+                            aDocumentSubjectRightPermition.add(oDocumentSubjectRightPermition);
                         }
-
-                        JSONObject oPermitionVisor = oGroup.optJSONObject("oPermitions_AddVisor");
-                        LOG.info("oPermitionVisor is {}", oPermitionVisor);
-                        if (oPermitionVisor != null && aPermition.getString(i).equals("AddVisor")) {
-                            LOG.info("oPermitionVisor sKeyGroupe_Source is {}", oPermitionVisor.get("sKeyGroupe_Source"));
-                            oDocumentSubjectRightPermition.setsKeyGroupeSource((String) oPermitionVisor.get("sKeyGroupe_Source"));
-                        }
-                        aDocumentSubjectRightPermition.add(oDocumentSubjectRightPermition);
                     }
                 }
             }
