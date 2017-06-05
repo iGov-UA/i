@@ -16,62 +16,60 @@
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Укажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району; ;bVisible=false" type="string" default="635"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Скан ІПН" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан ІПН ; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист звернення до держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>kolonschinska_rada@ukr.net</activiti:expression>
+          <activiti:expression><![CDATA[kolonschinska_rada@ukr.net]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання згоди на виготовлення будівельного паспорта на житловий або садовий будинок</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Надання згоди на виготовлення будівельного паспорта на житловий або садовий будинок]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="servicetask5" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему:  Надання згоди на виготовлення будівельного паспорта на житловий або садовий будинок.</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему:  Надання згоди на виготовлення будівельного паспорта на житловий або садовий будинок.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-			Ваше звернення щодо отримання згоди на виготовлення будівельного паспорта на житловий або садовий будинок успішно зареєстроване.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+			Ваше звернення щодо отримання згоди на виготовлення будівельного паспорта на житловий або садовий будинок успішно зареєстроване.<br />
 			Ви отримаєте відповідь протягом десяти робочих днів.
-			&lt;/p&gt;
-			&lt;p&gt;Контакти відділу, який буде займатися обробкою Вашого звернення:
-	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br /&gt;
-	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br /&gt;
-	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]&lt;/p&gt;
+			</p>
+			<p>Контакти відділу, який буде займатися обробкою Вашого звернення:
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]<br />
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]<br />
+	[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]</p>
 [pattern/mail/_common_signature_start.html]
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -94,16 +92,15 @@
           <activiti:value id="Enum1" name="Дати згоду на виготовлення будівельного паспорта"></activiti:value>
           <activiti:value id="Enum2" name="Відмовити у виготовленні будівельного паспорта"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fileresult" name="Додайте файл з результатом згоди" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fileresult" name="Додайте файл з результатом згоди ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення (Наприклад, пояснення чому громадянину було відмовлено в наданні згоди)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zayava_dozvil_na_bud.html]; ;bVisible=false ,bPrintform=true" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району; ;bVisible=false" type="string"></activiti:formProperty>
+        
+         <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан ІПН ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}, ${bankId_scan_inn}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -115,35 +112,35 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Отримання згоди на виготовлення будівельного паспорту на житловий або садовий будинок]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними держоргану Вам ВІДМОВЛЕНО у наданні будівельного паспорта на житловий або садовий будинок.&lt;br&gt;
-			Коментар Держслужбовця, який обробляв заяву: &lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-			&lt;p&gt;За необхідності Ви можете звернутися за адресою:
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]&lt;br&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>За даними держоргану Вам ВІДМОВЛЕНО у наданні будівельного паспорта на житловий або садовий будинок.<br>
+			Коментар Держслужбовця, який обробляв заяву: </p>
+<p>${decisionComment}</p>
+			<p>За необхідності Ви можете звернутися за адресою:
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:3]<br>
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:4]<br>
 [pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:5]
-&lt;/p&gt;
+</p>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]&lt;br&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]<br>
                      [pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -156,32 +153,32 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Отримання згоди на виготовлення будівельного паспорту на житловий або садовий будинок]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними держоргана Вам НАДАНО згоду на виготовлення будівельного паспорта на житловий або садовий будинок.&lt;br&gt;  
-			Коментар Держслужбовця, який обробляв заяву:&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>За даними держоргана Вам НАДАНО згоду на виготовлення будівельного паспорта на житловий або садовий будинок.<br>  
+			Коментар Держслужбовця, який обробляв заяву:</p>
+<p>${decisionComment}</p>
 			[pattern/mail/_common_signature_start.html]
-			&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]
-			&lt;/p&gt;
+			<p>[pattern_dictonary:dnepr_reg_cnap.csv:value{[rNumber]}:2]
+			</p>
             [pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${fileresult}</activiti:expression>
+          <activiti:expression><![CDATA[${fileresult}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -190,14 +187,8 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow9" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask5">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kolon_cnap394">
     <bpmndi:BPMNPlane bpmnElement="kolon_cnap394" id="BPMNPlane_kolon_cnap394">
@@ -225,19 +216,6 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="754.0" y="212.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="80.0" width="105.0" x="20.0" y="101.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="20.0" y="150.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="54.0" y="216.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="125.0" y="141.0"></omgdi:waypoint>
-        <omgdi:waypoint x="163.0" y="140.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="268.0" y="140.0"></omgdi:waypoint>
         <omgdi:waypoint x="301.0" y="140.0"></omgdi:waypoint>
@@ -254,31 +232,27 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         <omgdi:waypoint x="621.0" y="161.0"></omgdi:waypoint>
         <omgdi:waypoint x="621.0" y="202.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="587.0" y="174.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="60.0" x="587.0" y="174.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="641.0" y="141.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="141.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="67.0" x="635.0" y="124.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="67.0" x="635.0" y="124.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="674.0" y="229.0"></omgdi:waypoint>
         <omgdi:waypoint x="754.0" y="229.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="72.0" y="75.0"></omgdi:waypoint>
-        <omgdi:waypoint x="72.0" y="101.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="35.0" y="180.0"></omgdi:waypoint>
-        <omgdi:waypoint x="71.0" y="216.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="771.0" y="169.0"></omgdi:waypoint>
         <omgdi:waypoint x="771.0" y="212.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="72.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="215.0" y="105.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
