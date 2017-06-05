@@ -196,11 +196,13 @@ public class DocumentStepService {
 
         LOG.info("Result list of steps: {}", aDocumentStep_Result);
         
-        List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = getDocumentSubjectRightPermitions(oStep_Common);
+        List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = 
+                getDocumentSubjectRightPermitions(oStep_Common, oStep_Common != null, asKey_Step_ExcludeCommon.size());
         LOG.info("aDocumentSubjectRightPermition size is {}", aDocumentSubjectRightPermition.size());
         if (aDocumentSubjectRightPermition != null){
             LOG.info("aDocumentSubjectRightPermition isn't null");
             for(DocumentStep oDocumentStep_Result : aDocumentStep_Result){
+                LOG.info("oDocumentStep_Result sKey_Step {}", oDocumentStep_Result.getsKey_Step());
                 if(oDocumentStep_Result.getRights() != null){
                     LOG.info("oDocumentStep_Result rights isn't null");
                     for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Result.getRights()){
@@ -317,13 +319,22 @@ public class DocumentStepService {
 
     }
 
-    private List<DocumentSubjectRightPermition> getDocumentSubjectRightPermitions(Object oStep_JSON) {
+    private List<DocumentSubjectRightPermition> getDocumentSubjectRightPermitions(Object oStep_JSON, boolean isCommonStep, int stepCount) {
         List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = new ArrayList<>();
 
         JSONObject oStep = (JSONObject) oStep_JSON;
         LOG.info("try to parse step: {}", oStep);
+        LOG.info("isCommonStep {}", isCommonStep);
+        LOG.info("stepCount {}", stepCount);
+        
         if (oStep == null) {
             return null;
+        }
+        
+        int stepCounter = 1;
+        
+        if(isCommonStep){
+            
         }
         
         String[] asKey_Group = JSONObject.getNames(oStep);
