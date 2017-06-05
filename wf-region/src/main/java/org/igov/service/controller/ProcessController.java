@@ -21,7 +21,7 @@ import org.igov.analytic.model.process.ProcessDao;
 import org.igov.analytic.model.process.ProcessTask;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
-import org.igov.io.db.kv.analytic.FileStorageAnalytic;
+import org.igov.io.db.kv.analytic.impl.FileMongoStorageAnalytic;
 import org.igov.io.db.kv.statical.IFileStorage;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 import org.igov.service.ArchiveServiceImpl;
@@ -40,8 +40,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -72,7 +70,7 @@ public class ProcessController {
     private Attribute_FileDao attribute_FileDao;
 
     @Autowired
-    private FileStorageAnalytic analyticFileDataStorage;
+    private FileMongoStorageAnalytic analyticFileDataStorage;
 
     @Autowired
     private IFileStorage durableFileStorage;
