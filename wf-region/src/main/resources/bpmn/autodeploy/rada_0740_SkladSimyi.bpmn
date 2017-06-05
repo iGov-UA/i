@@ -104,14 +104,6 @@
         <activiti:formProperty id="markers2" name="VisitDay" type="markers" default="${markerService.loadFromFile('form3/form3_Subject.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -562,20 +554,12 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow22" sourceRef="servicetask7" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0740_SkladSimyi">
     <bpmndi:BPMNPlane bpmnElement="rada_0740_SkladSimyi" id="BPMNPlane_rada_0740_SkladSimyi">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="81.0" width="125.0" x="96.0" y="107.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="82.0" width="105.0" x="240.0" y="107.0"></omgdc:Bounds>
@@ -619,18 +603,6 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="61.0" width="105.0" x="665.0" y="545.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="96.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="115.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="167.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="221.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="240.0" y="148.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="345.0" y="148.0"></omgdi:waypoint>
         <omgdi:waypoint x="371.0" y="147.0"></omgdi:waypoint>
@@ -647,7 +619,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="588.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="709.0" y="250.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="597.0" y="207.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="597.0" y="207.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -659,7 +631,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="568.0" y="270.0"></omgdi:waypoint>
         <omgdi:waypoint x="568.0" y="292.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="449.0" y="249.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="449.0" y="249.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -694,7 +666,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="737.0" y="452.0"></omgdi:waypoint>
         <omgdi:waypoint x="804.0" y="452.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="86.0" x="718.0" y="419.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="86.0" x="718.0" y="419.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
@@ -705,13 +677,17 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="717.0" y="472.0"></omgdi:waypoint>
         <omgdi:waypoint x="717.0" y="545.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="83.0" x="630.0" y="495.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="83.0" x="630.0" y="495.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="770.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="857.0" y="575.0"></omgdi:waypoint>
         <omgdi:waypoint x="856.0" y="531.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="148.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

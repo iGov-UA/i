@@ -79,14 +79,6 @@
         <activiti:formProperty id="markers11" name="hide fields" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_11.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task (groovy)" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
@@ -408,7 +400,7 @@
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -617,20 +609,12 @@ execution.setVariable('sDateVizite', dDateV);
       </script>
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask3" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0024_dovidka_live_place">
     <bpmndi:BPMNPlane bpmnElement="rada_0024_dovidka_live_place" id="BPMNPlane_rada_0024_dovidka_live_place">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="13.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="81.0" width="105.0" x="69.0" y="107.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="60.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="123.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="69.0" y="30.0"></omgdc:Bounds>
@@ -683,18 +667,6 @@ execution.setVariable('sDateVizite', dDateV);
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="65.0" width="105.0" x="230.0" y="25.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="48.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="69.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="75.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="140.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="121.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="121.0" y="85.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="174.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="230.0" y="57.0"></omgdi:waypoint>
@@ -798,6 +770,10 @@ execution.setVariable('sDateVizite', dDateV);
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="282.0" y="90.0"></omgdi:waypoint>
         <omgdi:waypoint x="282.0" y="105.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="30.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="121.0" y="85.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
