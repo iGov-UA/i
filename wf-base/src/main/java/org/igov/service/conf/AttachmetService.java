@@ -37,6 +37,7 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,6 +56,7 @@ public class AttachmetService implements CustomRegexPattern {
     private IBytesDataInmemoryStorage oBytesDataInmemoryStorage;
 
     @Autowired
+    @Qualifier("durableBytesDataStorage")
     private IBytesDataStorage oBytesDataStaticStorage;
 
     @Autowired
