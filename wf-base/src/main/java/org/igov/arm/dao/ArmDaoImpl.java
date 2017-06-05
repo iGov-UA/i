@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.igov.arm.controller.ArmController;
 import org.igov.arm.model.DboTkModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArmDaoImpl implements ArmDao {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ArmController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ArmDaoImpl.class);
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.0";
 	
