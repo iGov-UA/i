@@ -36,13 +36,13 @@
         <activiti:formProperty id="nFile4" name="Графічні матеріали, що забезпечують чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж, контурів об'єктів нерухомого майна, розташованих на земельній ділянці, із зазначенням кадастрового номера земельної ділянки" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile5" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile6" name="Довідка учасника антитерористичної операції" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="график работы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адрес органа" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП" type="invisible" default="valery.stavitsky@gmail.com"></activiti:formProperty>
+        <activiti:formProperty id="sList_documents" name="Перелік документів ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="график работы ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адрес органа ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_345_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -134,15 +134,15 @@
         <activiti:formProperty id="sAdressLand" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Перелік документів ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="doc_ok" name="Документи прийняти на реєстрацію"></activiti:value>
           <activiti:value id="doc_bad" name="Відмовити громадянину, в разі неповного переліку документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sList_documents" name="Перелік документів" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_345_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sList_documents" name="Перелік документів ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaGolova" name="шапка принтформы ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_345_print.html] ; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
