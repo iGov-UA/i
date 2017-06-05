@@ -1,4 +1,4 @@
-package org.igov.service.arm.dao;
+package org.igov.model.arm;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.igov.service.arm.model.DboTkModel;
+import org.igov.model.arm.DboTkModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

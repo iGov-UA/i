@@ -1,9 +1,9 @@
-package org.igov.service.arm.service;
+package org.igov.service.business.arm;
 
 import java.util.List;
 
-import org.igov.service.arm.dao.ArmDao;
-import org.igov.service.arm.model.DboTkModel;
+import org.igov.model.arm.ArmDao;
+import org.igov.model.arm.DboTkModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

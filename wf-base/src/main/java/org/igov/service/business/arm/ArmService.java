@@ -1,17 +1,15 @@
-package org.igov.service.arm.dao;
+package org.igov.service.business.arm;
 
 import java.util.List;
 
-import javax.sql.DataSource;
+import org.igov.model.arm.DboTkModel;
 
-import org.igov.service.arm.model.DboTkModel;
+public interface ArmService {
 
-public interface ArmDao {
-	
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber);
-	
+
 	public void createDboTk(DboTkModel dboTkModel);
-	
+
 	public void updateDboTk(DboTkModel dboTkModel);
 
 }
