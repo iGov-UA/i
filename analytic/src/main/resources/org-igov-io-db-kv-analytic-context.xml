@@ -52,14 +52,14 @@
         </bean>
 	
         <!-- Connection to MongoDB server -->
-        <mongo:db-factory id="mongoDbFactory" host="${mongodb.analytic.host}" port="${mongodb.analytic.port}" dbname="${mongodb.analytic.database}"
+        <mongo:db-factory id="mongoDbAnalyticFactory" host="${mongodb.analytic.host}" port="${mongodb.analytic.port}" dbname="${mongodb.analytic.database}"
                                   username="${mongodb.analytic.login}" password="${mongodb.analytic.password}" authentication-dbname="${mongodb.analytic.database}"/>
                 
-        <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/>
+        <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbAnalyticFactory"/>
 		 
         <!-- MongoDB GridFS Template -->
         <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate" >
-            <constructor-arg ref="mongoDbFactory"/>
+            <constructor-arg ref="mongoDbAnalyticFactory"/>
             <constructor-arg ref="converterAnalytic"/>
             <constructor-arg name="bucket" value="${mongodb.analytic.bucket}" />
         </bean>
@@ -68,7 +68,7 @@
         <bean id="durableAnalyticFileStorage" class="org.igov.io.db.kv.analytic.impl.FileStorageAnalyticImpl"/>
 
         <bean id="mongoAnalyticTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-            <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+            <constructor-arg name="mongoDbFactory" ref="mongoDbAnalyticFactory" />
         </bean>
     </beans>        
         
