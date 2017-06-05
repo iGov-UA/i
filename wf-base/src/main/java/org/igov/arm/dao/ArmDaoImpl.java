@@ -1,20 +1,24 @@
 package org.igov.arm.dao;
 
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.igov.arm.controller.ArmController;
 import org.igov.arm.model.DboTkModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ArmDaoImpl implements ArmDao {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(ArmController.class);
 
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.0";
 	
@@ -27,17 +31,55 @@ public class ArmDaoImpl implements ArmDao {
 	@Value("#{sqlProperties['dbo_tk.updateDboTk']}")
     private String updateDboTk;
 	
-	private JdbcTemplate jdbcTemplate;
-	 
-    public ArmDaoImpl(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
+	@Value("#{datasourceProps['datasource.driverClassName']}")
+    private String driverClassName;
+	
+	@Value("#{datasourceProps['datasource.url']}")
+    private String url;
+	
+	@Value("#{datasourceProps['datasource.username']}")
+    private String username;
+	
+	@Value("#{datasourceProps['datasource.password']}")
+    private String password;
+	
 	@Override
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber) {
-		List<DboTkModel> listResult = jdbcTemplate.query(
-				getDboTkByOutNumber,
-				BeanPropertyRowMapper.newInstance(DboTkModel.class), outNumber);
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		List<DboTkModel> listResult = new ArrayList<>();
+		try {
+			dbConnection = getDBConnection();
+			preparedStatement = dbConnection.prepareStatement(getDboTkByOutNumber);
+			preparedStatement.setString(1, outNumber);
+
+			// execute select SQL stetement
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				DboTkModel dboTkModel = new DboTkModel();
+				dboTkModel.setId(rs.getLong("Id"));
+				dboTkModel.setIndustry(rs.getString("Industry"));
+				dboTkModel.setPriznak(rs.getString("Priznak"));
+				dboTkModel.setOut_number(rs.getString("Out_number"));
+				listResult.add(dboTkModel);
+			}
+
+		} catch (SQLException e) {
+			LOG.error("FAIL: {}", e.getMessage());
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
+			} catch (SQLException e) {
+				LOG.error("FAIL: {}", e.getMessage());
+			}
+
+		}
 		if(listResult.isEmpty()) {
 			return null;
 		}
@@ -46,14 +88,14 @@ public class ArmDaoImpl implements ArmDao {
 
 	@Override
 	public void createDboTk(DboTkModel dboTkModel) {
-		jdbcTemplate.update(createDboTk,
-				new BeanPropertySqlParameterSource(dboTkModel));
+		/*jdbcTemplate.update(createDboTk,
+				new BeanPropertySqlParameterSource(dboTkModel));*/
 
 	}
 
 	@Override
 	public void updateDboTk(DboTkModel dboTkModel) {
-		jdbcTemplate.update(updateDboTk,
+		/*jdbcTemplate.update(updateDboTk,
 				dboTkModel.getId(),dboTkModel.getIndustry(),dboTkModel.getPriznak(),dboTkModel.getOut_number(),
 				DateFormatUtils.format(dboTkModel.getData_out(), DATE_FORMAT),dboTkModel.getDep_number(),
 				dboTkModel.getNumber_441(), DateFormatUtils.format(dboTkModel.getData_in(), DATE_FORMAT), dboTkModel.getState(), dboTkModel.getName_object(),
@@ -64,8 +106,24 @@ public class ArmDaoImpl implements ArmDao {
 				dboTkModel.getUpdOKBID(), dboTkModel.getNotes(), dboTkModel.getArhiv(), DateFormatUtils.format(new Date(), DATE_FORMAT), 
 				dboTkModel.getZametki(), dboTkModel.getId_corp(),DateFormatUtils.format(dboTkModel.getDataBB(), DATE_FORMAT),  dboTkModel.getPriemka(),
 				dboTkModel.getProckred(), dboTkModel.getSumkred(), dboTkModel.getSumzak(), dboTkModel.getAuctionForm(), dboTkModel.getProtocol_Number(),
-				dboTkModel.getCorrectionDoc(), dboTkModel.getPrioritet(), dboTkModel.getLongterm(),dboTkModel.getOut_number());
+				dboTkModel.getCorrectionDoc(), dboTkModel.getPrioritet(), dboTkModel.getLongterm(),dboTkModel.getOut_number());*/
 				
+	}
+	
+	
+	private Connection getDBConnection() {
+		Connection dbConnection = null;
+		try {
+			Class.forName(driverClassName);
+			dbConnection = DriverManager.getConnection(
+					url, username,password);
+			return dbConnection;
+		} catch (SQLException|ClassNotFoundException e) {
+			LOG.error("FAIL: {}", e.getMessage());
+		}
+
+		return dbConnection;
+
 	}
 
 }

@@ -60,7 +60,7 @@ public class ArmController {
     
     @ApiOperation(value = "Обновление данных таблицы arm.dbo.TK", notes = "##### Пример:\n"
             + "https://alpha.test.region.igov.org.ua/wf/service/arm/createDboTk?sID_Order=10358663\n")
-    @RequestMapping(value = "/updateDboTk", method = RequestMethod.POST)
+    @RequestMapping(value = "/createDboTk", method = RequestMethod.POST)
     @ResponseBody
     public void createDboTk(@ApiParam(value = "Данные для добавление новой записи в таблицу arm.dbo.TK ", required = true) @RequestBody DboTkModel dboTkModel)
             throws Exception {
