@@ -2,10 +2,11 @@ package org.igov.model.arm;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
+@JsonRootName(value = "dboTkModel")
 public class DboTkModel implements Serializable {
 	
 	 /**
@@ -26,7 +27,7 @@ public class DboTkModel implements Serializable {
      private String out_number;
 	 
 	 @JsonProperty(value = "data_out")
-	 private Date data_out;
+	 private String data_out;
 	 
 	 @JsonProperty(value = "dep_number")
      private String dep_number;
@@ -35,7 +36,7 @@ public class DboTkModel implements Serializable {
      private Integer number_441;
 
 	 @JsonProperty(value = "data_in")
-	 private Date data_in; 
+	 private String data_in; 
 	 
 	 @JsonProperty(value = "state")
      private String state;
@@ -56,7 +57,7 @@ public class DboTkModel implements Serializable {
      private String finans;
 	 
 	 @JsonProperty(value = "data_out_raz")
-	 private Date data_out_raz;
+	 private String data_out_raz;
 	 
 	 @JsonProperty(value = "number_442")
      private Integer number_442;
@@ -95,13 +96,13 @@ public class DboTkModel implements Serializable {
      private String smeta;
 	 
 	 @JsonProperty(value = "dataEZ")
-	 private Date dataEZ;
+	 private String dataEZ;
 	 
 	 @JsonProperty(value = "prilog")
      private String prilog;
 	 
 	 @JsonProperty(value = "updateData")
-	 private Date updateData;
+	 private String updateData;
 	 
 	 @JsonProperty(value = "updOKBID")
      private Integer updOKBID;
@@ -113,7 +114,7 @@ public class DboTkModel implements Serializable {
      private String arhiv;
 	 
 	 @JsonProperty(value = "createDate")
-	 private Date createDate;
+	 private String createDate;
 	 	 
 	 @JsonProperty(value = "zametki")
      private String zametki;
@@ -122,7 +123,7 @@ public class DboTkModel implements Serializable {
      private Integer id_corp;
 	 
 	 @JsonProperty(value = "dataBB")
-	 private Date dataBB;
+	 private String dataBB;
 	 
 	 @JsonProperty(value = "priemka")
      private String priemka;
@@ -175,13 +176,6 @@ public class DboTkModel implements Serializable {
 		this.out_number = out_number;
 	}
 
-	public Date getData_out() {
-		return data_out;
-	}
-
-	public void setData_out(Date data_out) {
-		this.data_out = data_out;
-	}
 
 	public String getDep_number() {
 		return dep_number;
@@ -199,13 +193,6 @@ public class DboTkModel implements Serializable {
 		this.number_441 = number_441;
 	}
 
-	public Date getData_in() {
-		return data_in;
-	}
-
-	public void setData_in(Date data_in) {
-		this.data_in = data_in;
-	}
 
 	public String getState() {
 		return state;
@@ -253,14 +240,6 @@ public class DboTkModel implements Serializable {
 
 	public void setFinans(String finans) {
 		this.finans = finans;
-	}
-
-	public Date getData_out_raz() {
-		return data_out_raz;
-	}
-
-	public void setData_out_raz(Date data_out_raz) {
-		this.data_out_raz = data_out_raz;
 	}
 
 	public Integer getNumber_442() {
@@ -351,28 +330,12 @@ public class DboTkModel implements Serializable {
 		this.smeta = smeta;
 	}
 
-	public Date getDataEZ() {
-		return dataEZ;
-	}
-
-	public void setDataEZ(Date dataEZ) {
-		this.dataEZ = dataEZ;
-	}
-
 	public String getPrilog() {
 		return prilog;
 	}
 
 	public void setPrilog(String prilog) {
 		this.prilog = prilog;
-	}
-
-	public Date getUpdateData() {
-		return updateData;
-	}
-
-	public void setUpdateData(Date updateData) {
-		this.updateData = updateData;
 	}
 
 	public Integer getUpdOKBID() {
@@ -395,14 +358,6 @@ public class DboTkModel implements Serializable {
 		return arhiv;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
 	public void setArhiv(String arhiv) {
 		this.arhiv = arhiv;
 	}
@@ -421,14 +376,6 @@ public class DboTkModel implements Serializable {
 
 	public void setId_corp(Integer id_corp) {
 		this.id_corp = id_corp;
-	}
-
-	public Date getDataBB() {
-		return dataBB;
-	}
-
-	public void setDataBB(Date dataBB) {
-		this.dataBB = dataBB;
 	}
 
 	public String getPriemka() {
@@ -518,4 +465,61 @@ public class DboTkModel implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public String getData_out() {
+		return data_out;
+	}
+
+	public void setData_out(String data_out) {
+		this.data_out = data_out;
+	}
+
+	public String getData_in() {
+		return data_in;
+	}
+
+	public void setData_in(String data_in) {
+		this.data_in = data_in;
+	}
+
+	public String getData_out_raz() {
+		return data_out_raz;
+	}
+
+	public void setData_out_raz(String data_out_raz) {
+		this.data_out_raz = data_out_raz;
+	}
+
+	public String getDataEZ() {
+		return dataEZ;
+	}
+
+	public void setDataEZ(String dataEZ) {
+		this.dataEZ = dataEZ;
+	}
+
+	public String getUpdateData() {
+		return updateData;
+	}
+
+	public void setUpdateData(String updateData) {
+		this.updateData = updateData;
+	}
+
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getDataBB() {
+		return dataBB;
+	}
+
+	public void setDataBB(String dataBB) {
+		this.dataBB = dataBB;
+	}
+	
 }
