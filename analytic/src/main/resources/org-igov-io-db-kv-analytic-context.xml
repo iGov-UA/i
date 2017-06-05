@@ -22,14 +22,14 @@
         </bean>
 	
         <!-- Connection to MongoDB server -->
-        <mongo:db-factory id="mongoDbFactory" host="${mongodb.analytic.host}" port="${mongodb.analytic.port}" dbname="${mongodb.analytic.database}"
+        <mongo:db-factory id="mongoDbAnalyticFactory" host="${mongodb.analytic.host}" port="${mongodb.analytic.port}" dbname="${mongodb.analytic.database}"
                                   username="${mongodb.analytic.login}" password="${mongodb.analytic.password}" authentication-dbname="${mongodb.analytic.database}"/>
                 
-        <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbFactory"/> <!--base-package="com.x.y.core.beans"-->
+        <mongo:mapping-converter id="converterAnalytic" db-factory-ref="mongoDbAnalyticFactory"/> <!--base-package="com.x.y.core.beans"-->
 		 
         <!-- MongoDB GridFS Template -->
         <bean id="gridAnalyticTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
-            <constructor-arg ref="mongoDbFactory"/>
+            <constructor-arg ref="mongoDbAnalyticFactory"/>
             <constructor-arg ref="converterAnalytic"/>
         </bean>
 	
