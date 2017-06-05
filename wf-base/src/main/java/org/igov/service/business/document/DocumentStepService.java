@@ -197,7 +197,7 @@ public class DocumentStepService {
         LOG.info("Result list of steps: {}", aDocumentStep_Result);
         
         List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = 
-                getDocumentSubjectRightPermitions(oStep_Common, oStep_Common != null, asKey_Step_ExcludeCommon.size());
+                getDocumentSubjectRightPermitions(oStep_Common, oStep_Common != null, asKey_Step_ExcludeCommon);
         LOG.info("aDocumentSubjectRightPermition size is {}", aDocumentSubjectRightPermition.size());
         if (aDocumentSubjectRightPermition != null){
             LOG.info("aDocumentSubjectRightPermition isn't null");
@@ -206,14 +206,14 @@ public class DocumentStepService {
                 if(oDocumentStep_Result.getRights() != null){
                     LOG.info("oDocumentStep_Result rights isn't null");
                     for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Result.getRights()){
-                        
                         for(DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition){
                             LOG.info("oDocumentSubjectRightPermition.getsKeyGroup_Postfix() is {}", oDocumentSubjectRightPermition.getsKeyGroup_Postfix());
                             LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix() is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
                             
                             if((oDocumentSubjectRightPermition.getsKeyGroup_Postfix()
                                     .equals(oDocumentStepSubjectRight.getsKey_GroupPostfix()) 
-                                    && (oDocumentSubjectRightPermition.getnID_DocumentStepSubjectRight() == null))){
+                                    && (oDocumentSubjectRightPermition.getnID_DocumentStepSubjectRight() == null))
+                                    && oDocumentSubjectRightPermition.getsKey_Step().equals(oDocumentStep_Result.getsKey_Step())){
                                oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
                                oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition);
                                LOG.info("oDocumentSubjectRightPermition saved is id: {} "
@@ -319,19 +319,22 @@ public class DocumentStepService {
 
     }
 
-    private List<DocumentSubjectRightPermition> getDocumentSubjectRightPermitions(Object oStep_JSON, boolean isCommonStep, int stepCount) {
+    private List<DocumentSubjectRightPermition> getDocumentSubjectRightPermitions(Object oStep_JSON, boolean isCommonStep, List<String> asKey_Step_ExcludeCommon) {
         List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = new ArrayList<>();
 
         JSONObject oStep = (JSONObject) oStep_JSON;
         LOG.info("try to parse step: {}", oStep);
         LOG.info("isCommonStep {}", isCommonStep);
-        LOG.info("stepCount {}", stepCount);
+        
+        if(isCommonStep){
+            asKey_Step_ExcludeCommon.add("_");
+        }
+        
+        LOG.info("stepCount {}", asKey_Step_ExcludeCommon.size());
         
         if (oStep == null) {
             return null;
         }
-        
-        int stepCounter = isCommonStep ? stepCount + 1 : 1;
         
         String[] asKey_Group = JSONObject.getNames(oStep);
         if (asKey_Group != null) {
@@ -342,12 +345,13 @@ public class DocumentStepService {
                 LOG.info("aPermition is {}", aPermition);
 
                 if (aPermition != null) {
-                    for(int j = 0; j < stepCounter; j++){
+                    for(int j = 0; j < asKey_Step_ExcludeCommon.size(); j++){
                         for (int i = 0; i < aPermition.length(); i++) {
                             LOG.info("Permition elem is {}", aPermition.getString(i));
                             DocumentSubjectRightPermition oDocumentSubjectRightPermition = new DocumentSubjectRightPermition();
                             oDocumentSubjectRightPermition.setPermitionType(aPermition.getString(i));
                             oDocumentSubjectRightPermition.setsKeyGroup_Postfix(sKey_Group);
+                            oDocumentSubjectRightPermition.setsKey_Step(asKey_Step_ExcludeCommon.get(j));
                             //oDocumentSubjectRightPermition.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight.getId());
 
                             JSONObject oPermitionAcceptor = oGroup.optJSONObject("oPermitions_AddAcceptor");
