@@ -57,7 +57,6 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 
 		
 		DboTkModel dataForTransferToArm = new DboTkModel();
-		dataForTransferToArm.setId((Long) data.get("Industry"));
 		dataForTransferToArm.setIndustry((String) data.get("Industry"));
 		dataForTransferToArm.setPriznak((String) data.get("Priznak"));
 		dataForTransferToArm.setOut_number(sID_order);
@@ -103,25 +102,16 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	    dataForTransferToArm.setPrioritet((String) data.get("Prioritet"));
 	    dataForTransferToArm.setLongterm((String) data.get("Longterm"));
 
-LOG.info("dataForTransferToArm = {}",dataForTransferToArm);
+	    LOG.info("dataForTransferToArm = {}",dataForTransferToArm);
 		
 		// вызываю селект - получаю лист моделей
 		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
 
-		// если лист не нал, иду по листу, из каждой модели достаю значение
-		// Out_number и сравниваю его с sID_order
 		if (listOfModels !=null && !listOfModels.isEmpty()) {
-			for (DboTkModel dboTkModel : listOfModels) {
-				dataForTransferToArm.getOut_number();
-				// если найдено соответствие - делаю апдейт
-				if (dataForTransferToArm.getOut_number().equals(sID_order)) {
-					armService.updateDboTk(dataForTransferToArm);
-					// если не найдено - делаю инсерт
-				} else
-					armService.createDboTk(dataForTransferToArm);
-
-			}
+			armService.updateDboTk(dataForTransferToArm);
+		}else{
+			armService.createDboTk(dataForTransferToArm);
 		}
-
+		
 	}
 }
