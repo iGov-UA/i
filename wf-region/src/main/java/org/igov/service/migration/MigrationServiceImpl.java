@@ -1,5 +1,8 @@
 package org.igov.service.migration;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -22,14 +25,17 @@ import org.igov.analytic.model.process.*;
 import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
-import org.igov.io.db.kv.analytic.impl.FileMongoStorageAnalytic;
+import org.igov.io.db.kv.analytic.impl.BytesMongoStorageAnalytic;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.service.conf.AttachmetService;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -80,7 +86,10 @@ public class MigrationServiceImpl implements MigrationService {
     private RepositoryService repositoryService;
 
     @Autowired
-    private FileMongoStorageAnalytic fileStorageAnalytic;
+    private BytesMongoStorageAnalytic bytesStorageAnalytic;
+
+    @Autowired
+    private IBytesDataStorage bytesDataStorage;
 
     @Autowired
     private AttachmetService attachmentService;
@@ -113,7 +122,6 @@ public class MigrationServiceImpl implements MigrationService {
 
     private String composeSql(DateTime startTime, String processId) {
         DateTime endTime = startTime.plusDays(3);
-//        return "SELECT * from act_hi_procinst where proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'27110001\'";
         return "SELECT * from act_hi_procinst where proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'" + processId + "\'";
 //        return "SELECT * from act_hi_procinst where start_time_ > TIMESTAMP \' "
 //               + startTime.toString("yyyy-MM-dd HH:mm:ss")
@@ -339,9 +347,15 @@ public class MigrationServiceImpl implements MigrationService {
             if(string.startsWith("{") && string.contains("Mongo")) {
                 type = attributeTypeDao.findById(7L).get();
                 Attribute_File fileAttribute = new Attribute_File();
-            }
-
-            if (string.length() < 255) {
+                Map<String, String> fileValuesMap = parseJsonStringToMap(string);
+                fileAttribute.setsFileName(fileValuesMap.get("sFileNameAndExt").split(".")[0]);
+                fileAttribute.setsExtName(fileValuesMap.get("sFileNameAndExt").split(".")[1]);
+                fileAttribute.setsContentType(fileValuesMap.get("sContentType"));
+                String newKey = transferAttachment("Mongo-" + fileValuesMap.get("sKey"), fileValuesMap.get("sFileNameAndExt"), fileValuesMap.get("sContentType"));
+                fileValuesMap.put("sKey", newKey);
+                fileAttribute.setoAttribute(attribute);
+                fileAttribute.setsID_Data(parseMapToJson(fileValuesMap));
+            } else if (string.length() < 255) {
                 type = attributeTypeDao.findById(3L).get();
                 Attribute_StringShort shortString = new Attribute_StringShort();
                 shortString.setsValue(string);
@@ -393,5 +407,35 @@ public class MigrationServiceImpl implements MigrationService {
             attribute.setoAttribute_Long(long_attr);
         }
         return type;
+    }
+
+    private Map<String, String> parseJsonStringToMap(String stringToParse) {
+        Map<String, String> resultMap = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            resultMap = mapper.readValue(stringToParse, new TypeReference<Map<String, String>>(){});
+        }
+        catch(IOException ex) {
+            LOG.error("Error during json-string parsing:{}" , ex.getCause());
+        }
+        return resultMap;
+    }
+
+    private String parseMapToJson(Map<String, String> valuesMap) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(valuesMap);
+        }
+        catch (JsonProcessingException ex) {
+            LOG.error("Error during json-string parsing:{}" , ex.getCause());
+        }
+        return null;
+    }
+
+    private String transferAttachment(String fileKey, String fileName, String contentType) {
+        RestTemplate template = new RestTemplate();
+        byte[] result = template.getForObject("https://alpha-old.test.region.igov.org.ua/wf/service/object/file/download_file_from_storage_static?" +
+                "sId={fileKey}&sFileName={fileName}&sType={contentType}", byte[].class, fileKey, fileName, contentType);
+        return bytesStorageAnalytic.saveData(result);
     }
 }
