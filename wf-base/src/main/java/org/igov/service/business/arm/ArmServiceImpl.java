@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.igov.model.arm.ArmDao;
 import org.igov.model.arm.DboTkModel;
+import org.igov.model.arm.DboTkResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +20,14 @@ public class ArmServiceImpl implements ArmService {
 	}
 
 	@Override
-	public void createDboTk(DboTkModel dboTkModel) {
-		armDao.createDboTk(dboTkModel);
+	public DboTkResult createDboTk(DboTkModel dboTkModel) {
+		return armDao.createDboTk(dboTkModel);
 		
 	}
 
 	@Override
-	public void updateDboTk(DboTkModel dboTkModel) {
-		armDao.updateDboTk(dboTkModel);
+	public DboTkResult updateDboTk(DboTkModel dboTkModel) {
+		return armDao.updateDboTk(dboTkModel);
 		
 	}
 	
