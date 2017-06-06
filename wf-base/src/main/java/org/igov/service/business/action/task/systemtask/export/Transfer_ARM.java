@@ -2,6 +2,8 @@ package org.igov.service.business.action.task.systemtask.export;
 
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -54,48 +56,47 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
-
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		
 		DboTkModel dataForTransferToArm = new DboTkModel();
 		dataForTransferToArm.setIndustry((String) data.get("Industry"));
 		dataForTransferToArm.setPriznak((String) data.get("Priznak"));
 		dataForTransferToArm.setOut_number(sID_order);
-		dataForTransferToArm.setData_out((Date) data.get("Data_out"));
+		dataForTransferToArm.setData_out(df.parse((String)data.get("Data_out")));
 	    dataForTransferToArm.setDep_number((String) data.get("Dep_number"));
-	    dataForTransferToArm.setData_in((Date) data.get("Data_in"));
+	    dataForTransferToArm.setData_in(df.parse((String) data.get("Data_in")));
 	    dataForTransferToArm.setState((String) data.get("State"));
 	    dataForTransferToArm.setName_object((String) data.get("Name_object"));
 	    dataForTransferToArm.setKod((String) data.get("Kod"));
 	    dataForTransferToArm.setGruppa((String) data.get("Gruppa"));
 	    dataForTransferToArm.setUndergroup((String) data.get("Undergroup"));
 	    dataForTransferToArm.setFinans((String) data.get("Finans"));
-	    dataForTransferToArm.setData_out_raz((Date) data.get("Data_out_raz"));
-	    dataForTransferToArm.setNumber_442((Integer) data.get("Number_442"));
+	    dataForTransferToArm.setData_out_raz(df.parse((String)data.get("Data_out_raz")));
+	    dataForTransferToArm.setNumber_442(Integer.parseInt( (String) data.get("Number_442")));
 	    dataForTransferToArm.setWinner((String) data.get("Winner"));
 	    dataForTransferToArm.setKod_okpo((String) data.get("Kod_okpo"));
 	    dataForTransferToArm.setPhone((String) data.get("Phone"));
 	    dataForTransferToArm.setSrok((String) data.get("Srok"));
 	    dataForTransferToArm.setExpert((String) data.get("Expert"));
-	    dataForTransferToArm.setSumma((BigDecimal) data.get("Summa"));
+	    dataForTransferToArm.setSumma(new BigDecimal((String) data.get("Summa")));
 	    dataForTransferToArm.setuAN((String) data.get("UAN"));
 	    dataForTransferToArm.setIf_oplata((String) data.get("If_oplata"));
 	    dataForTransferToArm.setUslovie((String) data.get("Uslovie"));
 	    dataForTransferToArm.setBank((String) data.get("Bank"));
 	    dataForTransferToArm.setSmeta((String) data.get("Smeta"));
-	    dataForTransferToArm.setDataEZ((Date) data.get("DataEZ"));
+	    dataForTransferToArm.setDataEZ(df.parse((String) data.get("DataEZ")));
 	    dataForTransferToArm.setPrilog((String) data.get("Prilog"));
-	    dataForTransferToArm.setUpdateData((Date) data.get("UpdateData"));
-	    dataForTransferToArm.setUpdOKBID((Integer) data.get("UpdOKBID"));
+	    dataForTransferToArm.setUpdateData(df.parse((String) data.get("UpdateData")));
+	    dataForTransferToArm.setUpdOKBID(Integer.parseInt( (String)data.get("UpdOKBID")));
 	    dataForTransferToArm.setNotes((String) data.get("Notes"));
 	    dataForTransferToArm.setArhiv((String) data.get("Arhiv"));
-	    dataForTransferToArm.setCreateDate((Date) data.get("CreateDate"));
+	    dataForTransferToArm.setCreateDate(df.parse((String) data.get("CreateDate")));
 	    dataForTransferToArm.setZametki((String) data.get("Zametki"));
-	    dataForTransferToArm.setId_corp((Integer) data.get("Id_corp"));
-	    dataForTransferToArm.setDataBB((Date) data.get("DataBB"));
+	    dataForTransferToArm.setDataBB(df.parse((String) data.get("DataBB")));
 	    dataForTransferToArm.setPriemka((String) data.get("Priemka"));
 	    dataForTransferToArm.setProckred((String) data.get("Prockred"));
-	    dataForTransferToArm.setSumkred((BigDecimal) data.get("Sumkred"));
-	    dataForTransferToArm.setSumzak((BigDecimal) data.get("Sumzak"));
+	    dataForTransferToArm.setSumkred(new BigDecimal((String) data.get("Sumkred")));
+	    dataForTransferToArm.setSumzak(new BigDecimal((String) data.get("Sumzak")));
 	    dataForTransferToArm.setAuctionForm((String) data.get("AuctionForm"));
 	    dataForTransferToArm.setProtocol_Number((String) data.get("Protocol_Number"));
 	    dataForTransferToArm.setCorrectionDoc((String) data.get("CorrectionDoc"));
