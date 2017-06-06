@@ -509,6 +509,15 @@
                      ng-if="isMPassField(property.id)"
                      style="width: 160px;"
                      ng-click="authorizeCheckout()">
+                <input ng-switch-when="string"
+                       type="text"
+                       name="{{property.id}}"
+                       ng-hide="true"
+                       ng-model="data.formData.params[property.id].value"
+                       ng-required="isFieldRequired(property)"
+                       ng-class="getBpAndFieldID(property)"
+                       class="form-control"
+                       ng-if="isMPassField(property.id)">
                 <!--masterpass button end-->
 
                 <!--field for OKPO search start-->
@@ -570,15 +579,40 @@
                        class="form-control"
                        value="">
 
-                <input ng-switch-when="tel"
-                       type="text"
-                       name="{{property.id}}"
-                       ng-model="data.formData.params[property.id].value"
-                       ng-tel-field="{defaultCountry:'ua', autoFormat:true, allowExtensions:false, preferredCountries:['ua'], autoPlaceholder:true}"
-                       ng-required="isFieldRequired(property)"
-                       ng-class="getBpAndFieldID(property)"
-                       class="form-control"
-                       value="">
+                <div ng-switch-when="tel">
+                  <input type="text"
+                         ng-disabled="phoneVerify.confirmed"
+                         name="{{property.id}}"
+                         ng-model="data.formData.params[property.id].value"
+                         ng-tel-field="{defaultCountry:'ua', autoFormat:true, allowExtensions:false, preferredCountries:['ua'], autoPlaceholder:true}"
+                         ng-required="isFieldRequired(property)"
+                         ng-class="getBpAndFieldID(property)"
+                         class="form-control"
+                         maxlength="16"
+                         value="">
+                  <div class="mp-phone-check" ng-if="isMPassField(null, true)">
+                    <div class="phone-check-dialog" ng-if="phoneVerify.dialog">
+                      <input type="text"
+                             maxlength="4"
+                             class="form-control input-sm confirm-field"
+                             placeholder="Введiть надiсланий SMS-пароль"
+                             ng-model="phoneVerify.otp">
+                      <input type="button"
+                             class="btn btn-default btn-sm confirm-button"
+                             value="Пiдтвердити"
+                             ng-disabled="phoneVerify.otp.length < 4"
+                             ng-click="confirmOtp()">
+                    </div>
+                    <input type="button"
+                           class="btn btn-default btn-sm"
+                           value="Пiдтвердити номер"
+                           ng-if="data.formData.params[property.id].value.length === 16 && phoneVerify.showVerifyButton"
+                           ng-click="phoneVerifyStart()">
+                    <a ng-click="changePhone()"
+                       ng-if="!phoneVerify.showVerifyButton">Змiнити номер телефону</a>
+                  </div>
+                </div>
+
 
                 <p class="input-group datepicker-central"
                    ng-switch-when="date">

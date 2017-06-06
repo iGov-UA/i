@@ -22,6 +22,7 @@ import org.igov.service.controller.security.AccessContract;
 import org.igov.util.ToolWeb;
 import static org.igov.util.ToolWeb.getSignature;
 import static org.igov.util.ToolWeb.base64_encode;
+import org.joda.time.LocalDateTime;
 
 @Component()
 public class Liqpay {
@@ -118,19 +119,26 @@ public class Liqpay {
         params.put("version", version);
         params.put("amount", sSum);
         params.put("currency", oID_Currency.name());
+        if (nExpired_Period_Hour != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date oExriredDate = org.igov.service.business.util.Date.diff(null, nExpired_Period_Hour, Calendar.MINUTE);
+            LOG.info("oExriredDate: " + oExriredDate);
+            LOG.info("sdf.format(oExriredDate): " + sdf.format(oExriredDate));
+            
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(oExriredDate);
+            calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) - 3);
+            LOG.info("sdf.format(calemdar): " + sdf.format(calendar.getTime()));
+            params.put("expired_date", sdf.format(calendar.getTime()));
+            LOG.info("params>>>>getPayData>>: " + params); //+
+        }
         params.put("language", oLanguage.getShortName());
         params.put("description", sDescription);
         params.put("order_id", sID_Order);
         params.put("server_url", sURL_CallbackStatusNew);
         params.put("result_url", sURL_CallbackPaySuccess);
         params.put("public_key", sPublicKey);
-        if (nExpired_Period_Hour != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            Date oExriredDate = org.igov.service.business.util.Date.diff(null, nExpired_Period_Hour, Calendar.MINUTE);
-            LOG.info("oExriredDate: " + oExriredDate);
-            params.put("expired_date", sdf.format(oExriredDate));
-        }
-
+        
         if (bTest) {
             params.put("sandbox", sandbox);
         }
@@ -143,20 +151,27 @@ public class Liqpay {
             Currency oID_Currency, Language oLanguage, String sDescription,
             String sID_Order, String sURL_CallbackStatusNew,
             String sURL_CallbackPaySuccess, Long nID_Subject, boolean bTest, Integer nExpired_Period_Hour) throws Exception {
+    	
+    	LOG.info("getPayButtonHTML_LiqPay >>>>> nExpired_Period_Hour" +nExpired_Period_Hour); //10
 
         Map<String, String> mParam = getPayData(sID_Merchant, sSum,
-                oID_Currency, oLanguage, sDescription,
+                oID_Currency, oLanguage, sDescription, 
                 sID_Order, sURL_CallbackStatusNew,
-                sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour);
+                sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour); 
 
         String sHTML = getForm(mParam, privateKey, oLanguage);
-        LOG.info("ok! (sHTML={})", sHTML);
+        LOG.info("mParam in getPayButtonHTML_LiqPay  = {}", mParam); //+
+        LOG.info("ok! (sHTML={})", sHTML); //+
         return sHTML;
     }
 
     private String getForm(Map<String, String> mParam, String sPrivateKey, Language oLanguage) {
+    	LOG.info("sData in getForm before base64_encode>>>>>>>>={} ", mParam);// +
+    	LOG.info("JSONObject.toJSONString(mParam)>>>>>>>>={} ", JSONObject.toJSONString(mParam));//+
         String sData = base64_encode(JSONObject.toJSONString(mParam));
+        LOG.info("sData in getForm >>>>>>>>={} ", sData); // +
         String sSignature = getSignature(sData, sPrivateKey);
+        LOG.info("sSignature in getForm >>>>>>>>= {}", sSignature);
         return String.format(sHTML_PayButton, sData, sSignature, oLanguage.getShortName());
     }
 
@@ -169,7 +184,7 @@ public class Liqpay {
                 oID_Currency, oLanguage, sDescription,
                 sID_Order, sURL_CallbackStatusNew,
                 sURL_CallbackPaySuccess, nID_Subject, bTest, nExpired_Period_Hour);
-
+        LOG.info("mParam in >>>>>>>>>>>>> = {}", mParam);
         //String result = getForm(mParam, privateKey, oLanguage);
         String sData = base64_encode(JSONObject.toJSONString(mParam));
         String sSignature = getSignature(sData, privateKey);

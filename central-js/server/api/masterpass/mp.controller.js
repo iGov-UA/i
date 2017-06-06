@@ -3,6 +3,21 @@ var request = require('request'),
     masterPassAuth = require('./mp.service'),
     async = require('async');
 
+function getOptions(req) {
+  var config = require('../../config/environment');
+
+  var activiti = config.activiti;
+
+  return {
+    protocol: activiti.protocol,
+    hostname: activiti.hostname,
+    port: activiti.port,
+    path: activiti.path,
+    username: activiti.username,
+    password: activiti.password
+  };
+}
+
 module.exports.walletOperations = function (req, res) {
   var auth = masterPassAuth.getUserAuth();
   var params = req.body.body;
@@ -156,7 +171,7 @@ module.exports.verify3DSCallback = function (req, res) {
         }
       });
     } else {
-      res.redirect(callbackUrl)
+      res.redirect(callbackUrl + '?status=' + result.response.error)
     }
   }
 };
@@ -185,4 +200,45 @@ module.exports.createSaleCancelPayment = function (req, res) {
         res.end();
       }
     });
+};
+
+module.exports.verifyPhoneNumber = function (req, res) {
+  var options = getOptions(req),
+      url = options.protocol + '://' + options.hostname + options.path + '/subject/message/sendSms';
+
+  var verifyData = masterPassAuth.createAndCheckOTP(req.query);
+
+    var callback = function(error, response, body) {
+      if(!error) {
+        res.send({message: body});
+        res.end();
+      } else {
+        res.send(error);
+        res.end();
+      }
+    };
+
+    return request.get({
+      'url': url,
+      'auth': {
+        'username': options.username,
+        'password': options.password
+      },
+      'qs': {
+        'phone': verifyData.phone,
+        'message': verifyData.code,
+        'sID_Order': '1'
+      }
+    }, callback);
+};
+
+module.exports.confirmOtp = function (req, res) {
+  var response = masterPassAuth.createAndCheckOTP(req.query);
+    if(response) {
+      res.send(response);
+      res.end();
+    } else {
+      res.send(false);
+      res.end();
+    }
 };

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('app').service('MasterPassService', ['$http', '$location', '$window', 'modalService', function ($http, $location, $window, modalService) {
 
     var deleteCardModal = {
@@ -35,12 +37,53 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
         headerText: 'Увага',
         bodyText: 'Необхiдно заповнити поле з номером телефону'
       }
+    },
+    phoneIsNotVerified = {
+      defaults: answerDefault,
+      modal: {
+        actionButtonText: 'Ок',
+        headerText: 'Увага',
+        bodyText: 'Необхiдно пiдтвердити номер телефону'
+      }
     };
 
   return {
-    isMasterPassButton: function (id) {
-      if(id)
+    isMasterPassButton: function (id, all) {
+      if(id && !all)
         return id.indexOf('sID_Pay_MasterPass') === 0;
+      if(!id && all) {
+        for( var i=0; i<all.length; i++ ) {
+          if( all[i].id.indexOf('sID_Pay_MasterPass') === 0 ) {
+            return true;
+          }
+        }
+      }
+    },
+
+    phoneCheck: function (phone, value) {
+      var params = {
+        phone: phone,
+        value: value
+      };
+
+      return $http.get('./api/masterpass/verifyPhoneNumber', {params: params}).then(function (res) {
+        return !!(res);
+      })
+    },
+
+    otpPhoneConfirm: function (phone, otp) {
+      var params = {
+        phone: phone,
+        value: otp
+      };
+
+      return $http.get('./api/masterpass/confirmOtp', {params: params}).then(function (res) {
+        if(res) {
+          return res.data;
+        } else {
+          return false;
+        }
+      })
     },
 
     searchValidPhoneNumber: function (arr) {
@@ -239,6 +282,8 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
           return answerDefault;
         case 'missed-phone':
           return hasNoPhoneNumber;
+        case 'phone-is-not-verified':
+          return phoneIsNotVerified;
       }
     },
 

@@ -1,6 +1,21 @@
 'use strict';
 var md5 = require('md5'),
-    config = require('../../config/environment');
+    config = require('../../config/environment'),
+    NodeCache = require("node-cache");
+
+
+var cache = new NodeCache();
+var cacheTtl = 1800; // 30min
+
+var buildKey = function (params) {
+  var key = 'MP';
+  if (params) {
+    for (var k in params) {
+      key += '&' + k + '=' + params[k];
+    }
+  }
+  return key;
+};
 
 module.exports.getUserAuth = function () {
   var date = new Date();
@@ -25,6 +40,8 @@ module.exports.getUserAuth = function () {
 };
 
 module.exports.createGuid = function () {
+  var result;
+
   function guid() {
     return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
   }
@@ -35,7 +52,34 @@ module.exports.createGuid = function () {
       .substring(1);
   }
 
-  var guidParam = guid();
+  cache.get(buildKey('guid'), function (error, value) {
+    if (value) {
+      result = value;
+    } else {
+      var guidkey = guid();
+      cache.set(buildKey('guid'), guidkey, cacheTtl);
+      result = guidkey;
+    }
+  });
 
-  return guidParam ? guidParam : guid();
+  return result;
+};
+
+module.exports.createAndCheckOTP = function (data) {
+  var isTestServer = config.bTest, response;
+
+  if( data.phone && !data.value && data.value !== "") {
+    var code = isTestServer ? '0000' : Math.floor(1000 + Math.random() * 9000);
+    var string = '0000' ? '0000' : code.toString();
+
+    cache.set(buildKey(data.phone), string, 600);
+    response = {phone: data.phone, code: string};
+
+  } else if( data.phone && data.value ) {
+    cache.get(buildKey(data.phone), function (error, value) {
+      response = !!(value && value === data.value);
+    });
+  }
+
+  return response;
 };

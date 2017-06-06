@@ -257,8 +257,8 @@ var all = {
   },
 
   masterpass: {
-    login: processProps.MasterPass_sLogin ? processProps.MasterPass_sLogin : process.env.MasterPass_sLogin,
-    token: processProps.MasterPass_sSecret ? processProps.MasterPass_sSecret : process.env.MasterPass_sSecret
+    login: processProps.Pay_MasterPass_sLogin ? processProps.Pay_MasterPass_sLogin : process.env.Pay_MasterPass_sLogin,
+    token: processProps.Pay_MasterPass_sSecret ? processProps.Pay_MasterPass_sSecret : process.env.Pay_MasterPass_sSecret
   }
 };
 

@@ -22,8 +22,11 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.*;
+import org.activiti.engine.runtime.ProcessInstance;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -45,10 +48,13 @@ import org.igov.util.ToolJS;
 import org.igov.util.ToolLuna;
 import org.igov.util.cache.CachedInvocationBean;
 import org.igov.util.cache.SerializableResponseEntity;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -1074,25 +1080,27 @@ public class ActionTaskService {
     /**
      * Получение списка бизнес процессов к которым у пользователя есть доступ
      *
-     * @param sLogin - Логин пользователя
+     * @param sLogin - Логин. пользователя
      * @param bDocOnly Выводить только список БП документов
      * @param sProcessDefinitionId - выводить только из этого процесса
      * @return
      */
     public List<Map<String, String>> getBusinessProcessesOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
-
-        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
-                sLogin, bDocOnly, sProcessDefinitionId);
-
+                
+        List<ProcessDefinition> aProcessDefinition_Return = getProcessDefinitionOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
+                
         List<Map<String, String>> amPropertyBP = new LinkedList<>();
+         
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
             Map<String, String> mPropertyBP = new HashMap<>();
+            
             mPropertyBP.put("sID", oProcessDefinition.getKey());
             mPropertyBP.put("sName", oProcessDefinition.getName());
-            LOG.debug("Added record to response {}", mPropertyBP);
+            
+            LOG.info("Added record to response {}", mPropertyBP);
             amPropertyBP.add(mPropertyBP);
         }
-
+                
         return amPropertyBP;
     }
     /**
@@ -1104,50 +1112,61 @@ public class ActionTaskService {
      * @return  Лист полей, согласно запросу
      */
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
-        
-        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
+
+        List<ProcessDefinition> aProcessDefinition_Return = getProcessDefinitionOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
         
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
+        
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
+            
             StartFormData formData = oFormService.getStartFormData(oProcessDefinition.getId());
+            
             for (FormProperty property : formData.getFormProperties()) {
+                
                 Map<String, String> mPropertyBP = new HashMap<String, String>();
+                
                 mPropertyBP.put("sID", property.getId());
                 mPropertyBP.put("sName", property.getName());
                 mPropertyBP.put("sID_Type", property.getType().getName());
+                
                 amPropertyBP.put(mPropertyBP.get("sID"), mPropertyBP);
-                LOG.debug("Added record to response {}", mPropertyBP);
+                
+                LOG.info("Added record to response {}", mPropertyBP);
             }
-
+                        
             Collection<FlowElement> elements = oRepositoryService.getBpmnModel(oProcessDefinition.getId()).getMainProcess().getFlowElements();
-            //LOG.info("getBusinessProcessesFieldsOfLogin: Collection<FlowElement> elements = {} for oProcessDefinition = {}", elements, oProcessDefinition.getId());
             
             for (FlowElement flowElement : elements) {
+                
                 if (flowElement instanceof UserTask) {
-                    LOG.debug("Processing user task with ID {} name {} ", flowElement.getId(), flowElement.getName());
+                    
+                    LOG.info("Processing user task with ID {} name {} ", flowElement.getId(), flowElement.getName());
+                    
                     UserTask userTask = (UserTask) flowElement;
+                    
                     for (org.activiti.bpmn.model.FormProperty property : userTask.getFormProperties()) {
+                        
                         Map<String, String> mPropertyBP = new HashMap<String, String>();
                         mPropertyBP.put("sID", property.getId());
                         mPropertyBP.put("sName", property.getName());
                         mPropertyBP.put("sID_Type", property.getType());
+                        
                         amPropertyBP.put(mPropertyBP.get("sID"), mPropertyBP);
-                        LOG.debug("Added record to response from user task {}", mPropertyBP);
+                        LOG.info("Added record to response from user task {}", mPropertyBP);
                     }
                 }
-
             }
-
         }
-
-        LOG.info("Total list of fields {}", amPropertyBP);
+        
         List<Map<String, String>> res = new LinkedList<Map<String, String>>();
         res.addAll(amPropertyBP.values());
+        
+        
         return res;
     }
 
-    private List<ProcessDefinition> getBusinessProcessesObjectsOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {
-        
+    private List<ProcessDefinition> getProcessDefinitionOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {    
+        /*
         if (sLogin == null || sLogin.isEmpty()) {
             LOG.error("Unable to found business processes for sLogin=" + sLogin);
             throw new ActivitiObjectNotFoundException(
@@ -1162,7 +1181,6 @@ public class ActionTaskService {
                 .active()
                 .latestVersion().list();
 
-        //LOG.info("getBusinessProcessesObjectsOfLogin: all active processes aProcessDefinition = {}", aProcessDefinition);
         
         if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
              
@@ -1209,7 +1227,95 @@ public class ActionTaskService {
             LOG.info("Have not found active process definitions.");
         }
         
-        LOG.info("getBusinessProcessesObjectsOfLogin: aProcessDefinition_Return = {}", aProcessDefinition_Return);
+        LOG.info("getBusinessProcessesObjectsOfLogin: aProcessDefinition_Return = {}", aProcessDefinition_Return);*/
+        
+        List<ProcessInstance> aAllProcessInstance = new ArrayList<>();
+        
+        //вернуть только документы
+        if (bDocOnly) {
+            
+            List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
+                    + "                                                        and link.user_id_ = '" + sLogin + "'"
+                    + "                                                        and proc.proc_def_id_ like '_doc_%'"
+            ).list();
+                
+            List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_ru_identitylink link, act_hi_taskinst task, act_hi_procinst proc where link.task_id_ = task.id_"
+                    + "                                                        and task.proc_inst_id_ = proc.proc_inst_id_"
+                    + "                                                        and link.group_id_ = '" + sLogin + "'"
+                    + "                                                        and proc.proc_def_id_ like '_doc_%'"
+            ).list();
+            
+            aAllProcessInstance.addAll(aProcessInstanceHistory);
+            aAllProcessInstance.addAll(aProcessInstanceActive);
+            
+        //вернуть только заданный sProcessDefinitionId
+        } else if (sProcessDefinitionId != null) {
+            
+            List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
+                    + "                                                        and link.user_id_ = '" + sLogin + "'"
+                    + "                                                        and proc.proc_def_id_ like '" + sProcessDefinitionId + "%'"
+            ).list();
+                
+            List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_ru_identitylink link, act_hi_taskinst task, act_hi_procinst proc where link.task_id_ = task.id_"
+                    + "                                                        and task.proc_inst_id_ = proc.proc_inst_id_"
+                    + "                                                        and link.group_id_ = '" + sLogin + "'"
+                    + "                                                        and proc.proc_def_id_ like '" + sProcessDefinitionId + "%'"
+            ).list();
+            
+            aAllProcessInstance.addAll(aProcessInstanceHistory);
+            aAllProcessInstance.addAll(aProcessInstanceActive);
+        
+        //вернуть все процессы для логина    
+        } else if (!bDocOnly && sProcessDefinitionId == null) { 
+            
+            List<ProcessInstance> aProcessInstanceHistory = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_hi_procinst proc, act_hi_identitylink link where proc.id_ = link.proc_inst_id_"
+                    + "                                                        and link.user_id_ = '" + sLogin + "'"
+            ).list();
+                
+            List<ProcessInstance> aProcessInstanceActive = oRuntimeService.createNativeProcessInstanceQuery().sql(
+            "Select proc.* from act_ru_identitylink link, act_hi_taskinst task, act_hi_procinst proc where link.task_id_ = task.id_"
+                    + "                                                        and task.proc_inst_id_ = proc.proc_inst_id_"
+                    + "                                                        and link.group_id_ = '" + sLogin + "'"
+            ).list();
+            
+            aAllProcessInstance.addAll(aProcessInstanceHistory);
+            aAllProcessInstance.addAll(aProcessInstanceActive);
+        }    
+                       
+        //Сет в который записываются sProcessDefinitionId без версионности, чтобы убрать дубли одних и тех же процессов, но с разными версиями
+        Set<String> asProcessDefinitionIdWithoutVersion = new HashSet<>();
+        
+        //Лист без дублей
+        List<ProcessInstance> aProcessInstanceWithoutDuplicates = new ArrayList<>();
+
+        for (ProcessInstance oProcessInstance : aAllProcessInstance) {
+            
+            String sProcessDefinitionIdRoot = oProcessInstance.getProcessDefinitionId()
+                                                              .substring(0, oProcessInstance.getProcessDefinitionId().indexOf(":"));
+
+            //если в сете уже лежит такой ProcessDefinitionId, то не кладем в итоговый лист
+            if (!asProcessDefinitionIdWithoutVersion.contains(sProcessDefinitionIdRoot)) {
+
+                aProcessInstanceWithoutDuplicates.add(oProcessInstance);
+            }
+
+            asProcessDefinitionIdWithoutVersion.add(sProcessDefinitionIdRoot);
+        }
+        
+        List<ProcessDefinition> aProcessDefinition_Return = new ArrayList<>();
+                        
+        for (ProcessInstance oProcessInstance : aProcessInstanceWithoutDuplicates) {   
+            
+            ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
+            aProcessDefinition_Return.add(oProcessDefinition);
+        }  
+        LOG.info("aProcessDefinition_Return={}", aProcessDefinition_Return);
+        
         return aProcessDefinition_Return;
     }
     

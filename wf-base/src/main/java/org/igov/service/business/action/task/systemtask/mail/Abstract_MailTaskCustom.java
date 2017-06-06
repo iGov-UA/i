@@ -348,8 +348,9 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             String pattern_expired_period_hour = String.format(PATTERN_EXPIRED_PERIOD_HOUR, prefix);
             Integer nExpired_Period_Hour = execution.getVariable(pattern_expired_period_hour) != null 
                     ? ((Long)execution.getVariable(pattern_expired_period_hour)).intValue() : null;
+              LOG.info("nExpired_Period_Hour >>>>>>>>>>>>>>" + nExpired_Period_Hour);
 
-            String sID_Order = "TaskActiviti_" + execution.getId().trim()
+              String sID_Order = "TaskActiviti_" + execution.getId().trim()
                     + prefix;
             String sURL_CallbackStatusNew = String.format(LIQPAY_CALLBACK_URL,
                     sID_Order, "", prefix);
@@ -364,7 +365,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             String htmlButton = liqBuy.getPayButtonHTML_LiqPay(sID_Merchant,
                     sSum, oID_Currency, sLanguage, sDescription, sID_Order,
                     sURL_CallbackStatusNew, sURL_CallbackPaySuccess,
-                    nID_Subject, bTest, nExpired_Period_Hour);
+                    nID_Subject, bTest, nExpired_Period_Hour==null?1:nExpired_Period_Hour);
+            LOG.info("htmlButton ==========>>>>>> ",htmlButton);
             matcher.appendReplacement(outputTextBuffer, htmlButton);
         }
         return matcher.appendTail(outputTextBuffer).toString();
@@ -655,8 +657,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
+        LOG.info("Mail_BaseFromTask sBodySource >>>>> "+ sBodySource);
+        
         String sBody = replaceTags(sBodySource, oExecution);
-
+        
         Mail oMail = context.getBean(Mail.class);
         
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
@@ -676,18 +680,20 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
      */
     public Mail sendToMailFromMongo(DelegateExecution oExecution)
             throws Exception {
+    	
+    	LOG.info("sNotification_day is >>>>> "+ oExecution.getVariable("sNotification_day"));
 
         String saToMail = getStringFromFieldExpression(to, oExecution);
         String sHead = getStringFromFieldExpression(subject, oExecution);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
-        
+        LOG.info("sendToMailFromMongo sBodySource >>>>> "+ sBodySource);
         Mail oMail = context.getBean(Mail.class);
         
         /**
          * достаем json который приходит в тексте из шага в виде ключ значение из монги 
          */
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
-        LOG.info("sJsonMongo is ", sJsonMongo);
+        LOG.info("sJsonMongo is "+ sJsonMongo);
         /**
          * достаем оригинальный текст html из mongo
          */
@@ -708,6 +714,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
 	    
 	    //анализируем тело
 	    String sBodyForMailResult = replaceTags(sBodyForMail, oExecution);
+	    
+	    LOG.info("sBodyForMailResult is >>> "+ sBodyForMailResult);
 	       
 	    //отправляем по емайлу
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
@@ -842,7 +850,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         Date d = dateTime.toDate();
         return getFormattedDate(d);
     }
-
+    
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
     }

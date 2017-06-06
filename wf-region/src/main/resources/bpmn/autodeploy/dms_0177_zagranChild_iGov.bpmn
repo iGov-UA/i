@@ -46,41 +46,40 @@
     <sequenceFlow id="flow43" sourceRef="exclusivegateway6" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay != null}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('date_of_visit')
-var year=src.substr(0,4)
-var month=src.substr(5,2)
-var day=src.substr(8,2)
-var hour=src.substr(11,2)
-var minutes=src.substr(14,2)
-var seconds='00'
-var delta=1
-var day1=day
-var month1=month
-if (day!='01')
-    {
-        day1=+day-delta
-    }
-else
-    {
-        if ((month!='01')&amp;&amp;(month!='03'))
-          {
-              month1=+month-1
-              day1=30
-          }
-        else
-          {
-            if (month=='03')
-            {
-              month1='02'
-              day1='28'
-            }            
-          }
-     }
-var timer=year+'-'+month1+'-'+day1+'T'+hour+':'+minutes+':'+seconds
-execution.setVariable('sNotification_day', timer)
-var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
-execution.setVariable('sEndDay', timerEnd)</script>
+    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>//подключаем библиотеку для форматирования даты под конкретую локаль
+import java.text.SimpleDateFormat
+
+//задаем украинский язык и регион Украина соответственно
+Locale locate  = new Locale("UK", "UA")
+
+//Настраиваем формат для парсера получаемой даты 'date_of_visit'
+def dateStartFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", locate)  
+
+String strDate = execution.getVariable('date_of_visit')
+//парсим строку по ранее указанному шаблону для преобразования в дату
+Date date_of_visit = dateStartFormat.parse(strDate)
+
+//настраиваем нужный формат даты и используем заданную локаль
+def dateFormat = new SimpleDateFormat("dd MMMM yyyy, HH:mm", locate)
+
+//форматируем дату под указанный формат
+def format_date_of_visit = dateFormat.format(date_of_visit)
+
+execution.setVariable('format_date_of_visit', format_date_of_visit)
+
+//отнимаем от нужной даты одни сутки в милисекундах 
+Date startDate = new Date(date_of_visit.getTime() - 1000*60*60*24)
+
+//форматируем под таймер дату, использовать букву "Т" и другой текст, не относяшийся к форматированию стоит помещать в одинарные кавычки
+def timerStartFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locate)
+def formatTimerStart = timerStartFormat.format(startDate)
+execution.setVariable('sNotification_day', formatTimerStart)
+
+//форматируем под таймер дату, время указываем жестко 
+def timerEndFormat = new SimpleDateFormat("yyyy-MM-dd'T19:00:00'", locate)
+def formatTimerEnd = timerStartFormat.format(date_of_visit)
+execution.setVariable('sEndDay', formatTimerEnd)</script>
     </scriptTask>
     <sequenceFlow id="flow28" sourceRef="scripttask1" targetRef="parallelgateway1"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
@@ -205,7 +204,7 @@ ${sNameOrgan},<br>
 									</p>
 									<p>
 																			<b>Деталі зустрічі:</b><br>
-Дата та час візиту: ${date_of_visit}.
+Дата та час візиту: ${format_date_of_visit}.
 </p>
 									
 									</p>
@@ -240,7 +239,7 @@ ${sNameOrgan},<br>
 <br>										
 <li>Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.</li>
 <br>
-<li>У випадку, якщо Ви не зможете з`явитися ${date_of_visit} , Ви можете скасувати запис </li>
+<li>У випадку, якщо Ви не зможете з`явитися ${format_date_of_visit} , Ви можете скасувати запис </li>
 <br>
 <li>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </li>
 <br>
