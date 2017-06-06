@@ -118,7 +118,6 @@
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable6_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -248,7 +247,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable6_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
