@@ -131,6 +131,7 @@ public class Cherg {
                 ._Data(mParam)
                 ._Header(oHttpHeaders)
                 ._Send();
+        
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
@@ -183,7 +184,10 @@ public class Cherg {
     }
     
     public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
-        JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
+        //JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
+        JSONArray oaJSONArray = new JSONArray();;
+        
+        
         
 	JSONObject oJSONObjectReturn = new JSONObject();
 	oJSONObjectReturn.put("aDate", oaJSONArray);
