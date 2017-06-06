@@ -357,9 +357,11 @@ public class Mail extends Abstract_Mail {
 
             try {
                 int nAttachments = getoMultiparts().getCount();
+                LOG.info("nAttachments: " + nAttachments);
                 for (int i = 0; i < nAttachments; i++) {
                     BodyPart oBodyPart = getoMultiparts().getBodyPart(i);
                     String sFileName = oBodyPart.getFileName();
+                    LOG.info("sFileName: " + sFileName);
                     InputStream oInputStream = oBodyPart.getInputStream();
                     oBuilder.setAttachment(sFileName, oInputStream);
                 }
