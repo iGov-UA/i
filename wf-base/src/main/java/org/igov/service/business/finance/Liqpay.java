@@ -140,7 +140,7 @@ public class Liqpay {
         params.put("public_key", sPublicKey);
         
         //if (bTest) {
-            params.put("sandbox", sandbox);
+            //params.put("sandbox", sandbox);
         //}
 
         LOG.info("(params={},privateKey={})", params, privateKey);
