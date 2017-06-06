@@ -1,7 +1,6 @@
 package org.igov.io.mail;
 
 import javax.mail.Multipart;
-import javax.mail.internet.MimeMultipart;
 import org.springframework.beans.factory.annotation.Value;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;

@@ -16,8 +16,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.mail.Multipart;
-import javax.mail.internet.MimeMultipart;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
