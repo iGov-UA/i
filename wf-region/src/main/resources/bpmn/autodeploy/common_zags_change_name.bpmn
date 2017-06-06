@@ -85,6 +85,7 @@
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_name1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_name2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers26" name="якщо раніше не змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_26&quot;:{&quot;aField_ID&quot;:[&quot;sSum&quot;,&quot;sDescription&quot;],&quot;asID_Field_sValue&quot;:[&quot;5.2&quot;,&quot;державне мито за державну реєстрацію зміни імені фізичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'||[sClient] == 'ні'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса адміністративного органу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -200,7 +201,6 @@
         <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -562,7 +562,7 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове  звернення. Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
@@ -886,7 +886,6 @@ var new_minutes = new_src.getMinutes();
 var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
 execution.setVariable('sNotification_day', timer)</script>
     </scriptTask>
-    <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow50" sourceRef="usertask3_yellow" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow51" name="+" sourceRef="exclusivegateway2" targetRef="servicetask8">
@@ -1064,7 +1063,6 @@ execution.setVariable('sCountPayment', src)</script>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow157" sourceRef="escalationTimer2" targetRef="exclusivegateway6"></sequenceFlow>
     <sequenceFlow id="flow158" sourceRef="servicetask15" targetRef="timerintermediatecatchevent2"></sequenceFlow>
     <scriptTask id="scripttask4" name="зміна суми та опису у мерчант" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
@@ -1091,6 +1089,7 @@ execution.setVariable('sDescription', des)</script>
     </scriptTask>
     <sequenceFlow id="flow161" sourceRef="scripttask4" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow162" sourceRef="startevent1" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow163" sourceRef="escalationTimer2" targetRef="exclusivegateway6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
@@ -1173,10 +1172,10 @@ execution.setVariable('sDescription', des)</script>
         <omgdc:Bounds height="71.0" width="119.0" x="656.0" y="37.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="71.0" width="121.0" x="220.0" y="37.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="121.0" x="234.0" y="37.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
-        <omgdc:Bounds height="30.0" width="30.0" x="320.0" y="59.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="326.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="580.0" y="56.0"></omgdc:Bounds>
@@ -1184,10 +1183,6 @@ execution.setVariable('sDescription', des)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="72.0" width="105.0" x="92.0" y="37.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="882.0" y="171.0"></omgdi:waypoint>
-        <omgdi:waypoint x="915.0" y="171.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="916.0" y="312.0"></omgdi:waypoint>
         <omgdi:waypoint x="762.0" y="312.0"></omgdi:waypoint>
@@ -1332,21 +1327,21 @@ execution.setVariable('sDescription', des)</script>
         <omgdi:waypoint x="775.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="801.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow157" id="BPMNEdge_flow157">
-        <omgdi:waypoint x="350.0" y="74.0"></omgdi:waypoint>
-        <omgdi:waypoint x="373.0" y="73.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow158" id="BPMNEdge_flow158">
         <omgdi:waypoint x="559.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="580.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow161" id="BPMNEdge_flow161">
         <omgdi:waypoint x="197.0" y="73.0"></omgdi:waypoint>
-        <omgdi:waypoint x="220.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="234.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow162" id="BPMNEdge_flow162">
         <omgdi:waypoint x="52.0" y="94.0"></omgdi:waypoint>
         <omgdi:waypoint x="92.0" y="73.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow163" id="BPMNEdge_flow163">
+        <omgdi:waypoint x="356.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="373.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
