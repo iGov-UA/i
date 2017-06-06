@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -340,7 +342,7 @@ public class MigrationServiceImpl implements MigrationService {
         Class<?> clazz = obj.getClass();
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
-            if(string.startsWith("{") && string.contains("Mongo")) {
+            if (string.startsWith("{") && string.contains("Mongo")) {
                 type = attributeTypeDao.findById(7L).get();
                 Attribute_File fileAttribute = new Attribute_File();
                 Map<String, String> fileValuesMap = parseJsonStringToMap(string);
@@ -406,15 +408,9 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private Map<String, String> parseJsonStringToMap(String stringToParse) {
-        Map<String, String> resultMap = new HashMap<>();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        try{
-            resultMap = mapper.readValue(stringToParse, new TypeReference<Map<String, String>>(){});
-        }
-        catch(IOException ex) {
-            LOG.error("Error during json-string parsing:{}" , ex.getCause());
-        }
+        Map<String, String> resultMap;
+        Gson gson = new Gson();
+        resultMap = gson.fromJson(stringToParse, new TypeToken<Map<String, String>>() {}.getType());
         return resultMap;
     }
 
@@ -423,9 +419,8 @@ public class MigrationServiceImpl implements MigrationService {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         try {
             return mapper.writeValueAsString(valuesMap);
-        }
-        catch (JsonProcessingException ex) {
-            LOG.error("Error during json-string parsing:{}" , ex.getCause());
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error during json-string parsing:{}", ex.getCause());
         }
         return null;
     }
