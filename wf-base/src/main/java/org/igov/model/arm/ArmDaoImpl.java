@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public class ArmDaoImpl implements ArmDao {
 	
@@ -24,13 +25,13 @@ public class ArmDaoImpl implements ArmDao {
 	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.0";
 	
 	@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
-    private String getDboTkByOutNumber;
+	private String getDboTkByOutNumber;
 	
 	@Value("#{sqlProperties['dbo_tk.createDboTk']}")
-    private String createDboTk;
+	private String createDboTk;
 	
 	@Value("#{sqlProperties['dbo_tk.updateDboTk']}")
-    private String updateDboTk;
+	private String updateDboTk;
 	
 	@Value("#{datasourceProps['datasource.driverClassName']}")
     private String driverClassName;
@@ -107,7 +108,7 @@ public class ArmDaoImpl implements ArmDao {
 				listResult.add(dboTkModel);
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOG.error("FAIL: {}", e.getMessage());
 		} finally {
 			try {
@@ -117,7 +118,7 @@ public class ArmDaoImpl implements ArmDao {
 				if (dbConnection != null) {
 					dbConnection.close();
 				}
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				LOG.error("FAIL: {}", e.getMessage());
 			}
 
@@ -185,8 +186,10 @@ public class ArmDaoImpl implements ArmDao {
 			
 
 			preparedStatement.executeUpdate();
+			dbConnection.commit();
+			dbConnection.setAutoCommit(true);
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOG.error("FAIL: {}", e.getMessage());
 		} finally {
 			try {
@@ -196,7 +199,7 @@ public class ArmDaoImpl implements ArmDao {
 				if (dbConnection != null) {
 					dbConnection.close();
 				}
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				LOG.error("FAIL: {}", e.getMessage());
 			}
 
@@ -261,8 +264,10 @@ public class ArmDaoImpl implements ArmDao {
 			preparedStatement.setString(46, dboTkModel.getOut_number());
 			// execute update SQL stetement
 			preparedStatement.executeUpdate();
+			dbConnection.commit();
+			dbConnection.setAutoCommit(true);
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			LOG.error("FAIL: {}", e.getMessage());
 		} finally {
 			try {
@@ -272,7 +277,7 @@ public class ArmDaoImpl implements ArmDao {
 				if (dbConnection != null) {
 					dbConnection.close();
 				}
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				LOG.error("FAIL: {}", e.getMessage());
 			}
 
