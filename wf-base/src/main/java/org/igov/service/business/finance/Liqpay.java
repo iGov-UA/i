@@ -139,9 +139,9 @@ public class Liqpay {
         params.put("result_url", sURL_CallbackPaySuccess);
         params.put("public_key", sPublicKey);
         
-        if (bTest) {
+        //if (bTest) {
             params.put("sandbox", sandbox);
-        }
+        //}
 
         LOG.info("(params={},privateKey={})", params, privateKey);
         return params;
