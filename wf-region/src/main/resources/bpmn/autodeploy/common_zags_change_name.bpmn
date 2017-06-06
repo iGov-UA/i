@@ -294,7 +294,6 @@
         <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2_green" name="очікується відповідь з МВС" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -386,7 +385,6 @@
         <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask4" name="очікується візит громадянина для державної реєстрації зміни імені" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
@@ -476,7 +474,6 @@
         <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask15" name="Повідомлення громадянина про необхідніть сплати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -1087,14 +1084,15 @@ execution.setVariable('sSumPr', sumPr)
 execution.setVariable('sComPr', comPr)
 execution.setVariable('sDescription', des)</script>
     </scriptTask>
-    <sequenceFlow id="flow161" sourceRef="scripttask4" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow162" sourceRef="startevent1" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow163" sourceRef="escalationTimer2" targetRef="exclusivegateway6"></sequenceFlow>
+    <sequenceFlow id="flow164" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow165" sourceRef="scripttask4" targetRef="usertask6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="17.0" y="77.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="14.0" y="55.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
         <omgdc:Bounds height="71.0" width="121.0" x="916.0" y="277.0"></omgdc:Bounds>
@@ -1331,17 +1329,21 @@ execution.setVariable('sDescription', des)</script>
         <omgdi:waypoint x="559.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="580.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow161" id="BPMNEdge_flow161">
-        <omgdi:waypoint x="197.0" y="73.0"></omgdi:waypoint>
-        <omgdi:waypoint x="234.0" y="72.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow162" id="BPMNEdge_flow162">
-        <omgdi:waypoint x="52.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="49.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="92.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow163" id="BPMNEdge_flow163">
         <omgdi:waypoint x="356.0" y="85.0"></omgdi:waypoint>
         <omgdi:waypoint x="373.0" y="73.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow164" id="BPMNEdge_flow164">
+        <omgdi:waypoint x="882.0" y="171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="915.0" y="171.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow165" id="BPMNEdge_flow165">
+        <omgdi:waypoint x="197.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="234.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
