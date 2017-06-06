@@ -1,7 +1,9 @@
 package org.igov.service.migration;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
@@ -406,6 +408,7 @@ public class MigrationServiceImpl implements MigrationService {
     private Map<String, String> parseJsonStringToMap(String stringToParse) {
         Map<String, String> resultMap = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         try{
             resultMap = mapper.readValue(stringToParse, new TypeReference<Map<String, String>>(){});
         }
@@ -417,6 +420,7 @@ public class MigrationServiceImpl implements MigrationService {
 
     private String parseMapToJson(Map<String, String> valuesMap) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         try {
             return mapper.writeValueAsString(valuesMap);
         }
