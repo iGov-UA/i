@@ -17,15 +17,15 @@
         </activiti:formProperty>
         <activiti:formProperty id="marker_03" name="Дані фіз.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_04" name="Дані юр.особи" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код за ЄДРПОУ заявника експертизи" type="string" required="true"></activiti:formProperty>
+         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код за ЄДРПОУ заявника експертизи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Заявник (власник)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Податковий ідентифікаційний номер заявника експертизи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника (власника)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника (власника)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника (власника)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLocationFOP" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocationFOP" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWebsite" name="Веб-сторінка" type="string"></activiti:formProperty>
@@ -35,21 +35,21 @@
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDKPP" name="Введіть код за ДКПП об'єкта експертизи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="saQuestion2" name="Маєте код за УКТЗЕД?; ;sID_CheckboxTrue=YES" type="enum" default="NO">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sObjectCustoms" name="Оберіть код УКТЗЕД об'єкта експертизи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код УКТЗЕД;УВАГА! Це поле заповнюється автоматично після вибору в попередньому полі; " type="string"></activiti:formProperty>
         <activiti:formProperty id="saQuestion3" name="Маєте артикул?; ;sID_CheckboxTrue=YES" type="enum" default="NO">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArtikul" name="Введіть артикул об'єкта експертизи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="Линия реквизитов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sCountry_02&quot;],&quot;sValue&quot;:&quot;Реквізити виробника, розробника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sCountry_02" name="Країна походження об'єкта експертизи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocProducer" name="Виробник, розробник документів (його представник в Україні)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_02" name="Линия реквизитов" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sLocation&quot;],&quot;sValue&quot;:&quot;Реквізити виробника, розробника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sLocation" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone_1" name="Телефон" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email_1" name="E-mail" type="string" required="true"></activiti:formProperty>
@@ -115,13 +115,9 @@
         <activiti:formProperty id="sID_Merchant" name="Послуга є платною ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saDecisionType" name="Заявка приймається в роботу?; ;bVisible=false" type="enum">
-          <activiti:value id="YES" name="Так"></activiti:value>
-          <activiti:value id="NO" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sRefusal_Comments" name="Надайте коментар щодо причин відмови; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Вкажіть сумму в грн., яка буде направлена заявнику для оплати за замовлену послугу; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
-      </extensionElements>
+         </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Попередній розгляд Інститутом" activiti:candidateGroups="ASO">
       <extensionElements>
@@ -143,13 +139,13 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника (власника); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника (власника); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLocationFOP" name="Місцезнаходження;Вулиця, Дім, Квартира (Офіс), Населений пункт, Індекс;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_01" name="Країна реєстрації заявника; ;writable=false" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWebsite" name="Веб-сторінка; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSphere" name="Сфера застосування та реалізації об'єкта експертизи; ;writable=false" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" default="NO" writable="false">
+        <activiti:formProperty id="saQuestion1" name="Маєте код за ДКПП?; ;sID_CheckboxTrue=YES" type="enum" writable="false">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
@@ -226,7 +222,9 @@
         <activiti:formProperty id="sID_Merchant" name="Послуга є платною ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ID валюти ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="Строка опис платежу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saDecisionType" name="Заявка приймається в роботу?" type="enum" required="true">
+        <activiti:formProperty id="marker_15" name="Заявка приймається в роботу" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+        <activiti:formProperty id="marker_16" name="Заявка відхиляється" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
+       <activiti:formProperty id="saDecisionType" name="Заявка приймається в роботу?" type="enum" required="true">
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
