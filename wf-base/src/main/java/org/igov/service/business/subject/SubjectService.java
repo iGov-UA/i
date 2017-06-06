@@ -416,4 +416,13 @@ public class SubjectService {
         }
         return result;
     }
+    
+    public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, int nID_SubjectContactType) {
+        
+        System.out.println(String.format("Incoming params: %s, %s, %s, %s", snID_Process_Activiti, sID_Field, sSubjectType, nID_SubjectContactType));
+    
+        List<SubjectContact> aoSubjectContact = new ArrayList<>();
+        
+        return aoSubjectContact;
+    }
 }
