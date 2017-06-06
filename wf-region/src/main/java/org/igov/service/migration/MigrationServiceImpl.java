@@ -92,12 +92,12 @@ public class MigrationServiceImpl implements MigrationService {
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
 
     @Override
-    public void migrateOldRecords() {
-        prepareAndSave(getHistoricProcessList());
+    public void migrateOldRecords(String processId) {
+        prepareAndSave(getHistoricProcessList(processId));
     }
 
-    private List<HistoricProcessInstance> getHistoricProcessList() {
-        return historyService.createNativeHistoricProcessInstanceQuery().sql(composeSql(getStartTime())).list();
+    private List<HistoricProcessInstance> getHistoricProcessList(String processId) {
+        return historyService.createNativeHistoricProcessInstanceQuery().sql(composeSql(getStartTime(), processId)).list();
     }
 
     private DateTime getStartTime() {
@@ -111,9 +111,10 @@ public class MigrationServiceImpl implements MigrationService {
         return new DateTime(processInstance.getStartTime());
     }
 
-    private String composeSql(DateTime startTime) {
+    private String composeSql(DateTime startTime, String processId) {
         DateTime endTime = startTime.plusDays(3);
-        return "SELECT * from act_hi_procinst where proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'27110001\'";
+//        return "SELECT * from act_hi_procinst where proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'27110001\'";
+        return "SELECT * from act_hi_procinst where proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'" + processId + "\'";
 //        return "SELECT * from act_hi_procinst where start_time_ > TIMESTAMP \' "
 //               + startTime.toString("yyyy-MM-dd HH:mm:ss")
 //                + "\' AND start_time_ < TIMESTAMP \'" + endTime.toString("yyyy-MM-dd HH:mm:ss") + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
