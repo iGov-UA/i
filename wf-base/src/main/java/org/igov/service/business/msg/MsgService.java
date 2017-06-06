@@ -74,6 +74,7 @@ public class MsgService {
         }
 	IMsgObjR oIMsgObjR = null;
 	try {
+            /*
 	    oIMsgObjR = new MsgSendImpl(sURL_MSG, sBusinessId_MSG, sType, sFunction, sTemplateId_MSG, sLogin_MSG)
                 ._Head(sHead)
                 ._Body(sBody)
@@ -83,6 +84,7 @@ public class MsgService {
 		._Params(mParam)
                     
                 .save()
+            */
             ;
 	} catch (Exception oException) {
 	    LOG.warn("Can't send an error message to service MSG\n", oException);
