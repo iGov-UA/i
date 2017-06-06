@@ -132,67 +132,75 @@ public class ArmDaoImpl implements ArmDao {
 	}
 
 	@Override
-	public void createDboTk(DboTkModel dboTkModel) {
+	public DboTkResult createDboTk(DboTkModel dboTkModel) {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
+		DboTkResult dboTkResult = null;
 		try {
 			dbConnection = getDBConnection();
 			preparedStatement = dbConnection.prepareStatement(createDboTk);
 
-			preparedStatement.setLong(1, dboTkModel.getId());
-			preparedStatement.setString(2, dboTkModel.getIndustry());
-			preparedStatement.setString(3, dboTkModel.getPriznak());
-			preparedStatement.setString(4, dboTkModel.getOut_number());
-			preparedStatement.setDate(5, dboTkModel.getData_out()==null?null:new java.sql.Date(dboTkModel.getData_out().getTime()));
-			preparedStatement.setString(6, dboTkModel.getDep_number());
-			preparedStatement.setLong(7, dboTkModel.getNumber_441());
-			preparedStatement.setDate(8, dboTkModel.getData_in()==null?null:new java.sql.Date(dboTkModel.getData_in().getTime()));
-			preparedStatement.setString(9,  dboTkModel.getState());
-			preparedStatement.setString(10, dboTkModel.getName_object());
-			preparedStatement.setString(11, dboTkModel.getKod());
-			preparedStatement.setString(12, dboTkModel.getGruppa());
-			preparedStatement.setString(13, dboTkModel.getUndergroup());
-			preparedStatement.setString(14, dboTkModel.getFinans());
-			preparedStatement.setDate(15,  dboTkModel.getData_out_raz()==null?null:new java.sql.Date(dboTkModel.getData_out_raz().getTime()));
-			preparedStatement.setLong(16, dboTkModel.getNumber_442());
-			preparedStatement.setString(17, dboTkModel.getWinner());
-			preparedStatement.setString(18,  dboTkModel.getKod_okpo());
-			preparedStatement.setString(19, dboTkModel.getPhone());
-			preparedStatement.setString(20, dboTkModel.getSrok());
-			preparedStatement.setString(21,  dboTkModel.getExpert()); 
-			preparedStatement.setBigDecimal(22, dboTkModel.getSumma());
-			preparedStatement.setString(23, dboTkModel.getuAN());
-			preparedStatement.setString(24, dboTkModel.getIf_oplata());
-			preparedStatement.setString(25, dboTkModel.getUslovie()); 
-			preparedStatement.setString(26, dboTkModel.getBank());
-			preparedStatement.setString(27, dboTkModel.getSmeta());
-			preparedStatement.setDate(28, dboTkModel.getDataEZ()==null?null:new java.sql.Date(dboTkModel.getDataEZ().getTime()));
-			preparedStatement.setString(29, dboTkModel.getPrilog());
-			preparedStatement.setDate(30, dboTkModel.getUpdateData()==null?null:new java.sql.Date(dboTkModel.getUpdateData().getTime()));
-			preparedStatement.setLong(31, dboTkModel.getUpdOKBID());
-			preparedStatement.setString(32, dboTkModel.getNotes());
-			preparedStatement.setString(33, dboTkModel.getArhiv());
-			preparedStatement.setDate(34, new java.sql.Date(new Date().getTime()));
-			preparedStatement.setString(35, dboTkModel.getZametki());
-			preparedStatement.setLong(36, dboTkModel.getId_corp());
-			preparedStatement.setDate(37, dboTkModel.getDataBB()==null?null:new java.sql.Date(dboTkModel.getDataBB().getTime()));
-			preparedStatement.setString(38,  dboTkModel.getPriemka());
-			preparedStatement.setString(39, dboTkModel.getProckred()); 
-			preparedStatement.setBigDecimal(40, dboTkModel.getSumkred());
-			preparedStatement.setBigDecimal(41, dboTkModel.getSumzak());
-			preparedStatement.setString(42, dboTkModel.getAuctionForm());
-			preparedStatement.setString(43, dboTkModel.getProtocol_Number());
-			preparedStatement.setString(44,	dboTkModel.getCorrectionDoc());
-			preparedStatement.setString(45, dboTkModel.getPrioritet());
-			preparedStatement.setString(46, dboTkModel.getLongterm());
+			preparedStatement.setString(1, dboTkModel.getIndustry());
+			preparedStatement.setString(2, dboTkModel.getPriznak());
+			preparedStatement.setString(3, dboTkModel.getOut_number());
+			preparedStatement.setDate(4, dboTkModel.getData_out()==null?null:new java.sql.Date(dboTkModel.getData_out().getTime()));
+			preparedStatement.setString(5, dboTkModel.getDep_number());
+			preparedStatement.setLong(6, dboTkModel.getNumber_441());
+			preparedStatement.setDate(7, dboTkModel.getData_in()==null?null:new java.sql.Date(dboTkModel.getData_in().getTime()));
+			preparedStatement.setString(8,  dboTkModel.getState());
+			preparedStatement.setString(9, dboTkModel.getName_object());
+			preparedStatement.setString(10, dboTkModel.getKod());
+			preparedStatement.setString(11, dboTkModel.getGruppa());
+			preparedStatement.setString(12, dboTkModel.getUndergroup());
+			preparedStatement.setString(13, dboTkModel.getFinans());
+			preparedStatement.setDate(14,  dboTkModel.getData_out_raz()==null?null:new java.sql.Date(dboTkModel.getData_out_raz().getTime()));
+			preparedStatement.setLong(15, dboTkModel.getNumber_442());
+			preparedStatement.setString(16, dboTkModel.getWinner());
+			preparedStatement.setString(17,  dboTkModel.getKod_okpo());
+			preparedStatement.setString(18, dboTkModel.getPhone());
+			preparedStatement.setString(19, dboTkModel.getSrok());
+			preparedStatement.setString(20,  dboTkModel.getExpert()); 
+			preparedStatement.setBigDecimal(21, dboTkModel.getSumma());
+			preparedStatement.setString(22, dboTkModel.getuAN());
+			preparedStatement.setString(23, dboTkModel.getIf_oplata());
+			preparedStatement.setString(24, dboTkModel.getUslovie()); 
+			preparedStatement.setString(25, dboTkModel.getBank());
+			preparedStatement.setString(26, dboTkModel.getSmeta());
+			preparedStatement.setDate(27, dboTkModel.getDataEZ()==null?null:new java.sql.Date(dboTkModel.getDataEZ().getTime()));
+			preparedStatement.setString(28, dboTkModel.getPrilog());
+			preparedStatement.setDate(29, dboTkModel.getUpdateData()==null?null:new java.sql.Date(dboTkModel.getUpdateData().getTime()));
+			preparedStatement.setLong(30, dboTkModel.getUpdOKBID());
+			preparedStatement.setString(31, dboTkModel.getNotes());
+			preparedStatement.setString(32, dboTkModel.getArhiv());
+			preparedStatement.setDate(33, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(34, dboTkModel.getZametki());
+			preparedStatement.setLong(35, dboTkModel.getId_corp());
+			preparedStatement.setDate(36, dboTkModel.getDataBB()==null?null:new java.sql.Date(dboTkModel.getDataBB().getTime()));
+			preparedStatement.setString(37,  dboTkModel.getPriemka());
+			preparedStatement.setString(38, dboTkModel.getProckred()); 
+			preparedStatement.setBigDecimal(39, dboTkModel.getSumkred());
+			preparedStatement.setBigDecimal(40, dboTkModel.getSumzak());
+			preparedStatement.setString(41, dboTkModel.getAuctionForm());
+			preparedStatement.setString(42, dboTkModel.getProtocol_Number());
+			preparedStatement.setString(43,	dboTkModel.getCorrectionDoc());
+			preparedStatement.setString(44, dboTkModel.getPrioritet());
+			preparedStatement.setString(45, dboTkModel.getLongterm());
 			
 
 			preparedStatement.executeUpdate();
 			dbConnection.commit();
 			dbConnection.setAutoCommit(true);
+			
+			dboTkResult = new DboTkResult();
+            dboTkResult.setMess("ok");
+            dboTkResult.setCode("0000");
+            dboTkResult.setState("r");
 
 		} catch (Exception e) {
-			LOG.error("FAIL: {}", e.getMessage());
+			dboTkResult = new DboTkResult();
+            dboTkResult.setMess(e.getMessage());
+            dboTkResult.setCode("e");
+            dboTkResult.setState("e");
 		} finally {
 			try {
 				if (preparedStatement != null) {
@@ -202,16 +210,21 @@ public class ArmDaoImpl implements ArmDao {
 					dbConnection.close();
 				}
 			} catch (Exception e) {
-				LOG.error("FAIL: {}", e.getMessage());
+				dboTkResult = new DboTkResult();
+	            dboTkResult.setMess(e.getMessage());
+	            dboTkResult.setCode("e");
+	            dboTkResult.setState("e");
+	            return dboTkResult;
 			}
 
 		}
+		return dboTkResult;
 	}
 	
 
 	@Override
-	public void updateDboTk(DboTkModel dboTkModel) {
-		
+	public DboTkResult updateDboTk(DboTkModel dboTkModel) {
+		DboTkResult dboTkResult = null;
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 		try {
@@ -267,9 +280,17 @@ public class ArmDaoImpl implements ArmDao {
 			preparedStatement.executeUpdate();
 			dbConnection.commit();
 			dbConnection.setAutoCommit(true);
+			
+			dboTkResult = new DboTkResult();
+            dboTkResult.setMess("ok");
+            dboTkResult.setCode("0000");
+            dboTkResult.setState("r");
 
 		} catch (Exception e) {
-			LOG.error("FAIL: {}", e.getMessage());
+			dboTkResult = new DboTkResult();
+            dboTkResult.setMess(e.getMessage());
+            dboTkResult.setCode("e");
+            dboTkResult.setState("e");
 		} finally {
 			try {
 				if (preparedStatement != null) {
@@ -279,10 +300,16 @@ public class ArmDaoImpl implements ArmDao {
 					dbConnection.close();
 				}
 			} catch (Exception e) {
-				LOG.error("FAIL: {}", e.getMessage());
+				dboTkResult = new DboTkResult();
+	            dboTkResult.setMess(e.getMessage());
+	            dboTkResult.setCode("e");
+	            dboTkResult.setState("e");
+	            return dboTkResult;
 			}
 
 		}
+		
+		return dboTkResult;
 	}
 	
 	private Connection getDBConnection() {
