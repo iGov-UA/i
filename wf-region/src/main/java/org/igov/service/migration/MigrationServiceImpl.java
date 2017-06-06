@@ -89,12 +89,6 @@ public class MigrationServiceImpl implements MigrationService {
     private BytesMongoStorageAnalytic bytesStorageAnalytic;
 
     @Autowired
-    private IBytesDataStorage bytesDataStorage;
-
-    @Autowired
-    private AttachmetService attachmentService;
-
-    @Autowired
     private FormService formService;
 
 
