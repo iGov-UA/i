@@ -437,7 +437,7 @@ public class SubjectService {
         LOG.info("getSubjectContacts start...");
         List<SubjectContact> aoSubjectContact = new ArrayList<>();
         
-        List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
+        List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, null, sID_Field);
         LOG.info("getSubjectContacts: asLogin={}", asLogin);    
         
         return aoSubjectContact;
