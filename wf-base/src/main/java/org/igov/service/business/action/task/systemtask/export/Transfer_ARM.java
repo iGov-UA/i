@@ -3,6 +3,7 @@ package org.igov.service.business.action.task.systemtask.export;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,8 @@ import org.springframework.stereotype.Component;
 public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegate {
 
 	private final static Logger LOG = LoggerFactory.getLogger(Transfer_ARM.class);
+	
+	private final static String[] formats = { "yyyy-MM-dd", "dd-MM-yyyy", "yyyy/MM/dd", "dd/MM/yyyy", "yyyy.MM.dd", "dd.MM.yyyy", "yyyyy-MM-dd HH:mm:ss","yyyyy/MM/dd HH:mm:ss","yyyyy.MM.dd HH:mm:ss"};
 
 	private Expression soData;
 
@@ -56,23 +59,21 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		
 		DboTkModel dataForTransferToArm = new DboTkModel();
 		dataForTransferToArm.setIndustry((String) data.get("Industry"));
 		dataForTransferToArm.setPriznak((String) data.get("Priznak"));
 		dataForTransferToArm.setOut_number(sID_order);
-		dataForTransferToArm.setData_out(data.get("Data_out")==null ? (new java.util.Date()) : (df.parse((String)data.get("Data_out"))));
+		dataForTransferToArm.setData_out(data.get("Data_out")==null ? new Date() : parseDate((String)data.get("Data_out"),formats));
 	    dataForTransferToArm.setDep_number((String) data.get("Dep_number"));
-	    dataForTransferToArm.setData_in(data.get("Data_in") == null ? (new java.util.Date()): (df.parse((String) data.get("Data_in"))));
+	    dataForTransferToArm.setData_in(data.get("Data_in") == null ? new Date(): parseDate((String)data.get("Data_in"),formats));
 	    dataForTransferToArm.setState((String) data.get("State"));
 	    dataForTransferToArm.setName_object((String) data.get("Name_object"));
 	    dataForTransferToArm.setKod((String) data.get("Kod"));
 	    dataForTransferToArm.setGruppa((String) data.get("Gruppa"));
 	    dataForTransferToArm.setUndergroup((String) data.get("Undergroup"));
 	    dataForTransferToArm.setFinans((String) data.get("Finans"));
-	    dataForTransferToArm.setData_out_raz(data.get("Data_out_raz")==null ? (new java.util.Date()) : df.parse((String)data.get("Data_out_raz")));
-	    dataForTransferToArm.setNumber_442(data.get("Number_442")==null? 0: Integer.parseInt( (String) data.get("Number_442")));
+	    dataForTransferToArm.setData_out_raz(data.get("Data_out_raz")==null ? new Date() : parseDate((String)data.get("Data_out_raz"),formats));
+	    dataForTransferToArm.setNumber_442(data.get("Number_442")==null? null: Integer.valueOf((String) data.get("Number_442")));
 	    dataForTransferToArm.setWinner(data.get("Winner")==null? "": (String) data.get("Winner"));
 	    dataForTransferToArm.setKod_okpo(data.get("Kod_okpo")==null? "":(String)data.get("Kod_okpo"));
 	    dataForTransferToArm.setPhone(data.get("Phone")==null? "": (String) data.get("Phone"));
@@ -84,17 +85,17 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	    dataForTransferToArm.setUslovie(data.get("Uslovie")==null? "":(String) data.get("Uslovie"));
 	    dataForTransferToArm.setBank(data.get("Bank")==null? "":(String) data.get("Bank"));
 	    dataForTransferToArm.setSmeta(data.get("Smeta")==null? "":(String) data.get("Smeta"));
-	    dataForTransferToArm.setDataEZ(data.get("DataEZ")==null ? (new java.util.Date()) :df.parse((String) data.get("DataEZ")));
+	    dataForTransferToArm.setDataEZ(data.get("DataEZ")==null ? new Date():parseDate((String)data.get("DataEZ"),formats));
 	    dataForTransferToArm.setPrilog(data.get("Prilog")==null? "":(String) data.get("Prilog"));
-	    dataForTransferToArm.setUpdateData(data.get("UpdateData")==null ? (new java.util.Date()) :df.parse((String) data.get("UpdateData")));
-	    dataForTransferToArm.setUpdOKBID((data.get("UpdOKBID")==null ||data.get("UpdOKBID")=="") ? 0:Integer.parseInt( (String)data.get("UpdOKBID")));
+	    dataForTransferToArm.setUpdateData(data.get("UpdateData")==null ? new Date():parseDate((String)data.get("UpdateData"),formats));
+	    dataForTransferToArm.setUpdOKBID((data.get("sUpdOKBID")==null ||((String)data.get("sUpdOKBID")).isEmpty()) ? null:Integer.valueOf( (String)data.get("sUpdOKBID")));
 	    dataForTransferToArm.setNotes(data.get("Notes")==null? "":(String) data.get("Notes"));
 	    dataForTransferToArm.setArhiv(data.get("Arhiv")==null? "":(String) data.get("Arhiv"));
-        dataForTransferToArm.setCreateDate(data.get("CreateDate")==null ? (new java.util.Date()) :df.parse((String) data.get("CreateDate")));
+        dataForTransferToArm.setCreateDate(data.get("CreateDate")==null ? new Date():parseDate((String)data.get("CreateDate"),formats));
 	    dataForTransferToArm.setZametki(data.get("Zametki")==null? "":(String) data.get("Zametki"));
-	    dataForTransferToArm.setDataBB(data.get("DataBB")==null ? (new java.util.Date()) :df.parse((String) data.get("DataBB")));
+	    dataForTransferToArm.setDataBB(data.get("DataBB")==null ? new Date():parseDate((String)data.get("DataBB"),formats));
 	    dataForTransferToArm.setPriemka(data.get("Priemka")==null? "":(String) data.get("Priemka"));
-	    dataForTransferToArm.setProckred((data.get("Prockred")==null||data.get("Prockred")=="")? "":(String) data.get("Prockred"));
+	    dataForTransferToArm.setProckred((data.get("sProckred")==null ||((String)data.get("sProckred")).isEmpty())? "":(String) data.get("sProckred"));
 	    dataForTransferToArm.setSumkred(new BigDecimal((String) data.get("Sumkred")));
 	    dataForTransferToArm.setSumzak(new BigDecimal((String) data.get("Sumzak")));
 	    dataForTransferToArm.setAuctionForm(data.get("AuctionForm")==null? "":(String) data.get("AuctionForm"));
@@ -114,5 +115,37 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 			armService.createDboTk(dataForTransferToArm);
 		}
 		
+	}
+	
+	
+	/**
+	 * метод принимающий на вход массив форматов дат и парсит String to Date
+	 * @param dateString
+	 * @param formats
+	 * @return
+	 */
+	public static Date parseDate(String dateString, String[] formats)
+	{
+	  Date date = null;
+	  boolean success = false;
+
+	  for (int i = 0; i < formats.length; i++)
+	  {
+	    String format = formats[i];
+	    SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+
+	    try
+	    {
+	      date = dateFormat.parse(dateString);
+	      success = true;
+	      break;
+	    }
+	    catch(ParseException e)
+	    {
+	    	 return new Date();
+	    }
+	  }
+
+	  return date;
 	}
 }
