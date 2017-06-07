@@ -325,7 +325,7 @@ ${sMail_Signature}<br /><br />
 <p>
 <p>Інструкція для самостійної сплати:</p>
 Реквізити: ${sBankDetails1} 
-Сума державного мита: ${sSum}
+Сума державного мита: 8,50 грн.
 
 <br /><br />
 Після сплати Вам потрібно зайти у розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a> та відправити квитанцію співробітнику відділу ДРАЦС:
@@ -751,10 +751,10 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="decide3" name="Рішення про надання послуги" type="enum" required="true">
         <activiti:formProperty id="sDivorceDay" name="Назнена дата розлучення" type="string" writable="false"></activiti:formProperty>
-          <activiti:value id="accept33" name="Звернення підписано."></activiti:value>
-          <activiti:value id="reject33" name="Звернення не підписано."></activiti:value>
+        <activiti:formProperty id="decide3" name="Рішення про надання послуги" type="enum" required="true">
+        	<activiti:value id="accept33" name="Звернення підписано."></activiti:value>
+        	<activiti:value id="reject33" name="Звернення не підписано."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment3" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ;додайте сканкопії всіх сторінок паспорта, де є записи;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -771,6 +771,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_divorce.html]; ;bVisible=false" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow39" sourceRef="usertask5" targetRef="exclusivegateway6"></sequenceFlow>
