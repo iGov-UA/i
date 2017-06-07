@@ -433,22 +433,12 @@ public class SubjectService {
     }
     
     public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, int nID_SubjectContactType) throws Exception {
-           
+        
+        LOG.info("getSubjectContacts start...");
         List<SubjectContact> aoSubjectContact = new ArrayList<>();
         
-        List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
-        LOG.info("getSubjectContacts: asLogin={}", asLogin);
-        
-        List<String> asResultListOfLogin = asLogin.stream()
-                .filter(sID_Group_Activiti -> oSubjectGroupTreeService.getSubjectType(sID_Group_Activiti).equals(sSubjectType))
-                .collect(Collectors.toList());
-        
-        for (String sID_Group_Activiti : asResultListOfLogin) {
-        
-            
-        
-        }
-        
+        List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, null, sID_Field);
+        LOG.info("getSubjectContacts: asLogin={}", asLogin);    
         
         return aoSubjectContact;
     }
