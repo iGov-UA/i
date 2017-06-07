@@ -10,15 +10,14 @@ import com.google.gson.reflect.TypeToken;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.FormService;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.RepositoryService;
+import org.activiti.engine.*;
 import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.task.Attachment;
 import org.igov.analytic.model.access.AccessGroup;
 
 import org.igov.analytic.model.access.AccessUser;
@@ -32,6 +31,7 @@ import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.impl.BytesMongoStorageAnalytic;
 import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.service.conf.AttachmetService;
+import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +40,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -94,6 +95,9 @@ public class MigrationServiceImpl implements MigrationService {
 
     @Autowired
     private FormService formService;
+
+    @Autowired
+    private TaskService taskService;
 
 
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
@@ -439,9 +443,25 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private String transferAttachment(String fileKey, String fileName, String contentType) {
-        RestTemplate template = new RestTemplate();
-        byte[] result = template.getForObject("https://alpha-old.test.region.igov.org.ua/wf/service/object/file/download_file_from_storage_static?" +
-                "sId={fileKey}&sFileName={fileName}&sType={contentType}", byte[].class, fileKey, fileName, contentType);
+        InputStream attachmentStream = ((org.igov.service.conf.TaskServiceImpl) taskService)
+                .getAttachmentContentByMongoID(fileKey);
+        if (attachmentStream == null) {
+            throw new ActivitiObjectNotFoundException("Attachment with ID '"
+                    + fileKey + "' doesn't have content associated with it.",
+                    Attachment.class);
+        }
+
+        int nTo = fileName.lastIndexOf(".");
+        if (nTo >= 0) {
+            fileName = "attach_" + fileKey + "."
+                    + fileName.substring(nTo + 1);
+        }
+        VariableMultipartFile multipartFile = new VariableMultipartFile(
+                attachmentStream, fileName,
+                fileName, contentType);
+
+        byte[] result = multipartFile.getBytes();
+
         return bytesStorageAnalytic.saveData(result);
     }
 }
