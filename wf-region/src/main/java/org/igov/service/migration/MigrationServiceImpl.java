@@ -350,9 +350,8 @@ public class MigrationServiceImpl implements MigrationService {
                 fileAttribute.setsExtName(fileValuesMap.get("sFileNameAndExt").split(".")[1]);
                 fileAttribute.setsContentType(fileValuesMap.get("sContentType"));
                 String newKey = transferAttachment("Mongo-" + fileValuesMap.get("sKey"), fileValuesMap.get("sFileNameAndExt"), fileValuesMap.get("sContentType"));
-                fileValuesMap.put("sKey", newKey);
                 fileAttribute.setoAttribute(attribute);
-                fileAttribute.setsID_Data(parseMapToJson(fileValuesMap));
+                fileAttribute.setsID_Data(parseMapToJson(newKey, string));
             } else if (string.length() < 255) {
                 type = attributeTypeDao.findById(3L).get();
                 Attribute_StringShort shortString = new Attribute_StringShort();
@@ -408,18 +407,32 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private Map<String, String> parseJsonStringToMap(String stringToParse) {
-        Map<String, String> resultMap;
-        Gson gson = new Gson();
-        resultMap = gson.fromJson(stringToParse, new TypeToken<Map<String, String>>() {}.getType());
+        Map<String, Object> valueMap;
+        Map<String, String> resultMap = new HashMap<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            valueMap = mapper.readValue(stringToParse, new TypeReference<Map<String, Object>>() {});
+            for(Map.Entry<String, Object> entry: valueMap.entrySet()) {
+                if(entry.getKey().equals("sFileNameAndExt")
+                        || entry.getKey().equals("sContentType")
+                        || entry.getKey().equals("sKey"))
+                    resultMap.put(entry.getKey(), (String) entry.getValue());
+            }
+        }
+        catch (IOException ex) {
+            LOG.error("Error during json-string parsing:{}", ex.getCause());
+        }
+
         return resultMap;
     }
 
-    private String parseMapToJson(Map<String, String> valuesMap) {
+    private String parseMapToJson(String newKey, String jsonString) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         try {
-            return mapper.writeValueAsString(valuesMap);
-        } catch (JsonProcessingException ex) {
+            Map<String, Object> jsonMap = mapper.readValue(jsonString, new TypeReference<Map<String, Object>>() {});
+            jsonMap.put("sKey", newKey);
+            return mapper.writeValueAsString(jsonMap);
+        } catch (IOException ex) {
             LOG.error("Error during json-string parsing:{}", ex.getCause());
         }
         return null;
