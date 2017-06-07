@@ -48,7 +48,7 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	public void execute(DelegateExecution execution) throws Exception {
 		// получаю из екзекьюшена sID_order
 		String sID_order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
-		LOG.info("sID_order", sID_order);
+		LOG.info("sID_order in Transfer_ARM>>>>>>>>>>>"+ sID_order);
 
 		// получаю из екзекьюшена soData
 		String soData_Value = this.soData.getExpressionText();
@@ -74,7 +74,7 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	    dataForTransferToArm.setUndergroup((String) data.get("Undergroup"));
 	    dataForTransferToArm.setFinans((String) data.get("Finans"));
 	    dataForTransferToArm.setData_out_raz(data.get("Data_out_raz")==null ? new Date() : parseDate((String)data.get("Data_out_raz"),formats));
-	    dataForTransferToArm.setNumber_442(data.get("Number_442")==null? null: Integer.valueOf((String) data.get("Number_442")));
+	    dataForTransferToArm.setNumber_442((data.get("Number_442")==null|| data.get("Number_442").equals("null"))? null: Integer.valueOf((String) data.get("Number_442")));
 	    dataForTransferToArm.setWinner(data.get("Winner")==null? "": (String) data.get("Winner"));
 	    dataForTransferToArm.setKod_okpo(data.get("Kod_okpo")==null? "":(String)data.get("Kod_okpo"));
 	    dataForTransferToArm.setPhone(data.get("Phone")==null? "": (String) data.get("Phone"));
