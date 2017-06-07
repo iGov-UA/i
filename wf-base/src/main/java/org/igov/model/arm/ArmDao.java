@@ -6,8 +6,8 @@ public interface ArmDao {
 	
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber);
 	
-	public void createDboTk(DboTkModel dboTkModel);
+	public DboTkResult createDboTk(DboTkModel dboTkModel);
 	
-	public void updateDboTk(DboTkModel dboTkModel);
+	public DboTkResult updateDboTk(DboTkModel dboTkModel);
 
 }

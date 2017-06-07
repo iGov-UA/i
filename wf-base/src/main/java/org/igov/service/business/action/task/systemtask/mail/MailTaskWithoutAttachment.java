@@ -18,7 +18,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-    	LOG.info("MailTaskWithoutAttachment sNotification_day is >>>>> "+ oExecution.getVariable("sNotification_day"));
+        
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
         LOG.info("sJsonMongo: {}", sJsonMongo);
@@ -28,13 +28,13 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
             try {
                 oMail = sendToMailFromMongo(oExecution);
             } catch (Exception ex) {
-                LOG.error("MailTaskWithoutAttachment: {}", ex);
+                LOG.error("MailTaskWithoutAttachment: ", ex);
             }
         } else{
             try {
                 oMail = Mail_BaseFromTask(oExecution);
             } catch (Exception ex) {
-                LOG.error("MailTaskWithoutAttachment: {}", ex);
+                LOG.error("MailTaskWithoutAttachment: ", ex);
             }
         }
         

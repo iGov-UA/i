@@ -22,6 +22,7 @@ import org.igov.model.subject.SubjectHumanIdType;
 import org.igov.model.subject.SubjectHumanRole;
 import org.igov.model.subject.SubjectHumanRoleDao;
 import org.igov.model.subject.organ.SubjectOrganDao;
+import org.igov.service.business.document.DocumentStepService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,9 @@ public class SubjectService {
 
     @Autowired
     private SubjectAccountDao subjectAccountDao;
+    
+    @Autowired
+    private DocumentStepService oDocumentStepService;
 
     public Subject getSubjectByLoginAccount(String sLogin) {
         Subject result = null;
@@ -415,5 +419,14 @@ public class SubjectService {
             LOG.error("getLoginSubjectAccountByLoginIgovAccount: ", ex);
         }
         return result;
+    }
+    
+    public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, int nID_SubjectContactType) {
+           
+        List<SubjectContact> aoSubjectContact = new ArrayList<>();
+        
+        
+        
+        return aoSubjectContact;
     }
 }
