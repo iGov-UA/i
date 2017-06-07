@@ -63,6 +63,7 @@ public class ProminSession_Singleton {
     }
     
     public String getSID_Auth_PB_SMS() {
+        LOG.info("getSID_Auth_PB_SMS: start");
         checkAndUpdateSid();
         return aSID_Auth_PB_SMS;
     }
