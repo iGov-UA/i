@@ -173,7 +173,7 @@ ${sMail_Signature}<br /><br />
         </activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDivorceDay" name="Назначити дату розлучення, необхідно заповнити для відображення у заяві" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDivorceDay" name="Назначити попередню дату розлучення, необхідно заповнити для відображення у заяві" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Початок-блок для кого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA1&quot;],&quot;sValue&quot;:&quot;Дані чоловіка&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Власне ім'я; ;writable=false" type="string"></activiti:formProperty>
@@ -246,7 +246,6 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/common_zags_divorce_107.html]; ;bVisible=false" type="string" default="заява громадян_107" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/common_zags_divorce_court.html]; ;bVisible=false" type="string" default="заява громадян_sud" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_divorce.html]; ;bVisible=false" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -432,6 +431,7 @@ ${sMail_Signature}<br /><br />
           <activiti:value id="accept22" name="Звернення потребує підписів. Повідомити заявника"></activiti:value>
           <activiti:value id="reject22" name="Кошти не надійшли. Відмовити громадянину в наданні послуги."></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDivorceDay" name="Назначити дату розлучення, необхідно заповнити для відображення у заяві" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ;додайте сканкопії всіх сторінок паспорта, де є записи;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ);додайте сканкопії всіх сторінок паспорта, де є записи;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -699,6 +699,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide3" name="Рішення про надання послуги" type="enum" required="true">
+        <activiti:formProperty id="sDivorceDay" name="Назнена дата розлучення" type="string" writable="false></activiti:formProperty>
           <activiti:value id="accept33" name="Звернення підписано."></activiti:value>
           <activiti:value id="reject33" name="Звернення не підписано."></activiti:value>
         </activiti:formProperty>
@@ -833,6 +834,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sQuantityChildren2" name="Кількість спільних дітей віком до 18 років; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDivorceDay" name="Назнена дата розлучення" type="string" writable="false></activiti:formProperty>
         <activiti:formProperty id="decide4" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept44" name="Підтверджую, що заявники отримали послугу"></activiti:value>
           <activiti:value id="reject44" name="ромадяни не з'явилися для отримання послуги. Закрити заявку"></activiti:value>
