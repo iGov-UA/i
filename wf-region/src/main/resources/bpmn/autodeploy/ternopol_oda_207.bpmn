@@ -24,9 +24,9 @@
           <activiti:value id="digit" name="Отримати електронну копію"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="doc" name="Супроводжуючі документи; за наявності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="postV1" name="електронна пошта ОДА1; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="postV2" name="електронна пошта ОДА2; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA" name="sID_UA" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="postV1" name="електронна пошта ОДА1" type="invisible"></activiti:formProperty>
+        <activiti:formProperty id="postV2" name="електронна пошта ОДА2" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="назва підприємства" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;orgName&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;whoIs&quot;},&quot;sCondition&quot;:&quot;[sService]=='ur'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -62,12 +62,6 @@ per2 = 'Чернігівська обласна держана адмініст�
 var per3 = 'svyrydenko.yulia@gmail.com'
 var per4 = 'vvsparrow@gmail.com'
 }
-if (execution.getVariable('sID_UA') == '6800000000'){
-per1 = 'Хмельницької обласної державної адміністрації'
-per2 = 'Хмельницька обласна держана адміністрація, м. Хмельницький, майдан Незалежності, Будинок Рад'
-var per3 = 'zhigan.roman@gmail.com'
-var per4 = 'zhigan.roman@gmail.com'
-}
 execution.setVariable('obl', per1)
 execution.setVariable('rekv', per2)
 execution.setVariable('postV1', per3)
@@ -78,7 +72,7 @@ execution.setVariable('postV2', per4)
     <serviceTask id="servicetask5" name="Повідомлення ОДА про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression>${postV1}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -95,7 +89,7 @@ execution.setVariable('postV2', per4)
     <serviceTask id="servicetask8" name="Повідомлення ОДА про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression>${postV2}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -135,7 +129,7 @@ execution.setVariable('postV2', per4)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка документів операціоністом" activiti:candidateGroups="${sID_UA}_oda_5">
+    <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="${sID_UA}_oda_5">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -160,7 +154,7 @@ execution.setVariable('postV2', per4)
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_207.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_207.html]" type="invisible" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
