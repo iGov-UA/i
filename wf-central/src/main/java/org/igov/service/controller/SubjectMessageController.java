@@ -124,8 +124,8 @@ public class SubjectMessageController {
     public
     @ResponseBody
     ResponseEntity getMessage(
-            @ApiParam(value = "", required = true) @RequestParam(value = "nID") Long nID) {
-
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID", required = true) Long nID) {
+        LOG.info("/getMessage: start");    
         SubjectMessage message = subjectMessagesDao.getMessage(nID);
                 
         return JsonRestUtils.toJsonResponse(message);
