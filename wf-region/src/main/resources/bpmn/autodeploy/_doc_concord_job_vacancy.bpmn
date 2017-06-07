@@ -25,7 +25,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <userTask id="usertask1" name="Створення заявки на заміщення вакансії" activiti:candidateGroups="OE_">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Cлужбовий ініциативний лист" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на подбор персонала" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
@@ -51,7 +51,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sExpDuration" name="Досвід роботи: тривалість" type="long"></activiti:formProperty>
         <activiti:formProperty id="sExpPost" name="Досвід роботи: посада" type="string"></activiti:formProperty>
         <activiti:formProperty id="sExpActivity" name="Досвід роботи: напрям діяльності" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCompetence" name="Необхідні професійні навички, вміння, знання" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sCompetence" name="Необхідні професійні навички, вміння, знання" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sEducationMain" name="Основна освіта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEducationExtra" name="Додаткова освіта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Володіння іноземними мовами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_concord_job_vacancy.json')}"></activiti:formProperty>
@@ -74,10 +74,10 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </activiti:formProperty>
         <activiti:formProperty id="sExpExtra" name="Додаткові бажані навички, досвід" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Вакантна позиція" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Вакантна позиція&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTasks" name="Основні задачі" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sFunctions" name="Основні функціональні обов'язки" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sResults" name="Очікувані результати в випробувальний період" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sTasks" name="Основні задачі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFunctions" name="Основні функціональні обов'язки" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sResults" name="Очікувані результати в випробувальний період" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sMentor" name="Наставник на випробувальний період (тут будет селект из дерева)" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace" name="Робоче місце" type="string"></activiti:formProperty>
@@ -167,7 +167,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <sequenceFlow id="flow22" sourceRef="exclusivegateway2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow26" sourceRef="scripttask7" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_concord_job_vacancy">
     <bpmndi:BPMNPlane bpmnElement="_doc_concord_job_vacancy" id="BPMNPlane__doc_concord_job_vacancy">
@@ -239,11 +238,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="155.0" y="62.0"></omgdi:waypoint>
         <omgdi:waypoint x="190.0" y="62.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="385.0" y="255.0"></omgdi:waypoint>
-        <omgdi:waypoint x="385.0" y="297.0"></omgdi:waypoint>
-        <omgdi:waypoint x="523.0" y="297.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
