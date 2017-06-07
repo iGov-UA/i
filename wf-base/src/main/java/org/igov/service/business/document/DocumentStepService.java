@@ -121,6 +121,7 @@ public class DocumentStepService {
     public List<DocumentStep> setDocumentSteps(String snID_Process_Activiti, String soJSON) {
         JSONObject oJSON = new JSONObject(soJSON);
         List<DocumentStep> aDocumentStep_Result = new ArrayList<>();
+        List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = new ArrayList<>();
         // process common step if it exists
         Object oStep_Common = oJSON.opt("_");
         LOG.info("snID_Process_Activiti {} Common step is - {}", snID_Process_Activiti, oStep_Common);
@@ -166,6 +167,11 @@ public class DocumentStepService {
                 oDocumentStepType = oDocumentStepTypeDao.findByExpected("name", asKey_Step_Split[1]);
             }
             LOG.info("sKeyStep in setDocumentSteps is: {}", sKey_Step);
+            List<String> asKey_Step_Common = new ArrayList<>();
+            asKey_Step_Common.add(sKey_Step);
+            aDocumentSubjectRightPermition
+                    .addAll(getDocumentSubjectRightPermitions(oJSON.get(sKey_Step), 
+                            false, asKey_Step_Common));
             DocumentStep oDocumentStep = mapToDocumentStep(oJSON.get(sKey_Step));
             oDocumentStep.setnOrder(i++);
             oDocumentStep.setsKey_Step(asKey_Step_Split[0]);
@@ -196,9 +202,9 @@ public class DocumentStepService {
 
         LOG.info("Result list of steps: {}", aDocumentStep_Result);
         
-        List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = 
-                getDocumentSubjectRightPermitions(oStep_Common, oStep_Common != null, asKey_Step_ExcludeCommon);
+        aDocumentSubjectRightPermition.addAll(getDocumentSubjectRightPermitions(oStep_Common, oStep_Common != null, asKey_Step_ExcludeCommon));
         LOG.info("aDocumentSubjectRightPermition size is {}", aDocumentSubjectRightPermition.size());
+        
         if (aDocumentSubjectRightPermition != null){
             LOG.info("aDocumentSubjectRightPermition isn't null");
             for(DocumentStep oDocumentStep_Result : aDocumentStep_Result){

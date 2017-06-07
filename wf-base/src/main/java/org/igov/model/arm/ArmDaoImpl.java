@@ -201,6 +201,7 @@ public class ArmDaoImpl implements ArmDao {
             dboTkResult.setMess(e.getMessage());
             dboTkResult.setCode("e");
             dboTkResult.setState("e");
+            LOG.error("FAIL createDboTk: {}", dboTkResult);
 		} finally {
 			try {
 				if (preparedStatement != null) {
@@ -214,6 +215,7 @@ public class ArmDaoImpl implements ArmDao {
 	            dboTkResult.setMess(e.getMessage());
 	            dboTkResult.setCode("e");
 	            dboTkResult.setState("e");
+	            LOG.error("FAIL createDboTk: {}", dboTkResult);
 	            return dboTkResult;
 			}
 
@@ -291,6 +293,7 @@ public class ArmDaoImpl implements ArmDao {
             dboTkResult.setMess(e.getMessage());
             dboTkResult.setCode("e");
             dboTkResult.setState("e");
+            LOG.error("FAIL updateDboTk: {}", dboTkResult);
 		} finally {
 			try {
 				if (preparedStatement != null) {
@@ -304,6 +307,7 @@ public class ArmDaoImpl implements ArmDao {
 	            dboTkResult.setMess(e.getMessage());
 	            dboTkResult.setCode("e");
 	            dboTkResult.setState("e");
+	            LOG.error("FAIL updateDboTk: {}", dboTkResult);
 	            return dboTkResult;
 			}
 

@@ -52,6 +52,7 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getBy
 import static org.igov.service.business.subject.SubjectMessageService.sMessageHead;
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.model.action.event.HistoryEventDao;
+import org.igov.service.business.promin.ProminSession_Singleton;
 import static org.igov.util.Tool.sO;
 
 @Controller
@@ -60,6 +61,7 @@ import static org.igov.util.Tool.sO;
 public class SubjectMessageController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageController.class);
+    
     @Autowired
     MethodsCallRunnerUtil methodCallRunner;
     @Autowired
@@ -86,8 +88,8 @@ public class SubjectMessageController {
     private ServerDao serverDao;
     @Autowired
     private HistoryEventDao historyEventDao;
-
-
+    @Autowired
+    private ProminSession_Singleton prominSession_Singleton;
     @Autowired
     HttpRequester httpRequester;
 
@@ -123,10 +125,27 @@ public class SubjectMessageController {
     @ResponseBody
     ResponseEntity getMessage(
             @ApiParam(value = "", required = true) @RequestParam(value = "nID") Long nID) {
-
+        LOG.info("/getMessage: start");    
         SubjectMessage message = subjectMessagesDao.getMessage(nID);
+                
         return JsonRestUtils.toJsonResponse(message);
     }
+    
+    
+    
+    
+    @RequestMapping(value = "/getSID_Auth_PB_SMS", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
+    public
+    @ResponseBody
+    String getSID_Auth_PB_SMS(
+            @ApiParam(value = "", required = false) @RequestParam(value = "nID") Long nID) {
+        LOG.info("getSID_Auth_PB_SMS start...");
+        String sSid = prominSession_Singleton.getSID_Auth_PB_SMS();
+        LOG.info("getSID_Auth_PB_SMS finish sSid: " + sSid);
+        return (sSid != null || "".equals(sSid)) ? sSid : "None";
+    }
+    
 
     @ApiOperation(value = "Сохранение сообщение ", notes = ""
             + "При заданных параметрах sID_Order или nID_Protected с/без nID_Server и sID_Rate - обновляется поле nRate в записи сущности HistoryEvent_Service, которая находится по sID_Order или nID_Protected с/без nID_Server (подробнее тут, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5. т.е. возможные ошибки:\n\n"
