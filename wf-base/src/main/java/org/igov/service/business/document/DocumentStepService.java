@@ -1305,12 +1305,12 @@ public class DocumentStepService {
         Map<String, Object> mReturn = new HashMap();
 
         Boolean bWrite = null;
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+        /*for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             if (bWrite == null) {
                 bWrite = false;
             }
             bWrite = bWrite || oDocumentStepSubjectRight.getbWrite();
-        }
+        }*/
         mReturn.put("bWrite", bWrite);
         LOG.info("bWrite={}", bWrite);
 
