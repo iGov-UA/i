@@ -1141,7 +1141,9 @@ public class ActionFlowController {
 
         JSONArray oaSlot = null;
 
-        JSONArray oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+//        JSONArray oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+        JSONArray oaJSONArray = new JSONArray();
+
         for (Object o : oaJSONArray) {
             //JSONObject oJSONObject = (JSONObject) o;
             String sDate = o.toString();
