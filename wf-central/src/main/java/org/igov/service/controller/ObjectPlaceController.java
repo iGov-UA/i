@@ -579,7 +579,7 @@ public class ObjectPlaceController {
             method = RequestMethod.GET, headers = {JSON_TYPE})
     public @ResponseBody
     PlaceType getPlaceType(@ApiParam(value = "нет описания", required = true) @RequestParam(value = "nID") Long placeTypeId) {
-        LOG.info("/getPlaceType: start");
+
         return placeTypeDao.findByIdExpected(placeTypeId);
     }
 
