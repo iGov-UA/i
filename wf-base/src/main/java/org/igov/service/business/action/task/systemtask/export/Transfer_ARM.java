@@ -109,10 +109,13 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		
 		// вызываю селект - получаю лист моделей
 		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
+		LOG.info("Size of listOfModels    ", listOfModels.size() );
 
 		if (listOfModels !=null && !listOfModels.isEmpty()) {
+			LOG.info("updateDboTk method started....");
 			armService.updateDboTk(dataForTransferToArm);
 		}else{
+			LOG.info("createDboTk method started....");
 			armService.createDboTk(dataForTransferToArm);
 		}
 		
