@@ -32,7 +32,8 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 
 	private final static Logger LOG = LoggerFactory.getLogger(Transfer_ARM.class);
 	
-	private final static String[] formats = { "yyyy-MM-dd", "dd-MM-yyyy", "yyyy/MM/dd", "dd/MM/yyyy", "yyyy.MM.dd", "dd.MM.yyyy", "yyyyy-MM-dd HH:mm:ss","yyyyy/MM/dd HH:mm:ss","yyyyy.MM.dd HH:mm:ss"};
+	private final static String[] formats = { "yyyy-MM-dd", "dd-MM-yyyy", "yyyy/MM/dd", "dd/MM/yyyy", "yyyy.MM.dd",
+			"dd.MM.yyyy", "yyyyy-MM-dd HH:mm:ss", "yyyyy/MM/dd HH:mm:ss", "yyyyy.MM.dd HH:mm:ss" };
 
 	private Expression soData;
 
@@ -88,14 +89,14 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	    dataForTransferToArm.setDataEZ(data.get("DataEZ")==null ? new Date():parseDate((String)data.get("DataEZ"),formats));
 	    dataForTransferToArm.setPrilog(data.get("Prilog")==null? "":(String) data.get("Prilog"));
 	    dataForTransferToArm.setUpdateData(data.get("UpdateData")==null ? new Date():parseDate((String)data.get("UpdateData"),formats));
-	    dataForTransferToArm.setUpdOKBID((data.get("sUpdOKBID")==null ||((String)data.get("sUpdOKBID")).isEmpty()) ? null:Integer.valueOf( (String)data.get("sUpdOKBID")));
+	    dataForTransferToArm.setUpdOKBID((data.get("UpdOKBID")==null ||((String)data.get("UpdOKBID")).isEmpty()) ? null:Integer.valueOf( (String)data.get("UpdOKBID")));
 	    dataForTransferToArm.setNotes(data.get("Notes")==null? "":(String) data.get("Notes"));
 	    dataForTransferToArm.setArhiv(data.get("Arhiv")==null? "":(String) data.get("Arhiv"));
         dataForTransferToArm.setCreateDate(data.get("CreateDate")==null ? new Date():parseDate((String)data.get("CreateDate"),formats));
 	    dataForTransferToArm.setZametki(data.get("Zametki")==null? "":(String) data.get("Zametki"));
 	    dataForTransferToArm.setDataBB(data.get("DataBB")==null ? new Date():parseDate((String)data.get("DataBB"),formats));
 	    dataForTransferToArm.setPriemka(data.get("Priemka")==null? "":(String) data.get("Priemka"));
-	    dataForTransferToArm.setProckred((data.get("sProckred")==null ||((String)data.get("sProckred")).isEmpty())? "":(String) data.get("sProckred"));
+	    dataForTransferToArm.setProckred((data.get("Prockred")==null ||((String)data.get("Prockred")).isEmpty())? "":(String) data.get("Prockred"));
 	    dataForTransferToArm.setSumkred(new BigDecimal((String) data.get("Sumkred")));
 	    dataForTransferToArm.setSumzak(new BigDecimal((String) data.get("Sumzak")));
 	    dataForTransferToArm.setAuctionForm(data.get("AuctionForm")==null? "":(String) data.get("AuctionForm"));
