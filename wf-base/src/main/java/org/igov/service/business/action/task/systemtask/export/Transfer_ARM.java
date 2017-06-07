@@ -80,7 +80,7 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	    dataForTransferToArm.setPhone((String)data.get("Phone")==null? "": (String) data.get("Phone"));
 	    dataForTransferToArm.setSrok((String)data.get("Srok")==null? "":(String) data.get("Srok"));
 	    dataForTransferToArm.setExpert((String)data.get("Expert")==null? "":(String) data.get("Expert"));
-	    dataForTransferToArm.setSumma(new BigDecimal((String) data.get("Summa")));
+	    dataForTransferToArm.setSumma((String) data.get("Summa")==null?null:new BigDecimal((String) data.get("Summa")));
 	    dataForTransferToArm.setuAN((String)data.get("UAN")==null? "":(String) data.get("UAN"));
 	    dataForTransferToArm.setIf_oplata((String)data.get("If_oplata")==null? "":(String) data.get("If_oplata"));
 	    dataForTransferToArm.setUslovie((String)data.get("Uslovie")==null? "":(String) data.get("Uslovie"));
@@ -97,8 +97,8 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	    dataForTransferToArm.setDataBB((String)data.get("DataBB")==null ? new Date():parseDate((String)data.get("DataBB"),formats));
 	    dataForTransferToArm.setPriemka((String)data.get("Priemka")==null? "":(String) data.get("Priemka"));
 	    dataForTransferToArm.setProckred(((String)data.get("Prockred")==null)? "":(String) data.get("Prockred"));
-	    dataForTransferToArm.setSumkred(new BigDecimal((String) data.get("Sumkred")));
-	    dataForTransferToArm.setSumzak(new BigDecimal((String) data.get("Sumzak")));
+	    dataForTransferToArm.setSumkred((String)data.get("Sumkred")==null?null:new BigDecimal((String) data.get("Sumkred")));
+	    dataForTransferToArm.setSumzak((String)data.get("Sumzak")==null?null:new BigDecimal((String) data.get("Sumzak")));
 	    dataForTransferToArm.setAuctionForm((String)data.get("AuctionForm")==null? "":(String) data.get("AuctionForm"));
 	    dataForTransferToArm.setProtocol_Number((String)data.get("Protocol_Number")==null? "":(String) data.get("Protocol_Number"));
 	    dataForTransferToArm.setCorrectionDoc((String)data.get("CorrectionDoc")==null? "":(String) data.get("CorrectionDoc"));
