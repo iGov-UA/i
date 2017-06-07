@@ -44,6 +44,9 @@ public class DboTkResult implements Serializable {
 		public void setCode(String code) {
 			this.code = code;
 		}
-		 
-		 
+
+		@Override
+		public String toString() {
+			return "DboTkResult [state=" + state + ", mess=" + mess + ", code=" + code + "]";
+		}
 }
