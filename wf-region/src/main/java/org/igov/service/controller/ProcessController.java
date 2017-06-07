@@ -306,22 +306,4 @@ public class ProcessController {
             return ("error: " + ex.getMessage()).getBytes();
         }
     }
-
-    @RequestMapping(value = "/saveFile", method = RequestMethod.PUT)
-    @ResponseBody
-    public String uploadFile(MultipartFile file) {
-        if (!file.isEmpty()) {
-            analyticFileDataStorage.saveFile(file.getName(), file);
-            durableFileStorage.saveFile(file.getName(), file);
-        }
-        return null;
-    }
-
-    @RequestMapping(value = "/checkFile", method=RequestMethod.GET)
-    @ResponseBody
-    public Boolean isFilePresent(@RequestParam(value = "fileName") String fileName) {
-        boolean isPresent = analyticFileDataStorage.keyExists(fileName);
-        return isPresent;
-    }
-
 }

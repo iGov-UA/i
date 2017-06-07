@@ -1,12 +1,7 @@
 package org.igov.service.migration;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
@@ -19,7 +14,6 @@ import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Attachment;
 import org.igov.analytic.model.access.AccessGroup;
-
 import org.igov.analytic.model.access.AccessUser;
 import org.igov.analytic.model.attribute.*;
 import org.igov.analytic.model.config.Config;
@@ -29,16 +23,12 @@ import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.impl.BytesMongoStorageAnalytic;
-import org.igov.io.db.kv.statical.IBytesDataStorage;
-import org.igov.service.conf.AttachmetService;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -356,7 +346,6 @@ public class MigrationServiceImpl implements MigrationService {
                 fileAttribute.setsContentType(fileValuesMap.get("sContentType"));
                 String newKey = transferAttachment("Mongo-" + fileValuesMap.get("sKey"), fileValuesMap.get("sFileNameAndExt"), fileValuesMap.get("sContentType"));
                 fileAttribute.setoAttribute(attribute);
-                //fileAttribute.setsID_Data(parseMapToJson(newKey, string));
                 fileAttribute.setsID_Data(newKey);
                 attribute.setoAttribute_File(fileAttribute);
             } else if (string.length() < 255) {
@@ -431,18 +420,6 @@ public class MigrationServiceImpl implements MigrationService {
         }
 
         return resultMap;
-    }
-
-    private String parseMapToJson(String newKey, String jsonString) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            Map<String, Object> jsonMap = mapper.readValue(jsonString, new TypeReference<Map<String, Object>>() {});
-            jsonMap.put("sKey", newKey);
-            return mapper.writeValueAsString(jsonMap);
-        } catch (IOException ex) {
-            LOG.error("Error during json-string parsing:{}", ex.getCause());
-        }
-        return null;
     }
 
     private String transferAttachment(String fileKey, String fileName, String contentType) {
