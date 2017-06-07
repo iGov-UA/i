@@ -786,7 +786,6 @@ public abstract class AbstractModelTask {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
                 LOG.info("sID_AttachmentTrimmed is: " + sID_AttachmentTrimmed);
                 Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
-
                 if (oAttachment != null) {
                     aAttachment.add(oAttachment);
                 }
