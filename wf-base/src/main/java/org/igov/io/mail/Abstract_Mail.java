@@ -1,5 +1,6 @@
 package org.igov.io.mail;
 
+import javax.mail.Multipart;
 import org.springframework.beans.factory.annotation.Value;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  * @author Belyavtsev Vladimir Vladimirovich (BW)
  */
@@ -34,6 +34,8 @@ public abstract class Abstract_Mail {
     private boolean bSSL;
     @Value("${general.Mail.bUseTLS}")
     private boolean bTLS;
+    private Multipart oMultiparts;
+
     public Abstract_Mail() {
     }
 
@@ -64,7 +66,7 @@ public abstract class Abstract_Mail {
         return sToName;
     }
 
-    public Abstract_Mail _ToName(String ... saToName){
+    public Abstract_Mail _ToName(String... saToName) {
         String fullName = saToName[0];
         if (saToName.length > 1) {
             for (int i = 1; i < saToName.length; i++) {
@@ -147,8 +149,16 @@ public abstract class Abstract_Mail {
         return this;
     }
 
-    //abstract public void init() throws Exception;
+    public Multipart getoMultiparts() {
+        return oMultiparts;
+    }
 
+    public Multipart _oMultiparts(Multipart oMultiparts) {
+        this.oMultiparts = oMultiparts;
+        return oMultiparts;
+    }
+
+    //abstract public void init() throws Exception;
     abstract public void send() throws Exception;
 
 }

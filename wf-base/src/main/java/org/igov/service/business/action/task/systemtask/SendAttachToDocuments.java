@@ -150,19 +150,6 @@ public class SendAttachToDocuments implements JavaDelegate {
                 String sURL = generalConfig.getSelfHostCentral() + "/wf/service/document/setDocumentFile";
                 Long nReturn = oHttpEntityInsedeCover.nReturn_RequestPost_ByMap(sURL, mParam);
 		LOG.info("nReturn={}", nReturn);
-                
-                /*
-		String sUser = generalConfig.getAuthLogin();
-        String sPassword = generalConfig.getAuthPassword();
-        String sAuth = ToolWeb.base64_encode(sUser + ":" + sPassword);
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "Basic " + sAuth);
-		HttpEntity<?> httpEntity = new HttpEntity<Object>(parts, headers);
-		
-		RestTemplate template = new RestTemplate();
-		LOG.info("Calling URL with parametes {}|{}", generalConfig.getSelfHostCentral() + URI, parts);
-		Long result = template.postForObject(generalConfig.getSelfHostCentral() + URI, httpEntity, Long.class);
-		*/
 		LOG.info("Received response from setDocumentFile: {}", nReturn);
 	}
     

@@ -184,12 +184,6 @@ public class UniSender {
         mParamObject.add("sender_email", oCreateEmailMessageRequest.getSenderEmail());
         mParamObject.add("lang", "ua");
 
-        //parametersMap.add("subject", createEmailMessageRequest.getSubject());
-        //String subject = createEmailMessageRequest.getSubject() == null || "".equals(createEmailMessageRequest.getSubject()) ? " " : createEmailMessageRequest.getSubject();
-        /*mParamByteArray.add("subject", new ByteArrayResource(oCreateEmailMessageRequest.getSubject().getBytes(StandardCharsets.UTF_8)));
-        String sBody = oCreateEmailMessageRequest.getSubject() + " | " +  oCreateEmailMessageRequest.getBody();
-        LOG.info("!sBody: {}", sBody);
-        mParamByteArray.add("body", new ByteArrayResource(sBody.getBytes(StandardCharsets.UTF_8)));*/
         mParamObject.add("list_id", oCreateEmailMessageRequest.getListId());
         //optional
         if (!StringUtils.isBlank(oCreateEmailMessageRequest.getTextBody()))
@@ -222,31 +216,7 @@ public class UniSender {
             mParamObject.add("wrap_type", oCreateEmailMessageRequest.getWrapType());
         if (!StringUtils.isBlank(oCreateEmailMessageRequest.getCategories()))
             mParamObject.add("categories", oCreateEmailMessageRequest.getCategories());
-
-        //LOG.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), sCut(100, mParamObject.toString()));
-        //oLogBig_Mail.info("SENDING... (osURL={}, mParamObject={})", osURL.toString(), mParamObject.toString());
-
         UniResponse oUniResponse = sendRequest(mParamObject, osURL.toString(), mParamByteArray);
-        /*UniResponse oUniResponse = null;
-        try{
-        	LOG.info("Calling registrateMethod with params{}", mParamObject);
-        	oUniResponse = (UniResponse) methodCallRunner.registerMethod(UniSender.class.getName(), "sendRequest", new Object[]{mParamObject,osURL.toString(),mParamByteArray});
-        	LOG.info("Response from UniSender{}", oUniResponse);
-        }catch(Exception e){
-        	LOG.info("Error during sending email{} ", e);
-        }*/
-
-        /*LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
-        oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
-        
-        if(oUniResponse.getWarnings().size()>0){
-            LOG.warn("RESULT  oUniResponse: {}"+oUniResponse.getWarnings());
-        }
-        if(oUniResponse.getError().size()>0){
-            LOG.error("RESULT  oUniResponse: {}"+oUniResponse.getError());
-            throw new Exception("RESULT "+oUniResponse.getError());
-        }*/
-
         return oUniResponse;
     }
 
@@ -301,17 +271,7 @@ public class UniSender {
 
     private UniResponse sendRequest(MultiValueMap<String, Object> mParamObject, String sURL,
             MultiValueMap<String, ByteArrayResource> mParamByteArray) throws Exception {
-        /*
-        StringHttpMessageConverter oStringHttpMessageConverter = new StringHttpMessageConverter();
-        HttpMessageConverter<Resource> oHttpMessageConverter = new ResourceHttpMessageConverter();
-        FormHttpMessageConverter oFormHttpMessageConverter = new FormHttpMessageConverter();
-        oFormHttpMessageConverter.addPartConverter(oHttpMessageConverter);
-
-        RestTemplate oRestTemplate = new RestTemplate(
-                Arrays.asList(oStringHttpMessageConverter, oHttpMessageConverter, oFormHttpMessageConverter));
-        */
-        //restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8"))); //._HeaderItem("charset", "utf-8")
-        //let's construct main HTTP entity
+        
         HttpHeaders oHttpHeaders = new HttpHeaders();
 
         // unisender не всегда корректно поддерживает multipart/form_data (с) Техподдержка Unisender
@@ -320,32 +280,7 @@ public class UniSender {
                 : MediaType.APPLICATION_FORM_URLENCODED);
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
 
-        /*
-        //Let's construct attachemnts HTTP entities
-        if (mParamByteArray != null) {
-            Iterator<String> osIterator = mParamByteArray.keySet().iterator();
-            for (int n = 0; osIterator.hasNext(); n++) {
-                String sFileName = osIterator.next();
-                HttpHeaders oHttpHeaders_Part = new HttpHeaders();
-                oHttpHeaders_Part.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
-                //headers.add("Content-type","application/octet-stream;charset=utf-8");
-                //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-                List<ByteArrayResource> aByteArray_Part = mParamByteArray.get(sFileName);
-                HttpEntity<ByteArrayResource> oByteArray_Part = new HttpEntity<ByteArrayResource>(aByteArray_Part.get(0), oHttpHeaders_Part); //HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
-                LOG.info("!sFileName: {}", sFileName);
-                mParamObject.add(sFileName, oByteArray_Part);
-            }
-        }
-        */
-        //result HTTP Request httpEntity
-        //        LOG.info("!!!!!!!!!!!before send RESULT mParamObject: {}", mParamObject);
-        //LOG.info("SENDING... (sURL={})", sURL);
         LOG_BIG.debug("REQUESTING... (osURL={}, mParamObject={})", sURL, mParamObject.toString());
-
-        //        HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
-        //        ResponseEntity<String> osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
-        //        return getUniResponse(osResponseEntity.getBody());
-        //        LOG.info("RESULT sURL == {}, osResponseEntity(JSON) : {}", sURL, osResponseEntity);
 
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(sURL)
                 ._Data(mParamObject)
@@ -358,15 +293,11 @@ public class UniSender {
             //oHttpEntityCover.
             LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})", sURL,
                     mParamObject.toString(), oHttpEntityCover.nStatus(), sReturn);
-            //oLogBig_Mail.error("RESULT FAIL (sReturn={})", sReturn);
             throw new Exception("[sendRequest](sURL=" + sURL + "): nStatus()=" + oHttpEntityCover.nStatus());
         }
         LOG.info("RESULT GOT! (sURL={}, mParamObject(cuted)={}, sReturn(cuted)={})", sURL,
                 sCut(100, mParamObject.toString()), sCut(100, sReturn));
         LOG_BIG.debug("RESULT GOT! (sReturn={})", sReturn);
-
-        //LOG.info("RESULT (oUniResponse={})", sCut(100, oUniResponse.toString()));
-        //oLogBig_Mail.info("RESULT (oUniResponse={})", oUniResponse);
         UniResponse oUniResponse = getUniResponse(sReturn);
         if (oUniResponse.getWarnings().size() > 0) {
             LOG.warn("RESULT WARN (oUniResponse.getWarnings()={})", oUniResponse.getWarnings());
