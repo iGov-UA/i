@@ -138,7 +138,10 @@ public class SubjectMessageController {
     @ResponseBody
     String getSID_Auth_PB_SMS(
             @ApiParam(value = "", required = false) @RequestParam(value = "nID") Long nID) {
-        return prominSession_Singleton.getSID_Auth_PB_SMS();
+        LOG.info("getSID_Auth_PB_SMS start...");
+        String sSid = prominSession_Singleton.getSID_Auth_PB_SMS();
+        LOG.info("getSID_Auth_PB_SMS finish sSid: " + sSid);
+        return (sSid != null || "".equals(sSid)) ? sSid : "None";
     }
     
 
