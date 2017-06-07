@@ -185,7 +185,7 @@ public class Cherg {
     
     public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
         //JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
-        JSONArray oaJSONArray = new JSONArray();;
+        JSONArray oaJSONArray = new JSONArray();
         
         
         
