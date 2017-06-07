@@ -15,12 +15,10 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-import org.json.simple.JSONArray;
 
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
