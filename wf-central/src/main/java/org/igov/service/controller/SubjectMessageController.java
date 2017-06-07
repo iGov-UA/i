@@ -124,7 +124,7 @@ public class SubjectMessageController {
     public
     @ResponseBody
     ResponseEntity getMessage(
-            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID", required = true) Long nID) {
+            @ApiParam(value = "", required = true) @RequestParam(value = "nID") Long nID) {
         LOG.info("/getMessage: start");    
         SubjectMessage message = subjectMessagesDao.getMessage(nID);
                 
