@@ -126,9 +126,7 @@ public class SubjectMessageController {
             @ApiParam(value = "", required = true) @RequestParam(value = "nID") Long nID) {
 
         SubjectMessage message = subjectMessagesDao.getMessage(nID);
-        
-        LOG.info("/getMessage: test log");
-        
+                
         return JsonRestUtils.toJsonResponse(message);
     }
     
