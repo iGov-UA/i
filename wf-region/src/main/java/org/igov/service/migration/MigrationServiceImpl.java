@@ -356,6 +356,7 @@ public class MigrationServiceImpl implements MigrationService {
                 String newKey = transferAttachment("Mongo-" + fileValuesMap.get("sKey"), fileValuesMap.get("sFileNameAndExt"), fileValuesMap.get("sContentType"));
                 fileAttribute.setoAttribute(attribute);
                 fileAttribute.setsID_Data(parseMapToJson(newKey, string));
+                attribute.setoAttribute_File(fileAttribute);
             } else if (string.length() < 255) {
                 type = attributeTypeDao.findById(3L).get();
                 Attribute_StringShort shortString = new Attribute_StringShort();
