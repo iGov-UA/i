@@ -1312,6 +1312,10 @@ public class DocumentStepService {
             bWrite = bWrite || oDocumentStepSubjectRight.getbWrite();*/
             
             if(oDocumentStepSubjectRight.getbWrite() != null){
+                if (bWrite == null) {
+                    bWrite = false;
+                }
+                
                 bWrite = bWrite || oDocumentStepSubjectRight.getbWrite();
             }
         }
