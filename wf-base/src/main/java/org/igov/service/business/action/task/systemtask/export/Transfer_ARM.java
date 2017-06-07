@@ -87,14 +87,14 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	    dataForTransferToArm.setDataEZ(data.get("DataEZ")==null ? (new java.util.Date()) :df.parse((String) data.get("DataEZ")));
 	    dataForTransferToArm.setPrilog(data.get("Prilog")==null? "":(String) data.get("Prilog"));
 	    dataForTransferToArm.setUpdateData(data.get("UpdateData")==null ? (new java.util.Date()) :df.parse((String) data.get("UpdateData")));
-	    dataForTransferToArm.setUpdOKBID(Integer.parseInt( (String)data.get("UpdOKBID")));
+	    dataForTransferToArm.setUpdOKBID((data.get("UpdOKBID")==null ||data.get("UpdOKBID")=="") ? 0:Integer.parseInt( (String)data.get("UpdOKBID")));
 	    dataForTransferToArm.setNotes(data.get("Notes")==null? "":(String) data.get("Notes"));
 	    dataForTransferToArm.setArhiv(data.get("Arhiv")==null? "":(String) data.get("Arhiv"));
         dataForTransferToArm.setCreateDate(data.get("CreateDate")==null ? (new java.util.Date()) :df.parse((String) data.get("CreateDate")));
 	    dataForTransferToArm.setZametki(data.get("Zametki")==null? "":(String) data.get("Zametki"));
 	    dataForTransferToArm.setDataBB(data.get("DataBB")==null ? (new java.util.Date()) :df.parse((String) data.get("DataBB")));
 	    dataForTransferToArm.setPriemka(data.get("Priemka")==null? "":(String) data.get("Priemka"));
-	    dataForTransferToArm.setProckred(data.get("Prockred")==null? "":(String) data.get("Prockred"));
+	    dataForTransferToArm.setProckred((data.get("Prockred")==null||data.get("Prockred")=="")? "":(String) data.get("Prockred"));
 	    dataForTransferToArm.setSumkred(new BigDecimal((String) data.get("Sumkred")));
 	    dataForTransferToArm.setSumzak(new BigDecimal((String) data.get("Sumzak")));
 	    dataForTransferToArm.setAuctionForm(data.get("AuctionForm")==null? "":(String) data.get("AuctionForm"));
