@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import org.igov.io.GeneralConfig;
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.Flow;
@@ -70,6 +71,9 @@ public class ActionFlowController {
     @Autowired
     private FlowSlotDao flowSlotDao;
 
+    @Autowired
+    GeneralConfig generalConfig;
+    
     /**
      * Получение слотов по сервису сгруппированных по дням.
      *
@@ -1141,8 +1145,10 @@ public class ActionFlowController {
 
         JSONArray oaSlot = null;
 
-//        JSONArray oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
         JSONArray oaJSONArray = new JSONArray();
+        if(generalConfig.isQueueManagementSystem()){
+            oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+        }
 
         for (Object o : oaJSONArray) {
             //JSONObject oJSONObject = (JSONObject) o;

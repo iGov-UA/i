@@ -114,7 +114,7 @@ public class Cherg {
     }
 
     public JSONArray getSlotFreeDaysArray(Integer nID_Service_Private) throws Exception {
-        if (nID_Service_Private == null) {
+        if (nID_Service_Private == null) { 
             LOG.error("service_id=={}", nID_Service_Private);
             throw new IllegalArgumentException("nID_Service_Private is null");
         }
@@ -184,8 +184,10 @@ public class Cherg {
     }
     
     public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
-        //JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
         JSONArray oaJSONArray = new JSONArray();
+        if(generalConfig.isQueueManagementSystem()){
+            oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
+        }
         
         
         

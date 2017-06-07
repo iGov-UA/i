@@ -74,6 +74,8 @@ public class MsgService {
         }
 	IMsgObjR oIMsgObjR = null;
 	try {
+            //if(generalConfig.isAuthPromin()){
+            //}
             /*
 	    oIMsgObjR = new MsgSendImpl(sURL_MSG, sBusinessId_MSG, sType, sFunction, sTemplateId_MSG, sLogin_MSG)
                 ._Head(sHead)
