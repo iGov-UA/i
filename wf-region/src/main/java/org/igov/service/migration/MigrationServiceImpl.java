@@ -92,8 +92,7 @@ public class MigrationServiceImpl implements MigrationService {
     private RepositoryService repositoryService;
 
     @Autowired
-    @Qualifier("durableBytesDataStorage")
-    private IBytesDataStorage bytesStorageAnalytic;
+    private BytesMongoStorageAnalytic bytesStorageAnalytic;
 
     @Autowired
     private FormService formService;
