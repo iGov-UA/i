@@ -6,6 +6,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу" type="enum" required="true">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей"></activiti:value>
           <activiti:value id="sEnum2" name="на підставі рішення суду"></activiti:value>
@@ -157,6 +158,9 @@ ${sMail_Signature}<br /><br />
     </serviceTask>
     <userTask id="usertask3" name="Перевірка вхідних даних" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="bankIdinn" name="ІПН; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
@@ -354,6 +358,9 @@ ${sMail_Signature}<br /><br />
     <sequenceFlow id="flow22" sourceRef="servicetask8" targetRef="usertask4"></sequenceFlow>
     <userTask id="usertask4" name="Прийнятя рішення щодо сплачених коштів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="bankIdinn" name="ІПН; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
@@ -622,6 +629,9 @@ ${sMail_Signature}<br /><br />
     <sequenceFlow id="flow38" sourceRef="servicetask14" targetRef="exclusivegateway7"></sequenceFlow>
     <userTask id="usertask5" name="Кінцева обробка" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+         <activiti:formProperty id="bankIdinn" name="ІПН; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
@@ -754,6 +764,9 @@ ${sMail_Signature}<br /><br />
     </sequenceFlow>
     <userTask id="usertask6" name="Надання послуги" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+         <activiti:formProperty id="bankIdinn" name="ІПН; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asApplicationType" name="Ви бажаєте подати заяву про розірвання шлюбу; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="подружжя, яке не має дітей (існує взаємна згода подружжя на розірвання шлюбу)"></activiti:value>
