@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_mvk_296" name="Довідка про використання житлових чеків під час приватизації державного житлового фонду" isExecutable="true">
+  <process id="dnepr_mvk_296" name="Дніпропетровськ - Видача довідок про використання житлових чеків під час приватизації державного житлового фонду" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -40,24 +40,23 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>ms@igov.org.ua</activiti:expression>
+          <activiti:expression>valykanatalia@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Нове звернення. Довідка про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
+          <activiti:string><![CDATA[Нове звернення. Видача довідок про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
 &lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
 У Вас в черзі на обробку нове звернення щодо видачі довідок про використання житлових чеків під час приватизації державного житлового фонду.&lt;br /&gt;
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Номер звернення: [sID_Order]&lt;br /&gt;
 Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
 [pattern/mail/_common_signature.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку в відділ" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку в відділ" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -66,11 +65,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Довідка про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
+          <activiti:string><![CDATA[Видача довідок про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt; Ваше звернення щодо видачі довідок про використання житлових чеків під час приватизації державного житлового фонду було зареєстровано у системі.&lt;br/&gt;
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
@@ -80,15 +78,6 @@
 Відділ житлової політики Управління житлового господарства Дніпропетровської міської ради,&lt;br /&gt;
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -130,7 +119,7 @@
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="reference" name="Якщо відправляєте в електронному вигляді - завантажте довідку підписану ЕЦП" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_11&quot;:{&quot;aElement_ID&quot;:[&quot;adress1_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sQuantityAdress&quot;},&quot;sCondition&quot;:&quot;[sCond]=='one'&quot;},&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;adress1_pf&quot;,&quot;adress2_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sQuantityAdress&quot;},&quot;sCondition&quot;:&quot;[sCond]=='two'&quot;},&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;adress1_pf&quot;,&quot;adress2_pf&quot;,&quot;adress3_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sQuantityAdress&quot;},&quot;sCondition&quot;:&quot;[sCond]=='three'&quot;},&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;adress1_pf&quot;,&quot;adress2_pf&quot;,&quot;adress3_pf&quot;,&quot;adress4_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sQuantityAdress&quot;},&quot;sCondition&quot;:&quot;[sCond]=='four'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_296_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_296_print.html]" type="invisible" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -147,7 +136,7 @@
     <sequenceFlow id="flow5" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення в разі відмови" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask4" name="Повідомлення в разі відмови" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -156,11 +145,10 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Довідка про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
+          <activiti:string><![CDATA[Видача довідок про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 На жаль, Ваше звернення щодо видачі довідок про використання житлових чеків під час приватизації державного житлового фонду було відхилено.&lt;/p&gt;
 &lt;p&gt;Причина в наступному:&lt;/p&gt;
@@ -173,22 +161,13 @@
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow7" name="decision == 'doc_bad'" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision == 'doc_bad'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення громадянина про готовність довідки." activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask5" name="Повідомлення громадянина про готовність довідки." activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -197,15 +176,14 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Довідка про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
+          <activiti:string><![CDATA[Видача довідок про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
+          <activiti:expression>[pattern/mail/_common_header.html]
 &lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;p&gt;
 Ваше звернення щодо видачі довідок про використання житлових чеків під час приватизації державного житлового фонду - опрацьовано. &lt;br /&gt;
-Ви можете отримати довідку особисто за адресою вул.Воскресенська (Леніна) 44а.&lt;br/&gt; 
+Ви можете отримати довідку особисто за адресою вул.Леніна 44а.&lt;br/&gt; 
 При собі треба мати документ, що посвідчує особу.
 &lt;/p&gt;
 &lt;p&gt;Телефон для довідок: (056) 744-88-08&lt;p/&gt;
@@ -221,15 +199,6 @@
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
-        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" name="decision == 'doc_ok_pap'" sourceRef="exclusivegateway1" targetRef="servicetask5">
@@ -237,7 +206,7 @@
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Відправка в електронному вигляді" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask6" name="Відправка в електронному вигляді" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -246,7 +215,7 @@
           <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Довідка про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
+          <activiti:string><![CDATA[Видача довідок про використання житлових чеків під час приватизації державного житлового фонду.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>[pattern/mail/_common_header.html]
@@ -265,12 +234,6 @@
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>${reference}</activiti:expression>
-        </activiti:field>
-         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
