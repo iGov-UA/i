@@ -89,7 +89,7 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	    dataForTransferToArm.setDataEZ(data.get("DataEZ")==null ? new Date():parseDate((String)data.get("DataEZ"),formats));
 	    dataForTransferToArm.setPrilog(data.get("Prilog")==null? "":(String) data.get("Prilog"));
 	    dataForTransferToArm.setUpdateData(data.get("UpdateData")==null ? new Date():parseDate((String)data.get("UpdateData"),formats));
-	    dataForTransferToArm.setUpdOKBID((data.get("UpdOKBID")==null ||((String)data.get("UpdOKBID")).isEmpty()) ? null:Integer.valueOf( (String)data.get("UpdOKBID")));
+	    dataForTransferToArm.setUpdOKBID((data.get("UpdOKBID")==null ||((String)data.get("UpdOKBID")).isEmpty()) ? 0 :Integer.valueOf( (String)data.get("UpdOKBID")));
 	    dataForTransferToArm.setNotes(data.get("Notes")==null? "":(String) data.get("Notes"));
 	    dataForTransferToArm.setArhiv(data.get("Arhiv")==null? "":(String) data.get("Arhiv"));
         dataForTransferToArm.setCreateDate(data.get("CreateDate")==null ? new Date():parseDate((String)data.get("CreateDate"),formats));
