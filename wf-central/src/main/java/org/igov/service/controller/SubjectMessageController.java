@@ -61,6 +61,7 @@ import static org.igov.util.Tool.sO;
 public class SubjectMessageController {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubjectMessageController.class);
+    
     @Autowired
     MethodsCallRunnerUtil methodCallRunner;
     @Autowired
