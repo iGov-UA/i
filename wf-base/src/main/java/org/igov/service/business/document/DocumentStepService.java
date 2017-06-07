@@ -203,7 +203,7 @@ public class DocumentStepService {
         LOG.info("Result list of steps: {}", aDocumentStep_Result);
         
         aDocumentSubjectRightPermition.addAll(getDocumentSubjectRightPermitions(oStep_Common, oStep_Common != null, asKey_Step_ExcludeCommon));
-        LOG.info("aDocumentSubjectRightPermition size is {}", aDocumentSubjectRightPermition.size());
+        //LOG.info("aDocumentSubjectRightPermition size is {}", aDocumentSubjectRightPermition.size());
         
         if (aDocumentSubjectRightPermition != null){
             LOG.info("aDocumentSubjectRightPermition isn't null");
@@ -545,12 +545,14 @@ public class DocumentStepService {
 
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
-
+            cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
+            
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                 if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
                     LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight.getsKey_GroupPostfix());
-                    oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group_Delegate);
-                    oDocumentStepSubjectRight.setsDateECP(null);
+                    oDocumentStepSubjectRight.setbWrite(null);
+                    //oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group_Delegate);
+                    //oDocumentStepSubjectRight.setsDateECP(null);
                     oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
                     break;
                 }
@@ -560,7 +562,7 @@ public class DocumentStepService {
                     active().singleResult().getId();
             oTaskService.addCandidateGroup(nId_Task, sKey_Group_Delegate);
 
-            oTaskService.deleteCandidateGroup(nId_Task, sKey_Group);
+            //oTaskService.deleteCandidateGroup(nId_Task, sKey_Group);
             //setDocumentStep(snID_Process_Activiti, sKey_Step);
             /*aDocumentStepSubjectRight_Current = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
 
