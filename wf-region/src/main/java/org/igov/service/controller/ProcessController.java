@@ -283,7 +283,7 @@ public class ProcessController {
             if (attribute_File.isPresent()) {
                 Attribute_File file = attribute_File.get();
                 multipartFile = new VariableMultipartFile(
-                        durableFileStorage.openFileStream(String.valueOf(file.getsID_Data())),
+                        analyticFileDataStorage.openFileStream(String.valueOf(file.getsID_Data())),
                         file.getsFileName(), file.getsFileName() + "." + file.getsExtName(), file.getsContentType());
                 httpResponse.setCharacterEncoding("UTF-8");
                 httpResponse.setHeader("Content-disposition", "attachment; filename=" + multipartFile.getName());
