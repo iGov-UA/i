@@ -8,6 +8,8 @@ package org.igov.service.business.subject;
 import com.google.common.base.Optional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectAccount;
 import org.igov.model.subject.SubjectAccountDao;
@@ -16,6 +18,7 @@ import org.igov.model.subject.SubjectContactDao;
 import org.igov.model.subject.SubjectContactType;
 import org.igov.model.subject.SubjectContactTypeDao;
 import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectGroupDao;
 import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.SubjectHumanIdType;
@@ -23,8 +26,10 @@ import org.igov.model.subject.SubjectHumanRole;
 import org.igov.model.subject.SubjectHumanRoleDao;
 import org.igov.model.subject.organ.SubjectOrganDao;
 import org.igov.service.business.document.DocumentStepService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,6 +66,12 @@ public class SubjectService {
     
     @Autowired
     private DocumentStepService oDocumentStepService;
+    
+    @Autowired
+    private SubjectGroupTreeService oSubjectGroupTreeService;
+    
+    @Autowired
+    private SubjectGroupDao oSubjectGroupDao;
 
     public Subject getSubjectByLoginAccount(String sLogin) {
         Subject result = null;
@@ -421,11 +432,13 @@ public class SubjectService {
         return result;
     }
     
-    public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, int nID_SubjectContactType) {
-           
+    public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, int nID_SubjectContactType) throws Exception {
+        
+        LOG.info("getSubjectContacts start...");
         List<SubjectContact> aoSubjectContact = new ArrayList<>();
         
-        
+        List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
+        LOG.info("getSubjectContacts: asLogin={}", asLogin);    
         
         return aoSubjectContact;
     }
