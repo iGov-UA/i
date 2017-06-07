@@ -29,28 +29,8 @@
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Тестирование файлов">
-      <extensionElements>
-        <activiti:formProperty id="Enum_test" name="Оберіть варіант ; ;writable=false" type="enum">
-          <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
-          <activiti:value id="sEnumMarried" name="одруження"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDecision1" name="Рішення" type="enum">
-          <activiti:value id="Yes1" name="так"></activiti:value>
-          <activiti:value id="No1" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/test_analit.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/test_analit.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${ScancopyDoc},${ScancopyDoc2},${PrintForm_1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_AnalitServ_StatOld">
     <bpmndi:BPMNPlane bpmnElement="_test_AnalitServ_StatOld" id="BPMNPlane__test_AnalitServ_StatOld">
@@ -64,26 +44,19 @@
         <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="700.0" y="140.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="130.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="510.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="65.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="110.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="425.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="645.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="215.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="425.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
