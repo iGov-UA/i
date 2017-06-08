@@ -407,7 +407,7 @@ public class DocumentStepService {
                 Boolean bWrite = null;
                 
                 LOG.info("oGroup.opt(bWrite) {}", oGroup.opt("bWrite"));
-                if(oGroup.opt("bWrite") != null){
+                if(!"null".equals(oGroup.opt("bWrite"))){
                     bWrite = (Boolean) oGroup.opt("bWrite");
                 }
                 
