@@ -442,6 +442,7 @@ public class SubjectService {
         LOG.info("getSubjectContacts start...");
         List<SubjectContact> aoSubjectContact = new ArrayList<>();
         
+        //Login = sID_Group_Activiti
         List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
         LOG.info("getSubjectContacts: asLogin={}", asLogin);
         
@@ -464,10 +465,8 @@ public class SubjectService {
             aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
             aoAllSubjectGroup.add(oSubjectGroupRoot);
         }
-        LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);
         
-        for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {  
-            
+        for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {              
             LOG.info("oSubject.Id={}", oSubjectGroup.getoSubject().getId());
             List<SubjectContact> aoSubjectContactToAdd = oSubjectContactDao.findContactsBySubjectAndContactType(oSubjectGroup.getoSubject(), nID_SubjectContactType);
             LOG.info("aoSubjectContactToAdd={}", aoSubjectContactToAdd);
