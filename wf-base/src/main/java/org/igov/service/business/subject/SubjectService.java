@@ -454,14 +454,10 @@ public class SubjectService {
             }
             
             SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
-                    .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, true, 0l, sSubjectType);
+                    .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, false, 0l, sSubjectType);
             LOG.info("oSubjectGroupResultTree={}", oSubjectGroupResultTree);
             
-            List<SubjectGroup> aoLoginSubjectGroup = oSubjectGroupResultTree.getaSubjectGroupTree();
-            
-            LOG.info("aoLoginSubjectGroup={}", aoLoginSubjectGroup);
-            
-            aoAllSubjectGroup.addAll(aoLoginSubjectGroup);
+            aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
         }
         LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);
         
