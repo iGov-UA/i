@@ -1,6 +1,7 @@
 package org.igov.service.buisness.dictionary;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Kovilin
  */
-@Component("DictionaryService")
+@Component("dictionaryService")
 @Service
 public class DictionaryService {
     
@@ -36,20 +37,40 @@ public class DictionaryService {
             
 
             String sLine;
+            String sLineColums = oBufferedReader.readLine();
+            LOG.info("sLineColums is {}", sLineColums);
+            String[] columns = sLineColums.split("\\;");
+            int columnNumber = -1;
+            
+            for(int i = 0; i < columns.length; i++){
+                if(columns[i].equals(sID_Field)){
+                    columnNumber = i;
+                    break;
+                }
+            }
+            
+            if(columnNumber == -1){
+                throw new RuntimeException("There is no column with name " + sID_Field + " in " + sPath + ".csv");
+            }
+            
             while ((sLine = oBufferedReader.readLine()) != null) {
-                LOG.info("sLine is {}", sLine);
                 String key = StringUtils.substringBefore(sLine, ";");
                 
                 if(key.equals(sValue)){
-                    values.put(key, sLine);
+                    String [] columnsValues = sLine.split("\\;");
+                    for(int i = 0; i < columnsValues.length; i++){
+                        if(i == columnNumber){
+                            values.put(key, columnsValues[i]);
+                            break;
+                        }
+                    }
                 }
             }
 
             oBufferedReader.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOG.warn("Error during loading csv file: {}", e.getMessage());
             LOG.trace("FAIL:", e);
-            throw new ExceptionInInitializerError(e);
         }
         
         return values;
