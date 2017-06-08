@@ -441,10 +441,14 @@ public class SubjectService {
         List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
         LOG.info("getSubjectContacts: asLogin={}", asLogin);
         
-        SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
-                .getCatalogSubjectGroupsTree(snID_Process_Activiti, 0l, "", true, 0l, sSubjectType);
+        for (String sID_Group_Activiti : asLogin) {
+        
+            SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
+                .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, "", true, 0l, sSubjectType);
         LOG.info("oSubjectGroupResultTree={}", oSubjectGroupResultTree);
         
+        }
+                
         return aoSubjectContact;
     }
 }
