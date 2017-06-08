@@ -1,6 +1,7 @@
 package org.igov.service.buisness.dictionary;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Kovilin
  */
-@Component("DictionaryService")
+@Component("dictionaryService")
 @Service
 public class DictionaryService {
     
@@ -67,10 +68,9 @@ public class DictionaryService {
             }
 
             oBufferedReader.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOG.warn("Error during loading csv file: {}", e.getMessage());
             LOG.trace("FAIL:", e);
-            throw new ExceptionInInitializerError(e);
         }
         
         return values;
