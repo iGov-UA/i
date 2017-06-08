@@ -44,9 +44,9 @@ public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact
     @Override
     public List<SubjectContact> findContactsBySubjectAndContactType(Subject oSubject, int nID_SubjectContactType) {
         
-        Criteria criteria = getSession().createCriteria(SubjectContact.class);
+        Criteria criteria = createCriteria();
 
-        criteria.add(Restrictions.eq("nID_Subject", oSubject.getsID()));
+        criteria.add(Restrictions.eq("oSubject", oSubject));
         criteria.add(Restrictions.eq("nID_SubjectContactType", nID_SubjectContactType));
                
         return criteria.list();
