@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,11 +20,6 @@ public class ArmDaoImpl implements ArmDao {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ArmDaoImpl.class);
 
-	private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.0";
-	
-	public static final SimpleDateFormat formatDate = new SimpleDateFormat(
-			DATE_FORMAT);
-	
 	@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
 	private String getDboTkByOutNumber;
 	
