@@ -168,7 +168,7 @@ public class ArmDaoImpl implements ArmDao {
 			preparedStatement.setString(32, dboTkModel.getArhiv()==null?null:dboTkModel.getArhiv());
 			preparedStatement.setDate(33, new java.sql.Date(new Date().getTime()));
 			preparedStatement.setString(34, dboTkModel.getZametki()==null?null:dboTkModel.getZametki());
-			preparedStatement.setLong(35, dboTkModel.getId_corp()==null?null:dboTkModel.getId_corp());
+			preparedStatement.setLong(35, dboTkModel.getId_corp()==null?1L:dboTkModel.getId_corp());
 			preparedStatement.setDate(36, dboTkModel.getDataBB()==null?null:new java.sql.Date(dboTkModel.getDataBB().getTime()));
 			preparedStatement.setString(37,  dboTkModel.getPriemka()==null?null:dboTkModel.getPriemka());
 			preparedStatement.setString(38, dboTkModel.getProckred()==null?null:dboTkModel.getProckred()); 
