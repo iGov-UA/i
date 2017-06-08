@@ -1,10 +1,11 @@
 package org.igov.model.subject;
 
-import com.google.common.base.Optional;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
+
 import org.igov.model.core.GenericEntityDao;
 
-import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -39,4 +40,15 @@ public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact
     public List<SubjectContact> findoMail(SubjectContact oMail) {
         return findAllBy("oMail", oMail);
     }
+
+    @Override
+    public List<SubjectContact> findContactsBySubjectAndContactType(Subject oSubject, int nID_SubjectContactType) {
+        
+        Criteria criteria = getSession().createCriteria(SubjectContact.class);
+
+        criteria.add(Restrictions.eq("oSubject", oSubject));
+        criteria.add(Restrictions.eq("nID_SubjectContactType", nID_SubjectContactType));
+               
+        return criteria.list();
+    }    
 }

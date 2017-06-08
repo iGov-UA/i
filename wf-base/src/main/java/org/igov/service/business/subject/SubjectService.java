@@ -18,6 +18,7 @@ import org.igov.model.subject.SubjectContactDao;
 import org.igov.model.subject.SubjectContactType;
 import org.igov.model.subject.SubjectContactTypeDao;
 import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectGroup;
 import org.igov.model.subject.SubjectGroupDao;
 import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.model.subject.SubjectHuman;
@@ -73,6 +74,9 @@ public class SubjectService {
     
     @Autowired
     private SubjectGroupDao oSubjectGroupDao;
+    
+    @Autowired
+    private SubjectContactDao oSubjectContactDao;
 
     public Subject getSubjectByLoginAccount(String sLogin) {
         Subject result = null;
@@ -441,14 +445,29 @@ public class SubjectService {
         List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
         LOG.info("getSubjectContacts: asLogin={}", asLogin);
         
+        List<SubjectGroup> aoAllSubjectGroup = new ArrayList<>();
+        
         for (String sID_Group_Activiti : asLogin) {
-        
+            
+            if (sSubjectType == null) {
+                sSubjectType = "Human";
+            }
+            
             SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
-                .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, "", true, 0l, sSubjectType);
-        LOG.info("oSubjectGroupResultTree={}", oSubjectGroupResultTree);
-        
+                    .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, "", true, 0l, sSubjectType);
+            LOG.info("oSubjectGroupResultTree={}", oSubjectGroupResultTree);
+            
+            aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
         }
-                
+        
+        for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {  
+            
+            List<SubjectContact> aoSubjectContactToAdd = oSubjectContactDao.findContactsBySubjectAndContactType(oSubjectGroup.getoSubject(), nID_SubjectContactType);
+            LOG.info("aoSubjectContactToAdd={}", aoSubjectContactToAdd);
+            aoSubjectContact.addAll(aoSubjectContactToAdd);
+        }
+        
+        LOG.info("aoSubjectContact={}", aoSubjectContact);        
         return aoSubjectContact;
     }
 }
