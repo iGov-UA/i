@@ -459,6 +459,7 @@ public class SubjectService {
             
             aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
         }
+        LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);
         
         for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {  
             
