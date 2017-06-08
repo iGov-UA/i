@@ -40,7 +40,7 @@ public class SubjectCommonController {
     }
     
     @ApiOperation(value = "Получение контактов", notes = "##### Пример:\n"
-            + "https://alpha.test.region.igov.org.ua/wf/service/subject/getSubjectContacts?snID_Process_Activiti=33465001&sID_Field=sTableViewed&sSubjectType=Human&nID_SubjectContactType=1 \n"
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/getSubjectContacts?snID_Process_Activiti=34610001&sID_Field=sTableViewed&sSubjectType=Human&nID_SubjectContactType=1 \n"
     )
     @RequestMapping(value = "/getSubjectContacts", method = RequestMethod.GET)
     @ResponseBody
