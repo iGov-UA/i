@@ -149,8 +149,7 @@ public static DboTkModel fillModel(String soData_Value_Result){
     dataForTransferToArm.setBank(isValid(data.get("Bank"))? data.get("Bank"):null);
     dataForTransferToArm.setSmeta(isValid(data.get("Smeta"))? data.get("Smeta"):null);
     dataForTransferToArm.setDataEZ(isValid(data.get("DataEZ")) ? parseDate(data.get("DataEZ"),formats): null);
-    dataForTransferToArm.setPrilog(isValid(data.get("Prilog"))? (data.get("Prilog")):null);
-    //dataForTransferToArm.setPrilog(isValid(data.get("Prilog"))? isValidSizePrilog(data.get("Prilog")):null);
+    dataForTransferToArm.setPrilog(isValid(data.get("Prilog"))? data.get("Prilog"):null);
     dataForTransferToArm.setUpdateData(isValid(data.get("UpdateData")) ? parseDate(data.get("UpdateData"),formats): null);
     dataForTransferToArm.setUpdOKBID(isValid(data.get("UpdOKBID"))?Integer.valueOf(data.get("UpdOKBID")):null);
     dataForTransferToArm.setNotes(isValid(data.get("Notes"))? data.get("Notes"):null);
