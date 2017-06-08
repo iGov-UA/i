@@ -49,7 +49,7 @@ public class ValidationARM {
 		return prilog;
 	}
 	
-	public static String isValidSizeOwn(String data) {
+	public static String isValidSizeOne(String data) {
 		String param = "";
 		if (isValid(data)) {
 			if (data.length() > 1) {
@@ -149,8 +149,7 @@ public static DboTkModel fillModel(String soData_Value_Result){
     dataForTransferToArm.setBank(isValid(data.get("Bank"))? data.get("Bank"):null);
     dataForTransferToArm.setSmeta(isValid(data.get("Smeta"))? data.get("Smeta"):null);
     dataForTransferToArm.setDataEZ(isValid(data.get("DataEZ")) ? parseDate(data.get("DataEZ"),formats): null);
-    dataForTransferToArm.setPrilog(isValid(data.get("Prilog"))? (data.get("Prilog")):null);
-    //dataForTransferToArm.setPrilog(isValid(data.get("Prilog"))? isValidSizePrilog(data.get("Prilog")):null);
+    dataForTransferToArm.setPrilog(isValid(data.get("Prilog"))? data.get("Prilog"):null);
     dataForTransferToArm.setUpdateData(isValid(data.get("UpdateData")) ? parseDate(data.get("UpdateData"),formats): null);
     dataForTransferToArm.setUpdOKBID(isValid(data.get("UpdOKBID"))?Integer.valueOf(data.get("UpdOKBID")):null);
     dataForTransferToArm.setNotes(isValid(data.get("Notes"))? data.get("Notes"):null);
@@ -165,8 +164,8 @@ public static DboTkModel fillModel(String soData_Value_Result){
     dataForTransferToArm.setAuctionForm(isValid(data.get("AuctionForm"))? data.get("AuctionForm"):null);
     dataForTransferToArm.setProtocol_Number(isValid(data.get("Protocol_Number"))? data.get("Protocol_Number"):null);
     dataForTransferToArm.setCorrectionDoc(isValid(data.get("CorrectionDoc"))? data.get("CorrectionDoc"):null);
-    dataForTransferToArm.setPrioritet(isValid(data.get("Prioritet"))? isValidSizeOwn(data.get("Prioritet")):null);
-    dataForTransferToArm.setLongterm(isValid(data.get("Longterm"))? isValidSizeOwn(data.get("Longterm")):null);
+    dataForTransferToArm.setPrioritet(isValid(data.get("Prioritet"))? isValidSizeOne(data.get("Prioritet")):null);
+    dataForTransferToArm.setLongterm(isValid(data.get("Longterm"))? isValidSizeOne(data.get("Longterm")):null);
     dataForTransferToArm.setId_corp(isValid(data.get("Id_corp"))? Integer.valueOf(data.get("Id_corp")):1);
 
 	return dataForTransferToArm;

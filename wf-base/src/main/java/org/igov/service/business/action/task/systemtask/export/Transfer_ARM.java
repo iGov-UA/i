@@ -2,6 +2,7 @@ package org.igov.service.business.action.task.systemtask.export;
 
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.delegate.DelegateExecution;
@@ -61,6 +62,7 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		dataForTransferToArm.setOut_number(sID_order);
 		String prilog = getPrilog(dataForTransferToArm.getPrilog(),oAttachmetService);
 		LOG.info("prilog>>>>>>>>>>>> = {}",prilog);
+		dataForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 	    LOG.info("dataForTransferToArm = {}",dataForTransferToArm);
 		
 		// вызываю селект - получаю лист моделей
@@ -83,6 +85,7 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	 * @return
 	 */
 	public String getPrilog(String data, AttachmetService oAttachmetService) {
+		String listStringPrilog = ", ";
 		if (ValidationARM.isValid(data)) {
 			org.json.simple.JSONObject oJSONObject = null;
 			try {
@@ -96,12 +99,44 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 
 				oJSONObject = (org.json.simple.JSONObject) parser
 						.parse(IOUtils.toString(oAttachmet_InputStream, "UTF-8"));
-				LOG.info("oTableJSONObject in listener: " + oJSONObject.toJSONString());
+				LOG.info("oTableJSONObject in listener Transfer_ARM: " + oJSONObject.toJSONString());
+				 org.json.simple.JSONArray aJsonRow = (org.json.simple.JSONArray) oJSONObject.get("aRow");
+
+	                if (aJsonRow != null) {
+	                	List<String> listPrilogName = new ArrayList<String>();
+	                    for (int i = 0; i < aJsonRow.size(); i++) {
+	                        org.json.simple.JSONObject oJsonField = (org.json.simple.JSONObject) aJsonRow.get(i);
+	                        LOG.info("oJsonField in {}", oJsonField);
+	                        if (oJsonField != null) {
+	                            org.json.simple.JSONArray aJsonField = (org.json.simple.JSONArray) oJsonField.get("aField");
+	                            LOG.info("aJsonField in getPrilog is {}", aJsonField);
+	                            if (aJsonField != null) {
+	                                for (int j = 0; j < aJsonField.size(); j++) {
+	                                    org.json.simple.JSONObject oJsonMap = (org.json.simple.JSONObject) aJsonField
+	                                            .get(j);
+	                                    LOG.info("oJsonMap in getPrilog is {}", oJsonMap);
+	                                    if (oJsonMap != null) {
+	                                        Object fileName = oJsonMap.get("fileName");
+	                                            if (fileName != null) {
+	                                                LOG.info("oValue in getPrilog is {}", fileName);
+	                                                listPrilogName.add((String) fileName);
+	                                            } else {
+	                                                LOG.info("oValue in getPrilog is null");
+	                                            }
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                    listStringPrilog = String.join(", ", listPrilogName);
+	                } else {
+	                    LOG.info("JSON array is null in getPrilog is null");
+	                }
 			} catch (Exception e) {
-				LOG.error("oTableJSONObject in listener: " + oJSONObject.toJSONString());
+				LOG.error("oTableJSONObject in listener Transfer_ARM: " + oJSONObject.toJSONString());
 			}
 		}
-		return data;
+		return listStringPrilog;
 	}
 	
 	
