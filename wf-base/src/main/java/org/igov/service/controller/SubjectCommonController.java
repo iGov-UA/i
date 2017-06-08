@@ -50,8 +50,7 @@ public class SubjectCommonController {
         @ApiParam(value = "фильтр по типу Subject'a", required = false) @RequestParam(value = "sSubjectType", required = false) String sSubjectType,
         @ApiParam(value = "тип контакта", required = true) @RequestParam(value = "nID_SubjectContactType", required = true) long nID_SubjectContactType
     ) throws Exception {
-    
-        
+            
         return oSubjectService.getSubjectContacts(snID_Process_Activiti, sID_Field, sSubjectType, nID_SubjectContactType);
     }
 }

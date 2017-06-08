@@ -453,21 +453,25 @@ public class SubjectService {
                 sSubjectType = "Human";
             }
             
+            //находим SubjectGroup`ы всех элементов дерева
             SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
                     .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, false, 0l, sSubjectType);
             LOG.info("oSubjectGroupResultTree={}", oSubjectGroupResultTree);
             
-            //добавить рутовый элемент
+            //находим SubjectGroup рутового элемент
+            SubjectGroup oSubjectGroupRoot = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
             
             aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
+            aoAllSubjectGroup.add(oSubjectGroupRoot);
         }
         LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);
         
         for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {  
             
-            LOG.info("oSubjectGroup.getoSubject()={}", oSubjectGroup.getoSubject().getId());
+            LOG.info("oSubject.Id={}", oSubjectGroup.getoSubject().getId());
             List<SubjectContact> aoSubjectContactToAdd = oSubjectContactDao.findContactsBySubjectAndContactType(oSubjectGroup.getoSubject(), nID_SubjectContactType);
             LOG.info("aoSubjectContactToAdd={}", aoSubjectContactToAdd);
+            
             aoSubjectContact.addAll(aoSubjectContactToAdd);
         }
         
