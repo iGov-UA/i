@@ -49,7 +49,7 @@ public class ValidationARM {
 		return prilog;
 	}
 	
-	public static String isValidSizeOwn(String data) {
+	public static String isValidSizeOne(String data) {
 		String param = "";
 		if (isValid(data)) {
 			if (data.length() > 1) {
@@ -164,8 +164,8 @@ public static DboTkModel fillModel(String soData_Value_Result){
     dataForTransferToArm.setAuctionForm(isValid(data.get("AuctionForm"))? data.get("AuctionForm"):null);
     dataForTransferToArm.setProtocol_Number(isValid(data.get("Protocol_Number"))? data.get("Protocol_Number"):null);
     dataForTransferToArm.setCorrectionDoc(isValid(data.get("CorrectionDoc"))? data.get("CorrectionDoc"):null);
-    dataForTransferToArm.setPrioritet(isValid(data.get("Prioritet"))? isValidSizeOwn(data.get("Prioritet")):null);
-    dataForTransferToArm.setLongterm(isValid(data.get("Longterm"))? isValidSizeOwn(data.get("Longterm")):null);
+    dataForTransferToArm.setPrioritet(isValid(data.get("Prioritet"))? isValidSizeOne(data.get("Prioritet")):null);
+    dataForTransferToArm.setLongterm(isValid(data.get("Longterm"))? isValidSizeOne(data.get("Longterm")):null);
     dataForTransferToArm.setId_corp(isValid(data.get("Id_corp"))? Integer.valueOf(data.get("Id_corp")):1);
 
 	return dataForTransferToArm;

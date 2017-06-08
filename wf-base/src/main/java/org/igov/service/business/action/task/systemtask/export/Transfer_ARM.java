@@ -116,10 +116,10 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	                                            .get(j);
 	                                    LOG.info("oJsonMap in getPrilog is {}", oJsonMap);
 	                                    if (oJsonMap != null) {
-	                                        Object name = oJsonMap.get("name");
-	                                            if (name != null) {
-	                                                LOG.info("oValue in getPrilog is {}", name);
-	                                                listPrilogName.add((String) name);
+	                                        Object fileName = oJsonMap.get("fileName");
+	                                            if (fileName != null) {
+	                                                LOG.info("oValue in getPrilog is {}", fileName);
+	                                                listPrilogName.add((String) fileName);
 	                                            } else {
 	                                                LOG.info("oValue in getPrilog is null");
 	                                            }
