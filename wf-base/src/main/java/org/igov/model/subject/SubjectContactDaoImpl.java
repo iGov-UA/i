@@ -46,7 +46,7 @@ public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact
         
         Criteria criteria = createCriteria();
 
-        criteria.add(Restrictions.eq("subjectContactType", nID_SubjectContactType));
+        criteria.add(Restrictions.eq("subjectContactType.id", nID_SubjectContactType));
         criteria.add(Restrictions.eq("subject", oSubject));
                
         return criteria.list();
