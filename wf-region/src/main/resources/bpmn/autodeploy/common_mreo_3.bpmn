@@ -18,7 +18,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса Вашої реєстрації; зазначена в громадянському паспорті" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
@@ -31,8 +31,8 @@
           <activiti:value id="attr2" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="renamed_doc" name="Документ, що підтверджує зміну прізвища; назва документу, серія, номер, дата видачі, орган ким видано" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="medical_scan1" name="Дійсна медична довідка форма 083/о (сторона 1)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="medical_scan2" name="Дійсна медична довідка форма 083/о (сторона 2)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="medical_scan1" name="Дійсна медична довідка форма 083/о (сторона 1) ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="medical_scan2" name="Дійсна медична довідка форма 083/о (сторона 2) ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="show/hide fields" type="markers" default="${markerService.loadFromFile('mvd/dnepr_mreo_2_1.json')}"></activiti:formProperty>
@@ -69,12 +69,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Вкажіть номер віконця для отримання посвідчення або підставу для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Коментар  заявника в разі скасування   свого звернення; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="medical_scan1" name="Дійсна медична довідка форма 083/о (сторона 1) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="medical_scan2" name="Дійсна медична довідка форма 083/о (сторона 2) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${medical_scan1},${medical_scan2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -116,12 +117,13 @@
           <activiti:value id="reject2" name="Громадянин не з'являється для отримання посвядчення. Закрити заявку."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Коментар  заявника в разі скасування   свого звернення; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="medical_scan1" name="Дійсна медична довідка форма 083/о (сторона 1) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="medical_scan2" name="Дійсна медична довідка форма 083/о (сторона 2) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${medical_scan1},${medical_scan2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
