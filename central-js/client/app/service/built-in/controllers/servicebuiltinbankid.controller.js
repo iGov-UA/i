@@ -240,7 +240,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           if(prop.type === 'table') {
             angular.forEach(prop.aRow, function (row) {
               angular.forEach(row.aField, function (field, key, obj) {
-                if(field.type === 'file' && 'value' in field && field.value.id) {
+                if(field.type === 'file' && field.value && field.value.id) {
                   obj[key].value = field.value.id;
                 }
               })
