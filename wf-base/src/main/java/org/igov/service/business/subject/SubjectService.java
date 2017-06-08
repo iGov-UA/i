@@ -462,7 +462,7 @@ public class SubjectService {
         
         for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {  
             
-            LOG.info("oSubjectGroup.getoSubject()={}", oSubjectGroup.getoSubject());
+            LOG.info("oSubjectGroup.getoSubject()={}", oSubjectGroup.getoSubject().getId());
             List<SubjectContact> aoSubjectContactToAdd = oSubjectContactDao.findContactsBySubjectAndContactType(oSubjectGroup.getoSubject(), nID_SubjectContactType);
             LOG.info("aoSubjectContactToAdd={}", aoSubjectContactToAdd);
             aoSubjectContact.addAll(aoSubjectContactToAdd);
