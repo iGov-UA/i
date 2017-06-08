@@ -1,26 +1,20 @@
 package org.igov.service.business.action.task.systemtask.export;
 
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.igov.io.GeneralConfig;
 import org.igov.model.arm.DboTkModel;
+import org.igov.model.arm.ValidationARM;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import org.igov.service.business.arm.ArmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Lists;
-
-import edu.emory.mathcs.backport.java.util.Arrays; 
+import org.springframework.stereotype.Component; 
 
 /**
  *

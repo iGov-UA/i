@@ -1,4 +1,4 @@
-package org.igov.service.business.action.task.systemtask.export;
+package org.igov.model.arm;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
