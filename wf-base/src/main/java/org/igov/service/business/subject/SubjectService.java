@@ -454,7 +454,7 @@ public class SubjectService {
             }
             
             SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
-                    .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, "", true, 0l, sSubjectType);
+                    .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, true, 0l, sSubjectType);
             LOG.info("oSubjectGroupResultTree={}", oSubjectGroupResultTree);
             
             aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
@@ -462,7 +462,7 @@ public class SubjectService {
         
         for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {  
             
-            LOG.info("oSubjectGroup.getoSubject()={}", oSubjectGroup.getoSubject());
+            LOG.info("oSubjectGroup.getoSubject()={}", oSubjectGroup.getoSubject().getId());
             List<SubjectContact> aoSubjectContactToAdd = oSubjectContactDao.findContactsBySubjectAndContactType(oSubjectGroup.getoSubject(), nID_SubjectContactType);
             LOG.info("aoSubjectContactToAdd={}", aoSubjectContactToAdd);
             aoSubjectContact.addAll(aoSubjectContactToAdd);
