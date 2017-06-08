@@ -407,15 +407,15 @@ public class MigrationServiceImpl implements MigrationService {
         Map<String, String> resultMap = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            valueMap = mapper.readValue(stringToParse, new TypeReference<Map<String, Object>>() {});
-            for(Map.Entry<String, Object> entry: valueMap.entrySet()) {
-                if(entry.getKey().equals("sFileNameAndExt")
+            valueMap = mapper.readValue(stringToParse, new TypeReference<Map<String, Object>>() {
+            });
+            for (Map.Entry<String, Object> entry : valueMap.entrySet()) {
+                if (entry.getKey().equals("sFileNameAndExt")
                         || entry.getKey().equals("sContentType")
                         || entry.getKey().equals("sKey"))
                     resultMap.put(entry.getKey(), (String) entry.getValue());
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             LOG.error("Error during json-string parsing:{}", ex.getCause());
         }
 
