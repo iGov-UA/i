@@ -19,6 +19,7 @@ import org.igov.model.subject.SubjectContactType;
 import org.igov.model.subject.SubjectContactTypeDao;
 import org.igov.model.subject.SubjectDao;
 import org.igov.model.subject.SubjectGroupDao;
+import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.SubjectHumanIdType;
@@ -438,7 +439,11 @@ public class SubjectService {
         List<SubjectContact> aoSubjectContact = new ArrayList<>();
         
         List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
-        LOG.info("getSubjectContacts: asLogin={}", asLogin);    
+        LOG.info("getSubjectContacts: asLogin={}", asLogin);
+        
+        SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
+                .getCatalogSubjectGroupsTree(snID_Process_Activiti, 0l, "", true, 0l, sSubjectType);
+        LOG.info("oSubjectGroupResultTree={}", oSubjectGroupResultTree);
         
         return aoSubjectContact;
     }
