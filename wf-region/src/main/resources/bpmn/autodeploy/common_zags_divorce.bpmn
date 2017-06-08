@@ -31,7 +31,6 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name=" Ви можете сплатити державне мито онлайн;після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string"></activiti:formProperty>
@@ -157,6 +156,7 @@ ${sMail_Signature}<br /><br />
     </serviceTask>
     <userTask id="usertask3" name="Перевірка вхідних даних" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+      	<activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string"></activiti:formProperty>
