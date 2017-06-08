@@ -9,9 +9,9 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ідентифікаційний код" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія ідентифікаційного коду" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ідентифікаційного коду ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="AddressFactual" name="Адреса реєстрації, за якою необхідна довідка" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -24,7 +24,7 @@
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFilePreferentialQueue" name="Копія документу, який підтверджує перебування на пільговій квартирній черзі;Наприклад, Довідка з місця роботи" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFilePreferentialQueue" name="Копія документу, який підтверджує перебування на пільговій квартирній черзі;Наприклад, Довідка з місця роботи ;bNew=true" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="sMoreFiles" name="Чи потрібні ще поля для завантаження файлів" type="enum" default="no">
           <activiti:value id="no" name="Ні"></activiti:value>
@@ -32,11 +32,11 @@
           <activiti:value id="yes2" name="два"></activiti:value>
           <activiti:value id="yes3" name="три"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Додати документ" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Додати документ" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Додати документ" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Додати документ ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Додати документ ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Додати документ ; ;bNew=true" type="file"></activiti:formProperty>
 
-        <activiti:formProperty id="nfileToLive" name="Завантажте копію довідки про період реєстрації за місцем проживання" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nfileToLive" name="Завантажте копію довідки про період реєстрації за місцем проживання ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersHideFields" name="hide fields" type="markers" default="${markerService.loadFromFile('newField.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersPreferentialQueue" name="Пільгова черга" type="markers" default="${markerService.loadFromFile('mvk/chernihiv_mvk_479.json')}"></activiti:formProperty>
 
@@ -143,13 +143,17 @@
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('mvk/chernihiv_mvk_479_print.json')}"></activiti:formProperty>
 
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ідентифікаційного коду ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFilePreferentialQueue" name="Копія документу, який підтверджує перебування на пільговій квартирній черзі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        
+        
 		<activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFilePreferentialQueue},${nFile1},${nFile2},${nFile3}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
+       
     </userTask>
 	<sequenceFlow id="flow58" sourceRef="usertask3" targetRef="exclusivegateway7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
@@ -227,12 +231,14 @@
         <activiti:formProperty id="sShapkaGolova" name="підпис в шапке; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('mvk/chernihiv_mvk_479_print.json')}"></activiti:formProperty>
 
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${nFilePreferentialQueue},${nFile1},${nFile2},${nFile3}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
+         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія ідентифікаційного коду ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFilePreferentialQueue" name="Копія документу, який підтверджує перебування на пільговій квартирній черзі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>            
+
+              </extensionElements>
     </userTask>
     <sequenceFlow id="flow64" sourceRef="usertask5" targetRef="exclusivegateway4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
