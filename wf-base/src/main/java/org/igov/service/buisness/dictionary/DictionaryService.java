@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Kovilin
  */
-@Component("documentStepService")
+@Component("DictionaryService")
 @Service
 public class DictionaryService {
     
