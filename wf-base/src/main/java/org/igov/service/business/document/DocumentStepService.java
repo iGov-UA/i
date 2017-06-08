@@ -406,8 +406,9 @@ public class DocumentStepService {
                 oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group);
                 Boolean bWrite = null;
                 
-                LOG.info("oGroup.opt(bWrite) {}", oGroup.opt("bWrite"));
-                if(!"null".equals(oGroup.opt("bWrite"))){
+                
+                if((oGroup.opt("bWrite") != null )&& (!"null".equals(oGroup.opt("bWrite")))){
+                    LOG.info("oGroup.opt(bWrite) {}", oGroup.opt("bWrite"));
                     bWrite = (Boolean) oGroup.opt("bWrite");
                 }
                 
