@@ -296,23 +296,28 @@ public class MigrationServiceImpl implements MigrationService {
         List<Attribute> resultList = new ArrayList<>(attributes.size());
         attributes.forEach((id, value) -> {
             Attribute attribute = new Attribute();
-            if (process != null)
+            if (process != null) {
                 attribute.setoProcess(process);
+                attribute.setoAttributeTypeCustom(createAttributeTypeCustom(id, process.getsID_()));
+            }
             else
                 attribute.setoProcessTask(processTask);
             attribute.setName(id);
             attribute.setoAttributeType(getAttributeType(value, attribute));
             attribute.setsID_("sID_ Attribute");
             attribute.setoAttributeName(createAttributeName(id));
-            attribute.setoAttributeTypeCustom(createAttributeTypeCustom(id));
+
             resultList.add(attribute);
         });
         return resultList;
     }
 
-    private AttributeTypeCustom createAttributeTypeCustom(String variableId) {
+    private AttributeTypeCustom createAttributeTypeCustom(String variableId, String processId) {
+//        List<HistoricVariableInstance> historicVariableInstance =
+//                historyService.createHistoricVariableInstanceQuery().variableName(variableId).list();
         List<HistoricVariableInstance> historicVariableInstance =
-                historyService.createHistoricVariableInstanceQuery().variableName(variableId).list();
+                historyService.createNativeHistoricVariableInstanceQuery()
+                        .sql("SELECT * FROM act_hi_varinst where name_ = \'" + variableId + "\' AND proc_inst_id = \'" + processId +"\'" ).list();
         return attributeTypeCustomDao.findBy("name", historicVariableInstance.get(0).getVariableTypeName()).get();
     }
 
