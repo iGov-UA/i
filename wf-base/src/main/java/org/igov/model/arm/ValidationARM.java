@@ -15,14 +15,29 @@ import org.igov.model.arm.DboTkModel;
 import com.google.common.collect.Lists;
 public class ValidationARM {
 	
+	/**
+	 * часто используемы форматы дат
+	 */
 	private final static List<String> formats = Lists.newArrayList("yyyy-MM-dd", "dd-MM-yyyy", "yyyy/MM/dd", "dd/MM/yyyy", "yyyy.MM.dd",
 			"dd.MM.yyyy", "yyyyy-MM-dd HH:mm:ss", "yyyyy/MM/dd HH:mm:ss", "yyyyy.MM.dd HH:mm:ss");
 	
+	
+	/**
+	 * метод проверки параметра на налл, пустоту
+	 * @param pvalue
+	 * @return
+	 */
 	public static boolean isValid(String pvalue) {
 		  return StringUtils.isNotEmpty(pvalue) && Objects.nonNull(pvalue)
 				  && !pvalue.equals("null");
 		}
 
+	
+	/**
+	 * проверка размера поля Prilog - временно
+	 * @param data
+	 * @return
+	 */
 	public static String isValidSizePrilog(String data) {
 		String prilog = "";
 		if (isValid(data)) {
@@ -64,8 +79,13 @@ public class ValidationARM {
 	  return date;
 	}
 	
+	/**
+	 * метод парсинга строки которая приходит на вход бп арм
+	 * @param soData_Value_Result
+	 * @return
+	 */
     public static Map<String, String> parseDataARM(String soData_Value_Result){ 
-        Map<String, String> data = new HashMap();
+        Map<String, String> data = new HashMap<String, String>();
         String[] aDataSplit = soData_Value_Result.split(";;");
         String key, value;
         for (String dataSplit : aDataSplit) {
@@ -83,7 +103,11 @@ public class ValidationARM {
         return data;
     }
     
-	
+/**
+ * заполнение модели
+ * @param soData_Value_Result
+ * @return
+ */
 public static DboTkModel fillModel(String soData_Value_Result){
 		
 	Map<String, String> data = parseDataARM(soData_Value_Result);
