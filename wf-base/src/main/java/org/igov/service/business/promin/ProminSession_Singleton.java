@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
 public class ProminSession_Singleton {
     
     private final static Logger LOG = LoggerFactory.getLogger(ProminSession_Singleton.class);
-    private final static Logger LOGG = LoggerFactory.getLogger(Mail.class);
+    
     private String sid_Auth_UkrDoc_SED;
     private String sid_Auth_Receipt_PB_Bank;
     private String aSID_Auth_PB_SMS;
@@ -71,20 +71,14 @@ public class ProminSession_Singleton {
     public String getSid_Auth_PB_ObjectSubPlace() {
         LOG.info("Auth Promin begin. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
         	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
-        LOGG.info("Auth Promin begin. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
-        	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
+
         if (sid_Auth_PB_ObjectSubPlace == null || (System.currentTimeMillis() - nTimeCreatedMS_PB_ObjectSubPlace) > nTimeLiveLimitMS_PB_ObjectSubPlace) {
             nTimeCreatedMS_PB_ObjectSubPlace = System.currentTimeMillis();
 
             LOG.debug("Auth Promin, sid refresh");
-            LOGG.info("Auth Promin, sid refresh");
-            sid_Auth_PB_ObjectSubPlace= getSessionId(generalConfig.getObjectSubPlace_Auth_sLogin(),
-                    generalConfig.getObjectSubPlace_Auth_sPassword(),
-                    generalConfig.getObjectSubPlace_Auth_sURL_GenerateSID() + "?lang=UA");            
+            
         }
         LOG.info("Auth Promin end. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
-        	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
-        LOGG.info("Auth Promin end. sid_Auth_PB_ObjectSubPlace={}, nTimeCreatedMS_PB_ObjectSubPlace={}, nTimeLiveLimitMS_PB_ObjectSubPlace={}", 
         	sid_Auth_PB_ObjectSubPlace, nTimeCreatedMS_PB_ObjectSubPlace, nTimeLiveLimitMS_PB_ObjectSubPlace);
 	
         return sid_Auth_PB_ObjectSubPlace;
@@ -92,22 +86,22 @@ public class ProminSession_Singleton {
     
     private void checkAndUpdateSid() {
         LOG.info("getSID ... " + toString());
-        LOGG.info("getSID ... " + toString());
+
         if (sid_Auth_UkrDoc_SED == null || (System.currentTimeMillis() - nTimeCreatedMS) > nTimeLiveLimitMS) {
-            LOGG.info("nTimeCreatedMS ... " + toString());
+
             nTimeCreatedMS = System.currentTimeMillis();
             sid_Auth_UkrDoc_SED = getSessionId(generalConfig.getLogin_Auth_UkrDoc_SED(),
                     generalConfig.getPassword_Auth_UkrDoc_SED(),
                     generalConfig.getURL_GenerateSID_Auth_UkrDoc_SED() + "?lang=UA");
-            LOGG.info("sid_Auth_UkrDoc_SED ... " + sid_Auth_UkrDoc_SED);
+            
             sid_Auth_Receipt_PB_Bank = getSessionId(generalConfig.getLogin_Auth_Receipt_PB_Bank(),
                     generalConfig.getPassword_Auth_Receipt_PB_Bank(),
                     generalConfig.getURL_GenerateSID_Auth_Receipt_PB_Bank() + "?lang=UA");
-            LOGG.info("sid_Auth_Receipt_PB_Bank ... " + sid_Auth_Receipt_PB_Bank);
+
             aSID_Auth_PB_SMS = getSessionId(generalConfig.getLogin_Auth_PB_SMS(),
                     generalConfig.getPassword_Auth_PB_SMS(),
                     generalConfig.getURL_GenerateSID_Auth_PB_SMS() + "?lang=UA");
-            LOGG.info("aSID_Auth_PB_SMS ... " + aSID_Auth_PB_SMS);
+
         }
         LOG.info(toString() + " ok!");
     }
@@ -134,11 +128,9 @@ public class ProminSession_Singleton {
             String xmlResponse = httpRequester.postInside(uriSid, null, xml,
                     "text/xml; charset=utf-8", null, null);
             LOG.info("Response from SID generator: {}", xmlResponse);
-            LOGG.info("Response from SID generator: {}", xmlResponse);
             sessionId = getSidFromXml(xmlResponse);
         } catch (Exception ex) {
             LOG.error("", ex);
-            LOGG.error("", ex);
         }
         return sessionId;
     }
