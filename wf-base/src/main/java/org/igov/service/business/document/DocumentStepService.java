@@ -406,15 +406,16 @@ public class DocumentStepService {
                 oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group);
                 Boolean bWrite = null;
                 
-                LOG.info("oGroup.opt(bWrite) {}", oGroup.opt("bWrite"));
-                if(oGroup.opt("bWrite") != null){
+                
+                if((oGroup.get("bWrite") != null )&& (!"null".equals((String)oGroup.get("bWrite")))){
+                    LOG.info("oGroup.opt(bWrite) {}", oGroup.opt("bWrite"));
                     bWrite = (Boolean) oGroup.opt("bWrite");
                 }
                 
                 
-                if (bWrite == null) {
+                /*if (bWrite == null) {
                     throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite. Probably your json is wrong");
-                }
+                }*/
                 oDocumentStepSubjectRight.setbWrite(bWrite);
                 
                 Object oNeedECP = oGroup.opt("bNeedECP");
