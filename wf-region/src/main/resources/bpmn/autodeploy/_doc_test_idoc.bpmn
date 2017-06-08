@@ -276,7 +276,7 @@ execution.setVariable('processInstanceId', processInstanceId)
     <scriptTask id="scripttask10" name="Step 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol', 'sTable4', 'step_4',false,'sLogin_Addressee')</script>
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol', 'sTable4', 'step_2',false,'sLogin_Addressee')</script>
     </scriptTask>
     <sequenceFlow id="flow76" sourceRef="scripttask10" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow77" sourceRef="usertask2" targetRef="servicetask2"></sequenceFlow>
@@ -287,7 +287,6 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Pro
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow78" sourceRef="servicetask1" targetRef="scripttask10"></sequenceFlow>
     <serviceTask id="servicetask2" name="Update_DocumentARM" activiti:delegateExpression="#{Update_ARM}">
       <extensionElements>
         <activiti:field name="soData">
@@ -296,6 +295,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Pro
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow79" sourceRef="servicetask2" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow80" sourceRef="servicetask1" targetRef="scripttask10"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_idoc">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_idoc" id="BPMNPlane__doc_test_idoc">
@@ -318,7 +318,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Pro
         <omgdc:Bounds height="55.0" width="105.0" x="700.0" y="108.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="560.0" y="108.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="560.0" y="103.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="980.0" y="108.0"></omgdc:Bounds>
@@ -333,7 +333,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Pro
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
         <omgdi:waypoint x="536.0" y="131.0"></omgdi:waypoint>
-        <omgdi:waypoint x="560.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="805.0" y="135.0"></omgdi:waypoint>
@@ -343,13 +343,13 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Pro
         <omgdi:waypoint x="945.0" y="135.0"></omgdi:waypoint>
         <omgdi:waypoint x="980.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
-        <omgdi:waypoint x="665.0" y="135.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="135.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
         <omgdi:waypoint x="1085.0" y="135.0"></omgdi:waypoint>
         <omgdi:waypoint x="1140.0" y="135.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
+        <omgdi:waypoint x="665.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
