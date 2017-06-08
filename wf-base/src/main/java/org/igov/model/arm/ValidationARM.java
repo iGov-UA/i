@@ -41,8 +41,8 @@ public class ValidationARM {
 	public static String isValidSizePrilog(String data) {
 		String prilog = "";
 		if (isValid(data)) {
-			if (data.length() > 250) {
-				prilog = data.substring(0, 240) + " ...";
+			if (data.length() > 200) {
+				prilog = data.substring(0, 150) + " ...";
 			} else {
 				prilog = data;
 			}
@@ -155,6 +155,7 @@ public static DboTkModel fillModel(String soData_Value_Result){
     dataForTransferToArm.setCorrectionDoc(isValid(data.get("CorrectionDoc"))? data.get("CorrectionDoc"):null);
     dataForTransferToArm.setPrioritet(isValid(data.get("Prioritet"))? data.get("Prioritet"):null);
     dataForTransferToArm.setLongterm(isValid(data.get("Longterm"))? data.get("Longterm"):null);
+    dataForTransferToArm.setId_corp(isValid(data.get("Id_corp"))? Integer.valueOf(data.get("Id_corp")):1);
 
 	return dataForTransferToArm;
 		
