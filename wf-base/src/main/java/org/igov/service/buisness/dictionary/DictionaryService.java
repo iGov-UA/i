@@ -37,9 +37,12 @@ public class DictionaryService {
 
             String sLine;
             while ((sLine = oBufferedReader.readLine()) != null) {
+                LOG.info("sLine is {}", sLine);
                 String key = StringUtils.substringBefore(sLine, ";");
-
-                values.put(key, sLine);
+                
+                if(key.equals(sValue)){
+                    values.put(key, sLine);
+                }
             }
 
             oBufferedReader.close();

@@ -404,8 +404,14 @@ public class DocumentStepService {
                 }
                 DocumentStepSubjectRight oDocumentStepSubjectRight = new DocumentStepSubjectRight();
                 oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group);
-
-                Boolean bWrite = (Boolean) oGroup.opt("bWrite");
+                Boolean bWrite = null;
+                
+                LOG.info("oGroup.opt(bWrite) {}", oGroup.opt("bWrite"));
+                if(oGroup.opt("bWrite") != null){
+                    Boolean bWrite = (Boolean) oGroup.opt("bWrite");
+                }
+                
+                
                 if (bWrite == null) {
                     throw new IllegalArgumentException("Group " + sKey_Group + " hasn't property bWrite. Probably your json is wrong");
                 }
