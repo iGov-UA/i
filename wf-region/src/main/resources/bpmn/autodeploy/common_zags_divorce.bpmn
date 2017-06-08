@@ -99,7 +99,6 @@
         <activiti:formProperty id="ScancopyDoc2" name="Cвідоцтво про шлюб; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc1" name="Копія рішення суду (витяг з рішення суду) про визнання другого з подружжя безвісно відсутнім чи недієздатним, що набрало законної сили; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc3" name="Копії рішення суду (витягу з рішення суду) про розірвання шлюбу, що набрало законної сили; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDivorceDay" name="Дата развода; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_show.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show-hide2" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_show_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Required" type="markers" default="${markerService.loadFromFile('minust/common_zags_divorce_req.json')}"></activiti:formProperty>
@@ -229,7 +228,7 @@ ${sMail_Signature}<br /><br />
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ); ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після розірвання шлюбу бажаю мати прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Зауваження відсутні"></activiti:value>
+          <activiti:value id="accept" name="Зауваження відсутні, надіслати повідомлення про необхідність сплати державного мита"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
@@ -305,7 +304,7 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Заява про державну реєстрацію розірвання шлюбу]]></activiti:string>
+          <activiti:string><![CDATA[Заява про державну реєстрацію розірвання шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -458,7 +457,7 @@ ${sMail_Signature}<br /><br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Звернення на тему: Заява про державну реєстрацію розірвання шлюбу]]></activiti:string>
+          <activiti:string><![CDATA[Заява про державну реєстрацію розірвання шлюбу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -929,7 +928,9 @@ execution.setVariable('sDescription', des)</script>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow60" sourceRef="servicetask18" targetRef="exclusivegateway7"></sequenceFlow>
     <sequenceFlow id="flow61" sourceRef="exclusivegateway7" targetRef="usertask5"></sequenceFlow>
-    <sequenceFlow id="flow62" sourceRef="exclusivegateway6" targetRef="servicetask15"></sequenceFlow>
+    <sequenceFlow id="flow62" sourceRef="exclusivegateway6" targetRef="servicetask15">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide3 == 'reject33'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask19" name="Заява підписана" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -948,7 +949,7 @@ execution.setVariable('sDescription', des)</script>
 Співробітник ДРАЦС отримав заяву про державну реєстрацію розірвання шлюбу.<br> 
 Примітка співробітника: ${comment}<br>
 <br>
-Для державної реєстрації розірвання шлюбу Вам необхідно з'явитися відділ ДРАЦС за адресою: ${sAddress} ${sDivorceDay}.<br><br>
+Для державної реєстрації розірвання шлюбу Вам необхідно з'явитися у відділ ДРАЦС за адресою: ${sAddress} ${sDivorceDay}.<br><br>
 
 Під час візиту до ДРАЦСу обов'язково при собі мати:<br>
 1. Квитанцію про сплату держ.мита (якщо Ви сплатили онлайн на порталі - необов’язково).<br>
@@ -973,9 +974,7 @@ ${sMail_Signature}<br /><br />
         <activiti:field name="sText_SMS">
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
-      </extensionElements>   
-        
-        
+      </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow63" sourceRef="servicetask19" targetRef="usertask6"></sequenceFlow>
   </process>
