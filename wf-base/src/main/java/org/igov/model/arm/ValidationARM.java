@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
-import org.igov.model.arm.DboTkModel;
 
 import com.google.common.collect.Lists;
 public class ValidationARM {
