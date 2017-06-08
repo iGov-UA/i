@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author Kovilin
  */
+@Component("documentStepService")
 @Service
 public class DictionaryService {
     
@@ -26,7 +28,7 @@ public class DictionaryService {
         Map<String, String> values = new HashMap<>();
         
         try (BufferedReader oBufferedReader = 
-                getBufferedReader_PatternDictonary("patterns/dictionary/" + sPath + ".csv")) {
+                getBufferedReader_PatternDictonary(sPath + ".csv")) {
 
             String sLine;
             while ((sLine = oBufferedReader.readLine()) != null) {
