@@ -42,7 +42,7 @@ public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact
     }
 
     @Override
-    public List<SubjectContact> findContactsBySubjectAndContactType(Subject oSubject, int nID_SubjectContactType) {
+    public List<SubjectContact> findContactsBySubjectAndContactType(Subject oSubject, long nID_SubjectContactType) {
         
         Criteria criteria = createCriteria();
 

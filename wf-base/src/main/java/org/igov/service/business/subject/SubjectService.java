@@ -437,7 +437,7 @@ public class SubjectService {
         return result;
     }
     
-    public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, int nID_SubjectContactType) throws Exception {
+    public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, long nID_SubjectContactType) throws Exception {
         
         LOG.info("getSubjectContacts start...");
         List<SubjectContact> aoSubjectContact = new ArrayList<>();
