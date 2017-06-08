@@ -457,6 +457,8 @@ public class SubjectService {
                     .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, false, 0l, sSubjectType);
             LOG.info("oSubjectGroupResultTree={}", oSubjectGroupResultTree);
             
+            //добавить рутовый элемент
+            
             aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
         }
         LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);

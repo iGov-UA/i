@@ -9,6 +9,9 @@ import org.igov.model.core.GenericEntityDao;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * User: goodg_000
  * Date: 27.12.2015
@@ -16,7 +19,9 @@ import org.hibernate.criterion.Restrictions;
  */
 @Repository
 public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact> implements SubjectContactDao {
-
+    
+    private static final Logger LOG = LoggerFactory.getLogger(SubjectContactDaoImpl.class);
+    
     public SubjectContactDaoImpl() {
         super(SubjectContact.class);
     }
@@ -43,8 +48,10 @@ public class SubjectContactDaoImpl extends GenericEntityDao<Long, SubjectContact
 
     @Override
     public List<SubjectContact> findContactsBySubjectAndContactType(Subject oSubject, long nID_SubjectContactType) {
+    
+        LOG.info("findContactsBySubjectAndContactType: oSubject={}, nID_SubjectContactType={}", oSubject, nID_SubjectContactType);
         
-        Criteria criteria = createCriteria();
+        Criteria criteria = getSession().createCriteria(SubjectContact.class);
 
         criteria.add(Restrictions.eq("subjectContactType.id", nID_SubjectContactType));
         criteria.add(Restrictions.eq("subject", oSubject));
