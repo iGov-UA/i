@@ -407,7 +407,8 @@ public class DocumentStepService {
                 Boolean bWrite = null;
                 
                 
-                if((oGroup.get("bWrite") != null )&& (!"null".equals((String)oGroup.get("bWrite")))){
+                //if((oGroup.get("bWrite") != null )&& (!"null".equals((String)oGroup.get("bWrite")))){
+                if(!oGroup.isNull("bWrite")){
                     LOG.info("oGroup.opt(bWrite) {}", oGroup.opt("bWrite"));
                     bWrite = (Boolean) oGroup.opt("bWrite");
                 }
