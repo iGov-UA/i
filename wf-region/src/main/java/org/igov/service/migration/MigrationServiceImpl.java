@@ -11,6 +11,7 @@ import org.activiti.engine.form.StartFormData;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
+import org.activiti.engine.impl.persistence.entity.AttachmentEntity;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Attachment;
 import org.apache.commons.lang.StringUtils;
@@ -352,9 +353,13 @@ public class MigrationServiceImpl implements MigrationService {
             if (StringUtils.isNumeric(string)) {
                 type = attributeTypeDao.findById(7L).get();
                 Attribute_File fileAttribute = new Attribute_File();
-                Attachment file = actionTaskService.getAttachment(string, 0, processId);
-                fileAttribute.setsID_Data(string);
+                AttachmentEntity file = (AttachmentEntity) actionTaskService.getAttachment(string, 0, processId);
                 fileAttribute.setsContentType(file.getType());
+                fileAttribute.setoAttribute(attribute);
+                fileAttribute.setsFileName(file.getName());
+                fileAttribute.setsExtName(file.getName().split("\\.")[1]);
+                String newKey = transferAttachment(file.getContentId(), file.getName(), file.getType());
+                fileAttribute.setsID_Data(newKey);
                 attribute.setoAttribute_File(fileAttribute);
             } else if (string.startsWith("{") && string.contains("Mongo")) {
                 type = attributeTypeDao.findById(7L).get();
