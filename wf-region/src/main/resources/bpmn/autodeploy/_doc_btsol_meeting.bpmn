@@ -42,7 +42,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_meeting_print.html] ; ;bVisible=false" type="string" default="Протокол" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_btsol]]></activiti:string>
@@ -53,13 +53,13 @@
             <activiti:string><![CDATA[_task_btsol]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable3}]]></activiti:expression>
+            <activiti:expression>${sTable3}</activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
-            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+            <activiti:expression>${processDefinitionId}</activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sTextMeeting::${sTextMeeting};;sDateMeeting::${sDateMeeting};;sDurationMeeting::${sDurationMeeting};;sAmtParticipants::${sAmtParticipants};;sAmtDecisions::${sAmtDecisions};;sChairperson::${sChairperson};;sPresent::${sPresent};;sHearken::${sHearken};;sTask::${sTask}]]></activiti:expression>
+            <activiti:expression>sTitleDoc::${sTitleDoc};;sTextMeeting::${sTextMeeting};;sDateMeeting::${sDateMeeting};;sDurationMeeting::${sDurationMeeting};;sAmtParticipants::${sAmtParticipants};;sAmtDecisions::${sAmtDecisions};;sChairperson::${sChairperson};;sPresent::${sPresent};;sHearken::${sHearken};;sTask::${sTask}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -121,7 +121,10 @@ execution.setVariable('processInstanceId', processInstanceId)
     <scriptTask id="scripttask6" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2', 'step_2',false,'sLogin_isExecute')</script>
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2', 'step_2',false,'sLogin_isExecute')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')
+</script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2_red"></sequenceFlow>
     <scriptTask id="scripttask8" name="сброс подписи" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -210,7 +213,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="493.0" y="126.0"></omgdi:waypoint>
         <omgdi:waypoint x="580.0" y="127.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="52.0" x="493.0" y="126.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="52.0" x="493.0" y="126.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
@@ -227,7 +230,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="311.0" y="308.0"></omgdi:waypoint>
         <omgdi:waypoint x="311.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
