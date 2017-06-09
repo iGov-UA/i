@@ -66,29 +66,28 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		// модель и туда же укладываем по ключу Out_number значение sID_order
 		DboTkModel dataWithExecutorForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
 		dataWithExecutorForTransferToArm.setOut_number(sID_order);
-		
-		String check = getExc(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService);
-		LOG.info("dataWithExecutorForTransferToArm = {}",dataWithExecutorForTransferToArm);
-		LOG.info("asExecutorsFromsoData = {}", check);
+		LOG.info("dataBEFOREgetEXEC = {}",dataWithExecutorForTransferToArm);
+		List <String> asExecutorsFromsoData = getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");//json с ключом из монги
+		LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
 
-		/*List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
+		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
 
 		if (listOfModels != null && !listOfModels.isEmpty()) {
 
 			if (!asExecutorsFromsoData.isEmpty() && asExecutorsFromsoData != null) {
 				dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
+				LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
 				armService.updateDboTk(dataWithExecutorForTransferToArm);
 				// если в листе не одно значение - для каждого исполнителя сетим
 				if (asExecutorsFromsoData.get(1) != null) {
 					for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
-						
 						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
 						armService.createDboTk(dataWithExecutorForTransferToArm);
 					}
 				}
 			}else LOG.info("Executors are abcent ");
 
-		}else LOG.info("Model include sID_order "+ sID_order + "not found in ARM");*/
+		}else LOG.info("Model include sID_order "+ sID_order + "not found in ARM");
 	}
 
 	/**
@@ -99,37 +98,17 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 	 * @return
 	 */
 	/**
-	 * Получение значения поля Prilog - должно одержать имена атачей прикрепленных
+	 * Получение значения поля Prilog - должно одержать имена атачей
+	 * прикрепленных
+	 * 
 	 * @param data
 	 * @param oAttachmetService
 	 * @return
 	 */
-	public String getExc(String data, AttachmetService oAttachmetService) {
-		if (ValidationARM.isValid(data)) {
-			org.json.simple.JSONObject oJSONObject = null;
-			try {
-				JSONParser parser = new JSONParser();
 
-				org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(data);
-
-				InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
-						(String) oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType"))
-						.getInputStream();
-
-				oJSONObject = (org.json.simple.JSONObject) parser
-						.parse(IOUtils.toString(oAttachmet_InputStream, "UTF-8"));
-				LOG.info("oTableJSONObject in listener: " + oJSONObject.toJSONString());
-			} catch (Exception e) {
-				LOG.error("oTableJSONObject in listener: " + oJSONObject.toJSONString());
-			}
-		}
-		return data;
-	}
-	
-	/*
-	public List<String> getAsExecutors(String data, AttachmetService oAttachmetService) {
-		List<String> listPrilogName = new ArrayList<String>(); // array of
-																// executors
+	public List<String> getAsExecutors(String data, AttachmetService oAttachmetService, String sID_FieldTable) {
+		List<String> listPrilogName = new ArrayList<String>();
+	//	String sID_FieldTable1 = "sName_isExecute";
 		if (ValidationARM.isValid(data)) {
 			org.json.simple.JSONObject oJSONObject = null;
 			try {
@@ -160,12 +139,15 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 											.get(j);
 									LOG.info("oJsonMap in getExpert is {}", oJsonMap);
 									if (oJsonMap != null) {
-										Object value = oJsonMap.get("value");
-										if (value != null) {
-											LOG.info("oValue in getExpert is {}", value);
-											listPrilogName.add((String) value);
-										} else {
-											LOG.info("oValue in getExpert is null");
+										Object oId = oJsonMap.get("id");
+										if (((String) oId).equals(sID_FieldTable)) {
+											Object oValue = oJsonMap.get("value");
+											if (oValue != null) {
+												LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
+												listPrilogName.add((String) oValue);
+											} else {
+												LOG.info("oValue in cloneDocumentStepFromTable is null");
+											}
 										}
 									}
 								}
@@ -181,5 +163,5 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}
 		}
 		return listPrilogName;
-	}*/
+	}
 }
