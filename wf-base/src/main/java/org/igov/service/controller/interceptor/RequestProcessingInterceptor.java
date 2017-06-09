@@ -216,7 +216,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
                     }
                 } catch (Exception ex) {
-                    LOG.debug("Error parsing sRequestBody: {}", ex);
+                    LOG.debug("Error parsing sResponseBody: {}", ex);
                     //LOG.debug("sRequestBody is: {}", sResponseBody);
                 }
 
@@ -351,12 +351,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
 
                 String sRequestBody = osRequestBody.toString();
-                String sResponseBody = !bFinish ? "" : oResponse.toString();
+                //String sResponseBody = !bFinish ? "" : oResponse.toString();
 
                 String sURL = oRequest.getRequestURL().toString();
 
                 JSONObject omRequestBody = null;
-                JSONObject omResponseBody = null;
+                //JSONObject omResponseBody = null;
 
                 try {
                     if (!sRequestBody.trim().equals("")) {
@@ -367,16 +367,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     //LOG.info("sRequestBody is: {}", sRequestBody);
                 }
 
-                try {
+               /*try {
                     if (!sResponseBody.trim().equals("")) {
                         omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
                     }
                 } catch (Exception ex) {
-                    LOG.info("Error parsing sRequestBody: {}", ex);
+                    LOG.info("Error parsing sResponseBody: {}", ex);
                     //LOG.info("sRequestBody is: {}", sResponseBody);
                 }
 
-                /*if (isUpdateProcess(oRequest)){
+                if (isUpdateProcess(oRequest)){
 
                     LOG.info("--------------ALL PARAMS IN UPDATE PROCESS(REGION)--------------");
                     LOG.info("protocolize sURL is: " + sURL);
