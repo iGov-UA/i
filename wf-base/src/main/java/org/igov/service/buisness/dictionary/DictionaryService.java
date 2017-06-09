@@ -61,7 +61,7 @@ public class DictionaryService {
                     String [] columnsValues = sLine.split("\\;");
                     for(int i = 0; i < columnsValues.length; i++){
                         if(i == columnNumber){
-                            values.put(key, columnsValues[i]);
+                            values.put("test", columnsValues[i]);
                             break;
                         }
                     }
