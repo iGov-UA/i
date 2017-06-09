@@ -68,6 +68,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.activiti.engine.task.IdentityLinkType;
+import org.igov.model.document.DocumentStepSubjectRightFieldDao;
 
 @Component("documentStepService")
 @Service
@@ -84,7 +85,11 @@ public class DocumentStepService {
 
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
+    
+    @Autowired
+    private DocumentStepSubjectRightFieldDao oDocumentStepSubjectRightFieldDao;
 
+    
     @Autowired
     private AttachmetService oAttachmetService;
 
@@ -541,7 +546,7 @@ public class DocumentStepService {
         return bRemoved;
     }
 
-    public List<DocumentStepSubjectRight> delegateDocumentStepSubject(String snID_Process_Activiti, String sKey_Step, String sKey_Group, String sKey_Group_Delegate)
+    public List<DocumentStepSubjectRight> delegateDocumentStepSubject(String snID_Process_Activiti, String sKey_Step, String sKey_Group, String sKey_Group_Delegate, String sOperationType)
             throws Exception {
 
         LOG.info("started... sKey_Group={}, snID_Process_Activiti={}, sKey_Step={}", sKey_Group, snID_Process_Activiti,
@@ -553,19 +558,60 @@ public class DocumentStepService {
 
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
-            cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
             
-            for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-                if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
-                    LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight.getsKey_GroupPostfix());
-                    oDocumentStepSubjectRight.setbWrite(null);
-                    //oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group_Delegate);
-                    //oDocumentStepSubjectRight.setsDateECP(null);
-                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                    break;
+            if(sOperationType.equals("delegate")){
+                cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
+                
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                        LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                        oDocumentStepSubjectRight.setbWrite(null);
+                        //oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group_Delegate);
+                        //oDocumentStepSubjectRight.setsDateECP(null);
+                        oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                        break;
+                    }
                 }
             }
-
+            
+            if(sOperationType.equals("AddAcceptor")){
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                        List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = 
+                                oDocumentSubjectRightPermitionDao.findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight.getId());
+                        
+                        for(DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition){
+                            if(oDocumentSubjectRightPermition.getPermitionType().equals("AddAcceptor")){
+                                if(oDocumentSubjectRightPermition.getsKeyGroupeSource() != null){
+                                    cloneDocumentStepSubject(snID_Process_Activiti, 
+                                            sKey_Group, oDocumentSubjectRightPermition.getsKeyGroupeSource(), sKey_Step, true);
+                                }else{
+                                    
+                                    DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
+                                    oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
+                                    oDocumentStepSubjectRight_New.setbWrite(true);
+                                    oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight.getbNeedECP());
+                                    oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
+                                    
+                                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
+                                    
+                                    for(DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()){
+                                        DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
+                                        oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField.getbWrite());
+                                        oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField.getsMask_FieldID());
+                                        oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
+                                        oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        
+                        break;
+                    }
+                }
+            }
+            
             String nId_Task = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
                     active().singleResult().getId();
             oTaskService.addCandidateGroup(nId_Task, sKey_Group_Delegate);

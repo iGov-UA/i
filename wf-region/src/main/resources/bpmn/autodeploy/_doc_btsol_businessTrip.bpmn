@@ -40,7 +40,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_businessTrip_print.html] ; ;bVisible=false" type="string" default="Форма приказа" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_btsol]]></activiti:string>
@@ -94,6 +94,10 @@ execution.setVariable('processInstanceId', processInstanceId)
 var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_2')
+
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')
+
 </script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2"></sequenceFlow>
@@ -185,6 +189,13 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 var sKey_GroupPostfix_New = 'btsol_070363MSV'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_3')
+
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_3')
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_3')
+
+
 </script>
     </scriptTask>
     <sequenceFlow id="flow109" sourceRef="scripttask18" targetRef="usertask4"></sequenceFlow>
@@ -194,7 +205,17 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_5')</script>
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_5')
+
+var sKey_GroupPostfix_New = 'btsol_law'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_5')
+
+var sKey_GroupPostfix_New = 'btsol_070363MSV'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_5')
+
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_5')
+</script>
     </scriptTask>
     <sequenceFlow id="flow111" sourceRef="exclusivegateway4" targetRef="scripttask20">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign'}]]></conditionExpression>
@@ -208,10 +229,19 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
 var sKey_GroupPostfix_New = 'btsol_law'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_4')
+
+var sKey_GroupPostfix_New = 'btsol_070363MSV'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_4')
+
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_4')
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_4')
+
 </script>
     </scriptTask>
     <userTask id="usertask5" name="Регистрация приказа">
-    <extensionElements>
+      <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
@@ -317,7 +347,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="496.0" y="349.0"></omgdi:waypoint>
         <omgdi:waypoint x="496.0" y="258.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="562.0" y="331.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="55.0" x="562.0" y="331.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
@@ -357,7 +387,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="496.0" y="620.0"></omgdi:waypoint>
         <omgdi:waypoint x="496.0" y="258.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="562.0" y="599.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="55.0" x="562.0" y="599.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow114" id="BPMNEdge_flow114">

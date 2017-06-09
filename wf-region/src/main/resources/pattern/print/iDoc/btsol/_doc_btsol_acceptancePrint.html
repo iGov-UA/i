@@ -498,40 +498,31 @@
                 Найменування підприємства (установи, організації)
 
             </div>
-            <div class="w33p r">
-                <b> Типова форма № П-4</b><br>
+            <div class="w33p r ta-c">
+                <b> Типова форма № П-1</b><br>
                 ЗАТВЕРДЖЕНО<br>
                 наказом Держкомстату України<br>
                 від 5 грудня 2008 р. № 489
             </div>
         </div>
 
-        <div class="layout ta-j w100p">
-        	<div class="r ta-c">
-                <table class="ta-c w300">
-                    <tr>
-                    	<td>Код ЄДРПОУ</td>
-                    	<td>36495470</td>
-                    </tr>
-                    <tr>
-                    	<td>Дата складання</td>
-                    	<td>[sDateCreateProcess]</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
         <br />
 
         <div class="b ta-c fs14">
-            НАКАЗ №______<br>
-            (РОЗПОРЯДЖЕННЯ)<br>
-            <span class="fs10">про припинення трудового договору (контракту)</span>
+            НАКАЗ (РОЗПОРЯДЖЕННЯ) №____ від «____» ____________20____ р.<br />
+            <span class="fs10">про прийняття на роботу</span>
+        </div>
+
+        <div class="w100p">
+            <div class="under_field w100p ta-c">
+                <u>[sHiredPersonLastName] [sHiredPersonFirstName] [sHiredPersonMiddleName]</u>
+                <span>(прізвище, ім’я, по батькові)</span>
+            </div>
         </div>
 
         <div class="layout ta-j w100p">
             <div class="w60p l b ta-l  va-c">
-                Звільнити <span id="spansDateStart">[sDateDismissal]</span>
+                Прийняти на роботу з <span id="spansDateStart">[sDateStart]</span>
             </div>
 
             <div class="r ta-c">
@@ -542,47 +533,187 @@
             </div>
         </div>
 
+        <div class="w100p ta-c">
+         <!-- до  [sDateContract]  --> 
+         	до «<em id="emsDateContract_date">&#160;&#160;&#160;&#160;</em>»
+           <em id="emsDateContract_month">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</em>
+           20<em id="emsDateContract_year">&#160;&#160;&#160;&#160;</em> р. 
+        </div>
+        <div class="w100p ta-c smallText">(заповнюється у разі строкового трудового договору (контракту))</div>
+
+
         <div class="w100p">
             <div class="under_field w100p ta-c">
-                <u>[sNameDismissal]</u>
-                <span>(прізвище, ім’я, по батькові)</span>
-            </div>
-            <div class="under_field w100p ta-c">
-                <u>[sName_Department]</u>
-                <span>(назва структурного підрозділу)</span>
-            </div>
-            <div class="under_field w100p ta-c">
-                <u>[sPositionDismissal]</u>
-                <span>назва професії (посади), розряд, клас (категорія) кваліфікації</span>
-            </div>
-            <div class="under_field w100p ta-c">
-                <u>[asTypeLaw]</u>
-                <span>(причина звільнення)</span>
-            </div>
-            <div class="under_field w100p ta-c">
-                <u>[sCause]</u>
-                <span>(підстави звільнення)</span>
+                <u class="b">[sName_Department]</u>
+                <span>назва структурного підрозділу</span>
             </div>
         </div>
 
-        
+        <div class="w100p">
+            <div class="under_field w100p ta-c">
+                <u class="b">[sHiredPersonPosition]</u>
+                <span>назва професії (посади), кваліфікація</span>
+            </div>
+        </div>
 
 
         <div class="layout ta-l w100p">
             <div class="w50p l">
-                <div class="w100p">
-                   
 
+                <div class="w100p ta-c">
+                    <span class="u b">умови прийняття на роботу</span><br />
+                    <span>(необхідне відмітити позначкою «&#10004;»):</span>
+                </div>
+
+
+                <div class="w100p">
                     <span class="check_box"><span id="spanbConditions_1">&#10004;</span></span>
-                    Вихідна допомога <em id="emsDateContract">[sAssistanceSum]</em> грн.<br>
+                    на конкурсній основі<br />
+
+                    <span class="check_box"><span id="spanbConditions_2">&#10004;</span></span>
+                    за умовами контракту до <em id="emsDateContract">[sDateContract]</em> у разі необхідності вказати дату (дд.мм.рррр.)<br />
+
+                    <span class="check_box"><span id="spanbConditions_3">&#10004;</span></span>
+                    зі строком випробування <em id="emsProbation">[sProbation]</em> місяців<br />
+
+                    <span class="check_box"><span id="spanbConditions_4">&#10004;</span></span>
+                    на час виконання певної роботи<br />
+
+                    <span class="check_box"><span id="spanbConditions_5">&#10004;</span></span>
+                    на період відсутності основного працівника<br />
+
+                    <span class="check_box"><span id="spanbConditions_6">&#10004;</span></span>
+                    із кадрового резерву<br />
+
+                    <span class="check_box"><span id="spanbConditions_7">&#10004;</span></span>
+                    за результатами успішного стажування<br />
+
+                    <span class="check_box"><span id="spanbConditions_8">&#10004;</span></span>
+                    переведення<br />
+
+                    <span class="check_box"><span id="spanEmpty1">&#10004;</span></span>
+                    _________________________________<br />
+                </div>
+            </div>
+            <div class="w50p r">
+
+                <div class="w100p ta-c">
+                    <span class="b u pg-20">умови роботи:</span><br />
+                    <span>(необхідне відмітити позначкою «&#10004;»):</span>
+                </div>
+
+
+                <div class="w100p">
+
+                    робота:
+                    <span class="check_box"><span id="spanEnumBasic">&#10004;</span></span>
+                    основна
+                    <span class="check_box"><span id="spanEnumSameTime">&#10004;</span></span>
+                    за сумісництвом<br />
+
+                    умови праці (згідно атестації робочого місця ):<br />
+
+
+                    <div class="w100p under_multifield">
+                        <u>[sWorkingConditions]</u>
+                    </div>
+
+
+                    <span class="check_box"><span id="spanFirst">&#10004;</span></span>
+                    тривалість робочого дня (тижня) <em>[sWorkingHours]</em> .<br />
+
+
+                    <span class="check_box"><span id="spanFirst">&#10004;</span></span>
+                    тривалість робочого дня (тижня) при роботі з неповним робочим часом  1 год. 00 хв.<br />
+
+
+                    <span class="check_box"><span id="spanFirst">&#10004;</span></span>
+                    ____________________________________<br />
+
+
+                    <span class="check_box"><span id="spanFirst">&#10004;</span></span>
+                    ____________________________________<br />
+
                 </div>
             </div>
         </div>
 
-        <br><br><br><br><br>
+        <br />
 
-        
+        <table class="w100p nbr">
+            <colgroup>
+                <col width="32%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="8%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td class="ta-r" colspan="4">оклад (тарифна ставка)</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td>&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td colspan="4">коп.</td>
+                </tr>
+                <tr>
+                    <td class="ta-r">надбавка за_______________</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-r-l">&#160;</td>
+                    <td>%</td>
+                    <td class="ta-r" colspan="8">надбавка за ______________</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-r-l">&#160;</td>
+                    <td>%</td>
+                </tr>
+                <tr>
+                    <td class="ta-r">надбавка за_______________</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-r-l">&#160;</td>
+                    <td>%</td>
+                    <td class="ta-r" colspan="8">надбавка за ______________</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td>%</td>
+                </tr>
+                <tr>
+                    <td class="ta-r">доплата</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td colspan="2">грн.</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td colspan="7">коп.</td>
+                </tr>
+            </tbody>
+        </table>
 
+        <br />
 
         <table class="ta-c nbr">
             <colgroup>
@@ -629,7 +760,99 @@
         </table>
     </section>
     <div style="page-break-after: always"></div>
-    
+    <section class="PrintFormClaim">
+        <br />
+
+        <div class="w100p">З правилами внутрішнього трудового розпорядку підприємства ознайомлений.</div>
+
+        <div class="layout ta-j w100p">
+            <div class="w10p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(підпис працівника)</span>
+                </div>
+            </div>
+            <div class="w20p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(дата)</span>
+                </div>
+            </div>
+            <div class="w10p"></div>
+        </div>
+
+
+        <div class="w100p">З посадовою інструкцією  ознайомлений  і зобов'язуюсь в повному обсязі виконувати її вимоги.</div>
+
+        <div class="layout ta-j w100p">
+            <div class="w10p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(підпис працівника)</span>
+                </div>
+            </div>
+            <div class="w20p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(дата)</span>
+                </div>
+            </div>
+            <div class="w10p"></div>
+        </div>
+
+
+        <div class="w100p">З умовами роботи згоден, правами на пільги і компенсацію за роботу в таких умовах відповідно до чинних нормативних актів ознайомлений.</div>
+
+        <div class="layout ta-j w100p">
+            <div class="w10p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(підпис працівника)</span>
+                </div>
+            </div>
+            <div class="w20p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(дата)</span>
+                </div>
+            </div>
+            <div class="w10p"></div>
+        </div>
+
+        <div class="w100p">Відмітки про проходження інструктажу з техніки безпеки, протипожежному мінімуму та інше.</div>
+
+        <table class="nbr br-b w100p">
+            <tr><td>&#160;</td></tr>
+            <tr><td>&#160;</td></tr>
+            <tr><td>&#160;</td></tr>
+        </table>
+
+
+        <div class="layout ta-j w100p">
+            <div class="w10p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(підпис працівника)</span>
+                </div>
+            </div>
+            <div class="w20p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(дата)</span>
+                </div>
+            </div>
+            <div class="w10p"></div>
+        </div>
+
+    </section>
 
 
     <script>
@@ -647,7 +870,7 @@
 	    }
 	
 	
-	    if ("[bAssistance]" == "yes") {
+	    if ("[bConditions_1]" == "yes") {
 	        document.getElementById('spanbConditions_1').style.visibility = 'visible';
 	    }
 	    if ("[bConditions_2]" == "yes") {

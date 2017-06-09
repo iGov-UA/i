@@ -182,7 +182,8 @@ public class DocumentCommonController {
         LOG.info("sKey_Group_Delegate={}", sKey_Group_Delegate);
         LOG.info("sKey_Step={}", sKey_Step);
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService.delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService
+                .delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate, "delegate");
         
         LOG.info("aDocumentStepSubjectRight_Current={}", aDocumentStepSubjectRight_Current);
         
