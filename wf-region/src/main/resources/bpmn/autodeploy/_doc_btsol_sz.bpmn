@@ -37,11 +37,11 @@
           <activiti:value id="sEnumDoc" name="документ"></activiti:value>
           <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable5_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable6_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_Kontroler" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="если задание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;asTypeReport&quot;,&quot;sDateExecution&quot;,&quot;sTextTask&quot;,&quot;sTable5&quot;,&quot;sName_Kontroler&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumYes'||[sClient] == 'да'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_Kontroler" name="Логін ; ; bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="если задание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;asTypeReport&quot;,&quot;sDateExecution&quot;,&quot;sTextTask&quot;,&quot;sTable6&quot;,&quot;sName_Kontroler&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumYes'||[sClient] == 'да'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression>${sLoginAuthor}</activiti:expression>
@@ -55,7 +55,7 @@
             <activiti:string><![CDATA[_task_btsol]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression>${sTable5}</activiti:expression>
+            <activiti:expression>${sTable6}</activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
             <activiti:expression>${processDefinitionId}</activiti:expression>
@@ -89,7 +89,7 @@
           <activiti:value id="sEnumDoc" name="документ"></activiti:value>
           <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
@@ -122,7 +122,7 @@
           <activiti:value id="sEnumDoc" name="документ"></activiti:value>
           <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT3" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
@@ -155,7 +155,7 @@
           <activiti:value id="sEnumDoc" name="документ"></activiti:value>
           <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Разрешаю"></activiti:value>
@@ -189,7 +189,7 @@
           <activiti:value id="sEnumDoc" name="документ"></activiti:value>
           <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" writable="false">
           <activiti:value id="sEnumSign" name="Разрешаю"></activiti:value>
@@ -215,11 +215,9 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable3', 'step_3',true,'sLogin_Approver')
-
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_3',true,'sLogin_isExecute')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_3')
-
 </script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
@@ -249,12 +247,9 @@ var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, '
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol', 'sTable4', 'step_4','sLogin_Addressee')
 
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable3', 'step_4',true,'sLogin_Approver')
-
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_4',true,'sLogin_isExecute')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_4')
-
-
 
 //4. получение ИД БП
 var executeProcessDefinitionId = execution.getProcessDefinitionId();
@@ -329,10 +324,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_5')
+
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol_view', 'sTable4', 'step_5','sLogin_Addressee')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable3', 'step_5',true,'sLogin_Approver')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_5',true,'sLogin_isExecute')
-</script>
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_5',true,'sLogin_isExecute')</script>
     </scriptTask>
     <sequenceFlow id="flow105" sourceRef="scripttask17" targetRef="usertask4"></sequenceFlow>
   </process>

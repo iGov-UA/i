@@ -216,7 +216,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
                     }
                 } catch (Exception ex) {
-                    LOG.debug("Error parsing sRequestBody: {}", ex);
+                    LOG.debug("Error parsing sResponseBody: {}", ex);
                     //LOG.debug("sRequestBody is: {}", sResponseBody);
                 }
 
@@ -351,12 +351,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
 
                 String sRequestBody = osRequestBody.toString();
-                String sResponseBody = !bFinish ? "" : oResponse.toString();
+                //String sResponseBody = !bFinish ? "" : oResponse.toString();
 
                 String sURL = oRequest.getRequestURL().toString();
 
                 JSONObject omRequestBody = null;
-                JSONObject omResponseBody = null;
+                //JSONObject omResponseBody = null;
 
                 try {
                     if (!sRequestBody.trim().equals("")) {
@@ -367,16 +367,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     //LOG.info("sRequestBody is: {}", sRequestBody);
                 }
 
-                try {
+               /*try {
                     if (!sResponseBody.trim().equals("")) {
                         omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
                     }
                 } catch (Exception ex) {
-                    LOG.info("Error parsing sRequestBody: {}", ex);
+                    LOG.info("Error parsing sResponseBody: {}", ex);
                     //LOG.info("sRequestBody is: {}", sResponseBody);
                 }
 
-                /*if (isUpdateProcess(oRequest)){
+                if (isUpdateProcess(oRequest)){
 
                     LOG.info("--------------ALL PARAMS IN UPDATE PROCESS(REGION)--------------");
                     LOG.info("protocolize sURL is: " + sURL);
@@ -718,6 +718,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     }
                     return;
                 } else {
+                    LOG.info("sRequestBody {}", sRequestBody);
+                    LOG.info("sResponseBody {}", sRequestBody);
+                    LOG.info("mRequestParam {}", sRequestBody);
                     saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
                 }
                 //{nID_Service=25, nID_Subject=255289, nID_ServiceData=542, sID_BP=dms_0025_ID2 545_iGov:1:1, sID_UA=1210100000}
@@ -806,14 +809,21 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             //LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
         Map<String, String> mParam = new HashMap<>();
+        LOG.info("sRequestBody {}", sRequestBody);
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
         
-        //LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
+        LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
         
         JSONArray properties = (JSONArray) omRequestBody.get("properties");
-        //LOG.info("properties >>>>>>>>>>>>>> {}", properties );
+        LOG.info("properties >>>>>>>>>>>>>> {}", properties );
+        
+        if(properties == null){
+            properties = (JSONArray) omRequestBody.get("aFormProperty");
+        }
+        
         Iterator<JSONObject> iterator = properties.iterator();
         String sID_Public_SubjectOrganJoin = null;
+        
         while (iterator.hasNext()) {
             JSONObject jsonObject = iterator.next();
 

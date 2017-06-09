@@ -38,7 +38,7 @@ public class DictionaryController {
     @RequestMapping(value = "/processDictionary", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
-    Map<String, String> processDictionary (@RequestParam(value = "sPath", required = true) String sPath,
+    List<Map<String, String>> processDictionary (@RequestParam(value = "sPath", required = true) String sPath,
                                     @RequestParam(value = "sID_Field", required = false) String sID_Field,
                                     @RequestParam(value = "sValue", required = false) String sValue) throws Exception
     {
