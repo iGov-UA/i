@@ -816,6 +816,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         JSONArray properties = (JSONArray) omRequestBody.get("properties");
         LOG.info("properties >>>>>>>>>>>>>> {}", properties );
+        
+        if(properties == null){
+            properties = (JSONArray) omRequestBody.get("aFormProperty");
+        }
+        
         Iterator<JSONObject> iterator = properties.iterator();
         String sID_Public_SubjectOrganJoin = null;
         
