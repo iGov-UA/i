@@ -113,12 +113,11 @@
         <activiti:formProperty id="sProgOsPos" name="Посада особи що робила проект" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sProgOsPIB" name="ПІБ особи що робила проект" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sProgOsKvalS" name="Серія та номер кваліфікаційного сертифікату" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="chekTexNag" name="Авторський нагляд здійснює та сама особа, що робила прект?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
+        <activiti:formProperty id="chekTexNag" name="Авторський нагляд здійснює та сама особа, що робила проект?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAvtNagPIB" name="ПІБ особи що здійснює авторський нагляд" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAvtNak" name="Наказ на підставі якого робиться нагляд;(ким видано, номер, дата)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="chekPrEksp" name="Чи пройшов проект будівництва експертизу?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -197,19 +196,11 @@
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/DABI/DABI_1569_PovVukBudBP_ECP.html"></activiti:formProperty>
         
-        <activiti:formProperty id="markerclFio" name="markerclFio" type="markers" default="${markerService.loadFromFile('AK/Value_clFio.json')}"></activiti:formProperty>
-        <activiti:formProperty id="clFio" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
-        
-        <activiti:formProperty id="markerDABIValue" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIValue1569.json')}"></activiti:formProperty>
-        <activiti:formProperty id="ScrGPodr1" name="Код ЄДРПОУ підрядника; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="ScrGPodr2" name="Повне найменування юридичної особи підрядника; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="ScrGPodr3" name="Юридична адреса; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        
         <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk_dabi" name="Пошта ДЗК; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk_dabi" name="Пошта ДАБІ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan_dabi" name="Назва органу; ;bVisible=false" type="string" default="Управління державного архітектурно-будівельного контролю"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan_dabi" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
@@ -272,7 +263,7 @@ execution.setVariable('sSum', sum);
 Спочатку вашу заяву перевірить ЦНАП.<br />
 Потім звернення надійде до Управління державного архітектурно-будівельного контролю(УДАБК) і буде ним оброблене.<br />
 Якщо помилки будуть критичні, в наданні послуги буде відмовлено.<br /><br />
-Після обробки в УДАБК відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br />
+Після обробки в УДАБК, відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -316,7 +307,7 @@ ${sNameOrgan}<br />
 Спочатку вашу заяву перевірить ЦНАП.<br />
 Потім звернення надійде до Управління державного архітектурно-будівельного контролю(УДАБК) і буде ним оброблене.<br />
 Якщо помилки будуть критичні, в наданні послуги буде відмовлено.<br /><br />
-Після обробки в УДАБК відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br /><br />
+Після обробки в УДАБК, відповідь буде передана до ЦНАПу, про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br /><br />
 У випадку позитивного результату обробки в листі буде посилання для оплати доставки поштою.<br />
 На оплату буде надано 48 годин.<br />
 У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь особисто в ЦНАПі.<br /> 
@@ -340,7 +331,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow62" name="ЛИСТ ПОШТА" sourceRef="exclusivegateway6" targetRef="servicetask15">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVidpovid == 'sEnamPost'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="dabi_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="markersLine_fio" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_fio&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
@@ -432,7 +423,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sProgOsPIB" name="ПІБ особи що робила проект; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sProgOsKvalS" name="Серія та номер кваліфікаційного сертифікату; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAvtNagPIB" name="ПІБ особи що здійснює авторський нагляд; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAvtNak" name="Наказ на підставі якого робиться нагляд; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_03" name="Код ЄДРПОУ експертної організації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_03" name="Найменування експертної організації; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sEkspPIB" name="ПІБ відповідального експерта; ;writable=false" type="string"></activiti:formProperty>
@@ -692,8 +682,8 @@ ${sNameOrgan}<br />
           <activiti:value id="accept" name="Заяву задоволено"></activiti:value>
           <activiti:value id="reject" name="УДАБК відмовив в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="commentCN" name="Вкажіть причину відмови" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileVidpov" name="Завантажте відповідь ДАБІ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="commentCN" name="Вкажіть причину відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="fileVidpov" name="Завантажте відповідь ДАБІ" type="file"></activiti:formProperty>
         <activiti:formProperty id="markerCN2" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekdashCnap.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -727,7 +717,7 @@ ${sNameOrgan}<br />
 <p>Причина відмови: ${commentCN}</p>
 Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 У разі подання повторної заявки, при вході під тим же логіном, поля будуть заповнені автоматично.<br />
-Якщо вам потрібен документ з відмовою ви можете отримати його в ЦНАПі.<br />
+Якщо вам потрібен документ з відмовою ви можете отримати його в ЦНАПі.<br /><br />
 ${sAddress}<br />
 ${sWorkTime}<br />
 ${sPhoneOrgan}<br />
@@ -757,7 +747,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Відмова ДАБІ. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression><![CDATA[Контроль. Відмова ДАБІ. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -767,7 +757,7 @@ ${sNameOrgan}<br />
 <p>Причина відмови: ${commentCN}</p>
 Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 У разі подання повторної заявки, при вході під тим же логіном, поля будуть заповнені автоматично.<br />
-Якщо вам потрібен документ з відмовою ви можете отримати його в ЦНАПі.<br />
+Якщо вам потрібен документ з відмовою ви можете отримати його в ЦНАПі.<br /><br />
 ${sAddress}<br />
 ${sWorkTime}<br />
 ${sPhoneOrgan}<br />
@@ -799,8 +789,8 @@ ${sNameOrgan}<br />
 [pattern/mail/new_design/_common_content_start.html]
 
 По вашому зверненню №[sID_Order] винесено позитивне рішення.<br />
-УДАБК успішно обробив вашу заяву.<br />
-Отриманйте відповідь в ЦНАПі.<br />
+УДАБК успішно обробив вашу заяву і зареєстрував повідомлення.<br />
+Отриманйте відповідь в ЦНАПі.<br /><br />
 ${sAddress}<br />
 ${sWorkTime}<br />
 ${sPhoneOrgan}<br />
@@ -841,7 +831,7 @@ ${sNameOrgan}<br/>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 По вашому зверненню №[sID_Order] винесено позитевне рішення.<br />
-Відповідь готова і передана в ЦНАП.<br /><br />
+Повідомлення зареєстроване. Відповідь готова і передана в ЦНАП.<br /><br />
 При замовленні послуги, ви обрали доставку відповіді поштою.<br /> 
 Для того щоб закінчити процедуру, необхідно протягом 48 годин(2х діб) сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)
 [paymentButton_LiqPay]
