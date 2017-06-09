@@ -17,7 +17,7 @@
       <script>
 		var value = execution.getVariable('sIPN');
   		var obj = dictionaryService.processDictionary('MinFin_test', 'IPN', value);
-  		var obj1 = obj.REZ;
+  		var obj1 = obj[0].REZ;
   		var sResult = " ";
   		if (obj1==0)
   		{
@@ -27,13 +27,13 @@
   		{
   			sResult = "ІПН некорректний"
   		}
-  		execution.setVariable('sResult', sResult);	  </script>
+  		execution.setVariable('sResult', obj1);	  </script>
     </scriptTask>
     <scriptTask id="scripttask2" name="Перевірка законності видачі субсидій і ВПО по наявності депозиту " scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script><![CDATA[
       	var value = execution.getVariable('sIPN');
   		var obj = dictionaryService.processDictionary('MinFin_test', 'IPN', value);
-  		var obj1 = obj.IS_DEP;
+  		var obj1 = obj[0].IS_DEP;
   		var sResult = " ";
   		if (obj1<50000)
   		{
