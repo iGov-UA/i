@@ -67,11 +67,14 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		DboTkModel dataWithExecutorForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
 		dataWithExecutorForTransferToArm.setOut_number(sID_order);
 		LOG.info("dataBEFOREgetEXEC = {}",dataWithExecutorForTransferToArm);
+		String prilog = getPrilog(dataWithExecutorForTransferToArm.getPrilog(),oAttachmetService);
+		LOG.info("prilog>>>>>>>>>>>> = {}",prilog);
+		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 		List <String> asExecutorsFromsoData = getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");//json с ключом из монги
 		LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
 
 		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
-
+		
 		if (listOfModels != null && !listOfModels.isEmpty()) {
 
 			if (!asExecutorsFromsoData.isEmpty() && asExecutorsFromsoData != null) {
@@ -164,4 +167,65 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		}
 		return listPrilogName;
 	}
+	/**
+	 * Получение значения поля Prilog - должно одержать имена атачей прикрепленных
+	 * @param data
+	 * @param oAttachmetService
+	 * @return
+	 */
+	public String getPrilog(String data, AttachmetService oAttachmetService) {
+		String listStringPrilog = ", ";
+		if (ValidationARM.isValid(data)) {
+			org.json.simple.JSONObject oJSONObject = null;
+			try {
+				JSONParser parser = new JSONParser();
+
+				org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(data);
+
+				InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+						(String) oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType"))
+						.getInputStream();
+
+				oJSONObject = (org.json.simple.JSONObject) parser
+						.parse(IOUtils.toString(oAttachmet_InputStream, "UTF-8"));
+				LOG.info("oTableJSONObject in listener Transfer_ARM: " + oJSONObject.toJSONString());
+				 org.json.simple.JSONArray aJsonRow = (org.json.simple.JSONArray) oJSONObject.get("aRow");
+
+	                if (aJsonRow != null) {
+	                	List<String> listPrilogName = new ArrayList<String>();
+	                    for (int i = 0; i < aJsonRow.size(); i++) {
+	                        org.json.simple.JSONObject oJsonField = (org.json.simple.JSONObject) aJsonRow.get(i);
+	                        LOG.info("oJsonField in {}", oJsonField);
+	                        if (oJsonField != null) {
+	                            org.json.simple.JSONArray aJsonField = (org.json.simple.JSONArray) oJsonField.get("aField");
+	                            LOG.info("aJsonField in getPrilog is {}", aJsonField);
+	                            if (aJsonField != null) {
+	                                for (int j = 0; j < aJsonField.size(); j++) {
+	                                    org.json.simple.JSONObject oJsonMap = (org.json.simple.JSONObject) aJsonField
+	                                            .get(j);
+	                                    LOG.info("oJsonMap in getPrilog is {}", oJsonMap);
+	                                    if (oJsonMap != null) {
+	                                        Object fileName = oJsonMap.get("fileName");
+	                                            if (fileName != null) {
+	                                                LOG.info("oValue in getPrilog is {}", fileName);
+	                                                listPrilogName.add((String) fileName);
+	                                            } else {
+	                                                LOG.info("oValue in getPrilog is null");
+	                                            }
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                    listStringPrilog = String.join(", ", listPrilogName);
+	                } else {
+	                    LOG.info("JSON array is null in getPrilog is null");
+	                }
+			} catch (Exception e) {
+				LOG.error("oTableJSONObject in listener Transfer_ARM: " + oJSONObject.toJSONString());
+			}
+		}
+		return listStringPrilog;
+	}
+	
 }
