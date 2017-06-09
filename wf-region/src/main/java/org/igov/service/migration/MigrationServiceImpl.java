@@ -321,8 +321,6 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private AttributeTypeCustom createAttributeTypeCustom(String variableId, String processId) {
-//        List<HistoricVariableInstance> historicVariableInstance =
-//                historyService.createHistoricVariableInstanceQuery().variableName(variableId).list();
         List<HistoricVariableInstance> historicVariableInstance =
                 historyService.createNativeHistoricVariableInstanceQuery()
                         .sql("SELECT * FROM act_hi_varinst where name_ = \'" + variableId + "\' AND proc_inst_id_ = \'" + processId + "\'").list();
