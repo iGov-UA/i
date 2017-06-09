@@ -56,8 +56,6 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		String sID_order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
 		LOG.info("sID_order in Update_ARM>>>>>>>>>>>" + sID_order);
 
-		
-
 		// получаю из екзекьюшена soData
 		String soData_Value = this.soData.getExpressionText();
 		LOG.info("soData_Value before: " + soData_Value);
@@ -67,12 +65,13 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
 		DboTkModel dataWithExecutorForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
-		
 		dataWithExecutorForTransferToArm.setOut_number(sID_order);
-		List<String> asExecutorsFromsoData = getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService);
-		LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
+		
+		String check = getExc(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService);
+		LOG.info("dataWithExecutorForTransferToArm = {}",dataWithExecutorForTransferToArm);
+		LOG.info("asExecutorsFromsoData = {}", check);
 
-		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
+		/*List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
 
 		if (listOfModels != null && !listOfModels.isEmpty()) {
 
@@ -89,7 +88,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 				}
 			}else LOG.info("Executors are abcent ");
 
-		}else LOG.info("Model include sID_order "+ sID_order + "not found in ARM");
+		}else LOG.info("Model include sID_order "+ sID_order + "not found in ARM");*/
 	}
 
 	/**
@@ -99,6 +98,35 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 	 * @param oAttachmetService
 	 * @return
 	 */
+	/**
+	 * Получение значения поля Prilog - должно одержать имена атачей прикрепленных
+	 * @param data
+	 * @param oAttachmetService
+	 * @return
+	 */
+	public String getExc(String data, AttachmetService oAttachmetService) {
+		if (ValidationARM.isValid(data)) {
+			org.json.simple.JSONObject oJSONObject = null;
+			try {
+				JSONParser parser = new JSONParser();
+
+				org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(data);
+
+				InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+						(String) oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType"))
+						.getInputStream();
+
+				oJSONObject = (org.json.simple.JSONObject) parser
+						.parse(IOUtils.toString(oAttachmet_InputStream, "UTF-8"));
+				LOG.info("oTableJSONObject in listener: " + oJSONObject.toJSONString());
+			} catch (Exception e) {
+				LOG.error("oTableJSONObject in listener: " + oJSONObject.toJSONString());
+			}
+		}
+		return data;
+	}
+	
+	/*
 	public List<String> getAsExecutors(String data, AttachmetService oAttachmetService) {
 		List<String> listPrilogName = new ArrayList<String>(); // array of
 																// executors
@@ -153,5 +181,5 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}
 		}
 		return listPrilogName;
-	}
+	}*/
 }
