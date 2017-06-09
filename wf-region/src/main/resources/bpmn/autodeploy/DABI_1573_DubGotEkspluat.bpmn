@@ -231,8 +231,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="print_marker" name="print_marker" type="markers" default="${markerService.loadFromFile('AK/Print_ur_fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
         
-        <activiti:formProperty id="sDocDekPoshkod" name="Фотодоказ пошкодженого оригіналу декларації; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocDekVtrat" name="Докази розміщення у ЗМІ повідомлення про втрату декларації; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocDekPoshkod" name="Фотодоказ пошкодженого оригіналу декларації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocDekVtrat" name="Докази розміщення у ЗМІ повідомлення про втрату декларації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         
