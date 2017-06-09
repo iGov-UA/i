@@ -437,6 +437,17 @@ public class SubjectService {
         return result;
     }
     
+    /**
+     * Получение контактов. По sID_Field и snID_Process_Activiti вытаскивааем все логины, для каждого логина
+     * получаем дерево, для всего дерева ищем контакты.
+     * 
+     * @param snID_Process_Activiti     ид процесса
+     * @param sID_Field                 ид поля
+     * @param sSubjectType              тип SubjectGroup
+     * @param nID_SubjectContactType    тип контакта, который нужно получить
+     * @return                          лист контактов заданного типа
+     * @throws Exception 
+     */
     public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, long nID_SubjectContactType) throws Exception {
         
         LOG.info("getSubjectContacts start...");
