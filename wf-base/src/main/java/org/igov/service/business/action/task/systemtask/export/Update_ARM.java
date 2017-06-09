@@ -77,12 +77,13 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		if (listOfModels != null && !listOfModels.isEmpty()) {
 
 			if (!asExecutorsFromsoData.isEmpty() && asExecutorsFromsoData != null) {
-				dataWithExecutorForTransferToArm.setExpert(ValidationARM.isValidSizePrilog(asExecutorsFromsoData.get(0)));
+				dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
 				armService.updateDboTk(dataWithExecutorForTransferToArm);
 				// если в листе не одно значение - для каждого исполнителя сетим
 				if (asExecutorsFromsoData.get(1) != null) {
 					for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
-						dataWithExecutorForTransferToArm.setExpert(ValidationARM.isValidSizePrilog(asExecutorsFromsoData.get(i)));
+						
+						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
 						armService.createDboTk(dataWithExecutorForTransferToArm);
 					}
 				}
@@ -131,10 +132,10 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 											.get(j);
 									LOG.info("oJsonMap in getExpert is {}", oJsonMap);
 									if (oJsonMap != null) {
-										Object fileName = oJsonMap.get("id");
-										if (fileName != null) {
-											LOG.info("oValue in getExpert is {}", fileName);
-											listPrilogName.add((String) fileName);
+										Object value = oJsonMap.get("value");
+										if (value != null) {
+											LOG.info("oValue in getExpert is {}", value);
+											listPrilogName.add((String) value);
 										} else {
 											LOG.info("oValue in getExpert is null");
 										}
