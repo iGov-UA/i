@@ -577,16 +577,19 @@ public class DocumentStepService {
             if(sOperationType.equals("AddAcceptor")){
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                     if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                        LOG.info("sKey_Group in AddAcceptor is {}", sKey_Group);
                         List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = 
                                 oDocumentSubjectRightPermitionDao.findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight.getId());
+                        LOG.info("aDocumentSubjectRightPermition is {}", aDocumentSubjectRightPermition);
                         
                         for(DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition){
+                            LOG.info("oDocumentSubjectRightPermition in addAcceptor is {}", oDocumentSubjectRightPermition);
                             if(oDocumentSubjectRightPermition.getPermitionType().equals("AddAcceptor")){
                                 if(oDocumentSubjectRightPermition.getsKeyGroupeSource() != null){
                                     cloneDocumentStepSubject(snID_Process_Activiti, 
                                             sKey_Group, oDocumentSubjectRightPermition.getsKeyGroupeSource(), sKey_Step, true);
                                 }else{
-                                    
+                                    LOG.info("sKeyGroupeSource is null");
                                     DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                                     oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
                                     oDocumentStepSubjectRight_New.setbWrite(true);
@@ -595,12 +598,15 @@ public class DocumentStepService {
                                     
                                     oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
                                     
+                                    LOG.info("oDocumentStepSubjectRightDao in addAcceptor is {}", oDocumentStepSubjectRight_New.getId());
+                                    
                                     for(DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()){
                                         DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
                                         oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField.getbWrite());
                                         oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField.getsMask_FieldID());
                                         oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
                                         oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
+                                        LOG.info("DocumentStepSubjectRightField in addAcceptor is {}", oDocumentStepSubjectRightField_New.getId());
                                     }
                                 }
                                 break;
