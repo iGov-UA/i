@@ -69,7 +69,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 public class RequestProcessingInterceptor extends HandlerInterceptorAdapter implements ConstantsInterceptor {
 	
-	private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming|_doc_justice_171";
+    private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming|_doc_justice_171";
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
     private boolean bFinish = false;
@@ -160,146 +160,149 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 String sKey = (String) paramsName.nextElement();
                 mRequestParam.put(sKey, oRequest.getParameter(sKey));
             }
-
-            StringBuilder osRequestBody = new StringBuilder();
-            BufferedReader oReader = oRequest.getReader();
-            String line;
-
-            if (oReader != null) {
-                while ((line = oReader.readLine()) != null) {
-                    osRequestBody.append(line);
-                }
-            }
-
-            String sRequestBody = osRequestBody.toString();
+            
             String sResponseBody = !bFinish ? "" : oResponse.toString();
+            
+            if (isCloseTask(oRequest, sResponseBody) || isDocumentSubmit(oRequest) || isUpdateTask(oRequest)
+                    || ((mRequestParam.containsKey("sID_BP") || mRequestParam.containsKey("snID_Process_Activiti"))
+                        && mRequestParam.get("sID_BP") != null && mRequestParam.get("sID_BP").startsWith("_doc"))
+            ) {
 
-            String sURL = oRequest.getRequestURL().toString();
+                StringBuilder osRequestBody = new StringBuilder();
+                BufferedReader oReader = oRequest.getReader();
+                String line;
 
-            JSONObject omRequestBody = null;
-            JSONObject omResponseBody = null;
-
-            try {
-                if (!sRequestBody.trim().equals("")) {
-                    omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
-                }
-            } catch (Exception ex) {
-                LOG.info("Error parsing sRequestBody: {}", ex);
-                LOG.info("sRequestBody is: {}", sRequestBody);
-            }
-
-            try {
-                if (!sResponseBody.trim().equals("")) {
-                    omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
-                }
-            } catch (Exception ex) {
-                LOG.debug("Error parsing sRequestBody: {}", ex);
-                LOG.debug("sRequestBody is: {}", sResponseBody);
-            }
-
-            if (isCloseTask(oRequest, sResponseBody)) {
-                if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
-                    String sTaskId = (String) omRequestBody.get("taskId");
-                    LOG.info("sTaskId is: {}", sTaskId);
-                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
-                    String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
-
-                    LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
-
-                    if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
-
-                        LOG.info("Close document is started...");
-                        Map<String, String> mParam = new HashMap<>();
-                        String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
-                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
-
-                        List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
-
-                        boolean bProcessClosed = aTask == null || aTask.size() == 0;
-                        String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
-
-                        if (aTask.isEmpty()) {
-                            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
-                        }
+                if (oReader != null) {
+                    while ((line = oReader.readLine()) != null) {
+                        osRequestBody.append(line);
                     }
                 }
-            }
 
-            if (isUpdateTask(oRequest)) {
-                LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (POSTPROCESSING)--------------");
-                LOG.info("protocolize sURL is: " + sURL);
-                LOG.info("-----------------------------------------------");
-                /*LOG.info("sRequestBody: {}", sRequestBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("sResponseBody: {}", sResponseBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("mRequestParam {}", mRequestParam);
-                LOG.info("-----------------------------------------------");*/
-            }
+                String sRequestBody = osRequestBody.toString();          
 
-            if (isDocumentSubmit(oRequest)) {
-                if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
-                    String sTaskId = (String) omRequestBody.get("taskId");
-                    LOG.info("sTaskId is: {}", sTaskId);
-                    HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
-                    String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                String sURL = oRequest.getRequestURL().toString();
 
-                    if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
-                        runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", oHistoricTaskInstance.getAssignee());
+                JSONObject omRequestBody = null;
+                JSONObject omResponseBody = null;
+
+                try {
+                    if (!sRequestBody.trim().equals("")) {
+                        omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
                     }
+                } catch (Exception ex) {
+                    LOG.info("Error parsing sRequestBody: {}", ex);
+
                 }
-            }
 
-            if (((mRequestParam.containsKey("sID_BP") || mRequestParam.containsKey("snID_Process_Activiti"))
-                    && mRequestParam.get("sID_BP") != null && mRequestParam.get("sID_BP").startsWith("_doc"))) {
-                LOG.info("--------------ALL REQUEST DOCUMENT PARAMS--------------");
-                sURL = oRequest.getRequestURL().toString();
-                LOG.info("protocolize sURL is: " + sURL);
-                /*LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("sResponseBody: {}", sResponseBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("mRequestParam {}", mRequestParam);
-                LOG.info("-----------------------------------------------");*/
+                try {
+                    if (!sResponseBody.trim().equals("")) {
+                        omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+                    }
+                } catch (Exception ex) {
+                    LOG.info("Error parsing sResponseBody: {}", ex);
+                }
 
-                String sID_Process = null;
-                //String sID_Order = null;
+                if (isCloseTask(oRequest, sResponseBody)) {
+                    if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+                        String sTaskId = (String) omRequestBody.get("taskId");
+                        LOG.info("sTaskId is: {}", sTaskId);
+                        HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                        String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
 
-                if (omResponseBody != null) {
-                    sID_Process = (String) omResponseBody.get("snID_Process");
-                    if (sID_Process != null) {
-                        String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sID_Process));
-                        HistoricProcessInstance oHistoricProcessInstance
-                                = historyService.createHistoricProcessInstanceQuery().processInstanceId(sID_Process).singleResult();
-                        ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
-                                .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
-                        String sProcessName = oProcessDefinition.getName() != null ? oProcessDefinition.getName() : "";
+                        LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
 
-                        List<Task> aTask = taskService.createTaskQuery().processInstanceId(sID_Process).active().list();
-                        boolean bProcessClosed = aTask == null || aTask.size() == 0;
-                        String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                        if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
 
-                        Map<String, String> mParam = new HashMap<>();
+                            LOG.info("Close document is started...");
+                            Map<String, String> mParam = new HashMap<>();
+                            String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
-                        LOG.info("document nID_StatusType in interceptor {}", HistoryEvent_Service_StatusType.CREATED.getnID());
-                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
-                        LOG.info("document sID_Process in interceptor {}", sID_Process);
-                        LOG.info("document sID_Order in interceptor {}", sID_Order);
-                        LOG.info("document sUserTaskName in interceptor {}", sUserTaskName);
+                            List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
 
-                        if (!(oResponse.getStatus() < 200 || oResponse.getStatus() >= 300
-                                || (sResponseBody != null && sResponseBody.contains(SYSTEM_ERR)))) {
-                            if (isSetDocumentService(oRequest, sResponseBody)) {
-                                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 11L);
+                            boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                            String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+
+                            if (aTask.isEmpty()) {
+                                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
                             }
                         }
                     }
-
                 }
 
-            }
+                if (isUpdateTask(oRequest)) {
+                    LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (POSTPROCESSING)--------------");
+                    LOG.info("protocolize sURL is: " + sURL);
+                    LOG.info("-----------------------------------------------");
+                    /*LOG.info("sRequestBody: {}", sRequestBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sResponseBody: {}", sResponseBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("mRequestParam {}", mRequestParam);
+                    LOG.info("-----------------------------------------------");*/
+                }
 
+                if (isDocumentSubmit(oRequest)) {
+                    if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+                        String sTaskId = (String) omRequestBody.get("taskId");
+                        LOG.info("sTaskId is: {}", sTaskId);
+                        HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                        String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+
+                        if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+                            runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", oHistoricTaskInstance.getAssignee());
+                        }
+                    }
+                }
+
+                if (((mRequestParam.containsKey("sID_BP") || mRequestParam.containsKey("snID_Process_Activiti"))
+                        && mRequestParam.get("sID_BP") != null && mRequestParam.get("sID_BP").startsWith("_doc"))) {
+                    LOG.info("--------------ALL REQUEST DOCUMENT PARAMS--------------");
+                    sURL = oRequest.getRequestURL().toString();
+                    LOG.info("protocolize sURL is: " + sURL);
+                    /*LOG.info("-----------------------------------------------");
+                    LOG.info("sRequestBody: {}", sRequestBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sResponseBody: {}", sResponseBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("mRequestParam {}", mRequestParam);
+                    LOG.info("-----------------------------------------------");*/
+
+                    String sID_Process = null;
+                    //String sID_Order = null;
+
+                    if (omResponseBody != null) {
+                        sID_Process = (String) omResponseBody.get("snID_Process");
+                        if (sID_Process != null) {
+                            String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(sID_Process));
+                            HistoricProcessInstance oHistoricProcessInstance
+                                    = historyService.createHistoricProcessInstanceQuery().processInstanceId(sID_Process).singleResult();
+                            ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
+                                    .processDefinitionId(oHistoricProcessInstance.getProcessDefinitionId()).singleResult();
+                            String sProcessName = oProcessDefinition.getName() != null ? oProcessDefinition.getName() : "";
+
+                            List<Task> aTask = taskService.createTaskQuery().processInstanceId(sID_Process).active().list();
+                            boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                            String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+
+                            Map<String, String> mParam = new HashMap<>();
+
+                            LOG.info("document nID_StatusType in interceptor {}", HistoryEvent_Service_StatusType.CREATED.getnID());
+                            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                            LOG.info("document sID_Process in interceptor {}", sID_Process);
+                            LOG.info("document sID_Order in interceptor {}", sID_Order);
+                            LOG.info("document sUserTaskName in interceptor {}", sUserTaskName);
+
+                            if (!(oResponse.getStatus() < 200 || oResponse.getStatus() >= 300
+                                    || (sResponseBody != null && sResponseBody.contains(SYSTEM_ERR)))) {
+                                if (isSetDocumentService(oRequest, sResponseBody)) {
+                                    oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 11L);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         } catch (Exception ex) {
             LOG.info("Error during document processing in interceptor: {} ", ex);
         }
@@ -315,131 +318,132 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 String sKey = (String) paramsName.nextElement();
                 mRequestParam.put(sKey, oRequest.getParameter(sKey));
             }
+            
+            if (isUpdateTask(oRequest) || isDocumentSubmit(oRequest)) {
+            
+                StringBuilder osRequestBody = new StringBuilder();
+                BufferedReader oReader = oRequest.getReader();
+                String line;
 
-            StringBuilder osRequestBody = new StringBuilder();
-            BufferedReader oReader = oRequest.getReader();
-            String line;
-
-            if (oReader != null) {
-                while ((line = oReader.readLine()) != null) {
-                    osRequestBody.append(line);
+                if (oReader != null) {
+                    while ((line = oReader.readLine()) != null) {
+                        osRequestBody.append(line);
+                    }
                 }
-            }
 
-            String sRequestBody = osRequestBody.toString();
-            String sResponseBody = !bFinish ? "" : oResponse.toString();
+                String sRequestBody = osRequestBody.toString();
+                //String sResponseBody = !bFinish ? "" : oResponse.toString();
 
-            String sURL = oRequest.getRequestURL().toString();
+                String sURL = oRequest.getRequestURL().toString();
 
-            JSONObject omRequestBody = null;
-            JSONObject omResponseBody = null;
+                JSONObject omRequestBody = null;
+                //JSONObject omResponseBody = null;
 
-            try {
-                if (!sRequestBody.trim().equals("")) {
-                    omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+                try {
+                    if (!sRequestBody.trim().equals("")) {
+                        omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+                    }
+                } catch (Exception ex) {
+                    LOG.info("Error parsing sRequestBody: {}", ex);
                 }
-            } catch (Exception ex) {
-                LOG.info("Error parsing sRequestBody: {}", ex);
-                LOG.info("sRequestBody is: {}", sRequestBody);
-            }
 
-            try {
-                if (!sResponseBody.trim().equals("")) {
-                    omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+                /*try {
+                    if (!sResponseBody.trim().equals("")) {
+                        omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+                    }
+                } catch (Exception ex) {
+                    LOG.info("Error parsing sResponseBody: {}", ex);
                 }
-            } catch (Exception ex) {
-                LOG.info("Error parsing sRequestBody: {}", ex);
-                LOG.info("sRequestBody is: {}", sResponseBody);
-            }
 
-            /*if (isUpdateProcess(oRequest)){
+                if (isUpdateProcess(oRequest)){
 
-            	LOG.info("--------------ALL PARAMS IN UPDATE PROCESS(REGION)--------------");
-                LOG.info("protocolize sURL is: " + sURL);
-                LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("sResponseBody: {}", sResponseBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("mRequestParam {}", mRequestParam);        
-                LOG.info("-----------------------------------------------");
-            	
-        	Map mJsonBody = JsonRestUtils.readObject(sRequestBody, Map.class);
-                if(mJsonBody != null){
-                	if (mJsonBody.containsKey("taskId")){
-                		LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
-                		List<Task> tasks = taskService.createTaskQuery().taskId((String) mJsonBody.get("taskId")).list();
-                        String executionId = null;
-                        if (tasks != null && tasks.size() > 0){
-                        	Task firstTask = tasks.get(0);
-                        	executionId = firstTask.getExecutionId();
-                        	
-                        	String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(firstTask.getProcessInstanceId()));
-                        	
-                        	Map<String, String> mParam = new HashMap<>();
-                            
-                            LOG.info("updateProcess nID_StatusType in interceptor {}", HistoryEvent_Service_StatusType.CREATED.getnID());
-                            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
-                            LOG.info("updateProcess sID_Process in interceptor {}", firstTask.getProcessInstanceId().toString());
-                            LOG.info("updateProcess sID_Order in interceptor {}", sID_Order);
-                            LOG.info("updateProcess sHead in interceptor {}", firstTask.getName());
-                            mParam.put("sHead", firstTask.getName());
-                        	
-                        	oActionEventHistoryService.addHistoryEvent(sID_Order, firstTask.getName(), mParam, 11L);
-                        }
-                	}
-                }
-            }*/
-            if (isUpdateTask(oRequest)) {
-                LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (PREPROCESSING)--------------");
-                LOG.info("protocolize sURL is: " + sURL);
-                /*LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("sResponseBody: {}", sResponseBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("mRequestParam {}", mRequestParam);
-                LOG.info("-----------------------------------------------");*/
-            }
+                    LOG.info("--------------ALL PARAMS IN UPDATE PROCESS(REGION)--------------");
+                    LOG.info("protocolize sURL is: " + sURL);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sRequestBody: {}", sRequestBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sResponseBody: {}", sResponseBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("mRequestParam {}", mRequestParam);        
+                    LOG.info("-----------------------------------------------");
 
-            if (isDocumentSubmit(oRequest)) {
+                    Map mJsonBody = JsonRestUtils.readObject(sRequestBody, Map.class);
+                    if(mJsonBody != null){
+                            if (mJsonBody.containsKey("taskId")){
+                                    LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
+                                    List<Task> tasks = taskService.createTaskQuery().taskId((String) mJsonBody.get("taskId")).list();
+                            String executionId = null;
+                            if (tasks != null && tasks.size() > 0){
+                                    Task firstTask = tasks.get(0);
+                                    executionId = firstTask.getExecutionId();
 
-                LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
-                LOG.info("protocolize sURL is: " + sURL);
-                /*LOG.info("-----------------------------------------------");
-                LOG.info("sRequestBody: {}", sRequestBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("sResponseBody: {}", sResponseBody);
-                LOG.info("-----------------------------------------------");
-                LOG.info("mRequestParam {}", mRequestParam);
-                LOG.info("-----------------------------------------------");*/
+                                    String sID_Order = generalConfig.getOrderId_ByProcess(Long.valueOf(firstTask.getProcessInstanceId()));
 
-                processDocumentSubmit(mRequestParam, omRequestBody);
+                                    Map<String, String> mParam = new HashMap<>();
 
-                /*if(isCloseTask(oRequest, sResponseBody)){
-                    if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
-                        String sTaskId = (String) omRequestBody.get("taskId");
-                        LOG.info("sTaskId is: {}", sTaskId);
-                        HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
-                        String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+                                LOG.info("updateProcess nID_StatusType in interceptor {}", HistoryEvent_Service_StatusType.CREATED.getnID());
+                                mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                                LOG.info("updateProcess sID_Process in interceptor {}", firstTask.getProcessInstanceId().toString());
+                                LOG.info("updateProcess sID_Order in interceptor {}", sID_Order);
+                                LOG.info("updateProcess sHead in interceptor {}", firstTask.getName());
+                                mParam.put("sHead", firstTask.getName());
 
-                        LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
-
-                        if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
-
-                            LOG.info("Close document is started...");
-                            Map<String, String> mParam = new HashMap<>();
-                            String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
-                            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
-                            
-                            List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
-                            boolean bProcessClosed = aTask == null || aTask.size() == 0;
-                            String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
-                            
-                            oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
-                        }
+                                    oActionEventHistoryService.addHistoryEvent(sID_Order, firstTask.getName(), mParam, 11L);
+                            }
+                            }
                     }
                 }*/
+                if (isUpdateTask(oRequest)) {
+                    LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (PREPROCESSING)--------------");
+                    LOG.info("protocolize sURL is: " + sURL);
+                    /*LOG.info("-----------------------------------------------");
+                    LOG.info("sRequestBody: {}", sRequestBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sResponseBody: {}", sResponseBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("mRequestParam {}", mRequestParam);
+                    LOG.info("-----------------------------------------------");*/
+                }
+
+                if (isDocumentSubmit(oRequest)) {
+
+                    LOG.info("--------------ALL PARAMS IN SUBMIT(REGION)--------------");
+                    LOG.info("protocolize sURL is: " + sURL);
+                    /*LOG.info("-----------------------------------------------");
+                    LOG.info("sRequestBody: {}", sRequestBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sResponseBody: {}", sResponseBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("mRequestParam {}", mRequestParam);
+                    LOG.info("-----------------------------------------------");*/
+
+                    processDocumentSubmit(mRequestParam, omRequestBody);
+
+                    /*if(isCloseTask(oRequest, sResponseBody)){
+                        if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+                            String sTaskId = (String) omRequestBody.get("taskId");
+                            LOG.info("sTaskId is: {}", sTaskId);
+                            HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
+                            String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
+
+                            LOG.info("oHistoricTaskInstance.getProcessDefinitionId {}", oHistoricTaskInstance.getProcessDefinitionId());
+
+                            if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+
+                                LOG.info("Close document is started...");
+                                Map<String, String> mParam = new HashMap<>();
+                                String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                                mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+
+                                List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                                boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                                String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+
+                                oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 18L);
+                            }
+                        }
+                    }*/
+                }
             }
 
         } catch (Exception ex) {
@@ -623,11 +627,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
         if (!bFinish) {
             LOG.info("(mRequestParam={})", mRequestParam);
-            LOG.info("(sRequestBody={})", sCut(nLen, sRequestBody));
             if (sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")) {
             } else {
-                LOG_BIG.debug("(sRequestBody={})", sRequestBody);
+                //LOG_BIG.debug("(sRequestBody={})", sRequestBody);
             }
         }
 
@@ -658,7 +661,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     || sURL.contains(SERVICE_OBJECT_FILE)
                     || sURL.contains(SERVICE_DOCUMENT_GET_DOCUMENT_ABSTRACT)) {
             } else {
-                LOG_BIG.debug("(sResponseBody={})", sResponseBody);
+                //LOG_BIG.debug("(sResponseBody={})", sResponseBody);
             }
         }
         String sType = "";
@@ -684,9 +687,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                 ._Case("Activiti_FailStartTask")
                                 ._Status(Log.LogStatus.ERROR)
                                 ._Head("Error hapened while start process!")
-                                ._Body(oResponse.toString())
-                                ._Param("sRequestBody", sRequestBody)
-                                ._Param("sResponseBody", sResponseBody)
+                                //._Body(oResponse.toString())
+                                //._Param("sRequestBody", sRequestBody)
+                                //._Param("sResponseBody", sResponseBody)
                                 ._Param("mRequestParam", mRequestParam)
                                 .save();
                     } catch (Exception ex) {
@@ -749,8 +752,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         //                    ._Body(oException.getMessage())
                         ._Param("sURL", sURL)
                         ._Param("mRequestParam", mRequestParam)
-                        ._Param("sRequestBody", sRequestBody)
-                        ._Param("sResponseBody", sResponseBody)
+                        //._Param("sRequestBody", sRequestBody)
+                       // ._Param("sResponseBody", sResponseBody)
                         ._LogTrace()
                         .save();
             } catch (Exception e) {
@@ -774,12 +777,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         
-        LOG.info("sRequestBody {}", sRequestBody);
-        LOG.info("sResponseBody {}", sResponseBody);
         LOG.info("mParamRequest {}", mParamRequest);
         
         if (sResponseBody == null) {
-            LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
+            LOG.warn("sResponseBody=null!!!");
         }
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
@@ -864,9 +865,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      */
     //(#1234) added additional parameter snClosedTaskId
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
-        LOG.info("Method saveClosedTaskInfo started");
         
-        LOG.info("sRequestBody is {}", sRequestBody);
+        LOG.info("Method saveClosedTaskInfo started");      
         LOG.info("snClosedTaskId is {}", snClosedTaskId);
         
         JSONObject omRequestBody = null;
@@ -940,7 +940,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      * @param snID_Subject
      * @param snID_Service
      * @param oProcessDefinition
-     * @param notificationPatterns TODO
      * @throws ParseException
      * @throws EmailException
      */
