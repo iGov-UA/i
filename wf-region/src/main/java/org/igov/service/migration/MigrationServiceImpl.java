@@ -305,12 +305,12 @@ public class MigrationServiceImpl implements MigrationService {
             if (process != null) {
                 attribute.setoProcess(process);
                 attribute.setoAttributeTypeCustom(createAttributeTypeCustom(id, process.getsID_()));
-                attribute.setoAttributeType(getAttributeType(value, attribute, process.getsID_()));
             }
-            else
+            else {
                 attribute.setoProcessTask(processTask);
+                attribute.setoAttributeType(getAttributeType(value, attribute, processTask.getsID_()));
+            }
             attribute.setName(id);
-
             attribute.setsID_("sID_ Attribute");
             attribute.setoAttributeName(createAttributeName(id));
 
