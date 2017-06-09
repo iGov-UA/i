@@ -84,7 +84,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 				// если в листе не одно значение - для каждого исполнителя сетим
 				if (asExecutorsFromsoData.get(1) != null) {
 					for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
-						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
+						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
 						armService.createDboTk(dataWithExecutorForTransferToArm);
 					}
 				}
