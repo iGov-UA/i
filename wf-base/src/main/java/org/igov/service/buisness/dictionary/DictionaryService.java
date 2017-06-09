@@ -41,7 +41,7 @@ public class DictionaryService {
             LOG.info("sLineColums is {}", sLineColums);
             String[] columns = sLineColums.split("\\;");
             int columnNumber = -1;
-            
+             
             for(int i = 0; i < columns.length; i++){
                 if(columns[i].equals(sID_Field)){
                     columnNumber = i;
