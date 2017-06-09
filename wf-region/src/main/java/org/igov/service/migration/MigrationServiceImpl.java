@@ -348,7 +348,7 @@ public class MigrationServiceImpl implements MigrationService {
         Class<?> clazz = obj.getClass();
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
-            if (StringUtils.isNumeric(string)) {
+            if (StringUtils.isNumeric(string) && StringUtils.isNotEmpty(string)) {
                 type = attributeTypeDao.findById(7L).get();
                 Attribute_File fileAttribute = new Attribute_File();
                 AttachmentEntity file = (AttachmentEntity) actionTaskService.getAttachment(string, 0, processId);
