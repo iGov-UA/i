@@ -437,11 +437,23 @@ public class SubjectService {
         return result;
     }
     
+    /**
+     * Получение контактов. По sID_Field и snID_Process_Activiti вытаскивааем все логины, для каждого логина
+     * получаем дерево, для всего дерева ищем контакты.
+     * 
+     * @param snID_Process_Activiti     ид процесса
+     * @param sID_Field                 ид поля
+     * @param sSubjectType              тип SubjectGroup
+     * @param nID_SubjectContactType    тип контакта, который нужно получить
+     * @return                          лист контактов заданного типа
+     * @throws Exception 
+     */
     public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, long nID_SubjectContactType) throws Exception {
         
         LOG.info("getSubjectContacts start...");
         List<SubjectContact> aoSubjectContact = new ArrayList<>();
         
+        //Login = sID_Group_Activiti
         List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
         LOG.info("getSubjectContacts: asLogin={}", asLogin);
         
@@ -464,10 +476,8 @@ public class SubjectService {
             aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
             aoAllSubjectGroup.add(oSubjectGroupRoot);
         }
-        LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);
         
-        for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {  
-            
+        for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {              
             LOG.info("oSubject.Id={}", oSubjectGroup.getoSubject().getId());
             List<SubjectContact> aoSubjectContactToAdd = oSubjectContactDao.findContactsBySubjectAndContactType(oSubjectGroup.getoSubject(), nID_SubjectContactType);
             LOG.info("aoSubjectContactToAdd={}", aoSubjectContactToAdd);
