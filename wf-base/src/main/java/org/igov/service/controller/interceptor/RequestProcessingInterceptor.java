@@ -806,14 +806,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             //LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
         Map<String, String> mParam = new HashMap<>();
+        LOG.info("sRequestBody {}", sRequestBody);
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
         
-        //LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
+        LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
         
         JSONArray properties = (JSONArray) omRequestBody.get("properties");
-        //LOG.info("properties >>>>>>>>>>>>>> {}", properties );
+        LOG.info("properties >>>>>>>>>>>>>> {}", properties );
         Iterator<JSONObject> iterator = properties.iterator();
         String sID_Public_SubjectOrganJoin = null;
+        
         while (iterator.hasNext()) {
             JSONObject jsonObject = iterator.next();
 
