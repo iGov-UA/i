@@ -11,6 +11,17 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="selection2" name="Довідка потрібна для пред'явлення до:" type="enum" required="true">
+          <activiti:value id="yes2" name="Управління соцзахисту"></activiti:value>
+          <activiti:value id="no2" name="Центру зайнятості"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="selection1" name="Чи наявна земельна ділянка?" type="enum" required="true">
+          <activiti:value id="yes1" name="так"></activiti:value>
+          <activiti:value id="no1" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSeries" name="Серія державного акту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Номер державного акту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sKadastrObject" name="Oб'єкт з земельного кадастру;кадастровий номер у форматі хххххххххх:хх:ххх:хххх" type="string" default="__" required="true"></activiti:formProperty>
         <activiti:formProperty id="selection" name="Чи треба друкований документ?" type="enum" required="true">
           <activiti:value id="attr1_yes" name="так"></activiti:value>
           <activiti:value id="attr2_no" name="ні"></activiti:value>
@@ -24,6 +35,7 @@
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Довідка про наявність або відсутність земельної ділянки"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="довідку щодо наявністі або відсутністі земельної ділянки"></activiti:formProperty>
+        <activiti:formProperty id="markerFiles" name="markers" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/Zem_657.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -84,6 +96,17 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="selection2" name="Довідка потрібна для пред'явлення до:" type="enum" writable="false">
+          <activiti:value id="yes2" name="Управління соцзахисту"></activiti:value>
+          <activiti:value id="no2" name="Центру зайнятості"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="selection1" name="Чи наявна земельна ділянка?" type="enum" writable="false">
+          <activiti:value id="yes1" name="так"></activiti:value>
+          <activiti:value id="no1" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSeries" name="Серія державного акту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Номер державного акту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sKadastrObject" name="Oб'єкт з земельного кадастру;кадастровий номер у форматі хххххххххх:хх:ххх:хххх" type="string" default="__" writable="false"></activiti:formProperty>
         <activiti:formProperty id="selection" name="Видати друкований документ" type="enum" writable="false">
           <activiti:value id="attr1_yes" name="так"></activiti:value>
           <activiti:value id="attr2_no" name="ні"></activiti:value>
@@ -187,6 +210,17 @@ ${sPhoneOrgan}.<br />
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="selection2" name="Довідка потрібна для пред'явлення до:" type="enum" writable="false">
+          <activiti:value id="yes2" name="Управління соцзахисту"></activiti:value>
+          <activiti:value id="no2" name="Центру зайнятості"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="selection1" name="Чи наявна земельна ділянка?" type="enum" writable="false">
+          <activiti:value id="yes1" name="так"></activiti:value>
+          <activiti:value id="no1" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSeries" name="Серія державного акту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Номер державного акту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sKadastrObject" name="Oб'єкт з земельного кадастру;кадастровий номер у форматі хххххххххх:хх:ххх:хххх" type="string" default="__" writable="false"></activiti:formProperty>
         <activiti:formProperty id="selection" name="Видати друкований документ" type="enum" writable="false">
           <activiti:value id="attr1_yes" name="так"></activiti:value>
           <activiti:value id="attr2_no" name="ні"></activiti:value>
