@@ -595,12 +595,15 @@ public class DocumentStepService {
                                     
                                     oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
                                     
+                                    LOG.info("oDocumentStepSubjectRightDao in addAcceptor is {}", oDocumentStepSubjectRight_New.getId());
+                                    
                                     for(DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()){
                                         DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
                                         oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField.getbWrite());
                                         oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField.getsMask_FieldID());
                                         oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
                                         oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
+                                        LOG.info("DocumentStepSubjectRightField in addAcceptor is {}", oDocumentStepSubjectRightField_New.getId());
                                     }
                                 }
                                 break;
