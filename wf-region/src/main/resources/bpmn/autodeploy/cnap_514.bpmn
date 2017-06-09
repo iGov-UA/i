@@ -25,13 +25,13 @@
         <activiti:formProperty id="sAdress2" name="Адреса земельної ділянки;(обов'язково вкажіть поштовий індекс)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nSquare" name="Площа земельної ділянки, (м.кв.)" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Проект землеустрою щодо відведення земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Копія свідоцтва про державну реєстрацію суб’єкта господарювання" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Копію ліцензії на відповідний від діяльності;(якщо це передбачено законом)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Копії правовстановлюючих документів на об’єкти нерухомого майна, які належать на праві власності суб’єкту господарювання" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Копію торгівельного патенту, якщо це передбачено законом;(якщо це передбачено законом)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Проект землеустрою щодо відведення земельної ділянки ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Копія свідоцтва про державну реєстрацію суб’єкта господарювання ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Копію ліцензії на відповідний від діяльності;(якщо це передбачено законом) ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Копії правовстановлюючих документів на об’єкти нерухомого майна, які належать на праві власності суб’єкту господарювання ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Копію торгівельного патенту, якщо це передбачено законом;(якщо це передбачено законом) ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_514.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП" type="invisible"></activiti:formProperty>
@@ -125,12 +125,17 @@ ${sNameOrgan},&lt;br /&gt;
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_514_print.html]" type="invisible" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ІПН ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Проект землеустрою щодо відведення земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Копія свідоцтва про державну реєстрацію суб’єкта господарювання ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Копію ліцензії на відповідний від діяльності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Копії правовстановлюючих документів на об’єкти нерухомого майна, які належать на праві власності суб’єкту господарювання ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Копію торгівельного патенту, якщо це передбачено законом; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${bankId_scan_passport},${bankId_scan_inn}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -228,7 +233,7 @@ ${sNameOrgan},&lt;br /&gt;
           <activiti:value id="sEnumGood" name="Рішення готове. Запросити громадянина до ЦНАПу"></activiti:value>
           <activiti:value id="sEnumBad" name="Відправити заявнику копію рішення у разі негативного рішення управління"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nReference" name="Сканкопія рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nReference" name="Сканкопія рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
