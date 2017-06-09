@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class FinanceCommonController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(FinanceCommonController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FinanceCommonController.class);   
 
     @Autowired
     GeneralConfig generalConfig;
