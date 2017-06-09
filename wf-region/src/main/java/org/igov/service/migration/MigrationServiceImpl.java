@@ -24,6 +24,7 @@ import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.impl.BytesMongoStorageAnalytic;
+import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.object.ObjectFileService;
 import org.igov.service.conf.AttachmetService;
 import org.igov.util.VariableMultipartFile;
@@ -95,7 +96,7 @@ public class MigrationServiceImpl implements MigrationService {
     private TaskService taskService;
 
     @Autowired
-    private ObjectFileService fileService;
+    private ActionTaskService actionTaskService;
 
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
 
@@ -304,12 +305,11 @@ public class MigrationServiceImpl implements MigrationService {
             Attribute attribute = new Attribute();
             if (process != null) {
                 attribute.setoProcess(process);
-                attribute.setoAttributeTypeCustom(createAttributeTypeCustom(id, process.getsID_()));
-            }
-            else {
+            } else {
                 attribute.setoProcessTask(processTask);
-                attribute.setoAttributeType(getAttributeType(value, attribute, processTask.getsID_()));
             }
+            attribute.setoAttributeTypeCustom(createAttributeTypeCustom(id, process == null ? processTask.getoProcess().getsID_() : process.getsID_()));
+            attribute.setoAttributeType(getAttributeType(value, attribute, process == null ? processTask.getoProcess().getsID_() : process.getsID_()));
             attribute.setName(id);
             attribute.setsID_("sID_ Attribute");
             attribute.setoAttributeName(createAttributeName(id));
@@ -324,7 +324,7 @@ public class MigrationServiceImpl implements MigrationService {
 //                historyService.createHistoricVariableInstanceQuery().variableName(variableId).list();
         List<HistoricVariableInstance> historicVariableInstance =
                 historyService.createNativeHistoricVariableInstanceQuery()
-                        .sql("SELECT * FROM act_hi_varinst where name_ = \'" + variableId + "\' AND proc_inst_id_ = \'" + processId +"\'" ).list();
+                        .sql("SELECT * FROM act_hi_varinst where name_ = \'" + variableId + "\' AND proc_inst_id_ = \'" + processId + "\'").list();
         return attributeTypeCustomDao.findBy("name", historicVariableInstance.get(0).getVariableTypeName()).get();
     }
 
@@ -349,16 +349,14 @@ public class MigrationServiceImpl implements MigrationService {
         Class<?> clazz = obj.getClass();
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
-            if(StringUtils.isNumeric(string)) {
+            if (StringUtils.isNumeric(string)) {
                 type = attributeTypeDao.findById(7L).get();
                 Attribute_File fileAttribute = new Attribute_File();
-                VariableMultipartFile file = fileService.download_file_from_db(processId, string, 0);
+                Attachment file = actionTaskService.getAttachment(string, 0, processId);
                 fileAttribute.setsID_Data(string);
-                fileAttribute.setsContentType(file.getContentType());
-                fileAttribute.setsContentType(file.getContentType());
+                fileAttribute.setsContentType(file.getType());
                 attribute.setoAttribute_File(fileAttribute);
-            }
-            else if (string.startsWith("{") && string.contains("Mongo")) {
+            } else if (string.startsWith("{") && string.contains("Mongo")) {
                 type = attributeTypeDao.findById(7L).get();
                 Attribute_File fileAttribute = new Attribute_File();
                 Map<String, String> fileValuesMap = parseJsonStringToMap(string);
