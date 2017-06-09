@@ -13,6 +13,7 @@ import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Attachment;
+import org.apache.commons.lang.StringUtils;
 import org.igov.analytic.model.access.AccessGroup;
 import org.igov.analytic.model.access.AccessUser;
 import org.igov.analytic.model.attribute.*;
@@ -23,12 +24,15 @@ import org.igov.analytic.model.process.Process;
 import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.impl.BytesMongoStorageAnalytic;
+import org.igov.service.business.object.ObjectFileService;
+import org.igov.service.conf.AttachmetService;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,6 +94,8 @@ public class MigrationServiceImpl implements MigrationService {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private ObjectFileService fileService;
 
     private final static Logger LOG = LoggerFactory.getLogger(MigrationServiceImpl.class);
 
@@ -299,11 +305,12 @@ public class MigrationServiceImpl implements MigrationService {
             if (process != null) {
                 attribute.setoProcess(process);
                 attribute.setoAttributeTypeCustom(createAttributeTypeCustom(id, process.getsID_()));
+                attribute.setoAttributeType(getAttributeType(value, attribute, process.getsID_()));
             }
             else
                 attribute.setoProcessTask(processTask);
             attribute.setName(id);
-            attribute.setoAttributeType(getAttributeType(value, attribute));
+
             attribute.setsID_("sID_ Attribute");
             attribute.setoAttributeName(createAttributeName(id));
 
@@ -337,12 +344,21 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     //TODO write generics for this method
-    private AttributeType getAttributeType(Object obj, Attribute attribute) {
+    private AttributeType getAttributeType(Object obj, Attribute attribute, String processId) {
         AttributeType type = null;
         Class<?> clazz = obj.getClass();
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
-            if (string.startsWith("{") && string.contains("Mongo")) {
+            if(StringUtils.isNumeric(string)) {
+                type = attributeTypeDao.findById(7L).get();
+                Attribute_File fileAttribute = new Attribute_File();
+                VariableMultipartFile file = fileService.download_file_from_db(processId, string, 0);
+                fileAttribute.setsID_Data(string);
+                fileAttribute.setsContentType(file.getContentType());
+                fileAttribute.setsContentType(file.getContentType());
+                attribute.setoAttribute_File(fileAttribute);
+            }
+            else if (string.startsWith("{") && string.contains("Mongo")) {
                 type = attributeTypeDao.findById(7L).get();
                 Attribute_File fileAttribute = new Attribute_File();
                 Map<String, String> fileValuesMap = parseJsonStringToMap(string);
