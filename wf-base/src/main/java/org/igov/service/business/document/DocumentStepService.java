@@ -577,7 +577,7 @@ public class DocumentStepService {
                         if (oDocumentSubjectRightPermition.getsKeyGroupeSource() != null) {
                             
                             List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = cloneDocumentStepSubject(snID_Process_Activiti,
-                                    sKey_Group, oDocumentSubjectRightPermition.getsKeyGroupeSource(), sKey_Step, true);
+                                    oDocumentSubjectRightPermition.getsKeyGroupeSource(), sKey_Group_Delegate, sKey_Step, true);
                             
                             for (DocumentStepSubjectRight oDocumentStepSubjectRight_New : aDocumentStepSubjectRight_New) {
                                 if (sKey_Group_Delegate.equals(oDocumentStepSubjectRight_New.getsKey_GroupPostfix())) {
@@ -634,7 +634,7 @@ public class DocumentStepService {
                         if (oDocumentSubjectRightPermition.getsKeyGroupeSource() != null) {
                             
                             List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = cloneDocumentStepSubject(snID_Process_Activiti,
-                                    sKey_Group, oDocumentSubjectRightPermition.getsKeyGroupeSource(), sKey_Step, true);
+                                    oDocumentSubjectRightPermition.getsKeyGroupeSource(), sKey_Group_Delegate, sKey_Step, true);
                             
                             for (DocumentStepSubjectRight oDocumentStepSubjectRight_New : aDocumentStepSubjectRight_New) {
                                 if (sKey_Group_Delegate.equals(oDocumentStepSubjectRight_New.getsKey_GroupPostfix())) {
