@@ -564,6 +564,10 @@ public class DocumentStepService {
     
     private void addVisor(DocumentStep oDocumentStep, List<DocumentStepSubjectRight> aDocumentStepSubjectRight,
             String sKey_Group, String snID_Process_Activiti, String sKey_Group_Delegate, String sKey_Step) throws Exception {
+        LOG.info("addVisor params: oDocumentStep {}  aDocumentStepSubjectRight {} sKey_Group {} "
+                + "snID_Process_Activiti {} sKey_Group_Delegate {} sKey_Step{}", oDocumentStep, aDocumentStepSubjectRight,
+        sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
+        
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
                 LOG.info("sKey_Group in AddVisor is {}", sKey_Group);
