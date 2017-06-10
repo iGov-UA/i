@@ -167,7 +167,7 @@ public class DocumentCommonController {
     }
     
     @ApiOperation(value = "Добавить согласующего")
-    @RequestMapping(value = "/addAVisor", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/addVisor", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     List<DocumentStepSubjectRight> addAVisor(
             @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
@@ -182,7 +182,7 @@ public class DocumentCommonController {
         LOG.info("sKey_Step={}", sKey_Step);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService
-                .delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate, "addAVisor");
+                .delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate, "addVisor");
         
         LOG.info("aDocumentStepSubjectRight_Current={}", aDocumentStepSubjectRight_Current);
         
