@@ -182,7 +182,7 @@ public class DocumentCommonController {
         LOG.info("sKey_Step={}", sKey_Step);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService
-                .delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate, "addVisor");
+                .delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate, "AddVisor");
         
         LOG.info("aDocumentStepSubjectRight_Current={}", aDocumentStepSubjectRight_Current);
         
