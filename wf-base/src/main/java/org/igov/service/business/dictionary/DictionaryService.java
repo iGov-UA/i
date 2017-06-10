@@ -1,4 +1,4 @@
-package org.igov.service.buisness.dictionary;
+package org.igov.service.business.dictionary;
 
 import java.io.BufferedReader;
 import java.io.IOException;
