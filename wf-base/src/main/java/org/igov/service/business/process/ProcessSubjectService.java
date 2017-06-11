@@ -22,8 +22,8 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
-
 import org.apache.commons.io.IOUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
@@ -34,19 +34,17 @@ import org.igov.model.process.ProcessSubjectStatusDao;
 import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessSubjectTreeDao;
 import org.igov.model.process.ProcessUser;
-import org.igov.service.conf.AttachmetService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.util.DateUtilFormat;
-import org.igov.io.GeneralConfig;
-
+import org.igov.service.conf.AttachmetService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -55,9 +53,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -459,7 +454,7 @@ public class ProcessSubjectService {
                         
                         try{
                             mProcessVariable.replace(sProcessVariable, 
-                                    df_StartProcess.format(parseDate((String) mProcessVariable.get(sProcessVariable),DateUtilFormat.formats)));
+                                    df_StartProcess.format(parseDate((String) mProcessVariable.get(sProcessVariable))));
                         }
                         catch(Exception ex){}
                         
@@ -508,7 +503,7 @@ public class ProcessSubjectService {
 
                             DateTime datePlan = null;
                             if (mParamDocument.get("sDateExecution") != null) {
-                                datePlan = new DateTime(parseDate((String) mParamDocument.get("sDateExecution"),DateUtilFormat.formats));
+                                datePlan = new DateTime(parseDate((String) mParamDocument.get("sDateExecution")));
                                 
                             }
                             
@@ -586,21 +581,21 @@ public class ProcessSubjectService {
             LOG.info("oDateExecution: " + oDateExecution);
 
             if ((mParam.get("sDateExecution") != null) && (!mParam.get("sDateExecution").equals(""))) {
-                oDateExecution = parseDate((String)mParam.get("sDateExecution"),DateUtilFormat.formats);
+                oDateExecution = parseDate((String)mParam.get("sDateExecution"));
                 sFormatDateExecution = df_StartProcess.format(oDateExecution);
                 LOG.info("oDateExecution: " + oDateExecution);
                 LOG.info("sFormatDateExecution: " + sFormatDateExecution);
                 mParam.replace("sDateExecution", sFormatDateExecution);
             }
             if ((mParam.get("sDateRegistration") != null) && (!mParam.get("sDateRegistration").equals(""))) {
-                Date oDateRegistration = parseDate((String)mParam.get("sDateRegistration"),DateUtilFormat.formats);
+                Date oDateRegistration = parseDate((String)mParam.get("sDateRegistration"));
                 sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
                 LOG.info("oDateRegistration: " + oDateRegistration);
                 LOG.info("sFormatDateRegistration: " + sFormatDateRegistration);
                 mParam.replace("sDateRegistration", sFormatDateRegistration);
             }
             if ((mParam.get("sDateDoc") != null) && (!mParam.get("sDateDoc").equals(""))) {
-                Date oDateDoc = parseDate((String)mParam.get("sDateDoc"),DateUtilFormat.formats);
+                Date oDateDoc = parseDate((String)mParam.get("sDateDoc"));
                 sFormatDateDoc = df_StartProcess.format(oDateDoc);
                 LOG.info("oDateDoc: " + oDateDoc);
                 LOG.info("sFormatDateDoc: " + sFormatDateDoc);
@@ -760,31 +755,6 @@ public class ProcessSubjectService {
         return oDateReturn;
     }
     
-    public Date parseDate(String dateString, List<String> formats) {
-  	  Date date = null;
-  	  boolean success = false;
-
-  	  for (String format:formats)
-  	  {
-  	    SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-
-  	    try
-  	    {
-  	      date = dateFormat.parse(dateString);
-  	      success = true;
-  	      break;
-  	    }
-  	    catch(ParseException e)
-  	    {
-  	    	 return new Date();
-  	    }
-  	  }
-
-  	  return date;
-  	}
-
-    
-
       
     /**
      * По ид процесса активити вынимаем всех детей. Если статус отличен от
