@@ -2,11 +2,11 @@ package org.igov.service.business.action.task.systemtask.mail;
 
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.util.ToolLuna.getProtectedNumber;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,16 +14,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
+
 import javax.mail.Multipart;
 import javax.mail.internet.MimeMultipart;
+
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
+import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
@@ -834,20 +838,23 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     }
     
     private String getFormattedDateS(String date) {
-    	LOG.info("getFormattedDateS -->>>>" + date);
-    	 DateTimeFormatter dateStringFormat = DateTimeFormat
-                 .forPattern("EEE MMM dd HH:mm:ss zzz yyyy");
-        DateTimeFormatter df_StartProcess = DateTimeFormat
-                .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
-        DateTime dateTime;
-        try {
-        	dateTime = dateStringFormat.parseDateTime(date);
-        }catch(Exception ex) {
-        	dateTime = df_StartProcess.parseDateTime(date);
-        }
-        Date d = dateTime.toDate();
-        return getFormattedDate(d);
-    }
+		 SimpleDateFormat dateStringFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+       DateTimeFormatter df_StartProcess = DateTimeFormat
+               .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
+       DateTime dateTime = null;
+       Date d = null;
+       try {
+       	dateTime = df_StartProcess.parseDateTime(date);
+       }catch(Exception ex) {
+       	try {
+				return getFormattedDate(dateStringFormat.parse(date));
+			} catch (java.text.ParseException e) {
+				throw new ActivitiIllegalArgumentException("invalid date value "+date);
+			}
+       }
+       d = dateTime.toDate();
+       return getFormattedDate(d);
+   }
     
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
