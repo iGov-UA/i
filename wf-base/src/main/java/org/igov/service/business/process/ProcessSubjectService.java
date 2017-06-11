@@ -605,6 +605,41 @@ public class ProcessSubjectService {
                 LOG.info("sFormatDateDoc: " + sFormatDateDoc);
                 mParam.replace("sDateDoc", sFormatDateDoc);
             }
+            if ((mParam.get("oDateBegin") != null) && (!mParam.get("oDateBegin").equals(""))) {
+                Date oDateDoc = parseDate((String)mParam.get("oDateBegin"));
+                sFormatDateDoc = df_StartProcess.format(oDateDoc);
+                LOG.info("oDateBegin: " + oDateDoc);
+                LOG.info("sFormatoDateBegin: " + sFormatDateDoc);
+                mParam.replace("oDateBegin", sFormatDateDoc);
+            }
+            if ((mParam.get("oDateEnd") != null) && (!mParam.get("oDateEnd").equals(""))) {
+                Date oDateDoc = parseDate((String)mParam.get("oDateEnd"));
+                sFormatDateDoc = df_StartProcess.format(oDateDoc);
+                LOG.info("oDateEnd: " + oDateDoc);
+                LOG.info("sFormatoDateEnd: " + sFormatDateDoc);
+                mParam.replace("oDateEnd", sFormatDateDoc);
+            }
+            if ((mParam.get("sDate_441") != null) && (!mParam.get("sDate_441").equals(""))) {
+                Date oDateDoc = parseDate((String)mParam.get("sDate_441"));
+                sFormatDateDoc = df_StartProcess.format(oDateDoc);
+                LOG.info("sDate_441: " + oDateDoc);
+                LOG.info("sFormatsDate_441: " + sFormatDateDoc);
+                mParam.replace("sDate_441", sFormatDateDoc);
+            }
+            if ((mParam.get("sDateApprove") != null) && (!mParam.get("sDateApprove").equals(""))) {
+                Date oDateDoc = parseDate((String)mParam.get("sDateApprove"));
+                sFormatDateDoc = df_StartProcess.format(oDateDoc);
+                LOG.info("sDateApprove: " + oDateDoc);
+                LOG.info("sFormatsDateApprove: " + sFormatDateDoc);
+                mParam.replace("sDateApprove", sFormatDateDoc);
+            }
+            if ((mParam.get("sDate_442") != null) && (!mParam.get("sDate_442").equals(""))) {
+                Date oDateDoc = parseDate((String)mParam.get("sDate_442"));
+                sFormatDateDoc = df_StartProcess.format(oDateDoc);
+                LOG.info("sDate_442: " + oDateDoc);
+                LOG.info("sFormatsDate_442: " + sFormatDateDoc);
+                mParam.replace("sDate_442", sFormatDateDoc);
+            }
 
             ProcessSubject oProcessSubjectParent = processSubjectDao.findByProcessActivitiId(snProcess_ID);
 
