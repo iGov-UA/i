@@ -56,12 +56,12 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		
 		if (listOfModels != null && !listOfModels.isEmpty()) {
 
-			if (!asExecutorsFromsoData.isEmpty() && asExecutorsFromsoData != null) {
+			if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
 				dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
 				LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
 				armService.updateDboTk(dataWithExecutorForTransferToArm);
 				// если в листе не одно значение - для каждого исполнителя сетим
-				if (asExecutorsFromsoData.get(1) != null) {
+				if (asExecutorsFromsoData.size()>1) {
 					for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
 						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
 						armService.createDboTk(dataWithExecutorForTransferToArm);

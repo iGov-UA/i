@@ -465,6 +465,7 @@ public class SubjectService {
                 sSubjectType = "Human";
             }
             
+            LOG.info("/getSubjectContacts: sID_Group_Activiti", sID_Group_Activiti);
             //находим SubjectGroup`ы всех элементов дерева
             SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
                     .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, false, 0l, sSubjectType);
