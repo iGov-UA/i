@@ -985,7 +985,6 @@ public class DocumentStepService {
             }
 
             String sValue = (String) runtimeService.getVariable(snID_Process_Activiti, sID_Field);
-            LOG.info("/getLoginsFromField: sValue={}", sValue);
             // String soJSON=(String)
             // runtimeService.getVariable(snID_Process_Activiti, sID_Field);
             if (sValue.startsWith("{")) {// TABLE
@@ -1103,12 +1102,12 @@ public class DocumentStepService {
 
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
-            LOG.info("syncDocumentSubmitedsByField: aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight_ForRemove = new LinkedList();
-
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            
             // DocumentStepSubjectRight oDocumentStepSubjectRight = null;
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                LOG.info("oDocumentStepSubjectRight={}", oDocumentStepSubjectRight);
                 if (sID_Field.equals(oDocumentStepSubjectRight.getsID_Field())) {
                     String sLogin = oDocumentStepSubjectRight.getsKey_GroupPostfix();
                     if (asLogin.contains(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
