@@ -53,9 +53,18 @@
         <activiti:formProperty id="nSvidChild" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_scan_passport" name="Паспорт особи, до якої реєструється дитина; скан-копія всіх заповнених сторінок, у форматі pdf або архів (формату zip, rar, 7z);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Дата подання заявки ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="date_of_visit" name="Дата-час електронної черги; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
+    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Для очереди" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var src=execution.getVariable('date_of_visit')
@@ -186,10 +195,10 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regBkChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/1zajava_znFrChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_regFrChild.html,sFileName=Zayava_pro_reyestratsiyu_Page1_of_2" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_regBkChild.html,sFileName=Zayava_pro_reyestratsiyu_Page2_of_2" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_znFrChild.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page1_of_2" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_znBk.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page2_of_2" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_regFrChild.html,sFileName=Zayava_pro_reyestratsiyu_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_regBkChild.html,sFileName=Zayava_pro_reyestratsiyu_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_znFrChild.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_znBk.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nSvidChild" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -525,12 +534,21 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow38" name="${sIsCancellCustomeVizite!='False'}" sourceRef="exclusivegateway3" targetRef="endevent3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sIsCancellCustomeVizite!='False'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-212">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dms-212" id="BPMNPlane_dnepr_dms-212">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="125.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="71.0" width="121.0" x="100.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="148.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="51.0" y="216.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="26.0"></omgdc:Bounds>
@@ -580,6 +598,14 @@ execution.setVariable('sMaxPay', maxpay)
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="902.0" y="291.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="75.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="142.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="115.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="68.0" y="216.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="295.0" y="53.0"></omgdi:waypoint>
         <omgdi:waypoint x="316.0" y="53.0"></omgdi:waypoint>
@@ -682,8 +708,9 @@ execution.setVariable('sMaxPay', maxpay)
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="57.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="242.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="53.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
