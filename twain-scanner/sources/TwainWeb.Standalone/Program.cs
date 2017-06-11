@@ -72,9 +72,9 @@ namespace TwainWeb.Standalone
 	    }
 
 	    private static void OpenInBrowser()
-	    {
-		    Process.Start("http://127.0.0.1:" + Settings.Default.Port + "/TWAIN@Web/");
-	    }
+        {
+            Process.Start(Settings.Default.MainURL + ":" + Settings.Default.Port + "/TWAIN@Web/");
+        }
 
 		private static Process RunServiceManager(string command)
 	    {

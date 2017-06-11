@@ -301,7 +301,10 @@
                 return localSettings != null ? new ScanSettings(JSON.parse(localSettings)) : new ScanSettings({});
             };
             var SetLocalSettings = function (source, fileName, dpi, scanFeed, pixelType, compressionFormat, format, counter, modeSwitch) {
-                var settings = new ScanSettings({ "source": source, "fileName": fileName, "dpi": dpi, "scanFeed": scanFeed, "pixelType": pixelType, "compressionFormat": compressionFormat, "format": format, "modeSwitch": modeSwitch });
+                var settings = new ScanSettings({
+                    "source": source, "fileName": fileName, "dpi": dpi, "scanFeed": scanFeed,
+                    "pixelType": pixelType, "compressionFormat": compressionFormat, "format": format, "modeSwitch": modeSwitch
+                });
                 localStorage.setItem(localSettingsName, JSON.stringify(settings));
                 return settings;
             };

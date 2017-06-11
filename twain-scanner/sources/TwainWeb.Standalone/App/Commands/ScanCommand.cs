@@ -145,14 +145,28 @@ namespace TwainWeb.Standalone.App.Commands
 				(GlobalDictionaries.SaveAsValues)_command.SaveAs,
 				_command.CompressionFormat.ImgFormat);
 
-			var file = Path.GetTempFileName();
+
+            var file = Path.GetTempFileName();
 			var tempfile = Path.GetFileName(file);	
 
-			var downloadFile = new DownloadFile(filename, tempfile);
 
 			ImageTools.CompressAndSaveImage(image, file, _command.CompressionFormat);
-		
-			GlobalDictionaries.Scans.Add(downloadFile.TempFile);
+
+            string base64str = "";
+
+            using (var ms = new MemoryStream())
+            {
+                //сохраняем картинку в байты
+                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                //массив байт конвертируем в строку
+                base64str = Convert.ToBase64String(ms.ToArray());
+            }
+
+            var downloadFile = new DownloadFile(filename, tempfile, base64str);
+
+
+            GlobalDictionaries.Scans.Add(downloadFile.TempFile);
 
 			return downloadFile;
 		}
