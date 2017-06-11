@@ -94,7 +94,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 var needReload = false;
                 if(data.message.indexOf('Время уже занято') >= 0 || data.message.indexOf('Обраний Вами час вже заброньовано') >= 0){
                   needReload = true;
-                  dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка')
+                  dialogs.error('Помилка', 'Обраний Вами час вже недоступний. Повторіть, будь ласка, спробу пізніше або оберіть інший час та дату.')
                 } else {
                   needReload = true;
                   dialogs.error('Помилка', err[1])

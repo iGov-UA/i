@@ -1,18 +1,27 @@
 package org.igov.model.arm;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.igov.service.conf.AttachmetService;
+import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 public class ValidationARM {
+	
+	private final static Logger LOG = LoggerFactory.getLogger(ValidationARM.class);
 	
 	/**
 	 * часто используемы форматы дат
@@ -171,5 +180,133 @@ public static DboTkModel fillModel(String soData_Value_Result){
 	return dataForTransferToArm;
 		
 	}
+
+
+/**
+ * Получение значения поля Prilog - должно одержать имена атачей прикрепленных
+ * @param data
+ * @param oAttachmetService
+ * @return
+ */
+public static String getPrilog(String data, AttachmetService oAttachmetService) {
+	String listStringPrilog = ", ";
+	if (ValidationARM.isValid(data)) {
+		org.json.simple.JSONObject oJSONObject = null;
+		try {
+			JSONParser parser = new JSONParser();
+
+			org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(data);
+
+			InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+					(String) oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType"))
+					.getInputStream();
+
+			oJSONObject = (org.json.simple.JSONObject) parser
+					.parse(IOUtils.toString(oAttachmet_InputStream, "UTF-8"));
+			LOG.info("oTableJSONObject in listener Transfer_ARM: " + oJSONObject.toJSONString());
+			 org.json.simple.JSONArray aJsonRow = (org.json.simple.JSONArray) oJSONObject.get("aRow");
+
+                if (aJsonRow != null) {
+                	List<String> listPrilogName = new ArrayList<String>();
+                    for (int i = 0; i < aJsonRow.size(); i++) {
+                        org.json.simple.JSONObject oJsonField = (org.json.simple.JSONObject) aJsonRow.get(i);
+                        LOG.info("oJsonField in {}", oJsonField);
+                        if (oJsonField != null) {
+                            org.json.simple.JSONArray aJsonField = (org.json.simple.JSONArray) oJsonField.get("aField");
+                            LOG.info("aJsonField in getPrilog is {}", aJsonField);
+                            if (aJsonField != null) {
+                                for (int j = 0; j < aJsonField.size(); j++) {
+                                    org.json.simple.JSONObject oJsonMap = (org.json.simple.JSONObject) aJsonField
+                                            .get(j);
+                                    LOG.info("oJsonMap in getPrilog is {}", oJsonMap);
+                                    if (oJsonMap != null) {
+                                        Object fileName = oJsonMap.get("fileName");
+                                            if (fileName != null) {
+                                                LOG.info("oValue in getPrilog is {}", fileName);
+                                                listPrilogName.add((String) fileName);
+                                            } else {
+                                                LOG.info("oValue in getPrilog is null");
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    listStringPrilog = String.join(", ", listPrilogName);
+                } else {
+                    LOG.info("JSON array is null in getPrilog is null");
+                }
+		} catch (Exception e) {
+			LOG.error("oTableJSONObject in listener Transfer_ARM: " + oJSONObject.toJSONString());
+		}
+	}
+	return listStringPrilog;
+}
+
+/**
+ * Получение значения поля Expert - которое содержит имена исполнителей
+ * 
+ * @param data
+ * @param oAttachmetService
+ * @return
+ */
+public static List<String> getAsExecutors(String data, AttachmetService oAttachmetService, String sID_FieldTable) {
+	List<String> listExecutors = new ArrayList<String>();
+	if (ValidationARM.isValid(data)) {
+		org.json.simple.JSONObject oJSONObject = null;
+		try {
+			JSONParser parser = new JSONParser();
+
+			org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(data);
+
+			InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+					(String) oTableJSONObject.get("sKey"), (String) oTableJSONObject.get("sID_StorageType"))
+					.getInputStream();
+
+			oJSONObject = (org.json.simple.JSONObject) parser
+					.parse(IOUtils.toString(oAttachmet_InputStream, "UTF-8"));
+			LOG.info("oTableJSONObject in listener Update_ARM: " + oJSONObject.toJSONString());
+			org.json.simple.JSONArray aJsonRow = (org.json.simple.JSONArray) oJSONObject.get("aRow");
+
+			if (aJsonRow != null) {
+
+				for (int i = 0; i < aJsonRow.size(); i++) {
+					org.json.simple.JSONObject oJsonField = (org.json.simple.JSONObject) aJsonRow.get(i);
+					LOG.info("oJsonField in  Update_ARM: {}", oJsonField);
+					if (oJsonField != null) {
+						org.json.simple.JSONArray aJsonField = (org.json.simple.JSONArray) oJsonField.get("aField");
+						LOG.info("aJsonField in getExpert is {}", aJsonField);
+						if (aJsonField != null) {
+							for (int j = 0; j < aJsonField.size(); j++) {
+								org.json.simple.JSONObject oJsonMap = (org.json.simple.JSONObject) aJsonField
+										.get(j);
+								LOG.info("oJsonMap in getExpert is {}", oJsonMap);
+								if (oJsonMap != null) {
+									Object oId = oJsonMap.get("id");
+									if (((String) oId).equals(sID_FieldTable)) {
+										Object oValue = oJsonMap.get("value");
+										if (oValue != null) {
+											LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
+											listExecutors.add((String) oValue);
+										} else {
+											LOG.info("oValue in cloneDocumentStepFromTable is null");
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+			} else {
+				LOG.info("JSON array is null in getExpert is null");
+			}
+		} catch (Exception e) {
+			LOG.error("oTableJSONObject in listener Update_ARM: " + oJSONObject.toJSONString());
+		}
+	}
+	return listExecutors;
+}
+
 
 }
