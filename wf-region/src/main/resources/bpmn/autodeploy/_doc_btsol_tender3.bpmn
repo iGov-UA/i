@@ -12,10 +12,10 @@
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order" name="sID_Order; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Заявка на проведение тендера по отбору подрядчика/ТЭЭ победителя внутреннего тендера" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
@@ -35,7 +35,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_441" name="Дата №441" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sNumberCard" name="Исход № предприятия/Вх.№ карточки (БЗ)" type="string" default="${processInstanceId}"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCard" name="Исход № предприятия/Вх.№ карточки (БЗ)" type="string" default="${sID_Order}"></activiti:formProperty>
         <activiti:formProperty id="sDateApprove" name="Дата исход №/Дата вх.№ карточки (БЗ)" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" required="true"></activiti:formProperty>
@@ -546,8 +546,12 @@
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <scriptTask id="scripttask1" name="ProcessInstanceId" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var processInstanceId = execution.getProcessInstanceId();
+      <script>var processInstanceId = execution.getProcessInstanceId()
 execution.setVariable('processInstanceId', processInstanceId)
+
+var processInstanceIdToLong = parseFloat(processInstanceId)
+var sID_Order= generalConfig.getOrderId_ByProcess(processInstanceIdToLong)
+execution.setVariable('sID_Order', sID_Order)
 </script>
     </scriptTask>
     <scriptTask id="scripttask4" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
