@@ -166,6 +166,52 @@ public class DocumentCommonController {
         return m;
     }
     
+    @ApiOperation(value = "Добавить согласующего")
+    @RequestMapping(value = "/addVisor", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    List<DocumentStepSubjectRight> addAVisor(
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "группа", required = true) @RequestParam(required = true, value = "sKey_Group") String sKey_Group,
+            @ApiParam(value = "группа делегирования", required = true) @RequestParam(required = true, value = "sKey_Group_Delegate") String sKey_Group_Delegate,
+            @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step
+    ) throws Exception {
+        LOG.info("addAVisor started");
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        LOG.info("sKey_Group={}", sKey_Group);
+        LOG.info("sKey_Group_Delegate={}", sKey_Group_Delegate);
+        LOG.info("sKey_Step={}", sKey_Step);
+
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService
+                .delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate, "AddVisor");
+        
+        LOG.info("aDocumentStepSubjectRight_Current={}", aDocumentStepSubjectRight_Current);
+        
+        return aDocumentStepSubjectRight_Current;
+    }
+    
+    @ApiOperation(value = "Добавить согласующего")
+    @RequestMapping(value = "/addAcceptor", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    List<DocumentStepSubjectRight> addAcceptor(
+            @ApiParam(value = "ИД процесс-активити", required = true) @RequestParam(required = true, value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "группа", required = true) @RequestParam(required = true, value = "sKey_Group") String sKey_Group,
+            @ApiParam(value = "группа делегирования", required = true) @RequestParam(required = true, value = "sKey_Group_Delegate") String sKey_Group_Delegate,
+            @ApiParam(value = "степ документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step
+    ) throws Exception {
+        LOG.info("addAcceptor started");
+        LOG.info("snID_Process_Activiti={}", snID_Process_Activiti);
+        LOG.info("sKey_Group={}", sKey_Group);
+        LOG.info("sKey_Group_Delegate={}", sKey_Group_Delegate);
+        LOG.info("sKey_Step={}", sKey_Step);
+
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService
+                .delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate, "AddAcceptor");
+        
+        LOG.info("aDocumentStepSubjectRight_Current={}", aDocumentStepSubjectRight_Current);
+        
+        return aDocumentStepSubjectRight_Current;
+    }
+    
     @ApiOperation(value = "Делегировать подписанта документа")
     @RequestMapping(value = "/delegateDocumentStepSubject", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     //@Transactional
@@ -182,7 +228,8 @@ public class DocumentCommonController {
         LOG.info("sKey_Group_Delegate={}", sKey_Group_Delegate);
         LOG.info("sKey_Step={}", sKey_Step);
 
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService.delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate);
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Current = documentStepService
+                .delegateDocumentStepSubject(snID_Process_Activiti, sKey_Step, sKey_Group, sKey_Group_Delegate, "delegate");
         
         LOG.info("aDocumentStepSubjectRight_Current={}", aDocumentStepSubjectRight_Current);
         

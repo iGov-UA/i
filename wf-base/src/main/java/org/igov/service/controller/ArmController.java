@@ -3,6 +3,7 @@ package org.igov.service.controller;
 import java.util.List;
 
 import org.igov.model.arm.DboTkModel;
+import org.igov.model.arm.DboTkResult;
 import org.igov.service.business.arm.ArmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,30 +46,42 @@ public class ArmController {
     
     
     @ApiOperation(value = "Обновление данных таблицы arm.dbo.TK", notes = "##### Пример:\n"
-            + "https://alpha.test.region.igov.org.ua/wf/service/arm/updateDboTk?sID_Order=10358663\n")
+            + "https://alpha.test.region.igov.org.ua/wf/service/arm/updateDboTk\n")
     @RequestMapping(value = "/updateDboTk", method = RequestMethod.POST)
     @ResponseBody
-    public void updateDboTk(@ApiParam(value = "Данные для обновления данных в таблице arm.dbo.TK ", required = true) @RequestBody DboTkModel dboTkModel)
+    public DboTkResult updateDboTk(@ApiParam(value = "Данные для обновления данных в таблице arm.dbo.TK ", required = true) @RequestBody DboTkModel dboTkModel)
             throws Exception {
+    	DboTkResult dboTkResult = null;
     	try {
-        	armService.updateDboTk(dboTkModel);
+    		dboTkResult =  armService.updateDboTk(dboTkModel);
     	 } catch (Exception e) {
-             LOG.error("FAIL: {}", e.getMessage());
+    		 dboTkResult = new DboTkResult();
+             dboTkResult.setMess(e.getMessage());
+             dboTkResult.setCode("e");
+             dboTkResult.setState("e");
+             return dboTkResult;
          }
+		return dboTkResult;
     }
     
     
     @ApiOperation(value = "Обновление данных таблицы arm.dbo.TK", notes = "##### Пример:\n"
-            + "https://alpha.test.region.igov.org.ua/wf/service/arm/createDboTk?sID_Order=10358663\n")
+            + "https://alpha.test.region.igov.org.ua/wf/service/arm/createDboTk\n")
     @RequestMapping(value = "/createDboTk", method = RequestMethod.POST)
     @ResponseBody
-    public void createDboTk(@ApiParam(value = "Данные для добавление новой записи в таблицу arm.dbo.TK ", required = true) @RequestBody DboTkModel dboTkModel)
+    public DboTkResult createDboTk(@ApiParam(value = "Данные для добавление новой записи в таблицу arm.dbo.TK ", required = true) @RequestBody DboTkModel dboTkModel)
             throws Exception {
+    	DboTkResult dboTkResult = null;
     	try {
-        	armService.createDboTk(dboTkModel);
+    		dboTkResult =  armService.createDboTk(dboTkModel);
     	 } catch (Exception e) {
-             LOG.error("FAIL: {}", e.getMessage());
+    		 dboTkResult = new DboTkResult();
+             dboTkResult.setMess(e.getMessage());
+             dboTkResult.setCode("e");
+             dboTkResult.setState("e");
          }
+    	
+    	return dboTkResult;
     }
 	
 }

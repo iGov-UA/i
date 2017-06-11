@@ -20,7 +20,7 @@
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ;bVisible=false" type="string" default="btsol_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ о приеме на работу" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Наказ (розпорядження) про прийняття на роботу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Замечание при согласовании" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT4" name="Замечание утверждающего" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Данные нового сотрудника&quot;}}}"></activiti:formProperty>
@@ -80,11 +80,10 @@
         <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="если На условиях контракта" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateContract&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bConditions_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="если На испытательный срок" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sProbation&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bConditions_3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
-        
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptancePrint.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_btsol]]></activiti:string>
@@ -103,13 +102,15 @@
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Данные нового сотрудника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonLastName" name="Фамилия; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonFirstName" name="Имя; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonMiddleName" name="Отчество; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonFullName" name="ФИО нового сотрудника" type="string" default="${sHiredPersonLastName} ${sHiredPersonFirstName} ${sHiredPersonMiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonPosition" name="Должность" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Личный E-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Принять с" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Department" name="Департамент (структурое подразделение); ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_2" name="линия условия принятия на работу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;bConditions_1&quot;],&quot;sValue&quot;:&quot;Условия принятия на работу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bConditions_1" name="На конкурсной основе; ;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -160,7 +161,6 @@
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -178,6 +178,9 @@ execution.setVariable('processInstanceId', processInstanceId)
 var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_2')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_2')
+
 </script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2"></sequenceFlow>
@@ -202,18 +205,18 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Приказ о приеме на работу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<b>Добрый день!</b><br><br>
-Приказ о принятии на работу - подписан.<br>
-Хорошего дня!<br>
-<p>
-    Обязательно ознакомтесь с приказом по <a href="https://alpha.test.region.igov.org.ua">ссылке</a>
-</p>]]></activiti:expression>
+          <activiti:expression>&lt;b&gt;Добрый день!&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+Приказ о принятии на работу - подписан.&lt;br&gt;
+Хорошего дня!&lt;br&gt;
+&lt;p&gt;
+    Обязательно ознакомтесь с приказом по &lt;a href="https://alpha.test.region.igov.org.ua"&gt;ссылке&lt;/a&gt;
+&lt;/p&gt;</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -223,6 +226,13 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 var sKey_GroupPostfix_New = 'btsol_hr'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_3')
+
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_3')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_3')
+
+
 </script>
     </scriptTask>
     <userTask id="usertask4" name="Утверждение приказа">
@@ -236,6 +246,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Данные нового сотрудника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonLastName" name="Фамилия; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonFirstName" name="Имя; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHiredPersonMiddleName" name="Отчество; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonFullName" name="ФИО нового сотрудника" type="string" default="${sHiredPersonLastName} ${sHiredPersonFirstName} ${sHiredPersonMiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sHiredPersonPosition" name="Должность" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" writable="false"></activiti:formProperty>
@@ -292,7 +305,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sCommentUT4" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_acceptance_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>

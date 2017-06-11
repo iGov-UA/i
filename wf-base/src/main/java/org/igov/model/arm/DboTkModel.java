@@ -1,15 +1,22 @@
 package org.igov.model.arm;
 
 import java.io.Serializable;
+import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 @JsonRootName(value = "dboTkModel")
 public class DboTkModel implements Serializable {
-	
+	private static final transient Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());	
 	 /**
 	 * 
 	 */
@@ -520,5 +527,14 @@ public class DboTkModel implements Serializable {
 		public void setId(Long id) {
 			this.id = id;
 		}
-	
+		@Override
+		public String toString() {
+			try {
+				return new ObjectMapper().configure(SerializationFeature.WRAP_ROOT_VALUE, true)
+						.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+			} catch (JsonProcessingException e) {
+				LOG.info(String.format("error [%s]", e.getMessage()));
+			}
+			return null;
+		}
 }
