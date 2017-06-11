@@ -1,8 +1,8 @@
 package org.igov.service.business.action.task.form;
-import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.form.AbstractFormType;
@@ -37,7 +37,7 @@ public class DateFormType extends AbstractFormType {
   }
 
   public Object convertFormValueToModelValue(String propertyValue) {
-	  DateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+	  SimpleDateFormat dateStringFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
     if (StringUtils.isEmpty(propertyValue)) {
       return null;
     }
@@ -45,7 +45,7 @@ public class DateFormType extends AbstractFormType {
       return dateFormat.parseObject(propertyValue);
     } catch (ParseException e) {
     	try {
-			return df.parse(propertyValue);
+			return dateStringFormat.parse(propertyValue);
 		} catch (ParseException e1) {
 			throw new ActivitiIllegalArgumentException("invalid date value "+propertyValue);
 		}
