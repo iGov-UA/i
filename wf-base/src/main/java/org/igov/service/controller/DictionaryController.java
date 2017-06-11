@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Map;
 import org.igov.model.action.vo.Relation_VO;
-import org.igov.service.buisness.dictionary.DictionaryService;
+import org.igov.service.business.dictionary.DictionaryService;
 import org.igov.service.business.relation.RelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

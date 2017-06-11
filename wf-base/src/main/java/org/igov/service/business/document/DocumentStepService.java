@@ -546,6 +546,137 @@ public class DocumentStepService {
         return bRemoved;
     }
 
+    
+    private void delegate(String sKey_Group, String snID_Process_Activiti, String sKey_Group_Delegate, String sKey_Step) throws Exception 
+    {
+
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
+
+        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+            if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                oDocumentStepSubjectRight.setbWrite(null);
+                oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
+                break;
+            }
+        }
+    }
+    
+    private void addVisor(DocumentStep oDocumentStep, List<DocumentStepSubjectRight> aDocumentStepSubjectRight,
+            String sKey_Group, String snID_Process_Activiti, String sKey_Group_Delegate, String sKey_Step) throws Exception {
+        LOG.info("addVisor params: oDocumentStep {}  aDocumentStepSubjectRight {} sKey_Group {} "
+                + "snID_Process_Activiti {} sKey_Group_Delegate {} sKey_Step{}", oDocumentStep, aDocumentStepSubjectRight,
+        sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
+        
+        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+            if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                LOG.info("sKey_Group in AddVisor is {}", sKey_Group);
+                List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition
+                        = oDocumentSubjectRightPermitionDao.findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight.getId());
+                LOG.info("aDocumentSubjectRightPermition is {}", aDocumentSubjectRightPermition);
+
+                for (DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition) {
+                    LOG.info("oDocumentSubjectRightPermition in AddVisor is {}", oDocumentSubjectRightPermition);
+                    if (oDocumentSubjectRightPermition.getPermitionType().equals("AddVisor")) {
+                        if (oDocumentSubjectRightPermition.getsKeyGroupeSource() != null) {
+                            
+                            List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = cloneDocumentStepSubject(snID_Process_Activiti,
+                                    oDocumentSubjectRightPermition.getsKeyGroupeSource(), sKey_Group_Delegate, sKey_Step, true);
+                            
+                            for (DocumentStepSubjectRight oDocumentStepSubjectRight_New : aDocumentStepSubjectRight_New) {
+                                if (sKey_Group_Delegate.equals(oDocumentStepSubjectRight_New.getsKey_GroupPostfix())) {
+                                    LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight_New.getsKey_GroupPostfix());
+                                    oDocumentStepSubjectRight_New.setbWrite(false);
+                                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
+                                    break;
+                                }
+                            }
+                        
+                        } else {
+                            LOG.info("sKeyGroupeSource is null");
+                            DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
+                            oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
+                            oDocumentStepSubjectRight_New.setbWrite(false);
+                            oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight.getbNeedECP());
+                            oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
+
+                            oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
+
+                            LOG.info("oDocumentStepSubjectRightDao in AddVisor is {}", oDocumentStepSubjectRight_New.getId());
+
+                            for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
+                                DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
+                                oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField.getbWrite());
+                                oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField.getsMask_FieldID());
+                                oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
+                                oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
+                                LOG.info("DocumentStepSubjectRightField in AddVisor is {}", oDocumentStepSubjectRightField_New.getId());
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
+    }
+
+    private void addAcceptor(DocumentStep oDocumentStep, List<DocumentStepSubjectRight> aDocumentStepSubjectRight,
+            String sKey_Group, String snID_Process_Activiti, String sKey_Group_Delegate, String sKey_Step) throws Exception 
+    {
+        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+            if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                LOG.info("sKey_Group in AddAcceptor is {}", sKey_Group);
+                List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition
+                        = oDocumentSubjectRightPermitionDao.findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight.getId());
+                LOG.info("aDocumentSubjectRightPermition is {}", aDocumentSubjectRightPermition);
+
+                for (DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition) {
+                    LOG.info("oDocumentSubjectRightPermition in addAcceptor is {}", oDocumentSubjectRightPermition);
+                    if (oDocumentSubjectRightPermition.getPermitionType().equals("AddAcceptor")) {
+                        if (oDocumentSubjectRightPermition.getsKeyGroupeSource() != null) {
+                            
+                            List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = cloneDocumentStepSubject(snID_Process_Activiti,
+                                    oDocumentSubjectRightPermition.getsKeyGroupeSource(), sKey_Group_Delegate, sKey_Step, true);
+                            
+                            for (DocumentStepSubjectRight oDocumentStepSubjectRight_New : aDocumentStepSubjectRight_New) {
+                                if (sKey_Group_Delegate.equals(oDocumentStepSubjectRight_New.getsKey_GroupPostfix())) {
+                                    LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight_New.getsKey_GroupPostfix());
+                                    oDocumentStepSubjectRight_New.setbWrite(true);
+                                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
+                                    break;
+                                }
+                            }
+                        } else {
+                            LOG.info("sKeyGroupeSource is null");
+                            DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
+                            oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
+                            oDocumentStepSubjectRight_New.setbWrite(true);
+                            oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight.getbNeedECP());
+                            oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
+
+                            oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
+
+                            LOG.info("oDocumentStepSubjectRightDao in addAcceptor is {}", oDocumentStepSubjectRight_New.getId());
+
+                            for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
+                                DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
+                                oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField.getbWrite());
+                                oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField.getsMask_FieldID());
+                                oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
+                                oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
+                                LOG.info("DocumentStepSubjectRightField in addAcceptor is {}", oDocumentStepSubjectRightField_New.getId());
+                            }
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+    }
+    
     public List<DocumentStepSubjectRight> delegateDocumentStepSubject(String snID_Process_Activiti, String sKey_Step, String sKey_Group, String sKey_Group_Delegate, String sOperationType)
             throws Exception {
 
@@ -560,62 +691,15 @@ public class DocumentStepService {
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
             
             if(sOperationType.equals("delegate")){
-                cloneDocumentStepSubject(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step, true);
-                
-                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-                    if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
-                        LOG.info("{} is equals {} in delegateDocumentStepSubject", sKey_Group, oDocumentStepSubjectRight.getsKey_GroupPostfix());
-                        oDocumentStepSubjectRight.setbWrite(null);
-                        //oDocumentStepSubjectRight.setsKey_GroupPostfix(sKey_Group_Delegate);
-                        //oDocumentStepSubjectRight.setsDateECP(null);
-                        oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight);
-                        break;
-                    }
-                }
+                delegate(sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step); 
             }
             
             if(sOperationType.equals("AddAcceptor")){
-                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-                    if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
-                        LOG.info("sKey_Group in AddAcceptor is {}", sKey_Group);
-                        List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = 
-                                oDocumentSubjectRightPermitionDao.findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight.getId());
-                        LOG.info("aDocumentSubjectRightPermition is {}", aDocumentSubjectRightPermition);
-                        
-                        for(DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition){
-                            LOG.info("oDocumentSubjectRightPermition in addAcceptor is {}", oDocumentSubjectRightPermition);
-                            if(oDocumentSubjectRightPermition.getPermitionType().equals("AddAcceptor")){
-                                if(oDocumentSubjectRightPermition.getsKeyGroupeSource() != null){
-                                    cloneDocumentStepSubject(snID_Process_Activiti, 
-                                            sKey_Group, oDocumentSubjectRightPermition.getsKeyGroupeSource(), sKey_Step, true);
-                                }else{
-                                    LOG.info("sKeyGroupeSource is null");
-                                    DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
-                                    oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
-                                    oDocumentStepSubjectRight_New.setbWrite(true);
-                                    oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight.getbNeedECP());
-                                    oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
-                                    
-                                    oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
-                                    
-                                    LOG.info("oDocumentStepSubjectRightDao in addAcceptor is {}", oDocumentStepSubjectRight_New.getId());
-                                    
-                                    for(DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()){
-                                        DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
-                                        oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField.getbWrite());
-                                        oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField.getsMask_FieldID());
-                                        oDocumentStepSubjectRightField.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
-                                        oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField);
-                                        LOG.info("DocumentStepSubjectRightField in addAcceptor is {}", oDocumentStepSubjectRightField_New.getId());
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                        
-                        break;
-                    }
-                }
+                addAcceptor(oDocumentStep, aDocumentStepSubjectRight, sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
+            }
+            
+            if(sOperationType.equals("AddVisor")){
+                addVisor(oDocumentStep, aDocumentStepSubjectRight, sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
             }
             
             String nId_Task = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
@@ -1057,6 +1141,7 @@ public class DocumentStepService {
 			 * aDocumentStepSubjectRight_Return.addAll(
 			 * aDocumentStepSubjectRight_Current); }
              */
+            LOG.info("aDocumentStepSubjectRight_ForRemove={}", aDocumentStepSubjectRight_ForRemove);
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
                     + ",sKey_GroupPostfix=" + sKey_Group_Default + "" + ",sID_Field=" + sID_Field + ""

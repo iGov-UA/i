@@ -38,7 +38,7 @@ public class FinanceCommonController {
             @ApiParam(value = "Строка-Подпись платежной системы", required = false) @RequestParam(value = "signature", required = false) String signature,
             HttpServletRequest request
     ) throws Exception {
-
+    
         String resultString = oFinanceService.setPaymentStatus_TaskActiviti(sID_Order, sID_PaymentSystem, sData, sPrefix, sData, signature, request);
         return resultString;     
     }
