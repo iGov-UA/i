@@ -32,7 +32,8 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// получаю из екзекьюшена sID_order
-		//String sID_order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
+		String sID_order = generalConfig.getOrderId_ByProcess(Long.valueOf(execution.getProcessInstanceId()));
+		LOG.info("sID_order in Update_ARM>>>>>>>>>>>" + sID_order);
 
 		// получаю из екзекьюшена soData
 		String soData_Value = this.soData.getExpressionText();
@@ -43,8 +44,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
 		DboTkModel dataWithExecutorForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
-		LOG.info("sID_order in Update_ARM>>>>>>>>>>>" + dataWithExecutorForTransferToArm.getOut_number());
-		//dataWithExecutorForTransferToArm.setOut_number(sID_order);
+		dataWithExecutorForTransferToArm.setOut_number(sID_order);
 		LOG.info("dataBEFOREgetEXEC = {}",dataWithExecutorForTransferToArm);
 		String prilog = ValidationARM.getPrilog(dataWithExecutorForTransferToArm.getPrilog(),oAttachmetService);
 		LOG.info("prilog>>>>>>>>>>>> = {}",prilog);
@@ -52,7 +52,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		List <String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");//json с ключом из монги
 		LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
 
-		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
+		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
 		
 		if (listOfModels != null && !listOfModels.isEmpty()) {
 
@@ -72,7 +72,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}
 
 		}else {
-			LOG.info("Model include sID_order "+ dataWithExecutorForTransferToArm.getOut_number() + "not found in ARM");
+			LOG.info("Model include sID_order "+ sID_order + "not found in ARM");
 		}
 	}
 
