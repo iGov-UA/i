@@ -243,7 +243,7 @@ public class SubjectGroupTreeService {
                 // детей его детей
                 children = subjToNodeMap.get(groupFiltr);
             }
-            LOG.info("children.size: " + children.size());
+            //LOG.info("children.size: " + children.size());
             Map<Long, List<SubjectGroup>> hierarchyProcessSubject = new HashMap<>();
             // children полный список первого уровня
             if (children != null && !children.isEmpty()) {
