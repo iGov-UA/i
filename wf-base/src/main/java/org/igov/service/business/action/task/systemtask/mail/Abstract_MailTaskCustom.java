@@ -821,36 +821,24 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     }
     
     private String getFormattedDate(Date date) {
-    	if (date == null) {
+    	LOG.info("getFormattedDate -->>>>" + date);
+        if (date == null) {
             return StringUtils.EMPTY;
         }
         
         Calendar oCalendar = Calendar.getInstance();
         oCalendar.setTime(date);
-        SimpleDateFormat oSimpleDateFormat = null;
-        for(String format:DateUtilFormat.formats){
-        oSimpleDateFormat = new SimpleDateFormat(format);
+        SimpleDateFormat oSimpleDateFormat = new SimpleDateFormat(DateUtilFormat.DATE_FORMAT_yyyy_MM_dd);
         return oSimpleDateFormat.format(oCalendar.getTime());
-        }
-		return StringUtils.EMPTY;
-       
     }
     
     private String getFormattedDateS(String date) {
-    	if (date == null || date.isEmpty()) {
-            return StringUtils.EMPTY;
-        }
-    	DateTimeFormatter dateStringFormat = null;
-        for(String format:DateUtilFormat.formats){
-        	dateStringFormat = DateTimeFormat
-                .forPattern(format);
-        	DateTime dateTime = dateStringFormat.parseDateTime(date);
-            Date d = dateTime.toDate();
-            return getFormattedDate(d);
-        }
-		return StringUtils.EMPTY;
-        
-      
+    	LOG.info("getFormattedDateS -->>>>" + date);
+        DateTimeFormatter dateStringFormat = DateTimeFormat
+                .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
+        DateTime dateTime = dateStringFormat.parseDateTime(date);
+        Date d = dateTime.toDate();
+        return getFormattedDate(d);
     }
     
     @Override
