@@ -53,6 +53,8 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
 var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_Accept', 'sTable', 'step_2')
 
+
+
 </script>
     </scriptTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>
@@ -79,13 +81,13 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="тестове повідомлення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="тестове повідомлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sValue}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression>УРА!!!</activiti:expression>
@@ -94,7 +96,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
           <activiti:expression>ПИСЬМО ПРИШЛО</activiti:expression>
         </activiti:field>
       </extensionElements>
-      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${subjectService.getSubjectContacts('ProcessInstanceId', 'sTable', 'Organ', 1)}" activiti:elementVariable="sValue"></multiInstanceLoopCharacteristics>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${subjectService.getSubjectContacts(execution.getProcessInstanceId(), 'sTable', 'Organ', 'Email')}" activiti:elementVariable="sValue"></multiInstanceLoopCharacteristics>
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask2" targetRef="scripttask2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
