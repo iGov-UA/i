@@ -821,6 +821,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     }
     
     private String getFormattedDate(Date date) {
+    	LOG.info("getFormattedDate -->>>>" + date);
         if (date == null) {
             return StringUtils.EMPTY;
         }
@@ -832,6 +833,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     }
     
     private String getFormattedDateS(String date) {
+    	LOG.info("getFormattedDateS -->>>>" + date);
         DateTimeFormatter dateStringFormat = DateTimeFormat
                 .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
         DateTime dateTime = dateStringFormat.parseDateTime(date);

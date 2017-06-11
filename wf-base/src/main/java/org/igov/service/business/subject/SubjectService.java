@@ -444,11 +444,11 @@ public class SubjectService {
      * @param snID_Process_Activiti     ид процесса
      * @param sID_Field                 ид поля
      * @param sSubjectType              тип SubjectGroup
-     * @param nID_SubjectContactType    тип контакта, который нужно получить
+     * @param sSubjectContactType    тип контакта, который нужно получить
      * @return                          лист контактов заданного типа
      * @throws Exception 
      */
-    public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, long nID_SubjectContactType) throws Exception {
+    public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, String sSubjectContactType) throws Exception {
         
         LOG.info("getSubjectContacts start...");
         List<SubjectContact> aoSubjectContact = new ArrayList<>();
@@ -465,6 +465,7 @@ public class SubjectService {
                 sSubjectType = "Human";
             }
             
+            LOG.info("/getSubjectContacts: sID_Group_Activiti", sID_Group_Activiti);
             //находим SubjectGroup`ы всех элементов дерева
             SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
                     .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, false, 0l, sSubjectType);
@@ -475,6 +476,21 @@ public class SubjectService {
             
             aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
             aoAllSubjectGroup.add(oSubjectGroupRoot);
+        }
+        
+        long nID_SubjectContactType = 0;
+        
+        //Определяем nID_SubjectContactType по заданному типу
+        if (sSubjectContactType.equalsIgnoreCase("Phone")) {
+        	nID_SubjectContactType = 0;        	
+        } else if (sSubjectContactType.equalsIgnoreCase("Email")) {
+        	nID_SubjectContactType = 1; 
+        } else if (sSubjectContactType.equalsIgnoreCase("Skype")) {
+        	nID_SubjectContactType = 2; 
+        } else if (sSubjectContactType.equalsIgnoreCase("GitHub")) {
+        	nID_SubjectContactType = 3; 
+        } else if (sSubjectContactType.equalsIgnoreCase("ldap")) {
+        	nID_SubjectContactType = 4; 
         }
         
         for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {              
