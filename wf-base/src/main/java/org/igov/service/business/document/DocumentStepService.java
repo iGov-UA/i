@@ -1103,10 +1103,11 @@ public class DocumentStepService {
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight_ForRemove = new LinkedList();
-
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            
             // DocumentStepSubjectRight oDocumentStepSubjectRight = null;
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                LOG.info("oDocumentStepSubjectRight={}", oDocumentStepSubjectRight);
                 if (sID_Field.equals(oDocumentStepSubjectRight.getsID_Field())) {
                     String sLogin = oDocumentStepSubjectRight.getsKey_GroupPostfix();
                     if (asLogin.contains(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
@@ -1141,6 +1142,7 @@ public class DocumentStepService {
 			 * aDocumentStepSubjectRight_Return.addAll(
 			 * aDocumentStepSubjectRight_Current); }
              */
+            LOG.info("aDocumentStepSubjectRight_ForRemove={}", aDocumentStepSubjectRight_ForRemove);
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
                     + ",sKey_GroupPostfix=" + sKey_Group_Default + "" + ",sID_Field=" + sID_Field + ""

@@ -48,9 +48,9 @@ public class SubjectCommonController {
         @ApiParam(value = "ИД процесса", required = true) @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
         @ApiParam(value = "ид поля - из которого мы вытянем или тейблу, или селек, или стрингу", required = true) @RequestParam(value = "sID_Field", required = true) String sID_Field,
         @ApiParam(value = "фильтр по типу Subject'a", required = false) @RequestParam(value = "sSubjectType", required = false) String sSubjectType,
-        @ApiParam(value = "тип контакта", required = true) @RequestParam(value = "nID_SubjectContactType", required = true) long nID_SubjectContactType
+        @ApiParam(value = "тип контакта", required = true) @RequestParam(value = "sSubjectContactType", required = true) String sSubjectContactType
     ) throws Exception {
             
-        return oSubjectService.getSubjectContacts(snID_Process_Activiti, sID_Field, sSubjectType, nID_SubjectContactType);
+        return oSubjectService.getSubjectContacts(snID_Process_Activiti, sID_Field, sSubjectType, sSubjectContactType);
     }
 }
