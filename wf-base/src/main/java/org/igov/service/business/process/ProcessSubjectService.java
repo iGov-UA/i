@@ -37,6 +37,7 @@ import org.igov.model.process.ProcessUser;
 import org.igov.service.conf.AttachmetService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.igov.service.business.util.DateUtilFormat;
 import org.igov.io.GeneralConfig;
 
 import org.joda.time.DateTime;
@@ -458,7 +459,7 @@ public class ProcessSubjectService {
                         
                         try{
                             mProcessVariable.replace(sProcessVariable, 
-                                    df_StartProcess.format(parseDate((String) mProcessVariable.get(sProcessVariable))));
+                                    df_StartProcess.format(parseDate((String) mProcessVariable.get(sProcessVariable),DateUtilFormat.formats)));
                         }
                         catch(Exception ex){}
                         
@@ -507,7 +508,7 @@ public class ProcessSubjectService {
 
                             DateTime datePlan = null;
                             if (mParamDocument.get("sDateExecution") != null) {
-                                datePlan = new DateTime(parseDate((String) mParamDocument.get("sDateExecution")));
+                                datePlan = new DateTime(parseDate((String) mParamDocument.get("sDateExecution"),DateUtilFormat.formats));
                                 
                             }
                             
@@ -585,21 +586,21 @@ public class ProcessSubjectService {
             LOG.info("oDateExecution: " + oDateExecution);
 
             if ((mParam.get("sDateExecution") != null) && (!mParam.get("sDateExecution").equals(""))) {
-                oDateExecution = parseDate((String)mParam.get("sDateExecution"));
+                oDateExecution = parseDate((String)mParam.get("sDateExecution"),DateUtilFormat.formats);
                 sFormatDateExecution = df_StartProcess.format(oDateExecution);
                 LOG.info("oDateExecution: " + oDateExecution);
                 LOG.info("sFormatDateExecution: " + sFormatDateExecution);
                 mParam.replace("sDateExecution", sFormatDateExecution);
             }
             if ((mParam.get("sDateRegistration") != null) && (!mParam.get("sDateRegistration").equals(""))) {
-                Date oDateRegistration = parseDate((String)mParam.get("sDateRegistration"));
+                Date oDateRegistration = parseDate((String)mParam.get("sDateRegistration"),DateUtilFormat.formats);
                 sFormatDateRegistration = df_StartProcess.format(oDateRegistration);
                 LOG.info("oDateRegistration: " + oDateRegistration);
                 LOG.info("sFormatDateRegistration: " + sFormatDateRegistration);
                 mParam.replace("sDateRegistration", sFormatDateRegistration);
             }
             if ((mParam.get("sDateDoc") != null) && (!mParam.get("sDateDoc").equals(""))) {
-                Date oDateDoc = parseDate((String)mParam.get("sDateDoc"));
+                Date oDateDoc = parseDate((String)mParam.get("sDateDoc"),DateUtilFormat.formats);
                 sFormatDateDoc = df_StartProcess.format(oDateDoc);
                 LOG.info("oDateDoc: " + oDateDoc);
                 LOG.info("sFormatDateDoc: " + sFormatDateDoc);
@@ -758,6 +759,29 @@ public class ProcessSubjectService {
         }
         return oDateReturn;
     }
+    
+    public Date parseDate(String dateString, List<String> formats) {
+  	  Date date = null;
+  	  boolean success = false;
+
+  	  for (String format:formats)
+  	  {
+  	    SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+
+  	    try
+  	    {
+  	      date = dateFormat.parse(dateString);
+  	      success = true;
+  	      break;
+  	    }
+  	    catch(ParseException e)
+  	    {
+  	    	 return new Date();
+  	    }
+  	  }
+
+  	  return date;
+  	}
 
     
 
