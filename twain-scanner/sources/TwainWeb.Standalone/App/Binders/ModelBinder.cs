@@ -29,7 +29,7 @@ namespace TwainWeb.Standalone.App.Binders
                 var tempFile = TryGet("fileId"+i);
                 if (fileName == null || tempFile == null)
                     break;
-                downloadParam.ListFiles.Add(new DownloadFile(fileName,tempFile));
+                downloadParam.ListFiles.Add(new DownloadFile(fileName,tempFile, ""));
                 i++;
             }                       
             if(downloadParam.ListFiles.Count == 0)
