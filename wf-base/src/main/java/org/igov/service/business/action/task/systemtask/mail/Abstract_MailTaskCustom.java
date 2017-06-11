@@ -837,7 +837,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         return oSimpleDateFormat.format(oCalendar.getTime());
     }
     
-    private String getFormattedDateS(String date) {
+    /*private String getFormattedDateS(String date) {
 		 SimpleDateFormat dateStringFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
        DateTimeFormatter df_StartProcess = DateTimeFormat
                .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
@@ -854,7 +854,15 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
        }
        d = dateTime.toDate();
        return getFormattedDate(d);
-   }
+   }*/
+    private String getFormattedDateS(String date) {
+    	LOG.info("getFormattedDateS -->>>>" + date);
+        DateTimeFormatter dateStringFormat = DateTimeFormat
+                .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
+        DateTime dateTime = dateStringFormat.parseDateTime(date);
+        Date d = dateTime.toDate();
+        return getFormattedDate(d);
+    }
     
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
