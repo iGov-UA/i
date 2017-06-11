@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -821,6 +822,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     }
     
     private String getFormattedDate(Date date) {
+    	LOG.info("getFormattedDate -->>>>" + date);
         if (date == null) {
             return StringUtils.EMPTY;
         }
@@ -832,9 +834,17 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     }
     
     private String getFormattedDateS(String date) {
-        DateTimeFormatter dateStringFormat = DateTimeFormat
+    	LOG.info("getFormattedDateS -->>>>" + date);
+    	 DateTimeFormatter dateStringFormat = DateTimeFormat
+                 .forPattern("EEE MMM dd HH:mm:ss zzz yyyy");
+        DateTimeFormatter df_StartProcess = DateTimeFormat
                 .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
-        DateTime dateTime = dateStringFormat.parseDateTime(date);
+        DateTime dateTime;
+        try {
+        	dateTime = dateStringFormat.parseDateTime(date);
+        }catch(Exception ex) {
+        	dateTime = df_StartProcess.parseDateTime(date);
+        }
         Date d = dateTime.toDate();
         return getFormattedDate(d);
     }

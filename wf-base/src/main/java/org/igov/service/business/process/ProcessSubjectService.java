@@ -22,8 +22,8 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
-
 import org.apache.commons.io.IOUtils;
+import org.igov.io.GeneralConfig;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectDao;
@@ -34,18 +34,17 @@ import org.igov.model.process.ProcessSubjectStatusDao;
 import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessSubjectTreeDao;
 import org.igov.model.process.ProcessUser;
-import org.igov.service.conf.AttachmetService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.io.GeneralConfig;
-
+import org.igov.service.conf.AttachmetService;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,9 +53,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -793,9 +789,7 @@ public class ProcessSubjectService {
         }
         return oDateReturn;
     }
-
     
-
       
     /**
      * По ид процесса активити вынимаем всех детей. Если статус отличен от

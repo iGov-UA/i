@@ -27,7 +27,7 @@ public class ValidationARM {
 	 * часто используемы форматы дат
 	 */
 	private final static List<String> formats = Lists.newArrayList("yyyy-MM-dd", "dd-MM-yyyy", "yyyy/MM/dd", "dd/MM/yyyy", "yyyy.MM.dd",
-			"dd.MM.yyyy", "yyyyy-MM-dd HH:mm:ss", "yyyyy/MM/dd HH:mm:ss", "yyyyy.MM.dd HH:mm:ss");
+			"dd.MM.yyyy", "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss", "yyyy.MM.dd HH:mm:ss", "EEE MMM dd HH:mm:ss zzz yyyy");
 	
 	
 	/**
