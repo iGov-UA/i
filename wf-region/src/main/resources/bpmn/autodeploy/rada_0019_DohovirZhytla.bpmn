@@ -55,12 +55,9 @@
     </startEvent>   
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script><![CDATA[
-      
-      
-      
+      	execution.setVariable('nNumberOfOwners', execution.getVariable('sTable1').aRow.length)
       ]]></script>
     </scriptTask>
-       
     <userTask id="usertask1_red" name="Обробка вхідної документації ЦНАП (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -100,6 +97,7 @@
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Адресат; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumberOfOwners" name="Кількість повнолітніх; ;bVisible=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         
