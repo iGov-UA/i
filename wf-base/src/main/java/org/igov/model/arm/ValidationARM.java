@@ -176,6 +176,7 @@ public static DboTkModel fillModel(String soData_Value_Result){
     dataForTransferToArm.setPrioritet(isValid(data.get("Prioritet"))? isValidSizeOne(data.get("Prioritet")):null);
     dataForTransferToArm.setLongterm(isValid(data.get("Longterm"))? isValidSizeOne(data.get("Longterm")):null);
     dataForTransferToArm.setId_corp(isValid(data.get("Id_corp"))? Integer.valueOf(data.get("Id_corp")):1);
+    dataForTransferToArm.setOut_number(isValid(data.get("Out_number"))? data.get("Out_number"):"");
 
 	return dataForTransferToArm;
 		

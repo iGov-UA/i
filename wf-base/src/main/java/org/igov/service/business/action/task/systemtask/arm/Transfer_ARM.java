@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.systemtask.arm;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.activiti.engine.delegate.DelegateExecution;
@@ -46,21 +47,39 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
 		DboTkModel dataForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
-		dataForTransferToArm.setOut_number(sID_order);
+		
 		String prilog = ValidationARM.getPrilog(dataForTransferToArm.getPrilog(),oAttachmetService);
 		LOG.info("prilog>>>>>>>>>>>> = {}",prilog);
 		dataForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 	    LOG.info("dataForTransferToArm = {}",dataForTransferToArm);
 		
-		// вызываю селект - получаю лист моделей
-		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
-
-		if (listOfModels !=null && !listOfModels.isEmpty()) {
-			armService.updateDboTk(dataForTransferToArm);
+		List<DboTkModel> listOfModels = new ArrayList<>();
+		if(ValidationARM.isValid(dataForTransferToArm.getOut_number())){
+			listOfModels = armService.getDboTkByOutNumber(dataForTransferToArm.getOut_number());
+			transferDateArm(dataForTransferToArm.getOut_number(), dataForTransferToArm, listOfModels);
+			
 		}else{
+			listOfModels = armService.getDboTkByOutNumber(sID_order);
+			transferDateArm(sID_order, dataForTransferToArm, listOfModels);
+		}
+
+	}
+
+	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels) {
+		if (listOfModels !=null && !listOfModels.isEmpty()) {
+			if (ValidationARM.isValid(dataForTransferToArm.getExpert())) {
+				for (DboTkModel dboTkModel : listOfModels) {
+					dataForTransferToArm.setExpert(dboTkModel.getExpert());
+					armService.updateDboTkByExpert(dataForTransferToArm);
+				}
+
+			} else {
+				armService.updateDboTk(dataForTransferToArm);
+			}
+		}else{
+			dataForTransferToArm.setOut_number(sID_order);
 			armService.createDboTk(dataForTransferToArm);
 		}
-		
 	}
 	
 	

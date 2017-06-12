@@ -838,23 +838,13 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     }
     
     private String getFormattedDateS(String date) {
-		 SimpleDateFormat dateStringFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-       DateTimeFormatter df_StartProcess = DateTimeFormat
-               .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
-       DateTime dateTime = null;
-       Date d = null;
-       try {
-       	dateTime = df_StartProcess.parseDateTime(date);
-       }catch(Exception ex) {
-       	try {
-				return getFormattedDate(dateStringFormat.parse(date));
-			} catch (java.text.ParseException e) {
-				throw new ActivitiIllegalArgumentException("invalid date value "+date);
-			}
-       }
-       d = dateTime.toDate();
-       return getFormattedDate(d);
-   }
+    	LOG.info("getFormattedDateS -->>>>" + date);
+        DateTimeFormatter dateStringFormat = DateTimeFormat
+                .forPattern(DateUtilFormat.DATE_FORMAT_dd_SLASH_MM_SLASH_yyyy);
+        DateTime dateTime = dateStringFormat.parseDateTime(date);
+        Date d = dateTime.toDate();
+        return getFormattedDate(d);
+    }
     
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
