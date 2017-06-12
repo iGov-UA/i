@@ -52,29 +52,23 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		LOG.info("prilog>>>>>>>>>>>> = {}",prilog);
 		dataForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 	    LOG.info("dataForTransferToArm = {}",dataForTransferToArm);
-	    List<String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataForTransferToArm.getExpert(),
-				oAttachmetService, "sName_isExecute");
-	    LOG.info("asExecutorsFromsoData = {}",asExecutorsFromsoData);
 		
 		List<DboTkModel> listOfModels = new ArrayList<>();
 		if(ValidationARM.isValid(dataForTransferToArm.getOut_number())){
 			listOfModels = armService.getDboTkByOutNumber(dataForTransferToArm.getOut_number());
-			 LOG.info("listOfModels1 = {}",listOfModels);
-			transferDateArm(dataForTransferToArm.getOut_number(), dataForTransferToArm, listOfModels,asExecutorsFromsoData);
+			transferDateArm(dataForTransferToArm.getOut_number(), dataForTransferToArm, listOfModels);
 			
 		}else{
 			listOfModels = armService.getDboTkByOutNumber(sID_order);
-			 LOG.info("listOfModels2 = {}",listOfModels);
-			transferDateArm(sID_order, dataForTransferToArm, listOfModels,asExecutorsFromsoData);
+			transferDateArm(sID_order, dataForTransferToArm, listOfModels);
 		}
 
 	}
 
-	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels,List<String> asExecutorsFromsoData) {
+	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels) {
 		if (listOfModels !=null && !listOfModels.isEmpty()) {
 			if (ValidationARM.isValid(dataForTransferToArm.getExpert())) {
 				for (DboTkModel dboTkModel : listOfModels) {
-					LOG.info("dboTkModel.getExpert() = {}",dboTkModel.getExpert());
 					dataForTransferToArm.setExpert(dboTkModel.getExpert());
 					armService.updateDboTkByExpert(dataForTransferToArm);
 				}
