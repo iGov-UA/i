@@ -12,5 +12,7 @@ public interface ArmService {
 	public DboTkResult createDboTk(DboTkModel dboTkModel);
 
 	public DboTkResult updateDboTk(DboTkModel dboTkModel);
+	
+	public DboTkResult updateDboTkByExpert(DboTkModel dboTkModel);
 
 }

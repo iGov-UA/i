@@ -29,6 +29,9 @@ public class ArmDaoImpl implements ArmDao {
 	@Value("#{sqlProperties['dbo_tk.updateDboTk']}")
 	private String updateDboTk;
 	
+	@Value("#{sqlProperties['dbo_tk.updateDboTkByExpert']}")
+	private String updateDboTkByExpert;
+	
 	@Value("#{datasourceProps['datasource.driverClassName']}")
     private String driverClassName;
 	
@@ -271,6 +274,99 @@ public class ArmDaoImpl implements ArmDao {
 			preparedStatement.setString(43, dboTkModel.getPrioritet()==null?null:dboTkModel.getPrioritet());
 			preparedStatement.setString(44, dboTkModel.getLongterm()==null?null:dboTkModel.getLongterm());
 			preparedStatement.setString(45, dboTkModel.getOut_number()==null?"":dboTkModel.getOut_number());
+			// execute update SQL stetement
+			preparedStatement.executeUpdate();
+			dbConnection.commit();
+			dbConnection.setAutoCommit(true);
+			
+			dboTkResult = new DboTkResult();
+            dboTkResult.setMess("ok");
+            dboTkResult.setCode("0000");
+            dboTkResult.setState("r");
+
+		} catch (Exception e) {
+			dboTkResult = new DboTkResult();
+            dboTkResult.setMess(e.getMessage());
+            dboTkResult.setCode("e");
+            dboTkResult.setState("e");
+            LOG.error("FAIL updateDboTk: {}", dboTkResult);
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
+			} catch (Exception e) {
+				dboTkResult = new DboTkResult();
+	            dboTkResult.setMess(e.getMessage());
+	            dboTkResult.setCode("e");
+	            dboTkResult.setState("e");
+	            LOG.error("FAIL updateDboTk: {}", dboTkResult);
+	            return dboTkResult;
+			}
+
+		}
+		
+		return dboTkResult;
+	}
+	
+	@Override
+	public DboTkResult updateDboTkByExpert(DboTkModel dboTkModel) {
+		DboTkResult dboTkResult = null;
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		try {
+			dbConnection = getDBConnection();
+			preparedStatement = dbConnection.prepareStatement(updateDboTkByExpert);
+
+			preparedStatement.setString(1, dboTkModel.getIndustry()==null?null:dboTkModel.getIndustry());
+			preparedStatement.setString(2, dboTkModel.getPriznak()==null?null:dboTkModel.getPriznak());
+			preparedStatement.setDate(3, dboTkModel.getData_out()==null?null:new java.sql.Date(dboTkModel.getData_out().getTime()));
+			preparedStatement.setString(4, dboTkModel.getDep_number()==null?null:dboTkModel.getDep_number());
+			preparedStatement.setLong(5, dboTkModel.getNumber_441()==null?1L:dboTkModel.getNumber_441());
+			preparedStatement.setDate(6, dboTkModel.getData_in()==null?null:new java.sql.Date(dboTkModel.getData_in().getTime()));
+			preparedStatement.setString(7,  dboTkModel.getState()==null?null:dboTkModel.getState());
+			preparedStatement.setString(8, dboTkModel.getName_object()==null?null:dboTkModel.getName_object());
+			preparedStatement.setString(9, dboTkModel.getKod()==null?null:dboTkModel.getKod());
+			preparedStatement.setString(10, dboTkModel.getGruppa()==null?null:dboTkModel.getGruppa());
+			preparedStatement.setString(11, dboTkModel.getUndergroup()==null?null:dboTkModel.getUndergroup());
+			preparedStatement.setString(12, dboTkModel.getFinans()==null?null:dboTkModel.getFinans());
+			preparedStatement.setDate(13,  dboTkModel.getData_out_raz()==null?null:new java.sql.Date(dboTkModel.getData_out_raz().getTime()));
+			preparedStatement.setLong(14, dboTkModel.getNumber_442()==null?1L:dboTkModel.getNumber_442());
+			preparedStatement.setString(15, dboTkModel.getWinner()==null?null:dboTkModel.getWinner());
+			preparedStatement.setString(16,  dboTkModel.getKod_okpo()==null?null:dboTkModel.getKod_okpo());
+			preparedStatement.setString(17, dboTkModel.getPhone()==null?null:dboTkModel.getPhone());
+			preparedStatement.setString(18, dboTkModel.getSrok()==null?null:dboTkModel.getSrok());
+			preparedStatement.setString(19,  dboTkModel.getExpert()==null?null:dboTkModel.getExpert()); 
+			preparedStatement.setBigDecimal(20, dboTkModel.getSumma()==null?null:dboTkModel.getSumma());
+			preparedStatement.setString(21, dboTkModel.getuAN()==null?null:dboTkModel.getuAN());
+			preparedStatement.setString(22, dboTkModel.getIf_oplata()==null?null:dboTkModel.getIf_oplata());
+			preparedStatement.setString(23, dboTkModel.getUslovie()==null?null:dboTkModel.getUslovie()); 
+			preparedStatement.setString(24, dboTkModel.getBank()==null?null:dboTkModel.getBank());
+			preparedStatement.setString(25, dboTkModel.getSmeta()==null?null:dboTkModel.getSmeta());
+			preparedStatement.setDate(26, dboTkModel.getDataEZ()==null?null:new java.sql.Date(dboTkModel.getDataEZ().getTime()));
+			preparedStatement.setString(27, dboTkModel.getPrilog()==null?null:dboTkModel.getPrilog());
+			preparedStatement.setDate(28, dboTkModel.getUpdateData()==null?null:new java.sql.Date(dboTkModel.getUpdateData().getTime()));
+			preparedStatement.setLong(29, dboTkModel.getUpdOKBID()==null?null:dboTkModel.getUpdOKBID());
+			preparedStatement.setString(30, dboTkModel.getNotes()==null?null:dboTkModel.getNotes());
+			preparedStatement.setString(31, dboTkModel.getArhiv()==null?null:dboTkModel.getArhiv());
+			preparedStatement.setDate(32, new java.sql.Date(new Date().getTime()));
+			preparedStatement.setString(33, dboTkModel.getZametki()==null?null:dboTkModel.getZametki());
+			preparedStatement.setLong(34, dboTkModel.getId_corp()==null?null:dboTkModel.getId_corp());
+			preparedStatement.setDate(35, dboTkModel.getDataBB()==null?null:new java.sql.Date(dboTkModel.getDataBB().getTime()));
+			preparedStatement.setString(36,  dboTkModel.getPriemka()==null?null:dboTkModel.getPriemka());
+			preparedStatement.setString(37, dboTkModel.getProckred()==null?null:dboTkModel.getProckred()); 
+			preparedStatement.setBigDecimal(38, dboTkModel.getSumkred()==null?null:dboTkModel.getSumkred());
+			preparedStatement.setBigDecimal(39, dboTkModel.getSumzak()==null?null:dboTkModel.getSumzak());
+			preparedStatement.setString(40, dboTkModel.getAuctionForm()==null?null:dboTkModel.getAuctionForm());
+			preparedStatement.setString(41, dboTkModel.getProtocol_Number()==null?null:dboTkModel.getProtocol_Number());
+			preparedStatement.setString(42,	dboTkModel.getCorrectionDoc()==null?null:dboTkModel.getCorrectionDoc());
+			preparedStatement.setString(43, dboTkModel.getPrioritet()==null?null:dboTkModel.getPrioritet());
+			preparedStatement.setString(44, dboTkModel.getLongterm()==null?null:dboTkModel.getLongterm());
+			preparedStatement.setString(45, dboTkModel.getOut_number()==null?"":dboTkModel.getOut_number());
+			preparedStatement.setString(46,  dboTkModel.getExpert()==null?null:dboTkModel.getExpert()); 
 			// execute update SQL stetement
 			preparedStatement.executeUpdate();
 			dbConnection.commit();
