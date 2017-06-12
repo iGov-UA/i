@@ -203,6 +203,7 @@ public class Mail extends Abstract_Mail {
 
     public Mail _AttachBody(String sBody) {
         try {
+            LOG.info("sBody {}", sBody);
             MimeBodyPart oMimeBodyPart = new MimeBodyPart();
             //oMimeBodyPart.setText(sBody,DEFAULT_ENCODING,"Content-Type: text/html;");
             oMimeBodyPart.setText(sBody, DEFAULT_ENCODING);
