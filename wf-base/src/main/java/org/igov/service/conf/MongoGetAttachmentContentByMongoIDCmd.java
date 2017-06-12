@@ -31,7 +31,6 @@ public class MongoGetAttachmentContentByMongoIDCmd extends GetAttachmentContentC
 
         LOG.info("Retrieved content ID from MOngo DB by key:{}", realKey);
         return new ByteArrayInputStream(content);
-        
     }
 
 }

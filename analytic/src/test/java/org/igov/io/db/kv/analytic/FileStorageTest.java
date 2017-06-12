@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.igov.io.db.kv.analytic.impl.FileMongoStorageAnalytic;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -25,7 +26,7 @@ import org.igov.io.db.kv.statical.model.UploadedFile;
 public class FileStorageTest {
 
 	@Autowired
-	private IFileStorage oStorage;
+	private FileMongoStorageAnalytic oStorage;
 
 	
 	@Test(expected=RecordNotFoundException.class)
