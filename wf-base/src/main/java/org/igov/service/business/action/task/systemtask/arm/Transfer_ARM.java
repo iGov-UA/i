@@ -69,8 +69,10 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		if (listOfModels !=null && !listOfModels.isEmpty()) {
 			if (ValidationARM.isValid(dataForTransferToArm.getExpert())) {
 				for (DboTkModel dboTkModel : listOfModels) {
-					dataForTransferToArm.setExpert(dboTkModel.getExpert());
-					armService.updateDboTkByExpert(dataForTransferToArm);
+					if(dataForTransferToArm.getExpert().equalsIgnoreCase(dboTkModel.getExpert())){
+						dataForTransferToArm.setExpert(dboTkModel.getExpert());
+						armService.updateDboTkByExpert(dataForTransferToArm);
+					}
 				}
 
 			} else {
