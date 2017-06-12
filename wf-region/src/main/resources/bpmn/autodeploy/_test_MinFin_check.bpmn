@@ -76,14 +76,14 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірка щодо ІПН]]></activiti:string>
+          <activiti:expression><![CDATA[Перевірка щодо ІПН ${sIPN}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
           	<p>
           		ІПН <b>${sIPN}</b> перевірено.<br>
-          		результат: ${sResult}<br>
+          		Результат: ${sResult}<br>
           	</p>
           	[pattern/mail/new_design/_common_content_end.html]
           	[pattern/mail/new_design/_common_signature_start.html]
@@ -100,7 +100,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${email==null}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Ответ" activiti:candidateGroups="MinFin_test">
+    <userTask id="usertask1" name="Відповідь щодо ІПН ${sIPN}" activiti:candidateGroups="MinFin_test">
       <extensionElements>
         <activiti:formProperty id="sIPN" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта; сюди буде відправлено відповідь" type="string" writable="false"></activiti:formProperty>
