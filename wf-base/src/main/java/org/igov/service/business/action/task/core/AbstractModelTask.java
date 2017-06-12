@@ -531,7 +531,7 @@ public abstract class AbstractModelTask {
 
                                                                     try {
                                                                         oJsonTableFile = (JSONObject)parser.parse(oFileValue);
-                                                                    } catch (ParseException ex) {
+                                                                    } catch (Exception ex) {
                                                                         LOG.error("There aren't TaskAttachVO objects in sFieldValue in table - JSON parsing error: ", ex);
                                                                     }
                                                                     
@@ -786,7 +786,6 @@ public abstract class AbstractModelTask {
                 String sID_AttachmentTrimmed = sID_Attachment.replaceAll("^\"|\"$", "");
                 LOG.info("sID_AttachmentTrimmed is: " + sID_AttachmentTrimmed);
                 Attachment oAttachment = taskService.getAttachment(sID_AttachmentTrimmed);
-
                 if (oAttachment != null) {
                     aAttachment.add(oAttachment);
                 }

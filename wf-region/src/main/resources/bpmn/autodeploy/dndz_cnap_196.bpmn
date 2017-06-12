@@ -12,11 +12,11 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="objectAddress" name="Адреса розміщення об`єкта дрібно-роздрібної торгівлі" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dergReestracia" name="Завантажте копію свідоцтва про державну реєстрацію суб’єкта господарювання;або копію виписки з ЄДР юридичних осіб та фізичних осіб-підприємців" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="EP" name="Завантажте Витяг з реєстру платників єдиного податку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="region" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="clerkPost" name="почта чиновника; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dergReestracia" name="Завантажте копію свідоцтва про державну реєстрацію суб’єкта господарювання;або копію виписки з ЄДР юридичних осіб та фізичних осіб-підприємців ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="EP" name="Завантажте Витяг з реєстру платників єдиного податку ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="region" name="Регион ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="clerkPost" name="почта чиновника ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта ; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask6" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -25,13 +25,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>email@email.ua</activiti:expression>
+          <activiti:expression><![CDATA[${clerkPost}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Погодження розміщення об’єктів виносної дрібно-роздрібної торгівлі для продажу морозива та безалкогольних напоїв у весняно-літній період. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Погодження розміщення об’єктів виносної дрібно-роздрібної торгівлі для продажу морозива та безалкогольних напоїв у весняно-літній період. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -42,22 +42,22 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Погодження розміщення об’єктів виносної дрібно-роздрібної торгівлі для продажу морозива та безалкогольних напоїв у весняно-літній період]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-			Ваше звернення щодо погодження розміщення об’єктів виносної дрібно-роздрібної торгівлі для продажу морозива та безалкогольних напоїв у весняно-літній період успішно зареєстроване.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+			Ваше звернення щодо погодження розміщення об’єктів виносної дрібно-роздрібної торгівлі для продажу морозива та безалкогольних напоїв у весняно-літній період успішно зареєстроване.<br />
 			Ви отримаєте відповідь протягом 30 днів.
-			&lt;/p&gt;
+			</p>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+			[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]<br />
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -79,13 +79,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Ви можете додати коментар за результатами перевірки документів" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dndz_cnap_196_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dndz_cnap_196_print.html]; ;bVisible=false" type="string" default="Заява щодо розміщення об`єктів торгівлі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dndz_cnap_196_print.html] ; ;bVisible=false" type="string" default="Заява щодо розміщення об`єктів торгівлі" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="dergReestracia" name="Завантажте копію свідоцтва про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="EP" name="Завантажте Витяг з реєстру платників єдиного податку ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${dergReestracia}, ${EP}, ${bankId_scan_passport}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
@@ -97,25 +98,25 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Погодження розміщення об’єктів виносної дрібно-роздрібної торгівлі для продажу морозива та безалкогольних напоїв у весняно-літній період]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, для виконання вашого запиту недостатньо інформації. &lt;/p&gt;
-			&lt;p&gt;${comment}&lt;/p&gt;
-			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>На жаль, для виконання вашого запиту недостатньо інформації. </p>
+			<p>${comment}</p>
+			За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+			<p>Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]</p>
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -128,26 +129,26 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Погодження розміщення об’єктів виносної дрібно-роздрібної торгівлі для продажу морозива та безалкогольних напоїв у весняно-літній період]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Ваше подання опрацьовано адміністратором ЦНАП та передано до комісії з питань впорядкування організації роботи торговельної мережі, сфери послуг та ринків міста.&lt;br /&gt;Ви можете роздрукувати свою заяву з прикріплення до цього листа.&lt;br /&gt;
-			&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Ваше подання опрацьовано адміністратором ЦНАП та передано до комісії з питань впорядкування організації роботи торговельної мережі, сфери послуг та ринків міста.<br />Ви можете роздрукувати свою заяву з прикріплення до цього листа.<br />
+			<p>Якщо у Вас з`явились питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]</p>
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -156,13 +157,6 @@
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow9" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask2" name="Опрацювання документів комісією" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="Task2" name="На цьому етапі візьміть звернення в опрацювання," type="label" default="далі оберіть результат розгляду комісією (додайте коментар, якщо потрібно), після цього натиснути опрацювати"></activiti:formProperty>
@@ -178,16 +172,15 @@
           <activiti:value id="accept" name="Комісія винесла позитивне рішення"></activiti:value>
           <activiti:value id="reject" name="Комісія відхилила заяву"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="result" name="Додайте скановану копію рішення комісії" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="result" name="Додайте скановану копію рішення комісії ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment2" name="Ви можете додати коментар за результатами розгляду документів" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dndz_cnap_196_print.html]; ;bVisible=false" type="string" default="Заява щодо розміщення об`єктів торгівлі" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${dergReestracia}, ${EP}, ${bankId_scan_passport}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dndz_cnap_196_print.html] ; ;bVisible=false" type="string" default="Заява щодо розміщення об`єктів торгівлі" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="dergReestracia" name="Завантажте копію свідоцтва про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="EP" name="Завантажте Витяг з реєстру платників єдиного податку ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+              </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -198,29 +191,29 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Погодження розміщення об’єктів виносної дрібно-роздрібної торгівлі для продажу морозива та безалкогольних напоїв у весняно-літній період]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, для виконання вашого запиту недостатньо інформації.&lt;/p&gt;
-			&lt;p&gt;${comment2}&lt;/p&gt;
-			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
-			&lt;p&gt;Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
-&lt;p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>На жаль, для виконання вашого запиту недостатньо інформації.</p>
+			<p>${comment2}</p>
+			За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a>
+			<p>Якщо у вас виникли питання, Ви можете звернутись до [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]</p>
+<p>
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]</p>
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]<br />
 [pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -233,28 +226,28 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Комісія з питань впорядкування організації роботи торговельної мережі, сфери послуг та ринків міста розглянула Вашу заяву.&lt;br /&gt;
-			Ви можете завантажити протокол засідання комісії з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;/p&gt;
-&lt;p&gt;[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]&lt;/p&gt;
-&lt;p&gt;Для отримання довідки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт). &lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Комісія з питань впорядкування організації роботи торговельної мережі, сфери послуг та ринків міста розглянула Вашу заяву.<br />
+			Ви можете завантажити протокол засідання комісії з додатку до цього листа, та отримати оригінал у [pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]</p>
+<p>[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:3]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:4]<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:5]</p>
+<p>Для отримання довідки потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт). </p>
  [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:value{[region]}:2]<br />
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -263,7 +256,7 @@
     </sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-        <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var no = [ "26", "376"]
 var post = [ "dozvildndz@ukr.net", "email@email.com"]
 var So = [ "dndzT", "pol_krem"]
@@ -277,7 +270,7 @@ execution.setVariable('region', per2)
 execution.setVariable('clerkPost', per4)
 </script>
     </scriptTask>
-    <sequenceFlow id="flow17" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dndz_cnap_196">
     <bpmndi:BPMNPlane bpmnElement="dndz_cnap_196" id="BPMNPlane_dndz_cnap_196">
@@ -304,15 +297,6 @@ execution.setVariable('clerkPost', per4)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="565.0" y="190.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="70.0" y="110.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="70.0" y="109.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="630.0" y="30.0"></omgdc:Bounds>
@@ -349,27 +333,19 @@ execution.setVariable('clerkPost', per4)
         <omgdi:waypoint x="450.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="450.0" y="180.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="460.0" y="138.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="460.0" y="138.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="450.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="450.0" y="85.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="450.0" y="85.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="450.0" y="85.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="503.0" y="207.0"></omgdi:waypoint>
         <omgdi:waypoint x="565.0" y="207.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="122.0" y="75.0"></omgdi:waypoint>
-        <omgdi:waypoint x="122.0" y="110.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="70.0" y="124.0"></omgdi:waypoint>
-        <omgdi:waypoint x="55.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="503.0" y="57.0"></omgdi:waypoint>
@@ -396,7 +372,7 @@ execution.setVariable('clerkPost', per4)
         <omgdi:waypoint x="600.0" y="207.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="122.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="122.0" y="75.0"></omgdi:waypoint>
         <omgdi:waypoint x="122.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

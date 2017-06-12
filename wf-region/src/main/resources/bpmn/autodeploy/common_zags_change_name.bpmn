@@ -4,7 +4,10 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/687</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info" name="Зверніть увагу" type="label" default="Послуга надається тільки громадянам України"></activiti:formProperty>
+        <activiti:formProperty id="sText1" name="; ;labelType=info" type="label" default="Зверніть увагу: послуга надається тільки громадянам України" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ваше Ім'я; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть відділ ДРАЦС згідно Вашого місця проживання" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="saChangeName" name="Чи міняли раніше прізвище, власне ім’я, по батькові?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -16,10 +19,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита; якщо ім'я змінюєте вперше - 5,1 грн, повторна зміна - 51 грн" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sText88" name=" " type="label" default="Після замовлення послуги Ви отримаєте лист з кнопкою для сплати"></activiti:formProperty>
-        <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністративного органу, який здійснив попередні зміни в імені, прізвищі або по батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPrevious" name="Документ, що підтверджує зміну імені; свідоцтво про зміну імені заявника, його батька, матері, якщо раніше здійснювалась державна реєстрація зміни імені" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocPrevious" name="Документ, що підтверджує зміну імені; свідоцтво про зміну імені заявника, його батька, матері, якщо раніше здійснювалась державна реєстрація зміни імені ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSurname" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName" name="Ім’я" type="string" required="true"></activiti:formProperty>
@@ -52,75 +55,15 @@
           <activiti:value id="noMarriage" name="у шлюбі не перебуваю"></activiti:value>
           <activiti:value id="widow" name="удова (удівець)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDocMarriage" name="Свідоцтво про шлюб" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу; або інший документ, який підтверджує припинення шлюбу (якщо Ви раніше перебували у шлюбі)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; або відповідне рішення суду" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocMarriage" name="Свідоцтво про шлюб ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу; або інший документ, який підтверджує припинення шлюбу (якщо Ви раніше перебували у шлюбі) ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; або відповідне рішення суду ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="saChildren" name="Чи маєте дітей?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountChildren" name="Укажіть кількість неповнолітніх дітей" type="enum" required="true">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPibChild1" name="ПІБ першої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild1" name="Дата народження першої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild1" name="Місце народження першої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild1" name="Адреса, за якою проживає перша неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild1" name="Свідоцтво про народження першої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild2" name="ПІБ другої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild2" name="Дата народження другої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild2" name="Місце народження другої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild2" name="Адреса, за якою проживає друга неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild2" name="Свідоцтво про народження другої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild3" name="ПІБ третьої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild3" name="Дата народження третьої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild3" name="Місце народження третьої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild3" name="Адреса, за якою проживає третя неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild3" name="Свідоцтво про народження третьої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої неповнолітньої дитини" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild4" name="Дата народження четвертої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild4" name="Місце народження четвертої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild4" name="Адреса, за якою проживає четверта неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild4" name="Свідоцтво про народження четвертої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild5" name="Дата народження п'ятої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild5" name="Місце народження п'ятої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild5" name="Адреса, за якою проживає п'ята неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild5" name="Свідоцтво про народження п'ятої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild6" name="ПІБ шостої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild6" name="Дата народження шостої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild6" name="Місце народження шостої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild6" name="Адреса, за якою проживає шоста неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild6" name="Свідоцтво про народження шостої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild7" name="Дата народження сьомої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild7" name="Місце народження сьомої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild7" name="Адреса, за якою проживає сьома неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild7" name="Свідоцтво про народження сьомої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild8" name="Дата народження восьмої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild8" name="Місце народження восьмої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild8" name="Адреса, за якою проживає восьма неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild8" name="Свідоцтво про народження восьмої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild9" name="Дата народження дев'ятої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild9" name="Місце народження дев'ятої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild9" name="Адреса, за якою проживає дев'ята неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild9" name="Свідоцтво про народження дев'ятої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild10" name="ПІБ десятої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild10" name="Дата народження десятої неповнолітньої дитини" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild10" name="Місце народження десятої неповнолітньої дитини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild10" name="Адреса, за якою проживає десята неповнолітня дитина" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocChild10" name="Свідоцтво про народження десятої неповнолітньої дитини" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Діти лінія" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable1&quot;],&quot;sValue&quot;:&quot;Відомості про неповнолітніх дітей&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="інформація про неповнолітніх дітей; ;bNew=true" type="table" default="${markerService.loadFromFile('table/justice/sTable1_common_zags_change_name.json')}"></activiti:formProperty>
         <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -129,94 +72,19 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountPlaces" name="Укажіть кількість місцевостей, де ви проживали" type="enum" required="true">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPlace1" name="1. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime1" name="1. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork1" name="1. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace2" name="2. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime2" name="2. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork2" name="2. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace3" name="3. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime3" name="3. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork3" name="3. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace4" name="4. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime4" name="4. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork4" name="4. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace5" name="5. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime5" name="5. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork5" name="5. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace6" name="6. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime6" name="6. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork6" name="6. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace7" name="7. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime7" name="7. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork7" name="7. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace8" name="8. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime8" name="8. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork8" name="8. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace9" name="9. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime9" name="9. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork9" name="9. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace10" name="10. Населений пункт" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTime10" name="10. Проміжок часу проживання; роки проживання" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sWork10" name="10. Місце роботи, навчання, служби в армії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Місцевості лінія" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;Відомості про місця проживання&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="інформація про місцевості проживання; ;bNew=true" type="table" default="${markerService.loadFromFile('table/justice/sTable2_common_zags_change_name.json')}"></activiti:formProperty>
         <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" required="true">
           <activiti:value id="pasport" name="паспорт"></activiti:value>
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText1" name="Про відповідальність за повідомлення завідомо неправдивих відомостей відділу державної реєстрації актів цивільного стану і про необхідність обміну паспорта громадянина України попереджений(а)" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="якщо змінюється ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'name'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="якщо змінюється прізвище" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNewSurname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'surname'||[sClient] == 'власне прізвище'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="якщо змінюється по батькові" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;infoSecondname&quot;,&quot;sNewSecondname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'secondname'||[sClient] == 'по батькові'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="якщо перебуває на обліку" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sNameRVK&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asMilitary&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'||[sClient] == 'перебуваю на обліку'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="якщо служить" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sPlaceMilitary&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asMilitary&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yesMilitary'||[sClient] == 'перебуваю на військовій службі'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="якщо у шлюбі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sDocMarriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saMarriage&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'marriage'||[sClient] == 'перебуваю у шлюбі'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="якщо не у шлюбі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sDocNoMarriage&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saMarriage&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'noMarriage'||[sClient] == 'у шлюбі не перебуваю'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers8" name="якщо має дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sCountChildren&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'||[sClient] == 'так'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="якщо одна неповнолітня дитина" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'one'||[sClient] == '1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="якщо дві неповнолітньої дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'two'||[sClient] == '2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="якщо три неповнолітньої дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'three'||[sClient] == '3'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="якщо чотири неповнолітньої дитини" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateBirthChild4&quot;,&quot;sPlaceBirthChild4&quot;,&quot;sPlaceChild4&quot;,&quot;sDocChild4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'four'||[sClient] == '4'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="якщо пять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateBirthChild4&quot;,&quot;sPlaceBirthChild4&quot;,&quot;sPlaceChild4&quot;,&quot;sDocChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateBirthChild5&quot;,&quot;sPlaceBirthChild5&quot;,&quot;sPlaceChild5&quot;,&quot;sDocChild5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'five'||[sClient] == '5'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="якщо раніше змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_14&quot;:{&quot;aField_ID&quot;:[&quot;sNameOrganPrevious&quot;,&quot;sDatePrevious&quot;,&quot;sDocPrevious&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'||[sClient] == 'так'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name="якщо одне місце проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'one'||[sClient] == '1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers16" name="якщо два місця проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'two'||[sClient] == '2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers17" name="якщо три місця проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'three'||[sClient] == '3'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers18" name="якщо чотири місця проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'four'||[sClient] == '4'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers19" name="якщо п'ять місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'five'||[sClient] == '5'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers20" name="якщо шість місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;,&quot;sPlace6&quot;,&quot;sTime6&quot;,&quot;sWork6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'six'||[sClient] == '6'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers21" name="якщо сім місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_21&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;,&quot;sPlace6&quot;,&quot;sTime6&quot;,&quot;sWork6&quot;,&quot;sPlace7&quot;,&quot;sTime7&quot;,&quot;sWork7&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'seven'||[sClient] == '7'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers22" name="якщо вісім місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;,&quot;sPlace6&quot;,&quot;sTime6&quot;,&quot;sWork6&quot;,&quot;sPlace7&quot;,&quot;sTime7&quot;,&quot;sWork7&quot;,&quot;sPlace8&quot;,&quot;sTime8&quot;,&quot;sWork8&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'eight'||[sClient] == '8'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers23" name="якщо дев'ять місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_23&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;,&quot;sPlace6&quot;,&quot;sTime6&quot;,&quot;sWork6&quot;,&quot;sPlace7&quot;,&quot;sTime7&quot;,&quot;sWork7&quot;,&quot;sPlace8&quot;,&quot;sTime8&quot;,&quot;sWork8&quot;,&quot;sPlace9&quot;,&quot;sTime9&quot;,&quot;sWork9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'nine'||[sClient] == '9'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers24" name="якщо десять місць проживання" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_24&quot;:{&quot;aField_ID&quot;:[&quot;sPlace1&quot;,&quot;sTime1&quot;,&quot;sWork1&quot;,&quot;sPlace2&quot;,&quot;sTime2&quot;,&quot;sWork2&quot;,&quot;sPlace3&quot;,&quot;sTime3&quot;,&quot;sWork3&quot;,&quot;sPlace4&quot;,&quot;sTime4&quot;,&quot;sWork4&quot;,&quot;sPlace5&quot;,&quot;sTime5&quot;,&quot;sWork5&quot;,&quot;sPlace6&quot;,&quot;sTime6&quot;,&quot;sWork6&quot;,&quot;sPlace7&quot;,&quot;sTime7&quot;,&quot;sWork7&quot;,&quot;sPlace8&quot;,&quot;sTime8&quot;,&quot;sWork8&quot;,&quot;sPlace9&quot;,&quot;sTime9&quot;,&quot;sWork9&quot;,&quot;sPlace10&quot;,&quot;sTime10&quot;,&quot;sWork10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountPlaces&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ten'||[sClient] == '10'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers25" name="заховати маркери" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;markers1&quot;,&quot;markers2&quot;,&quot;markers3&quot;,&quot;markers4&quot;,&quot;markers5&quot;,&quot;markers6&quot;,&quot;markers7&quot;,&quot;markers8&quot;,&quot;markers9&quot;,&quot;markers10&quot;,&quot;markers11&quot;,&quot;markers12&quot;,&quot;markers13&quot;,&quot;markers14&quot;,&quot;markers15&quot;,&quot;markers16&quot;,&quot;markers17&quot;,&quot;markers18&quot;,&quot;markers19&quot;,&quot;markers20&quot;,&quot;markers21&quot;,&quot;markers22&quot;,&quot;markers23&quot;,&quot;markers24&quot;,&quot;markers26&quot;,&quot;markers27&quot;,&quot;markers28&quot;,&quot;markers29&quot;,&quot;markers30&quot;,&quot;markers31&quot;,&quot;markers32&quot;,&quot;markers33&quot;,&quot;markers35&quot;,&quot;markers36&quot;,&quot;markers37&quot;,&quot;markers38&quot;,&quot;markers39&quot;,&quot;sNameOrgan&quot;,&quot;sWorkTime&quot;,&quot;sPhoneOrgan&quot;,&quot;sAddress&quot;,&quot;sMailClerk&quot;,&quot;sShapka&quot;,&quot;sID_Payment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sListDocumentsPrint&quot;,&quot;sListDocumentsLetter&quot;,&quot;PrintformDate&quot;,&quot;sNowName&quot;,&quot;asFullNamepf&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sWork4&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'картошечка'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sText2" name="; ;labelType=success" type="label" default="Про відповідальність за повідомлення завідомо неправдивих відомостей відділу державної реєстрації актів цивільного стану і про необхідність обміну паспорта громадянина України попереджений(а)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_central.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_central2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers26" name="якщо раніше не змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_26&quot;:{&quot;aField_ID&quot;:[&quot;sSum&quot;,&quot;sDescription&quot;],&quot;asID_Field_sValue&quot;:[&quot;5.2&quot;,&quot;державне мито за державну реєстрацію зміни імені фізичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'||[sClient] == 'ні'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers27" name="якщо шість дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_27&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateBirthChild4&quot;,&quot;sPlaceBirthChild4&quot;,&quot;sPlaceChild4&quot;,&quot;sDocChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateBirthChild5&quot;,&quot;sPlaceBirthChild5&quot;,&quot;sPlaceChild5&quot;,&quot;sDocChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateBirthChild6&quot;,&quot;sPlaceBirthChild6&quot;,&quot;sPlaceChild6&quot;,&quot;sDocChild6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'six'||[sClient] == '6'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers28" name="якщо сім дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_28&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateBirthChild4&quot;,&quot;sPlaceBirthChild4&quot;,&quot;sPlaceChild4&quot;,&quot;sDocChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateBirthChild5&quot;,&quot;sPlaceBirthChild5&quot;,&quot;sPlaceChild5&quot;,&quot;sDocChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateBirthChild6&quot;,&quot;sPlaceBirthChild6&quot;,&quot;sPlaceChild6&quot;,&quot;sDocChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateBirthChild7&quot;,&quot;sPlaceBirthChild7&quot;,&quot;sPlaceChild7&quot;,&quot;sDocChild7&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'seven'||[sClient] == '7'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers29" name="якщо вісім дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_29&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateBirthChild4&quot;,&quot;sPlaceBirthChild4&quot;,&quot;sPlaceChild4&quot;,&quot;sDocChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateBirthChild5&quot;,&quot;sPlaceBirthChild5&quot;,&quot;sPlaceChild5&quot;,&quot;sDocChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateBirthChild6&quot;,&quot;sPlaceBirthChild6&quot;,&quot;sPlaceChild6&quot;,&quot;sDocChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateBirthChild7&quot;,&quot;sPlaceBirthChild7&quot;,&quot;sPlaceChild7&quot;,&quot;sDocChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateBirthChild8&quot;,&quot;sPlaceBirthChild8&quot;,&quot;sPlaceChild8&quot;,&quot;sDocChild8&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'eight'||[sClient] == '8'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers30" name="якщо дев'ять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_30&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateBirthChild4&quot;,&quot;sPlaceBirthChild4&quot;,&quot;sPlaceChild4&quot;,&quot;sDocChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateBirthChild5&quot;,&quot;sPlaceBirthChild5&quot;,&quot;sPlaceChild5&quot;,&quot;sDocChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateBirthChild6&quot;,&quot;sPlaceBirthChild6&quot;,&quot;sPlaceChild6&quot;,&quot;sDocChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateBirthChild7&quot;,&quot;sPlaceBirthChild7&quot;,&quot;sPlaceChild7&quot;,&quot;sDocChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateBirthChild8&quot;,&quot;sPlaceBirthChild8&quot;,&quot;sPlaceChild8&quot;,&quot;sDocChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateBirthChild9&quot;,&quot;sPlaceBirthChild9&quot;,&quot;sPlaceChild9&quot;,&quot;sDocChild9&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'nine'||[sClient] == '9'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers31" name="якщо десять дітей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_31&quot;:{&quot;aField_ID&quot;:[&quot;sPibChild1&quot;,&quot;sDateBirthChild1&quot;,&quot;sPlaceBirthChild1&quot;,&quot;sPlaceChild1&quot;,&quot;sDocChild1&quot;,&quot;sPibChild2&quot;,&quot;sDateBirthChild2&quot;,&quot;sPlaceBirthChild2&quot;,&quot;sPlaceChild2&quot;,&quot;sDocChild2&quot;,&quot;sPibChild3&quot;,&quot;sDateBirthChild3&quot;,&quot;sPlaceBirthChild3&quot;,&quot;sPlaceChild3&quot;,&quot;sDocChild3&quot;,&quot;sPibChild4&quot;,&quot;sDateBirthChild4&quot;,&quot;sPlaceBirthChild4&quot;,&quot;sPlaceChild4&quot;,&quot;sDocChild4&quot;,&quot;sPibChild5&quot;,&quot;sDateBirthChild5&quot;,&quot;sPlaceBirthChild5&quot;,&quot;sPlaceChild5&quot;,&quot;sDocChild5&quot;,&quot;sPibChild6&quot;,&quot;sDateBirthChild6&quot;,&quot;sPlaceBirthChild6&quot;,&quot;sPlaceChild6&quot;,&quot;sDocChild6&quot;,&quot;sPibChild7&quot;,&quot;sDateBirthChild7&quot;,&quot;sPlaceBirthChild7&quot;,&quot;sPlaceChild7&quot;,&quot;sDocChild7&quot;,&quot;sPibChild8&quot;,&quot;sDateBirthChild8&quot;,&quot;sPlaceBirthChild8&quot;,&quot;sPlaceChild8&quot;,&quot;sDocChild8&quot;,&quot;sPibChild9&quot;,&quot;sDateBirthChild9&quot;,&quot;sPlaceBirthChild9&quot;,&quot;sPlaceChild9&quot;,&quot;sDocChild9&quot;,&quot;sPibChild10&quot;,&quot;sDateBirthChild10&quot;,&quot;sPlaceBirthChild10&quot;,&quot;sPlaceChild10&quot;,&quot;sDocChild10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sCountChildren&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ten'||[sClient] == '10'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers32" name="якщо удова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_32&quot;:{&quot;aField_ID&quot;:[&quot;sDocDeath&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saMarriage&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'widow'||[sClient] == 'удова (удівець)'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers33" name="якщо паспорт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_33&quot;:{&quot;aField_ID&quot;:[&quot;sDocPassport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saNameDoc&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pasport'||[sClient] == 'паспорт'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers35" name="якщо раніше не змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_35&quot;:{&quot;aField_ID&quot;:[&quot;sSum&quot;,&quot;sDescription&quot;],&quot;asID_Field_sValue&quot;:[&quot;51.92&quot;,&quot;державне мито за повторну державну реєстрацію зміни імені фізичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'||[sClient] == 'так'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers36" name="якщо змінюється прізвище та ім'я" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_36&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'namesurname'||[sClient] == 'прізвище та імя'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers37" name="якщо змінюється ПІБ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_37&quot;:{&quot;aField_ID&quot;:[&quot;sNewName&quot;,&quot;sNewSurname&quot;,&quot;infoSecondname&quot;,&quot;sNewSecondname&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFullName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'pib'||[sClient] == 'прізвище, імя та по батькові'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers38" name="якщо онлайн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_38&quot;:{&quot;aField_ID&quot;:[&quot;sText88&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'online'||[sClient] == 'сплатити онлайн'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers39" name="якщо офлайн" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_39&quot;:{&quot;aField_ID&quot;:[&quot;sBankDetails1&quot;,&quot;sDocPay&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'offline'||[sClient] == 'отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -277,58 +145,6 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountChildren" name="Укажіть кількість неповнолітніх дітей" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPibChild1" name="ПІБ першої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild1" name="Дата народження першої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild1" name="Місце народження першої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild1" name="Адреса, за якою проживає перша дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild2" name="ПІБ другої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild2" name="Дата народження другої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild2" name="Місце народження другої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild2" name="Адреса, за якою проживає друга дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild3" name="ПІБ третьої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild3" name="Дата народження третьої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild3" name="Місце народження третьої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild3" name="Адреса, за якою проживає третя дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild4" name="Дата народження четвертої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild4" name="Місце народження четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild4" name="Адреса, за якою проживає четверта дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild5" name="Дата народження п'ятої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild5" name="Місце народження п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild5" name="Адреса, за якою проживає п'ята дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild6" name="ПІБ шостої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild6" name="Дата народження шостої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild6" name="Місце народження шостої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild6" name="Адреса, за якою проживає шоста дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild7" name="Дата народження сьомої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild7" name="Місце народження сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild7" name="Адреса, за якою проживає сьома дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild8" name="Дата народження восьмої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild8" name="Місце народження восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild8" name="Адреса, за якою проживає восьма дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild9" name="Дата народження дев'ятої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild9" name="Місце народження дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild9" name="Адреса, за якою проживає дев'ята дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild10" name="ПІБ десятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild10" name="Дата народження десятої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild10" name="Місце народження десятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild10" name="Адреса, за якою проживає десята дитина; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -343,48 +159,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністартивного органу, який здійснив попередні зміни в імені, прізвищі або по батькові; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sCountPlaces" name="Укажіть кількість місцевостей, де ви проживали" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPlace1" name="1. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime1" name="1. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork1" name="1. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace2" name="2. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime2" name="2. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork2" name="2. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace3" name="3. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime3" name="3. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork3" name="3. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace4" name="4. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime4" name="4. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork4" name="4. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace5" name="5. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime5" name="5. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork5" name="5. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace6" name="6. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime6" name="6. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork6" name="6. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace7" name="7. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime7" name="7. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork7" name="7. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace8" name="8. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime8" name="8. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork8" name="8. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace9" name="9. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime9" name="9. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork9" name="9. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace10" name="10. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime10" name="10. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork10" name="10. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">
           <activiti:value id="pasport" name="паспорт"></activiti:value>
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
@@ -397,31 +171,37 @@
         </activiti:formProperty>
         <activiti:formProperty id="sDateVisit1" name="Вкажіть дату і час - коли прийти громадянину для надання оригіналів документів" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення - внесіть, будь ласка, причину" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers47" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_47&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers48" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_48&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'Заповнені дані вірні, запросити заявника для надання оригіналів'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+       
+       <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
+      
+	  <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html] ; ;bVisible=false ,bPrintform=true" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html] ; ;bVisible=false,bPrintform=true" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_region.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComPr" name="сумма платежа ком чек ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
+   		<activiti:formProperty id="sTable1" name="інформація про неповнолітніх дітей; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="інформація про місцевості проживання; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPrevious" name="Документ, що підтверджує зміну імені; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocMarriage" name="Свідоцтво про шлюб ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+     
+	   </extensionElements>
     </userTask>
     <userTask id="usertask5" name="очікується візит громадянина для надання оригіналів документів" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -463,58 +243,6 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountChildren" name="Укажіть кількість неповнолітніх дітей" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPibChild1" name="ПІБ першої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild1" name="Дата народження першої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild1" name="Місце народження першої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild1" name="Адреса, за якою проживає перша неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild2" name="ПІБ другої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild2" name="Дата народження другої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild2" name="Місце народження другої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild2" name="Адреса, за якою проживає друга неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild3" name="ПІБ третьої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild3" name="Дата народження третьої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild3" name="Місце народження третьої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild3" name="Адреса, за якою проживає третя неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild4" name="Дата народження четвертої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild4" name="Місце народження четвертої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild4" name="Адреса, за якою проживає четверта неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild5" name="Дата народження п'ятої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild5" name="Місце народження п'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild5" name="Адреса, за якою проживає п'ята неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild6" name="ПІБ шостої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild6" name="Дата народження шостої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild6" name="Місце народження шостої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild6" name="Адреса, за якою проживає шоста неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild7" name="Дата народження сьомої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild7" name="Місце народження сьомої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild7" name="Адреса, за якою проживає сьома неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild8" name="Дата народження восьмої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild8" name="Місце народження восьмої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild8" name="Адреса, за якою проживає восьма неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild9" name="Дата народження дев'ятої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild9" name="Місце народження дев'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild9" name="Адреса, за якою проживає дев'ята неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild10" name="ПІБ десятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild10" name="Дата народження десятої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild10" name="Місце народження десятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild10" name="Адреса, за якою проживає десята неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -529,48 +257,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністартивного органу, який здійснив попередні зміни в імені, прізвищі або по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountPlaces" name="Укажіть кількість місцевостей, де ви проживали" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPlace1" name="1. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime1" name="1. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork1" name="1. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace2" name="2. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime2" name="2. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork2" name="2. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace3" name="3. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime3" name="3. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork3" name="3. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace4" name="4. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime4" name="4. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork4" name="4. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace5" name="5. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime5" name="5. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork5" name="5. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace6" name="6. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime6" name="6. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork6" name="6. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace7" name="7. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime7" name="7. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork7" name="7. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace8" name="8. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime8" name="8. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork8" name="8. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace9" name="9. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime9" name="9. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork9" name="9. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace10" name="10. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime10" name="10. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork10" name="10. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">
           <activiti:value id="pasport" name="паспорт"></activiti:value>
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
@@ -582,26 +268,36 @@
           <activiti:value id="reject" name="ні - заявник не з'явився вродовж тривалого часу - відхилити звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення - внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNowName" name="частина імені у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+       <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
+      
+	  <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNowName" name="частина імені у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html] ; ;bVisible=false ,bPrintform=true" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html] ; ;bVisible=false,bPrintform=true" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_region.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComPr" name="сумма платежа ком чек ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
-      </extensionElements>
+   		<activiti:formProperty id="sTable1" name="інформація про неповнолітніх дітей; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="інформація про місцевості проживання; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPrevious" name="Документ, що підтверджує зміну імені; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocMarriage" name="Свідоцтво про шлюб ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+     
+	   </extensionElements>
     </userTask>
     <userTask id="usertask2_green" name="очікується відповідь з МВС" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -643,58 +339,6 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountChildren" name="Укажіть кількість неповнолітніх дітей" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPibChild1" name="ПІБ першої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild1" name="Дата народження першої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild1" name="Місце народження першої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild1" name="Адреса, за якою проживає перша неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild2" name="ПІБ другої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild2" name="Дата народження другої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild2" name="Місце народження другої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild2" name="Адреса, за якою проживає друга неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild3" name="ПІБ третьої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild3" name="Дата народження третьої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild3" name="Місце народження третьої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild3" name="Адреса, за якою проживає третя неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild4" name="Дата народження четвертої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild4" name="Місце народження четвертої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild4" name="Адреса, за якою проживає четверта неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild5" name="Дата народження п'ятої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild5" name="Місце народження п'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild5" name="Адреса, за якою проживає п'ята неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild6" name="ПІБ шостої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild6" name="Дата народження шостої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild6" name="Місце народження шостої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild6" name="Адреса, за якою проживає шоста неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild7" name="Дата народження сьомої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild7" name="Місце народження сьомої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild7" name="Адреса, за якою проживає сьома неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild8" name="Дата народження восьмої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild8" name="Місце народження восьмої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild8" name="Адреса, за якою проживає восьма неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild9" name="Дата народження дев'ятої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild9" name="Місце народження дев'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild9" name="Адреса, за якою проживає дев'ята неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild10" name="ПІБ десятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild10" name="Дата народження десятої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild10" name="Місце народження десятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild10" name="Адреса, за якою проживає десята неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -709,48 +353,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністартивного органу, який здійснив попередні зміни в імені, прізвищі або по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountPlaces" name="Укажіть кількість місцевостей, де ви проживали" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPlace1" name="1. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime1" name="1. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork1" name="1. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace2" name="2. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime2" name="2. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork2" name="2. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace3" name="3. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime3" name="3. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork3" name="3. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace4" name="4. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime4" name="4. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork4" name="4. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace5" name="5. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime5" name="5. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork5" name="5. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace6" name="6. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime6" name="6. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork6" name="6. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace7" name="7. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime7" name="7. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork7" name="7. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace8" name="8. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime8" name="8. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork8" name="8. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace9" name="9. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime9" name="9. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork9" name="9. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace10" name="10. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime10" name="10. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork10" name="10. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">
           <activiti:value id="pasport" name="паспорт"></activiti:value>
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
@@ -762,23 +364,38 @@
           <activiti:value id="reject" name="відмовлено у зміні імені"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateVisit2" name="Вкажіть дату і час - коли прийти громадянину за документом" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDocDecision" name="Завантажте лист-висновок про надання дозволу на зміну імені" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocDecision" name="Завантажте лист-висновок про надання дозволу на зміну імені ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
+      
+	  <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNowName" name="частина імені у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html] ; ;bVisible=false,bPrintform=true" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_region.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComPr" name="сумма платежа ком чек ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNowName" name="частина імені у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="шапка у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
-      </extensionElements>
+   		<activiti:formProperty id="sTable1" name="інформація про неповнолітніх дітей; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="інформація про місцевості проживання; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPrevious" name="Документ, що підтверджує зміну імені; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocMarriage" name="Свідоцтво про шлюб ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+     
+	       
+        </extensionElements>
     </userTask>
     <userTask id="usertask4" name="очікується візит громадянина для державної реєстрації зміни імені" activiti:candidateGroups="common_zags_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -820,58 +437,6 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountChildren" name="Укажіть кількість неповнолітніх дітей" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPibChild1" name="ПІБ першої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild1" name="Дата народження першої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild1" name="Місце народження першої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild1" name="Адреса, за якою проживає перша неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild2" name="ПІБ другої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild2" name="Дата народження другої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild2" name="Місце народження другої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild2" name="Адреса, за якою проживає друга неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild3" name="ПІБ третьої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild3" name="Дата народження третьої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild3" name="Місце народження третьої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild3" name="Адреса, за якою проживає третя неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild4" name="Дата народження четвертої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild4" name="Місце народження четвертої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild4" name="Адреса, за якою проживає четверта неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild5" name="Дата народження п'ятої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild5" name="Місце народження п'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild5" name="Адреса, за якою проживає п'ята неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild6" name="ПІБ шостої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild6" name="Дата народження шостої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild6" name="Місце народження шостої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild6" name="Адреса, за якою проживає шоста неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild7" name="Дата народження сьомої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild7" name="Місце народження сьомої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild7" name="Адреса, за якою проживає сьома неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild8" name="Дата народження восьмої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild8" name="Місце народження восьмої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild8" name="Адреса, за якою проживає восьма неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild9" name="Дата народження дев'ятої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild9" name="Місце народження дев'ятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild9" name="Адреса, за якою проживає дев'ята неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild10" name="ПІБ десятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild10" name="Дата народження десятої неповнолітньої дитини" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild10" name="Місце народження десятої неповнолітньої дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild10" name="Адреса, за якою проживає десята неповнолітня дитина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -886,48 +451,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністартивного органу, який здійснив попередні зміни в імені, прізвищі або по батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountPlaces" name="Укажіть кількість місцевостей, де ви проживали" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPlace1" name="1. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime1" name="1. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork1" name="1. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace2" name="2. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime2" name="2. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork2" name="2. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace3" name="3. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime3" name="3. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork3" name="3. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace4" name="4. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime4" name="4. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork4" name="4. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace5" name="5. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime5" name="5. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork5" name="5. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace6" name="6. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime6" name="6. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork6" name="6. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace7" name="7. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime7" name="7. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork7" name="7. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace8" name="8. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime8" name="8. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork8" name="8. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace9" name="9. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime9" name="9. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork9" name="9. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPlace10" name="10. Населений пункт" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTime10" name="10. Проміжок часу проживання" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWork10" name="10. Місце роботи, навчання, служби в армії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">
           <activiti:value id="pasport" name="паспорт"></activiti:value>
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
@@ -937,22 +460,36 @@
         <activiti:formProperty id="decision_3" name="Заявник отримав свідоцтво про зміну імені, складено відповідний актовий запис" type="enum" required="true">
           <activiti:value id="accept" name="так"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
+      
+	  <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNowName" name="частина імені у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="шапка у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html] ; ;bVisible=false,bPrintform=true" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_region.json')}"></activiti:formProperty>
+      	<activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComPr" name="сумма платежа ком чек ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNowName" name="частина імені у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="шапка у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
-      </extensionElements>
+   		<activiti:formProperty id="sTable1" name="інформація про неповнолітніх дітей; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="інформація про місцевості проживання; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPrevious" name="Документ, що підтверджує зміну імені; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocMarriage" name="Свідоцтво про шлюб ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+     
+	   </extensionElements>
     </userTask>
     <serviceTask id="servicetask15" name="Повідомлення громадянина про необхідніть сплати" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -966,8 +503,8 @@
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 Вам необхідно сплатити державне мито.<br />
 Якщо ім'я змінюєте вперше - 5.10 UAH (Загальна сума з комісією (10 копійок) складе 5.20 UAH)/<br />
 Якщо вже раніше змінювали ім'я, державне мито складає - 51.00 UAH (Загальна сума з комісією (92 копійки) складе 51.92 UAH)/<br />
@@ -978,10 +515,11 @@
 Оберіть зручний для Вас спосіб оплати (ввести номер та реквізити карти, через гаманець liqPay, Приват24 тощо) та підтвердіть платіж.<br /><br />
 Після отримання оплати Ваша заявка буде прийнята в роботу працівникам обраного Вами ДРАЦСу для первинної перевірки вхідних даних та документів.<br />
 Якщо впродовж 2-х днів з моменту подання звернення оплата не надійде, ваше звернення буде відхилено.<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -1006,17 +544,18 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 На жаль, Ваше звернення відхилено.
 Причина: впродовж 2-х днів з моменту подання звернення, не надішла оплата державного мита за отримання послуги.<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
 <br />
 Телефони для довідок: ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -1035,19 +574,19 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове  звернення. Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 Шановний колего!<br /><br />
 У Вас в черзі на обробку зареєстровано нове звернення.<br />
 Заявник: ${sName} ${sSurname}<br />
 Опрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a><br />
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1063,17 +602,18 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 На жаль, Ваше звернення відхилено через недостатню або неправильну інформацію.<br />
 Коментар співробітника ДРАЦС: ${comment_1}<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
 <br />
 Телефони для довідок: ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -1098,8 +638,8 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 Ваше звернення отримано, вхідні дані пройшли первинну перевірку.<br />
 Для передачі документів на подальший розгляд в МВС Вам необхідно надати оригінали документів до обраного Вами відділу ДРАЦС.<br />
 Призначено дату і час візиту - ${sDateVisit1}.<br />
@@ -1113,10 +653,11 @@ ${sNameOrgan}<br />
 Перелік документів, які треба мати при собі:<br />
 ${sListDocumentsLetter}<br /><br />
 Телефони для довідок: ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -1141,8 +682,8 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${sName} ${sSurname}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 Вам надано дозвіл на зміну імені.<br />
 Копія висновку знаходиться у додатку до листа.<br />
 Вам призначено дату і час візиту для державної реєстрації зміни імені і отримання оригіналу свідоцтва - ${sDateVisit2}.<br />
@@ -1157,11 +698,13 @@ ${sNameOrgan}<br />
 Ви можете подати заявку на обмін паспорту через портал iGov.org.ua (послуга: <a href="https://igov.org.ua/service/173/general" target="_blank">Обмін паспорта громадянина в разі зміни (переміни) прізвища, імені або по батькові)</a>.<br /><br />
 ВАЖЛИВО! Якщо впродовж 90 днів Ви не з'явитесь для проведення державної реєстрації зміни імені та отримання свідоцтва,  дозвіл на зміну імені втратить силу.<br /><br />
 Телефони для довідок: ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html] 
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${sDocDecision}]]></activiti:expression>
@@ -1186,17 +729,18 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 На жаль, Вам відмовлено у зміні імені.<br />
 Копія висновку знаходиться у додатку до листа.<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
 <br />
 Телефони для довідок: ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -1221,18 +765,19 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[Звернення на тему: Державна реєстрація зміни імені фізичної особи (прізвища, власного імені та по батькові)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${sName} ${sSurname}</strong><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 80 днів тому Ви отримали дозвіл на зміну імені.<br />
 Нагадуємо, що Вам треба з'явитись до обраного Вами органу ДРАЦС для отримання оригіналу свідоцтва. <br />
 Якщо впродовж 10 днів свідоцтво Вами не буде отримано, дозвіл на зміну імені втратить силу.<br />
 У разі необхідності Ви зможете подати звернення на отримання дозволу повторно.
 <br />
 Телефони для довідок: ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -1274,7 +819,7 @@ per7 = '&lt;li&gt;Свідоцтво про шлюб;&lt;/li&gt;'
 if(execution.getVariable('sDocNoMarriage') != null){
 per8 = '&lt;li&gt;Документ про розірвання шлюбу (або інший документ, який підтверджує припинення шлюбу);&lt;/li&gt;'
 }
-if(execution.getVariable('sDocChild1') != null){
+if(execution.getVariable('saChildren') == 'yes'){
 per9 = "&lt;li&gt;Свідоцтва про народження дітей;&lt;/li&gt;"
 }
 if(execution.getVariable('sDocPrevious') != null){
@@ -1353,7 +898,6 @@ var new_minutes = new_src.getMinutes();
 var timer = new_year+'-'+m+'-'+d+'T'+new_hour+':'+new_minutes+':00';
 execution.setVariable('sNotification_day', timer)</script>
     </scriptTask>
-    <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow50" sourceRef="usertask3_yellow" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow51" name="+" sourceRef="exclusivegateway2" targetRef="servicetask8">
@@ -1463,58 +1007,6 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCountChildren" name="Укажіть кількість неповнолітніх дітей" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPibChild1" name="ПІБ першої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild1" name="Дата народження першої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild1" name="Місце народження першої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild1" name="Адреса, за якою проживає перша дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild2" name="ПІБ другої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild2" name="Дата народження другої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild2" name="Місце народження другої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild2" name="Адреса, за якою проживає друга дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild3" name="ПІБ третьої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild3" name="Дата народження третьої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild3" name="Місце народження третьої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild3" name="Адреса, за якою проживає третя дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild4" name="ПІБ четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild4" name="Дата народження четвертої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild4" name="Місце народження четвертої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild4" name="Адреса, за якою проживає четверта дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild5" name="ПІБ п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild5" name="Дата народження п'ятої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild5" name="Місце народження п'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild5" name="Адреса, за якою проживає п'ята дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild6" name="ПІБ шостої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild6" name="Дата народження шостої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild6" name="Місце народження шостої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild6" name="Адреса, за якою проживає шоста дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild7" name="ПІБ сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild7" name="Дата народження сьомої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild7" name="Місце народження сьомої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild7" name="Адреса, за якою проживає сьома дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild8" name="ПІБ восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild8" name="Дата народження восьмої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild8" name="Місце народження восьмої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild8" name="Адреса, за якою проживає восьма дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild9" name="ПІБ дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild9" name="Дата народження дев'ятої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild9" name="Місце народження дев'ятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild9" name="Адреса, за якою проживає дев'ята дитина; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibChild10" name="ПІБ десятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateBirthChild10" name="Дата народження десятої дитини; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirthChild10" name="Місце народження десятої дитини; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlaceChild10" name="Адреса, за якою проживає десята дитина; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -1529,75 +1021,40 @@ execution.setVariable('sCountPayment', src)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sNameOrganPrevious" name="Назва адміністартивного органу, який здійснив попередні зміни в імені, прізвищі або по батькові; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDatePrevious" name="Дата, коли раніше було змінено ім'я, прізвище або по батькові; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sCountPlaces" name="Укажіть кількість місцевостей, де ви проживали" type="enum" writable="false">
-          <activiti:value id="one" name="1"></activiti:value>
-          <activiti:value id="two" name="2"></activiti:value>
-          <activiti:value id="three" name="3"></activiti:value>
-          <activiti:value id="four" name="4"></activiti:value>
-          <activiti:value id="five" name="5"></activiti:value>
-          <activiti:value id="six" name="6"></activiti:value>
-          <activiti:value id="seven" name="7"></activiti:value>
-          <activiti:value id="eight" name="8"></activiti:value>
-          <activiti:value id="nine" name="9"></activiti:value>
-          <activiti:value id="ten" name="10"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sPlace1" name="1. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime1" name="1. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork1" name="1. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace2" name="2. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime2" name="2. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork2" name="2. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace3" name="3. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime3" name="3. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork3" name="3. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace4" name="4. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime4" name="4. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork4" name="4. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace5" name="5. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime5" name="5. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork5" name="5. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace6" name="6. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime6" name="6. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork6" name="6. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace7" name="7. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime7" name="7. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork7" name="7. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace8" name="8. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime8" name="8. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork8" name="8. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace9" name="9. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime9" name="9. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork9" name="9. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPlace10" name="10. Населений пункт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTime10" name="10. Проміжок часу проживання;  ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWork10" name="10. Місце роботи, навчання, служби в армії; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saNameDoc" name="Назва документа, що посвідчує особу" type="enum" writable="false">
           <activiti:value id="pasport" name="паспорт"></activiti:value>
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="перелік у лист ; ;bVisible=false" type="string"></activiti:formProperty>
+         <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
+      
+	  <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asFullNamepf" name="підкреслювання у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNowName" name="частина імені у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html] ; ;bVisible=false ,bPrintform=true" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/minust/common_zags_change_name_print.html] ; ;bVisible=false,bPrintform=true" type="string" default="заява загальна" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_change_name.html] ; ;bVisible=false,bPrintform=true" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSumPr" name="сумма платежа чек ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sComPr" name="сумма платежа ком чек ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDocChild1},${sDocChild2},${sDocChild3},${sDocChild4},${sDocChild5},${sDocMarriage},${sDocNoMarriage},${sDocPrevious},${sNumberPassport},${sDocBirth},${sDocPay},${sDocDeath},${sDocPassport}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+   		<activiti:formProperty id="sTable1" name="інформація про неповнолітніх дітей; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="інформація про місцевості проживання; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPay" name="Копія квитанції про сплату державного мита ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPrevious" name="Документ, що підтверджує зміну імені; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocMarriage" name="Свідоцтво про шлюб ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocNoMarriage" name="Документ про розірвання шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocDeath" name="Свідоцтво про смерть другого з подружжя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        	
+  <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask4" cancelActivity="true">
@@ -1621,7 +1078,6 @@ execution.setVariable('sCountPayment', src)</script>
         <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow157" sourceRef="escalationTimer2" targetRef="exclusivegateway6"></sequenceFlow>
     <sequenceFlow id="flow158" sourceRef="servicetask15" targetRef="timerintermediatecatchevent2"></sequenceFlow>
     <scriptTask id="scripttask4" name="зміна суми та опису у мерчант" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
@@ -1646,13 +1102,15 @@ execution.setVariable('sSumPr', sumPr)
 execution.setVariable('sComPr', comPr)
 execution.setVariable('sDescription', des)</script>
     </scriptTask>
-    <sequenceFlow id="flow161" sourceRef="scripttask4" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow162" sourceRef="startevent1" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow163" sourceRef="escalationTimer2" targetRef="exclusivegateway6"></sequenceFlow>
+    <sequenceFlow id="flow164" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow165" sourceRef="scripttask4" targetRef="usertask6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_change_name">
     <bpmndi:BPMNPlane bpmnElement="common_zags_change_name" id="BPMNPlane_common_zags_change_name">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="17.0" y="77.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="14.0" y="55.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3_yellow" id="BPMNShape_usertask3_yellow">
         <omgdc:Bounds height="71.0" width="121.0" x="916.0" y="277.0"></omgdc:Bounds>
@@ -1730,10 +1188,10 @@ execution.setVariable('sDescription', des)</script>
         <omgdc:Bounds height="71.0" width="119.0" x="656.0" y="37.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="71.0" width="121.0" x="220.0" y="37.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="121.0" x="234.0" y="37.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="escalationTimer2" id="BPMNShape_escalationTimer2">
-        <omgdc:Bounds height="30.0" width="30.0" x="320.0" y="59.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="326.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent2" id="BPMNShape_timerintermediatecatchevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="580.0" y="56.0"></omgdc:Bounds>
@@ -1741,10 +1199,6 @@ execution.setVariable('sDescription', des)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="72.0" width="105.0" x="92.0" y="37.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="882.0" y="171.0"></omgdi:waypoint>
-        <omgdi:waypoint x="915.0" y="171.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="916.0" y="312.0"></omgdi:waypoint>
         <omgdi:waypoint x="762.0" y="312.0"></omgdi:waypoint>
@@ -1889,21 +1343,25 @@ execution.setVariable('sDescription', des)</script>
         <omgdi:waypoint x="775.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="801.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow157" id="BPMNEdge_flow157">
-        <omgdi:waypoint x="350.0" y="74.0"></omgdi:waypoint>
-        <omgdi:waypoint x="373.0" y="73.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow158" id="BPMNEdge_flow158">
         <omgdi:waypoint x="559.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="580.0" y="73.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow161" id="BPMNEdge_flow161">
-        <omgdi:waypoint x="197.0" y="73.0"></omgdi:waypoint>
-        <omgdi:waypoint x="220.0" y="72.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow162" id="BPMNEdge_flow162">
-        <omgdi:waypoint x="52.0" y="94.0"></omgdi:waypoint>
+        <omgdi:waypoint x="49.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="92.0" y="73.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow163" id="BPMNEdge_flow163">
+        <omgdi:waypoint x="356.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="373.0" y="73.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow164" id="BPMNEdge_flow164">
+        <omgdi:waypoint x="882.0" y="171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="915.0" y="171.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow165" id="BPMNEdge_flow165">
+        <omgdi:waypoint x="197.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="234.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

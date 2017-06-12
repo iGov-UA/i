@@ -3,10 +3,8 @@
   <process id="common_mreo_2" name="(Загальна послуга) - Надання витягу з Єдиного державного реєстру МВС України" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-
-		<activiti:formProperty id="markerDateBirth" name="для правки DateBirth" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_DateBirth&quot;:{&quot;aField_ID&quot;:[&quot;bankIdbirthDay&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty>
-		
-		<activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markerDateBirth" name="для правки DateBirth" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_DateBirth&quot;:{&quot;aField_ID&quot;:[&quot;bankIdbirthDay&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Ваша дата народження; в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
@@ -40,15 +38,8 @@
         <activiti:formProperty id="searchDetail" name="searchDetail; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="reqDetail" name="reqDetail; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="resultData" name="Результат  перевірки; ;bVisible=false" type="string" default="&lt;th&gt;no responce&lt;/th&gt;"></activiti:formProperty>
-     </extensionElements>
+      </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка (запит по фізичним особам)" activiti:candidateGroups="common_mreo_2">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
@@ -74,43 +65,41 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Надання витягу з Єдиного державного реєстру МВС України]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>  
-		  [pattern/mail/mvd/new_design/_common_header.html]
-<!--		[pattern/mail/new_design/_common_header.html]-->
+          <activiti:expression><![CDATA[[pattern/mail/mvd/new_design/_common_header.html]
+
 		[pattern/mail/new_design/_common_content_start.html]
 
-<!-- &lt;p&gt;                                   -->
-Ваше звернення успішно оброблено. &lt;br/&gt;
-Запит ${searchDetail} &lt;br/&gt;
-&lt;b&gt;Звертаємо Вашу увагу! Послуга працює поки що в тестовому режимі. База містить записи здебільшого за останні кілька років та постійно наповнюється.&lt;/b&gt;&lt;br/&gt;
 
-Результат обробки: &lt;br/&gt;
-&lt;table cellspacing="0" cellpadding="7" bordercolor="#449DCD" border="1" style="color:#449DCD;"&gt;
+Ваше звернення успішно оброблено. <br/>
+Запит ${searchDetail} <br/>
+<b>Звертаємо Вашу увагу! Послуга працює поки що в тестовому режимі. База містить записи здебільшого за останні кілька років та постійно наповнюється.</b><br/>
+
+Результат обробки: <br/>
+<table cellspacing="0" cellpadding="7" bordercolor="#449DCD" border="1" style="color:#449DCD;">
 ${resultData} 
-&lt;/table&gt;
+</table>
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
-<!--[pattern/mail/mvd/_common_feedback.html] -->
-<!--[pattern/mail/mvd/_common_footer.html] -->
+
+
 [pattern/mail/mvd/new_design/_common_signature.html]
-[pattern/mail/new_design/_common_footer.html]
-</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -131,21 +120,12 @@ execution.setVariable('searchDetail', info)
     </scriptTask>
     <sequenceFlow id="flow58" sourceRef="scripttask2" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="usertask1" targetRef="servicetask11"></sequenceFlow>
-    <sequenceFlow id="flow60" sourceRef="servicetask1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="startevent1" targetRef="scripttask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_2">
     <bpmndi:BPMNPlane bpmnElement="common_mreo_2" id="BPMNPlane_common_mreo_2">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="548.0" y="26.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="490.0" y="91.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="627.0" y="77.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="710.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="61.0" width="185.0" x="473.0" y="329.0"></omgdc:Bounds>
@@ -159,14 +139,6 @@ execution.setVariable('searchDetail', info)
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="171.0" x="480.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="565.0" y="61.0"></omgdi:waypoint>
-        <omgdi:waypoint x="565.0" y="91.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="657.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="710.0" y="77.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="565.0" y="511.0"></omgdi:waypoint>
         <omgdi:waypoint x="565.0" y="550.0"></omgdi:waypoint>
@@ -180,7 +152,7 @@ execution.setVariable('searchDetail', info)
         <omgdi:waypoint x="565.0" y="447.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="565.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="61.0"></omgdi:waypoint>
         <omgdi:waypoint x="565.0" y="220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

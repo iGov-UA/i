@@ -9,7 +9,6 @@ import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
 import org.igov.io.fs.FileSystemData;
-import org.igov.service.business.action.task.core.ActionTaskService;
 import static org.igov.service.business.action.task.core.ActionTaskService.amFieldMessageQuestion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties;
-import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
-//import static org.igov.service.business.action.task.core.ActionTaskService.createTable_TaskProperties_Notification;
 
 /**
  * User: goodg_000 Date: 25.08.2015 Time: 22:54

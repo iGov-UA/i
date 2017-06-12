@@ -41,6 +41,9 @@ public class GeneralConfig {
     @Value("${general.Auth.sPassword}")
     private String sPassword_Auth;
 
+    @Value("${general.Auth.PB.Promin.bEnable}")
+    private String sbEnable_Auth_Promin;
+    
     @Value("${general.Bank.PB.Receipt.Auth.sLogin}")
     private String sLogin_Auth_Receipt_PB_Bank;
     @Value("${general.Bank.PB.Receipt.Auth.sPassword}")
@@ -144,6 +147,8 @@ public class GeneralConfig {
     @Value("${general.LiqPay.bTest}")
     private String sbTest_LiqPay;
 
+    @Value("${general.queue.cherg.bEnable}")
+    private String sbEnable_queueManagementSystem;
     @Value("${general.queue.cherg.sURL}")
     private String queueManagementSystemAddress;
     @Value("${general.queue.cherg.sLogin}")
@@ -606,6 +611,32 @@ public class GeneralConfig {
 
     }
 
+    
+    public boolean isAuthPromin() {
+        boolean b = true;
+        try {
+            b = (sbEnable_Auth_Promin == null ? b : Boolean.valueOf(sbEnable_Auth_Promin));
+            //LOG.info("(sbTest_LiqPay={})", sbTest_LiqPay);
+        } catch (Exception oException) {
+            LOG.error("Bad: {} (sbEnable_Auth_Promin={})", oException.getMessage(), sbEnable_Auth_Promin);
+            LOG.debug("FAIL:", oException);
+        }
+        return b;
+    }
+
+    
+    public boolean isQueueManagementSystem() {
+        boolean b = true;
+        try {
+            b = (sbEnable_queueManagementSystem == null ? b : Boolean.valueOf(sbEnable_queueManagementSystem));
+            //LOG.info("(sbTest_LiqPay={})", sbTest_LiqPay);
+        } catch (Exception oException) {
+            LOG.error("Bad: {} (sbEnable_queueManagementSystem={})", oException.getMessage(), sbEnable_queueManagementSystem);
+            LOG.debug("FAIL:", oException);
+        }
+        return b;
+    }
+    
     public String getQueueManagementSystemAddress() {
         return queueManagementSystemAddress;
     }
