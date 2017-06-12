@@ -1,74 +1,68 @@
 {
   "motion": {
-    "ShowFieldsOnCondition_FlFal": {
+    "ShowFieldsOnCondition_sBagkvatur": {
       "aField_ID": [
-        "bankIdlastName",
-        "bankIdfirstName",
-        "bankIdmiddleName",
-        "bankIdinn",
-        "bankIdPassport",
-        "email"
+        "asKorp",
+        "lRegistrationKvart"
       ],
       "asID_Field": {
-        "sCondit1": "sFlag"
+        "sConditF": "sFlag",
+        "sCondit1": "asBudType"
       },
-      "sCondition": "[sCondit1]=='false'"
+      "sCondition": "[sCondit1]=='sBagkvatur'&&[sConditF] == 'true'"
     },
-    "ShowFieldsOnCondition_FlTrue": {
+    "ShowFieldsOnCondition_sBagkvaturKorp": {
       "aField_ID": [
-        "asStatus",
-        "asPrizv",
-        "sLabePasport",
-        "phone",
-        "bankIdlastName",
-        "bankIdfirstName",
-        "bankIdmiddleName",
-        "bankIdinn",
-        "bankIdPassport",
-        "email"
+        "lRegistrationKorp"
       ],
       "asID_Field": {
-        "sCondit1": "sFlag"
+        "sConditF": "sFlag",
+        "sCondit1": "asKorp",
+        "sCondit2": "asBudType"
       },
-      "sCondition": "[sCondit1]=='true'"
+      "sCondition": "[sCondit1]=='yes'&&[sCondit2]=='sBagkvatur'&&[sConditF] == 'true'"
     },
-    "ShowFieldsOnCondition_FlTrueFPasp": {
+    "ShowFieldsOnCondition_sPrivSector": {
       "aField_ID": [
-        "nFile_ZayPasp"
+        "asKvart"
       ],
       "asID_Field": {
-        "sCondit1": "sFlag",
-        "sCondit2": "asRegistr",
-        "sCondit3": "asStatus"
+        "sConditF": "sFlag",
+        "sCondit1": "asBudType"
       },
-      "sCondition": "[sCondit1]=='true'&&([sCondit2]=='no'||([sCondit1]!='sVlasnDov'&&[sCondit1]!='sZareyDov'))"
+      "sCondition": "[sCondit1]=='sPrivSector'&&[sConditF] == 'true'"
     },
-    "ShowFieldsOnCondition_sVlasnsZareyPrizvF": {
+    "ShowFieldsOnCondition_sPrivSectorKvart": {
       "aField_ID": [
-        "nFile_ZminPrizv"
+        "lRegistrationKvart"
       ],
       "asID_Field": {
-        "sCondit1": "asStatus",
-        "sCondit2": "asPrizv",
-        "sConditR": "sFlag"
+        "sConditF": "sFlag",
+        "sCondit1": "asBudType",
+        "sCondit2": "asKvart"
       },
-      "sCondition": "([sCondit1]=='sVlasn'||[sCondit1]=='sZarey')&&[sCondit2]=='yes'&&[sConditR]=='true'"
+      "sCondition": "[sCondit1]=='sPrivSector'&&[sCondit2]=='yes'&&[sConditF] == 'true'"
     },
-    "ShowFieldsOnCondition_sVlasnDovsZareyDovF": {
+    "ShowFieldsOnCondition_sPrivSectorF": {
       "aField_ID": [
-        "nFile_Dovirenist",
-        "DovirutLastName",
-        "DovirutFirstName",
-        "DovirutMiddleName",
-        "DovirutdInn",
-        "DovirutdPassport"
+        "nFile_DomovKnig"
       ],
       "asID_Field": {
-        "sCondit1": "asStatus",
-        "sConditR": "sFlag"
+        "sCondit1": "asBudType",
+        "sConditF": "sFlag",
+        "sCondit2": "asRegistr"
       },
-      "sCondition": "([sCondit1]=='sVlasnDov'||[sCondit1]=='sZareyDov')&&[sConditR]=='true'"
+      "sCondition": "[sCondit1]=='sPrivSector'&&[sConditF]=='true'&&[sCondit2] == 'no'"
+    },
+    "ShowFieldsOnCondition_VlasnF": {
+      "aField_ID": [
+        "nFile_JutVlasn"
+      ],
+      "asID_Field": {
+        "sConditF": "sFlag",
+        "sCondit2": "asRegistr"
+      },
+      "sCondition": "[sConditF] == 'true'&&[sCondit2] == 'no'"
     }
-    
   }
 }
