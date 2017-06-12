@@ -570,6 +570,11 @@
                  <dependency>
                  <groupId>jstl</groupId><artifactId>jstl</artifactId><version>1.2</version>
       </dependency>
+                 <dependency><!-- add support for ssh/scp -->
+<groupId>org.apache.maven.wagon</groupId>
+                          <artifactId>wagon-ssh</artifactId>
+                          <version>${commons.wagon-ssh.version}</version>
+                 </dependency>
                           </dependencies>
     </dependencyManagement>
 
@@ -675,7 +680,7 @@
 <plugin>
  <groupId>org.apache.maven.plugins</groupId>
          <artifactId>maven-dependency-plugin</artifactId>
-         <version>2.8</version>
+         <version>3.0.0</version>
                      </plugin>
                      <plugin><groupId>org.apache.maven.plugins</groupId>
                               <artifactId>maven-enforcer-plugin</artifactId>
@@ -711,10 +716,7 @@
                         </execution>
                     </executions>
                 </plugin>
-                     <plugin><groupId>org.apache.maven.plugins</groupId>
-                              <artifactId>maven-gpg-plugin</artifactId><executions>
-                              <execution><goals><goal>sign</goal></goals></execution></executions>
-                     </plugin>
+              
                    <plugin>
                             <groupId>org.apache.maven.plugins</groupId
                             ><artifactId>maven-remote-resources-plugin</artifactId>
@@ -735,9 +737,11 @@
                 </plugin>
                      <plugin><groupId>org.apache.maven.plugins</groupId>
                               <artifactId>maven-gpg-plugin</artifactId>
-                              <executions><execution>
-                                       <goals><goal>sign</goal></goals></execution></executions>
-                     </plugin>
+                             <configuration><passphrase>${gpg.passphrase}</passphrase>
+                              </configuration>
+                              <executions><execution><id>sign-artifacts</id><phase>verify</phase>
+                                       <goals><goal>sign</goal></goals>
+                                       </execution></executions>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
