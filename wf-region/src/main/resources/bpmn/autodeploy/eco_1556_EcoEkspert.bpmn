@@ -78,20 +78,20 @@
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var x = '5'</script>
     </scriptTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask16"></sequenceFlow>
     <serviceTask id="servicetask2" name="Лист в міністерство" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
+          <activiti:expression>akylish88@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -104,35 +104,35 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>
-Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.<br />
-Граничні строки проведення державної  екологічної  експертизи об'єктів:<br />
-1. до 45 календарних днів, з продовженням у разі потреби до 60 днів, а у виняткових  випадках, залежно від складності проблеми, -до 120 днів;<br />
-2. за доопрацьованими матеріалами відповідно до висновків попередньої екологічної експертизи - до 30 календарних днів.<br />
-</p>
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;
+Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.&lt;br /&gt;
+Граничні строки проведення державної  екологічної  експертизи об'єктів:&lt;br /&gt;
+1. до 45 календарних днів, з продовженням у разі потреби до 60 днів, а у виняткових  випадках, залежно від складності проблеми, -до 120 днів;&lt;br /&gt;
+2. за доопрацьованими матеріалами відповідно до висновків попередньої екологічної експертизи - до 30 календарних днів.&lt;br /&gt;
+&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}<br />
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -157,7 +157,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="tProectInfo" name="Інформація про організацію, що виготовила проект; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/eco/eco_1556_EcoEkspert_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sDoc1" name="Том (книга, розділ) «Оцінка впливів на навколишнє середовище»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Заява про наміри; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="Підтвердження публікації «заяви про наміри»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -166,9 +165,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sDoc6" name="Загальна пояснювальна записка та основні креслення (марки ГП, ЗВК, ТХ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc7" name="Погодження з державними органами (якщо необхідно); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc8" name="Протокол громадських слухань; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-       
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -199,7 +196,6 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnamS5" name="Працівник №5"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/eco/eco_1556_EcoEkspert_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sDoc1" name="Том (книга, розділ) «Оцінка впливів на навколишнє середовище»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Заява про наміри; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="Підтвердження публікації «заяви про наміри»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -209,7 +205,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sDoc7" name="Погодження з державними органами (якщо необхідно); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc8" name="Протокол громадських слухань; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="ОПРАЦЮВАННЯ" activiti:candidateGroups="test_ECO">
@@ -237,7 +232,6 @@ ${sNameOrgan}<br />
           <activiti:value id="reject" name="Експертизу не пройдено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        
         <activiti:formProperty id="sDoc1" name="Том (книга, розділ) «Оцінка впливів на навколишнє середовище»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Заява про наміри; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="Підтвердження публікації «заяви про наміри»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -246,9 +240,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sDoc6" name="Загальна пояснювальна записка та основні креслення (марки ГП, ЗВК, ТХ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc7" name="Погодження з державними органами (якщо необхідно); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc8" name="Протокол громадських слухань; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask4" targetRef="usertask2"></sequenceFlow>
@@ -260,36 +252,36 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Позитивна відповідь. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Позитивна відповідь. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>Заяву оброблено. Документи пройшли експертизу.</p>
-Відповідь передано до канцелярії. Ви можете прийти і отримати дозвіл.<br />
-Якщо ви обрали отримати відповідь поштою, Вам буде надіслано лист.<br />
-${sAddress}<br />
-${sWorkTime}<br />
-${sPhoneOrgan}<br />
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Заяву оброблено. Документи пройшли експертизу.&lt;/p&gt;
+Відповідь передано до канцелярії. Ви можете прийти і отримати дозвіл.&lt;br /&gt;
+Якщо ви обрали отримати відповідь поштою, Вам буде надіслано лист.&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}<br />
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -302,37 +294,37 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Відмова. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Відмова. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>На жаль, надані Вами документи не пройшли експертизу. </p>
-<p>Причина: ${comment}</p>
-Відповідь з відмовою передана до канцелярії, можете прийти і забрати її. Якщо Ви замовили відповідь поштою, то буде надіслано лист.<br /><br />
-За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
-<p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
-${sAddress}<br />
-${sWorkTime}<br />
-${sPhoneOrgan}<br />
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;На жаль, надані Вами документи не пройшли експертизу. &lt;/p&gt;
+&lt;p&gt;Причина: ${comment}&lt;/p&gt;
+Відповідь з відмовою передана до канцелярії, можете прийти і забрати її. Якщо Ви замовили відповідь поштою, то буде надіслано лист.&lt;br /&gt;&lt;br /&gt;
+За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}<br />
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -365,7 +357,7 @@ ${sNameOrgan}<br />
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fileObgrunt},${fileMDA_Povid}]]></activiti:expression>
+            <activiti:expression>${fileObgrunt},${fileMDA_Povid}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -380,35 +372,35 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>Документи по вашому зверненню №[sID_Order] надіслано поштою.</p>
-В разі виникнення питань звертайтесь за контактами:<br />
-${sAddress}<br />
-${sWorkTime}<br />
-${sPhoneOrgan}<br />
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Документи по вашому зверненню №[sID_Order] надіслано поштою.&lt;/p&gt;
+В разі виникнення питань звертайтесь за контактами:&lt;br /&gt;
+${sAddress}&lt;br /&gt;
+${sWorkTime}&lt;br /&gt;
+${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}<br />
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vidpovid' nadislano lystom. [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vidpovid' nadislano lystom. [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -421,31 +413,31 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
-<p>Дякуємо що скористались нашою послугою та сервісом iGov.</p>
+&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+&lt;p&gt;Дякуємо що скористались нашою послугою та сервісом iGov.&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}<br />
+${sNameOrgan}&lt;br /&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Otrymayte vidpovid' u TsNAPi [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Otrymayte vidpovid' u TsNAPi [sID_Order]. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -463,13 +455,13 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[w9898@i.ua]]></activiti:expression>
+          <activiti:expression>w9898@i.ua</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
+          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -482,35 +474,35 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Звернення на тему: ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Звернення на тему: ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>
-Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.<br />
-Граничні строки проведення державної  екологічної  експертизи об'єктів:<br />
-1. до 45 календарних днів, з продовженням у разі потреби до 60 днів, а у виняткових  випадках, залежно від складності проблеми, -до 120 днів;<br />
-2. за доопрацьованими матеріалами відповідно до висновків попередньої екологічної експертизи - до 30 календарних днів.<br />
-</p>
-<p>[cancelTask]</p>
+&lt;p&gt;
+Ваше звернення [sID_Order] щодо ${sPosluga_nameZV} успішно зареєстроване.&lt;br /&gt;
+Граничні строки проведення державної  екологічної  експертизи об'єктів:&lt;br /&gt;
+1. до 45 календарних днів, з продовженням у разі потреби до 60 днів, а у виняткових  випадках, залежно від складності проблеми, -до 120 днів;&lt;br /&gt;
+2. за доопрацьованими матеріалами відповідно до висновків попередньої екологічної експертизи - до 30 календарних днів.&lt;br /&gt;
+&lt;/p&gt;
+&lt;p&gt;[cancelTask]&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Департамент екології та природних ресурсів Дніпропетровської ОДА<br />
+Департамент екології та природних ресурсів Дніпропетровської ОДА&lt;br /&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -551,7 +543,6 @@ ${sNameOrgan}<br />
           <activiti:value id="accept" name="Заявка оформлена вірно, запросити заявника на зустріч"></activiti:value>
           <activiti:value id="reject" name="Заявка оформлена не вірно, відмова"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/eco/eco_1556_EcoEkspert_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Том (книга, розділ) «Оцінка впливів на навколишнє середовище»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -562,9 +553,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sDoc6" name="Загальна пояснювальна записка та основні креслення (марки ГП, ЗВК, ТХ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc7" name="Погодження з державними органами (якщо необхідно); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc8" name="Протокол громадських слухань; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow22" sourceRef="servicetask9" targetRef="usertask5"></sequenceFlow>
@@ -576,32 +565,32 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Відмова. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Відмова. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>На жаль, надані Вами документи не пройшли попередню перевірку, заявка на зустріч в ЦНАПі скасована. </p>
-<p>Причина: ${comment}</p>
+&lt;p&gt;На жаль, надані Вами документи не пройшли попередню перевірку, заявка на зустріч в ЦНАПі скасована. &lt;/p&gt;
+&lt;p&gt;Причина: ${comment}&lt;/p&gt;
 
-За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Департамент екології та природних ресурсів Дніпропетровської ОДА<br>
+Департамент екології та природних ресурсів Дніпропетровської ОДА&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -614,36 +603,36 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Попередня перевірка пройдена. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Попередня перевірка пройдена. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Заявку перевірено. Прийдіть в Лівобережний ЦНАП м. Дніпра з оригіналами документів.</p>
+&lt;p&gt;Заявку перевірено. Прийдіть в Лівобережний ЦНАП м. Дніпра з оригіналами документів.&lt;/p&gt;
 
-<b>Деталі зустрічі:</b><br>
-День та час - ${date_of_visit}<br>
-Обов'язково принесіть заяву на експертизу.<br>
+&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
+День та час - ${date_of_visit}&lt;br&gt;
+Обов'язково принесіть заяву на експертизу.&lt;br&gt;
 
-<p>[cancelTask]</p>
+&lt;p&gt;[cancelTask]&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Департамент екології та природних ресурсів Дніпропетровської ОДА<br>
+Департамент екології та природних ресурсів Дніпропетровської ОДА&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -672,7 +661,6 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:value id="rejectN" name="Заявник не з'явився на зустріч"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/eco/eco_1556_EcoEkspert_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sDoc1" name="Том (книга, розділ) «Оцінка впливів на навколишнє середовище»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Заява про наміри; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="Підтвердження публікації «заяви про наміри»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -681,9 +669,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sDoc6" name="Загальна пояснювальна записка та основні креслення (марки ГП, ЗВК, ТХ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc7" name="Погодження з державними органами (якщо необхідно); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc8" name="Протокол громадських слухань; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow27" sourceRef="servicetask11" targetRef="usertask6"></sequenceFlow>
@@ -697,22 +683,22 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Заявка закрита через не явку. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Заявка закрита через не явку. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>На жаль, нажаль ви не з'явились на зустріч в ЦНАП у призначений час, ваша заявка скасована. </p>
+&lt;p&gt;На жаль, нажаль ви не з'явились на зустріч в ЦНАП у призначений час, ваша заявка скасована. &lt;/p&gt;
 
-За необхідності ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+За необхідності ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Департамент екології та природних ресурсів Дніпропетровської ОДА<br>
+Департамент екології та природних ресурсів Дніпропетровської ОДА&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -725,36 +711,36 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Оригінали передано на експертизу. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Оригінали передано на експертизу. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Оригінали документів які вами було надано, передані для подальшої експертизи.</p>
+&lt;p&gt;Оригінали документів які вами було надано, передані для подальшої експертизи.&lt;/p&gt;
 
-Максимальний строк експертизи 120 днів.<br><br>
+Максимальний строк експертизи 120 днів.&lt;br&gt;&lt;br&gt;
 
-Коли буде готова відповідь, вас буде сповіщено СМС повідомленням та на електронну пошту.<br>
-Ви отримаєте відповідь і свої документи в ЦНАПі.<br>
+Коли буде готова відповідь, вас буде сповіщено СМС повідомленням та на електронну пошту.&lt;br&gt;
+Ви отримаєте відповідь і свої документи в ЦНАПі.&lt;br&gt;
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Департамент екології та природних ресурсів Дніпропетровської ОДА<br>
+Департамент екології та природних ресурсів Дніпропетровської ОДА&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Po zvernenniu [sID_Order] documtntu peredano na podal`shu ekspertuzu.
-Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Po zvernenniu [sID_Order] documtntu peredano na podal`shu ekspertuzu.
+Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -776,7 +762,6 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sAdresObj" name="Місце розташування; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="commentV" name="Вкажіть в цьому полі результат експертизи" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/eco/eco_1556_EcoEkspert_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sDoc1" name="Том (книга, розділ) «Оцінка впливів на навколишнє середовище»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Заява про наміри; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc3" name="Підтвердження публікації «заяви про наміри»; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -785,9 +770,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="sDoc6" name="Загальна пояснювальна записка та основні креслення (марки ГП, ЗВК, ТХ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc7" name="Погодження з державними органами (якщо необхідно); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc8" name="Протокол громадських слухань; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow32" sourceRef="servicetask14" targetRef="usertask7"></sequenceFlow>
@@ -797,33 +780,33 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Експертизу проведено. ${sPosluga_name}]]></activiti:expression>
+          <activiti:expression>Експертизу проведено. ${sPosluga_name}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-<p>Експертизу документів проведено. </p>
-<p>Результат експертизи: ${commentV}</p>
+&lt;p&gt;Експертизу документів проведено. &lt;/p&gt;
+&lt;p&gt;Результат експертизи: ${commentV}&lt;/p&gt;
 
 Отримайте відповідь і оригінали документів у Лівобережному ЦНАПі м. Дніпра.
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-Департамент екології та природних ресурсів Дніпропетровської ОДА<br>
+Департамент екології та природних ресурсів Дніпропетровської ОДА&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ekspertuzy provedeno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Ekspertuzy provedeno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -835,6 +818,13 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decideZU == 'rejectV'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="scripttask1" targetRef="exclusivegateway3"></sequenceFlow>
+    <serviceTask id="servicetask16" name="Для черги" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
+    <sequenceFlow id="flow38" sourceRef="servicetask16" targetRef="scripttask1"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask16">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent5" name="End"></endEvent>
+    <sequenceFlow id="flow39" sourceRef="boundaryerror1" targetRef="endevent5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_eco_1556_EcoEkspert">
     <bpmndi:BPMNPlane bpmnElement="eco_1556_EcoEkspert" id="BPMNPlane_eco_1556_EcoEkspert">
@@ -842,7 +832,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="61.0" y="120.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="181.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="65.0" width="105.0" x="381.0" y="115.0"></omgdc:Bounds>
@@ -931,15 +921,24 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="324.0" y="830.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask16" id="BPMNShape_servicetask16">
+        <omgdc:Bounds height="55.0" width="105.0" x="52.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="62.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
+        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="61.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="52.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="361.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="381.0" y="147.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="22.0" x="383.0" y="100.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="22.0" x="383.0" y="100.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
@@ -962,14 +961,14 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="843.0" y="340.0"></omgdi:waypoint>
         <omgdi:waypoint x="875.0" y="340.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="34.0" x="890.0" y="300.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="34.0" x="890.0" y="300.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="803.0" y="340.0"></omgdi:waypoint>
         <omgdi:waypoint x="772.0" y="340.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="42.0" x="671.0" y="300.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="671.0" y="300.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
@@ -988,14 +987,14 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="803.0" y="490.0"></omgdi:waypoint>
         <omgdi:waypoint x="772.0" y="490.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="41.0" x="663.0" y="450.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="41.0" x="663.0" y="450.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="843.0" y="490.0"></omgdi:waypoint>
         <omgdi:waypoint x="881.0" y="490.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="43.0" x="890.0" y="450.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="43.0" x="890.0" y="450.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -1014,7 +1013,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="341.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="341.0" y="200.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="24.0" x="222.0" y="240.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="222.0" y="240.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -1033,14 +1032,14 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="321.0" y="462.0"></omgdi:waypoint>
         <omgdi:waypoint x="286.0" y="462.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="50.0" x="186.0" y="414.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="186.0" y="414.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="361.0" y="462.0"></omgdi:waypoint>
         <omgdi:waypoint x="393.0" y="462.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="45.0" x="410.0" y="414.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="37.0" x="410.0" y="414.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
@@ -1063,14 +1062,14 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="321.0" y="604.0"></omgdi:waypoint>
         <omgdi:waypoint x="286.0" y="604.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="168.0" y="560.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="168.0" y="560.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="361.0" y="604.0"></omgdi:waypoint>
         <omgdi:waypoint x="393.0" y="604.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="75.0" x="430.0" y="560.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="59.0" x="430.0" y="560.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
@@ -1095,12 +1094,20 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="200.0" y="678.0"></omgdi:waypoint>
         <omgdi:waypoint x="104.0" y="622.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="177.0" y="678.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="177.0" y="678.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="166.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="286.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="321.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="157.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="181.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="77.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="147.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
