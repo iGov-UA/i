@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="chervonograd_cnap_314" name="Дозвіл на переоформлення договору найму жилого приміщення" isExecutable="true">
+  <process id="rada_0019_DohovirZhytla" name="Дозвіл на переоформлення договору найму жилого приміщення" isExecutable="true">
+    <documentation>
+    	12.06.17 Рефакторинг:
+    		- перевод на таблицу
+    		- переименование переменных
+    		- маркер копирования адреса
+    		- маркер на дашборде
+    		- рефакторинг принтформы
+    		- переименование из chervonograd_cnap_314 в rada_0019_DohovirZhytla
+	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
@@ -23,7 +32,7 @@
         <activiti:formProperty id="info1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable1&quot;],&quot;sValue&quot;:&quot;Інформація про повнолітніх членів сім’ї&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;nRowsLimit=8,bNew=true" type="table" default="${markerService.loadFromFile('table/Rada/rada_0019_DohovirZhytla_table1.json')}"></activiti:formProperty>
 
-        <activiti:formProperty id="info2" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRelations&quot;],&quot;sValue&quot;:&quot;Змінити договір найму на квартиру&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="info2" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRelations&quot;],&quot;sValue&quot;:&quot;Зміни до договору найму квартири&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sRelations" name="Родинні відносини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIOchangeOff" name="П.І.Б. особи якої змінюється в договірі-найму" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIOhead" name="П.І.Б. на кого змінити в договірі-найму" type="string" required="true"></activiti:formProperty>
@@ -65,13 +74,12 @@
         <activiti:formProperty id="sCountRoom" name="Кількість кімнат у квартирі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLiveArea" name="Жила площа квартири" type="string" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="label_1" name="Змінити договір найму на квартиру" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="label_1" name="Зміни до договору найму квартири" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRelations" name="Родинні відносини" type="string" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="sFIOchangeOff" name="П.І.Б. особи якої змінюється в договірі-найму" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFIOhead" name="П.І.Б. на кого змінити в договірі-найму" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReasonChange" name="Причина зміни договору" type="string" writable="false"></activiti:formProperty>
-
 
         <activiti:formProperty id="asDecision1" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="doc_ok" name="З документами все гаразд - передати документи в Управління ЖКГ"></activiti:value>
@@ -422,8 +430,8 @@
     
     <endEvent id="endevent1" name="End"></endEvent>    
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_chervonograd_cnap_314">
-    <bpmndi:BPMNPlane bpmnElement="chervonograd_cnap_314" id="BPMNPlane_chervonograd_cnap_314">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0019_DohovirZhytla">
+    <bpmndi:BPMNPlane bpmnElement="rada_0019_DohovirZhytla" id="BPMNPlane_rada_0019_DohovirZhytla">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="93.0" y="55.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
