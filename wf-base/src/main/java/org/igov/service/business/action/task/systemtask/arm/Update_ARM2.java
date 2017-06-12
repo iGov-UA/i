@@ -55,7 +55,6 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
 		DboTkModel dataWithExecutorForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
-		dataWithExecutorForTransferToArm.setOut_number(sID_order);
 		LOG.info("dataBEFOREgetEXEC = {}",dataWithExecutorForTransferToArm);
 		String prilog = ValidationARM.getPrilog(dataWithExecutorForTransferToArm.getPrilog(),oAttachmetService);
 		LOG.info("prilog>>>>>>>>>>>> = {}",prilog);
@@ -67,7 +66,7 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 					List <String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");//json с ключом из монги
 					LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
 			
-					List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
+					List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
 					
 					if (listOfModels != null && !listOfModels.isEmpty()) {
 			
@@ -93,25 +92,13 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 			}else{
 				LOG.info("expert1>>>>>>>>>>>> = {}",expert);
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
-					List<DboTkModel> listOfModels = new ArrayList<>();
-					if(ValidationARM.isValid(dataWithExecutorForTransferToArm.getOut_number())){
-						listOfModels = armService.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
-					}else{
-						listOfModels = armService.getDboTkByOutNumber(sID_order);
-					}
-					transferDateArm(dataWithExecutorForTransferToArm, listOfModels,expert);
+				dataWithExecutorForTransferToArm.setExpert(expert);
+				armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 			}
 		
 	}
 	
 	
 	
-	private void transferDateArm(DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels,String expert) {
-		if (listOfModels !=null && !listOfModels.isEmpty()) {
-					LOG.info("expert = {}",expert);
-						dataForTransferToArm.setExpert(expert);
-						armService.updateDboTkByExpert(dataForTransferToArm);
-		}
-	}
 
 }
