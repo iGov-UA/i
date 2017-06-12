@@ -27,7 +27,7 @@
         <activiti:formProperty id="marker_fiz" name="фіз особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bankIdPassport&quot;,&quot;bankIdinn&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sOsoba2&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sOsoba2] == 'asFiz'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="завантаження документів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Лист чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
