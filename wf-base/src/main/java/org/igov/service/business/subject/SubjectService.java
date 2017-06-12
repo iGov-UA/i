@@ -466,16 +466,15 @@ public class SubjectService {
             if (sSubjectType == null) {
                 sSubjectType = "Human";
             }            
-            LOG.info("/getSubjectContacts: sID_Group_Activiti", sID_Group_Activiti);
-            
-            //находим SubjectGroup рутового элемент
-            SubjectGroup oSubjectGroupRoot = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
-            String sSubjectGroupRootType = oSubjectGroupTreeService.getSubjectType(sID_Group_Activiti);
             
             List<SubjectGroup> aSubjectGroupParent = oSubjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType);
             
             //Если нет родителя ищем детей для рутового елемента
             if(aSubjectGroupParent.isEmpty()) {
+                
+                //находим SubjectGroup рутового элемент
+                SubjectGroup oSubjectGroupRoot = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+                String sSubjectGroupRootType = oSubjectGroupTreeService.getSubjectType(sID_Group_Activiti);
 
                 SubjectGroupResultTree oSubjectGroupChildResultTree = oSubjectGroupTreeService
                         .getCatalogSubjectGroupsTree(sID_Group_Activiti, 1l, null, false, 1l, sSubjectType);
@@ -492,13 +491,16 @@ public class SubjectService {
                 for (SubjectGroup oSubjectGroup : aSubjectGroupParent) {
                     
                     String sID_Group_ActivitiParent = oSubjectGroup.getsID_Group_Activiti();
-                    
+                                        
                     SubjectGroupResultTree oSubjectGroupChildResultTree = oSubjectGroupTreeService
                         .getCatalogSubjectGroupsTree(sID_Group_ActivitiParent, 1l, null, false, 1l, sSubjectType);
                     LOG.info("oSubjectGroupChildResultTree={}", oSubjectGroupChildResultTree);
                     
                     aoAllSubjectGroup.addAll(oSubjectGroupChildResultTree.getaSubjectGroupTree());
                     
+                    //находим SubjectGroup родителя
+                    SubjectGroup oSubjectGroupParent = oSubjectGroupDao.findByExpected("sID_Group_ActivitiParent", sID_Group_Activiti);
+                    aoAllSubjectGroup.add(oSubjectGroupParent);
                 }           
             }            
         }
