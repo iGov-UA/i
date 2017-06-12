@@ -49,6 +49,8 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 		 * Достаем имя исполнителя
 		 */
 		String expert = getStringFromFieldExpression(this.name_isExecute, execution);
+		
+		LOG.info("expert>>>>>>>>>>>> = {}",expert);
 
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
@@ -89,16 +91,15 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 					}
 				}
 			}else{
+				LOG.info("expert1>>>>>>>>>>>> = {}",expert);
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
 					List<DboTkModel> listOfModels = new ArrayList<>();
 					if(ValidationARM.isValid(dataWithExecutorForTransferToArm.getOut_number())){
 						listOfModels = armService.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
-						transferDateArm(dataWithExecutorForTransferToArm, listOfModels,expert);
-						
 					}else{
 						listOfModels = armService.getDboTkByOutNumber(sID_order);
-						transferDateArm(dataWithExecutorForTransferToArm, listOfModels,expert);
 					}
+					transferDateArm(dataWithExecutorForTransferToArm, listOfModels,expert);
 			}
 		
 	}
