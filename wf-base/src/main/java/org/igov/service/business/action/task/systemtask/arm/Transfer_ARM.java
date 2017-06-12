@@ -57,20 +57,19 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		List<DboTkModel> listOfModels = new ArrayList<>();
 		if(ValidationARM.isValid(dataForTransferToArm.getOut_number())){
 			listOfModels = armService.getDboTkByOutNumber(dataForTransferToArm.getOut_number());
-			transferDateArm(dataForTransferToArm.getOut_number(), dataForTransferToArm, listOfModels);
+			transferDateArm(dataForTransferToArm.getOut_number(), dataForTransferToArm, listOfModels,execution);
 			
 		}else{
 			listOfModels = armService.getDboTkByOutNumber(sID_order);
-			transferDateArm(sID_order, dataForTransferToArm, listOfModels);
+			transferDateArm(sID_order, dataForTransferToArm, listOfModels,execution);
 		}
 
 	}
 
-	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels) {
+	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels,DelegateExecution execution) {
 		if (listOfModels !=null && !listOfModels.isEmpty()) {
 			if (ValidationARM.isValid(dataForTransferToArm.getExpert())) {
-				String expert = this.name_isExecute.getExpressionText();
-				LOG.info("asExecutorsFromsoData = {}",expert);
+				String expert = getStringFromFieldExpression(this.name_isExecute, execution);
 					LOG.info("expert = {}",expert);
 						dataForTransferToArm.setExpert(expert);
 						armService.updateDboTkByExpert(dataForTransferToArm);
