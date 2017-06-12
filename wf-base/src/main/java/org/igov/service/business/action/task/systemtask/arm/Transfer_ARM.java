@@ -54,14 +54,17 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	    LOG.info("dataForTransferToArm = {}",dataForTransferToArm);
 	    List<String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataForTransferToArm.getExpert(),
 				oAttachmetService, "sName_isExecute");
+	    LOG.info("asExecutorsFromsoData = {}",asExecutorsFromsoData);
 		
 		List<DboTkModel> listOfModels = new ArrayList<>();
 		if(ValidationARM.isValid(dataForTransferToArm.getOut_number())){
 			listOfModels = armService.getDboTkByOutNumber(dataForTransferToArm.getOut_number());
+			 LOG.info("listOfModels1 = {}",listOfModels);
 			transferDateArm(dataForTransferToArm.getOut_number(), dataForTransferToArm, listOfModels,asExecutorsFromsoData);
 			
 		}else{
 			listOfModels = armService.getDboTkByOutNumber(sID_order);
+			 LOG.info("listOfModels2 = {}",listOfModels);
 			transferDateArm(sID_order, dataForTransferToArm, listOfModels,asExecutorsFromsoData);
 		}
 
@@ -70,8 +73,8 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels,List<String> asExecutorsFromsoData) {
 		if (listOfModels !=null && !listOfModels.isEmpty()) {
 			if (ValidationARM.isValid(dataForTransferToArm.getExpert())) {
-				for (String expert : asExecutorsFromsoData) {
-					dataForTransferToArm.setExpert(expert);
+				for (DboTkModel dboTkModel : listOfModels) {
+					dataForTransferToArm.setExpert(dboTkModel.getExpert());
 					armService.updateDboTk(dataForTransferToArm);
 				}
 
