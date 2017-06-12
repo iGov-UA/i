@@ -1008,7 +1008,7 @@ window.Modernizr = (function( window, document, undefined ) {
     ;(function(window, document) {
     /*jshint evil:true */
       /** Preset options */
-      var options = window.html5 || {};
+      var options = window ? window.html5 || {} : {};
 
       /** Used to skip problem elements */
       var reSkip = /^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i;
