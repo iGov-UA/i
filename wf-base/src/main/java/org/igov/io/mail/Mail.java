@@ -177,8 +177,12 @@ public class Mail extends Abstract_Mail {
 
             _AttachBody(getBody());
             LOG.info("(getBody()={})", getBody());
-            oMimeMessage.setContent(getoMultiparts());
-            LOG.info("oMimeMessage content: " + oMimeMessage.getContent().toString());
+            
+            if(getoMultiparts() != null){
+                oMimeMessage.setContent(getoMultiparts());
+            }
+            
+            //LOG.info("oMimeMessage content: " + oMimeMessage.getContent().toString());
             try {
                 LOG.info("getoMultiparts().getBodyPart(0).getFileName(): " + getoMultiparts().getBodyPart(0).getFileName());
             } catch (Exception ex) {
@@ -203,12 +207,17 @@ public class Mail extends Abstract_Mail {
 
     public Mail _AttachBody(String sBody) {
         try {
+            LOG.info("sBody {}", sBody);
             MimeBodyPart oMimeBodyPart = new MimeBodyPart();
             //oMimeBodyPart.setText(sBody,DEFAULT_ENCODING,"Content-Type: text/html;");
             oMimeBodyPart.setText(sBody, DEFAULT_ENCODING);
             //         oMimeBodyPart.setHeader("Content-Type", "text/html");
             oMimeBodyPart.setHeader("Content-Type", "text/html;charset=utf-8");
-            getoMultiparts().addBodyPart(oMimeBodyPart);
+            
+            if(getoMultiparts() != null){
+                getoMultiparts().addBodyPart(oMimeBodyPart);
+            }
+            
             LOG.info("sBodylength()={}", sBody != null ? sBody.length() : "null");
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
