@@ -474,6 +474,7 @@ public class SubjectService {
                 
                 //находим SubjectGroup рутового элемент
                 SubjectGroup oSubjectGroupRoot = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+                LOG.info("oSubjectGroupRoot={}", oSubjectGroupRoot);
                 String sSubjectGroupRootType = oSubjectGroupTreeService.getSubjectType(sID_Group_Activiti);
 
                 SubjectGroupResultTree oSubjectGroupChildResultTree = oSubjectGroupTreeService
@@ -491,6 +492,7 @@ public class SubjectService {
                 for (SubjectGroup oSubjectGroup : aSubjectGroupParent) {
                     
                     String sID_Group_ActivitiParent = oSubjectGroup.getsID_Group_Activiti();
+                    LOG.info("sID_Group_ActivitiParent={}", sID_Group_ActivitiParent);
                                         
                     SubjectGroupResultTree oSubjectGroupChildResultTree = oSubjectGroupTreeService
                         .getCatalogSubjectGroupsTree(sID_Group_ActivitiParent, 1l, null, false, 1l, sSubjectType);
@@ -504,6 +506,7 @@ public class SubjectService {
                 }           
             }            
         }
+        LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);
         
         long nID_SubjectContactType = 0;
         
