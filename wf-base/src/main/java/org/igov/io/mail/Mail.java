@@ -182,7 +182,7 @@ public class Mail extends Abstract_Mail {
                 oMimeMessage.setContent(getoMultiparts());
             }
             
-            LOG.info("oMimeMessage content: " + oMimeMessage.getContent().toString());
+            //LOG.info("oMimeMessage content: " + oMimeMessage.getContent().toString());
             try {
                 LOG.info("getoMultiparts().getBodyPart(0).getFileName(): " + getoMultiparts().getBodyPart(0).getFileName());
             } catch (Exception ex) {
