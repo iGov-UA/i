@@ -7,8 +7,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>        
         
         <activiti:formProperty id="adress" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -16,12 +15,15 @@
         
         <activiti:formProperty id="room" name="Кількість кімнат у квартирі" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="liveArea" name="Жила площа квартири" type="string" required="true"></activiti:formProperty>
-        
+
+
         <activiti:formProperty id="reasonChange" name="Причина зміни договору;(у зв’язку зі смертю, зі зміною місця мешкання, за згодою всіх повнолітніх членів сім’ї тощо)" type="string" required="true"></activiti:formProperty>
-        
-        <activiti:formProperty id="info0" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_0&quot;:{&quot;aElement_ID&quot;:[&quot;relations&quot;],&quot;sValue&quot;:&quot;Змінити договір найму на квартиру з&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="relations" name="Родинні відносини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="changeOff" name="П.І.Б. особи з яка змінюється" type="string" required="true"></activiti:formProperty>
+
+
+        <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;nRowsLimit=8,bNew=true" type="table" default="${markerService.loadFromFile('table/cnap/chervonograd_cnap_314_table1.json')}"></activiti:formProperty>
+
+
+<!-- 
         
         <activiti:formProperty id="numberOfOwners" name="Кількість повнолітніх членів сім’ї" type="enum" required="true">
           <activiti:value id="one" name="1"></activiti:value>
@@ -35,8 +37,6 @@
         </activiti:formProperty>
         
         
-        <activiti:formProperty id="file1" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копія договору найму; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="relations2" name="Родинні відносини другої особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="owner2" name="П.І.Б. другої особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="relations3" name="Родинні відносини третьої особи" type="string" required="true"></activiti:formProperty>
@@ -71,8 +71,18 @@
         <activiti:formProperty id="info8" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_8&quot;:{&quot;aElement_ID&quot;:[&quot;scanPassportOwner8&quot;],&quot;sValue&quot;:&quot;&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-ої особи;(або свідоцтво про народження) ;bNew=true" type="file" required="true"></activiti:formProperty>
 
+ -->
 
+        <activiti:formProperty id="info0" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_0&quot;:{&quot;aElement_ID&quot;:[&quot;relations&quot;],&quot;sValue&quot;:&quot;Змінити договір найму на квартиру з&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="relations" name="Родинні відносини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="changeOff" name="П.І.Б. особи якої змінюється договір-найму" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="head" name="П.І.Б. на кого змінити договір-найму" type="string" required="true"></activiti:formProperty>
+
+
+        <activiti:formProperty id="file1" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Копія договору найму; ;bNew=true" type="file" required="true"></activiti:formProperty>
+
 
 
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('chervonograd/chervonograd_cnap_314_1.json')}"></activiti:formProperty>
@@ -87,19 +97,41 @@
       </extensionElements>
     </startEvent>
    
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script><![CDATA[
+      
+      
+      
+      ]]></script>
+    </scriptTask>   
+   
+   
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАП (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+
+
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="adress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="room" name="Кількість кімнат у квартирі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="liveArea" name="Жила площа квартири" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reasonChange" name="Причина зміни договору" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="label_1" name="Змінити договір найму на квартиру з" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="relations" name="Родинні відносини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="changeOff" name="П.І.Б. особи з яка змінюється;(у зв’язку зі смертю, зі зміною місця мешкання, за згодою всіх повнолітніх членів сім’ї тощо)" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="head" name="П.І.Б. на кого змінити договір-найму" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        
+        
+
+<!--  
         <activiti:formProperty id="numberOfOwners" name="Кількість повнолітніх членів сім’ї" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
@@ -124,48 +156,78 @@
         <activiti:formProperty id="owner7" name="П.І.Б. сьомої особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="relations8" name="Родинні відносини восьмої особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="owner8" name="П.І.Б. восьмої особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="head" name="П.І.Б. на кого змінити договір-найму" type="string" writable="false"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+  -->      
+
+
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
+
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+
+
         <activiti:formProperty id="decision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="doc_ok" name="З документами все гаразд - передати документи в Управління ЖКГ"></activiti:value>
           <activiti:value id="doc_bad" name="Відмовити за недостатньої кількості документів або даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+
+
         <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_314_print.html]; ;bVisible=false ,bPrintform=true " type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+
+
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Адресат; ;bVisible=false" type="string"></activiti:formProperty>
+        
+
+        
         <activiti:formProperty id="file1" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file2" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="Підготовка відповіді управлінням ЖКГ (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="adress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="room" name="Кількість кімнат у квартирі" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="liveArea" name="Жила площа квартири" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reasonChange" name="Причина зміни договору" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="label_1" name="Змінити договір найму на квартиру з" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="relations" name="Родинні відносини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="changeOff" name="П.І.Б. особи з яка змінюється;(у зв’язку зі смертю, зі зміною місця мешкання, за згодою всіх повнолітніх членів сім’ї тощо)" type="string" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="head" name="П.І.Б. на кого змінити договір-найму" type="string" writable="false"></activiti:formProperty>
+
+
+        <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        
+
+<!-- 
+
         <activiti:formProperty id="numberOfOwners" name="Кількість повнолітніх членів сім’ї" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
@@ -190,15 +252,7 @@
         <activiti:formProperty id="owner7" name="П.І.Б. сьомої особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="relations8" name="Родинні відносини восьмої особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="owner8" name="П.І.Б. восьмої особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="head" name="П.І.Б. на кого змінити договір-найму" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Дата реєстрації заяви" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="permission" name="Сканкопія дозволу або відповідь з відмовою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_314_print.html]; ;bVisible=false ,bPrintform=true " type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -206,28 +260,60 @@
         <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-ої особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+ -->
+
+
+
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Дата реєстрації заяви" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="permission" name="Сканкопія дозволу або відповідь з відмовою" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sBody1" name="[pattern/print/chervonogradLv/chervonograd_cnap_314_print.html]; ;bVisible=false ,bPrintform=true " type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="file1" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        
+
+
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Адресат ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask3" name="Відповідь громадянину (3-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="adress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="room" name="Кількість кімнат у квартирі" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="liveArea" name="Жила площа квартири" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="reasonChange" name="Причина зміни договору" type="string" writable="false"></activiti:formProperty>
+
         <activiti:formProperty id="label_1" name="Змінити договір найму на квартиру з" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="relations" name="Родинні відносини" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="changeOff" name="П.І.Б. особи з яка змінюється;(у зв’язку зі смертю, зі зміною місця мешкання, за згодою всіх повнолітніх членів сім’ї тощо)" type="string" writable="false"></activiti:formProperty>
+
+
+        <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        
+        
+<!-- 
         <activiti:formProperty id="numberOfOwners" name="Кількість повнолітніх членів сім’ї" type="enum" writable="false">
           <activiti:value id="one" name="1"></activiti:value>
           <activiti:value id="two" name="2"></activiti:value>
@@ -252,15 +338,24 @@
         <activiti:formProperty id="owner7" name="П.І.Б. сьомої особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="relations8" name="Родинні відносини восьмої особи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="owner8" name="П.І.Б. восьмої особи" type="string" writable="false"></activiti:formProperty>
+ -->
+ 
+ 
+
         <activiti:formProperty id="head" name="П.І.Б. на кого змінити договір-найму" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Дата реєстрації заяви" type="string" writable="false"></activiti:formProperty>
+
+
         <activiti:formProperty id="decision2" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="attr1_ok" name="Дозвіл готов. Запросити громадянина"></activiti:value>
           <activiti:value id="attr2_no" name="Відмова управління ЖКГ"></activiti:value>
         </activiti:formProperty>
+
+
         <activiti:formProperty id="permission" name="Сканкопія дозволу або відповідь з відмовою" type="file" writable="false"></activiti:formProperty>
+
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -467,9 +562,9 @@
       </extensionElements>
     </serviceTask>
 
+
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    
     <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -491,25 +586,30 @@
     <sequenceFlow id="flow14" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>    
+    <sequenceFlow id="flow17" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
+
+    <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_chervonograd_cnap_314">
     <bpmndi:BPMNPlane bpmnElement="chervonograd_cnap_314" id="BPMNPlane_chervonograd_cnap_314">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="93.0" y="55.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="65.0" width="105.0" x="182.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="65.0" width="136.0" x="355.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="65.0" width="121.0" x="560.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="600.0" y="149.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="85.0" width="121.0" x="560.0" y="345.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="78.0" width="105.0" x="408.0" y="349.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="65.0" width="105.0" x="280.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="65.0" width="136.0" x="406.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="79.0" width="105.0" x="182.0" y="130.0"></omgdc:Bounds>
@@ -517,30 +617,30 @@
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="56.0" width="121.0" x="560.0" y="235.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="85.0" width="121.0" x="560.0" y="345.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="326.0" y="367.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="78.0" width="105.0" x="408.0" y="349.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="85.0" width="105.0" x="182.0" y="275.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="81.0" width="105.0" x="182.0" y="426.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="600.0" y="149.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="326.0" y="367.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="93.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="287.0" y="72.0"></omgdi:waypoint>
-        <omgdi:waypoint x="355.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="406.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="491.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="542.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="560.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
@@ -579,7 +679,7 @@
         <omgdi:waypoint x="345.0" y="317.0"></omgdi:waypoint>
         <omgdi:waypoint x="287.0" y="317.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="298.0" y="301.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="298.0" y="301.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -587,7 +687,7 @@
         <omgdi:waypoint x="345.0" y="466.0"></omgdi:waypoint>
         <omgdi:waypoint x="287.0" y="466.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="298.0" y="468.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="37.0" x="298.0" y="468.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -604,8 +704,12 @@
         <omgdi:waypoint x="366.0" y="387.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="255.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="72.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="128.0" y="72.0"></omgdi:waypoint>
-        <omgdi:waypoint x="182.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
