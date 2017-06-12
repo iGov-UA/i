@@ -61,30 +61,32 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 		
 	//ветка - когда назначаются исполнители	
 		if(dataWithExecutorForTransferToArm.getExpert()!=null){
-			List <String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");//json с ключом из монги
-			LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
-	
-			List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
-			
-			if (listOfModels != null && !listOfModels.isEmpty()) {
-	
-				if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
-					dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
-					LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
-					armService.updateDboTk(dataWithExecutorForTransferToArm);
-					// если в листе не одно значение - для каждого исполнителя сетим
-					if (asExecutorsFromsoData.size()>1) {
-						for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
-							dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
-							armService.createDboTk(dataWithExecutorForTransferToArm);
+			if(expert==null){
+				List <String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");//json с ключом из монги
+				LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
+		
+				List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
+				
+				if (listOfModels != null && !listOfModels.isEmpty()) {
+		
+					if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
+						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
+						LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
+						armService.updateDboTk(dataWithExecutorForTransferToArm);
+						// если в листе не одно значение - для каждого исполнителя сетим
+						if (asExecutorsFromsoData.size()>1) {
+							for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
+								dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
+								armService.createDboTk(dataWithExecutorForTransferToArm);
+							}
 						}
+					}else{
+						LOG.info("Executors are abcent ");
 					}
-				}else{
-					LOG.info("Executors are abcent ");
+		
+				}else {
+					LOG.info("Model include sID_order "+ sID_order + "not found in ARM");
 				}
-	
-			}else {
-				LOG.info("Model include sID_order "+ sID_order + "not found in ARM");
 			}
 		}
 		
