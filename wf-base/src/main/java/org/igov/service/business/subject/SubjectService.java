@@ -501,7 +501,7 @@ public class SubjectService {
                     aoAllSubjectGroup.addAll(oSubjectGroupChildResultTree.getaSubjectGroupTree());
                     
                     //находим SubjectGroup родителя
-                    SubjectGroup oSubjectGroupParent = oSubjectGroupDao.findByExpected("sID_Group_ActivitiParent", sID_Group_Activiti);
+                    SubjectGroup oSubjectGroupParent = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_ActivitiParent);
                     aoAllSubjectGroup.add(oSubjectGroupParent);
                 }           
             }            
