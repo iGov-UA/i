@@ -108,13 +108,9 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 	
 	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels,String expert) {
 		if (listOfModels !=null && !listOfModels.isEmpty()) {
-			if (ValidationARM.isValid(dataForTransferToArm.getExpert())) {
 					LOG.info("expert = {}",expert);
 						dataForTransferToArm.setExpert(expert);
 						armService.updateDboTkByExpert(dataForTransferToArm);
-			} else {
-				armService.updateDboTk(dataForTransferToArm);
-			}
 		}
 	}
 
