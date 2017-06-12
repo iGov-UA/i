@@ -361,7 +361,9 @@ public class SubjectGroupTreeService {
             for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupTree) {
 
                 SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
-
+                LOG.info("oSubjectGroup_Parent={}", oSubjectGroup_Parent);
+                
+                LOG.info("getSubjectType={}", getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()));
                 if (getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()).equals(sSubjectTypeToFind)) {
 
                     aSubjectGroupParent.add(oSubjectGroup_Parent);
