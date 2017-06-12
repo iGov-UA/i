@@ -344,7 +344,6 @@ public class SubjectGroupTreeService {
 
             sSubjectTypeToFind = getSubjectType(sID_Group_Activiti);
         }
-        LOG.info("sSubjectTypeToFind={}", sSubjectTypeToFind);
 
         //Получили все SubjectGroup, которые относятся к группе sID_Group_Activiti
         List<SubjectGroup> aSubjectGroup = SubjectGroupDao.findAllBy("sID_Group_Activiti", sID_Group_Activiti);
@@ -363,7 +362,8 @@ public class SubjectGroupTreeService {
 
                 SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
                 LOG.info("oSubjectGroup_Parent={}", oSubjectGroup_Parent);
-
+                
+                LOG.info("getSubjectType={}", getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()));
                 if (getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()).equals(sSubjectTypeToFind)) {
 
                     aSubjectGroupParent.add(oSubjectGroup_Parent);
