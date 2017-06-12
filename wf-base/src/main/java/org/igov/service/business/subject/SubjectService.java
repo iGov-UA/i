@@ -7,7 +7,9 @@ package org.igov.service.business.subject;
 
 import com.google.common.base.Optional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.igov.model.subject.Subject;
@@ -457,26 +459,54 @@ public class SubjectService {
         List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
         LOG.info("getSubjectContacts: asLogin={}", asLogin);
         
-        List<SubjectGroup> aoAllSubjectGroup = new ArrayList<>();
+        Set<SubjectGroup> aoAllSubjectGroup = new HashSet<>();
         
         for (String sID_Group_Activiti : asLogin) {
             
             if (sSubjectType == null) {
                 sSubjectType = "Human";
-            }
+            }            
             
-            LOG.info("/getSubjectContacts: sID_Group_Activiti", sID_Group_Activiti);
-            //находим SubjectGroup`ы всех элементов дерева
-            SubjectGroupResultTree oSubjectGroupResultTree = oSubjectGroupTreeService
-                    .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, false, 0l, sSubjectType);
-            LOG.info("oSubjectGroupResultTree={}", oSubjectGroupResultTree);
+            List<SubjectGroup> aSubjectGroupParent = oSubjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType);
             
-            //находим SubjectGroup рутового элемент
-            SubjectGroup oSubjectGroupRoot = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
-            
-            aoAllSubjectGroup.addAll(oSubjectGroupResultTree.getaSubjectGroupTree());
-            aoAllSubjectGroup.add(oSubjectGroupRoot);
+            //Если нет родителя ищем детей для рутового елемента
+            if(aSubjectGroupParent.isEmpty()) {
+                
+                //находим SubjectGroup рутового элемент
+                SubjectGroup oSubjectGroupRoot = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+                LOG.info("oSubjectGroupRoot={}", oSubjectGroupRoot);
+                String sSubjectGroupRootType = oSubjectGroupTreeService.getSubjectType(sID_Group_Activiti);
+
+                SubjectGroupResultTree oSubjectGroupChildResultTree = oSubjectGroupTreeService
+                        .getCatalogSubjectGroupsTree(sID_Group_Activiti, 1l, null, false, 1l, sSubjectType);
+                LOG.info("oSubjectGroupChildResultTree={}", oSubjectGroupChildResultTree);
+                
+                aoAllSubjectGroup.addAll(oSubjectGroupChildResultTree.getaSubjectGroupTree());
+                
+                if (sSubjectGroupRootType.equals(sSubjectType)) {
+                    aoAllSubjectGroup.add(oSubjectGroupRoot);
+                }
+                
+            } else {
+                //ищем всех детей для родителя
+                for (SubjectGroup oSubjectGroup : aSubjectGroupParent) {
+                    
+                    String sID_Group_ActivitiParent = oSubjectGroup.getsID_Group_Activiti();
+                    LOG.info("sID_Group_ActivitiParent={}", sID_Group_ActivitiParent);
+                                        
+                    SubjectGroupResultTree oSubjectGroupChildResultTree = oSubjectGroupTreeService
+                        .getCatalogSubjectGroupsTree(sID_Group_ActivitiParent, 1l, null, false, 1l, sSubjectType);
+                    LOG.info("oSubjectGroupChildResultTree={}", oSubjectGroupChildResultTree);
+                    
+                    aoAllSubjectGroup.addAll(oSubjectGroupChildResultTree.getaSubjectGroupTree());
+                    
+                    //находим SubjectGroup родителя
+                    SubjectGroup oSubjectGroupParent = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_ActivitiParent);
+                    aoAllSubjectGroup.add(oSubjectGroupParent);
+                }           
+            }            
         }
+        LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);
         
         long nID_SubjectContactType = 0;
         

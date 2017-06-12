@@ -1,4 +1,18 @@
-package org.igov.io.db.kv.statical.impl;
+package org.igov.io.db.kv.analytic;
+
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSFile;
+import org.apache.commons.io.IOUtils;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
+import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
+import org.igov.io.db.kv.statical.impl.BytesDataStorage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsCriteria;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -6,29 +20,13 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsCriteria;
-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+/**
+ * Created by dpekach on 05.06.17.
+ */
+public abstract class SaveToMongoStorageBytes implements IBytesDataStorage {
+    private static final Logger LOG = LoggerFactory.getLogger(SaveToMongoStorageBytes.class);
 
-import org.igov.io.db.kv.statical.IBytesDataStorage;
-import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
-
-import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSFile;
-import org.springframework.beans.factory.annotation.Qualifier;
-
-public class BytesDataStorage implements IBytesDataStorage {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
-
-    @Autowired
-    private GridFsTemplate gridTemplate;
+    public abstract GridFsTemplate getGridTemplate();
 
     @Override
     public String saveData(byte[] aByte) {
@@ -46,12 +44,12 @@ public class BytesDataStorage implements IBytesDataStorage {
     public boolean setData(String sKey, byte[] data) {
         try (InputStream oInputStream = new ByteArrayInputStream(data)) {
             //LOG.info("Start create oGridFSFile");
-            GridFSFile oGridFSFile = gridTemplate.store(oInputStream, sKey);
+            GridFSFile oGridFSFile = getGridTemplate().store(oInputStream, sKey);
             //LOG.info("Start save oGridFSFile");
             oGridFSFile.save();
             //LOG.info("End save oGridFSFile File size = {}", oGridFSFile.getLength());
         } catch (IOException oException) {
-        	LOG.error("Bad: {}, (sKey={}, sData={})",oException.getMessage(), sKey, data);
+            LOG.error("Bad: {}, (sKey={}, sData={})", oException.getMessage(), sKey, data);
             LOG.trace("FAIL:", oException);
             return false;
         }
@@ -64,10 +62,10 @@ public class BytesDataStorage implements IBytesDataStorage {
 
     private GridFSDBFile findLatestEdition(String sKey) {
         //LOG.info("sKey = {}", sKey);
-        List<GridFSDBFile> aGridFSDBFile = gridTemplate.find(
+        List<GridFSDBFile> aGridFSDBFile = getGridTemplate().find(
                 getKeyQuery(sKey)
-                .with(new Sort(Direction.DESC, "uploadDate"))
-                .limit(1));
+                        .with(new Sort(Sort.Direction.DESC, "uploadDate"))
+                        .limit(1));
         if (aGridFSDBFile == null || aGridFSDBFile.isEmpty()) {
             /*
             if(aGridFSDBFile == null){
@@ -85,7 +83,7 @@ public class BytesDataStorage implements IBytesDataStorage {
 
     @Override
     public boolean remove(String sKey) {
-        gridTemplate.delete(getKeyQuery(sKey));
+        getGridTemplate().delete(getKeyQuery(sKey));
         return true;
     }
 
@@ -102,7 +100,7 @@ public class BytesDataStorage implements IBytesDataStorage {
             } else {
                 //LOG.info("oGridFSDBFile = null");
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             LOG.error("getData oGridFSDBFile.getInputStream Exeption: " + e.getMessage());
         }
 
@@ -112,7 +110,7 @@ public class BytesDataStorage implements IBytesDataStorage {
             //LOG.info("IOUtils.toByteArray(InputStream) size = {}", result.length);
             return result;
         } catch (NullPointerException | IOException oException) {
-            LOG.error("Bad: {}, (sKey={})",oException.getMessage(), sKey);
+            LOG.error("Bad: {}, (sKey={})", oException.getMessage(), sKey);
             LOG.trace("FAIL:", oException);
             return null;
         }
@@ -132,5 +130,4 @@ public class BytesDataStorage implements IBytesDataStorage {
         GridFSDBFile oGridFSDBFile = findLatestEdition(sKey);
         return oGridFSDBFile != null;
     }
-
 }

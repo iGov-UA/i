@@ -13,7 +13,7 @@ import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
-		"/META-INF/spring/org-igov-io-db-kv-statical-context.xml"})
+        "/org-igov-io-db-kv-statical-context.xml"})
 public class BytesDataStorageTest {
 
 	@Autowired

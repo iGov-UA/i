@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_AnalitServ_Stat" name="Для сервера аналитики поля" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sCountry_1" name="Країна імпортера (експортера)" type="select"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sBornPlace1" name="Місце народження;зазначте повністю: Україна, область, місто" type="textArea" default="Україна, Дніпропетровська обл., м."></activiti:formProperty>
+        <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; перший, другий тощо" type="long"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nVukidTable" name="Викиди яких забруднюючих речовин планується здійснювати; ;bNew=true" type="table" default="${markerService.loadFromFile('test_folder/ecotest_1565_Zabrud_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="fileHTML" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="firstName" name="double" type="double"></activiti:formProperty>
+        <activiti:formProperty id="ScancopyDoc1" name="Копія рішення суду ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Enum_test" name="Оберіть варіант" type="enum">
+        	<activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
+          	<activiti:value id="sEnumMarried" name="одруження"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="Уведомление гражданина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Заява про державну реєстрацію розірвання шлюбу]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+
+Результати первинної перевірки звернення будуть спрямовані на цей е-мейл протягом трьох робочих днів. <br />
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <userTask id="usertask1" name="Обработка заявки" activiti:candidateGroups="test_stat">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім`я ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDate1" name="Дата народження ; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sBornPlace1" name="Місце народження;зазначте повністю: Україна, область, місто ;writable=false" type="textArea" default="Україна, Дніпропетровська обл., м."></activiti:formProperty>
+        <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberOfMarriages2" name="Який за рахунком шлюб; перший, другий тощо;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш контактний телефон ; ;writable=false" type="string" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nVukidTable" name="Викиди яких забруднюючих речовин планується здійснювати; ;bNew=true" type="table" default="${markerService.loadFromFile('test_folder/ecotest_1565_Zabrud_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="lastName" name="fileHTML ; ;writable=false" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="firstName" name="double ; ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="ScancopyDoc1" name="Копія рішення суду ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Enum_test" name="Оберіть варіант ; ;writable=false" type="enum">
+        	<activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
+          	<activiti:value id="sEnumMarried" name="одруження"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Рішення" type="enum">
+        	<activiti:value id="Yes" name="так"></activiti:value>
+          	<activiti:value id="No" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/test_analit.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/test_analit.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_AnalitServ_Stat">
+    <bpmndi:BPMNPlane bpmnElement="_test_AnalitServ_Stat" id="BPMNPlane__test_AnalitServ_Stat">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="380.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="530.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="115.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="305.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="485.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
