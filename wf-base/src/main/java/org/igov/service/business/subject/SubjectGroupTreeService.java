@@ -353,6 +353,7 @@ public class SubjectGroupTreeService {
 
             //ID для которого ищем департаменты, которым он подчиняется
             Long nID = oSubjectGroup.getoSubject().getId();
+            LOG.info("aSubjectGroup.id={}", nID);
 
             //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
             List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
