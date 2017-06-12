@@ -347,7 +347,7 @@ public class SubjectGroupTreeService {
 
         //Получили все SubjectGroup, которые относятся к группе sID_Group_Activiti
         List<SubjectGroup> aSubjectGroup = SubjectGroupDao.findAllBy("sID_Group_Activiti", sID_Group_Activiti);
-        LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroup.size() + ", " + aSubjectGroup.toString());
+        LOG.info("aSubjectGroup consist: size={}, {}", aSubjectGroup.size(), aSubjectGroup.toString());
 
         for (SubjectGroup oSubjectGroup : aSubjectGroup) {
 
@@ -356,7 +356,7 @@ public class SubjectGroupTreeService {
 
             //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
             List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
-            LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroupTree.size() + ", " + aSubjectGroupTree.toString());
+            LOG.info("aSubjectGroupTree size={}, {}",  aSubjectGroupTree.size(), aSubjectGroupTree.toString());
 
             for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupTree) {
 
