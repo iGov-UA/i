@@ -93,11 +93,11 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 					List<DboTkModel> listOfModels = new ArrayList<>();
 					if(ValidationARM.isValid(dataWithExecutorForTransferToArm.getOut_number())){
 						listOfModels = armService.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
-						transferDateArm(dataWithExecutorForTransferToArm.getOut_number(), dataWithExecutorForTransferToArm, listOfModels,expert);
+						transferDateArm(dataWithExecutorForTransferToArm, listOfModels,expert);
 						
 					}else{
 						listOfModels = armService.getDboTkByOutNumber(sID_order);
-						transferDateArm(sID_order, dataWithExecutorForTransferToArm, listOfModels,expert);
+						transferDateArm(dataWithExecutorForTransferToArm, listOfModels,expert);
 					}
 			}
 		
@@ -105,7 +105,7 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 	
 	
 	
-	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels,String expert) {
+	private void transferDateArm(DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels,String expert) {
 		if (listOfModels !=null && !listOfModels.isEmpty()) {
 					LOG.info("expert = {}",expert);
 						dataForTransferToArm.setExpert(expert);
