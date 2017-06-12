@@ -24,7 +24,7 @@ import org.igov.model.action.task.core.entity.AttachmentEntityI;
 import org.igov.service.business.access.BankIDUtils;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.action.task.systemtask.FileTaskUpload;
+import org.igov.service.business.action.task.systemtask.ProcedQueueTickets;
 import org.igov.service.business.object.ObjectFileService;
 import org.igov.service.conf.AttachmetService;
 import org.igov.service.controller.interceptor.ActionProcessCountUtils;
@@ -483,7 +483,7 @@ public class ObjectFileCommonController {
 
         if (processVariables != null) {
             List<BuilderAttachModelCover> builderAttachModelList = (List) processVariables
-                    .get(FileTaskUpload.BUILDER_ATACH_MODEL_LIST);
+                    .get(ProcedQueueTickets.BUILDER_ATACH_MODEL_LIST);
 
             if (builderAttachModelList != null) {
                 attachModel = builderAttachModelList.get(0);
@@ -494,7 +494,7 @@ public class ObjectFileCommonController {
             throw new ActivitiObjectNotFoundException(
                     String.format(
                             "ProcessVariable '{%s}' for processInstanceId '{%s}' not found.",
-                            FileTaskUpload.BUILDER_ATACH_MODEL_LIST,
+                            ProcedQueueTickets.BUILDER_ATACH_MODEL_LIST,
                             processInstanceId));
         }
 
