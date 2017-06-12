@@ -37,7 +37,7 @@
         <activiti:formProperty id="marker1" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('dsmsu_0271_ZvernGrom.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="File upload" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="File upload" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <serviceTask id="servicetask2" name="Лист службовцю" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">

@@ -75,7 +75,7 @@
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/skv/SpecInspection_965_Common_print.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <userTask id="usertask1" name="[Етап I.1] Перевірка щодо корпоративних прав" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}_grp01">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan01" name="Орган, що здійснює спеціальної перевірку" type="string" writable="false"></activiti:formProperty>

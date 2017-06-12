@@ -324,7 +324,7 @@ ${sNameOrgan}.<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" name="немає оплати" sourceRef="exclusivegateway2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask2" name="институт " activiti:candidateGroups="ASO">
+    <userTask id="usertask2" name="інститут" activiti:candidateGroups="ASO">
       <extensionElements>
         <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" writable="false">
           <activiti:value id="Rawmaterials" name="Сировина, продукція тощо"></activiti:value>
@@ -417,7 +417,6 @@ ${sNameOrgan}.<br />
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
           <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
@@ -436,12 +435,7 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="sID_Merchant" name="Послуга є платною ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="saDecisionType" name="Заявка приймається в роботу?" type="enum" required="true">
-          <activiti:value id="YES" name="Так"></activiti:value>
-          <activiti:value id="NO" name="Ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sRefusal_Comments" name="Коментар; Надайте коментар щодо причин відмови" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сумма платежу за послугу;Вкажіть сумму в грн., яка буде направлена заявнику для оплати за замовлену послугу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDoc402" name="Проект висновку державної санітарно-епідеміологічної експертизи; Після опрацювання заявки та проведення всіх необхідних процедур, додайте скановану або електронну копію підготовленого Вашим інститутом проекту висновку;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Лист-підтвердення про прийняття в роботу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -479,7 +473,7 @@ ${sNameOrgan}.<br />
     <sequenceFlow id="flow14" sourceRef="exclusivegateway2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-    <userTask id="usertask4" name="эксперт" activiti:candidateGroups="ASO">
+    <userTask id="usertask4" name="експерт" activiti:candidateGroups="ASO">
       <extensionElements>
         <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" writable="false">
           <activiti:value id="Rawmaterials" name="Сировина, продукція тощо"></activiti:value>
@@ -572,8 +566,9 @@ ${sNameOrgan}.<br />
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
+       <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; Завантажено заявником;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc402" name="Проект висновку державної санітарно-епідеміологічної експертизи; Завантажено Інститутом;bNew=true" type="file" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
           <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
           <activiti:value id="Paper" name="Паперова форма надається у Дерджпродспоживслужбі"></activiti:value>
@@ -589,7 +584,7 @@ ${sNameOrgan}.<br />
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <userTask id="usertask5" name="нач. отдела" activiti:candidateGroups="ASO">
+    <userTask id="usertask5" name="нач. відділу" activiti:candidateGroups="ASO">
       <extensionElements>
         <activiti:formProperty id="saObjectType" name="Об'єкт експертизи" type="enum" writable="false">
           <activiti:value id="Rawmaterials" name="Сировина, продукція тощо"></activiti:value>
@@ -682,7 +677,8 @@ ${sNameOrgan}.<br />
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; Завантажено заявником;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc402" name="Проект висновку державної санітарно-епідеміологічної експертизи; Завантажено Інститутом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
           <activiti:value id="Electron" name="Тільки електронна форма"></activiti:value>
@@ -698,7 +694,7 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="sBody_1" name="[pattern/print/dpss/dpss_1441_visnovok.html]" type="string" default="Заява про проведення експертизи" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <userTask id="usertask6" name="зам" activiti:candidateGroups="ASO">
+    <userTask id="usertask6" name="заступник голови" activiti:candidateGroups="ASO">
       <extensionElements>
         <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
@@ -801,7 +797,8 @@ ${sNameOrgan}.<br />
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; Завантажено заявником;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc402" name="Проект висновку державної санітарно-епідеміологічної експертизи; Завантажено Інститутом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
@@ -820,7 +817,7 @@ ${sNameOrgan}.<br />
     </userTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow26" sourceRef="usertask6" targetRef="exclusivegateway6"></sequenceFlow>
-    <userTask id="usertask7" name="керівник" activiti:candidateGroups="ASO">
+    <userTask id="usertask7" name="голова" activiti:candidateGroups="ASO">
       <extensionElements>
         <activiti:formProperty id="marker_05" name="Список сировина, продукція тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_06" name="Список проекти, нормативні документи тощо" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
@@ -923,7 +920,8 @@ ${sNameOrgan}.<br />
           <activiti:value id="YES" name="Так"></activiti:value>
           <activiti:value id="NO" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc401" name="Проект висновку державної санітарно-епідеміологічної експертизи; Завантажено заявником;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc402" name="Проект висновку державної санітарно-епідеміологічної експертизи; Завантажено Інститутом;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть експертну комісію для проведення державної санітарно-епідеміологічної експертизи та підготовки відповідного проекту висновку" type="select" default="0" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_09" name="Вибір типу відправки висновку" type="markers" default="${markerService.loadFromFile('dpss/dpss_1441_visnovok.json')}"></activiti:formProperty>
         <activiti:formProperty id="saDeliveryType" name="Оберіть форму отримання висновку державної санітарно-епідеміологічної експертизи;Якщо Ви обрали паперовий варіант висновку, електронний буде Вам надіслано на електронну пошту в будь-якому випадку" type="enum" writable="false">
@@ -1044,11 +1042,11 @@ src=(+src + +1)
 execution.setVariable('sCountPayment', src)</script>
     </scriptTask>
     <sequenceFlow id="flow52" sourceRef="timerintermediatecatchevent2" targetRef="scripttask2"></sequenceFlow>
-    <sequenceFlow id="flow53" sourceRef="exclusivegateway9" targetRef="usertask5"></sequenceFlow>
-    <sequenceFlow id="flow54" sourceRef="exclusivegateway9" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow53" name="так" sourceRef="exclusivegateway9" targetRef="usertask5"></sequenceFlow>
+    <sequenceFlow id="flow54" name="ні" sourceRef="exclusivegateway9" targetRef="servicetask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway9" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow55" sourceRef="scripttask2" targetRef="exclusivegateway9"></sequenceFlow>
-    <sequenceFlow id="flow56" sourceRef="exclusivegateway9" targetRef="timerintermediatecatchevent2"></sequenceFlow>
+    <sequenceFlow id="flow56" name="ні, але час ще є" sourceRef="exclusivegateway9" targetRef="timerintermediatecatchevent2"></sequenceFlow>
     <serviceTask id="servicetask8" name="Лист відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow57" sourceRef="exclusivegateway1" targetRef="servicetask8"></sequenceFlow>
     <sequenceFlow id="flow58" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
@@ -1311,7 +1309,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="720.0" y="641.0"></omgdi:waypoint>
         <omgdi:waypoint x="720.0" y="525.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="927.0" y="622.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="95.0" x="927.0" y="622.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
@@ -1320,7 +1318,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="975.0" y="577.0"></omgdi:waypoint>
         <omgdi:waypoint x="975.0" y="525.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="1150.0" y="557.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="95.0" x="1168.0" y="557.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
@@ -1356,11 +1354,17 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="640.0" y="419.0"></omgdi:waypoint>
         <omgdi:waypoint x="640.0" y="496.0"></omgdi:waypoint>
         <omgdi:waypoint x="668.0" y="497.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="13.0" width="16.0" x="629.0" y="439.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="610.0" y="398.0"></omgdi:waypoint>
         <omgdi:waypoint x="609.0" y="295.0"></omgdi:waypoint>
         <omgdi:waypoint x="895.0" y="286.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="13.0" width="8.0" x="602.0" y="367.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
         <omgdi:waypoint x="574.0" y="418.0"></omgdi:waypoint>
@@ -1370,6 +1374,9 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="610.0" y="438.0"></omgdi:waypoint>
         <omgdi:waypoint x="610.0" y="494.0"></omgdi:waypoint>
         <omgdi:waypoint x="539.0" y="494.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="13.0" width="80.0" x="538.0" y="476.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="242.0" y="350.0"></omgdi:waypoint>

@@ -51,7 +51,7 @@
         <activiti:formProperty id="num_doc" name="Кількість доданих документів" type="long" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="mailtask1" name="Повідомлення громадянина про реєстрацію звернення" activiti:type="mail">
       <extensionElements>

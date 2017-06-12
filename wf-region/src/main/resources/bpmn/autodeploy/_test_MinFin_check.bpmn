@@ -20,7 +20,7 @@
   		var getIPNdata = dictionaryService.processDictionary('MinFin_test', 'IPN', value);
   		if (getIPNdata.length==0) 
 		{
-  			sResult = "ІПН неіснуючий"
+  			sResult = "ІПН не міститься в базі"
   		}
   		else
   		{
@@ -38,33 +38,33 @@
 	  </script>
     </scriptTask>
     <scriptTask id="scripttask2" name="Перевірка законності видачі субсидій і ВПО по наявності депозиту " scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script><![CDATA[
+      <script>
       	var value = execution.getVariable('sIPN');
   		var sResult = " ";
   		var getIPNdata = dictionaryService.processDictionary('MinFin_test', 'IPN', value);
   		if (getIPNdata.length==0) 
   		{
-  			sResult = "ІПН неіснуючий"
+  			sResult = "ІПН не міститься в базі"
   		}
   		else
   		{  		
   		var sumDep = getIPNdata[0].IS_DEP;
-  		if (sumDep<50000)
+  		if (sumDep&lt;50000)
   		{
   			sResult = "Субсидія може бути надана"
   		}
-  		if (sumDep>=50000)
+  		if (sumDep&gt;=50000)
   		{
   			sResult = "Субсидія не може бути надана"
   		}
   		}
-  		execution.setVariable('sResult', sResult);]]>
+  		execution.setVariable('sResult', sResult);
   	  </script>
     </scriptTask>
-    <sequenceFlow id="flow2" name="${asCheckType=='sCorrectIPN'}" sourceRef="exclusivegateway1" targetRef="scripttask1">
+    <sequenceFlow id="flow2" name="Перевірка коректності ідентифікаційних даних" sourceRef="exclusivegateway1" targetRef="scripttask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asCheckType=='sCorrectIPN'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow3" name="${asCheckType=='sDepozit'}" sourceRef="exclusivegateway1" targetRef="scripttask2">
+    <sequenceFlow id="flow3" name="Перевірка законності видачі субсидій" sourceRef="exclusivegateway1" targetRef="scripttask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asCheckType=='sDepozit'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask1" name="Відправка відповіді на пошту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -76,27 +76,31 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Перевірка щодо ІПН]]></activiti:string>
+          <activiti:expression><![CDATA[Перевірка щодо ІПН ${sIPN}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
           	<p>
-          		Щодо перевірки по ІПН була надана відповідь:<br>
-          		${sResult}<br>
+          		ІПН <b>${sIPN}</b> перевірено.<br>
+          		Результат: ${sResult}<br>
           	</p>
+          	[pattern/mail/new_design/_common_content_end.html]
+          	[pattern/mail/new_design/_common_signature_start.html]
+          	[pattern/mail/new_design/_common_signature_end.html]
           	[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow7" name="${email!=NULL}" sourceRef="exclusivegateway2" targetRef="servicetask1">
+    <sequenceFlow id="flow7" name="На старті внесено ел. пошту" sourceRef="exclusivegateway2" targetRef="servicetask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${email!=null}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow8" name="${email==NULL}" sourceRef="exclusivegateway2" targetRef="endevent1">
+    <sequenceFlow id="flow8" name="На старті не внесено ел. пошту" sourceRef="exclusivegateway2" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${email==null}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
-    <userTask id="usertask1" name="Ответ" activiti:candidateGroups="MinFin_test">
+    <userTask id="usertask1" name="Відповідь щодо ІПН ${sIPN}" activiti:candidateGroups="MinFin_test">
       <extensionElements>
         <activiti:formProperty id="sIPN" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта; сюди буде відправлено відповідь" type="string" writable="false"></activiti:formProperty>
@@ -143,7 +147,7 @@
         <omgdi:waypoint x="230.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="270.0" y="107.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="140.0" y="66.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="140.0" y="66.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
@@ -151,7 +155,7 @@
         <omgdi:waypoint x="230.0" y="247.0"></omgdi:waypoint>
         <omgdi:waypoint x="270.0" y="247.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="160.0" y="256.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="160.0" y="256.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -161,7 +165,7 @@
         <omgdi:waypoint x="619.0" y="54.0"></omgdi:waypoint>
         <omgdi:waypoint x="640.0" y="53.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="520.0" y="80.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="600.0" y="94.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -169,7 +173,7 @@
         <omgdi:waypoint x="600.0" y="277.0"></omgdi:waypoint>
         <omgdi:waypoint x="675.0" y="277.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="521.0" y="219.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="600.0" y="203.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">

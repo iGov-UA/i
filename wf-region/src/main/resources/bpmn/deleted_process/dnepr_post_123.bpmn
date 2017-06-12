@@ -32,7 +32,7 @@
         <activiti:formProperty id="sBody" name="sBody" type="invisible" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="mailtask1" name="E-mail о реєстрації запита" activiti:type="mail">
       <extensionElements>

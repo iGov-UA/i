@@ -42,7 +42,7 @@
     <serviceTask id="servicetask0" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow0" sourceRef="servicetask0" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow8" sourceRef="servicetask1" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="servicetask0"></sequenceFlow>
   </process>
