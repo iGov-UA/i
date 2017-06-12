@@ -10,6 +10,8 @@ import org.igov.io.mail.Mail;
 import org.igov.util.Tool;
 
 import java.util.Map;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeMultipart;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 @Component("EscalationHandler_SendMailAlert")
@@ -93,7 +95,8 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
         oMail
                 ._To(recipient)
                 ._Head(sHead)
-                ._Body(sBody);
+                ._Body(sBody)
+                ._oMultiparts(new MimeMultipart());
         oMail.send();
     }
 }
