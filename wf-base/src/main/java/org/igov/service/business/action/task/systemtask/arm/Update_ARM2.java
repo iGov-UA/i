@@ -60,48 +60,47 @@ public class Update_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate
 		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 		
 	//ветка - когда назначаются исполнители	
-		if(dataWithExecutorForTransferToArm.getExpert()!=null){
 			if(expert==null){
-				List <String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");//json с ключом из монги
-				LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
-		
-				List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
-				
-				if (listOfModels != null && !listOfModels.isEmpty()) {
-		
-					if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
-						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
-						LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
-						armService.updateDboTk(dataWithExecutorForTransferToArm);
-						// если в листе не одно значение - для каждого исполнителя сетим
-						if (asExecutorsFromsoData.size()>1) {
-							for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
-								dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
-								armService.createDboTk(dataWithExecutorForTransferToArm);
+				if(dataWithExecutorForTransferToArm.getExpert()!=null){
+					List <String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");//json с ключом из монги
+					LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
+			
+					List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
+					
+					if (listOfModels != null && !listOfModels.isEmpty()) {
+			
+						if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
+							dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
+							LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
+							armService.updateDboTk(dataWithExecutorForTransferToArm);
+							// если в листе не одно значение - для каждого исполнителя сетим
+							if (asExecutorsFromsoData.size()>1) {
+								for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
+									dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
+									armService.createDboTk(dataWithExecutorForTransferToArm);
+								}
 							}
+						}else{
+							LOG.info("Executors are abcent ");
 						}
-					}else{
-						LOG.info("Executors are abcent ");
+			
+					}else {
+						LOG.info("Model include sID_order "+ sID_order + "not found in ARM");
 					}
-		
-				}else {
-					LOG.info("Model include sID_order "+ sID_order + "not found in ARM");
 				}
-			}
-		}
-		
-		//ветка, когда исполнители уже есть и они отрабатывают свое задание
-		if(expert!=null){
-			List<DboTkModel> listOfModels = new ArrayList<>();
-			if(ValidationARM.isValid(dataWithExecutorForTransferToArm.getOut_number())){
-				listOfModels = armService.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
-				transferDateArm(dataWithExecutorForTransferToArm.getOut_number(), dataWithExecutorForTransferToArm, listOfModels,expert);
-				
 			}else{
-				listOfModels = armService.getDboTkByOutNumber(sID_order);
-				transferDateArm(sID_order, dataWithExecutorForTransferToArm, listOfModels,expert);
+					//ветка, когда исполнители уже есть и они отрабатывают свое задание
+					List<DboTkModel> listOfModels = new ArrayList<>();
+					if(ValidationARM.isValid(dataWithExecutorForTransferToArm.getOut_number())){
+						listOfModels = armService.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
+						transferDateArm(dataWithExecutorForTransferToArm.getOut_number(), dataWithExecutorForTransferToArm, listOfModels,expert);
+						
+					}else{
+						listOfModels = armService.getDboTkByOutNumber(sID_order);
+						transferDateArm(sID_order, dataWithExecutorForTransferToArm, listOfModels,expert);
+					}
 			}
-		}
+		
 	}
 	
 	
