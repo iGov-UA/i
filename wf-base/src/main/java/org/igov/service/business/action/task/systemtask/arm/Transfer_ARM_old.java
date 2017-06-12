@@ -19,19 +19,21 @@ import org.springframework.stereotype.Component;
 /**
  *
  * @author Elena
- * Листинер, предназначен для создания новой заявки в АРМ
  *
  */
-@Component("Transfer_ARM2")
-public class Transfer_ARM2 extends Abstract_MailTaskCustom implements JavaDelegate {
+@Component("Transfer_ARM_OLD")
+public class Transfer_ARM_old extends Abstract_MailTaskCustom implements JavaDelegate {
 
-	private final static Logger LOG = LoggerFactory.getLogger(Transfer_ARM2.class);
+	private final static Logger LOG = LoggerFactory.getLogger(Transfer_ARM_old.class);
 	
 	private Expression soData;
 
 	@Autowired
 	private ArmService armService;
 	
+	//имя исполнителя , который выполняет заявку
+	private Expression name_isExecute;
+
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// получаю из екзекьюшена sID_order
@@ -52,11 +54,34 @@ public class Transfer_ARM2 extends Abstract_MailTaskCustom implements JavaDelega
 		LOG.info("prilog>>>>>>>>>>>> = {}",prilog);
 		dataForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 	    LOG.info("dataForTransferToArm = {}",dataForTransferToArm);
-		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
-		if(listOfModels==null || listOfModels.isEmpty()){
-			armService.createDboTk(dataForTransferToArm);
+		List<DboTkModel> listOfModels = new ArrayList<>();
+		if(ValidationARM.isValid(dataForTransferToArm.getOut_number())){
+			listOfModels = armService.getDboTkByOutNumber(dataForTransferToArm.getOut_number());
+			transferDateArm(dataForTransferToArm.getOut_number(), dataForTransferToArm, listOfModels,execution);
+			
+		}else{
+			listOfModels = armService.getDboTkByOutNumber(sID_order);
+			transferDateArm(sID_order, dataForTransferToArm, listOfModels,execution);
 		}
 
 	}
+
+	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels,DelegateExecution execution) {
+		if (listOfModels !=null && !listOfModels.isEmpty()) {
+			if (ValidationARM.isValid(dataForTransferToArm.getExpert())) {
+				String expert = getStringFromFieldExpression(this.name_isExecute, execution);
+					LOG.info("expert = {}",expert);
+						dataForTransferToArm.setExpert(expert);
+						armService.updateDboTkByExpert(dataForTransferToArm);
+			} else {
+				armService.updateDboTk(dataForTransferToArm);
+			}
+		}else{
+			dataForTransferToArm.setOut_number(sID_order);
+			armService.createDboTk(dataForTransferToArm);
+		}
+	}
+	
+	
 
 }
