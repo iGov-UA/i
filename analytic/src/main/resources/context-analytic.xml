@@ -34,6 +34,7 @@
                 <list>
                     <value>file:${catalina.home}/conf/DB.NoSQL.Mongo.Analytic.properties</value>
                     <value>file:${catalina.home}/conf/DB.SQL.Analytic.properties</value>
+                    <value>file:${catalina.home}/conf/DB.NoSQL.Mongo.properties</value>
                 </list>
             </property>
             <property name="ignoreUnresolvablePlaceholders" value="true"/>
@@ -72,15 +73,10 @@
 
     <beans>
         <!-- ==============================   IMPORT STANDART  ============================= -->
-        <import resource="classpath:/META-INF/spring/org-igov-io-db-kv-statical-context.xml" />
-        <import resource="classpath:/META-INF/spring/org-igov-io-db-kv-analytic-context.xml"/>
-        <!--import resource="classpath:context-db-analytic.xml"/>
+        <import resource="classpath:org-igov-io-db-kv-analytic-context.xml"/>
+        <import resource="classpath:org-igov-io-db-kv-statical-context.xml"/> <!--for test-->
+        <import resource="classpath:context-db-analytic.xml"/>
         <import resource="classpath:context-dao-analytic.xml"/>
-        <import resource="classpath:org-igov-io-db-kv-analytic-context.xml"/-->
-        <import resource="classpath:/META-INF/spring/context-db-analytic.xml"/>
-        <import resource="classpath:/META-INF/spring/context-dao-analytic.xml"/>
-
-
     </beans>
 
 </beans>

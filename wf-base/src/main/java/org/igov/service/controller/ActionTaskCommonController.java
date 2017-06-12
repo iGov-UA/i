@@ -1795,7 +1795,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     groupsIds.add(group.getId());
                 }
                 LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
-               
+                LOG.info("Filter status: {}", sFilterStatus);
                 Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
                 long totalNumber = 0;
 
@@ -1845,7 +1845,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         break;
                     }
                 }
-
+                
+                LOG.info("tasks size is {}", tasks.size());
+                
                 int tasksSize = tasks.size();
                 if (bFilterHasTicket) {
                     totalNumber = tasksSize;
@@ -1859,13 +1861,17 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         tasks.clear();
                     }
                 }
-
+                
+                LOG.info("tasks size is {}", tasks.size());
+                
                 List<Map<String, Object>> data = new LinkedList<>();
                 if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {
                     oActionTaskService.populateResultSortedByTicketDate(bFilterHasTicket, tasks, mapOfTickets, data);
                 } else {
                     oActionTaskService.populateResultSortedByTasksOrder(bFilterHasTicket, tasks, mapOfTickets, data);
                 }
+                
+                LOG.info("data size is {}", data.size());
                 
                 List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<>();
 

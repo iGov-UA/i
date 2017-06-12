@@ -1,40 +1,35 @@
-package org.igov.io.db.kv.statical.impl;
+package org.igov.io.db.kv.analytic;
+
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSFile;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.igov.io.db.kv.statical.IFileStorage;
+import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
+import org.igov.io.db.kv.statical.impl.BytesDataStorage;
+import org.igov.io.db.kv.statical.model.UploadedFile;
+import org.igov.io.db.kv.statical.model.UploadedFileMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsCriteria;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsCriteria;
-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
-import org.springframework.web.multipart.MultipartFile;
+/**
+ * Created by dpekach on 05.06.17.
+ */
+public abstract class SaveToMongoStorageFile implements IFileStorage {
 
-import org.igov.io.db.kv.statical.IFileStorage;
-import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
-import org.igov.io.db.kv.statical.model.UploadedFile;
-import org.igov.io.db.kv.statical.model.UploadedFileMetadata;
+    private static final Logger LOG = LoggerFactory.getLogger(SaveToMongoStorageFile.class);
 
-import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSFile;
-import org.springframework.beans.factory.annotation.Qualifier;
-
-import javax.annotation.PostConstruct;
-
-public class FileStorage implements IFileStorage {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
-    @Autowired
-    private GridFsTemplate gridTemplate;
+    public abstract GridFsTemplate getGridTemplate();
 
     private static String getExtension(MultipartFile oFile) {
         return FilenameUtils.getExtension(oFile.getOriginalFilename());
@@ -53,7 +48,7 @@ public class FileStorage implements IFileStorage {
     public boolean saveFile(String sKey, MultipartFile oFile) {
         GridFSFile oGridFSFile;
         try {
-            oGridFSFile = gridTemplate.store(oFile.getInputStream(), sKey);
+            oGridFSFile = getGridTemplate().store(oFile.getInputStream(), sKey);
             oGridFSFile.put("contentType", oFile.getContentType());
             oGridFSFile.put("originalName", oFile.getOriginalFilename());
             oGridFSFile.save();
@@ -70,10 +65,10 @@ public class FileStorage implements IFileStorage {
     }
 
     private GridFSDBFile findLatestEdition(String sKey) {
-        List<GridFSDBFile> aGridFSDBFile = gridTemplate.find(
+        List<GridFSDBFile> aGridFSDBFile = getGridTemplate().find(
                 getKeyQuery(sKey)
-                .with(new Sort(Direction.DESC, "uploadDate"))
-                .limit(1));
+                        .with(new Sort(Sort.Direction.DESC, "uploadDate"))
+                        .limit(1));
         if (aGridFSDBFile == null || aGridFSDBFile.isEmpty()) {
             return null;
         }
@@ -83,7 +78,7 @@ public class FileStorage implements IFileStorage {
     @Override
     public boolean remove(String sKey) {
         try {
-            gridTemplate.delete(getKeyQuery(sKey));
+            getGridTemplate().delete(getKeyQuery(sKey));
             return true;
         } catch (Exception e) {
             LOG.error("Can't remove content by this key: {} (sKey={})", e.getMessage(), sKey);

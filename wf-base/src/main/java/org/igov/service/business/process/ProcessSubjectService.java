@@ -556,8 +556,8 @@ public class ProcessSubjectService {
         historyParam.put("sLogin", sLogin);
 
         try {
-            oActionEventHistoryService.addHistoryEvent(sID_Order,
-                   sLogin, historyParam, 14L);
+            //oActionEventHistoryService.addHistoryEvent(sID_Order,
+            //       sLogin, historyParam, 14L);
         } catch (Exception ex) {
             LOG.info("Error saving history during document editing: {}", ex);
         }

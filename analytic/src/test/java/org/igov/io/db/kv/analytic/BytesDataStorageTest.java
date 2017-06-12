@@ -1,5 +1,6 @@
 package org.igov.io.db.kv.analytic;
 
+import org.igov.io.db.kv.analytic.impl.BytesMongoStorageAnalytic;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -10,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 
-@Ignore
+//@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = {
 //		"/META-INF/spring/org-igov-io-db-kv-analytic-context.xml"})
@@ -20,7 +21,7 @@ import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
 public class BytesDataStorageTest {
 
 	@Autowired
-	private IBytesDataStorage oStorage;
+	private BytesMongoStorageAnalytic oStorage;
         //@Ignore
 	@Test(expected=RecordNotFoundException.class)
 	public void openStreamShouldThrowOnInexistentKey() throws RecordNotFoundException {
