@@ -16,9 +16,15 @@
     <scriptTask id="scripttask1" name="Перевірка коректності ідентифікаційних даних субсидій і ВПО" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       	var value = execution.getVariable('sIPN');
+      	var sResult = " ";
   		var getIPNdata = dictionaryService.processDictionary('MinFin_test', 'IPN', value);
+  		if (getIPNdata.length==0) 
+		{
+  			sResult = "ІПН неіснуючий"
+  		}
+  		else
+  		{
   		var IPNcheck = getIPNdata[0].REZ;
-  		var sResult = " ";
   		if (IPNcheck==0)
   		{
   			sResult = "ІПН коректний"
@@ -27,15 +33,22 @@
   		{
   			sResult = "ІПН некоректний"
   		}
+  		}
   		execution.setVariable('sResult', sResult);	
 	  </script>
     </scriptTask>
     <scriptTask id="scripttask2" name="Перевірка законності видачі субсидій і ВПО по наявності депозиту " scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script><![CDATA[
       	var value = execution.getVariable('sIPN');
-  		var getIPNdata = dictionaryService.processDictionary('MinFin_test', 'IPN', value);
-  		var sumDep = getIPNdata[0].IS_DEP;
   		var sResult = " ";
+  		var getIPNdata = dictionaryService.processDictionary('MinFin_test', 'IPN', value);
+  		if (getIPNdata.length==0) 
+  		{
+  			sResult = "ІПН неіснуючий"
+  		}
+  		else
+  		{  		
+  		var sumDep = getIPNdata[0].IS_DEP;
   		if (sumDep<50000)
   		{
   			sResult = "Субсидія може бути надана"
@@ -43,6 +56,7 @@
   		if (sumDep>=50000)
   		{
   			sResult = "Субсидія не може бути надана"
+  		}
   		}
   		execution.setVariable('sResult', sResult);]]>
   	  </script>
