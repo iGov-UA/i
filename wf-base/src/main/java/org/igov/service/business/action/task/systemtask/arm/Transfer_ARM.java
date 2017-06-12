@@ -30,6 +30,9 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 
 	@Autowired
 	private ArmService armService;
+	
+	//имя исполнителя , который выполняет заявку
+	private Expression name_isExecute;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -42,8 +45,7 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		LOG.info("soData_Value before: " + soData_Value);
 		String soData_Value_Result = replaceTags(soData_Value, execution);
 		LOG.info("soData_Value after: " + soData_Value_Result);
-
-
+		
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
 		DboTkModel dataForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
@@ -67,14 +69,11 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	private void transferDateArm(String sID_order, DboTkModel dataForTransferToArm, List<DboTkModel> listOfModels) {
 		if (listOfModels !=null && !listOfModels.isEmpty()) {
 			if (ValidationARM.isValid(dataForTransferToArm.getExpert())) {
-				  List <String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");
-				LOG.info("asExecutorsFromsoData = {}",asExecutorsFromsoData);
-				for (String expert : asExecutorsFromsoData) {
+				String expert = this.name_isExecute.getExpressionText();
+				LOG.info("asExecutorsFromsoData = {}",expert);
 					LOG.info("expert = {}",expert);
 						dataForTransferToArm.setExpert(expert);
 						armService.updateDboTkByExpert(dataForTransferToArm);
-				}
-
 			} else {
 				armService.updateDboTk(dataForTransferToArm);
 			}
