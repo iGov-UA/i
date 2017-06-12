@@ -353,7 +353,6 @@ public class SubjectGroupTreeService {
 
             //ID для которого ищем департаменты, которым он подчиняется
             Long nID = oSubjectGroup.getId();
-            LOG.info("oSubjectGroup.id={}", nID);
 
             //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
             List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
@@ -364,8 +363,9 @@ public class SubjectGroupTreeService {
                 SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
                 LOG.info("oSubjectGroup_Parent={}", oSubjectGroup_Parent);
                 
-                LOG.info("getSubjectType={}", getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()));
-                if (getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()).equals(sSubjectTypeToFind)) {
+                String sSubjectGroup_ParentType = getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti());
+                
+                if (sSubjectGroup_ParentType.equals(sSubjectTypeToFind)) {
 
                     aSubjectGroupParent.add(oSubjectGroup_Parent);
                 }
