@@ -177,7 +177,11 @@ public class Mail extends Abstract_Mail {
 
             _AttachBody(getBody());
             LOG.info("(getBody()={})", getBody());
-            oMimeMessage.setContent(getoMultiparts());
+            
+            if(getoMultiparts() != null){
+                oMimeMessage.setContent(getoMultiparts());
+            }
+            
             LOG.info("oMimeMessage content: " + oMimeMessage.getContent().toString());
             try {
                 LOG.info("getoMultiparts().getBodyPart(0).getFileName(): " + getoMultiparts().getBodyPart(0).getFileName());
