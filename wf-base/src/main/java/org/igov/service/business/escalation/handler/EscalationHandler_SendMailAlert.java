@@ -89,7 +89,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
         oMail
                 ._To(recipient)
                 ._Head(sHead)
-                ._Body(sBody);
+                ._Body(sBody)
                 ._oMultiparts(new MimeMultipart());
         oMail.send();
     }
